@@ -1,32 +1,23 @@
 {
-  "name": "GLLU-Mobile",
+  "name": "gllu",
   "version": "0.0.1",
-  "description": "GLLU's Mobile App",
-  "main": "index.js",
-  "repository": {
-    "url": "git@github.com:GLLU/mobile.git",
-    "type": "git"
-  },
-  "author": "Udi Mosayev <udi@gllu.com>",
-  "license": "NONE",
+  "private": true,
   "scripts": {
-    "start": "gulp"
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "15.3.2",
+    "react-native": "0.37.0"
+  },
+  "jest": {
+    "preset": "jest-react-native"
   },
   "devDependencies": {
-    "babel-preset-latest": "^6.16.0",
-    "del": "^2.2.2",
-    "eslint": "^3.9.1",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^3.0.1",
-    "eslint-plugin-react": "^6.6.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-eslint": "^3.0.1"
-  },
-  "babel": {
-    "presets": [
-      "latest"
-    ]
+    "babel-jest": "17.0.0",
+    "babel-preset-react-native": "1.9.0",
+    "jest": "17.0.0",
+    "jest-react-native": "17.0.0",
+    "react-test-renderer": "15.3.2"
   }
 }
