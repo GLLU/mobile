@@ -1,0 +1,23 @@
+{
+  "name": "GLLU-Mobile",
+  "version": "0.0.1",
+  "description": "GLLU's Mobile App",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:GLLU/mobile.git",
+    "type": "git"
+  },
+  "author": "Udi Mosayev <udi@gllu.com>",
+  "license": "NONE",
+  "devDependencies": {
+    "babel-preset-latest": "^6.16.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  }
+}
