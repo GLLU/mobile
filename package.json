@@ -9,7 +9,8 @@
   "dependencies": {
     "react": "15.3.2",
     "react-native": "0.37.0",
-    "react-native-code-push": "latest"
+    "react-native-code-push": "latest",
+    "react-native-fbsdk": "^0.4.0"
   },
   "jest": {
     "preset": "jest-react-native"
