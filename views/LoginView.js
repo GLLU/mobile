@@ -23,13 +23,14 @@ class LoginView extends Component {
   }
 
   loginSuccessful(data) {
-    this.setState({accessToken: data["accessToken"], expirationTime: data["expirationTime"]})
+    var jsonData = {access_token: data["accessToken"], expirationTime: data["expirationTime"]}
+    this.setState(jsonData)
 
-    fetch("http://api.gllu.dev/v1/login/facebook_sign_in.json",
+    fetch("https://sam.gllu.com/v1/login/facebook_sign_in.json",
       {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({access_token: data["accessToken"]}),
+        body: JSON.stringify(jsonData),
       })
       .then((response) => response.json())
       .then((responseData) => {
