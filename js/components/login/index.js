@@ -7,6 +7,7 @@ import { Container, Content, InputGroup, Input, Button, Icon, View } from 'nativ
 
 import { setUser } from '../../actions/user';
 import styles from './styles';
+import LoginView from './LoginView';
 
 const {
   replaceAt,
@@ -61,6 +62,7 @@ class Login extends Component {
                 <Button style={styles.btn} onPress={() => this.replaceRoute('home')}>
                   Login
                 </Button>
+                <LoginView/>
               </View>
             </Image>
           </Content>
