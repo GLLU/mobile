@@ -12,6 +12,8 @@ import {
   View
 } from 'react-native';
 
+var LoginView = require('./views/LoginView');
+
 export default class gllu extends Component {
   render() {
     return (
