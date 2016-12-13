@@ -3,8 +3,12 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Container, Content, Button, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { connect } from 'react-redux';
 
 import styles from './styles';
+import rest from '../../api/rest';
+import { loginViaFacebook } from '../../actions/user';
 
 const background = require('../../../images/background.jpg');
 const logo = require('../../../images/splash-logo.png');
@@ -28,9 +32,10 @@ const SignUpEmailButton = MKButton.coloredButton()
   .withText('Signup with Email')
   .build();
 
-export default class SplashPage extends Component {
+class SplashPage extends Component {
 
   static propTypes = {
+    loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     })
@@ -47,8 +52,29 @@ export default class SplashPage extends Component {
     console.log('Go To Signup with Email');
   }
 
+  loginSuccessful(data) {
+    const jsonData = { access_token: data["accessToken"], expirationTime: data["expirationTime"] };
+    this.props.loginViaFacebook(jsonData);
+  }
+
   connectWithFB() {
-    console.log('Connect with FB')
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+    LoginManager.logInWithReadPermissions(["email", "public_profile"]).then(
+      (result) => {
+        if (result.isCancelled) {
+          alert('Login cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then(
+            (data) => {
+              this.loginSuccessful(data)
+            }
+          );
+        }
+      },
+      (error) => {
+        alert('Login fail with error: ' + error);
+      }
+    );
   }
 
   render() {
@@ -78,3 +104,17 @@ export default class SplashPage extends Component {
     );
   }
 }
+
+
+function bindAction(dispatch) {
+  return {
+    loginViaFacebook: index => dispatch(loginViaFacebook()),
+    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+  };
+}
+
+const mapStateToProps = state => ({
+  navigation: state.cardNavigation,
+});
+
+export default connect(mapStateToProps, bindAction)(SplashPage);
