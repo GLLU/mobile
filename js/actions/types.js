@@ -1,4 +1,3 @@
-
 export type Action =
   { type: 'PUSH_NEW_ROUTE', route: string }
     | { type: 'POP_ROUTE' }

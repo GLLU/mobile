@@ -56,7 +56,8 @@ module.exports = StyleSheet.create({
   label: {
     textAlign: 'center',
     color: 'white',
-    marginTop: 20, marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 20,
     fontSize: 15,
     fontWeight: 'bold',
   },

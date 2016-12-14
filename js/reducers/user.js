@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { SET_USER, LOGIN_VIA_FACEBOOK } from '../actions/user';
+import { SET_USER } from '../actions/user';
 
 export type State = {
     name: string
@@ -17,5 +17,6 @@ export default function (state:State = initialState, action:Action): State {
       name: action.payload,
     };
   }
+
   return state;
 }

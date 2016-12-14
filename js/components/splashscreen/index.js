@@ -1,14 +1,16 @@
 
 import React, { Component } from 'react';
-import { Image } from 'react-native';
 import { Container, Content, Button, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
-import { connect, combineReducers } from 'react-redux';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
+
+const { navigateTo } = actions;
 
 const background = require('../../../images/background.jpg');
 const logo = require('../../../images/splash-logo.png');
