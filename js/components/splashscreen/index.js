@@ -12,6 +12,8 @@ import _ from 'lodash';
 
 const { navigateTo } = actions;
 
+const { navigateTo } = actions;
+
 const background = require('../../../images/background.jpg');
 const logo = require('../../../images/splash-logo.png');
 const MK = require('react-native-material-kit');
@@ -76,7 +78,7 @@ class SplashPage extends Component {
                     this.props.loginViaFacebook(jsonData);
                   }
                 });
-                new GraphRequestManager().addRequest(infoRequest).start(); 
+                new GraphRequestManager().addRequest(infoRequest).start();
               }
             );
           } else {
