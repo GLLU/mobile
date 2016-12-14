@@ -4,10 +4,9 @@ import { Image } from 'react-native';
 import { Container, Content, Button, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
-import { connect } from 'react-redux';
+import { connect, combineReducers } from 'react-redux';
 
 import styles from './styles';
-import rest from '../../api/rest';
 import { loginViaFacebook } from '../../actions/user';
 
 const background = require('../../../images/background.jpg');
@@ -78,6 +77,7 @@ class SplashPage extends Component {
   }
 
   render() {
+    console.log('splash screen');
     return (
       <Container>
         <View style={styles.container}>
@@ -108,7 +108,7 @@ class SplashPage extends Component {
 
 function bindAction(dispatch) {
   return {
-    loginViaFacebook: index => dispatch(loginViaFacebook()),
+    loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
   };
 }
