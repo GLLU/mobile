@@ -63,10 +63,9 @@ export default class SplashPage extends Component {
               <View style={styles.signupContainer}>
                 <SignUpEmailButton onPress={() => this.singupWithEmail() } />
                 <Text style={styles.label}>Or</Text>
-                <Button style={styles.btnFB} onPress={() => this.connectWithFB() }>
-                  <Icon style={styles.iconButton} name='facebook' size={18} color='#ffffff' />
-                  <Text style={styles.btnContent}>  Connect with facebook</Text>
-                </Button>
+                <Icon.Button style={styles.btnFB} name="facebook" backgroundColor="#3b5998" onPress={this.connectWithFB}>
+                  Connect with facebook
+                </Icon.Button>
               </View>
               <View style={styles.bottomContainer}>
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
