@@ -1,27 +1,79 @@
 
 import React, { Component } from 'react';
 import { Image } from 'react-native';
+import { Container, Content, Button, Text, View } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const launchscreen = require('../../../images/shadow.png');
+import styles from './styles';
+
+const background = require('../../../images/background.jpg');
+const logo = require('../../../images/splash-logo.png');
+const MK = require('react-native-material-kit');
+
+const {
+  MKButton,
+  MKColor,
+} = MK;
+
+const SignUpEmailButton = MKButton.coloredButton()
+  .withBackgroundColor(MKColor.Teal)
+  .withTextStyle({
+    color: 'white',
+    fontWeight: 'normal',
+  })
+  .withStyle({
+    height: 40,
+    borderRadius: 0
+  })
+  .withText('Signup with Email')
+  .build();
 
 export default class SplashPage extends Component {
 
   static propTypes = {
-    navigator: React.PropTypes.shape({}),
+    navigation: React.PropTypes.shape({
+      key: React.PropTypes.string,
+    })
   }
 
-  componentWillMount() {
-    const navigator = this.props.navigator;
-    setTimeout(() => {
-      navigator.replace({
-        id: 'login',
-      });
-    }, 1500);
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+    };
   }
 
-  render() { // eslint-disable-line class-methods-use-this
+  singupWithEmail() {
+    console.log('Go To Signup with Email');
+  }
+
+  connectWithFB() {
+    console.log('Connect with FB')
+  }
+
+  render() {
     return (
-      <Image source={launchscreen} style={{ flex: 1, height: null, width: null }} />
+      <Container>
+        <View style={styles.container}>
+          <Content>
+            <Image source={background} style={styles.shadow}>
+              <View style={styles.logoContainer}>
+                <Image source={logo} style={styles.logo} />
+              </View>
+              <View style={styles.signupContainer}>
+                <SignUpEmailButton onPress={() => this.singupWithEmail() } />
+                <Text style={styles.label}>Or</Text>
+                <Icon.Button style={styles.btnFB} name="facebook" backgroundColor="#3b5998" onPress={this.connectWithFB}>
+                  Connect with facebook
+                </Icon.Button>
+              </View>
+              <View style={styles.bottomContainer}>
+                <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
+              </View>
+            </Image>
+          </Content>
+        </View>
+      </Container>
     );
   }
 }
