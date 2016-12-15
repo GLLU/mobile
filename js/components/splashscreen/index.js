@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Container, Content, Button, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import { connect, combineReducers } from 'react-redux';
 
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
+import _ from 'lodash';
 
 const background = require('../../../images/background.jpg');
 const logo = require('../../../images/splash-logo.png');
@@ -17,6 +18,8 @@ const {
   MKButton,
   MKColor,
 } = MK;
+
+const PERMISSIONS = ["email", "public_profile"];
 
 const SignUpEmailButton = MKButton.coloredButton()
   .withBackgroundColor(MKColor.Teal)
@@ -51,23 +54,32 @@ class SplashPage extends Component {
     console.log('Go To Signup with Email');
   }
 
-  loginSuccessful(data) {
-    const jsonData = { access_token: data["accessToken"], expirationTime: data["expirationTime"] };
-    this.props.loginViaFacebook(jsonData);
-  }
-
   connectWithFB() {
+    const self = this;
     // Attempt a login using the Facebook login dialog asking for default permissions.
-    LoginManager.logInWithReadPermissions(["email", "public_profile"]).then(
+    LoginManager.logInWithReadPermissions(PERMISSIONS).then(
       (result) => {
         if (result.isCancelled) {
           alert('Login cancelled');
         } else {
-          AccessToken.getCurrentAccessToken().then(
-            (data) => {
-              this.loginSuccessful(data)
-            }
-          );
+          const diffPermissions = _.difference(result.grantedPermissions, PERMISSIONS);
+          if (diffPermissions.length == 0) {
+            AccessToken.getCurrentAccessToken().then(
+              (data) => {
+                const infoRequest = new GraphRequest('/me?fields=gender', null, (error, result) => {
+                  if (error) {
+                    alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
+                  } else {
+                    const jsonData = { access_token: data["accessToken"], expirationTime: data["expirationTime"], data: result };
+                    this.props.loginViaFacebook(jsonData);
+                  }
+                });
+                new GraphRequestManager().addRequest(infoRequest).start(); 
+              }
+            );
+          } else {
+            alert(`Missing permissions: ${diffPermissions.join(', ')}`);
+          }
         }
       },
       (error) => {
@@ -92,7 +104,7 @@ class SplashPage extends Component {
                 <Icon.Button style={styles.btnFB}
                    name="facebook"
                    backgroundColor="#3b5998"
-                   onPress={this.connectWithFB}>
+                   onPress={this.connectWithFB.bind(this)}>
                  Connect with facebook
                </Icon.Button>
               </View>
