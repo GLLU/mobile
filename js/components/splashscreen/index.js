@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { Image } from 'react-native';
 import { Container, Content, Button, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';

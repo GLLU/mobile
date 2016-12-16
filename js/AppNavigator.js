@@ -11,6 +11,7 @@ import Login from './components/login/';
 import Home from './components/home/';
 import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
+import FeedPage from './components/feedscreen';
 import SideBar from './components/sideBar';
 import { statusBarColor } from './themes/base-theme';
 
@@ -75,6 +76,8 @@ class AppNavigator extends Component {
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
+      case 'feedscreen':
+        return <FeedPage />;
       case 'login':
         return <Login />;
       case 'home':
