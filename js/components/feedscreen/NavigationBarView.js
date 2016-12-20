@@ -5,15 +5,18 @@ import { Col, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
 
-const profileIcon = require('../../../images/icons/profile-icon.png');
+const profileIcon = require('../../../images/icons/user.png');
 const notificationIcon = require('../../../images/icons/notification-icon.png');
-const bagIcon = require('../../../images/icons/bag-icon.png');
+const bagIcon = require('../../../images/icons/bag.png');
+const rectangleIcon = require('../../../images/icons/rectangle.png')
+const searchIcon = require('../../../images/icons/search.png')
+const cameraIcon = require('../../../images/icons/camera.png')
 
 class NavigationBarView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notificationHeight: 0 // increase height : 30 to visible notification
+      notificationHeight: 30 // increase height : 30 to visible notification
     };
   }
 
@@ -48,7 +51,7 @@ class NavigationBarView extends Component {
                   <Image source={notificationIcon} style={[styles.notificationIconImage, { height: this.state.notificationHeight }]} />
                 </View>
                 <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
-                  <Image source={profileIcon} style={styles.btnProfileImg} />
+                  <Image source={profileIcon} style={styles.btnImage} />
                 </Button>
               </Col>
               <Col size={70}>
@@ -60,24 +63,24 @@ class NavigationBarView extends Component {
             <Grid>
               <Col>
                 <Button transparent onPress={() => this.openSearch()}>
-                  <Icon name="md-search" style={styles.normalBtn} />
+                  <Image source={searchIcon} style={styles.btnImage} />
                 </Button>
               </Col>
               <Col>
                 <Button transparent onPress={() => this.openMenu()}>
-                  <Icon name="md-square-outline" style={styles.normalBtn} />
+                  <Image source={rectangleIcon} style={styles.btnImage} />
                 </Button>
               </Col>
               <Col>
                 <Button transparent onPress={() => this.goToShopping()}>
-                  <Image source={bagIcon} style={styles.btnBagImg} />
+                  <Image source={bagIcon} style={styles.btnImage} />
                 </Button>
               </Col>
             </Grid>
           </Col>
           <Col>
             <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
-              <Icon name="ios-camera-outline" style={styles.normalBtn} />
+              <Image source={cameraIcon} style={styles.btnImage} />
             </Button>
           </Col>
         </Grid>

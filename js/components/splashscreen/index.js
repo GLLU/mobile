@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import { Container, Content, Button, Text, View } from 'native-base';
+import { Container, Content, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
@@ -58,7 +58,6 @@ class SplashPage extends Component {
   }
 
   connectWithFB() {
-    const self = this;
     // Attempt a login using the Facebook login dialog asking for default permissions.
     LoginManager.logInWithReadPermissions(PERMISSIONS).then(
       (result) => {

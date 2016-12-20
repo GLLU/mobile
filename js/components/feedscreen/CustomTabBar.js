@@ -22,6 +22,9 @@ const CustomTabBar = React.createClass({
     tabStyle: View.propTypes.style,
     renderTab: React.PropTypes.func,
     underlineStyle: View.propTypes.style,
+    containerWidth: React.PropTypes.number,
+    style: React.PropTypes.array,
+    scrollValue: React.PropTypes.object
   },
 
   getDefaultProps() {

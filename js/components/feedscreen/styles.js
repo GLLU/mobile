@@ -8,8 +8,7 @@ module.exports = StyleSheet.create({
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0,
-    height: deviceHeight
+    right: 0
   },
   navigationBar: {
     flex: 1,
@@ -26,10 +25,6 @@ module.exports = StyleSheet.create({
     position: 'absolute',
     left: 5
   },
-  btnProfileImg: {
-    height: 30,
-    width: 30
-  },
   notificationIcon: {
     position: 'absolute',
     top: 5,
@@ -39,14 +34,14 @@ module.exports = StyleSheet.create({
     width: 35,
     backgroundColor: 'transparent'
   },
-  btnBagImg: {
-    height: 27,
-    width: 27,
-    marginBottom: 5
-  },
   btnCamera: {
     position: 'absolute',
     right: 5
+  },
+  btnImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain'
   },
   normalBtn: {
     fontSize: 24
@@ -66,8 +61,7 @@ module.exports = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: deviceHeight,
-    paddingTop: 15,
+    paddingTop: 10,
     backgroundColor: '#FFFFFF'
   },
   tab: {

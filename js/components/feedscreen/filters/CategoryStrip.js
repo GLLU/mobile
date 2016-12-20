@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, Image } from 'react-native'
-import { View, Text, Button, Icon } from 'native-base';
+import { ScrollView } from 'react-native'
+import { View } from 'native-base';
 import CategoryItem from './CategoryItem';
 
 import styles from '../styles';

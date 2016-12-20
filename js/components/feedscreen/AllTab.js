@@ -1,57 +1,43 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, Dimensions, ScrollView } from 'react-native';
-import { View, List, ListItem } from 'native-base';
-import { Col, Grid, Row } from "react-native-easy-grid";
+import { connect } from 'react-redux';
+import { Image, ScrollView } from 'react-native';
+import { View } from 'native-base';
 
 import FilterBar from './filters/FilterBar';
+import ImagesView from './ImagesView';
 
 import styles from './styles';
-import _ from 'lodash';
-const img1 = require('../../../images/img1.jpg');
-const img2 = require('../../../images/img2.jpg');
-const img3 = require('../../../images/img3.jpg');
-const img4 = require('../../../images/img4.jpg');
-
-const deviceWidth = Dimensions.get('window').width;
-const imageWidth = deviceWidth / 2 - 20;
-const imageHeight = imageWidth * 2 / 3;
 
 class AllTab extends Component {
+
+  static propTypes = {
+    images: React.PropTypes.array
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
-      images1: [
-        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: 408, height: 245 },
-        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: 212, height: 244 },
-        { uri: 'http://img.f29.vnecdn.net/2016/11/06/ngan-hang-2-1143-1478378666.jpg', width: 215, height: 245 },
-      ],
-      images2: [
-      { uri: 'http://img.f29.vnecdn.net/2016/11/06/ngan-hang-2-1143-1478378666.jpg', width: 215, height: 245 },
-        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: 408, height: 245 },
-        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: 212, height: 244 },
-        { uri: 'http://img.f29.vnecdn.net/2016/12/15/2-6886-1481797342.jpg', width: 158, height: 245 },
-        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: 408, height: 245 },
-        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: 212, height: 244 },
-
-      ]
+      filterHeight: 0,
+      imagesColumn1: [],
+      imagesColumn2: []
     }
   }
 
-  onColumnLayout1(e) {
+  onColumnLayout(e, key) {
     const layout = e.nativeEvent.layout;
-    console.log('layout', layout.width);
     const colW = layout.width;
-    this.arrangeImages('images1', this.state.images1, colW);
-  }
-
-  onColumnLayout2(e) {
-    const layout = e.nativeEvent.layout;
-    console.log('layout', layout.width);
-    const colW = layout.width;
-    this.arrangeImages('images2', this.state.images2, colW);
+    const images = [];
+    this.props.images.map((img, index) => {
+      if (key % 2 == 0) {
+        return index % 2 == 0 ? images.push(img) : false;
+      } else {
+        return index % 2 != 0 ? images.push(img) : false;
+      }
+    });
+    this.arrangeImages(`imagesColumn${key}`, images, colW);
   }
 
   arrangeImages(key, images, colW) {
@@ -66,34 +52,27 @@ class AllTab extends Component {
     });
   }
 
-  _renderImages1() {
-    return this.state.images1.map((img, index) => {
-      return  (<View key={index} style={{width: img.width, height: img.height }} >
-          <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
-        </View>);
-    });
-  }
-
-  _renderImages2() {
-    return this.state.images2.map((img, index) => {
-      return  (<View key={index} style={{width: img.width, height: img.height }} >
-          <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
-        </View>);
+  openFilter(height) {
+    console.log('Open filter');
+    const h = height === 0 ? 200 : 0;
+    this.setState({
+      filterHeight: h
     });
   }
 
   render() {
+    const paddingBottom = 150;
     return(
       <View style={styles.tab} scrollEnabled={false}>
-        <FilterBar />
+        <FilterBar filterHeight={this.state.filterHeight} openFilter={this.openFilter.bind(this)} />
         <View style={[styles.mainGrid]}>
           <ScrollView>
-            <View style={[{flex: 1, flexDirection: 'row'}]}>
-              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout1(e)}>
-                {this._renderImages1()}
+            <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
+              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
+                <ImagesView images={this.state.imagesColumn1} />
               </View>
-              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout2(e)}>
-                {this._renderImages2()}
+              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 2)}>
+                <ImagesView images={this.state.imagesColumn2} />
               </View>
             </View>
           </ScrollView>
@@ -103,4 +82,12 @@ class AllTab extends Component {
   }
 }
 
-module.exports = AllTab;
+function bindActions(dispatch) {
+  return { };
+}
+
+const mapStateToProps = state => ({
+  images: state.filters.images
+});
+
+export default connect(mapStateToProps, bindActions)(AllTab);

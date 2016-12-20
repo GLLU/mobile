@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ScrollView, Image } from 'react-native'
 import { connect } from 'react-redux';
 import { View, Text, Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
@@ -14,16 +13,17 @@ import styles from '../styles';
 
 class FilterView extends Component {
   static propTypes = {
+    openFilter: React.PropTypes.func,
     categories: React.PropTypes.array,
     minPrice: React.PropTypes.number,
-    maxPrice: React.PropTypes.number
+    maxPrice: React.PropTypes.number,
+    filterHeight: React.PropTypes.number
   }
 
   constructor(props) {
     super(props);
     this.state = {
       selectedCategory: null,
-      filterActionsHeight: 0,
       openFilter: true,
       fromPrice: this.props.minPrice,
       toPrice: this.props.maxPrice,
@@ -31,24 +31,11 @@ class FilterView extends Component {
   }
 
   componentDidMount() {
-    const slider = this.refs.sliderWithValue;
-    const ranged = this.refs.rangeSlider;
+
   }
 
-  openFilter() {
-    console.log('Open Filter');
-    this.setState({
-      openFilter: !this.state.openFilter
-    });
-    var h = 0;
-    if (this.state.openFilter == true) {
-      h = 200;
-    } else {
-      h = 0;
-    }
-    this.setState({
-        filterActionsHeight: h
-    });
+  componentWillReceiveProps() {
+
   }
 
   filterByCategory(item) {
@@ -79,12 +66,12 @@ class FilterView extends Component {
   }
 
   _renderFilterHeader(){
-    let labelColor = this.state.selectedCategory ? '#1DE9B6' : '#212121';
+    let labelColor = this.state.selectedCategory || this.state.fromPrice != 1 || this.state.toPrice != 1000 ? '#1DE9B6' : '#212121';
     return (
       <View>
         <Grid style={styles.filter}>
           <Col size={10}>
-            <Button transparent onPress={() => this.openFilter()} style={styles.btnFilter}>
+            <Button transparent onPress={() => this.props.openFilter(this.props.filterHeight)} style={styles.btnFilter}>
               <Icon name="md-options" style={[styles.normalBtn, { color: labelColor }]} />
             </Button>
           </Col>
@@ -134,7 +121,7 @@ class FilterView extends Component {
   _rederFilterText() {
     const filterOnChangeCategory = this.state.selectedCategory;
     const filterOnChangePrice = this.state.fromPrice != this.props.minPrice || this.state.toPrice != this.props.maxPrice;
-    if (filterOnChangePrice == false && filterOnChangeCategory == false) {
+    if (filterOnChangePrice === false && filterOnChangeCategory === null) {
       return (
         <View>
           <Text style={styles.TextResults}>All Results</Text>
@@ -160,7 +147,7 @@ class FilterView extends Component {
     return(
       <View>
         {this._renderFilterHeader()}
-        <View style={[styles.filterActions, {height: this.state.filterActionsHeight}]}>
+        <View style={[styles.filterActions, {height: this.props.filterHeight}]}>
           <View style={styles.filterActionsGrid}>
             {this._renderCategories()}
             {this._renderSlider()}
@@ -178,7 +165,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => ({
   categories: state.filters.categories,
   minPrice: state.filters.minPrice,
-  maxPrice: state.filters.maxPrice,
+  maxPrice: state.filters.maxPrice
 });
 
 export default connect(mapStateToProps, bindActions)(FilterView);

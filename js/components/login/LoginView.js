@@ -2,11 +2,8 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
   Text,
-  View,
-  Button
+  View
 } from 'react-native';
 
 const FBSDK = require('react-native-fbsdk');

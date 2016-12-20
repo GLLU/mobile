@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, Image } from 'react-native'
-import { View, Text, Button, Icon } from 'native-base';
+import { Image } from 'react-native'
+import { View, Text, Button } from 'native-base';
 
 import styles from '../styles';
 
