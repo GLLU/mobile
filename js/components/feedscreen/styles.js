@@ -26,6 +26,24 @@ module.exports = StyleSheet.create({
     position: 'absolute',
     left: 5
   },
+  btnProfileImg: {
+    height: 30,
+    width: 30
+  },
+  notificationIcon: {
+    position: 'absolute',
+    top: 5,
+    left: 6
+  },
+  notificationIconImage: {
+    width: 35,
+    backgroundColor: 'transparent'
+  },
+  btnBagImg: {
+    height: 27,
+    width: 27,
+    marginBottom: 5
+  },
   btnCamera: {
     position: 'absolute',
     right: 5
@@ -35,6 +53,7 @@ module.exports = StyleSheet.create({
   },
   wallet: {
     paddingTop: 10,
+    marginTop: 5,
     textAlign: 'left',
     fontSize: 12,
     fontWeight: 'normal',
@@ -79,8 +98,7 @@ module.exports = StyleSheet.create({
     paddingTop: 10,
     textAlign: 'left',
     fontSize: 15,
-    fontWeight: 'normal',
-    color: '#212121'
+    fontWeight: 'normal'
   },
   TextResults: {
     paddingTop: 12,
@@ -89,16 +107,18 @@ module.exports = StyleSheet.create({
     fontWeight: 'normal',
     color: '#757575'
   },
+  TextlabelReset: {
+    paddingTop: 8,
+    textAlign: 'right',
+    color: '#757575',
+    fontSize: 13,
+    fontWeight: '500',
+    marginBottom: 6
+  },
   mainGrid: {
     backgroundColor: '#FFFFFF',
-    marginTop: 10,
-    paddingBottom: 10,
-    paddingTop: 10,
-    height: deviceHeight
-  },
-  cardItem: {
-    padding: 0,
-    paddingBottom: 10
+    height: deviceHeight,
+    marginTop: -10
   },
   customTabBar: {
     backgroundColor: '#1DE9B6'
@@ -107,7 +127,7 @@ module.exports = StyleSheet.create({
     height: 100
   },
   categoryItem: {
-    width: 100,
+    width: 80,
     marginLeft: 5,
     marginRight: 5,
     paddingTop: 5

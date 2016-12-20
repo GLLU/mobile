@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { Component } from 'react';
 import { View, Container, Content } from 'native-base';
 var ScrollableTabView = require('react-native-scrollable-tab-view');
@@ -17,12 +15,16 @@ class MainView extends Component {
     super(props);
   }
 
+  _renderTabBar() {
+    return <CustomTabBar underlineStyle={styles.customTabBar} inactiveTextColor={'#9E9E9E'} />;
+  }
+
   render() {
     return(
-      <View style={styles.mainView}>
+      <View style={styles.mainView} scrollEnabled={false}>
         <Container>
-            <Content theme={tabTheme}>
-                <ScrollableTabView initialPage={2} locked={true} renderTabBar={() => <CustomTabBar underlineStyle={styles.customTabBar} inactiveTextColor={'#9E9E9E'} />}>
+            <Content theme={tabTheme} scrollEnabled={false}>
+                <ScrollableTabView initialPage={2} locked={true} renderTabBar={() => this._renderTabBar()}>
                     <NewTab tabLabel='New' />
                     <FollowingTab tabLabel='Following' />
                     <AllTab tabLabel='All' />
@@ -34,4 +36,4 @@ class MainView extends Component {
   }
 }
 
-module.exports = MainView;
+export default MainView;

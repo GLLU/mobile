@@ -5,24 +5,23 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
-		00C302E51ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
-		00C302E71ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
-		00C302E81ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
-		00C302E91ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
-		00C302EA1ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
+		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
+		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
+		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
+		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
+		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* glluTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* glluTests.m */; };
 		00EE382FE39D42E48D6B5928 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 476C4CDE67FC4A89AB1B005D /* MaterialIcons.ttf */; };
-		133E29F31AD74F7200F7D852 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
-		139105C61AF99C1200B5F7CC /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
-		139FDEF61B0652A700C62182 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
+		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
+		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
+		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		140ED2AC1D01E1AD002B40FF /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		146834051AC3E58100842450 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1737D333132E43D688CFF506 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D1B9999768496FBFB2D230 /* Entypo.ttf */; };
 		1866995F8EB34FC1930BD50E /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9EAE8D736B84131A0BE302D /* libCodePush.a */; };
 		1FA1E659D055463B945A72D8 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C088D1238D1B457992234ACE /* Arial Black.ttf */; };
@@ -35,7 +34,7 @@
 		64C34B1020F44AC9A466E2F4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FDFABFC19A34E9E8EC2AF8A /* FontAwesome.ttf */; };
 		77CC25145EAD4DABA136676C /* SF-UI-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F010170E6FB4AC494C7E102 /* SF-UI-Text-Regular.otf */; };
 		792ACA8802694CC7B71DD99A /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99422D82CFB44D01A9B36C8B /* Arial.ttf */; };
-		832341BD1AAA6AB300B99B32 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		98DEA545FFE14C6FA0CD3F4C /* Times New Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB7D2E3BE024C71B60888B9 /* Times New Roman.ttf */; };
 		9A156E7A1C6340C8843C0D34 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7BAB309E223B4A23B6F5F36F /* Ionicons.ttf */; };
 		9CB15071635240FE9A394C36 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1407E961A4DD43838E1FB8D2 /* libRNVectorIcons.a */; };
@@ -230,7 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				140ED2AC1D01E1AD002B40FF /* ReferenceProxy in Frameworks */,
+				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,16 +242,16 @@
 				D066434B1E00E5F500DCEFDE /* libFBSDKLoginKit.a in Frameworks */,
 				D066434C1E00E5F500DCEFDE /* libFBSDKShareKit.a in Frameworks */,
 				D066434D1E00E5F500DCEFDE /* libPods-gllu.a in Frameworks */,
-				146834051AC3E58100842450 /* ReferenceProxy in Frameworks */,
-				00C302E51ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				00C302E71ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				00C302E81ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				133E29F31AD74F7200F7D852 /* ReferenceProxy in Frameworks */,
-				00C302E91ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				139105C61AF99C1200B5F7CC /* ReferenceProxy in Frameworks */,
-				832341BD1AAA6AB300B99B32 /* ReferenceProxy in Frameworks */,
-				00C302EA1ABCBA2D00DB3ED1 /* ReferenceProxy in Frameworks */,
-				139FDEF61B0652A700C62182 /* ReferenceProxy in Frameworks */,
+				146834051AC3E58100842450 /* libReact.a in Frameworks */,
+				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
+				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
+				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
+				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
+				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
+				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
+				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				DB843DEF3EA144819620A980 /* libRCTFBSDK.a in Frameworks */,
 				1866995F8EB34FC1930BD50E /* libCodePush.a in Frameworks */,
 				A99752E4EDCB40839A8AE3B6 /* libz.tbd in Frameworks */,
@@ -896,10 +895,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gllu.app/gllu";
@@ -916,10 +911,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gllu.app/gllu";

@@ -1,14 +1,20 @@
-'use strict';
-
 import React, { Component } from 'react';
+import { Image } from 'react-native'
 import { View, Text, Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
 
+const profileIcon = require('../../../images/icons/profile-icon.png');
+const notificationIcon = require('../../../images/icons/notification-icon.png');
+const bagIcon = require('../../../images/icons/bag-icon.png');
+
 class NavigationBarView extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      notificationHeight: 0 // increase height : 30 to visible notification
+    };
   }
 
   goToProfile() {
@@ -38,8 +44,11 @@ class NavigationBarView extends Component {
           <Col>
             <Grid>
               <Col size={30}>
+                <View style={styles.notificationIcon}>
+                  <Image source={notificationIcon} style={[styles.notificationIconImage, { height: this.state.notificationHeight }]} />
+                </View>
                 <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
-                  <Icon name="ios-person-outline" style={styles.normalBtn} />
+                  <Image source={profileIcon} style={styles.btnProfileImg} />
                 </Button>
               </Col>
               <Col size={70}>
@@ -51,17 +60,17 @@ class NavigationBarView extends Component {
             <Grid>
               <Col>
                 <Button transparent onPress={() => this.openSearch()}>
-                  <Icon name="ios-search-outline" style={styles.normalBtn} />
+                  <Icon name="md-search" style={styles.normalBtn} />
                 </Button>
               </Col>
               <Col>
                 <Button transparent onPress={() => this.openMenu()}>
-                  <Icon name="ios-square-outline" style={styles.normalBtn} />
+                  <Icon name="md-square-outline" style={styles.normalBtn} />
                 </Button>
               </Col>
               <Col>
                 <Button transparent onPress={() => this.goToShopping()}>
-                  <Icon name="ios-basket-outline" style={styles.normalBtn} />
+                  <Image source={bagIcon} style={styles.btnBagImg} />
                 </Button>
               </Col>
             </Grid>
@@ -77,4 +86,4 @@ class NavigationBarView extends Component {
   }
 }
 
-module.exports = NavigationBarView;
+export default NavigationBarView;

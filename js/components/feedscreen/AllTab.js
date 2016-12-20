@@ -5,7 +5,7 @@ import { Image, Dimensions, ScrollView } from 'react-native';
 import { View, List, ListItem } from 'native-base';
 import { Col, Grid, Row } from "react-native-easy-grid";
 
-import FilterView from './FilterView';
+import FilterBar from './filters/FilterBar';
 
 import styles from './styles';
 import _ from 'lodash';
@@ -24,18 +24,18 @@ class AllTab extends Component {
 
     this.state = {
       images1: [
-        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: imageWidth, height: imageHeight },
-        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: imageWidth, height: imageHeight },
-        { uri: 'http://img.f29.vnecdn.net/2016/11/06/ngan-hang-2-1143-1478378666.jpg', width: imageWidth, height: imageHeight },
+        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: 408, height: 245 },
+        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: 212, height: 244 },
+        { uri: 'http://img.f29.vnecdn.net/2016/11/06/ngan-hang-2-1143-1478378666.jpg', width: 215, height: 245 },
       ],
       images2: [
-      { uri: 'http://img.f29.vnecdn.net/2016/11/06/ngan-hang-2-1143-1478378666.jpg', width: imageWidth, height: imageHeight },
-        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: imageWidth, height: imageHeight },
-        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: imageWidth, height: imageHeight },
-        { uri: 'http://img.f29.vnecdn.net/2016/12/15/2-6886-1481797342.jpg', width: imageWidth, height: imageHeight },
-        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: imageWidth, height: imageHeight },
-        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: imageWidth, height: imageHeight },
-        
+      { uri: 'http://img.f29.vnecdn.net/2016/11/06/ngan-hang-2-1143-1478378666.jpg', width: 215, height: 245 },
+        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: 408, height: 245 },
+        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: 212, height: 244 },
+        { uri: 'http://img.f29.vnecdn.net/2016/12/15/2-6886-1481797342.jpg', width: 158, height: 245 },
+        { uri: 'http://img.f1.thethao.vnecdn.net/2016/12/16/top-5236-1481846170.jpg', width: 408, height: 245 },
+        { uri: 'http://img.f13.giadinh.vnecdn.net/2016/12/16/l-8933-1481858742-1666-1481859430.jpg', width: 212, height: 244 },
+
       ]
     }
   }
@@ -67,25 +67,25 @@ class AllTab extends Component {
   }
 
   _renderImages1() {
-    return this.state.images1.map((img) => {
-      return  (<View  style={{width: img.width, height: img.height }} >
-          <Image source={{uri: img.uri}} style={{width: img.width, height: img.height, resizeMode: 'contain' }} />
+    return this.state.images1.map((img, index) => {
+      return  (<View key={index} style={{width: img.width, height: img.height }} >
+          <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
         </View>);
     });
   }
 
   _renderImages2() {
-    return this.state.images2.map((img) => {
-      return  (<View  style={{width: img.width, height: img.height }} >
-          <Image source={{uri: img.uri}} style={{width: img.width, height: img.height, resizeMode: 'contain' }} />
+    return this.state.images2.map((img, index) => {
+      return  (<View key={index} style={{width: img.width, height: img.height }} >
+          <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
         </View>);
     });
   }
 
   render() {
     return(
-      <View style={styles.tab}>
-        <FilterView />
+      <View style={styles.tab} scrollEnabled={false}>
+        <FilterBar />
         <View style={[styles.mainGrid]}>
           <ScrollView>
             <View style={[{flex: 1, flexDirection: 'row'}]}>
