@@ -13,8 +13,9 @@ import _ from 'lodash';
 
 const { navigateTo } = actions;
 
-const background = require('../../../images/background.jpg');
-const logo = require('../../../images/splash-logo.png');
+const background = require('../../../images/background.png');
+const backgroundShadow = require('../../../images/background-shadow.png');
+const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
 
 const {
@@ -95,10 +96,12 @@ class SplashPage extends Component {
     return (
       <Container>
         <View style={styles.container}>
-          <Content>
+          <Content scrollEnabled={false}>
             <Image source={background} style={styles.shadow}>
+              <Image source={backgroundShadow} style={styles.bgShadow} />
               <View style={styles.logoContainer}>
                 <Image source={logo} style={styles.logo} />
+                <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
               <View style={styles.signupContainer}>
                 <SignUpEmailButton onPress={() => this.singupWithEmail() } />

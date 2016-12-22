@@ -26,6 +26,12 @@ module.exports = StyleSheet.create({
     paddingBottom: 30,
     bottom: 0
   },
+  bgShadow: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
   btn: {
     marginTop: 20,
     alignSelf: 'center',
@@ -33,7 +39,7 @@ module.exports = StyleSheet.create({
   logoContainer: {
     flex: 1,
     marginTop: 0,
-    paddingTop: 120,
+    paddingTop: 80,
     paddingLeft: 10,
     paddingRight: 10,
     bottom: 0,
@@ -41,8 +47,18 @@ module.exports = StyleSheet.create({
   },
   logo: {
     flex: 1,
-    width: 220,
-    height: 220
+    width: 200,
+    height: 200,
+    resizeMode: 'contain'
+  },
+  titleHeading: {
+    fontSize: 32,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#FFFFFF',
+    marginTop: 20,
+    paddingTop: 20,
+    textAlign: 'center'
   },
   signupContainer: {
     flex: 1,
