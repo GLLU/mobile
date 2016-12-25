@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { BackAndroid, StatusBar, NavigationExperimental } from 'react-native';
 import { connect } from 'react-redux';
@@ -13,6 +12,10 @@ import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
 import SideBar from './components/sideBar';
+import MyBodyType from './components/myBodyType';
+import MyBodyMeasure from './components/myBodyMeasure';
+
+
 import { statusBarColor } from './themes/base-theme';
 
 const {
@@ -71,7 +74,6 @@ class AppNavigator extends Component {
       this.props.closeDrawer();
     }
   }
-
   _renderScene(props) { // eslint-disable-line class-methods-use-this
     switch (props.scene.route.key) {
       case 'splashscreen':
@@ -84,6 +86,10 @@ class AppNavigator extends Component {
         return <Home />;
       case 'blankPage':
         return <BlankPage />;
+      case 'myBodyType':
+        return <MyBodyType />;
+      case 'myBodyMeasure':
+        return <MyBodyMeasure />;
       default :
         return <Login />;
     }
