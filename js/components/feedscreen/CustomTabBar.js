@@ -29,9 +29,9 @@ const CustomTabBar = React.createClass({
 
   getDefaultProps() {
     return {
-      activeTextColor: 'black',
-      inactiveTextColor: 'black',
-      backgroundColor: '#EEEEEE',
+      activeTextColor: '#000000',
+      inactiveTextColor: '#686868',
+      backgroundColor: '#e6e6e6',
     };
   },
 

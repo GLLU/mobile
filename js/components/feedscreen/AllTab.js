@@ -6,14 +6,15 @@ import { Image, ScrollView } from 'react-native';
 import { View } from 'native-base';
 
 import FilterBar from './filters/FilterBar';
-import ImagesView from './ImagesView';
+import ImagesView from './items/ImagesView';
 
 import styles from './styles';
 
 class AllTab extends Component {
 
   static propTypes = {
-    images: React.PropTypes.array
+    images: React.PropTypes.array,
+    handleSwipeTab: React.PropTypes.func
   }
 
   constructor(props) {
@@ -58,6 +59,17 @@ class AllTab extends Component {
     this.setState({
       filterHeight: h
     });
+    this.props.handleSwipeTab(h === 0 ? false : true);
+  }
+
+  handleScroll(event) {
+    const contentSizeHeight = event.nativeEvent.contentSize.height;
+    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+    const currentScroll = event.nativeEvent.contentOffset.y
+    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
+    if (compare >= 1) {
+      console.log('Load more items');
+    }
   }
 
   render() {
@@ -66,7 +78,7 @@ class AllTab extends Component {
       <View style={styles.tab} scrollEnabled={false}>
         <FilterBar filterHeight={this.state.filterHeight} openFilter={this.openFilter.bind(this)} />
         <View style={[styles.mainGrid]}>
-          <ScrollView>
+          <ScrollView scrollEventThrottle={1} onScroll={this.handleScroll.bind(this)}>
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
                 <ImagesView images={this.state.imagesColumn1} />

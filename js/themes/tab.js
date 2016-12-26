@@ -1,5 +1,5 @@
 export default {
-  tabBgColor: '#E0E0E0',
-  tabTextColor: '#424242',
+  tabBgColor: '#e6e6e6',
+  tabTextColor: '#000000',
   tabFontSize: 13
 };
