@@ -4,7 +4,7 @@ const { StyleSheet } = React;
 module.exports = StyleSheet.create({
   likeContainer: {
     height: 30,
-    width: 80,
+    width: 60,
     paddingRight: 5,
     paddingBottom: 6,
     backgroundColor: 'transparent',
@@ -12,7 +12,7 @@ module.exports = StyleSheet.create({
   bgShadow: {
     position: 'absolute',
     backgroundColor: 'transparent',
-    width: 80,
+    width: 60,
     height: 30
   },
   iconWithImage: {
@@ -23,31 +23,33 @@ module.exports = StyleSheet.create({
   },
   countLikeLabel: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: '500',
     textAlign: 'center',
     alignSelf: 'center',
-    marginTop: 8
+    marginTop: 10
   },
   typeContainer: {
     position: 'absolute',
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
     top: 4,
     left: 0,
-    paddingTop: 15,
-    paddingLeft: 5,
-    paddingRight: 5,
+    padding: 4,
+    justifyContent: 'center',
     backgroundColor: '#05d7b2'
   },
   typeImage: {
-    width: 20,
-    height: 20,
+    top: 8,
+    width: 16,
+    height: 16,
     resizeMode: 'contain',
     backgroundColor: 'transparent',
     alignSelf: 'center'
   },
   typeLabel: {
+    top: 9,
+    fontSize: 12,
     color: '#ffffff',
     alignSelf: 'center',
     textAlign: 'center'
@@ -72,7 +74,7 @@ module.exports = StyleSheet.create({
   priceTagLabel: {
     color: '#FFFFFF',
     backgroundColor: 'transparent',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '500',
     alignSelf: 'center',
     paddingTop: 10
