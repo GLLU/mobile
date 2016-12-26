@@ -31,8 +31,8 @@ export default class HorizontalCarousel extends Component {
         initialPage: 0,
         pageStyle: null,
         containerStyle: null,
-        pageWidth: width - 200,
-        sneak: 20,
+        pageWidth: width - 220,
+        sneak: 0,
         noItemsText: "Sorry, there are currently \n no items available",
         transitionDelay: 100
     };

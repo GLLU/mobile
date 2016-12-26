@@ -27,9 +27,14 @@ class MyBodyType extends Component {
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
-    bodyTypes: React.PropTypes.array,
+    bodyTypes: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
-    currentIndex: React.PropTypes.number
+    currentIndex: React.PropTypes.number,
+    gender: React.PropTypes.string
+  }
+
+  static defaultProps = {
+    gender: 'female'
   }
 
   popRoute() {
@@ -62,9 +67,10 @@ class MyBodyType extends Component {
             <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
               sneak={100} initialPage={this.props.currentIndex}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
-                {this.props.bodyTypes.map((img, i) => {
+                {this.props.bodyTypes[this.props.gender].map((img, i) => {
+                  const isActive = i === this.props.currentIndex;
                   return (
-                    <CarouselItem key={i} item={img} />
+                    <CarouselItem key={i} item={img} itemActive={isActive}/>
                   )
                 })}
             </HorizontalCarousel>

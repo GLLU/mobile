@@ -31,6 +31,7 @@ class MyBodyMeasure extends Component {
     }),
     isEdit: React.PropTypes.bool,
     currentBodyType: React.PropTypes.object,
+    gender: React.PropTypes.string,
 
     popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
@@ -62,13 +63,16 @@ class MyBodyMeasure extends Component {
             <Grid>
               <Col>
               <View style={{width: w}}>
-                <Image source={this.props.isEdit ? sampleImage2 : sampleImage} resizeMode={'contain'}/>
+                <Image style={{width: w, height: 350}}
+                   source={this.props.isEdit ? this.props.currentBodyType.imageEditUrl
+                                            : this.props.currentBodyType.imageOriUrl} resizeMode={'contain'}/>
               </View>
               </Col>
               <Col>
-                <Image source={imageBodyShape} style={{height: 30, width: 30, marginBottom: 10}}/>
+                <Image source={this.props.currentBodyType.shapeActive} style={{height: 30, width: 30, marginBottom: 10, resizeMode: 'contain'}}/>
                 <Text style={myStyles.bodyTypeText}>{this.props.currentBodyType.name}</Text>
-                {this.props.isEdit ? <EditSizeView /> : <MainSizeView />}
+                {this.props.isEdit ? <EditSizeView gender={this.props.gender} bodyTypeName={this.props.currentBodyType.uniqueName}/>
+                                   : <MainSizeView gender={this.props.gender} bodyTypeName={this.props.currentBodyType.uniqueName}/>}
               </Col>
             </Grid>
           </View>
@@ -93,7 +97,8 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   isEdit: state.myBodyMeasure.isEdit,
-  currentBodyType: state.myBodyType.currentBodyType
+  currentBodyType: state.myBodyType.currentBodyType,
+  gender: state.myBodyType.gender
 });
 
 export default connect(mapStateToProps, bindAction)(MyBodyMeasure);
