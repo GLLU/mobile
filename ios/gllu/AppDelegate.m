@@ -13,6 +13,7 @@
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -21,7 +22,7 @@
 {
   NSURL *jsCodeLocation;
 
-  
+
 #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
@@ -39,18 +40,18 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-//  
+//
 //  [[FBSDKApplicationDelegate sharedInstance] application:application
 //                           didFinishLaunchingWithOptions:launchOptions];
   // Add any custom logic here.
-  
+
   return YES;
 }
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  
+
   BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                                 openURL:url
                                                       sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
@@ -58,6 +59,10 @@
                   ];
   // Add any custom logic here.
   return handled;
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 @end

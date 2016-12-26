@@ -11,6 +11,8 @@ import ProgressBar from './components/loaders/ProgressBar';
 
 import theme from './themes/base-theme';
 
+var Orientation = require('react-native-orientation');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,6 +37,10 @@ class App extends Component {
       showInstalling: false,
       downloadProgress: 0,
     };
+  }
+
+  componentWillMount() {
+    Orientation.lockToPortrait(); // Lock Screen With Portrait
   }
 
   componentDidMount() {
