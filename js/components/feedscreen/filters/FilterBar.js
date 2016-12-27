@@ -66,7 +66,7 @@ class FilterView extends Component {
   }
 
   _renderFilterHeader(){
-    let labelColor = this.state.selectedCategory || this.state.fromPrice != 1 || this.state.toPrice != 1000 ? '#1DE9B6' : '#212121';
+    const labelColor = this.state.selectedCategory || this.state.fromPrice != 1 || this.state.toPrice != 1000 ? '#1DE9B6' : '#212121';
     return (
       <View>
         <Grid style={styles.filter}>
@@ -76,7 +76,9 @@ class FilterView extends Component {
             </Button>
           </Col>
           <Col size={20}>
-            <Text style={[styles.Textlabel, { color: labelColor }]}>Filter by</Text>
+            <Button transparent onPress={() => this.props.openFilter(this.props.filterHeight)} style={styles.btnFilter}>
+              <Text style={[styles.Textlabel, { color: labelColor }]}>Filter by</Text>
+            </Button>
           </Col>
           <Col size={50}>
             {this._rederFilterText()}

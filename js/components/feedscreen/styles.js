@@ -79,10 +79,10 @@ module.exports = StyleSheet.create({
     left: 5
   },
   Textlabel: {
-    paddingTop: 10,
-    textAlign: 'left',
+    paddingTop: 0,
     fontSize: 15,
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    textAlign: 'left'
   },
   TextResults: {
     paddingTop: 12,
