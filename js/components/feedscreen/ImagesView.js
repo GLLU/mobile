@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import { View } from 'native-base';
+import { View, Button } from 'native-base';
 
 class ImagesView extends Component {
 
@@ -17,7 +17,10 @@ class ImagesView extends Component {
   _renderImages() {
     return this.props.images.map((img, index) => {
       return  (<View key={index} style={{width: img.width, height: img.height, paddingLeft: 0 }} >
-          <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
+          <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} >
+            <View>
+            </View>
+          </Image>
         </View>);
     });
   }

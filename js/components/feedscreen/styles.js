@@ -14,25 +14,16 @@ module.exports = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: 0,
-    bottom: 0,
     left: 0,
     right: 0,
-    height: 45,
-    paddingTop: 15,
-    backgroundColor: '#FFFFFF'
+    height: 60,
+    paddingTop: 20,
+    paddingBottom: 5,
+    backgroundColor: '#f2f2f2'
   },
   btnProfile: {
     position: 'absolute',
     left: 5
-  },
-  notificationIcon: {
-    position: 'absolute',
-    top: 5,
-    left: 6
-  },
-  notificationIconImage: {
-    width: 35,
-    backgroundColor: 'transparent'
   },
   btnCamera: {
     position: 'absolute',
@@ -57,11 +48,10 @@ module.exports = StyleSheet.create({
   mainView: {
     flex: 1,
     position: 'absolute',
-    top: 45,
+    top: 60,
     bottom: 0,
     left: 0,
     right: 0,
-    paddingTop: 10,
     backgroundColor: '#FFFFFF'
   },
   tab: {
@@ -89,10 +79,10 @@ module.exports = StyleSheet.create({
     left: 5
   },
   Textlabel: {
-    paddingTop: 10,
-    textAlign: 'left',
+    paddingTop: 0,
     fontSize: 15,
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    textAlign: 'left'
   },
   TextResults: {
     paddingTop: 12,

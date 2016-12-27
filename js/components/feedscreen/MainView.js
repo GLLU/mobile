@@ -13,6 +13,15 @@ import styles from './styles';
 class MainView extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      locked: false
+    }
+  }
+
+  handleSwipeTab(locked) {
+    this.setState({
+      locked: locked
+    })
   }
 
   _renderTabBar() {
@@ -24,10 +33,10 @@ class MainView extends Component {
       <View style={styles.mainView} scrollEnabled={false}>
         <Container>
             <Content theme={tabTheme} scrollEnabled={false}>
-                <ScrollableTabView initialPage={2} locked={true} renderTabBar={() => this._renderTabBar()}>
-                    <NewTab tabLabel='New' />
-                    <FollowingTab tabLabel='Following' />
-                    <AllTab tabLabel='All' />
+                <ScrollableTabView initialPage={2} locked={this.state.locked} renderTabBar={() => this._renderTabBar()}>
+                    <NewTab tabLabel='NEW' />
+                    <FollowingTab tabLabel='FOLLOWING' />
+                    <AllTab handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='ALL' />
                 </ScrollableTabView>
             </Content>
         </Container>
