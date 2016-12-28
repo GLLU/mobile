@@ -2,14 +2,16 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView } from 'react-native';
+import { Image, ScrollView, Dimensions } from 'react-native';
 import { View } from 'native-base';
-
+import Modal from 'react-native-modalbox';
 import FilterBar from './filters/FilterBar';
 import ImagesView from './items/ImagesView';
-
+import MyBodyModal from '../common/myBodyModal'
 import styles from './styles';
-
+import _ from 'lodash';
+const w = Dimensions.get('window').width;
+const h = Dimensions.get('window').height;
 class AllTab extends Component {
 
   static propTypes = {
@@ -25,6 +27,9 @@ class AllTab extends Component {
       imagesColumn1: [],
       imagesColumn2: []
     }
+
+    this.scrollCallAsync = _.debounce(this.scrollDebounced, 400)
+    this.showBodyModal = _.once(this._showBodyModal);
   }
 
   onColumnLayout(e, key) {
@@ -63,13 +68,23 @@ class AllTab extends Component {
   }
 
   handleScroll(event) {
+    this.scrollCallAsync(event);
+
     const contentSizeHeight = event.nativeEvent.contentSize.height;
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const currentScroll = event.nativeEvent.contentOffset.y
     const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
     if (compare >= 1) {
-      console.log('Load more items');
+      // console.log('Load more items');
     }
+  }
+
+  _showBodyModal() {
+     this.refs.bodyTypeModalRef.open();
+  }
+
+  scrollDebounced(event) {
+     this.showBodyModal()
   }
 
   render() {
@@ -89,6 +104,11 @@ class AllTab extends Component {
             </View>
           </ScrollView>
         </View>
+        <Modal style={{justifyContent: 'flex-start', alignItems: 'center', height: h*.75, width: w*.9, top: 20}}
+            position={"top"} ref={"bodyTypeModalRef"}>
+          <MyBodyModal />
+        </Modal>
+
       </View>
     )
   }

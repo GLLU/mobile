@@ -12,10 +12,6 @@ import EditSizeView from './edit/editSizeView';
 import MainSizeView from './mainSizeView';
 import InformationTextIcon from '../common/informationTextIcon';
 
-const sampleImage = require('../../../images/samplebody.png');
-const sampleImage2 = require('../../../images/samplebody2.png');
-const imageBodyShape = require('../../../images/bodyshape_neathourglass.png');
-
 const deviceWidth = Dimensions.get('window').width;
 
 const { popRoute, pushRoute } = actions

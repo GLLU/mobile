@@ -46,9 +46,8 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   arrowBorder: {
-    position: 'absolute',
-    left: w/2.0 - 15,
-    top: 12,
+    alignSelf:'center',
+    top: 5,
     width: 0,
     height: 0,
     borderTopWidth: 0,
@@ -62,8 +61,7 @@ export default StyleSheet.create({
     zIndex: 1
   },
   arrow: {
-    position: 'absolute',
-    left: w/2.0-14,
+    alignSelf:'center',
     top: 15,
     width: 0,
     height: 0,
