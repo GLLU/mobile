@@ -1,5 +1,6 @@
 import reduxApi from "redux-api";
 const adapterFetch = require("redux-api/lib/adapters/fetch");
+import navigateTo from '../actions/sideBarNav';
 
 export default reduxApi({
   facebook_sign_in: {
@@ -8,8 +9,9 @@ export default reduxApi({
       method: "post"
     },
     postfetch: [
-      function({data}) {
-        alert(`Logged in successfully: ${JSON.stringify(data)}`);
+      function({data, dispatch}) {
+        console.log(`Logged in successfully: ${JSON.stringify(data)}`);
+        dispatch(navigateTo('feedscreen'));
       }
     ]
   }
