@@ -1,5 +1,7 @@
+import { BODY_TYPE_CHANGE_SLIDING, BODY_TYPE_SHOW_MODAL, BODY_TYPE_HIDE_MODAL } from '../actions/myBodyType';
+
 // Data sample
-var bodyTypeList = {
+const bodyTypeList = {
   female: [
     {
       name: 'Triangle',
@@ -106,36 +108,33 @@ var bodyTypeList = {
   ]
 }
 
-//  Constants
-export const BODY_TYPE_CHANGE_SLIDING = 'BODY_TYPE_CHANGE_SLIDING'
-
-// Actions
-export function changeBodyType(index) {
-  return {
-    type: BODY_TYPE_CHANGE_SLIDING,
-    payload: {
-      selectedIndex: index
-    }
-  }
-}
-
-export const actions = {
-  changeBodyType
-}
-
 // Action Handlers
 const ACTION_HANDLERS = {
   [BODY_TYPE_CHANGE_SLIDING]: (state, action) => {
-    let currentItem = Object.assign({},bodyTypeList[state.gender][action.payload.selectedIndex]);
-    return ({ ...state
+    const currentItem = Object.assign({},bodyTypeList[state.gender][action.payload.selectedIndex]);
+    return { ...state
       , currentBodyType: currentItem
-      , currentIndex: action.payload.selectedIndex})
+      , currentIndex: action.payload.selectedIndex
+    }
+  },
+  [BODY_TYPE_SHOW_MODAL]: (state, action) => {
+    return {
+      ...state,
+      modalShowing: true
+    }
+  },
+  [BODY_TYPE_HIDE_MODAL]: (state, action) => {
+    return {
+      ...state,
+      modalShowing: false
+    }
   }
 }
 
 // Reducer
 const initialState = {
   gender: 'female',
+  modalShowing: false,
   bodyTypes: bodyTypeList,
   currentBodyType:  Object.assign({},bodyTypeList['female'][3]),
   currentIndex: 3

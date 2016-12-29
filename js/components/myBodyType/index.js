@@ -6,7 +6,7 @@ import gluuTheme from '../../themes/gluu-theme';
 
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
-import {changeBodyType} from '../../reducers/myBodyType';
+import {changeBodyType} from '../../actions/myBodyType';
 const { popRoute, pushRoute } = actions;
 
 import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';

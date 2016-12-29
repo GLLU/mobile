@@ -1,192 +1,230 @@
+import convert from 'convert-units';
+import { TOGGLE_SIZE, TOGGLE_EDIT_SIZE, TOGGLE_CM_INCH, INITIAL_MYBODY_MEASURE } from '../actions/myBodyMeasure';
+
 // Data sample
-var sizeList = {
+const sizeList = {
   female: {
     triangle: [
       {
         name: 'XS',
-        chest: '82 cm', waist: '62 cm', hips: '87 cm', height: '170 cm',
+        chest: '82', waist: '62', hips: '87', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'S',
-        chest: '88 cm', waist: '68 cm', hips: '93 cm', height: '170 cm',
+        chest: '88', waist: '68', hips: '93', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '94 cm', waist: '74 cm', hips: '99 cm', height: '170 cm',
+        chest: '94', waist: '74', hips: '99', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'L',
-        chest: '101 cm', waist: '80 cm', hips: '105 cm', height: '170 cm',
+        chest: '101', waist: '80', hips: '105', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XL',
-        chest: '109 cm', waist: '87 cm', hips: '112 cm', height: '170 cm',
+        chest: '109', waist: '87', hips: '112', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     leanColumn: [
       {
         name: 'XS',
-        chest: '78 cm', waist: '63 cm', hips: '86 cm', height: '170 cm',
+        chest: '78', waist: '63', hips: '86', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'S',
-        chest: '84 cm', waist: '69 cm', hips: '92 cm', height: '170 cm',
+        chest: '84', waist: '69', hips: '92', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '90 cm', waist: '75 cm', hips: '98 cm', height: '170 cm',
+        chest: '90', waist: '75', hips: '98', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'L',
-        chest: '96 cm', waist: '81 cm', hips: '104 cm', height: '170 cm',
+        chest: '96', waist: '81', hips: '104', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XL',
-        chest: '103 cm', waist: '88 cm', hips: '111 cm', height: '170 cm',
+        chest: '103', waist: '88', hips: '111', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     rectangle: [
       {
         name: 'XS',
-        chest: '82 cm', waist: '66 cm', hips: '86 cm', height: '170 cm',
+        chest: '82', waist: '66', hips: '86', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'S',
-        chest: '88 cm', waist: '72 cm', hips: '92 cm', height: '170 cm',
+        chest: '88', waist: '72', hips: '92', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '94 cm', waist: '78 cm', hips: '98 cm', height: '170 cm',
+        chest: '94', waist: '78', hips: '98', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'L',
-        chest: '101 cm', waist: '85 cm', hips: '104 cm',height: '170 cm',
+        chest: '101', waist: '85', hips: '104', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XL',
-        chest: '109 cm', waist: '94 cm', hips: '111 cm',height: '170 cm',
+        chest: '109', waist: '94', hips: '111', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     apple: [
       {
         name: 'XS',
-        chest: '82 cm', waist: '82 cm', hips: '86 cm',height: '170 cm',
+        chest: '82', waist: '82', hips: '86', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'S',
-        chest: '88 cm', waist: '88 cm', hips: '92 cm',height: '170 cm',
+        chest: '88', waist: '88', hips: '92', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '94 cm', waist: '94 cm', hips: '98 cm', height: '170 cm',
+        chest: '94', waist: '94', hips: '98', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'L',
-        chest: '101 cm', waist: '101 cm', hips: '104 cm',height: '170 cm',
+        chest: '101', waist: '101', hips: '104', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XL',
-        chest: '109 cm', waist: '109 cm', hips: '111 cm',height: '170 cm',
+        chest: '109', waist: '109', hips: '111', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     pear: [
       {
         name: 'XS',
-        chest: '77 cm', waist: '66 cm', hips: '90 cm',height: '170 cm',
+        chest: '77', waist: '66', hips: '90', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'S',
-        chest: '83 cm', waist: '72 cm', hips: '96 cm',height: '170 cm',
+        chest: '83', waist: '72', hips: '96', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '89 cm', waist: '78 cm', hips: '102 cm',height: '170 cm',
+        chest: '89', waist: '78', hips: '102', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'L',
-        chest: '95 cm', waist: '85 cm', hips: '109 cm',height: '170 cm',
+        chest: '95', waist: '85', hips: '109', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XL',
-        chest: '102 cm', waist: '94 cm', hips: '116 cm',height: '170 cm',
+        chest: '102', waist: '94', hips: '116', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     neatHourGlass: [
       {
         name: 'XS',
-        chest: '82 cm', waist: '61 cm', hips: '90 cm',height: '170 cm',
+        chest: '82', waist: '61', hips: '90', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'S',
-        chest: '88 cm', waist: '67 cm', hips: '92 cm',height: '170 cm',
+        chest: '88', waist: '67', hips: '92', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '94 cm', waist: '73 cm', hips: '102 cm',height: '170 cm',
+        chest: '94', waist: '73', hips: '102', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'L',
-        chest: '101 cm', waist: '79 cm', hips: '109 cm',height: '170 cm',
+        chest: '101', waist: '79', hips: '109', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XL',
-        chest: '109 cm', waist: '86 cm', hips: '116 cm',height: '170 cm',
+        chest: '109', waist: '86', hips: '116', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     fullHourGlass: [
       {
         name: 'XS',
-        chest: '82 cm', waist: '61 cm', hips: '90 cm',height: '170 cm',
+        chest: '82', waist: '61', hips: '90', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'S',
-        chest: '88 cm', waist: '67 cm', hips: '92 cm',height: '170 cm',
+        chest: '88', waist: '67', hips: '92', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '94 cm', waist: '73 cm', hips: '102 cm',height: '170 cm',
+        chest: '94', waist: '73', hips: '102', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'L',
-        chest: '101 cm', waist: '79 cm', hips: '109 cm',height: '170 cm',
+        chest: '101', waist: '79', hips: '109', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XL',
-        chest: '109 cm', waist: '86 cm', hips: '116 cm',height: '170 cm',
+        chest: '109', waist: '86', hips: '116', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ]
@@ -195,135 +233,160 @@ var sizeList = {
     trapezoid: [
       {
         name: 'S',
-        chest: '93 cm', waist: '77 cm', hips: '87 cm',height: '170 cm',
+        chest: '93', waist: '77', hips: '87', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '101 cm', waist: '84 cm', hips: '94 cm',height: '170 cm',
+        chest: '101', waist: '84', hips: '94', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'L',
-        chest: '110 cm', waist: '92 cm', hips: '102 cm',height: '170 cm',
+        chest: '110', waist: '92', hips: '102', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'XL',
-        chest: '120 cm', waist: '101 cm', hips: '111 cm',height: '170 cm',
+        chest: '120', waist: '101', hips: '111', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XXL',
-        chest: '131 cm', waist: '111 cm', hips: '120 cm',height: '170 cm',
+        chest: '131', waist: '111', hips: '120', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     invertedTriangle: [
       {
         name: 'S',
-        chest: '94 cm', waist: '76 cm', hips: '87 cm',height: '170 cm',
+        chest: '94', waist: '76', hips: '87', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '102 cm', waist: '83 cm', hips: '94 cm',height: '170 cm',
+        chest: '102', waist: '83', hips: '94', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'L',
-        chest: '111 cm', waist: '91 cm', hips: '102 cm',height: '170 cm',
+        chest: '111', waist: '91', hips: '102', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'XL',
-        chest: '121 cm', waist: '100 cm', hips: '111 cm',height: '170 cm',
+        chest: '121', waist: '100', hips: '111', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XXL',
-        chest: '132 cm', waist: '110 cm', hips: '120 cm',height: '170 cm',
+        chest: '132', waist: '110', hips: '120', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     ractangle: [
       {
         name: 'S',
-        chest: '94 cm', waist: '76 cm', hips: '87 cm',height: '170 cm',
+        chest: '94', waist: '76', hips: '87', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '102 cm', waist: '83 cm', hips: '94 cm',height: '170 cm',
+        chest: '102', waist: '83', hips: '94', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'L',
-        chest: '111 cm', waist: '91 cm', hips: '102 cm',height: '170 cm',
+        chest: '111', waist: '91', hips: '102', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'XL',
-        chest: '121 cm', waist: '100 cm', hips: '111 cm',height: '170 cm',
+        chest: '121', waist: '100', hips: '111', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XXL',
-        chest: '132 cm', waist: '110 cm', hips: '120 cm',height: '170 cm',
+        chest: '132', waist: '110', hips: '120', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     triangle: [
       {
         name: 'S',
-        chest: '88 cm', waist: '81 cm', hips: '93 cm',height: '170 cm',
+        chest: '88', waist: '81', hips: '93', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '95 cm', waist: '89 cm', hips: '101 cm',height: '170 cm',
+        chest: '95', waist: '89', hips: '101', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'L',
-        chest: '103 cm', waist: '93 cm', hips: '110 cm',height: '170 cm',
+        chest: '103', waist: '93', hips: '110', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'XL',
-        chest: '112 cm', waist: '101 cm', hips: '119 cm',height: '170 cm',
+        chest: '112', waist: '101', hips: '119', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XXL',
-        chest: '122 cm', waist: '111 cm', hips: '128 cm',height: '170 cm',
+        chest: '122', waist: '111', hips: '128', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ],
     oval: [
       {
         name: 'S',
-        chest: '91 cm', waist: '81 cm', hips: '93 cm',height: '170 cm',
+        chest: '91', waist: '81', hips: '93', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'M',
-        chest: '101 cm', waist: '89 cm', hips: '101 cm',height: '170 cm',
+        chest: '101', waist: '89', hips: '101', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'L',
-        chest: '109 cm', waist: '93 cm', hips: '110 cm',height: '170 cm',
+        chest: '109', waist: '93', hips: '110', height: '170',
+        measurements_scale: 'cm',
         select: true
       },
       {
         name: 'XL',
-        chest: '118 cm', waist: '101 cm', hips: '119 cm',height: '170 cm',
+        chest: '118', waist: '101', hips: '119', height: '170',
+        measurements_scale: 'cm',
         select: false
       },
       {
         name: 'XXL',
-        chest: '130 cm', waist: '111 cm', hips: '128 cm',height: '170 cm',
+        chest: '130', waist: '111', hips: '128', height: '170',
+        measurements_scale: 'cm',
         select: false
       }
     ]
@@ -332,78 +395,25 @@ var sizeList = {
 
 var commonSizeTypes = ['chest','waist','hips', 'height'];
 
-//  Constants
-export const TOGGLE_CM_INCH = 'TOGGLE_CM_INCH'
-export const TOGGLE_SIZE = 'TOGGLE_SIZE'
-export const TOGGLE_EDIT_SIZE = 'TOGGLE_EDIT_SIZE'
-export const INITIAL_MYBODY_MEASURE = 'INITIAL_MYBODY_MEASURE'
-
-// Actions
-export function toggleCMInch(checked) {
-  return {
-    type: TOGGLE_CM_INCH,
-    payload: {
-      checked: checked
-    }
-  }
-}
-
-export function toggleSize(sizeType) {
-  return {
-    type: TOGGLE_SIZE,
-    payload: {
-      sizeType: sizeType
-    }
-  }
-}
-
-export function toggleEditSize(isEdit, sizeType, sizeInitValue) {
-  return {
-    type: TOGGLE_EDIT_SIZE,
-    payload: {
-      isEdit: isEdit,
-      typeEdit: sizeType,
-      sizeInitValue: sizeInitValue
-    }
-  }
-}
-
-export function initalBodyMeasure(gender, bodyType) {
-  return {
-    type: INITIAL_MYBODY_MEASURE,
-    payload: {
-      gender: gender,
-      bodyType: bodyType
-    }
-  }
-}
-
-function _convertCmAndInc(obj, isCheck) {
+function _convertCmAndInc(obj, fromScale, toScale) {
+  console.log('convert', obj, fromScale, toScale);
   commonSizeTypes.map((sizeType) => {
-    var value = obj[sizeType].split(' ')[0];
-    var type = obj[sizeType].split(' ')[1];
-    if(isCheck && type === 'cm') {
-      obj[sizeType] = Math.round((value / 2.54) * 100)/100 + ' inch';
-    }
-    if(!isCheck && type === 'inch') {
-      obj[sizeType] = Math.round((value * 2.54) * 100)/100 + ' cm';
-    }
+    const value = obj[sizeType];
+    obj[sizeType] = convert(value).from(fromScale).to(toScale);
   });
+  obj.measurements_scale = toScale;
   return obj;
-}
-
-export const actions = {
-  toggleCMInch,
-  toggleSize,
-  toggleEditSize
 }
 
 // Action Handlers
 const ACTION_HANDLERS = {
   [TOGGLE_CM_INCH]: (state, action) => {
     const isCheck = action.payload.checked
-    var sizeResult = state.current;
-    _convertCmAndInc(sizeResult,isCheck);
+    const sizeResult = state.current;
+    const measurements_scale = isCheck ? 'in' :'cm';
+    if (measurements_scale != sizeResult.measurements_scale) {
+      _convertCmAndInc(sizeResult, sizeResult.measurements_scale, measurements_scale);
+    }
     return ({ ...state, isInchSelect: isCheck , current: sizeResult})
   },
   [TOGGLE_SIZE]: (state, action) => {
@@ -411,8 +421,10 @@ const ACTION_HANDLERS = {
         item.select = false;
         if(item.name === action.payload.sizeType) {
           item.select = true;
-          const isCheck = state.isInchSelect;
-          _convertCmAndInc(item,isCheck);
+          const measurements_scale = state.isInchSelect ? 'in' :'cm';
+          if (measurements_scale != item.measurements_scale) {
+            _convertCmAndInc(item, item.measurements_scale, measurements_scale);
+          }
           state.current = Object.assign({}, item);
         }
         return item;
@@ -420,11 +432,19 @@ const ACTION_HANDLERS = {
     })
   },
   [TOGGLE_EDIT_SIZE]: (state, action) => {
-   return ({ ...state, isEdit: action.payload.isEdit, typeEdit: action.payload.typeEdit, sizeInitValue: action.payload.sizeInitValue})
+    return ({
+      ...state,
+      isEdit: action.payload.isEdit,
+      typeEdit: action.payload.typeEdit,
+      sizeInitValue: action.payload.sizeInitValue
+    });
  },
  [INITIAL_MYBODY_MEASURE]: (state, action) => {
-   return ({...state, sizeList: sizeList[action.payload.gender][action.payload.bodyType],
-            current: sizeList[action.payload.gender][action.payload.bodyType][2]});
+    return ({
+      ...state,
+      sizeList: sizeList[action.payload.gender][action.payload.bodyType],
+      current: sizeList[action.payload.gender][action.payload.bodyType][2]
+    });
  }
 }
 

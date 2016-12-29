@@ -35,6 +35,7 @@
 		77CC25145EAD4DABA136676C /* SF-UI-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F010170E6FB4AC494C7E102 /* SF-UI-Text-Regular.otf */; };
 		792ACA8802694CC7B71DD99A /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99422D82CFB44D01A9B36C8B /* Arial.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8E073973841A40CAB557C25A /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 122498F2E2BA4279A3AA17AC /* SimpleLineIcons.ttf */; };
 		98DEA545FFE14C6FA0CD3F4C /* Times New Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB7D2E3BE024C71B60888B9 /* Times New Roman.ttf */; };
 		9A156E7A1C6340C8843C0D34 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7BAB309E223B4A23B6F5F36F /* Ionicons.ttf */; };
 		9CB15071635240FE9A394C36 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1407E961A4DD43838E1FB8D2 /* libRNVectorIcons.a */; };
@@ -45,6 +46,14 @@
 		C3AA3960893448EBAEA6C9B8 /* Microsoft Sans Serif.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17D3F07812774530A43EC6D4 /* Microsoft Sans Serif.ttf */; };
 		C54905B8E76E49A49BCA76CC /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33D88D6CB77D4E0F877BC10F /* Octicons.ttf */; };
 		CEFBEA4C1E0C205500F793D1 /* FBSDKCoreKit.h in Frameworks */ = {isa = PBXBuildFile; fileRef = CEFBEA4B1E0C205500F793D1 /* FBSDKCoreKit.h */; };
+		D03B93D81E13D5AF00DDE832 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D01E13D5AF00DDE832 /* Montserrat-Bold.ttf */; };
+		D03B93D91E13D5AF00DDE832 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D11E13D5AF00DDE832 /* Montserrat-Regular.ttf */; };
+		D03B93DA1E13D5AF00DDE832 /* PlayfairDisplay-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D21E13D5AF00DDE832 /* PlayfairDisplay-Black.ttf */; };
+		D03B93DB1E13D5AF00DDE832 /* PlayfairDisplay-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D31E13D5AF00DDE832 /* PlayfairDisplay-BlackItalic.ttf */; };
+		D03B93DC1E13D5AF00DDE832 /* PlayfairDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D41E13D5AF00DDE832 /* PlayfairDisplay-Bold.ttf */; };
+		D03B93DD1E13D5AF00DDE832 /* PlayfairDisplay-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D51E13D5AF00DDE832 /* PlayfairDisplay-BoldItalic.ttf */; };
+		D03B93DE1E13D5AF00DDE832 /* PlayfairDisplay-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D61E13D5AF00DDE832 /* PlayfairDisplay-Italic.ttf */; };
+		D03B93DF1E13D5AF00DDE832 /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D03B93D71E13D5AF00DDE832 /* PlayfairDisplay-Regular.ttf */; };
 		D06643491E00E5F500DCEFDE /* libBolts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643441E00E5F500DCEFDE /* libBolts.a */; };
 		D066434A1E00E5F500DCEFDE /* libFBSDKCoreKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643451E00E5F500DCEFDE /* libFBSDKCoreKit.a */; };
 		D066434B1E00E5F500DCEFDE /* libFBSDKLoginKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643461E00E5F500DCEFDE /* libFBSDKLoginKit.a */; };
@@ -183,6 +192,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* glluTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = glluTests.m; sourceTree = "<group>"; };
 		03FE0E3882D34356B0AF0020 /* libRCTMaterialKit.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTMaterialKit.a; sourceTree = "<group>"; };
+		122498F2E2BA4279A3AA17AC /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* gllu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gllu.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,6 +239,14 @@
 		CEFBEA381E0C1F4400F793D1 /* FBSDKCoreKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FBSDKCoreKit.h; path = FBSDKCoreKit.framework/Headers/FBSDKCoreKit.h; sourceTree = "<group>"; };
 		CEFBEA3A1E0C1F6700F793D1 /* FBSDKShareKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FBSDKShareKit.h; path = FBSDKShareKit.framework/Headers/FBSDKShareKit.h; sourceTree = "<group>"; };
 		CEFBEA4B1E0C205500F793D1 /* FBSDKCoreKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FBSDKCoreKit.h; path = Pods/FBSDKCoreKit/FBSDKCoreKit/FBSDKCoreKit/FBSDKCoreKit.h; sourceTree = "<group>"; };
+		D03B93D01E13D5AF00DDE832 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Bold.ttf"; path = "../fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		D03B93D11E13D5AF00DDE832 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Regular.ttf"; path = "../fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		D03B93D21E13D5AF00DDE832 /* PlayfairDisplay-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-Black.ttf"; path = "../fonts/PlayfairDisplay-Black.ttf"; sourceTree = "<group>"; };
+		D03B93D31E13D5AF00DDE832 /* PlayfairDisplay-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-BlackItalic.ttf"; path = "../fonts/PlayfairDisplay-BlackItalic.ttf"; sourceTree = "<group>"; };
+		D03B93D41E13D5AF00DDE832 /* PlayfairDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-Bold.ttf"; path = "../fonts/PlayfairDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		D03B93D51E13D5AF00DDE832 /* PlayfairDisplay-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-BoldItalic.ttf"; path = "../fonts/PlayfairDisplay-BoldItalic.ttf"; sourceTree = "<group>"; };
+		D03B93D61E13D5AF00DDE832 /* PlayfairDisplay-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-Italic.ttf"; path = "../fonts/PlayfairDisplay-Italic.ttf"; sourceTree = "<group>"; };
+		D03B93D71E13D5AF00DDE832 /* PlayfairDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-Regular.ttf"; path = "../fonts/PlayfairDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		D06643441E00E5F500DCEFDE /* libBolts.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBolts.a; path = "../../../../Library/Developer/Xcode/DerivedData/gllu-dnnthniclmbftrawkveraoowjalq/Build/Products/Debug-iphonesimulator/Bolts/libBolts.a"; sourceTree = "<group>"; };
 		D06643451E00E5F500DCEFDE /* libFBSDKCoreKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFBSDKCoreKit.a; path = "../../../../Library/Developer/Xcode/DerivedData/gllu-dnnthniclmbftrawkveraoowjalq/Build/Products/Debug-iphonesimulator/FBSDKCoreKit/libFBSDKCoreKit.a"; sourceTree = "<group>"; };
 		D06643461E00E5F500DCEFDE /* libFBSDKLoginKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFBSDKLoginKit.a; path = "../../../../Library/Developer/Xcode/DerivedData/gllu-dnnthniclmbftrawkveraoowjalq/Build/Products/Debug-iphonesimulator/FBSDKLoginKit/libFBSDKLoginKit.a"; sourceTree = "<group>"; };
@@ -382,6 +400,14 @@
 		5207B329129A4BDBBC0DEFAB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D03B93D01E13D5AF00DDE832 /* Montserrat-Bold.ttf */,
+				D03B93D11E13D5AF00DDE832 /* Montserrat-Regular.ttf */,
+				D03B93D21E13D5AF00DDE832 /* PlayfairDisplay-Black.ttf */,
+				D03B93D31E13D5AF00DDE832 /* PlayfairDisplay-BlackItalic.ttf */,
+				D03B93D41E13D5AF00DDE832 /* PlayfairDisplay-Bold.ttf */,
+				D03B93D51E13D5AF00DDE832 /* PlayfairDisplay-BoldItalic.ttf */,
+				D03B93D61E13D5AF00DDE832 /* PlayfairDisplay-Italic.ttf */,
+				D03B93D71E13D5AF00DDE832 /* PlayfairDisplay-Regular.ttf */,
 				E16DC894766245298EE724D4 /* Andale Mono.ttf */,
 				C088D1238D1B457992234ACE /* Arial Black.ttf */,
 				99422D82CFB44D01A9B36C8B /* Arial.ttf */,
@@ -402,6 +428,7 @@
 				476C4CDE67FC4A89AB1B005D /* MaterialIcons.ttf */,
 				33D88D6CB77D4E0F877BC10F /* Octicons.ttf */,
 				BBF3BF47BAE842099CA57B8A /* Zocial.ttf */,
+				122498F2E2BA4279A3AA17AC /* SimpleLineIcons.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -796,28 +823,37 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03B93DF1E13D5AF00DDE832 /* PlayfairDisplay-Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				D03B93DD1E13D5AF00DDE832 /* PlayfairDisplay-BoldItalic.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				57DDA7698E1F4960A71E78A0 /* Andale Mono.ttf in Resources */,
 				1FA1E659D055463B945A72D8 /* Arial Black.ttf in Resources */,
+				D03B93DB1E13D5AF00DDE832 /* PlayfairDisplay-BlackItalic.ttf in Resources */,
 				792ACA8802694CC7B71DD99A /* Arial.ttf in Resources */,
 				22526CA9FC3947D18AE201AC /* Comic Sans MS.ttf in Resources */,
 				4B83A7C864134355AFD01B42 /* Courier New.ttf in Resources */,
+				D03B93DC1E13D5AF00DDE832 /* PlayfairDisplay-Bold.ttf in Resources */,
 				C19A7827975440EE9833BBAD /* Georgia.ttf in Resources */,
 				C3AA3960893448EBAEA6C9B8 /* Microsoft Sans Serif.ttf in Resources */,
 				AACC05A1C0CE43759AEE30DB /* Roboto_medium.ttf in Resources */,
 				FF6D81E1B9D54CB7B21B39BD /* Roboto.ttf in Resources */,
 				77CC25145EAD4DABA136676C /* SF-UI-Text-Regular.otf in Resources */,
+				D03B93DE1E13D5AF00DDE832 /* PlayfairDisplay-Italic.ttf in Resources */,
 				4E052BF26E6D4B29966A767B /* Skia.ttf in Resources */,
+				D03B93D91E13D5AF00DDE832 /* Montserrat-Regular.ttf in Resources */,
 				98DEA545FFE14C6FA0CD3F4C /* Times New Roman.ttf in Resources */,
 				1737D333132E43D688CFF506 /* Entypo.ttf in Resources */,
 				5C684BDF724643C288E4DE94 /* EvilIcons.ttf in Resources */,
+				D03B93DA1E13D5AF00DDE832 /* PlayfairDisplay-Black.ttf in Resources */,
 				64C34B1020F44AC9A466E2F4 /* FontAwesome.ttf in Resources */,
 				E1F82379AF874C81A759EF9E /* Foundation.ttf in Resources */,
 				9A156E7A1C6340C8843C0D34 /* Ionicons.ttf in Resources */,
 				00EE382FE39D42E48D6B5928 /* MaterialIcons.ttf in Resources */,
+				D03B93D81E13D5AF00DDE832 /* Montserrat-Bold.ttf in Resources */,
 				C54905B8E76E49A49BCA76CC /* Octicons.ttf in Resources */,
 				5B26F3762A9E4C5B8DF166DA /* Zocial.ttf in Resources */,
+				8E073973841A40CAB557C25A /* SimpleLineIcons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

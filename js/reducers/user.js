@@ -7,7 +7,9 @@ export type State = {
 }
 
 const initialState = {
+  id: null,
   name: '',
+  email: ''
 };
 
 export default function (state:State = initialState, action:Action): State {

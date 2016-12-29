@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 import myStyles from './styles';
 import { connect } from 'react-redux';
-import { toggleEditSize, toggleSize, toggleCMInch, initalBodyMeasure } from '../../reducers/myBodyMeasure';
+import { toggleEditSize, toggleSize, toggleCMInch, initalBodyMeasure } from '../../actions/myBodyMeasure';
 
 import CMInchRangeView from './edit/cmInchRangeView';
+import Util from '../../Util';
 
 export class MainSizeView extends Component {
   constructor(props) {
@@ -31,12 +32,9 @@ export class MainSizeView extends Component {
   }
 
   _enterEditMode(sizeType) {
-    var sizeValue = Number(this.props.currentSize[sizeType].split(' ')[0]);
-    var sizeValueType = this.props.currentSize[sizeType].split(' ')[1];
-    if(sizeValueType === 'cm') {
-      sizeValue = sizeValue / 2.54;
-    }
-    this.props.toggleEditSize(true,sizeType, sizeValue);
+    var sizeValue = Number(this.props.currentSize[sizeType]);
+    var sizeValueType = this.props.currentSize['measurements_scale'];
+    this.props.toggleEditSize(true, sizeType, sizeValue);
   }
 
   render() {
@@ -57,7 +55,7 @@ export class MainSizeView extends Component {
           return (<View key={i} style={myStyles.infoContainer}>
             <Text style={myStyles.infoText}>{item}</Text>
             <TouchableOpacity style={myStyles.infoDetailTouch} onPress={() => this._enterEditMode(item)}>
-              <Text style={myStyles.infoDetailText}>{currentSize ? currentSize[item] : null}</Text>
+              <Text style={myStyles.infoDetailText}>{currentSize ? Util.format_measurement(currentSize[item], currentSize['measurements_scale']) : null}</Text>
             </TouchableOpacity>
           </View>)
         })}

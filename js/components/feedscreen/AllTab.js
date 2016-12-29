@@ -10,6 +10,10 @@ import ImagesView from './items/ImagesView';
 import MyBodyModal from '../common/myBodyModal'
 import styles from './styles';
 import _ from 'lodash';
+import { showBodyTypeModal } from '../../actions/myBodyType';
+
+
+
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 class AllTab extends Component {
@@ -28,7 +32,7 @@ class AllTab extends Component {
       imagesColumn2: []
     }
 
-    this.scrollCallAsync = _.debounce(this.scrollDebounced, 400)
+    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
   }
 
@@ -80,11 +84,11 @@ class AllTab extends Component {
   }
 
   _showBodyModal() {
-     this.refs.bodyTypeModalRef.open();
+     this.props.showBodyTypeModal();
   }
 
   scrollDebounced(event) {
-     this.showBodyModal()
+     this.showBodyModal();
   }
 
   render() {
@@ -93,7 +97,7 @@ class AllTab extends Component {
       <View style={styles.tab} scrollEnabled={false}>
         <FilterBar filterHeight={this.state.filterHeight} openFilter={this.openFilter.bind(this)} />
         <View style={[styles.mainGrid]}>
-          <ScrollView scrollEventThrottle={1} onScroll={this.handleScroll.bind(this)}>
+          <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
                 <ImagesView images={this.state.imagesColumn1} />
@@ -104,8 +108,8 @@ class AllTab extends Component {
             </View>
           </ScrollView>
         </View>
-        <Modal style={{justifyContent: 'flex-start', alignItems: 'center', height: h*.75, width: w*.9, top: 20}}
-            position={"top"} ref={"bodyTypeModalRef"}>
+        <Modal isOpen={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center', height: h*.75, width: w*.9, top: 20}}
+            position={"top"} ref={(ref) => this.bodyTypeModalRef = ref}>
           <MyBodyModal />
         </Modal>
 
@@ -115,11 +119,14 @@ class AllTab extends Component {
 }
 
 function bindActions(dispatch) {
-  return { };
+  return {
+    showBodyTypeModal: name => dispatch(showBodyTypeModal()),
+  };
 }
 
 const mapStateToProps = state => ({
-  images: state.filters.images
+  images: state.filters.images,
+  modalShowing: state.myBodyType.modalShowing
 });
 
 export default connect(mapStateToProps, bindActions)(AllTab);
