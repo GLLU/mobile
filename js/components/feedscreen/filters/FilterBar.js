@@ -131,7 +131,7 @@ class FilterView extends Component {
     } else {
       const filters = [];
       if (filterOnChangeCategory) {
-        filters.push(this.state.selectedCategory.name);
+        filters.push(this.state.selectedCategory.attributes.name);
       }
       if (filterOnChangePrice) {
         filters.push(`₤${this.state.fromPrice} - ₤${this.state.toPrice}`);

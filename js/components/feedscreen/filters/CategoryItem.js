@@ -14,12 +14,12 @@ class CategoryItem extends Component {
   render() {
     const { item, selected, onPress } = this.props;
     return (<View style={styles.categoryItem}>
-              <Text style={styles.categoryItemTitle}>{item.name}</Text>
-              <Button transparent style={styles.btncategoryItem} onPress={() => onPress(item)} >
+              <Text style={styles.categoryItemTitle}>{item.attributes.name}</Text>
+              <Button transparent style={styles.btncategoryItem} onPress={() => this.props.onPress(item)} >
                 { selected ?
-                  <Image source={item.imageSelected} style={styles.categoryItemImage} />
+                  <Image source={{uri: item.attributes.icon.url}} style={styles.categoryItemImage} />
                   :
-                  <Image source={item.img} style={styles.categoryItemImage} />
+                  <Image source={{uri: item.attributes.icon.url}} style={styles.categoryItemImage} />
                 }
               </Button>
             </View>);

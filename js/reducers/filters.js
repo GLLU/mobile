@@ -15,15 +15,6 @@ const coatSelected = require('../../images/categories/coat-selected.png');
 const initialState = {
   minPrice: 1,
   maxPrice: 1000,
-  categories: [
-    { id: 0, name: 'Dresses', img: dress, imageSelected: coatSelected },
-    { id: 1, name: 'Boots', img: boot, imageSelected: coatSelected },
-    { id: 2, name: 'Coats', img: coat, imageSelected: coatSelected },
-    { id: 3, name: 'Dresses 2', img: dress, imageSelected: coatSelected },
-    { id: 4, name: 'Boots 2', img: boot, imageSelected: coatSelected },
-    { id: 5, name: 'Coats 2', img: coat, imageSelected: coatSelected },
-    { id: 6, name: 'Dresses 3', img: dress, imageSelected: coatSelected }
-  ],
   images: [
     { uri: 'https://s-media-cache-ak0.pinimg.com/474x/00/3f/cf/003fcf4f6439be98fadc6567c93e46c8.jpg', width: 137, height: 245, likes: 13, liked: true, type: '1', tags: [ { price: 88, x: 10, y: 80 }, { price: 115, x: 40, y: 140 }, { price: 99, x: 10, y: 250 } ] },
     { uri: 'https://s-media-cache-ak0.pinimg.com/474x/de/21/15/de2115e2b274f01a5759aad017065693.jpg', width: 149, height: 244, likes: 23, liked: false, type: '2', tags: [ { price: 88, x: 30, y: 70 } ] },
@@ -35,6 +26,9 @@ const initialState = {
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/96/8e/5e/968e5eeb3ceb6e07b718ed60654ff308.jpg', width: 163, height: 245, likes: 130, liked: false, type: '1', tags: [ { price: 88, x: 78, y: 100 } ] },
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/d5/a5/a5/d5a5a5c60c6a1befbf3ee6d346ce5c59.jpg', width: 385, height: 244, likes: 44, liked: false, type: '2', tags: [ { price: 88, x: 30, y: 50 } ] },
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/c9/cc/d9/c9ccd926889c5bfb7decbff5b7de3eb9.jpg', width: 215, height: 245, likes: 123, liked: false, type: '3', tags: [ { price: 88, x: 10, y: 140 } ] }
+  ],
+  categories: [
+    {id: 1, type: 'tag', attributes: { name: 'Tops', gender: 'male', kind: 'category', icon: { url: 'https://s3.amazonaws.com/gllu-assets/categories_icons/tops.png', width: 134, height: 150 }}}
   ]
 };
 
