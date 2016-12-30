@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import CodePush from 'react-native-code-push';
 
 import { Container, Content, Text, View } from 'native-base';
@@ -11,7 +11,7 @@ import ProgressBar from './components/loaders/ProgressBar';
 
 import theme from './themes/base-theme';
 
-var Orientation = require('react-native-orientation');
+import Orientation from 'react-native-orientation';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,7 +40,9 @@ class App extends Component {
   }
 
   componentWillMount() {
-    Orientation.lockToPortrait(); // Lock Screen With Portrait
+    if (Platform.OS === 'ios') {
+      Orientation.lockToPortrait(); // Lock Screen With Portrait
+    }
   }
 
   componentDidMount() {

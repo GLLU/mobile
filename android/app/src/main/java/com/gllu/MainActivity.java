@@ -32,7 +32,7 @@ public class MainActivity extends ReactActivity {
         mCallbackManager = new CallbackManager.Factory().create();
         ReactPackage packages[] = new ReactPackage[]{
                 new MainReactPackage(),
-            new OrientationPackage(this),
+            new OrientationPackage(),
                 new FBSDKPackage(mCallbackManager),
         };
         return Arrays.<ReactPackage>asList(packages);
