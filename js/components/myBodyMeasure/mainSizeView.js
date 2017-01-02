@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 import myStyles from './styles';
 import { connect } from 'react-redux';
-import { toggleEditSize, toggleSize, toggleCMInch, initalBodyMeasure } from '../../actions/myBodyMeasure';
+import { toggleSize, toggleCMInch, initalBodyMeasure } from '../../actions/myBodyMeasure';
 
 import CMInchRangeView from './edit/cmInchRangeView';
 import Util from '../../Util';
@@ -33,8 +33,8 @@ export class MainSizeView extends Component {
 
   _enterEditMode(sizeType) {
     var sizeValue = Number(this.props.currentSize[sizeType]);
-    var sizeValueType = this.props.currentSize['measurements_scale'];
-    this.props.toggleEditSize(true, sizeType, sizeValue);
+    // var sizeValueType = this.props.currentSize['measurements_scale'];
+    this.props.toggleEditSize(sizeType, sizeValue);
   }
 
   render() {
@@ -67,7 +67,6 @@ export class MainSizeView extends Component {
 
 function bindAction(dispatch) {
   return {
-    toggleEditSize: (isEdit, sizeType, sizeInitValue) => dispatch(toggleEditSize(isEdit, sizeType, sizeInitValue)),
     toggleSize: (sizeType) => dispatch(toggleSize(sizeType)),
     toggleCMInch: (checked) => dispatch(toggleCMInch(checked)),
     initalBodyMeasure: (gender,bodyTYpe) => dispatch(initalBodyMeasure(gender,bodyTYpe)),
@@ -76,7 +75,6 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   isInchSelect: state.myBodyMeasure.isInchSelect,
-  typeEdit: state.myBodyMeasure.typeEdit,
   currentSize: state.myBodyMeasure.current,
   sizeList: state.myBodyMeasure.sizeList,
   sizeTypes: state.myBodyMeasure.sizeTypes

@@ -7,7 +7,7 @@ export const INITIAL_MYBODY_MEASURE = 'INITIAL_MYBODY_MEASURE'
 export const SAVE_USER_SIZE = 'SAVE_USER_SIZE'
 
 import { actions } from 'react-native-navigation-redux-helpers';
-const { reset, popRoute } = actions;
+const { popRoute } = actions;
 import { hideBodyTypeModal } from './myBodyType';
 
 // Actions

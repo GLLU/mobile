@@ -1,5 +1,5 @@
 import convert from 'convert-units';
-import { TOGGLE_SIZE, TOGGLE_EDIT_SIZE, TOGGLE_CM_INCH, INITIAL_MYBODY_MEASURE } from '../actions/myBodyMeasure';
+import { TOGGLE_SIZE, TOGGLE_CM_INCH, INITIAL_MYBODY_MEASURE } from '../actions/myBodyMeasure';
 
 // Data sample
 const sizeList = {
@@ -431,14 +431,6 @@ const ACTION_HANDLERS = {
       })
     })
   },
-  [TOGGLE_EDIT_SIZE]: (state, action) => {
-    return ({
-      ...state,
-      isEdit: action.payload.isEdit,
-      typeEdit: action.payload.typeEdit,
-      sizeInitValue: action.payload.sizeInitValue
-    });
- },
  [INITIAL_MYBODY_MEASURE]: (state, action) => {
     return ({
       ...state,
@@ -453,10 +445,7 @@ const initialState = {
   sizeList: null,
   sizeTypes: commonSizeTypes,
   isInchSelect: false,
-  isEdit: false,
-  typeEdit: null,
   current: null,
-  sizeInitValue: 0
 }
 
 export default function homeReducer (state = initialState, action) {
