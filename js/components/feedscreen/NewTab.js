@@ -2,19 +2,9 @@
 
 import React, { Component } from 'react';
 import { View, Text } from 'native-base';
+import TabContent from './TabContent';
 
-class NewTab extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return(
-      <View>
-        <Text>NewTab</Text>
-      </View>
-    )
-  }
+class NewTab extends TabContent {
 }
 
-module.exports = NewTab;
+export default NewTab;
