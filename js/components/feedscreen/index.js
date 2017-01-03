@@ -1,22 +1,29 @@
 
 import React, { Component } from 'react';
+import { Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, View } from 'native-base';
-
 import { setUser } from '../../actions/user';
 import styles from './styles';
-
 import NavigationBarView from './NavigationBarView';
 import MainView from './MainView';
+import Modal from 'react-native-modalbox';
+import MyBodyModal from '../common/myBodyModal';
+import { showBodyTypeModal } from '../../actions/myBodyType';
 
 const {
   replaceAt,
 } = actions;
 
+const w = Dimensions.get('window').width;
+const h = Dimensions.get('window').height;
+const DIALOG_PADDING = 20;
+
 class FeedPage extends Component {
 
   static propTypes = {
+    modalShowing: React.PropTypes.bool,
     setUser: React.PropTypes.func,
     replaceAt: React.PropTypes.func,
     navigation: React.PropTypes.shape({
@@ -41,11 +48,16 @@ class FeedPage extends Component {
   }
 
   render() {
+    const modalStyle = {justifyContent: 'flex-start', alignItems: 'center', height: h - DIALOG_PADDING * 2, width: w*.9, top: DIALOG_PADDING};
     return (
       <Container style={styles.container}>
         <View>
           <NavigationBarView />
           <MainView />
+          <Modal isOpen={this.props.modalShowing} style={modalStyle}
+            position={"top"}>
+            <MyBodyModal />
+          </Modal>
         </View>
       </Container>
     );
@@ -61,6 +73,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+  modalShowing: state.myBodyType.modalShowing
 });
 
 export default connect(mapStateToProps, bindActions)(FeedPage);

@@ -64,7 +64,7 @@ class MyBodyType extends Component {
           <Text style={styles.selectBodyTypeText}>Choose your body shape to find fashion that fits you</Text>
           <View style={styles.container}>
             <ArrowTextBox title={this.props.currentBodyType.name} description={this.props.currentBodyType.description} />
-            <HorizontalCarousel pageStyle={{backgroundColor: "white", borderRadius: 5}}
+            <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
               sneak={100} initialPage={this.props.currentIndex}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
                 {this.props.bodyTypes[this.props.gender].map((img, i) => {
@@ -75,7 +75,7 @@ class MyBodyType extends Component {
                 })}
             </HorizontalCarousel>
           </View>
-          <View style={{marginTop: 5}}>
+          <View style={{marginTop: 15}}>
             <InformationTextIcon text={'This information is private to you only'} />
           </View>
           <Button block primary style={styles.continueButton}
