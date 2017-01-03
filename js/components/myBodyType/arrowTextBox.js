@@ -12,7 +12,7 @@ export default class ArrowTextBox extends Component {
     return (
       <View>
         <Text style={styles.bodyTypeText}>{this.props.title}</Text>
-        <View style={{position: 'relative', height: 5}}>
+        <View style={{position: 'relative', height: 10}}>
           <Text style={styles.arrow}>{' '}</Text>
           <Text style={styles.arrowBorder}>{' '}</Text>
         </View>

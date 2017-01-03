@@ -8,15 +8,16 @@ let fontColor = '#000';
 
 export default StyleSheet.create({
   selectBodyTypeText: {
-    marginTop: 5,
-    marginBottom: 0,
-    paddingHorizontal: 30,
+    marginTop: 10,
+    marginBottom: 25,
+    paddingHorizontal: 50,
     textAlign: 'center',
-    fontSize: fontSizeDefault * 0.8,
+    fontWeight: '400',
+    fontSize: fontSizeDefault * 1.1,
     color: fontColor
   },
   container: {
-    height: 300,
+    height: 350,
     paddingTop: 5,
     paddingHorizontal: 10,
     backgroundColor: '#ffffff'
@@ -34,8 +35,7 @@ export default StyleSheet.create({
     padding: 15,
     marginHorizontal: 20,
     marginVertical: 10,
-    textAlign: 'center',
-    fontSize: fontSizeDefault * 0.8,
+    textAlign: 'center'
   },
   continueButton: {
     marginTop: 15,

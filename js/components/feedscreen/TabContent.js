@@ -12,10 +12,6 @@ import styles from './styles';
 import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
 
-
-
-const w = Dimensions.get('window').width;
-const h = Dimensions.get('window').height;
 class TabContent extends Component {
 
   static propTypes = {
@@ -71,11 +67,10 @@ class TabContent extends Component {
 
   openFilter(height) {
     console.log('Open filter');
-    const h = height === 0 ? 200 : 0;
-    this.setState({
-      filterHeight: h
+    const filterHeight = height === 0 ? 200 : 0;
+    this.setState({ filterHeight }, () => {
+      this.props.handleSwipeTab(filterHeight === 0 ? false : true);
     });
-    this.props.handleSwipeTab(h === 0 ? false : true);
   }
 
   handleScroll(event) {
@@ -115,11 +110,6 @@ class TabContent extends Component {
             </View>
           </ScrollView>
         </View>
-        <Modal isOpen={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center', height: h*.75, width: w*.9, top: 20}}
-            position={"top"} ref={(ref) => this.bodyTypeModalRef = ref}>
-          <MyBodyModal />
-        </Modal>
-
       </View>
     )
   }
