@@ -3,6 +3,7 @@ import _ from 'lodash';
 const adapterFetch = require("redux-api/lib/adapters/fetch");
 import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
+import { setCategories } from '../actions/filters';
 
 export default reduxApi({
   facebook_sign_in: {
@@ -46,6 +47,20 @@ export default reduxApi({
       }
     },
     crud: true
+  },
+  categories: {
+    url: '/tags?kind=category',
+    options: {
+      method: 'get',
+      headers: {
+        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
+      }
+    },
+    postfetch: [
+      ({data, dispatch}) => {
+        dispatch(setCategories(data.data)); 
+      }
+    ]
   }
 }).use("fetch", adapterFetch(fetch))
     .use('rootUrl', "https://sam.gllu.com/v1")

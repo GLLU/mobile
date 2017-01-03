@@ -11,8 +11,11 @@ import CategoryStrip from './CategoryStrip';
 
 import styles from '../styles';
 
+import { loadCategories } from '../../../actions/filters';
+
 class FilterView extends Component {
   static propTypes = {
+    loadCategories: React.PropTypes.func,
     openFilter: React.PropTypes.func,
     categories: React.PropTypes.array,
     minPrice: React.PropTypes.number,
@@ -31,7 +34,7 @@ class FilterView extends Component {
   }
 
   componentDidMount() {
-
+    this.props.loadCategories();
   }
 
   componentWillReceiveProps() {
@@ -161,7 +164,9 @@ class FilterView extends Component {
 }
 
 function bindActions(dispatch) {
-  return { };
+  return {
+    loadCategories: () => dispatch(loadCategories()),
+  };
 }
 
 const mapStateToProps = state => ({

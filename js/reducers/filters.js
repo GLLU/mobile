@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import type { Action } from '../actions/types';
+import { LOAD_CATEGORIES, SET_CATEGORIES } from '../actions/filters';
 
 export type State = {
     minPrice: number,
@@ -32,6 +34,19 @@ const initialState = {
   ]
 };
 
-export default function (state:State = initialState, action:Action): State {
-  return state;
+// Action Handlers
+const ACTION_HANDLERS = {
+  [SET_CATEGORIES]: (state, action) => {
+    console.log('action payload', action.payload);
+    const categories = _.filter((item) => item['parent-id'] == null);
+    return {
+      ...state,
+      categories: action.payload
+    }
+  }
+}
+
+export default function reducers (state = initialState, action) {
+  const handler = ACTION_HANDLERS[action.type]
+  return handler ? handler(state, action) : state
 }
