@@ -6,7 +6,7 @@ import gluuTheme from '../../themes/gluu-theme';
 
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
-import {changeBodyType} from '../../reducers/myBodyType';
+import {changeBodyType} from '../../actions/myBodyType';
 const { popRoute, pushRoute } = actions;
 
 import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
@@ -27,9 +27,14 @@ class MyBodyType extends Component {
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
-    bodyTypes: React.PropTypes.array,
+    bodyTypes: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
-    currentIndex: React.PropTypes.number
+    currentIndex: React.PropTypes.number,
+    gender: React.PropTypes.string
+  }
+
+  static defaultProps = {
+    gender: 'female'
   }
 
   popRoute() {
@@ -59,17 +64,18 @@ class MyBodyType extends Component {
           <Text style={styles.selectBodyTypeText}>Choose your body shape to find fashion that fits you</Text>
           <View style={styles.container}>
             <ArrowTextBox title={this.props.currentBodyType.name} description={this.props.currentBodyType.description} />
-            <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
+            <HorizontalCarousel pageStyle={{backgroundColor: "white", borderRadius: 5}}
               sneak={100} initialPage={this.props.currentIndex}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
-                {this.props.bodyTypes.map((img, i) => {
+                {this.props.bodyTypes[this.props.gender].map((img, i) => {
+                  const isActive = i === this.props.currentIndex;
                   return (
-                    <CarouselItem key={i} item={img} />
+                    <CarouselItem key={i} item={img} itemActive={isActive}/>
                   )
                 })}
             </HorizontalCarousel>
           </View>
-          <View style={{marginTop: 15}}>
+          <View style={{marginTop: 5}}>
             <InformationTextIcon text={'This information is private to you only'} />
           </View>
           <Button block primary style={styles.continueButton}

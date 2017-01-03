@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image} from 'react-native';
-import styles from './styles';
+import {Text, View, Image, StyleSheet} from 'react-native';
 const iconInfomation = require('../../../images/icons/information.png');
 
 export default class InformationTextIcon extends Component {
@@ -9,6 +8,24 @@ export default class InformationTextIcon extends Component {
   }
 
   render() {
+    let styles =  StyleSheet.create({
+      privacy: {
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+      },
+      privacyText: {
+        flexDirection: 'column',
+        textAlign: 'center'
+      },
+      privacyIcon: {
+        width: 32,
+        height: 32,
+        marginRight: 5
+      }
+    });
+
     return (
       <View style={styles.privacy}>
         <Image source={iconInfomation} style={styles.privacyIcon}/>

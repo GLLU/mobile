@@ -14,6 +14,6 @@ export function setUser(user:string):Action {
 
 export function loginViaFacebook(data):Action {
   return (dispatch) => {
-    dispatch(rest.actions.facebook_sign_in({}, { body: JSON.stringify(data) }));
+    return dispatch(rest.actions.facebook_sign_in({}, { body: JSON.stringify(data) }));
   };
 }

@@ -11,19 +11,27 @@ class CategoryItem extends Component {
     onPress: React.PropTypes.func,
   }
 
+  _renderIcon(url, selected) {
+    if (url) {
+     return selected ?
+        <Image source={{uri: url}} style={styles.categoryItemImage} />
+        :
+        <Image source={{uri: url}} style={styles.categoryItemImage} />;
+    }
+
+    return null;
+  }
+
   render() {
     const { item, selected, onPress } = this.props;
+    const url = item.attributes.icon ? item.attributes.icon.url : false;
     return (<View style={styles.categoryItem}>
-              <Text style={styles.categoryItemTitle}>{item.name}</Text>
-              <Button transparent style={styles.btncategoryItem} onPress={() => onPress(item)} >
-                { selected ?
-                  <Image source={item.imageSelected} style={styles.categoryItemImage} />
-                  :
-                  <Image source={item.img} style={styles.categoryItemImage} />
-                }
+              <Text style={styles.categoryItemTitle}>{item.attributes.name}</Text>
+              <Button transparent style={styles.btncategoryItem} onPress={() => this.props.onPress(item)} >
+                {this._renderIcon(url, selected)}
               </Button>
             </View>);
-  }
+    }
 }
 
 export default CategoryItem;

@@ -4,13 +4,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CMInchRangeView from './cmInchRangeView';
 import myStyles from '../styles';
 import { connect } from 'react-redux';
-import { toggleEditSize, toggleCMInch } from '../../../reducers/myBodyMeasure';
+import { toggleEditSize, toggleCMInch } from '../../../actions/myBodyMeasure';
+import convert from 'convert-units';
+import Util from '../../../Util';
 
 export class EditSizeView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sizeValue: this.props.sizeInitValue,
+      sizeScale: this.props.isInchSelect ? 'in' : 'cm',
+      sizeValue: this.props.currentSize[this.props.typeEdit],
       sizeInitValue: this.props.sizeInitValue
     }
   }
@@ -24,28 +27,22 @@ export class EditSizeView extends Component {
     toggleCMInch: React.PropTypes.func
   }
 
-  _rangeConvert(obj, isCheck) {
-    if(obj) {
-      if(isCheck) {
-        return Math.round(obj * 100)/ 100;
-      }
-      return Math.round(obj * 254)/100;
-    }
-    return 0;
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      sizeScale: nextProps.isInchSelect ? 'in' : 'cm',
+      sizeValue: nextProps.currentSize[nextProps.typeEdit],
+      sizeInitValue: nextProps.sizeInitValue
+    }); 
   }
 
   _completeEditSize() {
-    var sizeString = '';
-    if(this.props.isInchSelect) {
-      sizeString = Math.round(this.state.sizeValue * 100) / 100 + ' inch';
-    } else {
-      sizeString = Math.round(this.state.sizeValue * 254) / 100 + ' cm';
-    }
-    this.props.currentSize[this.props.typeEdit] = sizeString;
-    this.props.toggleEditSize(false,null);
+    const { currentSize, typeEdit } = this.props;
+    this.props.currentSize[typeEdit] = this.state.sizeValue;
+    this.props.toggleEditSize(false, null);
   }
 
   render() {
+    const { sizeValue, sizeScale } = this.state;
     return (
       <View>
         <CMInchRangeView isInchSelect={this.props.isInchSelect} toggleCMInch={this.props.toggleCMInch}/>
@@ -69,7 +66,7 @@ export class EditSizeView extends Component {
               onValueChange={(value) => this.setState({sizeValue: value})} />
           </View>
           <Text style={myStyles.sliderText} >
-            {this._rangeConvert(this.state.sizeValue,this.props.isInchSelect)} {this.props.isInchSelect ? 'inch' : 'cm'}
+            {Util.format_measurement(sizeValue, sizeScale)}
           </Text>
           <View style={myStyles.rangeButtonContainer}>
             <TouchableOpacity style={myStyles.rangeCompleteButton} onPress={() => this._completeEditSize()}>
@@ -86,7 +83,7 @@ export class EditSizeView extends Component {
 
 function bindAction(dispatch) {
   return {
-    toggleEditSize: (isEdit, sizeType) => dispatch(toggleEditSize(isEdit, sizeType)),
+    toggleEditSize: (isEdit, sizeType, value) => dispatch(toggleEditSize(isEdit, sizeType, value)),
     toggleCMInch: (checked) => dispatch(toggleCMInch(checked))
   };
 }
