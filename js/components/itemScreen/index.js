@@ -7,36 +7,39 @@ import TopButton from './topButton';
 import BuyItButton from './buyItButton';
 import IndicatorButton from './indicatorButton';
 import VideoPlayer from './videoPlayer';
-const itemImage = require('../../../images/background.png');
+
 
 const dataSample = [
   {
     type: 'image',
-    source: itemImage,
+    source: require('../../../images/img1.jpg'),
+    avatar: require('../../../images/avatar1.jpg'),
     brand: 'ZARA',
     price: 40.50,
-    top: 55,
+    top: 28,
     left: 16
   },
   {
     type: 'image',
-    source: itemImage,
+    source: require('../../../images/img2.jpg'),
+    avatar: require('../../../images/avatar2.jpg'),
     brand: 'ZARA 2',
-    price: 40.50,
+    price: 50.50,
     top: 55,
     left: 16
   },
   {
     type: 'image',
-    source: itemImage,
+    source: require('../../../images/img3.jpg'),
+    avatar: require('../../../images/avatar1.jpg'),
     brand: 'ZARA 3',
-    price: 40.50,
-    top: 55,
+    price: 60.50,
+    top: 30,
     left: 16
   },
   {
     type: 'video',
-    source: 'http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
+    source: 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4',
   }
 ];
 
@@ -61,16 +64,17 @@ class ItemScreen extends Component {
                 return item.type === 'image' ? (
                   <View style={styles.itemContainer} key={i}>
                     <Image source={item.source} style={styles.itemImage}>
-                      <TopButton />
+                      <TopButton avatar={item.avatar}/>
                       <BottomButton />
                       <BuyItButton title={item.brand} price={item.price} positionTop={item.top} positionLeft={item.left}/>
                     </Image>
                   </View>
                 ) :
-                (<View style={styles.itemContainer} key={i}>
-                  {/*<VideoPlayer source={{uri: item.source}} key={i}/> ---- this video cause memory leak/crash in android*/}
-                  <Text>Video put here</Text>
-                </View>)
+                <VideoPlayer source={{uri: item.source}} key={i}/> 
+                // (<View style={styles.itemContainer} key={i}>
+                //   {/**/}
+                //   <Text>Video put here</Text>
+                // </View>)
               })
             }
         </Swiper>
