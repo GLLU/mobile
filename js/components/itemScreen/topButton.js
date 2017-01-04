@@ -5,9 +5,9 @@ import styles from './styles';
 const bagItImage = require('../../../images/bagItImage.png');
 const bodySizeImage = require('../../../images/xsIcon.png');
 
-export default class BottomButton extends Component {
+export default class TopButton extends Component {
   static propTypes ={
-    avatar: React.PropTypes.string
+    avatar: React.PropTypes.number
   }
 
   render() {

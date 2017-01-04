@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import {View, Image, Text} from 'react-native';
+import {View, Image} from 'react-native';
 import Swiper from 'react-native-swiper';
 import styles from './styles';
 import BottomButton from './bottomButton';
 import TopButton from './topButton';
 import BuyItButton from './buyItButton';
 import IndicatorButton from './indicatorButton';
-import VideoPlayer from './videoPlayer';
-
+import VideoPlayer from './videoPlayer/videoPlayer';
 
 const dataSample = [
   {
