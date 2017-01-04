@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
+import { setIndex } from '../../actions/list';
 
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
@@ -22,6 +23,11 @@ const {
   MKButton,
   MKColor,
 } = MK;
+
+const {
+    pushRoute,
+    popRoute
+} = actions;
 
 const PERMISSIONS = ["email", "public_profile"];
 
@@ -56,6 +62,12 @@ class SplashPage extends Component {
 
   singupWithEmail() {
     console.log('Go To Signup with Email');
+      this.props.popRoute('signupemail');
+  }
+
+  pushRoute(route, index) {
+      this.props.setIndex(index);
+      this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
   connectWithFB() {
@@ -104,7 +116,7 @@ class SplashPage extends Component {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
               <View style={styles.signupContainer}>
-                <SignUpEmailButton onPress={() => this.singupWithEmail() } />
+                <SignUpEmailButton onPress={() => this.pushRoute('signupemail', 1) } />
                 <Text style={styles.label}>Or</Text>
                 <Icon.Button style={styles.btnFB}
                    name="facebook"
@@ -129,6 +141,8 @@ function bindAction(dispatch) {
   return {
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    setIndex: index => dispatch(setIndex(index)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };
 }
 

@@ -1,0 +1,114 @@
+
+const React = require('react-native');
+const { StyleSheet, Dimensions } = React;
+const deviceHeight = Dimensions.get('window').height;
+
+module.exports = StyleSheet.create({
+  header: {
+    backgroundColor: 'transparent'
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#FFFFFF',
+    textAlign: 'center'
+  },
+  headerArrow: {
+    color: '#FFFFFF'
+  },
+  container: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: deviceHeight
+  },
+  shadow: {
+    flex: 1,
+    width: null,
+    height: null
+  },
+  bg: {
+    flex: 1,
+    marginTop: deviceHeight / 1.75,
+    paddingTop: 0,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 30,
+    bottom: 0,
+    opacity: 0.3
+  },
+  bgShadow: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  uploadImgContainer: {
+      marginTop: 15,
+      alignSelf: 'center',
+      marginBottom: 15
+  },
+   uploadImgBtn: {
+       borderRadius: 50,
+       backgroundColor: '#FFFFFF',
+       height: 100,
+       width: 100
+   },
+  uploadImgIcon: {
+      backgroundColor: 'transparent',
+  },
+  formItem: {
+    flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
+    borderBottomWidth: 2,
+    borderColor: 'rgba(192,192,192, .3)',
+    opacity: 0.6,
+    height: 60,
+    paddingLeft: 0,
+    alignItems: 'flex-end'
+  },
+  formGroup: {
+    flex: 1,
+    borderColor: 'transparent',
+    alignItems: 'flex-end',
+    paddingLeft: 0
+  },
+  formInput: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    lineHeight: 20,
+    marginTop: 20,
+    alignItems: 'stretch'
+  },
+  formBtn: {
+    alignSelf: 'center',
+    marginTop: 45,
+    marginBottom: 20,
+    width: 280,
+    height: 40,
+    backgroundColor: '#ADADAD',
+    borderRadius: 0,
+    opacity: 0.8
+  },
+  alreadyBox: {
+    alignSelf: 'center',
+    flexDirection:'row',
+  },
+  alreadyTxt: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    opacity: 0.8
+  },
+  alreadyBtn: {
+    backgroundColor: 'transparent',
+    paddingVertical: 0,
+    paddingHorizontal: 5,
+    alignItems: 'flex-start',
+    opacity: 1
+  },
+});
