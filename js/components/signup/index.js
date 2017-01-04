@@ -38,11 +38,13 @@ class SignUpPage extends Component {
   }
 
   singupWithEmail() {
-    console.log('Go To Signup with Email');
+      console.log('state',this.state)
+      let { username, password, email, name, country } = this.state;
   }
 
     popRoute() {
-        this.props.popRoute(this.props.navigation.key);
+
+      this.props.popRoute(this.props.navigation.key);
     }
 
   render() {
@@ -69,31 +71,31 @@ class SignUpPage extends Component {
             <List style={styles.signupForm}>
               <ListItem style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Username" placeholderTextColor="lightgrey" />
+                  <Input color="white" style={styles.formInput} placeholder="Username" placeholderTextColor="lightgrey" onChangeText={(username) => this.setState({username})}/>
                 </InputGroup>
               </ListItem>
               <ListItem style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Name" placeholderTextColor="lightgrey" />
+                  <Input color="white" style={styles.formInput} placeholder="Name" placeholderTextColor="lightgrey" onChangeText={(name) => this.setState({name})}/>
                 </InputGroup>
               </ListItem>
               <ListItem style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Email" placeholderTextColor="lightgrey" />
+                  <Input color="white" style={styles.formInput} placeholder="Email" placeholderTextColor="lightgrey" onChangeText={(email) => this.setState({email})}/>
                 </InputGroup>
               </ListItem>
               <ListItem style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Password" secureTextEntry placeholderTextColor="lightgrey" />
+                  <Input color="white" style={styles.formInput} placeholder="Password" secureTextEntry placeholderTextColor="lightgrey" onChangeText={(password) => this.setState({password})}/>
                 </InputGroup>
               </ListItem>
               <ListItem style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Country" placeholderTextColor="lightgrey" />
+                  <Input color="white" style={styles.formInput} placeholder="Country" placeholderTextColor="lightgrey" onChangeText={(country) => this.setState({country})}/>
                 </InputGroup>
               </ListItem>
             </List>
-            <Button color='lightgrey' style={styles.formBtn}>
+            <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>
               Let's GLLU
             </Button>
               <View style={styles.alreadyBox}>
