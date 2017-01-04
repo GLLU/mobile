@@ -17,24 +17,24 @@ export default StyleSheet.create({
   },
   topLeft: {
     position: 'absolute',
-    top: 10,
+    top: 20,
     left: 10
   },
   topRight: {
     position: 'absolute',
-    top: 10,
+    top: 20,
     right: 10
   },
   bottomLeft: {
     position: 'absolute',
-    bottom: 25,
+    bottom: 10,
     left: 10
   },
   bottomRight: {
     flexWrap: 'wrap',
     flexDirection:'row',
     position: 'absolute',
-    bottom: 25,
+    bottom: 10,
     right: 10
   },
   footerButton: {
