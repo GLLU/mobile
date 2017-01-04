@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Container, Header, Content, Button, Icon, Title, Grid, Col } from 'native-base';
-import {Dimensions, Text, View, Image} from 'react-native';
+import {Container, Header, Content, Button, Icon, Title } from 'native-base';
+import {Text, View} from 'react-native';
 import myStyles from './styles';
 import gluuTheme from '../../themes/gluu-theme';
 
@@ -8,40 +8,32 @@ import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { saveUserSize} from '../../actions/myBodyMeasure';
 
-import EditSizeView from './edit/editSizeView';
-import MainSizeView from './mainSizeView';
+import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
 
-const deviceWidth = Dimensions.get('window').width;
 
 const { popRoute, pushRoute } = actions
 
 class MyBodyMeasure extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isEdit: false,
-      typeEdit: null,
-      sizeInitValue: null
-    }
+
   }
 
   static propTypes = {
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
-    isEdit: React.PropTypes.bool,
     currentSize: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     gender: React.PropTypes.string,
+
     popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
-    toggleEditSize: React.PropTypes.func,
-    saveUserSize: React.PropTypes.func
+    saveUserSize: React.PropTypes.func,
   }
 
   popRoute() {
-    this.props.toggleEditSize(false, null);
     this.props.popRoute(this.props.navigation.key);
   }
 
@@ -64,13 +56,8 @@ class MyBodyMeasure extends Component {
     this.props.saveUserSize(data);
   }
 
-  _toggleEditSize(sizeEdit, sizeInitValue) {
-    let toggleEdit = !this.state.isEdit;
-    this.setState({isEdit: toggleEdit, sizeEdit: sizeEdit, sizeInitValue: sizeInitValue})
-  }
 
   render() {
-    const w = deviceWidth / 2 - 30;
     return (
       <Container theme={gluuTheme}>
         <Header>
@@ -82,31 +69,7 @@ class MyBodyMeasure extends Component {
         <Content>
           <Text style={myStyles.selectBodyTypeText}>This will help us find unique items for a perfect fit</Text>
           <View style={myStyles.container}>
-            <Grid>
-              <Col>
-              <View style={{width: w}}>
-                <Image style={{width: w, height: 350}}
-                   source={this.state.isEdit ? this.props.currentBodyType.imageEditUrl
-                                            : this.props.currentBodyType.imageOriUrl} resizeMode={'contain'}/>
-              </View>
-              </Col>
-              <Col>
-                <Image source={this.props.currentBodyType.shapeActive} style={{height: 30, width: 30, marginBottom: 10, resizeMode: 'contain'}}/>
-                <Text style={myStyles.bodyTypeText}>{this.props.currentBodyType.name}</Text>
-                {this.state.isEdit
-                  ? <EditSizeView gender={this.props.gender}
-                     bodyTypeName={this.props.currentBodyType.uniqueName}
-                     currentSize={this.props.currentSize}
-                     typeEdit={this.state.sizeEdit}
-                     sizeInitValue={this.state.sizeInitValue}
-                     toggleEditSize={(type,sizeInit) => this._toggleEditSize(type,sizeInit)}/>
-                  : <MainSizeView gender={this.props.gender}
-                    bodyTypeName={this.props.currentBodyType.uniqueName}
-                    typeEdit={this.state.sizeEdit}
-                    sizeInitValue={this.state.sizeInitValue}
-                    toggleEditSize={(type,sizeInit) => this._toggleEditSize(type,sizeInit)}/>}
-              </Col>
-            </Grid>
+            <BodyMeasureView gender={this.props.gender} bodyType={this.props.currentBodyType} />
           </View>
           <View style={{marginTop: 15}}>
             <InformationTextIcon text={'This information is private to you only'} />
@@ -128,9 +91,9 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  currentSize: state.myBodyMeasure.current,
   currentBodyType: state.myBodyType.currentBodyType,
-  gender: state.myBodyType.gender
+  gender: state.myBodyType.gender,
+  currentSize: state.myBodyMeasure.current
 });
 
 export default connect(mapStateToProps, bindAction)(MyBodyMeasure);
