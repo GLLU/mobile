@@ -5,7 +5,8 @@ const deviceHeight = Dimensions.get('window').height;
 
 module.exports = StyleSheet.create({
   header: {
-    backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      shadowOpacity: 0,
   },
   headerTitle: {
     fontSize: 22,
@@ -109,6 +110,6 @@ module.exports = StyleSheet.create({
     paddingVertical: 0,
     paddingHorizontal: 5,
     alignItems: 'flex-start',
-    opacity: 1
+    shadowOpacity: 0,
   },
 });

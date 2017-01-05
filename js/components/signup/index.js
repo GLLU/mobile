@@ -5,6 +5,7 @@ import { Container, Header, Button, Title, Content, Text, View, Icon, List, List
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
+import { Row, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
 import _ from 'lodash';
@@ -20,7 +21,6 @@ const {
 } = MK;
 
 const {
-    pushRoute,
     popRoute
 } = actions;
 
@@ -35,6 +35,13 @@ class SignUpPage extends Component {
   constructor(props) {
     super(props);
 
+      this.state = {
+          username: '',
+          email: '',
+          password: '',
+          name: '',
+          country: '',
+      };
   }
 
   singupWithEmail() {
@@ -68,33 +75,33 @@ class SignUpPage extends Component {
               </Button>
             </View>
           <View>
-            <List style={styles.signupForm}>
-              <ListItem style={styles.formItem}>
+            <Grid style={styles.signupForm}>
+              <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
                   <Input color="white" style={styles.formInput} placeholder="Username" placeholderTextColor="lightgrey" onChangeText={(username) => this.setState({username})}/>
                 </InputGroup>
-              </ListItem>
-              <ListItem style={styles.formItem}>
+              </Row>
+              <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
                   <Input color="white" style={styles.formInput} placeholder="Name" placeholderTextColor="lightgrey" onChangeText={(name) => this.setState({name})}/>
                 </InputGroup>
-              </ListItem>
-              <ListItem style={styles.formItem}>
+              </Row>
+              <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
                   <Input color="white" style={styles.formInput} placeholder="Email" placeholderTextColor="lightgrey" onChangeText={(email) => this.setState({email})}/>
                 </InputGroup>
-              </ListItem>
-              <ListItem style={styles.formItem}>
+              </Row>
+              <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
                   <Input color="white" style={styles.formInput} placeholder="Password" secureTextEntry placeholderTextColor="lightgrey" onChangeText={(password) => this.setState({password})}/>
                 </InputGroup>
-              </ListItem>
-              <ListItem style={styles.formItem}>
+              </Row>
+              <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
                   <Input color="white" style={styles.formInput} placeholder="Country" placeholderTextColor="lightgrey" onChangeText={(country) => this.setState({country})}/>
                 </InputGroup>
-              </ListItem>
-            </List>
+              </Row>
+            </Grid>
             <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>
               Let's GLLU
             </Button>

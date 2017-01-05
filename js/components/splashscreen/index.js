@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
-import { setIndex } from '../../actions/list';
 
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
@@ -66,7 +65,6 @@ class SplashPage extends Component {
   }
 
   pushRoute(route, index) {
-      this.props.setIndex(index);
       this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
@@ -141,7 +139,6 @@ function bindAction(dispatch) {
   return {
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
-    setIndex: index => dispatch(setIndex(index)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };
 }
