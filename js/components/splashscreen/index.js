@@ -59,7 +59,7 @@ class SplashPage extends Component {
     };
   }
 
-  pushRoute(route, index) {
+  pushRoute(route) {
       this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
