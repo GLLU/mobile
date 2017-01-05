@@ -26,6 +26,7 @@ const {
 class SignUpPage extends Component {
 
   static propTypes = {
+    popRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     })
@@ -121,7 +122,6 @@ class SignUpPage extends Component {
 function bindAction(dispatch) {
   return {
     popRoute: key => dispatch(popRoute(key)),
-    loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
   };
 }

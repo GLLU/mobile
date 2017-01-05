@@ -24,8 +24,7 @@ const {
 } = MK;
 
 const {
-    pushRoute,
-    popRoute
+    pushRoute
 } = actions;
 
 const PERMISSIONS = ["email", "public_profile"];
@@ -46,6 +45,7 @@ const SignUpEmailButton = MKButton.coloredButton()
 class SplashPage extends Component {
 
   static propTypes = {
+    pushRoute: React.PropTypes.func,
     loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -57,11 +57,6 @@ class SplashPage extends Component {
     this.state = {
       name: '',
     };
-  }
-
-  singupWithEmail() {
-    console.log('Go To Signup with Email');
-      this.props.popRoute('signupemail');
   }
 
   pushRoute(route, index) {
