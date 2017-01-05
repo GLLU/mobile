@@ -40,7 +40,10 @@ class SignUpPage extends Component {
           email: '',
           password: '',
           name: '',
-          country: '',
+          usernameValid: 'times',
+          nameValid: 'times',
+          passwordValid: 'times',
+          emailValid: 'times'
       };
   }
 
@@ -49,13 +52,45 @@ class SignUpPage extends Component {
       let { username, password, email, name, country } = this.state;
   }
 
-    popRoute() {
+  popRoute() {
+    this.props.popRoute(this.props.navigation.key);
+  }
 
-      this.props.popRoute(this.props.navigation.key);
-    }
+  validateTextInput(value, type) {
+      let toValidString = type+'Valid'
+      if(value.length > 2){
+          this.setState({[toValidString]: 'check'});
+          this.setState({[type]: value});
+      } else {
+          this.setState({[toValidString]: 'times'});
+          this.setState({[type]: ''});
+      }
+  }
+
+
+  validateEmailInput(value) {
+      let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+       if(re.test(value)){
+          this.setState({emailValid: 'check'});
+          this.setState({email: value});
+      } else {
+          this.setState({emailValid: 'times'});
+           this.setState({email: ''});
+       }
+  }
+
+  validatePasswordInput(value) {
+      let re = /^[a-zA-Z0-9]{3,30}$/
+      if(re.test(value)){
+          this.setState({passwordValid: 'check'});
+          this.setState({password: value});
+      } else {
+          this.setState({passwordValid: 'times'});
+          this.setState({password: ''});
+      }
+  }
 
   render() {
-    console.log('SignUpPage screen');
     return (
       <Container>
 
@@ -77,29 +112,32 @@ class SignUpPage extends Component {
           <View>
             <Grid style={styles.signupForm}>
               <Row style={styles.formItem}>
+                <Text style={styles.label}>Username</Text>
                 <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} placeholder="Username" placeholderTextColor="lightgrey" onChangeText={(username) => this.setState({username})}/>
+                  <Input style={styles.formInput} onChangeText={(username) => this.validateTextInput(username, 'username')}/>
                 </InputGroup>
+                <IconB size={20} color={MKColor.Teal} name={this.state.usernameValid} style={styles.uploadImgIcon}/>
               </Row>
               <Row style={styles.formItem}>
+                <Text style={styles.label}>Name</Text>
                 <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} placeholder="Name" placeholderTextColor="lightgrey" onChangeText={(name) => this.setState({name})}/>
+                  <Input style={styles.formInput} onChangeText={(name) => this.validateTextInput(name, 'name')}/>
                 </InputGroup>
+                <IconB size={20} color={MKColor.Teal} name={this.state.nameValid} style={styles.uploadImgIcon}/>
               </Row>
               <Row style={styles.formItem}>
+                <Text style={styles.label}>Email</Text>
                 <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} placeholder="Email" placeholderTextColor="lightgrey" onChangeText={(email) => this.setState({email})}/>
+                  <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
                 </InputGroup>
+                <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>
               </Row>
               <Row style={styles.formItem}>
+                <Text style={styles.label}>Password</Text>
                 <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} placeholder="Password" secureTextEntry placeholderTextColor="lightgrey" onChangeText={(password) => this.setState({password})}/>
+                  <Input style={styles.formInput} secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
                 </InputGroup>
-              </Row>
-              <Row style={styles.formItem}>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} placeholder="Country" placeholderTextColor="lightgrey" onChangeText={(country) => this.setState({country})}/>
-                </InputGroup>
+                <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>
               </Row>
             </Grid>
             <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>

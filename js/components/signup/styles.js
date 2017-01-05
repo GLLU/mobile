@@ -60,6 +60,7 @@ module.exports = StyleSheet.create({
    },
   uploadImgIcon: {
       backgroundColor: 'transparent',
+      marginBottom: 5
   },
   formItem: {
     flex: 1,
@@ -78,6 +79,13 @@ module.exports = StyleSheet.create({
     alignItems: 'flex-end',
     paddingLeft: 0
   },
+  label: {
+    color: 'lightgrey',
+      fontSize: 16,
+      alignSelf: 'center',
+      marginTop: 20,
+      width: 100
+  },
   formInput: {
     flex: 1,
     paddingLeft: 0,
@@ -85,7 +93,8 @@ module.exports = StyleSheet.create({
     lineHeight: 20,
     marginTop: 20,
     alignItems: 'stretch',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    marginLeft: 10,
   },
   formBtn: {
     alignSelf: 'center',
