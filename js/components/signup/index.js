@@ -49,7 +49,7 @@ class SignUpPage extends Component {
 
   singupWithEmail() {
       console.log('state',this.state)
-      let { username, password, email, name, country } = this.state;
+      let { username, password, email, name } = this.state;
   }
 
   popRoute() {
