@@ -78,27 +78,27 @@ class SignUpPage extends Component {
             <Grid style={styles.signupForm}>
               <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Username" placeholderTextColor="lightgrey" onChangeText={(username) => this.setState({username})}/>
+                  <Input style={styles.formInput} placeholder="Username" placeholderTextColor="lightgrey" onChangeText={(username) => this.setState({username})}/>
                 </InputGroup>
               </Row>
               <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Name" placeholderTextColor="lightgrey" onChangeText={(name) => this.setState({name})}/>
+                  <Input style={styles.formInput} placeholder="Name" placeholderTextColor="lightgrey" onChangeText={(name) => this.setState({name})}/>
                 </InputGroup>
               </Row>
               <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Email" placeholderTextColor="lightgrey" onChangeText={(email) => this.setState({email})}/>
+                  <Input style={styles.formInput} placeholder="Email" placeholderTextColor="lightgrey" onChangeText={(email) => this.setState({email})}/>
                 </InputGroup>
               </Row>
               <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Password" secureTextEntry placeholderTextColor="lightgrey" onChangeText={(password) => this.setState({password})}/>
+                  <Input style={styles.formInput} placeholder="Password" secureTextEntry placeholderTextColor="lightgrey" onChangeText={(password) => this.setState({password})}/>
                 </InputGroup>
               </Row>
               <Row style={styles.formItem}>
                 <InputGroup style={styles.formGroup}>
-                  <Input color="white" style={styles.formInput} placeholder="Country" placeholderTextColor="lightgrey" onChangeText={(country) => this.setState({country})}/>
+                  <Input style={styles.formInput} placeholder="Country" placeholderTextColor="lightgrey" onChangeText={(country) => this.setState({country})}/>
                 </InputGroup>
               </Row>
             </Grid>

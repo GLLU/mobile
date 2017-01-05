@@ -1,5 +1,6 @@
 
 const React = require('react-native');
+import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -39,7 +40,6 @@ module.exports = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 30,
     bottom: 0,
-    opacity: 0.3
   },
   bgShadow: {
     flex: 1,
@@ -84,12 +84,13 @@ module.exports = StyleSheet.create({
     paddingRight: 0,
     lineHeight: 20,
     marginTop: 20,
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    color: '#FFFFFF'
   },
   formBtn: {
     alignSelf: 'center',
     marginTop: 45,
-    marginBottom: 20,
+    marginBottom: (Platform.OS === 'ios') ? 20 : 10,
     width: 280,
     height: 40,
     backgroundColor: '#ADADAD',
@@ -111,5 +112,8 @@ module.exports = StyleSheet.create({
     paddingHorizontal: 5,
     alignItems: 'flex-start',
     shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 0,
+      paddingTop: (Platform.OS === 'ios') ? 0 : 5,
   },
 });
