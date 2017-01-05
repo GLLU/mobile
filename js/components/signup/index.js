@@ -1,14 +1,13 @@
 
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import { Container, Header, Button, Title, Content, Text, View, Icon, List, ListItem, InputGroup, Input } from 'native-base';
+import { Container, Header, Button, Title, Content, Text, View, Icon,  InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
-import _ from 'lodash';
 
 const { navigateTo } = actions;
 
