@@ -69,7 +69,7 @@ module.exports = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: 'rgba(192,192,192, .3)',
     opacity: 0.6,
-    height: 60,
+    height: 50,
     paddingLeft: 0,
     alignItems: 'flex-end'
   },
@@ -86,6 +86,13 @@ module.exports = StyleSheet.create({
       marginTop: 20,
       width: 100
   },
+  genderLabel:{
+      color: 'lightgrey',
+      fontSize: 16,
+      alignSelf: 'center',
+      width: 100,
+      marginTop: 20
+  },
   formInput: {
     flex: 1,
     paddingLeft: 0,
@@ -98,7 +105,7 @@ module.exports = StyleSheet.create({
   },
   formBtn: {
     alignSelf: 'center',
-    marginTop: 45,
+    marginTop: 70,
     marginBottom: (Platform.OS === 'ios') ? 20 : 10,
     width: 280,
     height: 40,
@@ -125,4 +132,28 @@ module.exports = StyleSheet.create({
       elevation: 0,
       paddingTop: (Platform.OS === 'ios') ? 0 : 5,
   },
+    radioView: {
+        marginLeft: 20,
+        marginRight: 20,
+        borderBottomWidth: 2,
+        borderColor: 'rgba(192,192,192, .3)',
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 60,
+        width: 200,
+        opacity: 0.6,
+    },
+  radioBtn: {
+      marginTop: 20,
+      color: 'lightgrey'
+  },
+  radioOption: {
+      flexDirection: 'row'
+  },
+  radioSlash: {
+      marginTop: 20,
+      paddingLeft: 5,
+      color: 'lightgrey'
+  }
+
 });

@@ -1,15 +1,16 @@
 
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { Container, Header, Button, Title, Content, Text, View, Icon,  InputGroup, Input } from 'native-base';
+import { Image, TouchableWithoutFeedback } from 'react-native';
+import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
+import { RadioButtons } from 'react-native-radio-buttons'
 
 import styles from './styles';
 
-const { navigateTo } = actions;
+const { popRoute } = actions;
 
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow.png');
@@ -19,9 +20,10 @@ const {
   MKColor,
 } = MK;
 
-const {
-    popRoute
-} = actions;
+const genders = [
+    "Male",
+    "Female"
+];
 
 class SignUpPage extends Component {
 
@@ -40,16 +42,18 @@ class SignUpPage extends Component {
           email: '',
           password: '',
           name: '',
+          gender: 'Male',
           usernameValid: 'times',
           nameValid: 'times',
           passwordValid: 'times',
           emailValid: 'times'
       };
+
   }
 
   singupWithEmail() {
       console.log('state',this.state)
-      let { username, password, email, name } = this.state;
+      let { username, password, email, name, gender } = this.state;
   }
 
   popRoute() {
@@ -59,11 +63,9 @@ class SignUpPage extends Component {
   validateTextInput(value, type) {
       let toValidString = type+'Valid'
       if(value.length > 2){
-          this.setState({[toValidString]: 'check'});
-          this.setState({[type]: value});
+          this.setState({[toValidString]: 'check', [type]: value});
       } else {
-          this.setState({[toValidString]: 'times'});
-          this.setState({[type]: ''});
+          this.setState({[toValidString]: 'times', [type]: ''});
       }
   }
 
@@ -71,29 +73,24 @@ class SignUpPage extends Component {
   validateEmailInput(value) {
       let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
        if(re.test(value)){
-          this.setState({emailValid: 'check'});
-          this.setState({email: value});
+          this.setState({emailValid: 'check', email: value});
       } else {
-          this.setState({emailValid: 'times'});
-           this.setState({email: ''});
+          this.setState({emailValid: 'times', email: ''});
        }
   }
 
   validatePasswordInput(value) {
       let re = /^[a-zA-Z0-9]{3,30}$/
       if(re.test(value)){
-          this.setState({passwordValid: 'check'});
-          this.setState({password: value});
+          this.setState({passwordValid: 'check', password: value});
       } else {
-          this.setState({passwordValid: 'times'});
-          this.setState({password: ''});
+          this.setState({passwordValid: 'times', password: ''});
       }
   }
 
   render() {
     return (
       <Container>
-
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
           <Image source={backgroundShadow} style={styles.bgShadow} />
@@ -139,6 +136,15 @@ class SignUpPage extends Component {
                 </InputGroup>
                 <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>
               </Row>
+              <Row>
+                  <RadioButtons
+                      options={ genders }
+                      onSelection={ this.setGenderSelectedOption.bind(this) }
+                      selectedOption={this.state.gender }
+                      renderOption={ this.renderRadioOption }
+                      renderContainer={ this.renderRadioContainer }
+                  />
+              </Row>
             </Grid>
             <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>
               Let's GLLU
@@ -154,13 +160,40 @@ class SignUpPage extends Component {
       </Container>
     );
   }
+    setGenderSelectedOption(genderSelectedOption){
+        this.setState({
+            gender: genderSelectedOption
+        });
+    }
+
+    renderRadioOption(option, selected, onSelect, index){
+        return (
+            <View key={index}>
+                <TouchableWithoutFeedback onPress={onSelect} >
+                    <View style={styles.radioOption}>
+                        <Text style={[ styles.radioBtn, selected ? {color: MKColor.Teal} : null]}>{option}</Text>
+                        { index === 0 ? <Text style={styles.radioSlash}>/</Text> : null }
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        );
+    }
+
+    renderRadioContainer(optionNodes){
+        return (
+            <View style={styles.radioView}>
+                <Text style={styles.genderLabel}>Gender</Text>
+                {optionNodes}
+            </View>
+        );
+    }
 }
+
 
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    popRoute: key => dispatch(popRoute(key))
   };
 }
 

@@ -109,7 +109,7 @@ class SplashPage extends Component {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
               <View style={styles.signupContainer}>
-                <SignUpEmailButton onPress={() => this.pushRoute('signupemail', 1) } />
+                <SignUpEmailButton onPress={() => this.pushRoute('signupemail') } />
                 <Text style={styles.label}>Or</Text>
                 <Icon.Button style={styles.btnFB}
                    name="facebook"
