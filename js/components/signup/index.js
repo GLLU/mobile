@@ -10,7 +10,7 @@ import { RadioButtons } from 'react-native-radio-buttons'
 
 import styles from './styles';
 
-const { popRoute } = actions;
+const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow.png');
@@ -29,6 +29,7 @@ class SignUpPage extends Component {
 
   static propTypes = {
     popRoute: React.PropTypes.func,
+    pushRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     })
@@ -86,6 +87,10 @@ class SignUpPage extends Component {
       } else {
           this.setState({passwordValid: 'times', password: ''});
       }
+  }
+
+  pushRoute(route) {
+      this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
   render() {
@@ -151,7 +156,7 @@ class SignUpPage extends Component {
             </Button>
               <View style={styles.alreadyBox}>
                 <Text style={styles.alreadyTxt}>Already a user?</Text>
-                <Button color={MKColor.Teal} style={styles.alreadyBtn}>Login Here</Button>
+                <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
               </View>
             </View>
           </Content>
@@ -193,7 +198,8 @@ class SignUpPage extends Component {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key))
+    popRoute: key => dispatch(popRoute(key)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };
 }
 
