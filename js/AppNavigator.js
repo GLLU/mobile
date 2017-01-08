@@ -14,6 +14,7 @@ import FeedPage from './components/feedscreen';
 import SideBar from './components/sideBar';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
+import ItemScreen from './components/itemScreen';
 
 
 import { statusBarColor } from './themes/base-theme';
@@ -90,6 +91,8 @@ class AppNavigator extends Component {
         return <MyBodyType />;
       case 'myBodyMeasure':
         return <MyBodyMeasure />;
+      case 'itemScreen':
+        return <ItemScreen />;
       default :
         return <Login />;
     }

@@ -4,9 +4,9 @@ import { BODY_TYPE_CHANGE_SLIDING, BODY_TYPE_SHOW_MODAL, BODY_TYPE_HIDE_MODAL } 
 const bodyTypeList = {
   female: [
     {
-      name: 'Triangle',
-      uniqueName: 'triangle',
-      description: 'Triangle womens hip measurements are greater than their bust measurements.',
+      name: 'Inverted triangle',
+      uniqueName: 'invertedTriangle',
+      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/INVERTED_TRIANGLE_blank.png'),
       imageOriUrl: require('../../images/INVERTED_TRIANGLE.png'),
       imageEditUrl: require('../../images/INVERTED_TRIANGLE_Edit.png'),
@@ -16,7 +16,7 @@ const bodyTypeList = {
     {
       name: 'Lean Column',
       uniqueName: 'leanColumn',
-      description: 'your waist measurement is less than 9 inches smaller than the hip.',
+      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/LEAN_COLUMN_blank.png'),
       imageOriUrl: require('../../images/LEAN_COLUMN.png'),
       imageEditUrl: require('../../images/LEAN_COLUMN_Edit.png'),
@@ -26,7 +26,7 @@ const bodyTypeList = {
     {
       name: 'Rectangle',
       uniqueName: 'rectangle',
-      description: 'your waist measurement is less than 9 inches smaller than the hip.',
+      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/RECTANGLE_blank.png'),
       imageOriUrl: require('../../images/FULL_HOURGLASS_blank.png'),
       imageEditUrl: require('../../images/FULL_HOURGLASS.png'),
@@ -36,7 +36,7 @@ const bodyTypeList = {
     {
       name: 'Apple',
       uniqueName: 'apple',
-      description: 'Apple-shaped women have broader shoulders and bust, and narrower hips.',
+      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/APPLE_blank.png'),
       imageOriUrl: require('../../images/APPLE.png'),
       imageEditUrl: require('../../images/APPLE_Edit.png'),
@@ -46,7 +46,7 @@ const bodyTypeList = {
     {
       name: 'Pear',
       uniqueName: 'pear',
-      description: 'Pear-shaped womens hip measurements are greater than their bust measurements.',
+      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/PEAR_blank.png'),
       imageOriUrl: require('../../images/PEAR.png'),
       imageEditUrl: require('../../images/PEAR_Edit.png'),
@@ -54,19 +54,9 @@ const bodyTypeList = {
       shapeDeactive: require('../../images/PEAR_Shape_gray.png')
     },
     {
-      name: 'Neat Hourglass',
-      uniqueName: 'neatHourGlass',
-      description: 'You are neat hourglass if you are under a size 10 (i.e, a size 8 and smaller)',
-      imageUrl: require('../../images/NEAT_HOURGLASS_blank.png'),
-      imageOriUrl: require('../../images/NEAT_HOURGLASS.png'),
-      imageEditUrl: require('../../images/NEAT_HOURGLASS_Edit.png'),
-      shapeActive: require('../../images/NEAT_HOURGLASS_Shape_green.png'),
-      shapeDeactive: require('../../images/NEAT_HOURGLASS_Shape_gray.png')
-    },
-    {
       name: 'Full Hourglass',
       uniqueName: 'fullHourGlass',
-      description: 'You are neat hourglass if you are under a size 10 (i.e, a size 8 and smaller)',
+      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/FULL_HOURGLASS_blank.png'),
       imageOriUrl: require('../../images/FULL_HOURGLASS.png'),
       imageEditUrl: require('../../images/FULL_HOURGLASS_Edit.png'),
@@ -76,33 +66,33 @@ const bodyTypeList = {
   ],
   male: [
     {
-      name: 'trapezoid',
+      name: 'Trapezoid',
       uniqueName: 'trapezoid',
-      description: 'Triangle womens hip measurements are greater than their bust measurements.',
+      description: 'Your chest and shoulders are relatively broad with a taper down to the waist. The legs are commonly lean or defined.',
       imageUrl: require('../../images/neathourglass.png')
     },
     {
       name: 'Inverted Triangle',
       uniqueName: 'invertedTriangle',
-      description: 'The Lean Column is a very alluring body shape and is often thought of as a youthful and athletic build.',
+      description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
       imageUrl: require('../../images/neathourglass.png')
     },
     {
       name: 'Ractangle',
       uniqueName: 'ractangle',
-      description: 'your waist measurement is less than 9 inches smaller than the hip.',
+      description: 'Your shoulders are roughly the same width as your waist and hips. Chances are that you’re also tall and thin.',
       imageUrl: require('../../images/neathourglass.png')
     },
     {
       name: 'Triangle',
       uniqueName: 'triangle',
-      description: 'Apple-shaped women have broader shoulders and bust, and narrower hips.',
+      description: 'Your midsection is more pronounced with a narrower top and larger waist and hips.',
       imageUrl: require('../../images/neathourglass.png')
     },
     {
       name: 'Oval',
       uniqueName: 'oval',
-      description: 'Pear-shaped womens hip measurements are greater than their bust measurements.',
+      description: 'Your shoulders and lower legs look slimmer compared to your more rounded center of the body.',
       imageUrl: require('../../images/neathourglass.png')
     }
   ]
