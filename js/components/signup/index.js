@@ -8,6 +8,9 @@ import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
 import { RadioButtons } from 'react-native-radio-buttons'
 
+import { emailSignUp } from '../../actions/user';
+
+
 import styles from './styles';
 
 const { popRoute, pushRoute } = actions;
@@ -29,6 +32,7 @@ class SignUpPage extends Component {
 
   static propTypes = {
     popRoute: React.PropTypes.func,
+    emailSignUp: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -47,14 +51,24 @@ class SignUpPage extends Component {
           usernameValid: 'times',
           nameValid: 'times',
           passwordValid: 'times',
-          emailValid: 'times'
+          emailValid: 'times',
       };
 
   }
 
   singupWithEmail() {
-      console.log('state',this.state)
-      let { username, password, email, name, gender } = this.state;
+      let { username, password, email, name, gender, usernameValid, passwordValid, emailValid, nameValid } = this.state;
+      let validationArray = [ usernameValid, passwordValid, emailValid, nameValid  ] ;
+        if(validationArray.indexOf('times') === -1) {
+            console.log('all validation passed');
+            let data = {
+                email,
+                password,
+                password,
+                username
+            }
+            this.props.emailSignUp(data);
+        }
   }
 
   popRoute() {
@@ -142,13 +156,13 @@ class SignUpPage extends Component {
                 <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>
               </Row>
               <Row>
-                  <RadioButtons
-                      options={ genders }
-                      onSelection={ this.setGenderSelectedOption.bind(this) }
-                      selectedOption={this.state.gender }
-                      renderOption={ this.renderRadioOption }
-                      renderContainer={ this.renderRadioContainer }
-                  />
+                <RadioButtons
+                  options={ genders }
+                  onSelection={ this.setGenderSelectedOption.bind(this) }
+                  selectedOption={this.state.gender }
+                  renderOption={ this.renderRadioOption }
+                  renderContainer={ this.renderRadioContainer }
+                />
               </Row>
             </Grid>
             <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>
@@ -198,6 +212,7 @@ class SignUpPage extends Component {
 
 function bindAction(dispatch) {
   return {
+    emailSignUp: (data) => dispatch(emailSignUp(data)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };

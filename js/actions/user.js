@@ -17,3 +17,10 @@ export function loginViaFacebook(data):Action {
     return dispatch(rest.actions.facebook_sign_in({}, { body: JSON.stringify(data) }));
   };
 }
+
+export function emailSignUp(data):Action {
+  return (dispatch) => {
+    console.log('email: ', JSON.stringify(data))
+    return dispatch(rest.actions.email_sign_up({ body: JSON.stringify(data) }))
+  };
+}
