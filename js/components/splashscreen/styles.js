@@ -63,7 +63,7 @@ module.exports = StyleSheet.create({
   signupContainer: {
     flex: 1,
     marginTop: 0,
-    paddingTop: 120,
+    paddingTop: (Platform.OS === 'ios') ? 120 : 80,
     paddingLeft: 10,
     paddingRight: 10,
     bottom: 0,
@@ -72,7 +72,7 @@ module.exports = StyleSheet.create({
   label: {
     textAlign: 'center',
     color: 'white',
-    marginTop: 20,
+    marginTop: (Platform.OS === 'ios') ? 20 : 0,
     marginBottom: 20,
     fontSize: 15,
     fontWeight: 'bold',
