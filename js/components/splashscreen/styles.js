@@ -1,5 +1,5 @@
 
-const React = require('react-native');
+import React , { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -63,7 +63,7 @@ module.exports = StyleSheet.create({
   signupContainer: {
     flex: 1,
     marginTop: 0,
-    paddingTop: 120,
+    paddingTop: (Platform.OS === 'ios') ? 120 : 80,
     paddingLeft: 10,
     paddingRight: 10,
     bottom: 0,
@@ -72,7 +72,7 @@ module.exports = StyleSheet.create({
   label: {
     textAlign: 'center',
     color: 'white',
-    marginTop: 20,
+    marginTop: (Platform.OS === 'ios') ? 20 : 0,
     marginBottom: 20,
     fontSize: 15,
     fontWeight: 'bold',
@@ -93,12 +93,31 @@ module.exports = StyleSheet.create({
   },
   bottomContainer: {
     marginBottom: 30,
-    marginTop: 20,
     alignSelf: 'center'
   },
   bottomContainerContent: {
     color: '#E0E0E0',
     fontSize: 15,
     fontWeight: 'normal'
-  }
+  },
+    alreadyBox: {
+        alignSelf: 'center',
+        flexDirection:'row',
+
+    },
+    alreadyTxt: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        opacity: 0.8
+    },
+    alreadyBtn: {
+        backgroundColor: 'transparent',
+        paddingVertical: 0,
+        paddingHorizontal: 5,
+        alignItems: 'flex-start',
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        elevation: 0,
+        paddingTop: (Platform.OS === 'ios') ? 0 : 5,
+    },
 });

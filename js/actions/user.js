@@ -17,3 +17,15 @@ export function loginViaFacebook(data):Action {
     return dispatch(rest.actions.facebook_sign_in({}, { body: JSON.stringify(data) }));
   };
 }
+
+export function emailSignUp(data):Action {
+  return (dispatch) => {
+    return dispatch(rest.actions.email_sign_up({ user: data }))
+  };
+}
+
+export function emailSignIn(email, password):Action {
+  return (dispatch) => {
+    return dispatch(rest.actions.email_sign_in({ email, password }))
+  };
+}

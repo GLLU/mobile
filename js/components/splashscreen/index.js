@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import { Container, Content, Text, View } from 'native-base';
+import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
@@ -23,6 +23,10 @@ const {
   MKColor,
 } = MK;
 
+const {
+    pushRoute
+} = actions;
+
 const PERMISSIONS = ["email", "public_profile"];
 
 const SignUpEmailButton = MKButton.coloredButton()
@@ -41,6 +45,7 @@ const SignUpEmailButton = MKButton.coloredButton()
 class SplashPage extends Component {
 
   static propTypes = {
+    pushRoute: React.PropTypes.func,
     loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -54,8 +59,8 @@ class SplashPage extends Component {
     };
   }
 
-  singupWithEmail() {
-    console.log('Go To Signup with Email');
+  pushRoute(route) {
+      this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
   connectWithFB() {
@@ -104,7 +109,11 @@ class SplashPage extends Component {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
               <View style={styles.signupContainer}>
-                <SignUpEmailButton onPress={() => this.singupWithEmail() } />
+                <SignUpEmailButton onPress={() => this.pushRoute('signupemail') } />
+                <View style={styles.alreadyBox}>
+                  <Text style={styles.alreadyTxt}>Already a user?</Text>
+                  <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+                </View>
                 <Text style={styles.label}>Or</Text>
                 <Icon.Button style={styles.btnFB}
                    name="facebook"
@@ -129,6 +138,7 @@ function bindAction(dispatch) {
   return {
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };
 }
 

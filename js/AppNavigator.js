@@ -14,6 +14,8 @@ import FeedPage from './components/feedscreen';
 import SideBar from './components/sideBar';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
+import SignUpPage from './components/signup';
+import SignInPage from './components/signin';
 
 
 import { statusBarColor } from './themes/base-theme';
@@ -78,6 +80,10 @@ class AppNavigator extends Component {
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
+      case 'signupemail':
+        return <SignUpPage />;
+      case 'signinemail':
+        return <SignInPage />;
       case 'feedscreen':
         return <FeedPage />;
       case 'login':
