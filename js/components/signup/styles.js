@@ -50,7 +50,7 @@ module.exports = StyleSheet.create({
   uploadImgContainer: {
       marginTop: 15,
       alignSelf: 'center',
-      marginBottom: 15
+      marginBottom: 10
   },
    uploadImgBtn: {
        borderRadius: 50,
@@ -69,7 +69,7 @@ module.exports = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: 'rgba(192,192,192, .3)',
     opacity: 0.6,
-    height: 50,
+    height: 45,
     paddingLeft: 0,
     alignItems: 'flex-end'
   },
@@ -85,6 +85,9 @@ module.exports = StyleSheet.create({
       alignSelf: 'center',
       marginTop: 20,
       width: 100
+  },
+  confirmPass: {
+    paddingBottom: 10
   },
   genderLabel:{
       color: 'lightgrey',

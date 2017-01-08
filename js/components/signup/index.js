@@ -46,26 +46,31 @@ class SignUpPage extends Component {
           username: '',
           email: '',
           password: '',
+          confirmPassword: '',
           name: '',
-          gender: 'Male',
+          gender: 'male',
           usernameValid: 'times',
           nameValid: 'times',
           passwordValid: 'times',
+          confirmPasswordValid: 'times',
           emailValid: 'times',
       };
 
   }
 
   singupWithEmail() {
-      let { username, password, email, name, gender, usernameValid, passwordValid, emailValid, nameValid } = this.state;
-      let validationArray = [ usernameValid, passwordValid, emailValid, nameValid  ] ;
+      let { username, password, confirmPassword,  email, name, gender, usernameValid, passwordValid, confirmPasswordValid, emailValid, nameValid } = this.state;
+      let validationArray = [ usernameValid, passwordValid, emailValid, nameValid, confirmPasswordValid  ] ;
         if(validationArray.indexOf('times') === -1) {
             console.log('all validation passed');
             let data = {
                 email,
+                username,
+                name,
+                gender: gender.toLowerCase(),
                 password,
-                password,
-                username
+                confirmPassword
+
             }
             this.props.emailSignUp(data);
         }
@@ -100,6 +105,15 @@ class SignUpPage extends Component {
           this.setState({passwordValid: 'check', password: value});
       } else {
           this.setState({passwordValid: 'times', password: ''});
+      }
+  }
+
+  confirmPasswordInput(value) {
+      let pass = this.state.password
+      if(value === pass){
+          this.setState({confirmPasswordValid: 'check', confirmPassword: value});
+      } else {
+          this.setState({confirmPasswordValid: 'times', confirmPassword: ''});
       }
   }
 
@@ -154,6 +168,13 @@ class SignUpPage extends Component {
                   <Input style={styles.formInput} secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
                 </InputGroup>
                 <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>
+              </Row>
+              <Row style={styles.formItem}>
+                <Text style={[styles.label, styles.confirmPass]}>Confirm Password</Text>
+                <InputGroup style={styles.formGroup}>
+                  <Input style={styles.formInput} secureTextEntry onChangeText={(confirmPassword) => this.confirmPasswordInput(confirmPassword)}/>
+                </InputGroup>
+                <IconB size={20} color={MKColor.Teal} name={this.state.confirmPasswordValid} style={styles.uploadImgIcon}/>
               </Row>
               <Row>
                 <RadioButtons

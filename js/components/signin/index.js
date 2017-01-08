@@ -10,6 +10,8 @@ const logo = require('../../../images/logo.png');
 
 import styles from './styles';
 
+import { emailSignIn } from '../../actions/user';
+
 const { popRoute } = actions;
 
 const background = require('../../../images/background.png');
@@ -24,6 +26,7 @@ const {
 class SignInPage extends Component {
 
   static propTypes = {
+    emailSignIn: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -43,8 +46,12 @@ class SignInPage extends Component {
   }
 
   singinWithEmail() {
-      console.log('state',this.state)
-      let { username, password } = this.state;
+      let { password, email, passwordValid, emailValid } = this.state;
+      let validationArray = [ passwordValid, emailValid  ] ;
+      if(validationArray.indexOf('times') === -1) {
+          console.log('all validation passed');
+          this.props.emailSignIn(email,password);
+      }
   }
 
   popRoute() {
@@ -120,7 +127,8 @@ class SignInPage extends Component {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key))
+      emailSignIn: (email, password) => dispatch(emailSignIn(email, password)),
+      popRoute: key => dispatch(popRoute(key))
   };
 }
 

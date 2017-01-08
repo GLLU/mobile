@@ -20,7 +20,12 @@ export function loginViaFacebook(data):Action {
 
 export function emailSignUp(data):Action {
   return (dispatch) => {
-    console.log('email: ', JSON.stringify(data))
-    return dispatch(rest.actions.email_sign_up({ body: JSON.stringify(data) }))
+    return dispatch(rest.actions.email_sign_up({ user: data }))
+  };
+}
+
+export function emailSignIn(email, password):Action {
+  return (dispatch) => {
+    return dispatch(rest.actions.email_sign_in({ email, password }))
   };
 }
