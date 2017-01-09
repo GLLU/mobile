@@ -73,7 +73,7 @@ module.exports = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     marginTop: (Platform.OS === 'ios') ? 20 : 0,
-    marginBottom: 20,
+    marginBottom: 25,
     fontSize: 15,
     fontWeight: 'bold',
   },
@@ -103,12 +103,12 @@ module.exports = StyleSheet.create({
     alreadyBox: {
         alignSelf: 'center',
         flexDirection:'row',
-
+        height: 25
     },
     alreadyTxt: {
         color: '#FFFFFF',
         fontSize: 16,
-        opacity: 0.8
+        opacity: 0.8,
     },
     alreadyBtn: {
         backgroundColor: 'transparent',

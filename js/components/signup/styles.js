@@ -101,7 +101,7 @@ module.exports = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 0,
     lineHeight: 20,
-    marginTop: 20,
+    marginTop: 18,
     alignItems: 'stretch',
     color: '#FFFFFF',
     marginLeft: 10,

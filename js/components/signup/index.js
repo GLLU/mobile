@@ -48,7 +48,7 @@ class SignUpPage extends Component {
           password: '',
           confirmPassword: '',
           name: '',
-          gender: 'male',
+          gender: 'Male',
           usernameValid: 'times',
           nameValid: 'times',
           passwordValid: 'times',
