@@ -9,6 +9,8 @@ let Window = Dimensions.get('window');
 const deviceWidth = Window.width;
 const deviceHeight = Window.height;
 
+const IMAGE_BORDER = 10;
+
 const styles = StyleSheet.create({
   draggableContainer: {
     height: 400,
@@ -23,11 +25,9 @@ const styles = StyleSheet.create({
   },
   tagsContainer: {
     flex: 1,
-    height: (deviceHeight * (deviceWidth - 140)) / deviceWidth,
-    width: deviceWidth - 100,
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
-    borderWidth: 10,
+    borderWidth: IMAGE_BORDER,
     borderColor: '#FFFFFF'
   },
 });
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 class ImageView extends Component {
 
   static propTypes = {
-    imagePath: React.PropTypes.string,
+    image: React.PropTypes.object,
     newTag: React.PropTypes.bool
   }
 
@@ -76,8 +76,13 @@ class ImageView extends Component {
   }
 
   render() {
-    return(<View>
-            <Image source={{uri: this.props.imagePath}} style={styles.tagsContainer}>
+    const image = this.props.image;
+    const width = deviceWidth - 100;
+    const height = width * image.height / image.width;
+    console.log('render image', image, width, height);
+
+    return(<View style={[styles.tagsContainer]}>
+            <Image source={{uri: image.path}} style={{width, height, resizeMode: 'contain'}}>
               {this.props.newTag && this.renderTags()}
             </Image>
           </View>)

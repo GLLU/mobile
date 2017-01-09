@@ -3,11 +3,13 @@ import { StyleSheet } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 
+const WIZARD_PADDING = 80;
+
 const styles = StyleSheet.create({
   stepsContainer: {
     height: 40,
-    paddingLeft: 20,
-    paddingRight: 20
+    paddingHorizontal: WIZARD_PADDING,
+    justifyContent: 'center'
   },
   btnSteps: {
     width: 40,
@@ -30,8 +32,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: '#BDBDBD',
     height: 2,
-    marginLeft: 40,
-    marginRight: 40
+    marginHorizontal: WIZARD_PADDING,
   },
   stepsTab: {
     marginTop: 40,
@@ -71,22 +72,17 @@ class StepsBar extends Component {
     return (<View style={styles.stepsContainer}>
               <View style={styles.stepsLine} />
               <Grid>
-                <Col size={30}>
+                <Col size={40}>
                   <Button disabled={this.getDisabled(1)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(1), {alignSelf: 'flex-start'}]} onPress={() => this.props.selectTab(1)} >
                     <Text style={[styles.stepsLabel, {color: this.getStepTextColor(1)}]}>1</Text>
                   </Button>
                 </Col>
                 <Col size={40}>
-                  <Button disabled={this.getDisabled(2)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(2), {alignSelf: 'center'}]} onPress={() => this.props.selectTab(2)}>
+                  <Button disabled={this.getDisabled(2)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(2), {alignSelf: 'flex-end'}]} onPress={() => this.props.selectTab(2)}>
                     <Text style={[styles.stepsLabel, {color: this.getStepTextColor(2)}]}>2</Text>
                   </Button>
                 </Col>
-                <Col size={30}>
-                  <Button disabled={this.getDisabled(3)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(3), {alignSelf: 'flex-end'}]} onPress={() => this.props.selectTab(1)}>
-                    <Text style={[styles.stepsLabel, {color: this.getStepTextColor(3)}]}>3</Text>
-                  </Button>
-                </Col>
-                </Grid>
+              </Grid>
             </View>)
   }
 

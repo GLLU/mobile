@@ -5,14 +5,14 @@ const ACTION_HANDLERS = {
   [ADD_NEW_LOOK]: (state, action) => {
     return {
       ...state,
-      imagePath: action.payload.imagePath
+      image: action.payload.image
     }
   },
 }
 
 // Reducer
 const initialState = {
-  imagePath: null,
+  image: null,
   selectedCategoryId: 3,
   brandName: '',
   itemSizeCountry: 'us',

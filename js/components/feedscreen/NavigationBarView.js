@@ -38,7 +38,7 @@ class NavigationBarView extends Component {
       cropping: false
     }).then(image => {
       console.log('pick image:', image);
-      this.props.goToAddNewItem(image.path);
+      this.props.goToAddNewItem(image);
     });
   }
 
