@@ -6,7 +6,8 @@ export type State = {
     minPrice: number,
     maxPrice: number,
     categories: array,
-    images: array
+    images: array,
+    brands: array
 }
 
 const dress = require('../../images/categories/dress.png');
@@ -31,6 +32,21 @@ const initialState = {
   ],
   categories: [
     {id: 1, type: 'tag', attributes: { name: 'Tops', gender: 'male', kind: 'category', icon: { url: 'https://s3.amazonaws.com/gllu-assets/categories_icons/tops.png', width: 134, height: 150 }}}
+  ],
+  brands: [
+    { id: 0, name: 'zara'},
+    { id: 1, name: 'zapora' },
+    { id: 2, name: 'Dolce & Gabbana' },
+    { id: 3, name: 'Armani' },
+    { id: 4, name: 'Versace' },
+    { id: 5, name: 'Gucci' },
+    { id: 6, name: 'Burberry' },
+    { id: 7, name: 'Hermès' },
+    { id: 8, name: 'Dior' },
+    { id: 9, name: 'Prada' },
+    { id: 10, name: 'Chanel' },
+    { id: 11, name: 'Louis Vuitton' },
+    { id: 12, name: 'Bottega Veneta' }
   ]
 };
 
