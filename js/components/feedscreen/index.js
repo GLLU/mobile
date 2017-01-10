@@ -42,7 +42,7 @@ class FeedPage extends Component {
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath);
-    this.props.pushRoute({ key: 'addItemScreen' }, this.props.navigation.key);
+    this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
   }
 
   render() {

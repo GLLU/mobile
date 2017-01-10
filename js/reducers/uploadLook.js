@@ -1,4 +1,4 @@
-import { ADD_NEW_LOOK } from '../actions/uploadLook';
+import { ADD_NEW_LOOK, EDIT_TAG, ADD_TAG } from '../actions/uploadLook';
 
 // Action Handlers
 const ACTION_HANDLERS = {
@@ -6,6 +6,21 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       image: action.payload.image
+    }
+  },
+  [ADD_TAG]: (state, action) => {
+    const tags = state.tags;
+    tags.push(action.payload.tag);
+    return {
+      ...state,
+      tags,
+      editingTagIndex: action.payload.editingTagIndex
+    }
+  },
+  [EDIT_TAG]: (state, action) => {
+    return {
+      ...state,
+      editingTagIndex: action.payload.editingTagIndex
     }
   },
 }
@@ -20,7 +35,8 @@ const initialState = {
   currency: 'USD',
   price: '40',
   sharing: false,
-  tags: []
+  tags: [],
+  editingTagIndex: -1,
 }
 
 export default function mybodyTypeReducer (state = initialState, action) {

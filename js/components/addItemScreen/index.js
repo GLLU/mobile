@@ -1,34 +1,21 @@
-
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import {Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
-
-import { setUser } from '../../actions/user';
+import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
+import { setUser, replaceAt, popRoute } from '../../actions';
 import styles from './styles';
 import StepOne from './StepOne';
 import ActionsBar from './ActionsBar';
 import StepsBar from './StepsBar';
-import _ from 'lodash';
-
-const {
-  replaceAt,
-  popRoute,
-} = actions;
-
-const img = require('../../../images/background.png');
 
 class AddItemPage extends Component {
 
   static propTypes = {
     setUser: React.PropTypes.func,
     replaceAt: React.PropTypes.func,
+    popRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
-    imagePath: React.PropTypes.string
+    image: React.PropTypes.object
   }
 
   constructor(props) {
@@ -37,9 +24,6 @@ class AddItemPage extends Component {
       currentStep: 1,
       newTag: false
     };
-  }
-
-  componentDidMount() {
   }
 
   setUser(name) {
@@ -78,15 +62,13 @@ class AddItemPage extends Component {
   }
 
   getHeadingTitle() {
+    let title = '';
     switch (this.state.currentStep) {
       case 1:
         title = 'Add New Item';
         break;
       case 2:
         title = 'Additional Info';
-        break;
-      case 3:
-        title = 'Summary';
         break;
       default:
         title = '';
@@ -122,6 +104,8 @@ class AddItemPage extends Component {
     );
   }
 }
+
+import { connect } from 'react-redux';
 
 function bindActions(dispatch) {
   return {

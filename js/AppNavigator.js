@@ -12,6 +12,7 @@ import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
 import AddItemPage from './components/addItemScreen';
+import TagItemPage from './components/tagItemScreen';
 import SideBar from './components/sideBar';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
@@ -96,6 +97,8 @@ class AppNavigator extends Component {
         return <FeedPage />;
       case 'addItemScreen':
         return <AddItemPage />;
+      case 'tagItemScreen':
+        return <TagItemPage />;
       case 'login':
         return <Login />;
       case 'home':
