@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, Slider, Dimensions, Image} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Grid, Col} from 'native-base';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import {Grid, Col, Button} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';
 import myStyles from './styles';
@@ -29,6 +29,7 @@ class BodyMeasureView extends Component {
       sliderMaxValue: 0,
       sliderMinValue: 0
     }
+    console.log('props',this.props)
   }
 
   static propTypes = {
@@ -111,27 +112,35 @@ class BodyMeasureView extends Component {
     this.props.completeEdit(current);
   }
 
+  increasSize(item) {
+      console.log('before',this.state);
+    let currentSizeItem = this.state.currentSize[item];
+    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++)});
+      console.log('after',this.state);
+  }
+
   _renderMainView() {
+    console.log('state', Number(this.state.currentSize.chest));
     let {sizeTypes} = this.props;
     return (
       <View>
-        <Text style={myStyles.infoText}>Size</Text>
-        <View style={myStyles.sizeTypeContainer}>
-          {this.state.sizeList ? this.state.sizeList.map((item, i) => {
-            return (<TouchableOpacity key={i} style={item.select ? myStyles.sizeButtonActive : myStyles.sizeButton}
-              onPress={() => this._toggleSize(item.name)}>
-              <Text style={item.select ? myStyles.sizeTextActive : myStyles.sizeText }>{item.name}</Text>
-            </TouchableOpacity>)
-          }) : null}
-        </View>
         {sizeTypes.map((item, i) => {
           return (<View key={i} style={myStyles.infoContainer}>
             <Text style={myStyles.infoText}>{item}</Text>
-            <TouchableOpacity style={myStyles.infoDetailTouch} onPress={() => this._enterEditMode(item)}>
+            <View style={myStyles.infoDetailTouch}>
               <Text style={myStyles.infoDetailText}>{this.state.currentSize
                 ? Util.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
                 : null}</Text>
-            </TouchableOpacity>
+              <View style={myStyles.sizeLineContainer}>
+                <TouchableOpacity style={myStyles.sizeLineBtns}>
+                  <Icon name='minus' style={myStyles.sizeLineIcons}/>
+                </TouchableOpacity>
+                <View style={myStyles.sizeLine}></View>
+                <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.increasSize(item) }>
+                  <Icon name='plus' style={myStyles.sizeLineIcons}/>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>)
         })}
         <CMInchRangeView isInchSelect={this.state.isInchSelect}
@@ -140,44 +149,6 @@ class BodyMeasureView extends Component {
     )
   }
 
-  _renderEditView() {
-    return (
-      <View>
-        <CMInchRangeView isInchSelect={this.state.isInchSelect}
-           toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
-        <View style={myStyles.rangeContainer}>
-          <View style={myStyles.rangeButtonContainer}>
-            <TouchableOpacity style={myStyles.rangeCloseButton} onPress={() => this._closeEditMode()}>
-              <Icon style={myStyles.rangeCloseIcon}
-                 name="remove"
-                 backgroundColor="#3b5998"/>
-            </TouchableOpacity>
-          </View>
-          <View style={myStyles.sliderContainer}>
-            <Text style={myStyles.sliderSizeType} >
-              {this.state.typeEdit}
-            </Text>
-            <Slider
-              style={myStyles.slider}
-              value={this.state.sizeInitValue}
-              maximumValue={this.state.isInchSelect ? convert(this.props.sliderMaxValue).from('cm').to('in') : this.props.sliderMaxValue}
-              minimumValue={this.state.isInchSelect ? convert(this.props.sliderMinValue).from('cm').to('in') : this.props.sliderMinValue}
-              onValueChange={(value) => this.setState({sizeValue: value})} />
-          </View>
-          <Text style={myStyles.sliderText} >
-            {Util.format_measurement(this.state.sizeValue, this.state.currentSize.measurements_scale)}
-          </Text>
-          <View style={myStyles.rangeButtonContainer}>
-            <TouchableOpacity style={myStyles.rangeCompleteButton} onPress={() => this._completeEditMode()}>
-              <Icon style={myStyles.rangeCompleteIcon}
-                 name="check"
-                 backgroundColor="#3b5998"/>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    )
-  }
   render() {
     return (
       <Grid>

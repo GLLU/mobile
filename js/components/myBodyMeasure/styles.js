@@ -43,14 +43,33 @@ export default StyleSheet.create({
   },
   infoDetailTouch: {
     flexDirection: 'column',
-    borderBottomWidth: 2,
+    borderBottomWidth: 0,
     borderColor: '#ddd',
     flex: 1
+  },
+  sizeLineContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center'
+  },
+  sizeLine: {
+    flexDirection: 'row',
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgrey',
+  },
+  sizeLineBtns: {
+    flexDirection: 'row',
+  },
+  sizeLineIcons: {
+    color: '#00c497',
+    fontSize: 20,
   },
   infoDetailText: {
     fontSize: fontSizeDefault * 0.7,
     color: fontColor,
     fontWeight: 'bold',
+    textAlign: 'center'
   },
   toggleContainer: {
     flexWrap: 'wrap',
