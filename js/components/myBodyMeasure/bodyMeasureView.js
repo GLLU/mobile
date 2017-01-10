@@ -29,9 +29,12 @@ class BodyMeasureView extends Component {
       sliderMaxValue: 0,
       sliderMinValue: 0
     }
-    console.log('props',this.props)
   }
 
+  componentDidMount() {
+    let { currentSize } = this.state
+      this.props.completeEdit(currentSize);
+  }
   static propTypes = {
     gender: React.PropTypes.string,
     bodyType: React.PropTypes.object,
@@ -113,14 +116,16 @@ class BodyMeasureView extends Component {
   }
 
   increasSize(item) {
-      console.log('before',this.state);
     let currentSizeItem = this.state.currentSize[item];
     this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++)});
-      console.log('after',this.state);
+  }
+
+  decreasSize(item) {
+    let currentSizeItem = this.state.currentSize[item];
+    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--)});
   }
 
   _renderMainView() {
-    console.log('state', Number(this.state.currentSize.chest));
     let {sizeTypes} = this.props;
     return (
       <View>
@@ -132,7 +137,7 @@ class BodyMeasureView extends Component {
                 ? Util.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
                 : null}</Text>
               <View style={myStyles.sizeLineContainer}>
-                <TouchableOpacity style={myStyles.sizeLineBtns}>
+                <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.decreasSize(item) }>
                   <Icon name='minus' style={myStyles.sizeLineIcons}/>
                 </TouchableOpacity>
                 <View style={myStyles.sizeLine}></View>

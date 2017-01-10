@@ -28,7 +28,6 @@ export function completeEdit(sizeInfo) {
 }
 export function saveUserSize(data) {
   return (dispatch, getState) => {
-    console.log('action saveUserSize', data);
     const navigation = getState().cardNavigation;
     dispatch(rest.actions.size.post({user_id: 2}, { body: JSON.stringify(data) }))
     dispatch([

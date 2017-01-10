@@ -43,7 +43,6 @@ class MyBodyMeasure extends Component {
 
   _saveUserSize() {
     const { currentSize, currentBodyType } = this.props;
-    console.log('currentSize:', currentSize);
     const data = {
       body_type: currentBodyType.uniqueName,
       size: currentSize.name.toLowerCase(),
