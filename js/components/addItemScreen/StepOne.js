@@ -26,10 +26,10 @@ class StepOne extends Component {
     const { tags, editingTagIndex, image, addTag } = this.props;
     return(
       <ScrollView scrollEnabled={true} style={{marginVertical: 10}}>
-        <View style={{flex: 1, padding: 20}}>
+        <View style={{padding: 20}}>
           <ImageWithTags tags={tags} image={image} addTag={addTag} width={w - 40}/>
         </View>
-        {this.props.newTag && this.renderItemInfo()}
+        {this.renderItemInfo()}
       </ScrollView>
     )
   }

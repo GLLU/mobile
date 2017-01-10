@@ -3,6 +3,7 @@ import { Container, Header, Content, Button, Icon, Title, View } from 'native-ba
 import { setUser, replaceAt, popRoute } from '../../actions';
 import styles from './styles';
 import StepOne from './StepOne';
+import StepTwo from './StepTwo';
 import ActionsBar from './ActionsBar';
 import StepsBar from './StepsBar';
 
@@ -21,8 +22,7 @@ class AddItemPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 1,
-      newTag: false
+      currentStep: 2
     };
   }
 
@@ -93,10 +93,11 @@ class AddItemPage extends Component {
           </Button>
           <Title style={{fontFamily: 'PlayfairDisplay-Regular'}}>{this.getHeadingTitle()}</Title>
         </Header>
-        <Content contentContainerStyle={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
+        <Content scrollEnabled={false} contentContainerStyle={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
           <View style={styles.mainView}>
             <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
-            <StepOne key={0}/>
+            {this.state.currentStep == 1 && <StepOne key={1}/>}
+            {this.state.currentStep == 2 && <StepTwo key={2}/>}
             {this.state.currentStep == 1 && this._renderActionsContainer()}
           </View>
         </Content>

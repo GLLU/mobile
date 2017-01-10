@@ -1,19 +1,133 @@
 import React, { Component } from 'react';
-import { Image, TextInput } from 'react-native';
+import { Image, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { View, Text, Picker, Item, Icon } from 'native-base';
+import { View, Container, Content, Text, Picker, Item, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import { CheckboxField } from 'react-native-checkbox-field';
 
 import Category from './forms/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
+import FontSizeCalculator from './../../calculators/FontSize';
 
 import { loadCategories } from '../../actions/filters';
 
-import styles from './styles';
-
 const us = require('../../../images/flags/us.png');
 const uk = require('../../../images/flags/uk.png');
+
+const w = Dimensions.get('window').width;
+const h = Dimensions.get('window').height;
+
+const styles = StyleSheet.create({
+  itemInfoView: {
+    backgroundColor: 'transparent',
+    padding: 20
+  },
+  titleLabelInfo: {
+    color: '#757575',
+    fontWeight: '400',
+    marginBottom: 8
+  },
+  textInput: {
+    width: w - 40,
+    height: 50,
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10
+  },
+  textHalfInput: {
+    width: w / 2 - 30,
+    height: 50,
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    textAlign: 'center'
+  },
+  selectOptions: {
+    backgroundColor: 'transparent'
+  },
+  arrowSelect: {
+    color: '#BDBDBD',
+    fontSize: new FontSizeCalculator(18).getSize(),
+    paddingTop: 10
+  },
+  fakeBtnContainer: {
+    backgroundColor: '#FFFFFF',
+    marginTop: 10,
+    paddingTop: 5,
+    height: 50,
+  },
+  flagSelectOptions: {
+    width: 40,
+    height: 30,
+    marginLeft: 10,
+    marginTop: 5,
+    resizeMode: 'contain',
+    alignSelf: 'center'
+  },
+  btnTagAnother: {
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: '#333333',
+    height: 50,
+    width: w / 2 - 28,
+    borderRadius: 0
+  },
+  btnContinue: {
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: '#1DE9B6',
+    height: 50,
+    width: w / 2 - 28,
+    borderRadius: 0
+  },
+  textBtn: {
+    fontWeight: '500',
+    fontSize: new FontSizeCalculator(18).getSize(),
+    color: '#FFFFFF',
+    alignSelf: 'center'
+  },
+  headinSharing: {
+    fontSize: new FontSizeCalculator(20).getSize(),
+    fontWeight: '500',
+    marginTop: 15,
+    paddingTop: 20
+  },
+  legendLabel: {
+    fontSize: new FontSizeCalculator(15).getSize(),
+    fontWeight: '500',
+    paddingTop: 8
+  },
+  containerStyle: {
+  },
+  labelStyle: {
+    flex: 1
+  },
+  checkboxStyle: {
+    width: 26,
+    height: 26,
+    borderWidth: 2,
+    borderColor: '#BDBDBD',
+    borderRadius: 13,
+  },
+  checkboxLabelStyle: {
+    fontSize: new FontSizeCalculator(15).getSize(),
+    fontWeight: '500',
+    paddingTop: 15
+  },
+  actionsContainer: {
+    flex: 1,
+    width: w,
+    height: 100,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'transparent',
+    padding: 20,
+    paddingBottom: 0
+  },
+});
 
 class ItemInfoView extends Component {
 
@@ -32,7 +146,8 @@ class ItemInfoView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCategory: this.props.categories[this.props.selectedCategoryId - 1],
+      categories: [],
+      selectedCategory: null,
       flags: [
         {name: 'uk', icon: uk},
         {name: 'us', icon: us}
@@ -42,7 +157,12 @@ class ItemInfoView extends Component {
   }
 
   componentDidMount() {
-    this.props.loadCategories();
+    var categories = this.props.loadCategories();
+    new Promise((resolve, reject) => {
+      resolve(categories);
+    }).then((data) => {
+      this.setState({categories: this.props.categories, selectCategory: this.props.categories[this.props.selectedCategoryId - 1]})
+    });
   }
 
   selectCheckbox() {
@@ -195,19 +315,20 @@ class ItemInfoView extends Component {
   }
 
   render() {
-    const { selectedCategory } = this.state;
-    const categories = this.props.categories;
-    return(<View style={styles.itemInfoView}>
-          <Text style={styles.titleLabelInfo}>Item Type</Text>
-          <Category categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.selectCategory(cat)} scrollItemToMiddle={this.scrollItemToMiddle} />
-          <Text style={styles.titleLabelInfo}>Brand Name</Text>
-          <BrandNameInput brandName={this.state.brandName} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
-          <Text style={styles.titleLabelInfo}>Item Size</Text>
-          {this._rederItemSizeInput()}
-          {this._renderCurrency()}
-          {this._renderCurrencyInput()}
-          {this._renderSharing()}
-        </View>)
+    const { categories, selectedCategory } = this.state;
+    return(<Container style={styles.itemInfoView}>
+              <Content scrollEnabled={false}>
+                  <Text style={styles.titleLabelInfo}>Item Type</Text>
+                  <Category categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.selectCategory(cat)} />
+                  <Text style={styles.titleLabelInfo}>Brand Name</Text>
+                  <BrandNameInput brandName={this.state.brandName} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
+                  <Text style={styles.titleLabelInfo}>Item Size</Text>
+                  {this._rederItemSizeInput()}
+                  {this._renderCurrency()}
+                  {this._renderCurrencyInput()}
+                  {this._renderSharing()}
+              </Content>
+        </Container>)
   }
 
 }

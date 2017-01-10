@@ -75,9 +75,9 @@ class ImageWithTags extends Component {
   render() {
     const image = this.props.image;
     const width = this.props.width ? this.props.width : w;
-    const height = width * image.height / image.width;
+    const height = width * 2848 / 4288;
     return (
-      <Image source={{uri: image.path}} style={[styles.tagsContainer, {width, height}]} {...this._panResponder.panHandlers}>
+      <Image source={{uri: '/Users/nguyenquan/Library/Developer/CoreSimulator/Devices/E24A9FC3-F669-4DA6-BCC4-C7CB8136CD4D/data/Containers/Data/Application/BAC0401B-65B1-4329-8772-ACC6CCF05848/tmp/react-native-image-crop-picker/38A13082-E680-4E7E-9417-1BE1FD67F1F5.jpg'}} style={[styles.tagsContainer, {width, height}]} {...this._panResponder.panHandlers}>
         {this.renderDraggable()}
       </Image>
     );

@@ -30,9 +30,7 @@ const initialState = {
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/d5/a5/a5/d5a5a5c60c6a1befbf3ee6d346ce5c59.jpg', width: 385, height: 244, likes: 44, liked: false, type: '2', tags: [ { price: 88, x: 30, y: 50 } ] },
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/c9/cc/d9/c9ccd926889c5bfb7decbff5b7de3eb9.jpg', width: 215, height: 245, likes: 123, liked: false, type: '3', tags: [ { price: 88, x: 10, y: 140 } ] }
   ],
-  categories: [
-    {id: 1, type: 'tag', attributes: { name: 'Tops', gender: 'male', kind: 'category', icon: { url: 'https://s3.amazonaws.com/gllu-assets/categories_icons/tops.png', width: 134, height: 150 }}}
-  ],
+  categories: [],
   brands: [
     { id: 0, name: 'zara'},
     { id: 1, name: 'zapora' },
