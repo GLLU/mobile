@@ -101,7 +101,6 @@ module.exports = StyleSheet.create({
   formInput: {
     flex: 1,
     paddingLeft: 20,
-    paddingRight: 50,
     lineHeight: 20,
     marginTop: 17,
     alignItems: 'stretch',
