@@ -29,3 +29,9 @@ export function emailSignIn(email, password):Action {
     return dispatch(rest.actions.email_sign_in({ email, password }))
   };
 }
+
+export function forgotPassword(email):Action {
+  return (dispatch) => {
+    return dispatch(rest.actions.forgot_password({ email }))
+  };
+}

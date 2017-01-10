@@ -52,20 +52,9 @@ module.exports = StyleSheet.create({
     top: 0,
     left: 0
   },
-  uploadImgContainer: {
-      marginTop: 15,
-      alignSelf: 'center',
-      marginBottom: 15
-  },
-   uploadImgBtn: {
-       borderRadius: 50,
-       backgroundColor: '#FFFFFF',
-       height: 100,
-       width: 100
-   },
-  uploadImgIcon: {
-      backgroundColor: 'transparent',
-      marginBottom: 5
+  icons: {
+    backgroundColor: 'transparent',
+    marginBottom: 5
   },
   formItem: {
     flex: 1,
@@ -75,20 +64,20 @@ module.exports = StyleSheet.create({
     borderColor: 'rgba(192,192,192, .3)',
     height: 50,
     paddingLeft: 0,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+      marginTop: 20
   },
   formGroup: {
     flex: 1,
     borderColor: 'transparent',
-    alignItems: 'flex-end',
     paddingLeft: 0
   },
   label: {
     color: 'lightgrey',
-      fontSize: 16,
-      alignSelf: 'center',
-      marginTop: 20,
-      width: 100
+    fontSize: 16,
+    alignSelf: 'center',
+    marginTop: 10,
+    width: 100
   },
   addOpacity: {
       opacity: 0.8
@@ -98,15 +87,14 @@ module.exports = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 0,
     lineHeight: 20,
-    marginTop: 15,
-    alignItems: 'stretch',
+    marginTop: 10,
     color: '#FFFFFF',
     marginLeft: 10,
   },
   formBtn: {
     alignSelf: 'center',
-    marginTop: 70,
-    marginBottom: (Platform.OS === 'ios') ? 20 : 10,
+    marginTop: 50,
+    marginBottom: (Platform.OS === 'ios') ? 20 : 0,
     width: 280,
     height: 40,
     backgroundColor: '#ADADAD',
@@ -114,42 +102,25 @@ module.exports = StyleSheet.create({
     opacity: 0.8
   },
   validationPassed: {
-      backgroundColor: MKColor.Teal
+      backgroundColor: MKColor.Teal,
+      opacity: 1
   },
-  alreadyBox: {
-    alignSelf: 'center',
-    flexDirection:'row',
+  instuctionsContainer: {
+      flex: 1,
+      marginTop: 20,
+      paddingTop: 30,
+      paddingLeft: 10,
+      paddingRight: 10,
+      bottom: 0,
+      alignSelf: 'center'
   },
-  alreadyTxt: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    opacity: 0.8
+  instuctions: {
+      width: 300,
+      height: (Platform.OS === 'ios') ? 40 : 50,
+      color: '#FFFFFF',
+      opacity: 0.8,
+      textAlign: 'center'
   },
-  alreadyBtn: {
-    backgroundColor: 'transparent',
-    paddingVertical: 0,
-    paddingHorizontal: 5,
-    alignItems: 'flex-start',
-    shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0,
-      paddingTop: (Platform.OS === 'ios') ? 0 : 5,
-  },
-    logoContainer: {
-        flex: 1,
-        marginTop: 0,
-        paddingTop: 30,
-        paddingLeft: 10,
-        paddingRight: 10,
-        bottom: 0,
-        alignSelf: 'center'
-    },
-    logo: {
-        flex: 1,
-        width: 200,
-        height: 200,
-        resizeMode: 'contain'
-    },
 
 
 });

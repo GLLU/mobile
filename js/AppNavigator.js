@@ -17,6 +17,7 @@ import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
+import ForgotPassword from './components/forgotPassword';
 
 
 import { statusBarColor } from './themes/base-theme';
@@ -87,6 +88,8 @@ class AppNavigator extends Component {
         return <SignUpGenderPage />;
       case 'signinemail':
         return <SignInPage />;
+      case 'forgotpassword':
+        return <ForgotPassword />;
       case 'feedscreen':
         return <FeedPage />;
       case 'login':

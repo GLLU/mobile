@@ -56,6 +56,17 @@ export default reduxApi({
           }
       ]
   },
+  forgot_password: {
+      url: "/password_recovery",
+      options: {
+          method: "post"
+      },
+      postfetch: [
+          ({data}) => {
+              console.log('data forgot password rest',data)
+          }
+      ]
+  },
   sizes: {
     url: '/users/5/size',
     options: {

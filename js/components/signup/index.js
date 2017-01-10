@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, TextInput } from 'react-native';
+import { Image } from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
@@ -65,15 +65,9 @@ class SignUpPage extends Component {
           email,
           name,
           gender,
-          country,
-          countryValid,
-          usernameValid,
-          passwordValid,
-          emailValid,
-          nameValid } = this.state;
+          country } = this.state;
 
-      let validationArray = [ usernameValid, passwordValid, emailValid, nameValid, countryValid  ] ;
-        if(validationArray.indexOf('times') === -1) {
+        if(this.checkValidations()) {
             let data = {
                 email,
                 username,
@@ -87,6 +81,20 @@ class SignUpPage extends Component {
             this.props.emailSignUp(data);
         }
   }
+
+  checkValidations() {
+      let {
+          countryValid,
+          usernameValid,
+          passwordValid,
+          emailValid,
+          nameValid } = this.state;
+
+      let validationArray = [usernameValid, passwordValid, emailValid, nameValid, countryValid];
+
+      return (validationArray.indexOf('times') === -1)
+  }
+
 
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
@@ -156,7 +164,7 @@ class SignUpPage extends Component {
                           </Button>
                       </View>
                       <View>
-                          <Grid style={styles.signupForm}>
+                          <Grid>
                               <Row style={styles.formItem}>
                                   <Text style={[styles.label,  this.state.username.length !== 0 ? styles.addOpacity : null]}>Username</Text>
                                   <InputGroup style={styles.formGroup}>
@@ -202,7 +210,7 @@ class SignUpPage extends Component {
                               </Row>
 
                           </Grid>
-                          <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>
+                          <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.singupWithEmail()}>
                               Let's GLLU
                           </Button>
                           <View style={styles.alreadyBox}>

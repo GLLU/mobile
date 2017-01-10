@@ -12,7 +12,7 @@ import styles from './styles';
 
 import { emailSignIn } from '../../actions/user';
 
-const { popRoute } = actions;
+const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow.png');
@@ -28,6 +28,7 @@ class SignInPage extends Component {
   static propTypes = {
     emailSignIn: React.PropTypes.func,
     popRoute: React.PropTypes.func,
+    pushRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     })
@@ -46,40 +47,49 @@ class SignInPage extends Component {
   }
 
   singinWithEmail() {
-      let { password, email, passwordValid, emailValid } = this.state;
-      let validationArray = [ passwordValid, emailValid  ] ;
-      if(validationArray.indexOf('times') === -1) {
+      let { password, email } = this.state;
+      if(this.checkValidations()) {
           this.props.emailSignIn(email,password);
       }
+  }
+  checkValidations() {
+    let {
+        passwordValid,
+        emailValid } = this.state;
+
+    let validationArray = [ passwordValid, emailValid ];
+
+    return (validationArray.indexOf('times') === -1)
   }
 
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
+  pushRoute(route) {
+    this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
+  }
 
-
-    validateEmailInput(value) {
-        this.setState({email: value});
-        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(re.test(value)){
-            this.setState({emailValid: 'check'});
-        } else {
-            this.setState({emailValid: 'times'});
-        }
+  validateEmailInput(value) {
+    this.setState({email: value});
+    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(re.test(value)){
+        this.setState({emailValid: 'check'});
+    } else {
+        this.setState({emailValid: 'times'});
     }
+  }
 
-    validatePasswordInput(value) {
-        this.setState({password: value});
-        let re = /^[a-zA-Z0-9]{3,30}$/;
-        if(re.test(value)){
-            this.setState({passwordValid: 'check'});
-        } else {
-            this.setState({passwordValid: 'times'});
-        }
+  validatePasswordInput(value) {
+    this.setState({password: value});
+    let re = /^[a-zA-Z0-9]{3,30}$/;
+    if(re.test(value)){
+        this.setState({passwordValid: 'check'});
+    } else {
+        this.setState({passwordValid: 'times'});
     }
+  }
 
   render() {
-      console.log(this.state.email.length,'lolol')
     return (
       <Container>
         <View style={styles.container}>
@@ -96,13 +106,13 @@ class SignInPage extends Component {
                   <Image source={logo} style={styles.logo} />
               </View>
           <View>
-            <Grid style={styles.signupForm}>
+            <Grid>
                 <Row style={styles.formItem}>
                     <Text style={[styles.label,  this.state.email.length !== 0 ? styles.addOpacity : null]}>Email</Text>
                     <InputGroup style={styles.formGroup}>
                         <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
                     </InputGroup>
-                    <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>
+                    { this.state.email.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
                 <Row style={styles.formItem}>
                     <Text style={[styles.label,  this.state.password.length !== 0 ? styles.addOpacity : null]}>Password</Text>
@@ -112,9 +122,13 @@ class SignInPage extends Component {
                     { this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
             </Grid>
-            <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singinWithEmail()}>
+            <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.singinWithEmail()}>
               Let's GLLU
             </Button>
+              <View style={styles.alreadyBox}>
+                  <Text style={styles.alreadyTxt}>Forgot your password?</Text>
+                  <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('forgotpassword') }>Click Here</Button>
+              </View>
             </View>
           </Content>
           </Image>
@@ -130,7 +144,8 @@ class SignInPage extends Component {
 function bindAction(dispatch) {
   return {
       emailSignIn: (email, password) => dispatch(emailSignIn(email, password)),
-      popRoute: key => dispatch(popRoute(key))
+      popRoute: key => dispatch(popRoute(key)),
+      pushRoute: (route, key) => dispatch(pushRoute(route, key))
   };
 }
 

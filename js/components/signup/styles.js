@@ -3,6 +3,11 @@ const React = require('react-native');
 import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
+const MK = require('react-native-material-kit');
+
+const {
+    MKColor,
+} = MK;
 
 module.exports = StyleSheet.create({
   header: {
@@ -116,6 +121,9 @@ module.exports = StyleSheet.create({
     backgroundColor: '#ADADAD',
     borderRadius: 0,
     opacity: 0.8
+  },
+  validationPassed: {
+    backgroundColor: MKColor.Teal
   },
   countrySelectView: {
     flex:1,
