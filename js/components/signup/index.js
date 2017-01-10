@@ -192,11 +192,10 @@ class SignUpPage extends Component {
                                           data={countries}
                                           initValue="Select Country"
                                           onChange={(country)=>{ this.setState({country: country.label}); this.validateTextInput(country.label, 'country')}}>
-                                          <TextInput
-                                              style={styles.countrySelectInput}
+                                          <Text
+                                              style={[styles.formInput, styles.countrySelectInput]}
                                               editable={false}
-                                              value={this.state.country}
-                                          />
+                                          >{this.state.country}</Text>
                                       </ModalPicker>
                                   </View>
                                   {this.state.country.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.countryValid} style={styles.uploadImgIcon}/>  : null}

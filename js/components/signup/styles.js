@@ -6,8 +6,8 @@ const deviceHeight = Dimensions.get('window').height;
 
 module.exports = StyleSheet.create({
   header: {
-      backgroundColor: 'transparent',
-      shadowOpacity: 0,
+    backgroundColor: 'transparent',
+    shadowOpacity: 0,
   },
   headerTitle: {
     fontSize: 22,
@@ -48,19 +48,19 @@ module.exports = StyleSheet.create({
     left: 0
   },
   uploadImgContainer: {
-      marginTop: 15,
-      alignSelf: 'center',
-      marginBottom: 10
+    marginTop: 15,
+    alignSelf: 'center',
+    marginBottom: 10
   },
-   uploadImgBtn: {
-       borderRadius: 50,
-       backgroundColor: '#FFFFFF',
-       height: 100,
-       width: 100
-   },
+  uploadImgBtn: {
+    borderRadius: 50,
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100
+  },
   uploadImgIcon: {
-      backgroundColor: 'transparent',
-      marginBottom: 5
+    backgroundColor: 'transparent',
+    marginBottom: 5
   },
   formItem: {
     flex: 1,
@@ -80,11 +80,10 @@ module.exports = StyleSheet.create({
   },
   label: {
     color: 'lightgrey',
-      fontSize: 16,
-      alignSelf: 'center',
-      marginTop: 20,
-      width: 100,
-
+    fontSize: 16,
+    alignSelf: 'center',
+    marginTop: 20,
+    width: 100,
   },
   addOpacity: {
       opacity: 0.8
@@ -119,13 +118,12 @@ module.exports = StyleSheet.create({
     opacity: 0.8
   },
   countrySelectView: {
-    flex:1
+    flex:1,
   },
   countrySelectInput: {
     padding:10,
-    height:30,
+    height:40,
     color: '#FFFFFF',
-    opacity: 0.8,
     paddingLeft: 20,
     marginLeft: 10
   },
