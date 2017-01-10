@@ -16,6 +16,7 @@ import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
+import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 
 
 import { statusBarColor } from './themes/base-theme';
@@ -81,7 +82,9 @@ class AppNavigator extends Component {
       case 'splashscreen':
         return <SplashPage />;
       case 'signupemail':
-        return <SignUpPage />;
+        return <SignUpPage gender={props.scene.route.gender} />;
+      case 'genderselect':
+        return <SignUpGenderPage />;
       case 'signinemail':
         return <SignInPage />;
       case 'feedscreen':

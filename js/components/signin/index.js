@@ -49,7 +49,6 @@ class SignInPage extends Component {
       let { password, email, passwordValid, emailValid } = this.state;
       let validationArray = [ passwordValid, emailValid  ] ;
       if(validationArray.indexOf('times') === -1) {
-          console.log('all validation passed');
           this.props.emailSignIn(email,password);
       }
   }
@@ -59,25 +58,28 @@ class SignInPage extends Component {
   }
 
 
-  validateEmailInput(value) {
-      let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-       if(re.test(value)){
-          this.setState({emailValid: 'check', email: value});
-      } else {
-          this.setState({emailValid: 'times', email: ''});
-       }
-  }
+    validateEmailInput(value) {
+        this.setState({email: value});
+        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(re.test(value)){
+            this.setState({emailValid: 'check'});
+        } else {
+            this.setState({emailValid: 'times'});
+        }
+    }
 
-  validatePasswordInput(value) {
-      let re = /^[a-zA-Z0-9]{3,30}$/
-      if(re.test(value)){
-          this.setState({passwordValid: 'check', password: value});
-      } else {
-          this.setState({passwordValid: 'times', password: ''});
-      }
-  }
+    validatePasswordInput(value) {
+        this.setState({password: value});
+        let re = /^[a-zA-Z0-9]{3,30}$/;
+        if(re.test(value)){
+            this.setState({passwordValid: 'check'});
+        } else {
+            this.setState({passwordValid: 'times'});
+        }
+    }
 
   render() {
+      console.log(this.state.email.length,'lolol')
     return (
       <Container>
         <View style={styles.container}>
@@ -96,18 +98,18 @@ class SignInPage extends Component {
           <View>
             <Grid style={styles.signupForm}>
                 <Row style={styles.formItem}>
-                    <Text style={styles.label}>Email</Text>
+                    <Text style={[styles.label,  this.state.email.length !== 0 ? styles.addOpacity : null]}>Email</Text>
                     <InputGroup style={styles.formGroup}>
                         <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
                     </InputGroup>
                     <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>
                 </Row>
                 <Row style={styles.formItem}>
-                    <Text style={styles.label}>Password</Text>
+                    <Text style={[styles.label,  this.state.password.length !== 0 ? styles.addOpacity : null]}>Password</Text>
                     <InputGroup style={styles.formGroup}>
                         <Input style={styles.formInput} secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
                     </InputGroup>
-                    <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>
+                    { this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
             </Grid>
             <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singinWithEmail()}>

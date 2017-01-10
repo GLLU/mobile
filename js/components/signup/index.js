@@ -1,13 +1,13 @@
 
 import React, { Component } from 'react';
-import { Image, TouchableWithoutFeedback } from 'react-native';
+import { Image, TextInput } from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
-import { RadioButtons } from 'react-native-radio-buttons'
-
+import ModalPicker from 'react-native-modal-picker';
+import { countries } from './countries'
 import { emailSignUp } from '../../actions/user';
 
 
@@ -23,14 +23,11 @@ const {
   MKColor,
 } = MK;
 
-const genders = [
-    "Male",
-    "Female"
-];
 
 class SignUpPage extends Component {
 
   static propTypes = {
+      gender: React.PropTypes.string,
     popRoute: React.PropTypes.func,
     emailSignUp: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
@@ -40,38 +37,53 @@ class SignUpPage extends Component {
   }
 
   constructor(props) {
-    super(props);
 
+      super(props);
       this.state = {
           username: '',
           email: '',
           password: '',
           confirmPassword: '',
           name: '',
-          gender: 'Male',
+          country: '',
+          gender: this.props.gender,
           usernameValid: 'times',
           nameValid: 'times',
           passwordValid: 'times',
           confirmPasswordValid: 'times',
           emailValid: 'times',
-      };
+          countryValid: 'times',
 
+      };
   }
 
   singupWithEmail() {
-      let { username, password, confirmPassword,  email, name, gender, usernameValid, passwordValid, confirmPasswordValid, emailValid, nameValid } = this.state;
-      let validationArray = [ usernameValid, passwordValid, emailValid, nameValid, confirmPasswordValid  ] ;
+      let {
+          username,
+          password,
+          confirmPassword,
+          email,
+          name,
+          gender,
+          country,
+          countryValid,
+          usernameValid,
+          passwordValid,
+          emailValid,
+          nameValid } = this.state;
+
+      let validationArray = [ usernameValid, passwordValid, emailValid, nameValid, countryValid  ] ;
         if(validationArray.indexOf('times') === -1) {
-            console.log('all validation passed');
             let data = {
                 email,
                 username,
                 name,
                 gender: gender.toLowerCase(),
                 password,
-                confirmPassword
-
+                confirmPassword,
+                country: country.toLowerCase()
             }
+            console.log('passed');
             this.props.emailSignUp(data);
         }
   }
@@ -81,158 +93,134 @@ class SignUpPage extends Component {
   }
 
   validateTextInput(value, type) {
-      let toValidString = type+'Valid'
+      this.setState({[type]: value});
+      let toValidString = type+'Valid';
       if(value.length > 2){
-          this.setState({[toValidString]: 'check', [type]: value});
+          this.setState({[toValidString]: 'check'});
       } else {
-          this.setState({[toValidString]: 'times', [type]: ''});
+          this.setState({[toValidString]: 'times'});
       }
   }
 
 
   validateEmailInput(value) {
+      this.setState({email: value});
       let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
        if(re.test(value)){
-          this.setState({emailValid: 'check', email: value});
+          this.setState({emailValid: 'check'});
       } else {
-          this.setState({emailValid: 'times', email: ''});
-       }
+          this.setState({emailValid: 'times'});
+      }
   }
 
   validatePasswordInput(value) {
-      let re = /^[a-zA-Z0-9]{3,30}$/
+      this.setState({password: value});
+      let re = /^[a-zA-Z0-9]{3,30}$/;
       if(re.test(value)){
-          this.setState({passwordValid: 'check', password: value});
+          this.setState({passwordValid: 'check'});
       } else {
-          this.setState({passwordValid: 'times', password: ''});
+          this.setState({passwordValid: 'times'});
       }
   }
 
   confirmPasswordInput(value) {
+      this.setState({confirmPassword: value});
       let pass = this.state.password
       if(value === pass){
-          this.setState({confirmPasswordValid: 'check', confirmPassword: value});
+          this.setState({confirmPasswordValid: 'check'});
       } else {
-          this.setState({confirmPasswordValid: 'times', confirmPassword: ''});
+          this.setState({confirmPasswordValid: 'times'});
       }
   }
 
   pushRoute(route) {
-      this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
+      this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
   }
 
   render() {
     return (
       <Container>
-        <View style={styles.container}>
-          <Image source={background} style={styles.shadow} blurRadius={5}>
-          <Image source={backgroundShadow} style={styles.bgShadow} />
-          <Header style={styles.header} >
-            <Button transparent onPress={() => this.popRoute()}>
-              <Icon style={styles.headerArrow} name="ios-arrow-back" />
-            </Button>
-            <Title style={styles.headerTitle}>Signup for Gllu</Title>
-          </Header>
-          <Content scrollEnabled={false}>
-            <View style={styles.uploadImgContainer}>
-              <Button large style={styles.uploadImgBtn} warning>
-                <IconB size={30} color={MKColor.Teal} name='camera' style={styles.uploadImgIcon}/>
-              </Button>
-            </View>
-          <View>
-            <Grid style={styles.signupForm}>
-              <Row style={styles.formItem}>
-                <Text style={styles.label}>Username</Text>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} onChangeText={(username) => this.validateTextInput(username, 'username')}/>
-                </InputGroup>
-                <IconB size={20} color={MKColor.Teal} name={this.state.usernameValid} style={styles.uploadImgIcon}/>
-              </Row>
-              <Row style={styles.formItem}>
-                <Text style={styles.label}>Name</Text>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} onChangeText={(name) => this.validateTextInput(name, 'name')}/>
-                </InputGroup>
-                <IconB size={20} color={MKColor.Teal} name={this.state.nameValid} style={styles.uploadImgIcon}/>
-              </Row>
-              <Row style={styles.formItem}>
-                <Text style={styles.label}>Email</Text>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
-                </InputGroup>
-                <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>
-              </Row>
-              <Row style={styles.formItem}>
-                <Text style={styles.label}>Password</Text>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
-                </InputGroup>
-                <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>
-              </Row>
-              <Row style={styles.formItem}>
-                <Text style={[styles.label, styles.confirmPass]}>Confirm Password</Text>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} secureTextEntry onChangeText={(confirmPassword) => this.confirmPasswordInput(confirmPassword)}/>
-                </InputGroup>
-                <IconB size={20} color={MKColor.Teal} name={this.state.confirmPasswordValid} style={styles.uploadImgIcon}/>
-              </Row>
-              <Row>
-                <RadioButtons
-                  options={ genders }
-                  onSelection={ this.setGenderSelectedOption.bind(this) }
-                  selectedOption={this.state.gender }
-                  renderOption={ this.renderRadioOption }
-                  renderContainer={ this.renderRadioContainer }
-                />
-              </Row>
-            </Grid>
-            <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>
-              Let's GLLU
-            </Button>
-              <View style={styles.alreadyBox}>
-                <Text style={styles.alreadyTxt}>Already a user?</Text>
-                <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
-              </View>
-            </View>
-          </Content>
-          </Image>
-        </View>
+          <View style={styles.container}>
+              <Image source={background} style={styles.shadow} blurRadius={5}>
+                  <Image source={backgroundShadow} style={styles.bgShadow} />
+                  <Header style={styles.header} >
+                      <Button transparent onPress={() => this.popRoute()}>
+                          <Icon style={styles.headerArrow} name="ios-arrow-back" />
+                      </Button>
+                      <Title style={styles.headerTitle}>Signup for Gllu</Title>
+                  </Header>
+                  <Content scrollEnabled={false}>
+                      <View style={styles.uploadImgContainer}>
+                          <Button large style={styles.uploadImgBtn} warning>
+                              <IconB size={30} color={MKColor.Teal} name='camera' style={styles.uploadImgIcon}/>
+                          </Button>
+                      </View>
+                      <View>
+                          <Grid style={styles.signupForm}>
+                              <Row style={styles.formItem}>
+                                  <Text style={[styles.label,  this.state.username.length !== 0 ? styles.addOpacity : null]}>Username</Text>
+                                  <InputGroup style={styles.formGroup}>
+                                      <Input style={styles.formInput} ref="username" onChangeText={(username) => this.validateTextInput(username, 'username')}/>
+                                  </InputGroup>
+                                  {this.state.username.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
+                              </Row>
+                              <Row style={styles.formItem}>
+                                  <Text style={[styles.label,  this.state.name.length !== 0 ? styles.addOpacity : null]}>Name</Text>
+                                  <InputGroup style={styles.formGroup}>
+                                      <Input style={styles.formInput} onChangeText={(name) => this.validateTextInput(name, 'name')}/>
+                                  </InputGroup>
+                                  {this.state.name.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
+                              </Row>
+                              <Row style={styles.formItem}>
+                                  <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
+                                  <InputGroup style={styles.formGroup}>
+                                      <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
+                                  </InputGroup>
+                                  {this.state.email.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
+                              </Row>
+                              <Row style={styles.formItem}>
+                                  <Text style={[styles.label, this.state.password.length > 0 ? styles.addOpacity : null]}>Password</Text>
+                                  <InputGroup style={styles.formGroup}>
+                                      <Input style={styles.formInput} secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
+                                  </InputGroup>
+                                  {this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
+                              </Row>
+                              <Row style={styles.formItem}>
+                                  <Text style={[styles.label, this.state.country.length > 0 ? styles.addOpacity : null]}>Country</Text>
+                                  <View style={styles.countrySelectView}>
+                                      <ModalPicker
+                                          data={countries}
+                                          initValue="Select Country"
+                                          onChange={(country)=>{ this.setState({country: country.label}); this.validateTextInput(country.label, 'country')}}>
+                                          <TextInput
+                                              style={styles.countrySelectInput}
+                                              editable={false}
+                                              value={this.state.country}
+                                          />
+                                      </ModalPicker>
+                                  </View>
+                                  {this.state.country.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.countryValid} style={styles.uploadImgIcon}/>  : null}
+                              </Row>
+
+                          </Grid>
+                          <Button color='lightgrey' style={styles.formBtn} onPress={() => this.singupWithEmail()}>
+                              Let's GLLU
+                          </Button>
+                          <View style={styles.alreadyBox}>
+                              <Text style={styles.alreadyTxt}>Already a user?</Text>
+                              <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+                          </View>
+                      </View>
+                  </Content>
+              </Image>
+          </View>
       </Container>
     );
   }
-    setGenderSelectedOption(genderSelectedOption){
-        this.setState({
-            gender: genderSelectedOption
-        });
-    }
-
-    renderRadioOption(option, selected, onSelect, index){
-        return (
-            <View key={index}>
-                <TouchableWithoutFeedback onPress={onSelect} >
-                    <View style={styles.radioOption}>
-                        <Text style={[ styles.radioBtn, selected ? {color: MKColor.Teal} : null]}>{option}</Text>
-                        { index === 0 ? <Text style={styles.radioSlash}>/</Text> : null }
-                    </View>
-                </TouchableWithoutFeedback>
-            </View>
-        );
-    }
-
-    renderRadioContainer(optionNodes){
-        return (
-            <View style={styles.radioView}>
-                <Text style={styles.genderLabel}>Gender</Text>
-                {optionNodes}
-            </View>
-        );
-    }
 }
 
-
-
 function bindAction(dispatch) {
-  return {
+    return {
     emailSignUp: (data) => dispatch(emailSignUp(data)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),

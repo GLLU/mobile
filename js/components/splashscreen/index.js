@@ -109,7 +109,7 @@ class SplashPage extends Component {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
               <View style={styles.signupContainer}>
-                <SignUpEmailButton onPress={() => this.pushRoute('signupemail') } />
+                <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>

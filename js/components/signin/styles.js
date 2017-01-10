@@ -68,7 +68,6 @@ module.exports = StyleSheet.create({
     marginRight: 20,
     borderBottomWidth: 2,
     borderColor: 'rgba(192,192,192, .3)',
-    opacity: 0.6,
     height: 50,
     paddingLeft: 0,
     alignItems: 'flex-end'
@@ -85,6 +84,9 @@ module.exports = StyleSheet.create({
       alignSelf: 'center',
       marginTop: 20,
       width: 100
+  },
+  addOpacity: {
+      opacity: 0.8
   },
   formInput: {
     flex: 1,

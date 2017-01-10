@@ -68,8 +68,7 @@ module.exports = StyleSheet.create({
     marginRight: 20,
     borderBottomWidth: 2,
     borderColor: 'rgba(192,192,192, .3)',
-    opacity: 0.6,
-    height: 45,
+    height: 55,
     paddingLeft: 0,
     alignItems: 'flex-end'
   },
@@ -84,27 +83,31 @@ module.exports = StyleSheet.create({
       fontSize: 16,
       alignSelf: 'center',
       marginTop: 20,
-      width: 100
+      width: 100,
+
+  },
+  addOpacity: {
+      opacity: 0.8
   },
   confirmPass: {
     paddingBottom: 10
   },
-  genderLabel:{
-      color: 'lightgrey',
-      fontSize: 16,
-      alignSelf: 'center',
-      width: 100,
-      marginTop: 20
+  genderSelectContainer:{
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   formInput: {
     flex: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
+    paddingLeft: 20,
+    paddingRight: 50,
     lineHeight: 20,
-    marginTop: 18,
+    marginTop: 17,
     alignItems: 'stretch',
     color: '#FFFFFF',
     marginLeft: 10,
+
   },
   formBtn: {
     alignSelf: 'center',
@@ -115,6 +118,17 @@ module.exports = StyleSheet.create({
     backgroundColor: '#ADADAD',
     borderRadius: 0,
     opacity: 0.8
+  },
+  countrySelectView: {
+    flex:1
+  },
+  countrySelectInput: {
+    padding:10,
+    height:30,
+    color: '#FFFFFF',
+    opacity: 0.8,
+    paddingLeft: 20,
+    marginLeft: 10
   },
   alreadyBox: {
     alignSelf: 'center',
@@ -135,28 +149,21 @@ module.exports = StyleSheet.create({
       elevation: 0,
       paddingTop: (Platform.OS === 'ios') ? 0 : 5,
   },
-    radioView: {
-        marginLeft: 20,
-        marginRight: 20,
-        borderBottomWidth: 2,
-        borderColor: 'rgba(192,192,192, .3)',
-        flexDirection: 'row',
-        alignItems: 'center',
-        height: 60,
-        width: 200,
-        opacity: 0.6,
-    },
-  radioBtn: {
-      marginTop: 20,
-      color: 'lightgrey'
+  genderBtnContainer:{
+      flex: 1,
+      alignItems: 'center',
+      marginTop: deviceHeight/4
   },
-  radioOption: {
-      flexDirection: 'row'
+  genderImage:{
+      width: 130,
+      height: 130,
+      borderRadius: 65
   },
-  radioSlash: {
-      marginTop: 20,
-      paddingLeft: 5,
-      color: 'lightgrey'
-  }
+  genderLabel:{
+      color: '#FFFFFF',
+      alignSelf: 'center',
+      marginTop: 15,
+      opacity: 0.8
+  },
 
 });
