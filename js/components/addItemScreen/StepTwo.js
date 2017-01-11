@@ -88,6 +88,7 @@ class StepTwo extends Component {
     addTag: React.PropTypes.func,
     image: React.PropTypes.object,
     tags: React.PropTypes.array,
+    continueAction: React.PropTypes.func
   }
 
   constructor(props) {

@@ -97,7 +97,7 @@ class AddItemPage extends Component {
           <View style={styles.mainView}>
             <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
             {this.state.currentStep == 1 && <StepOne key={1}/>}
-            {this.state.currentStep == 2 && <StepTwo key={2}/>}
+            {this.state.currentStep == 2 && <StepTwo continueAction={this.publishAction.bind(this)} key={2}/>}
             {this.state.currentStep == 1 && this._renderActionsContainer()}
           </View>
         </Content>

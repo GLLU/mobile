@@ -21,4 +21,12 @@ module.exports = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 5
   },
+  flagSelectOptions: {
+    width: 40,
+    height: 30,
+    marginLeft: 10,
+    marginTop: 5,
+    resizeMode: 'contain',
+    alignSelf: 'center'
+  },
 });
