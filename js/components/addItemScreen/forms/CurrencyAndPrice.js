@@ -50,7 +50,7 @@ class CurrencyAndPrice extends Component {
 
   static propTypes = {
     currency: React.PropTypes.string,
-    price: React.PropTypes.number,
+    price: React.PropTypes.string,
     updateValue: React.PropTypes.func
   }
 
@@ -61,7 +61,7 @@ class CurrencyAndPrice extends Component {
   }
 
   _renderCurrency() {
-    return (<View style={{flex: 1, flexDirection: 'row', marginTop: 20, marginBottom: 0}}>
+    return (<View style={{flex: 1, flexDirection: 'row', marginTop: 0, marginBottom: 0}}>
               <View style={{flex: 0.5}}>
                 <Text style={[styles.titleLabelInfo]}>Currency</Text>
               </View>

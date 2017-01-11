@@ -7,12 +7,11 @@ import { Col, Grid } from "react-native-easy-grid";
 import Category from './forms/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
 import CurrencyAndPrice from './forms/CurrencyAndPrice';
+import ItemSize from './forms/ItemSize';
 import FontSizeCalculator from './../../calculators/FontSize';
 
 import { loadCategories } from '../../actions/filters';
 
-const us = require('../../../images/flags/us.png');
-const uk = require('../../../images/flags/uk.png');
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxChecked = require('../../../images/icons/checkbox-checked-black.png');
 
@@ -28,45 +27,6 @@ const styles = StyleSheet.create({
     color: '#757575',
     fontWeight: '400',
     marginBottom: 8
-  },
-  textInput: {
-    width: w - 40,
-    height: 50,
-    backgroundColor: '#FFFFFF',
-    padding: 10,
-    marginTop: 10,
-    marginBottom: 10
-  },
-  textHalfInput: {
-    width: w / 2 - 30,
-    height: 50,
-    backgroundColor: '#FFFFFF',
-    padding: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    textAlign: 'center'
-  },
-  selectOptions: {
-    backgroundColor: 'transparent'
-  },
-  arrowSelect: {
-    color: '#BDBDBD',
-    fontSize: new FontSizeCalculator(18).getSize(),
-    paddingTop: 10
-  },
-  fakeBtnContainer: {
-    backgroundColor: '#FFFFFF',
-    marginTop: 10,
-    paddingTop: 5,
-    height: 50,
-  },
-  flagSelectOptions: {
-    width: 40,
-    height: 30,
-    marginLeft: 10,
-    marginTop: 5,
-    resizeMode: 'contain',
-    alignSelf: 'center'
   },
   btnTagAnother: {
     marginTop: 20,
@@ -139,9 +99,9 @@ class ItemInfoView extends Component {
     selectedCategoryId: React.PropTypes.number,
     brandName: React.PropTypes.string,
     itemSizeCountry: React.PropTypes.string,
-    itemSizeNumber: React.PropTypes.number,
+    itemSizeNumber: React.PropTypes.string,
     currency: React.PropTypes.string,
-    price: React.PropTypes.number,
+    price: React.PropTypes.string,
     sharing: React.PropTypes.bool,
   }
 
@@ -150,10 +110,6 @@ class ItemInfoView extends Component {
     this.state = {
       categories: [],
       selectedCategory: null,
-      flags: [
-        {name: 'uk', icon: uk},
-        {name: 'us', icon: us}
-      ],
       ...props
     }
   }
@@ -216,59 +172,6 @@ class ItemInfoView extends Component {
         </View>)
   }
 
-  _rederItemSizeInput() {
-    let flagIcon = null;
-    this.state.flags.map((flag) => {
-      if (flag.name == this.state.itemSizeCountry) {
-        flagIcon = flag.icon;
-      }
-    });
-    return (<Grid>
-              <Col size={48}>
-                <Grid style={styles.fakeBtnContainer}>
-                  <Col size={20}>
-                    <Image source={flagIcon} style={styles.flagSelectOptions} />
-                  </Col>
-                  <Col size={60}>
-                    <Picker
-                      style={styles.selectOptions}
-                      iosHeader="Select one"
-                      mode="dropdown"
-                      selectedValue={this.state.itemSizeCountry}
-                      onValueChange={(value) => this.setState({ itemSizeCountry: value })}>
-                      <Item label="UK" value="uk" />
-                      <Item label="US" value="us" />
-                    </Picker>
-                  </Col>
-                  <Col size={20}>
-                    <Icon style={styles.arrowSelect} name='ios-arrow-down' />
-                  </Col>
-                </Grid>
-              </Col>
-              <Col size={4} />
-              <Col size={48}>
-                <Grid style={styles.fakeBtnContainer}>
-                  <Col size={80}>
-                    <Picker
-                      style={[styles.selectOptions, {width: 100}]}
-                      iosHeader="Select one"
-                      mode="dropdown"
-                      selectedValue={this.state.itemSizeNumber}
-                      onValueChange={(value) => this.setState({ itemSizeNumber: value })}>
-                      <Item label="1" value="1" />
-                      <Item label="2" value="2" />
-                      <Item label="3" value="3" />
-                      <Item label="4" value="4" />
-                    </Picker>
-                  </Col>
-                  <Col size={20}>
-                    <Icon style={styles.arrowSelect} name='ios-arrow-down' />
-                  </Col>
-                </Grid>
-              </Col>
-            </Grid>)
-  }
-
   render() {
     const { categories, selectedCategory } = this.state;
     return(<Container style={styles.itemInfoView}>
@@ -278,7 +181,7 @@ class ItemInfoView extends Component {
                   <Text style={styles.titleLabelInfo}>Brand Name</Text>
                   <BrandNameInput brandName={this.state.brandName} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
                   <Text style={styles.titleLabelInfo}>Item Size</Text>
-                  {this._rederItemSizeInput()}
+                  <ItemSize itemSizeCountry={this.state.itemSizeCountry} itemSizeNumber={this.state.itemSizeNumber} updateValue={this.updateValue.bind(this)} />
                   <CurrencyAndPrice currency={this.state.currency} price={this.state.price} updateValue={this.updateValue.bind(this)} />
                   {this._renderSharing()}
               </Content>
