@@ -8,6 +8,7 @@ import myStyles from './styles';
 import Util from '../../Util';
 import convert from 'convert-units';
 import { completeEdit, setMinMax} from '../../actions/myBodyMeasure';
+import RadioButtons from 'react-native-radio-buttons';
 const deviceWidth = Dimensions.get('window').width;
 const w = deviceWidth / 2 - 50;
 const MK = require('react-native-material-kit');
@@ -109,7 +110,7 @@ class BodyMeasureView extends Component {
 
   }
 
-  renderRadioContainer(option, selected, onSelect, index){
+  renderRadioContainer(optionNodes){
       return (
           <View style={myStyles.radioView}>
             <Text style={myStyles.genderLabel}>Gender</Text>
@@ -143,6 +144,13 @@ class BodyMeasureView extends Component {
           <CMInchRangeView isInchSelect={this.state.isInchSelect}
                            toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
         </View>
+        <RadioButtons
+          options={ genders }
+          onSelection={ this.setGenderSelectedOption.bind(this) }
+          selectedOption={this.state.gender }
+          renderOption={ this.renderRadioOption }
+          renderContainer={ this.renderRadioContainer }
+        />
         {sizeTypes.map((item, i) => {
           return (<View key={i} style={myStyles.infoContainer}>
             <Text style={myStyles.infoText}>{item}</Text>
