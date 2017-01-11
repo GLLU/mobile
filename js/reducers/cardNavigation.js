@@ -6,7 +6,7 @@ const initialState = {
   index: 0,
   routes: [
     {
-      key: 'addItemScreen',
+      key: 'feedscreen',
       index: 0,
     },
   ],

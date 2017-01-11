@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Image, TextInput, StyleSheet, Dimensions } from 'react-native';
+import { Image, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { View, Container, Content, Text, Picker, Item, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-import { CheckboxField } from 'react-native-checkbox-field';
 
 import Category from './forms/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
@@ -13,6 +12,8 @@ import { loadCategories } from '../../actions/filters';
 
 const us = require('../../../images/flags/us.png');
 const uk = require('../../../images/flags/uk.png');
+const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
+const checkboxChecked = require('../../../images/icons/checkbox-checked-black.png');
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -165,12 +166,6 @@ class ItemInfoView extends Component {
     });
   }
 
-  selectCheckbox() {
-    this.setState({
-        sharing: !this.state.sharing
-    });
-  }
-
   selectCategory(item) {
     const selectedCategory = this.state.selectedCategory;
     const selected = selectedCategory && selectedCategory.id === item.id ? selectedCategory : item;
@@ -200,21 +195,14 @@ class ItemInfoView extends Component {
   }
 
   _renderSharing() {
+    const sharingCheckBox = this.state.sharing ? checkboxChecked : checkboxUncheck;
     return (<View style={{marginBottom: 60}}>
             <Text style={styles.headinSharing}>BENEFIT FROM SHARING</Text>
             <Grid>
               <Col size={15}>
-                <CheckboxField
-                  label={this.state.fieldLabel}
-                  onSelect={this.selectCheckbox.bind(this)}
-                  selected={this.state.sharing}
-                  defaultColor={'#FFFFFF'}
-                  selectedColor="#333333"
-                  containerStyle={styles.containerStyle}
-                  labelStyle={styles.labelStyle}
-                  checkboxStyle={styles.checkboxStyle}
-                  labelSide="left">
-                </CheckboxField>
+                <TouchableOpacity style={{marginTop: 10}} onPress={() => this.setState({sharing: !this.state.sharing})}>
+                  <Image source={sharingCheckBox} style={{height:30, width: 30, borderRadius: 15}} />
+                </TouchableOpacity>
               </Col>
               <Col size={85}>
                 <Text style={styles.checkboxLabelStyle}>Web Page</Text>
