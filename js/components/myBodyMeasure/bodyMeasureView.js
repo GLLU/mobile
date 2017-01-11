@@ -22,12 +22,12 @@ class BodyMeasureView extends Component {
 
       currentSize: Object.assign({} , this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName][2]),
       sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName],
-
+      updateTextColor: 'black',
       // edit
       sizeInitValue: 0,
       sizeValue: 0,
       sliderMaxValue: 0,
-      sliderMinValue: 0
+      sliderMinValue: 0,
     }
   }
 
@@ -117,23 +117,31 @@ class BodyMeasureView extends Component {
 
   increasSize(item) {
     let currentSizeItem = this.state.currentSize[item];
-    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++)});
+    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++), updateTextColor: 'green', updateTextColorFor: item});
   }
 
   decreasSize(item) {
     let currentSizeItem = this.state.currentSize[item];
-    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--)});
+    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--), updateTextColor: 'green', updateTextColorFor: item});
   }
 
+  componentDidUpdate() {
+    if(this.state.updateTextColor === 'green'){
+        setTimeout(function() { this.setState({updateTextColor: 'black', updateTextColorFor: ''}); }.bind(this), 200);
+    }
+
+
+  }
   _renderMainView() {
     let {sizeTypes} = this.props;
+    console.log(this.state.updateTextColor)
     return (
       <View>
         {sizeTypes.map((item, i) => {
           return (<View key={i} style={myStyles.infoContainer}>
             <Text style={myStyles.infoText}>{item}</Text>
             <View style={myStyles.infoDetailTouch}>
-              <Text style={myStyles.infoDetailText}>{this.state.currentSize
+              <Text style={[myStyles.infoDetailText, this.state.updateTextColorFor === item ? myStyles.infoDetailTextColorChange : null]}>{this.state.currentSize
                 ? Util.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
                 : null}</Text>
               <View style={myStyles.sizeLineContainer}>

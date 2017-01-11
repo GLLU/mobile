@@ -2,6 +2,12 @@ import {StyleSheet} from 'react-native';
 
 let fontSizeDefault = 14;
 let fontColor = '#000';
+const MK = require('react-native-material-kit');
+
+const {
+    MKButton,
+    MKColor,
+} = MK;
 
 export default StyleSheet.create({
   selectBodyTypeText: {
@@ -24,7 +30,7 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   bodyTypeText: {
-    fontSize: fontSizeDefault * 1.25,
+    fontSize: fontSizeDefault * 1.35,
     color: fontColor,
     marginBottom: 15,
     fontFamily: 'PlayfairDisplay-Bold'
@@ -38,7 +44,7 @@ export default StyleSheet.create({
   infoText: {
     flexDirection: 'column',
     width: 50,
-    fontSize: fontSizeDefault * 0.9,
+    fontSize: fontSizeDefault * 1.2,
     color: '#ccc'
   },
   infoDetailTouch: {
@@ -63,13 +69,16 @@ export default StyleSheet.create({
   },
   sizeLineIcons: {
     color: '#00c497',
-    fontSize: 20,
+    fontSize: 35,
   },
   infoDetailText: {
-    fontSize: fontSizeDefault * 0.7,
-    color: fontColor,
+    fontSize: fontSizeDefault,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+      color: '#000000'
+  },
+  infoDetailTextColorChange: {
+    color: MKColor.Teal
   },
   toggleContainer: {
     flexWrap: 'wrap',
@@ -149,7 +158,7 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 100,
     right: 10,
-    fontSize: fontSizeDefault * 0.8,
+    fontSize: fontSizeDefault * 0.9,
     fontWeight: 'bold'
   },
   sliderSizeType: {
