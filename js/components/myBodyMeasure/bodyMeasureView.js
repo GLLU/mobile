@@ -55,9 +55,10 @@ class BodyMeasureView extends Component {
   __convertCmAndInc(obj, fromScale, toScale) {
     this.props.sizeTypes.map((sizeType) => {
       let value = obj[sizeType];
-      obj[sizeType] = convert(value).from(fromScale).to(toScale);
+      obj[sizeType] = Math.round(convert(value).from(fromScale).to(toScale));
     });
     obj.measurements_scale = toScale;
+
     return obj;
   }
 
@@ -78,41 +79,9 @@ class BodyMeasureView extends Component {
     })
 
     let sizeValue = convert(this.state.sizeValue).from(fromScale).to(toScale);
-
+      console.log('state before: ', this.state.isInchSelect, ' ', this.state.currentSize, ' ', this.state.currentSizeConverted)
     this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted, sizeList: sizeResults,
          sizeValue: sizeValue, sizeInitValue: sizeValue});
-  }
-
-  _toggleSize(sizeName) {
-    let current = this.state.currentSize;
-    let sizeResults = this.state.sizeList.map((item) => {
-      item.select = false;
-      if(item.name === sizeName) {
-        item.select = true;
-        current = Object.assign({}, item);
-      }
-      return item;
-    });
-    this.props.completeEdit(current);
-    this.setState({sizeSelect: sizeName, currentSize: current, sizeList: sizeResults});
-  }
-
-  _enterEditMode(bodyType) {
-    var _sizeValue = Number(this.state.currentSize[bodyType]);
-    this.props.setMinMax(Number(this.state.currentSize.minValue),
-                         Number(this.state.currentSize.maxValue));
-    this.setState({typeEdit: bodyType, isEdit: true, sizeInitValue: _sizeValue, sizeValue: _sizeValue});
-  }
-
-  _closeEditMode() {
-    this.setState({isEdit: false});
-  }
-
-  _completeEditMode() {
-    let current = Object.assign({}, this.state.currentSize);
-    current[this.state.typeEdit] = this.state.sizeValue;
-    this.setState({isEdit: false, currentSize: current});
-    this.props.completeEdit(current);
   }
 
   increasSize(item) {
