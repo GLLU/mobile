@@ -6,6 +6,7 @@ import { Col, Grid } from "react-native-easy-grid";
 
 import Category from './forms/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
+import CurrencyAndPrice from './forms/CurrencyAndPrice';
 import FontSizeCalculator from './../../calculators/FontSize';
 
 import { loadCategories } from '../../actions/filters';
@@ -194,6 +195,10 @@ class ItemInfoView extends Component {
     console.log(`Call Api create new brand: ${brandName}`);
   }
 
+  updateValue(key, value) {
+    this.setState({[key]: value});
+  }
+
   _renderSharing() {
     const sharingCheckBox = this.state.sharing ? checkboxChecked : checkboxUncheck;
     return (<View style={{marginBottom: 60}}>
@@ -209,44 +214,6 @@ class ItemInfoView extends Component {
               </Col>
             </Grid>
         </View>)
-  }
-
-  _renderCurrency() {
-    return (<View style={{flex: 1, flexDirection: 'row', marginTop: 20, marginBottom: 10}}>
-              <View style={{flex: 0.5}}>
-                <Text style={[styles.titleLabelInfo]}>Currency</Text>
-              </View>
-              <View style={{flex: 0.5, paddingLeft: 12}}>
-                <Text style={[styles.titleLabelInfo]}>Price</Text>
-              </View>
-          </View>)
-  }
-
-  _renderCurrencyInput() {
-    return (<Grid style={{marginTop: -38}}>
-            <Col size={48}>
-              <Grid style={styles.fakeBtnContainer}>
-                <Col size={80}>
-                  <Picker
-                    style={[styles.selectOptions, {width: 100}]}
-                    iosHeader="Select one"
-                    mode="dropdown"
-                    selectedValue={this.state.currency}
-                    onValueChange={(value) => this.setState({ currency: value })}>
-                    <Item label="£ GBP" value="LGP" />
-                    <Item label="$ USD" value="USD" />
-                  </Picker>
-                </Col>
-                <Col size={20}>
-                  <Icon style={styles.arrowSelect} name='ios-arrow-down' />
-                </Col>
-              </Grid>
-            </Col>
-            <Col size={4} />
-            <Col size={48}>
-              <TextInput placeholder="Type a price" keyboardType="numeric" placeholderTextColor="#BDBDBD"  style={styles.textHalfInput} value={this.state.price} onChangeText={(price) => this.setState({price: price})} />
-            </Col>
-          </Grid>)
   }
 
   _rederItemSizeInput() {
@@ -312,8 +279,7 @@ class ItemInfoView extends Component {
                   <BrandNameInput brandName={this.state.brandName} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
                   <Text style={styles.titleLabelInfo}>Item Size</Text>
                   {this._rederItemSizeInput()}
-                  {this._renderCurrency()}
-                  {this._renderCurrencyInput()}
+                  <CurrencyAndPrice currency={this.state.currency} price={this.state.price} updateValue={this.updateValue.bind(this)} />
                   {this._renderSharing()}
               </Content>
         </Container>)
