@@ -33,19 +33,21 @@ export default StyleSheet.create({
     fontSize: fontSizeDefault * 1.35,
     color: fontColor,
     marginBottom: 15,
-    fontFamily: 'PlayfairDisplay-Bold'
+    fontFamily: 'PlayfairDisplay-Bold',
   },
   infoContainer: {
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection:'row',
-    marginBottom: 10
+    marginBottom: 15
   },
   infoText: {
     flexDirection: 'column',
     width: 50,
     fontSize: fontSizeDefault * 1.2,
-    color: '#ccc'
+    color: '#ccc',
+    alignSelf: 'flex-end',
+    marginBottom: 7
   },
   infoDetailTouch: {
     flexDirection: 'column',
@@ -75,7 +77,11 @@ export default StyleSheet.create({
     fontSize: fontSizeDefault,
     fontWeight: 'bold',
     textAlign: 'center',
-      color: '#000000'
+      alignItems: 'flex-end',
+      color: '#000000',
+      width: 50,
+      marginLeft: 10,
+      marginRight: 5,
   },
   infoDetailTextColorChange: {
     color: MKColor.Teal

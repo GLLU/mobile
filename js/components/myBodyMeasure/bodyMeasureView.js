@@ -9,7 +9,7 @@ import Util from '../../Util';
 import convert from 'convert-units';
 import { completeEdit, setMinMax} from '../../actions/myBodyMeasure';
 const deviceWidth = Dimensions.get('window').width;
-const w = deviceWidth / 2 - 30;
+const w = deviceWidth / 2 - 50;
 
 class BodyMeasureView extends Component {
   constructor(props) {
@@ -101,23 +101,28 @@ class BodyMeasureView extends Component {
 
 
   }
+
   _renderMainView() {
     let {sizeTypes} = this.props;
     console.log(this.state.updateTextColor)
     return (
       <View>
+        <View style={{alignItems: 'center',marginLeft: 50 ,flex:1}}>
+          <CMInchRangeView isInchSelect={this.state.isInchSelect}
+                           toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
+        </View>
         {sizeTypes.map((item, i) => {
           return (<View key={i} style={myStyles.infoContainer}>
             <Text style={myStyles.infoText}>{item}</Text>
             <View style={myStyles.infoDetailTouch}>
-              <Text style={[myStyles.infoDetailText, this.state.updateTextColorFor === item ? myStyles.infoDetailTextColorChange : null]}>{this.state.currentSize
-                ? Util.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
-                : null}</Text>
+
               <View style={myStyles.sizeLineContainer}>
                 <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.decreasSize(item) }>
                   <Icon name='minus' style={myStyles.sizeLineIcons}/>
                 </TouchableOpacity>
-                <View style={myStyles.sizeLine}></View>
+                <Text style={[myStyles.infoDetailText, this.state.updateTextColorFor === item ? myStyles.infoDetailTextColorChange : null]}>{this.state.currentSize
+                    ? Util.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
+                    : null}</Text>
                 <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.increasSize(item) }>
                   <Icon name='plus' style={myStyles.sizeLineIcons}/>
                 </TouchableOpacity>
@@ -125,8 +130,7 @@ class BodyMeasureView extends Component {
             </View>
           </View>)
         })}
-        <CMInchRangeView isInchSelect={this.state.isInchSelect}
-          toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
+
       </View>
     )
   }
@@ -134,16 +138,18 @@ class BodyMeasureView extends Component {
   render() {
     return (
       <Grid>
-        <Col>
-        <View style={{width: w}}>
-          <Image style={{width: w, height: 350}}
-             source={this.state.isEdit ? this.props.bodyType.imageEditUrl
-                                       : this.props.bodyType.imageOriUrl} resizeMode={'contain'}/>
-        </View>
+        <Col style={{flex: 0.8}}>
+          <View style={{flexDirection: 'row'}}>
+            <Image source={this.props.bodyType.shapeActive} style={{height: 30, width: 30, resizeMode: 'contain'}}/>
+            <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
+          </View>
+          <View style={{width: w, flex: 1, justifyContent: 'flex-end', paddingBottom: 15}}>
+            <Image style={{width: w, height: 240}}
+               source={this.state.isEdit ? this.props.bodyType.imageEditUrl
+                                         : this.props.bodyType.imageOriUrl} resizeMode={'contain'}/>
+          </View>
         </Col>
-        <Col>
-          <Image source={this.props.bodyType.shapeActive} style={{height: 30, width: 30, marginBottom: 10, resizeMode: 'contain'}}/>
-          <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
+        <Col style={{flex: 1, justifyContent: 'flex-end', marginBottom: 25}}>
             {this.state.isEdit ?  this._renderEditView() : this._renderMainView() }
         </Col>
       </Grid>
