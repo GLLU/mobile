@@ -8,7 +8,6 @@ import myStyles from './styles';
 import Util from '../../Util';
 import convert from 'convert-units';
 import { completeEdit, setMinMax} from '../../actions/myBodyMeasure';
-import RadioButtons from 'react-native-radio-buttons';
 const deviceWidth = Dimensions.get('window').width;
 const w = deviceWidth / 2 - 50;
 const MK = require('react-native-material-kit');
@@ -17,7 +16,6 @@ const {
     MKButton,
     MKColor,
 } = MK;
-const genders = [ "Male",  "Female" ];
 
 class BodyMeasureView extends Component {
   constructor(props) {
@@ -28,8 +26,8 @@ class BodyMeasureView extends Component {
       typeEdit: null, // 'chest','hip','height'
       isInchSelect: false,
 
-      currentSize: Object.assign({} , this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName][2]),
-      sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName],
+      currentSize: Object.assign({} , this.props.sizeList[this.props.scale][this.props.bodyType.uniqueName][2]),
+      sizeList: this.props.sizeList[this.props.scale][this.props.bodyType.uniqueName],
       updateTextColor: 'black',
       // edit
       sizeInitValue: 0,
@@ -44,7 +42,7 @@ class BodyMeasureView extends Component {
       this.props.completeEdit(currentSize);
   }
   static propTypes = {
-    gender: React.PropTypes.string,
+    scale: React.PropTypes.string,
     bodyType: React.PropTypes.object,
 
     // redux
@@ -110,31 +108,8 @@ class BodyMeasureView extends Component {
 
   }
 
-  renderRadioContainer(optionNodes){
-      return (
-          <View style={myStyles.radioView}>
-            <Text style={myStyles.genderLabel}>Gender</Text>
-              {optionNodes}
-          </View>
-      )
-  }
 
-  renderRadioOption(option, selected, onSelect, index){
-    <View key={index}>
-      <TouchableWithoutFeedback onPress={onSelect} >
-        <View style={myStyles.radioOption}>
-          <Text style={[ myStyles.radioBtn, selected ? {color: MKColor.Teal} : null]}>{option}</Text>
-            { index === 0 ? <Text style={myStyles.radioSlash}>/</Text> : null }
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
-  }
 
-    setGenderSelectedOption(genderSelectedOption){
-        this.setState({
-            gender: genderSelectedOption
-        })
-    }
   _renderMainView() {
     let {sizeTypes} = this.props;
     console.log(this.state.updateTextColor)
@@ -144,13 +119,7 @@ class BodyMeasureView extends Component {
           <CMInchRangeView isInchSelect={this.state.isInchSelect}
                            toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
         </View>
-        <RadioButtons
-          options={ genders }
-          onSelection={ this.setGenderSelectedOption.bind(this) }
-          selectedOption={this.state.gender }
-          renderOption={ this.renderRadioOption }
-          renderContainer={ this.renderRadioContainer }
-        />
+
         {sizeTypes.map((item, i) => {
           return (<View key={i} style={myStyles.infoContainer}>
             <Text style={myStyles.infoText}>{item}</Text>

@@ -177,5 +177,24 @@ export default StyleSheet.create({
     marginTop: 45,
     width: 140,
     transform: [{ rotate: '90deg'}]
-  }
+  },
+    radioView: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    height: 60,
+    width: 100,
+    },
+    radioBtn: {
+      marginTop: 20,
+      color: 'lightgrey'
+    },
+    radioOption: {
+        flexDirection: 'row',
+    },
+    radioSlash: {
+      marginTop: 20,
+      paddingLeft: 5,
+      paddingRight: 5,
+      color: 'lightgrey'
+    }
 })
