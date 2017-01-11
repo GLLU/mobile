@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native'
 import { connect } from 'react-redux';
 import { View } from 'native-base';
 
 import Autocomplete from './CustomAutocomplete';
 
-import styles from './styles';
+const styles = StyleSheet.create({
+  inputContainerStyle: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 0,
+    padding: 5
+  },
+  autocompleteContainer: {
+    backgroundColor: 'transparent',
+    marginBottom: 10,
+  },
+});
 
 class BrandNameInput extends Component {
   static propTypes = {

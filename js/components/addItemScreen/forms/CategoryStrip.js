@@ -22,41 +22,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10
   },
-  categoryItem: {
-    width: (w - 40) / 5,
-    marginLeft: 5,
-    marginRight: 5,
-    paddingTop: 5
-  },
-  categoryItemTitle: {
-    color: '#333333',
-    fontSize: new FontSizeCalculator(15).getSize(),
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  categoryItemSelectedTitle: {
-    color: '#1DE9B6',
-    fontSize: new FontSizeCalculator(15).getSize(),
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  categoryItemImage: {
-    height: 100,
-    width: 50,
-    resizeMode: 'contain',
-    alignSelf: 'center'
-  },
-  categoryItemSelectedImage: {
-    height: 110,
-    width: 55,
-    resizeMode: 'contain',
-    alignSelf: 'center'
-  },
-  btncategoryItem: {
-    height: 100,
-    width: 50,
-    alignSelf: 'center'
-  },
   descContainer: {
     position: 'absolute',
     bottom: 0,

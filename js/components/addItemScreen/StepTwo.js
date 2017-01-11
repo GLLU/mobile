@@ -9,6 +9,7 @@ import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
+import Tags from './forms/Tags';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -17,7 +18,68 @@ const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png'
 
 const w = Dimensions.get('window').width;
 
-import styles from './mystyles';
+const styles = StyleSheet.create({
+  itemInfoView: {
+    backgroundColor: 'transparent',
+    padding: 20
+  },
+  titleLabelInfo: {
+    color: '#757575',
+    fontWeight: '400',
+    marginBottom: 8
+  },
+  describe: {
+    flex: 1,
+    height: 100,
+    fontSize: new FontSizeCalculator(18).getSize(),
+    fontFamily: 'Times New Roman',
+    color: '#9E9E9E',
+    marginVertical:6,
+    backgroundColor: '#FFFFFF',
+    padding: 10
+  },
+  textInput: {
+    width: w - 40,
+    height: 50,
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10
+  },
+  confirmText: {
+    flex: 1,
+    height: 120,
+    fontSize: new FontSizeCalculator(15).getSize(),
+    fontFamily: 'Times New Roman',
+    color: '#333333',
+    marginVertical:6,
+    backgroundColor: 'transparent',
+    padding: 2
+  },
+  normalIconImage: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: 5
+  },
+  btnGoToStep3: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: '#1DE9B6',
+    height: 45,
+    width: (w / 8) * 6,
+    borderRadius: 0,
+    alignSelf: 'center'
+  },
+  btnGoToStep3Text: {
+    color: '#FFFFFF',
+    fontSize: new FontSizeCalculator(18).getSize(),
+    fontWeight: '500',
+    textAlign: 'center'
+  },
+});
 
 class StepTwo extends Component {
   static propTypes = {
@@ -110,38 +172,9 @@ class StepTwo extends Component {
             </Text>
             <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
             <TextInput onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)} returnKeyType="done" placeholder="" value={this.state.tmpValue} keyboardType="default" placeholderTextColor="#BDBDBD"  style={styles.textInput} onChangeText={(text) => this.setState({tmpValue: text})} />
-            <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center'}}>
-              {this._renderTags()}
-            </View>
+            <Tags tags={this.state.tags} removeTag={this.removeTag.bind(this)} />
         </Content>
     )
-  }
-
-  _renderTags() {
-    return this.state.tags.map((tag, index) => {
-      var width = tag.length * 15;
-      var left = 70;
-      var right = 30;
-      if (width < 90) {
-          width = width + 20;
-          left = 50;
-          right = 50;
-      }
-      return (
-        <View key={index+1} style={[styles.tagTextContainer, {width: width}]}>
-          <Grid>
-            <Col size={left}>
-              <Text style={{color: '#FFFFFF', textAlign: 'center'}}>{tag}</Text>
-            </Col>
-            <Col size={right}>
-              <Button transparent onPress={() => this.removeTag(tag)} style={styles.tagRemove}>
-                <Text style={styles.tagRemoveText}>x</Text>
-              </Button>
-            </Col>
-          </Grid>
-        </View>
-      )
-    })
   }
 
   _renderSelections(){

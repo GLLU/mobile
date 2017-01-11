@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import { View, Container, Content, Button, Text, Picker, Item, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 
-import styles from './../mystyles';
+import styles from './styles';
 
 const us = require('../../../../images/flags/us.png');
 const uk = require('../../../../images/flags/uk.png');
