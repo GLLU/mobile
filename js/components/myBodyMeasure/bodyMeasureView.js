@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Slider, Dimensions, Image} from 'react-native';
+import {View, Text, TouchableOpacity, TouchableWithoutFeedback, Slider, Dimensions, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {Grid, Col, Button} from 'native-base';
 import { connect } from 'react-redux';
@@ -10,6 +10,13 @@ import convert from 'convert-units';
 import { completeEdit, setMinMax} from '../../actions/myBodyMeasure';
 const deviceWidth = Dimensions.get('window').width;
 const w = deviceWidth / 2 - 50;
+const MK = require('react-native-material-kit');
+
+const {
+    MKButton,
+    MKColor,
+} = MK;
+const genders = [ "Male",  "Female" ];
 
 class BodyMeasureView extends Component {
   constructor(props) {
@@ -102,6 +109,31 @@ class BodyMeasureView extends Component {
 
   }
 
+  renderRadioContainer(option, selected, onSelect, index){
+      return (
+          <View style={myStyles.radioView}>
+            <Text style={myStyles.genderLabel}>Gender</Text>
+              {optionNodes}
+          </View>
+      )
+  }
+
+  renderRadioOption(option, selected, onSelect, index){
+    <View key={index}>
+      <TouchableWithoutFeedback onPress={onSelect} >
+        <View style={myStyles.radioOption}>
+          <Text style={[ myStyles.radioBtn, selected ? {color: MKColor.Teal} : null]}>{option}</Text>
+            { index === 0 ? <Text style={myStyles.radioSlash}>/</Text> : null }
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  }
+
+    setGenderSelectedOption(genderSelectedOption){
+        this.setState({
+            gender: genderSelectedOption
+        })
+    }
   _renderMainView() {
     let {sizeTypes} = this.props;
     console.log(this.state.updateTextColor)
