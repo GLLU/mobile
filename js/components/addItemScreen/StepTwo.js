@@ -186,12 +186,12 @@ class StepTwo extends Component {
             <Location location={this.state.location} updateSelectValue={this.updateSelectValue.bind(this)} />
             <TrustLevel trustLevel={this.state.trustLevel} updateSelectValue={this.updateSelectValue.bind(this)} />
             <Grid>
-              <Col size={10}>
+              <Col size={15}>
                 <Button transparent onPress={() => this.setState({confirm: !this.state.confirm})} style={styles.fakeCheckbox}>
                   <Image source={checkBoxIcon} style={[styles.normalIconImage, {width: 25, height: 25}]} />
                 </Button>
               </Col>
-              <Col size={90}>
+              <Col size={85}>
                 <Text adjustsFontSizeToFit={true} numberOfLines={5} style={styles.confirmText}>
                   {'You will now become a "Glluer Presenter" while your exact measurements will still be hiddden. People that will view this item. Will see a % value of matching between their measurements and yours.'}
                 </Text>
