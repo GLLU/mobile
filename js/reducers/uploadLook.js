@@ -28,7 +28,8 @@ const ACTION_HANDLERS = {
 // Reducer
 const initialState = {
   image: null,
-  selectedCategoryId: 3,
+  selectedCategoryId: 24,
+  posInCategories: 3,
   brandName: '',
   itemSizeCountry: 'us',
   itemSizeNumber: '2',

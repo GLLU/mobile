@@ -97,6 +97,7 @@ class ItemInfoView extends Component {
     loadCategories: React.PropTypes.func,
     categories: React.PropTypes.array,
     selectedCategoryId: React.PropTypes.number,
+    posInCategories: React.PropTypes.number,
     brandName: React.PropTypes.string,
     itemSizeCountry: React.PropTypes.string,
     itemSizeNumber: React.PropTypes.string,
@@ -115,12 +116,24 @@ class ItemInfoView extends Component {
   }
 
   componentDidMount() {
+    var self = this;
     var categories = this.props.loadCategories();
     new Promise((resolve, reject) => {
       resolve(categories);
     }).then((data) => {
-      this.setState({categories: this.props.categories, selectCategory: this.props.categories[this.props.selectedCategoryId - 1]})
+      var category = self.findCategoryById(categories, this.props.selectedCategoryId)
+      self.setState({categories: categories, selectCategory: category});
     });
+  }
+
+  findCategoryById(categories, id) {
+    let category = null;
+    categories.map((cate, index) => {
+      if (parseInt(cate.id) == id){
+        category = cate;
+      }
+    });
+    return category;
   }
 
   selectCategory(item) {
@@ -177,7 +190,7 @@ class ItemInfoView extends Component {
     return(<Container style={styles.itemInfoView}>
               <Content scrollEnabled={false}>
                   <Text style={styles.titleLabelInfo}>Item Type</Text>
-                  <Category categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.selectCategory(cat)} />
+                  <Category categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
                   <Text style={styles.titleLabelInfo}>Brand Name</Text>
                   <BrandNameInput brandName={this.state.brandName} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
                   <Text style={styles.titleLabelInfo}>Item Size</Text>

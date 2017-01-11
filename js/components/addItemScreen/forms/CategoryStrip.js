@@ -54,25 +54,24 @@ class CategoryStrip extends Component {
   static propTypes = {
     categories: React.PropTypes.array,
     selectedCategory: React.PropTypes.object,
-    onCategorySelected: React.PropTypes.func
+    onCategorySelected: React.PropTypes.func,
+    posInCategories: React.PropTypes.number
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      categories: this.props.categories,
-      selectedCategory: this.props.selectedCategory
+      positionX: this.getPositionX()
     }
   }
 
-  componentDidMount() {
+  componentWillReceiveProps() {
   }
 
-  scrollItemToMiddle() {
-    let pos = this.state.categories.indexOf(this.state.selectedCategory);
-    let itemTypeCalculator = new ItemTypeCalculator(pos);
+  getPositionX() {
+    let itemTypeCalculator = new ItemTypeCalculator(this.props.posInCategories - 1);
     let x = itemTypeCalculator.findCurrentPosition();
-    this.refs.categories.scrollTo({x: x});
+    return x;
   }
 
   handleScroll(event) {
@@ -93,7 +92,7 @@ class CategoryStrip extends Component {
     const categories = this.props.categories;
     return categories.map((item, index) => {
       const selected = selectedCategory && selectedCategory.id == item.id;
-      return (<CategoryItem key={index} item={item} selected={selected} onPress={() =>console.log('on press')}/>);
+      return (<CategoryItem key={index} item={item} selected={selected} onPress={() => this.scrollItemToMiddle()}/>);
     });
   }
 
@@ -114,6 +113,7 @@ class CategoryStrip extends Component {
             scrollEventThrottle={32}
             directionalLockEnabled={true}
             contentInset={{top: 0, left: -20, bottom: 0, right: -20}}
+            contentOffset={{x: this.state.positionX, y:0}}
             showsHorizontalScrollIndicator={false}>
             <View style={styles.blankItem} />
             {this._drawCategoryItems()}
