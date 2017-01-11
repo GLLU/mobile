@@ -22,7 +22,7 @@ class AddItemPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 1
+      currentStep: 2
     };
   }
 

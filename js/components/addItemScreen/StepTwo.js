@@ -6,6 +6,7 @@ import { View, Content, Button, Text, Picker, Item, Icon } from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
+import AddMore from './forms/AddMore';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -35,9 +36,7 @@ class StepTwo extends Component {
     super(props);
     this.state = {
         tags: ['dresses', 'black', 'red', 'white'],
-        image1: '',
-        image2: '',
-        image3: '',
+        images:['', '', ''],
         video: '',
         tmpValue: '',
         location: 'us',
@@ -51,14 +50,16 @@ class StepTwo extends Component {
   }
 
   addPhoto(number) {
-    console.log(`Add photo ${number}`);
     ImagePicker.openPicker({
       cropping: false
     }).then(image => {
       var path = image.path;
       var Extension = path.substring(path.lastIndexOf('.')+1).toLowerCase();
       if (Extension == "gif" || Extension == "png" || Extension == "bmp" || Extension == "jpeg" || Extension == "jpg") {
-        this.setState({[`image${number}`]: path});
+        let images = this.state.images;
+        images[number - 1] = path;
+        this.setState({images: images});
+        console.log(this.state.images);
       }
     });
   }
@@ -92,40 +93,6 @@ class StepTwo extends Component {
     this.setState({tags: tags});
   }
 
-  _renderPhotoOrIcon(number) {
-    return this.state[`image${number}`] == '' ? <Image source={addMorePhotoIcon} style={styles.btnWithImage} /> : <Image source={{uri: this.state[`image${number}`]}} style={styles.morePhotoItem} />
-  }
-
-  _renderAddMore() {
-    return (
-      <Content scrollEnabled={false} style={{height: 90, margin: 5}}>
-        <Text style={styles.titleLabelInfo}>Add up to 3 photos and 1 video</Text>
-        <Grid>
-            <Col size={25}>
-                <Button transparent onPress={() => this.addPhoto(1)} style={styles.btnAddMorePhoto}>
-                    {this._renderPhotoOrIcon(1)}
-                </Button>
-            </Col>
-            <Col size={25}>
-                <Button transparent onPress={() => this.addPhoto(2)} style={styles.btnAddMorePhoto}>
-                    {this._renderPhotoOrIcon(2)}
-                </Button>
-            </Col>
-            <Col size={25}>
-                <Button transparent onPress={() => this.addPhoto(3)} style={styles.btnAddMorePhoto}>
-                    {this._renderPhotoOrIcon(3)}
-                </Button>
-            </Col>
-            <Col size={25}>
-                <Button transparent onPress={() => this.addVideo()} style={styles.btnAddMorePhoto}>
-                    <Image source={addMoreVideoIcon} style={styles.btnWithImage} />
-                </Button>
-            </Col>
-        </Grid>
-      </Content>
-      )
-  }
-
   getHeight(number) {
     var l = this.state.tags.length;
     var rH = 80;
@@ -136,7 +103,7 @@ class StepTwo extends Component {
     return numR == 0 ? 250 : numR * rH + 270;
   }
 
-  _renderForm() {
+  _renderDescribeAndTags() {
     var number = w < 375 ? 2 : 3;
     var height = this.getHeight(number);
     return (
@@ -228,6 +195,7 @@ class StepTwo extends Component {
       </View>
     )
   }
+
   _renderTrustLevel() {
     return (
       <View style={{height: 100, marginTop: 10, marginBottom: 10}}>
@@ -271,7 +239,7 @@ class StepTwo extends Component {
     )
   }
 
-  _renderForm2(){
+  _renderSelections(){
     const checkBoxIcon = this.state.confirm ? checkboxCheckedIcon : checkboxUncheckIcon;
     return (
         <Content scrollEnabled={false} style={{height: 400, margin: 5}}>
@@ -302,9 +270,9 @@ class StepTwo extends Component {
           <ImageWithTags tags={tags} image={image} addTag={addTag} width={w - 40}/>
         </View>
         <View style={styles.itemInfoView}>
-            {this._renderAddMore()}
-            {this._renderForm()}
-            {this._renderForm2()}
+            <AddMore video={this.state.video} images={this.state.images} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />
+            {this._renderDescribeAndTags()}
+            {this._renderSelections()}
             <Button transparent onPress={() => this.props.continueAction()} style={styles.btnGoToStep3}>
                 <Text style={styles.btnGoToStep3Text}>PUBLISH</Text>
             </Button>
