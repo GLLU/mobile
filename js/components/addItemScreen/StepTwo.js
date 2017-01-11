@@ -7,17 +7,13 @@ import { Row, Col, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
+import Location from './forms/Location';
+import TrustLevel from './forms/TrustLevel';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 
-const addMorePhotoIcon = require('../../../images/icons/add-more-photo.png');
-const addMoreVideoIcon = require('../../../images/icons/add-more-video.png');
-const us = require('../../../images/flags/us.png');
-const uk = require('../../../images/flags/uk.png');
-const trustLevelIcon = require('../../../images/icons/trust-level.png');
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
-const locationIcon = require('../../../images/icons/location.png');
 
 const w = Dimensions.get('window').width;
 
@@ -42,10 +38,6 @@ class StepTwo extends Component {
         location: 'us',
         trustLevel: '0',
         confirm: true,
-        flags: [
-          {name: 'uk', icon: uk},
-          {name: 'us', icon: us}
-        ]
     }
   }
 
@@ -75,6 +67,10 @@ class StepTwo extends Component {
         console.log(`${path} will upload and get thumbnail via api`);
       }
     });
+  }
+
+  updateSelectValue(key, value) {
+    this.setState({[key]: value});
   }
 
   addTags(name) {
@@ -148,104 +144,13 @@ class StepTwo extends Component {
     })
   }
 
-  _renderLocation() {
-    let flagIcon = null;
-    this.state.flags.map((flag) => {
-      if (flag.name == this.state.location) {
-        flagIcon = flag.icon;
-      }
-    });
-    return (
-      <View style={{height: 100, marginTop: 10, marginBottom: 10}}>
-        <Grid style={styles.gridInput}>
-            <Row>
-              <Grid>
-                <Col size={15}>
-                  <Image source={locationIcon} style={styles.normalIconImage} />
-                </Col>
-                <Col size={35}>
-                  <Text style={[styles.titleLabelInfo, {paddingTop: 10}]}>Location</Text>
-                </Col>
-                <Col size={10}>
-                  <Image source={flagIcon} style={styles.flagSelectOptions} />
-                </Col>
-                <Col size={20}>
-                  <Picker
-                    style={styles.selectOptions}
-                    iosHeader="Select one"
-                    mode="dropdown"
-                    selectedValue={this.state.location}
-                    onValueChange={(value) => this.setState({ location: value })}>
-                    <Item label="UK" value="uk" />
-                    <Item label="US" value="us" />
-                  </Picker>
-                </Col>
-                <Col size={20}>
-                  <Icon style={[styles.arrowSelect, {textAlign: 'center'}]} name='ios-arrow-forward-outline' />
-                </Col>
-              </Grid>
-            </Row>
-            <Row>
-              <Grid>
-                <Col size={15} />
-                <Col size={85}><Text style={styles.smallTextInput}>Keep country updated to increase sales</Text></Col>
-              </Grid>
-            </Row>
-        </Grid>
-      </View>
-    )
-  }
-
-  _renderTrustLevel() {
-    return (
-      <View style={{height: 100, marginTop: 10, marginBottom: 10}}>
-        <Grid style={styles.gridInput}>
-            <Row>
-              <Grid>
-                <Col size={15}>
-                  <Image source={trustLevelIcon} style={styles.normalIconImage} />
-                </Col>
-                <Col size={35}>
-                  <Text style={[styles.titleLabelInfo, {paddingTop: 10}]}>Trust Level</Text>
-                </Col>
-                <Col size={30}>
-                  <Picker
-                    style={styles.selectOptions}
-                    iosHeader="Select one"
-                    mode="dropdown"
-                    selectedValue={this.state.trustLevel}
-                    onValueChange={(value) => this.setState({ trustLevel: value })}>
-                    <Item label="0/5" value="0" />
-                    <Item label="1/5" value="1" />
-                    <Item label="2/5" value="2" />
-                    <Item label="3/5" value="3" />
-                    <Item label="4/5" value="4" />
-                    <Item label="5/5" value="5" />
-                  </Picker>
-                </Col>
-                <Col size={20}>
-                  <Icon style={[styles.arrowSelect, {textAlign: 'center'}]} name='ios-arrow-forward-outline' />
-                </Col>
-              </Grid>
-            </Row>
-            <Row>
-              <Grid>
-                <Col size={15} />
-                <Col size={85}><Text style={styles.smallTextInput}>Increase sales by upgrading your level</Text></Col>
-              </Grid>
-            </Row>
-        </Grid>
-      </View>
-    )
-  }
-
   _renderSelections(){
     const checkBoxIcon = this.state.confirm ? checkboxCheckedIcon : checkboxUncheckIcon;
     return (
         <Content scrollEnabled={false} style={{height: 400, margin: 5}}>
             <Text style={[styles.titleLabelInfo, {color: '#333333'}]}>Improve your sales experience</Text>
-            {this._renderLocation()}
-            {this._renderTrustLevel()}
+            <Location location={this.state.location} updateSelectValue={this.updateSelectValue.bind(this)} />
+            <TrustLevel trustLevel={this.state.trustLevel} updateSelectValue={this.updateSelectValue.bind(this)} />
             <Grid>
               <Col size={10}>
                 <Button transparent onPress={() => this.setState({confirm: !this.state.confirm})} style={styles.fakeCheckbox}>
