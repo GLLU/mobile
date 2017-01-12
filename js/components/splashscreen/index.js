@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import { Container, Content, Text, View } from 'native-base';
+import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
@@ -109,7 +109,11 @@ class SplashPage extends Component {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
               <View style={styles.signupContainer}>
-                <SignUpEmailButton onPress={() => this.pushRoute('signupemail', 1) } />
+                <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
+                <View style={styles.alreadyBox}>
+                  <Text style={styles.alreadyTxt}>Already a user?</Text>
+                  <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+                </View>
                 <Text style={styles.label}>Or</Text>
                 <Icon.Button style={styles.btnFB}
                    name="facebook"

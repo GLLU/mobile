@@ -11,8 +11,8 @@ const {
 
 module.exports = StyleSheet.create({
   header: {
-    backgroundColor: 'transparent',
-    shadowOpacity: 0,
+      backgroundColor: 'transparent',
+      shadowOpacity: 0,
   },
   headerTitle: {
     fontSize: 22,
@@ -52,18 +52,7 @@ module.exports = StyleSheet.create({
     top: 0,
     left: 0
   },
-  uploadImgContainer: {
-    marginTop: 15,
-    alignSelf: 'center',
-    marginBottom: 10
-  },
-  uploadImgBtn: {
-    borderRadius: 50,
-    backgroundColor: '#FFFFFF',
-    height: 100,
-    width: 100
-  },
-  uploadImgIcon: {
+  icons: {
     backgroundColor: 'transparent',
     marginBottom: 5
   },
@@ -73,49 +62,39 @@ module.exports = StyleSheet.create({
     marginRight: 20,
     borderBottomWidth: 2,
     borderColor: 'rgba(192,192,192, .3)',
-    height: 55,
+    height: 50,
     paddingLeft: 0,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+      marginTop: 20
   },
   formGroup: {
     flex: 1,
     borderColor: 'transparent',
-    alignItems: 'flex-end',
     paddingLeft: 0
   },
   label: {
     color: 'lightgrey',
     fontSize: 16,
     alignSelf: 'center',
-    marginTop: 20,
-    width: 100,
+    marginTop: 10,
+    width: 100
   },
   addOpacity: {
       opacity: 0.8
   },
-  confirmPass: {
-    paddingBottom: 10
-  },
-  genderSelectContainer:{
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
   formInput: {
     flex: 1,
-    paddingLeft: 20,
+    paddingLeft: 0,
+    paddingRight: 0,
     lineHeight: 20,
-    marginTop: 17,
-    alignItems: 'stretch',
+    marginTop: 10,
     color: '#FFFFFF',
     marginLeft: 10,
-
   },
   formBtn: {
     alignSelf: 'center',
-    marginTop: 70,
-    marginBottom: (Platform.OS === 'ios') ? 20 : 10,
+    marginTop: 50,
+    marginBottom: (Platform.OS === 'ios') ? 20 : 0,
     width: 280,
     height: 40,
     backgroundColor: '#ADADAD',
@@ -123,52 +102,25 @@ module.exports = StyleSheet.create({
     opacity: 0.8
   },
   validationPassed: {
-    backgroundColor: MKColor.Teal
+      backgroundColor: MKColor.Teal,
+      opacity: 1
   },
-  countrySelectView: {
-    flex:1,
-  },
-  countrySelectInput: {
-    padding:10,
-    height:40,
-    color: '#FFFFFF',
-    paddingLeft: 20,
-    marginLeft: 10
-  },
-  alreadyBox: {
-    alignSelf: 'center',
-    flexDirection:'row',
-  },
-  alreadyTxt: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    opacity: 0.8
-  },
-  alreadyBtn: {
-    backgroundColor: 'transparent',
-    paddingVertical: 0,
-    paddingHorizontal: 5,
-    alignItems: 'flex-start',
-    shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0,
-      paddingTop: (Platform.OS === 'ios') ? 0 : 5,
-  },
-  genderBtnContainer:{
+  instuctionsContainer: {
       flex: 1,
-      alignItems: 'center',
-      marginTop: deviceHeight/4
+      marginTop: 20,
+      paddingTop: 30,
+      paddingLeft: 10,
+      paddingRight: 10,
+      bottom: 0,
+      alignSelf: 'center'
   },
-  genderImage:{
-      width: 130,
-      height: 130,
-      borderRadius: 65
-  },
-  genderLabel:{
+  instuctions: {
+      width: 300,
+      height: (Platform.OS === 'ios') ? 40 : 50,
       color: '#FFFFFF',
-      alignSelf: 'center',
-      marginTop: 15,
-      opacity: 0.8
+      opacity: 0.8,
+      textAlign: 'center'
   },
+
 
 });
