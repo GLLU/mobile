@@ -78,7 +78,7 @@ class AppNavigator extends Component {
   _renderScene(props) { // eslint-disable-line class-methods-use-this
     switch (props.scene.route.key) {
       case 'splashscreen':
-        return <MyBodyMeasure />;
+        return <SplashPage />;
       case 'feedscreen':
         return <FeedPage />;
       case 'login':
