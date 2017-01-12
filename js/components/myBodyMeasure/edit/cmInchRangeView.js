@@ -5,11 +5,10 @@ import RadioButtons from 'react-native-radio-buttons';
 const MK = require('react-native-material-kit');
 
 const {
-    MKButton,
     MKColor,
 } = MK;
 
-const scales = [ "Male", "Female" ];
+const scales = [ 'CM', 'INCH' ];
 
 
 export default class CmInchRangeView extends Component {
@@ -17,6 +16,13 @@ export default class CmInchRangeView extends Component {
     isInchSelect: React.PropTypes.bool,
     toggleCMInch: React.PropTypes.func
   }
+    constructor(props) {
+        super(props);
+        this.state = {
+            scaleSelectedOption: 'CM',
+        }
+    }
+
 
     renderRadioContainer(optionNodes){
         return (
@@ -41,25 +47,18 @@ export default class CmInchRangeView extends Component {
 
     setScaleSelectedOption(scaleSelectedOption){
         this.setState({
-            scale: scaleSelectedOption
+            scaleSelectedOption: scaleSelectedOption
         })
+        scaleSelectedOption === 'INCH' ? this.props.toggleCMInch(true) : this.props.toggleCMInch(false)
     }
 
   render() {
-    const isInchSelect = this.props.isInchSelect;
-    const leftTextStyle = [isInchSelect ? myStyles.toggleDeactive : myStyles.toggleActive ];
-    const rightTextStyle = [isInchSelect ? myStyles.toggleActive : myStyles.toggleDeactive ];
     return (
       <View style={myStyles.toggleContainer}>
-        <Text style={leftTextStyle}>CM</Text>
-        <Switch style={{marginHorizontal: 5}}
-            onValueChange={(value) => this.props.toggleCMInch(value)}
-            value={this.props.isInchSelect} />
-        <Text style={rightTextStyle}>INCH</Text>
           <RadioButtons
               options={ scales }
               onSelection={ this.setScaleSelectedOption.bind(this) }
-              selectedOption={this.state.scale }
+              selectedOption={ this.state.scaleSelectedOption }
               renderOption={ this.renderRadioOption }
               renderContainer={ this.renderRadioContainer }
           />

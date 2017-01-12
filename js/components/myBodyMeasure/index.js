@@ -57,6 +57,7 @@ class MyBodyMeasure extends Component {
 
 
   render() {
+    console.log('blab',this.props.currentBodyType)
     return (
       <Container theme={gluuTheme}>
         <Header>

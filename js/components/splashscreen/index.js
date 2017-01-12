@@ -18,6 +18,8 @@ const backgroundShadow = require('../../../images/background-shadow.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
 
+import { emailSignIn } from '../../actions/user';
+
 const {
   MKButton,
   MKColor,
@@ -56,6 +58,15 @@ class SplashPage extends Component {
 
   singupWithEmail() {
     console.log('Go To Signup with Email');
+    const data = {
+      type: 'login',
+      attributes: {
+        email: '1@1.com',
+        password: '123123'
+      }
+    }
+    console.log(data)
+    this.props.emailSignIn(data);
   }
 
   connectWithFB() {
@@ -74,6 +85,7 @@ class SplashPage extends Component {
                     alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
                   } else {
                     const jsonData = { access_token: data["accessToken"], expirationTime: data["expirationTime"], data: result };
+                    console.log('facebookData',jsonData);
                     this.props.loginViaFacebook(jsonData);
                   }
                 });
@@ -127,6 +139,7 @@ class SplashPage extends Component {
 
 function bindAction(dispatch) {
   return {
+    emailSignIn: (data) => dispatch(emailSignIn(data)),
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
   };

@@ -11,17 +11,17 @@ const {
 
 export default StyleSheet.create({
   selectBodyTypeText: {
-      marginTop: 10,
-      marginBottom: 25,
-      paddingHorizontal: 50,
-      textAlign: 'center',
-      fontWeight: '400',
-      fontSize: fontSizeDefault * 1.1,
-      color: fontColor
+    marginTop: 10,
+    marginBottom: 25,
+    paddingHorizontal: 50,
+    textAlign: 'center',
+    fontWeight: '400',
+    fontSize: fontSizeDefault * 1.1,
+    color: fontColor
   },
   continueButton: {
-      marginTop: 15,
-      marginHorizontal: 50
+    marginTop: 15,
+    marginHorizontal: 50
   },
   container: {
     paddingTop: 25,
@@ -77,11 +77,11 @@ export default StyleSheet.create({
     fontSize: fontSizeDefault,
     fontWeight: 'bold',
     textAlign: 'center',
-      alignItems: 'flex-end',
-      color: '#000000',
-      width: 50,
-      marginLeft: 10,
-      marginRight: 5,
+    alignItems: 'flex-end',
+    color: '#000000',
+    width: 53,
+    marginLeft: 8,
+    marginRight: 4,
   },
   infoDetailTextColorChange: {
     color: MKColor.Teal
@@ -178,23 +178,26 @@ export default StyleSheet.create({
     width: 140,
     transform: [{ rotate: '90deg'}]
   },
-    radioView: {
+  radioView: {
     flexDirection: 'row',
     alignSelf: 'center',
     height: 60,
     width: 100,
-    },
-    radioBtn: {
-      marginTop: 20,
-      color: 'lightgrey'
-    },
-    radioOption: {
-        flexDirection: 'row',
-    },
-    radioSlash: {
-      marginTop: 20,
-      paddingLeft: 5,
-      paddingRight: 5,
-      color: 'lightgrey'
-    }
+    alignItems: 'flex-end',
+    marginBottom: 15,
+    marginLeft: 10
+  },
+  radioBtn: {
+    color: 'lightgrey',
+    fontSize: 17
+  },
+  radioOption: {
+    flexDirection: 'row',
+  },
+  radioSlash: {
+    paddingLeft: 5,
+    paddingRight: 5,
+    color: 'lightgrey',
+    fontSize: 17
+  }
 })

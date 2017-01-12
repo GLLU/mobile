@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, TouchableWithoutFeedback, Slider, Dimensions, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {Grid, Col, Button} from 'native-base';
+import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';
 import myStyles from './styles';
@@ -10,24 +10,17 @@ import convert from 'convert-units';
 import { completeEdit, setMinMax} from '../../actions/myBodyMeasure';
 const deviceWidth = Dimensions.get('window').width;
 const w = deviceWidth / 2 - 50;
-const MK = require('react-native-material-kit');
-
-const {
-    MKButton,
-    MKColor,
-} = MK;
 
 class BodyMeasureView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isEdit: false,
-      sizeSelect: null, // XS,S,M,L,XL
       typeEdit: null, // 'chest','hip','height'
       isInchSelect: false,
 
-      currentSize: Object.assign({} , this.props.sizeList[this.props.scale][this.props.bodyType.uniqueName][2]),
-      sizeList: this.props.sizeList[this.props.scale][this.props.bodyType.uniqueName],
+      currentSize: Object.assign({} , this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName][2]),
+      sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName],
       updateTextColor: 'black',
       // edit
       sizeInitValue: 0,
@@ -37,14 +30,9 @@ class BodyMeasureView extends Component {
     }
   }
 
-  componentDidMount() {
-    let { currentSize } = this.state
-      this.props.completeEdit(currentSize);
-  }
   static propTypes = {
-    scale: React.PropTypes.string,
+    gender: React.PropTypes.string,
     bodyType: React.PropTypes.object,
-
     // redux
     sizeList: React.PropTypes.object,
     sizeTypes: React.PropTypes.array,
@@ -54,8 +42,9 @@ class BodyMeasureView extends Component {
     setMinMax: React.PropTypes.func
   }
 
-  __invertScale(scaleType) {
-    return scaleType === 'in' ? 'cm' : 'in';
+  componentDidMount() {
+      let { currentSize } = this.state
+      this.props.completeEdit(currentSize);
   }
 
   __convertCmAndInc(obj, fromScale, toScale) {
@@ -104,22 +93,15 @@ class BodyMeasureView extends Component {
     if(this.state.updateTextColor === 'green'){
         setTimeout(function() { this.setState({updateTextColor: 'black', updateTextColorFor: ''}); }.bind(this), 200);
     }
-
-
   }
-
-
 
   _renderMainView() {
     let {sizeTypes} = this.props;
-    console.log(this.state.updateTextColor)
     return (
       <View>
         <View style={{alignItems: 'center',marginLeft: 50 ,flex:1}}>
-          <CMInchRangeView isInchSelect={this.state.isInchSelect}
-                           toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
+          <CMInchRangeView toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
         </View>
-
         {sizeTypes.map((item, i) => {
           return (<View key={i} style={myStyles.infoContainer}>
             <Text style={myStyles.infoText}>{item}</Text>
@@ -139,7 +121,6 @@ class BodyMeasureView extends Component {
             </View>
           </View>)
         })}
-
       </View>
     )
   }
@@ -148,7 +129,7 @@ class BodyMeasureView extends Component {
     return (
       <Grid>
         <Col style={{flex: 0.8}}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', marginRight: 25}}>
             <Image source={this.props.bodyType.shapeActive} style={{height: 30, width: 30, resizeMode: 'contain'}}/>
             <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
           </View>
