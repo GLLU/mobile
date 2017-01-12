@@ -10,6 +10,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -49,6 +50,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new ReactVideoPackage(),
             new ReactMaterialKitPackage(),
             new VectorIconsPackage(),
             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
