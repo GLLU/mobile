@@ -25,7 +25,7 @@ const {
 
 const PERMISSIONS = ["email", "public_profile"];
 
-const SignUpEmailButton = MKButton.coloredButton()
+const SignUpEmailButton = MKButton.coloredFlatButton()
   .withBackgroundColor(MKColor.Teal)
   .withTextStyle({
     color: 'white',
