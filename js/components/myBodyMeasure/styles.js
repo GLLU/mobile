@@ -1,5 +1,6 @@
-import {StyleSheet} from 'react-native';
-
+import {StyleSheet, Dimensions} from 'react-native';
+const deviceWidth = Dimensions.get('window').width;
+const w = deviceWidth / 2 - 50;
 let fontSizeDefault = 14;
 let fontColor = '#000';
 const MK = require('react-native-material-kit');
@@ -29,11 +30,36 @@ export default StyleSheet.create({
     marginHorizontal: 10,
     backgroundColor: '#ffffff'
   },
+  bodyType: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginRight: 25
+  },
+  bodyTypeShapeImage: {
+      height: 30,
+      width: 30,
+      resizeMode: 'contain'
+  },
   bodyTypeText: {
     fontSize: fontSizeDefault * 1.35,
     color: fontColor,
     marginBottom: 15,
     fontFamily: 'PlayfairDisplay-Bold',
+  },
+  bodyTypeImageContainer: {
+    width: w,
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 15
+  },
+  bodyTypeImage: {
+    width: w,
+    height: 240
+  },
+  sizeListContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 25
   },
   infoContainer: {
     flexWrap: 'wrap',
@@ -129,54 +155,10 @@ export default StyleSheet.create({
     fontSize: fontSizeDefault * 0.9,
     color: '#fff'
   },
-  rangeContainer: {
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    flexDirection:'row',
-    padding: 10,
-    height: 180,
-    backgroundColor: '#f2f2f2'
-  },
-  rangeButtonContainer: {
-    flex: 1,
-    alignSelf:'flex-end',
-    marginBottom: 10
-  },
-  rangeCloseButton: {
-    alignSelf: 'center'
-  },
-  rangeCloseIcon: {
-    color: '#797979',
-    textAlign: 'center'
-  },
-  rangeCompleteButton: {
-    alignSelf: 'center',
-  },
-  rangeCompleteIcon: {
-    color: '#05d7b2',
-    textAlign: 'center'
-  },
-  sliderContainer: {
-    flex: 1,
+  scaleRadioContainer: {
     alignItems: 'center',
-  },
-  sliderText: {
-    position: 'absolute',
-    top: 100,
-    right: 10,
-    fontSize: fontSizeDefault * 0.9,
-    fontWeight: 'bold'
-  },
-  sliderSizeType: {
-    height: 20,
-    fontSize: fontSizeDefault * 0.9,
-    fontWeight: 'bold',
-    marginBottom: 10
-  },
-  slider: {
-    marginTop: 45,
-    width: 140,
-    transform: [{ rotate: '90deg'}]
+    marginLeft: 50,
+    flex:1
   },
   radioView: {
     flexDirection: 'row',

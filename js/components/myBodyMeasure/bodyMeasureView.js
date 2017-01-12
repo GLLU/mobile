@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, TouchableWithoutFeedback, Slider, Dimensions, Image} from 'react-native';
+import {View, Text, TouchableOpacity, TouchableWithoutFeedback, Slider, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
@@ -8,8 +8,6 @@ import myStyles from './styles';
 import Util from '../../Util';
 import convert from 'convert-units';
 import { completeEdit, setMinMax} from '../../actions/myBodyMeasure';
-const deviceWidth = Dimensions.get('window').width;
-const w = deviceWidth / 2 - 50;
 
 class BodyMeasureView extends Component {
   constructor(props) {
@@ -99,7 +97,7 @@ class BodyMeasureView extends Component {
     let {sizeTypes} = this.props;
     return (
       <View>
-        <View style={{alignItems: 'center',marginLeft: 50 ,flex:1}}>
+        <View style={myStyles.scaleRadioContainer}>
           <CMInchRangeView toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
         </View>
         {sizeTypes.map((item, i) => {
@@ -129,17 +127,17 @@ class BodyMeasureView extends Component {
     return (
       <Grid>
         <Col style={{flex: 0.8}}>
-          <View style={{flexDirection: 'row', justifyContent: 'center', marginRight: 25}}>
-            <Image source={this.props.bodyType.shapeActive} style={{height: 30, width: 30, resizeMode: 'contain'}}/>
+          <View style={myStyles.bodyType}>
+            <Image source={this.props.bodyType.shapeActive} style={myStyles.bodyTypeShapeImage}/>
             <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
           </View>
-          <View style={{width: w, flex: 1, justifyContent: 'flex-end', paddingBottom: 15}}>
-            <Image style={{width: w, height: 240}}
+          <View style={myStyles.bodyTypeImageContainer}>
+            <Image style={myStyles.bodyTypeImage}
                source={this.state.isEdit ? this.props.bodyType.imageEditUrl
                                          : this.props.bodyType.imageOriUrl} resizeMode={'contain'}/>
           </View>
         </Col>
-        <Col style={{flex: 1, justifyContent: 'flex-end', marginBottom: 25}}>
+        <Col style={myStyles.sizeListContainer}>
             {this.state.isEdit ?  this._renderEditView() : this._renderMainView() }
         </Col>
       </Grid>
