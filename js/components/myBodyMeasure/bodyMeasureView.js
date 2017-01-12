@@ -17,7 +17,7 @@ class BodyMeasureView extends Component {
       typeEdit: null, // 'chest','hip','height'
       isInchSelect: false,
 
-      currentSize: Object.assign({} , this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName][2]),
+      currentSize: Object.assign({} , this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName]),
       sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName],
       updateTextColor: 'black',
       // edit

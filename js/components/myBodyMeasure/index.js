@@ -45,7 +45,6 @@ class MyBodyMeasure extends Component {
     const { currentSize, currentBodyType } = this.props;
     const data = {
       body_type: currentBodyType.uniqueName,
-      size: currentSize.name.toLowerCase(),
       chest: currentSize.chest,
       waist: currentSize.waist,
       hips: currentSize.hips,
