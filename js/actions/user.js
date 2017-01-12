@@ -24,9 +24,9 @@ export function emailSignUp(data):Action {
   };
 }
 
-export function emailSignIn(email, password):Action {
+export function emailSignIn(data):Action {
   return (dispatch) => {
-    return dispatch(rest.actions.email_sign_in({ email, password }))
+    return dispatch(rest.actions.email_sign_in({ data }))
   };
 }
 

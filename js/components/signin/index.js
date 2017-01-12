@@ -48,8 +48,15 @@ class SignInPage extends Component {
 
   singinWithEmail() {
       let { password, email } = this.state;
+      const data = {
+          type: 'login',
+          attributes: {
+              email,
+              password
+          }
+      }
       if(this.checkValidations()) {
-          this.props.emailSignIn(email,password);
+          this.props.emailSignIn(data);
       }
   }
   checkValidations() {
@@ -143,7 +150,7 @@ class SignInPage extends Component {
 
 function bindAction(dispatch) {
   return {
-      emailSignIn: (email, password) => dispatch(emailSignIn(email, password)),
+      emailSignIn: (data) => dispatch(emailSignIn(data)),
       popRoute: key => dispatch(popRoute(key)),
       pushRoute: (route, key) => dispatch(pushRoute(route, key))
   };

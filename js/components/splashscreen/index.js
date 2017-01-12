@@ -110,10 +110,6 @@ class SplashPage extends Component {
               </View>
               <View style={styles.signupContainer}>
                 <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
-                <View style={styles.alreadyBox}>
-                  <Text style={styles.alreadyTxt}>Already a user?</Text>
-                  <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
-                </View>
                 <Text style={styles.label}>Or</Text>
                 <Icon.Button style={styles.btnFB}
                    name="facebook"
@@ -121,6 +117,10 @@ class SplashPage extends Component {
                    onPress={this.connectWithFB.bind(this)}>
                  Connect with facebook
                </Icon.Button>
+              <View style={styles.alreadyBox}>
+                <Text style={styles.alreadyTxt}>Already a user?</Text>
+                <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+              </View>
               </View>
               <View style={styles.bottomContainer}>
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
