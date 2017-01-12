@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Container, Header, Content, Button, Icon, Title } from 'native-base';
 import {Text, View} from 'react-native';
 import styles from './styles';
-import gluuTheme from '../../themes/gluu-theme';
+import glluTheme from '../../themes/gllu-theme';
 
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -53,7 +53,7 @@ class MyBodyType extends Component {
 
   render() {
     return (
-      <Container theme={gluuTheme}>
+      <Container theme={glluTheme}>
         <Header>
           <Button transparent onPress={() => this.popRoute()}>
             <Icon name="ios-arrow-back" />
