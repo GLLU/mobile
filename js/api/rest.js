@@ -22,6 +22,51 @@ export default reduxApi({
       }
     ]
   },
+  email_sign_up: {
+      url: "/signup",
+      options: {
+          method: "post"
+      },
+      postfetch: [
+          ({data, dispatch}) => {
+              console.log('data sign up rest',data)
+              console.log(`Logged in successfully: ${JSON.stringify(data)}`);
+              const attributes = data['data']['attributes'];
+              global.apiKey = attributes['api-key'];
+              const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
+              dispatch(setUser(user));
+              dispatch(navigateTo('feedscreen'));
+          }
+      ]
+  },
+  email_sign_in: {
+      url: "/login",
+      options: {
+          method: "post"
+      },
+      postfetch: [
+          ({data, dispatch}) => {
+              console.log('data sign up rest',data)
+              console.log(`Logged in successfully: ${JSON.stringify(data)}`);
+              const attributes = data['data']['attributes'];
+              global.apiKey = attributes['api-key'];
+              const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
+              dispatch(setUser(user));
+              dispatch(navigateTo('feedscreen'));
+          }
+      ]
+  },
+  forgot_password: {
+      url: "/password_recovery",
+      options: {
+          method: "post"
+      },
+      postfetch: [
+          ({data}) => {
+              console.log('data forgot password rest',data)
+          }
+      ]
+  },
   sizes: {
     url: '/users/5/size',
     options: {
