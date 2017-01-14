@@ -78,7 +78,7 @@ class SplashPage extends Component {
                   if (error) {
                     alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
                   } else {
-                    const jsonData = { access_token: data["accessToken"], expirationTime: data["expirationTime"], data: result };
+                    const jsonData = { access_token: data["accessToken"], expiration_time: data["expirationTime"], data: result };
                     this.props.loginViaFacebook(jsonData);
                   }
                 });

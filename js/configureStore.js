@@ -7,6 +7,7 @@ import sequenceAction from 'redux-sequence-action';
 import { persistStore } from 'redux-persist';
 import reducer from './reducers';
 import promise from './promise';
+import { setEndpointPath, setEndpointHost, setHeaders } from 'redux-json-api';
 
 export default function configureStore(onCompletion:()=>void):any {
   const enhancer = compose(
@@ -17,6 +18,12 @@ export default function configureStore(onCompletion:()=>void):any {
   );
 
   const store = createStore(reducer, enhancer);
+  store.dispatch(setEndpointHost('https://sam.gllu.com'));
+  store.dispatch(setEndpointPath('/v1'))
+  store.dispatch(setHeaders({
+    'Content-Type': 'application/vnd.api+json',
+    Accept: 'application/vnd.api+json'
+  }));
   persistStore(store, { storage: AsyncStorage }, onCompletion);
 
   return store;

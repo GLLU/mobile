@@ -3,6 +3,8 @@ import type { Action } from './types';
 
 import rest from '../api/rest';
 
+import { createEntity } from 'redux-json-api';
+
 export const SET_USER = 'SET_USER';
 
 export function setUser(user:string):Action {
@@ -13,8 +15,19 @@ export function setUser(user:string):Action {
 }
 
 export function loginViaFacebook(data):Action {
+  console.log('loginViaFacebook', data);
   return (dispatch) => {
-    return dispatch(rest.actions.facebook_sign_in({}, { body: JSON.stringify(data) }));
+    const entity = {
+      "type": "facebook_auth",
+      "attributes": {
+        "access_token": data['access_token'],
+        "expiration_time": data['expiration_time']
+      }
+    }
+
+    return dispatch(createEntity(entity)).then(() => {
+      console.log('after login with facebook');
+    });;
   };
 }
 
