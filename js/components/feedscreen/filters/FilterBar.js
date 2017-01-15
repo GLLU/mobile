@@ -33,7 +33,7 @@ class FilterView extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.loadCategories();
   }
 
@@ -169,10 +169,14 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  categories: state.filters.categories,
-  minPrice: state.filters.minPrice,
-  maxPrice: state.filters.maxPrice
-});
+const mapStateToProps = state => {
+  console.log('mapStateToProps', state.api);
+  const tags = state.api.tag ? state.api.tag.data : [];
+  return {
+    categories: tags,
+    minPrice: state.filters.minPrice,
+    maxPrice: state.filters.maxPrice
+  }
+};
 
 export default connect(mapStateToProps, bindActions)(FilterView);
