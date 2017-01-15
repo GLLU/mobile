@@ -21,8 +21,7 @@ export default function configureStore(onCompletion:()=>void):any {
   store.dispatch(setEndpointHost('https://sam.gllu.com'));
   store.dispatch(setEndpointPath('/v1'))
   store.dispatch(setHeaders({
-    'Content-Type': 'application/vnd.api+json',
-    Accept: 'application/vnd.api+json'
+    'Content-Type': 'application/json',
   }));
   persistStore(store, { storage: AsyncStorage }, onCompletion);
 
