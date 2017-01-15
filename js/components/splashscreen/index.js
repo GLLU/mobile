@@ -74,10 +74,11 @@ class SplashPage extends Component {
           if (diffPermissions.length == 0) {
             AccessToken.getCurrentAccessToken().then(
               (data) => {
-                const infoRequest = new GraphRequest('/me?fields=gender', null, (error, result) => {
+                const infoRequest = new GraphRequest('/me?fields=id,name,email,gender', null, (error, result) => {
                   if (error) {
                     alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
                   } else {
+                    console.log('user info from facebook', result);
                     const jsonData = { access_token: data["accessToken"], expiration_time: data["expirationTime"], data: result };
                     this.props.loginViaFacebook(jsonData);
                   }

@@ -22,7 +22,6 @@
 {
   NSURL *jsCodeLocation;
 
-
 #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
@@ -40,9 +39,10 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-//
-//  [[FBSDKApplicationDelegate sharedInstance] application:application
-//                           didFinishLaunchingWithOptions:launchOptions];
+
+  //
+ [[FBSDKApplicationDelegate sharedInstance] application:application
+                          didFinishLaunchingWithOptions:launchOptions];
   // Add any custom logic here.
 
   return YES;

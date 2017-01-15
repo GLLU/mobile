@@ -1,9 +1,8 @@
 
 import type { Action } from './types';
 
-import rest from '../api/rest';
-
-import { createEntity } from 'redux-json-api';
+import { createEntity, readEndpoint, setAccessToken } from 'redux-json-api';
+import navigateTo from './sideBarNav';
 
 export const SET_USER = 'SET_USER';
 
@@ -25,8 +24,10 @@ export function loginViaFacebook(data):Action {
       }
     }
 
-    return dispatch(createEntity(entity)).then(() => {
-      console.log('after login with facebook');
+    return dispatch(createEntity(entity)).then((response) => {
+      console.log('response', response, response.data.attributes['api-key']);
+      dispatch(setAccessToken(response.data.attributes['api-key']));
+      dispatch(navigateTo('feedscreen'));
     });;
   };
 }

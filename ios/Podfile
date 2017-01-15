@@ -7,8 +7,8 @@ target 'gllu' do
 
   # Pods for gllu
   
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKLoginKit'
-  pod 'FBSDKShareKit'
+  pod 'FBSDKCoreKit', '4.17'
+  pod 'FBSDKLoginKit', '4.17'
+  pod 'FBSDKShareKit', '4.17'
 
 end
