@@ -23,7 +23,7 @@ export default reduxApi({
     ]
   },
   email_sign_in: {
-      url: "/login",
+      url: "/auth",
       options: {
           method: "post"
       },

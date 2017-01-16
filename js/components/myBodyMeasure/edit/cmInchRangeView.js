@@ -49,7 +49,7 @@ export default class CmInchRangeView extends Component {
         this.setState({
             scaleSelectedOption: scaleSelectedOption
         })
-        scaleSelectedOption === 'INCH' ? this.props.toggleCMInch(true) : this.props.toggleCMInch(false)
+        scaleSelectedOption === 'INCH' ? this.props.toggleCMInch(false) : this.props.toggleCMInch(true)
     }
 
   render() {

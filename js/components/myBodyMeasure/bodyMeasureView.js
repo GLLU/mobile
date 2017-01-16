@@ -56,25 +56,16 @@ class BodyMeasureView extends Component {
   }
 
   _toggleCMInch(inchSelected) {
-    let fromScale = this.state.isInchSelect ? 'in' :'cm';
-    let toScale = this.state.isInchSelect ? 'cm' :'in';
+    let fromScale = inchSelected ? 'in' :'cm';
+    let toScale = inchSelected ? 'cm' :'in';
     let currentSizeConverted = this.state.currentSize;
-    let sizeResults = this.state.sizeList;
-    sizeResults = sizeResults.map((item) => {
-      if(item.toScale !== item.measurements_scale) {
-        item = this.__convertCmAndInc(item, fromScale, toScale);
-        if(item.name === this.state.currentSize.name) {
-          currentSizeConverted = this.__convertCmAndInc(this.state.currentSize, fromScale, toScale);
-        }
-        item.measurements_scale = toScale;
-      }
-      return item;
-    })
-
-    let sizeValue = convert(this.state.sizeValue).from(fromScale).to(toScale);
-      console.log('state before: ', this.state.isInchSelect, ' ', this.state.currentSize, ' ', this.state.currentSizeConverted)
-    this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted, sizeList: sizeResults,
-         sizeValue: sizeValue, sizeInitValue: sizeValue});
+    console.log('curr',currentSizeConverted);
+    if(toScale !== currentSizeConverted.measurements_scale) {
+        currentSizeConverted = this.__convertCmAndInc(this.state.currentSize, fromScale, toScale);
+        let sizeValue = convert(this.state.sizeValue).from(fromScale).to(toScale);
+        this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted,
+            sizeValue: sizeValue, sizeInitValue: sizeValue});
+    }
   }
 
   increasSize(item) {
