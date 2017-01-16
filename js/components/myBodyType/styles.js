@@ -36,7 +36,7 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     textAlign: 'center',
-      height: 101
+    height: 101
   },
   continueButton: {
     marginTop: 15,
