@@ -27,18 +27,12 @@ class MyBodyMeasure extends Component {
     currentSize: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     gender: React.PropTypes.string,
-
     popRoute: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
     saveUserSize: React.PropTypes.func,
   }
 
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
-  }
-
-  pushRoute(route) {
-    this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
   _saveUserSize() {
@@ -81,7 +75,6 @@ class MyBodyMeasure extends Component {
 function bindAction(dispatch) {
   return {
     popRoute: key => dispatch(popRoute(key)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     saveUserSize: (measurements) => dispatch(saveUserSize(measurements))
   };
 }

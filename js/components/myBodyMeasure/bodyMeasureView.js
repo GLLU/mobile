@@ -7,7 +7,7 @@ import CMInchRangeView from './edit/cmInchRangeView';
 import myStyles from './styles';
 import Util from '../../Util';
 import convert from 'convert-units';
-import { completeEdit, setMinMax} from '../../actions/myBodyMeasure';
+import { completeEdit } from '../../actions/myBodyMeasure';
 
 class BodyMeasureView extends Component {
   constructor(props) {
@@ -37,7 +37,6 @@ class BodyMeasureView extends Component {
     sliderMinValue: React.PropTypes.number,
     sliderMaxValue: React.PropTypes.number,
     completeEdit: React.PropTypes.func,
-    setMinMax: React.PropTypes.func
   }
 
   componentDidMount() {
@@ -59,25 +58,26 @@ class BodyMeasureView extends Component {
     let fromScale = inchSelected ? 'in' :'cm';
     let toScale = inchSelected ? 'cm' :'in';
     let currentSizeConverted = this.state.currentSize;
-    console.log('curr',currentSizeConverted);
     if(toScale !== currentSizeConverted.measurements_scale) {
         currentSizeConverted = this.__convertCmAndInc(this.state.currentSize, fromScale, toScale);
         let sizeValue = convert(this.state.sizeValue).from(fromScale).to(toScale);
         this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted,
             sizeValue: sizeValue, sizeInitValue: sizeValue});
     }
-
-
   }
 
   increasSize(item) {
     let currentSizeItem = this.state.currentSize[item];
-    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++), updateTextColor: 'green', updateTextColorFor: item});
+    if(this.state.currentSize[item] < 300) {
+        this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++), updateTextColor: 'green', updateTextColorFor: item});
+    }
   }
 
   decreasSize(item) {
     let currentSizeItem = this.state.currentSize[item];
-    this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--), updateTextColor: 'green', updateTextColorFor: item});
+    if(this.state.currentSize[item] > 0){
+          this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--), updateTextColor: 'green', updateTextColorFor: item});
+    }
   }
 
   componentDidUpdate() {
@@ -141,7 +141,6 @@ class BodyMeasureView extends Component {
 function bindAction(dispatch) {
   return {
     completeEdit: (sizeInfo) => dispatch(completeEdit(sizeInfo)),
-    setMinMax: (min,max) => dispatch(setMinMax(min,max))
   };
 }
 
