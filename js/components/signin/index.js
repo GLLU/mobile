@@ -48,13 +48,7 @@ class SignInPage extends Component {
 
   singinWithEmail() {
       let { password, email } = this.state;
-      const data = {
-          type: 'login',
-          attributes: {
-              email,
-              password
-          }
-      }
+      const data = { email, password };
       if(this.checkValidations()) {
           this.props.emailSignIn(data);
       }
@@ -117,7 +111,7 @@ class SignInPage extends Component {
                 <Row style={styles.formItem}>
                     <Text style={[styles.label,  this.state.email.length !== 0 ? styles.addOpacity : null]}>Email</Text>
                     <InputGroup style={styles.formGroup}>
-                        <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
+                        <Input style={styles.formInput} keyboardType={'email-address'} onChangeText={(email) => this.validateEmailInput(email)}/>
                     </InputGroup>
                     { this.state.email.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
