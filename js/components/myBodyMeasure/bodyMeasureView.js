@@ -66,6 +66,8 @@ class BodyMeasureView extends Component {
         this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted,
             sizeValue: sizeValue, sizeInitValue: sizeValue});
     }
+
+
   }
 
   increasSize(item) {

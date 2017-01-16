@@ -55,9 +55,6 @@ class MyBodyType extends Component {
     return (
       <Container theme={gluuTheme}>
         <Header>
-          <Button transparent onPress={() => this.popRoute()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
           <Title style={{fontFamily: 'PlayfairDisplay-Regular'}}>My Body Type</Title>
         </Header>
         <Content>

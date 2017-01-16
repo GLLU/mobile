@@ -33,7 +33,7 @@ export default StyleSheet.create({
   bodyType: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginRight: 25
+
   },
   bodyTypeShapeImage: {
       height: 30,

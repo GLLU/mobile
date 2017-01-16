@@ -16,7 +16,7 @@ const bodyTypeList = {
     {
       name: 'Lean Column',
       uniqueName: 'leanColumn',
-      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
+      description: 'Your body build is characterized by narrow shoulders and hips with a relatively flat chest and bottom.',
       imageUrl: require('../../images/LEAN_COLUMN_blank.png'),
       imageOriUrl: require('../../images/LEAN_COLUMN.png'),
       imageEditUrl: require('../../images/LEAN_COLUMN_Edit.png'),
@@ -26,7 +26,7 @@ const bodyTypeList = {
     {
       name: 'Rectangle',
       uniqueName: 'rectangle',
-      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
+      description: 'Also known as H or straight body shape due to the similar width of the shoulders, hips and waistline.',
       imageUrl: require('../../images/RECTANGLE_blank.png'),
       imageOriUrl: require('../../images/FULL_HOURGLASS_blank.png'),
       imageEditUrl: require('../../images/FULL_HOURGLASS.png'),
@@ -36,7 +36,7 @@ const bodyTypeList = {
     {
       name: 'Apple',
       uniqueName: 'apple',
-      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
+      description: 'Your shoulders and hip line are about the same, and your waistline is the same or wider than your shoulders and hips.',
       imageUrl: require('../../images/APPLE_blank.png'),
       imageOriUrl: require('../../images/APPLE.png'),
       imageEditUrl: require('../../images/APPLE_Edit.png'),
@@ -46,7 +46,7 @@ const bodyTypeList = {
     {
       name: 'Pear',
       uniqueName: 'pear',
-      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
+      description: 'Your body is defined by hips that are wider than shoulders, relatively defined waist, full hips or thighs, and bust and small upper body.',
       imageUrl: require('../../images/PEAR_blank.png'),
       imageOriUrl: require('../../images/PEAR.png'),
       imageEditUrl: require('../../images/PEAR_Edit.png'),
@@ -56,7 +56,7 @@ const bodyTypeList = {
     {
       name: 'Full Hourglass',
       uniqueName: 'fullHourGlass',
-      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
+      description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
       imageUrl: require('../../images/FULL_HOURGLASS_blank.png'),
       imageOriUrl: require('../../images/FULL_HOURGLASS.png'),
       imageEditUrl: require('../../images/FULL_HOURGLASS_Edit.png'),

@@ -54,9 +54,7 @@ class MyBodyMeasure extends Component {
     this.props.saveUserSize(data);
   }
 
-
   render() {
-    console.log('blab',this.props.currentBodyType)
     return (
       <Container theme={gluuTheme}>
         <Header>
