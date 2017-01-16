@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
-
+import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
@@ -46,6 +46,7 @@ class SplashPage extends Component {
 
   static propTypes = {
     pushRoute: React.PropTypes.func,
+    isLoading: React.PropTypes.bool,
     loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -97,8 +98,28 @@ class SplashPage extends Component {
     );
   }
 
+  renderMainView() {
+    return (
+        <View style={styles.signupContainer}>
+          <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
+          <Text style={styles.label}>Or</Text>
+          <Icon.Button style={styles.btnFB}
+                       name="facebook"
+                       backgroundColor="#3b5998"
+                       onPress={this.connectWithFB.bind(this)}>
+            Connect with facebook
+          </Icon.Button>
+          <View style={styles.alreadyBox}>
+            <Text style={styles.alreadyTxt}>Already a user?</Text>
+            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+          </View>
+        </View>
+    )
+  }
+
   render() {
     console.log('splash screen');
+    console.log('loader splash', this.props.isLoading);
     return (
       <Container>
         <View style={styles.container}>
@@ -109,24 +130,12 @@ class SplashPage extends Component {
                 <Image source={logo} style={styles.logo} />
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
-              <View style={styles.signupContainer}>
-                <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
-                <Text style={styles.label}>Or</Text>
-                <Icon.Button style={styles.btnFB}
-                   name="facebook"
-                   backgroundColor="#3b5998"
-                   onPress={this.connectWithFB.bind(this)}>
-                 Connect with facebook
-               </Icon.Button>
-              <View style={styles.alreadyBox}>
-                <Text style={styles.alreadyTxt}>Already a user?</Text>
-                <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
-              </View>
-              </View>
+                {this.renderMainView()}
               <View style={styles.bottomContainer}>
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
               </View>
             </Image>
+              {this.props.isLoading ? <SpinnerSwitch /> : null}
           </Content>
         </View>
       </Container>
@@ -145,6 +154,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+    isLoading: state.loader.isLoading
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

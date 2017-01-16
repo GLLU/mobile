@@ -15,7 +15,7 @@ module.exports = StyleSheet.create({
   shadow: {
     flex: 1,
     width: null,
-    height: null
+    height: deviceHeight
   },
   bg: {
     flex: 1,
@@ -24,7 +24,7 @@ module.exports = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 30,
-    bottom: 0
+    bottom: 0,
   },
   bgShadow: {
     flex: 1,
