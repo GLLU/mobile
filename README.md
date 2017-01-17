@@ -9,8 +9,20 @@
 - install `ruby` and `cocoapods` gem:
   `gem install cocoapods`
 - install pod dependencties
-  `cd ios && pod install`
+  `cd ios && pod install` (read the note below)
 - launch app `react-native run-ios`
+
+### Install Pods Differently
+`pod install` or `pod setup` fetches whole repo with history when you first time run it. 
+You don't need that commit history.
+
+Instead, run:
+- `pod setup`
+- `Ctrl +C` to kill the setup.
+- `cd ~/.cocoapods/repos`
+- `git clone --depth 1 https://github.com/CocoaPods/Specs.git master`
+
+It'll take significantly less time to clone.
 
 ### Run in Android
 - install Android Studio
