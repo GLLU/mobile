@@ -14,6 +14,10 @@ import FeedPage from './components/feedscreen';
 import SideBar from './components/sideBar';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
+import SignUpPage from './components/signup';
+import SignInPage from './components/signin';
+import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
+import ForgotPassword from './components/forgotPassword';
 import ItemScreen from './components/itemScreen';
 
 
@@ -79,6 +83,14 @@ class AppNavigator extends Component {
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
+      case 'signupemail':
+        return <SignUpPage gender={props.scene.route.gender} />;
+      case 'genderselect':
+        return <SignUpGenderPage />;
+      case 'signinemail':
+        return <SignInPage />;
+      case 'forgotpassword':
+        return <ForgotPassword />;
       case 'feedscreen':
         return <FeedPage />;
       case 'login':

@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import { Container, Content, Text, View } from 'native-base';
+import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
-
+import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
@@ -25,9 +25,13 @@ const {
   MKColor,
 } = MK;
 
+const {
+    pushRoute
+} = actions;
+
 const PERMISSIONS = ["email", "public_profile"];
 
-const SignUpEmailButton = MKButton.coloredButton()
+const SignUpEmailButton = MKButton.coloredFlatButton()
   .withBackgroundColor(MKColor.Teal)
   .withTextStyle({
     color: 'white',
@@ -43,6 +47,8 @@ const SignUpEmailButton = MKButton.coloredButton()
 class SplashPage extends Component {
 
   static propTypes = {
+    pushRoute: React.PropTypes.func,
+    isLoading: React.PropTypes.number,
     loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -56,17 +62,9 @@ class SplashPage extends Component {
     };
   }
 
-  singupWithEmail() {
-    console.log('Go To Signup with Email');
-    const data = {
-      type: 'login',
-      attributes: {
-        email: '1@1.com',
-        password: '123123'
-      }
-    }
-    console.log(data)
-    this.props.emailSignIn(data);
+
+  pushRoute(route) {
+      this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
   connectWithFB() {
@@ -80,12 +78,12 @@ class SplashPage extends Component {
           if (diffPermissions.length == 0) {
             AccessToken.getCurrentAccessToken().then(
               (data) => {
-                const infoRequest = new GraphRequest('/me?fields=gender', null, (error, result) => {
+                const infoRequest = new GraphRequest('/me?fields=id,name,email,gender', null, (error, result) => {
                   if (error) {
                     alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
                   } else {
-                    const jsonData = { access_token: data["accessToken"], expirationTime: data["expirationTime"], data: result };
-                    console.log('facebookData',jsonData);
+                    console.log('user info from facebook', result);
+                    const jsonData = { access_token: data["accessToken"], expiration_time: data["expirationTime"], data: result };
                     this.props.loginViaFacebook(jsonData);
                   }
                 });
@@ -103,6 +101,25 @@ class SplashPage extends Component {
     );
   }
 
+  renderMainView() {
+    return (
+        <View style={styles.signupContainer}>
+          <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
+          <Text style={styles.label}>Or</Text>
+          <Icon.Button style={styles.btnFB}
+                       name="facebook"
+                       backgroundColor="#3b5998"
+                       onPress={this.connectWithFB.bind(this)}>
+            Connect with facebook
+          </Icon.Button>
+          <View style={styles.alreadyBox}>
+            <Text style={styles.alreadyTxt}>Already a user?</Text>
+            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+          </View>
+        </View>
+    )
+  }
+
   render() {
     console.log('splash screen');
     return (
@@ -115,20 +132,12 @@ class SplashPage extends Component {
                 <Image source={logo} style={styles.logo} />
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
-              <View style={styles.signupContainer}>
-                <SignUpEmailButton onPress={() => this.singupWithEmail() } />
-                <Text style={styles.label}>Or</Text>
-                <Icon.Button style={styles.btnFB}
-                   name="facebook"
-                   backgroundColor="#3b5998"
-                   onPress={this.connectWithFB.bind(this)}>
-                 Connect with facebook
-               </Icon.Button>
-              </View>
+                {this.renderMainView()}
               <View style={styles.bottomContainer}>
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
               </View>
             </Image>
+              {this.props.isLoading !== 0 ? <SpinnerSwitch /> : null}
           </Content>
         </View>
       </Container>
@@ -142,11 +151,13 @@ function bindAction(dispatch) {
     emailSignIn: (data) => dispatch(emailSignIn(data)),
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+  isLoading: state.api.isCreating
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

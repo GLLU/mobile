@@ -9,6 +9,7 @@ import myBodyMeasure from './myBodyMeasure';
 import myBodyType from './myBodyType';
 import filters from './filters';
 
+import { reducer as api } from 'redux-json-api';
 
 export default combineReducers({
   drawer,
@@ -18,4 +19,5 @@ export default combineReducers({
   myBodyType,
   myBodyMeasure,
   filters,
+  api,
 });

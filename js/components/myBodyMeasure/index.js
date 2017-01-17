@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Container, Header, Content, Button, Icon, Title } from 'native-base';
 import {Text, View} from 'react-native';
 import myStyles from './styles';
-import gluuTheme from '../../themes/gluu-theme';
+import glluTheme from '../../themes/gllu-theme';
 
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -50,7 +50,7 @@ class MyBodyMeasure extends Component {
 
   render() {
     return (
-      <Container theme={gluuTheme}>
+      <Container theme={glluTheme}>
         <Header>
           <Button transparent onPress={() => this.popRoute()}>
             <Icon name="ios-arrow-back" />
@@ -65,7 +65,7 @@ class MyBodyMeasure extends Component {
           <View style={{marginTop: 15}}>
             <InformationTextIcon text={'This information is private to you only'} />
           </View>
-          <Button block primary style={myStyles.continueButton} onPress={(e) => this._saveUserSize(e)}>All Set. Let's GLUU !</Button>
+          <Button block primary style={myStyles.continueButton} onPress={(e) => this._saveUserSize(e)}>All Set. Let's GLLU!</Button>
         </Content>
       </Container>
     )
