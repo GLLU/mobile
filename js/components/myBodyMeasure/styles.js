@@ -1,21 +1,28 @@
-import {StyleSheet} from 'react-native';
-
+import {StyleSheet, Dimensions} from 'react-native';
+const deviceWidth = Dimensions.get('window').width;
+const w = deviceWidth / 2 - 50;
 let fontSizeDefault = 14;
 let fontColor = '#000';
+const MK = require('react-native-material-kit');
+
+const {
+    MKButton,
+    MKColor,
+} = MK;
 
 export default StyleSheet.create({
   selectBodyTypeText: {
-      marginTop: 10,
-      marginBottom: 25,
-      paddingHorizontal: 50,
-      textAlign: 'center',
-      fontWeight: '400',
-      fontSize: fontSizeDefault * 1.1,
-      color: fontColor
+    marginTop: 10,
+    marginBottom: 25,
+    paddingHorizontal: 50,
+    textAlign: 'center',
+    fontWeight: '400',
+    fontSize: fontSizeDefault * 1.1,
+    color: fontColor
   },
   continueButton: {
-      marginTop: 15,
-      marginHorizontal: 50
+    marginTop: 15,
+    marginHorizontal: 50
   },
   container: {
     paddingTop: 25,
@@ -23,34 +30,87 @@ export default StyleSheet.create({
     marginHorizontal: 10,
     backgroundColor: '#ffffff'
   },
+  bodyType: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+
+  },
+  bodyTypeShapeImage: {
+      height: 30,
+      width: 30,
+      resizeMode: 'contain'
+  },
   bodyTypeText: {
-    fontSize: fontSizeDefault * 1.25,
+    fontSize: fontSizeDefault * 1.35,
     color: fontColor,
     marginBottom: 15,
-    fontFamily: 'PlayfairDisplay-Bold'
+    fontFamily: 'PlayfairDisplay-Bold',
+  },
+  bodyTypeImageContainer: {
+    width: w,
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 15
+  },
+  bodyTypeImage: {
+    width: w,
+    height: 240
+  },
+  sizeListContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 25
   },
   infoContainer: {
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection:'row',
-    marginBottom: 10
+    marginBottom: 15
   },
   infoText: {
     flexDirection: 'column',
     width: 50,
-    fontSize: fontSizeDefault * 0.9,
-    color: '#ccc'
+    fontSize: fontSizeDefault * 1.2,
+    color: '#ccc',
+    alignSelf: 'flex-end',
+    marginBottom: 7
   },
   infoDetailTouch: {
     flexDirection: 'column',
-    borderBottomWidth: 2,
+    borderBottomWidth: 0,
     borderColor: '#ddd',
     flex: 1
   },
+  sizeLineContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center'
+  },
+  sizeLine: {
+    flexDirection: 'row',
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgrey',
+  },
+  sizeLineBtns: {
+    flexDirection: 'row',
+  },
+  sizeLineIcons: {
+    color: '#00c497',
+    fontSize: 35,
+  },
   infoDetailText: {
-    fontSize: fontSizeDefault * 0.7,
-    color: fontColor,
+    fontSize: fontSizeDefault,
     fontWeight: 'bold',
+    textAlign: 'center',
+    alignItems: 'flex-end',
+    color: '#000000',
+    width: 53,
+    marginLeft: 8,
+    marginRight: 4,
+  },
+  infoDetailTextColorChange: {
+    color: MKColor.Teal
   },
   toggleContainer: {
     flexWrap: 'wrap',
@@ -95,53 +155,31 @@ export default StyleSheet.create({
     fontSize: fontSizeDefault * 0.9,
     color: '#fff'
   },
-  rangeContainer: {
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    flexDirection:'row',
-    padding: 10,
-    height: 180,
-    backgroundColor: '#f2f2f2'
-  },
-  rangeButtonContainer: {
-    flex: 1,
-    alignSelf:'flex-end',
-    marginBottom: 10
-  },
-  rangeCloseButton: {
-    alignSelf: 'center'
-  },
-  rangeCloseIcon: {
-    color: '#797979',
-    textAlign: 'center'
-  },
-  rangeCompleteButton: {
-    alignSelf: 'center',
-  },
-  rangeCompleteIcon: {
-    color: '#05d7b2',
-    textAlign: 'center'
-  },
-  sliderContainer: {
-    flex: 1,
+  scaleRadioContainer: {
     alignItems: 'center',
+    marginLeft: 50,
+    flex:1
   },
-  sliderText: {
-    position: 'absolute',
-    top: 100,
-    right: 10,
-    fontSize: fontSizeDefault * 0.8,
-    fontWeight: 'bold'
+  radioView: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    height: 60,
+    width: 100,
+    alignItems: 'flex-end',
+    marginBottom: 15,
+    marginLeft: 10
   },
-  sliderSizeType: {
-    height: 20,
-    fontSize: fontSizeDefault * 0.9,
-    fontWeight: 'bold',
-    marginBottom: 10
+  radioBtn: {
+    color: 'lightgrey',
+    fontSize: 17
   },
-  slider: {
-    marginTop: 45,
-    width: 140,
-    transform: [{ rotate: '90deg'}]
+  radioOption: {
+    flexDirection: 'row',
+  },
+  radioSlash: {
+    paddingLeft: 5,
+    paddingRight: 5,
+    color: 'lightgrey',
+    fontSize: 17
   }
 })

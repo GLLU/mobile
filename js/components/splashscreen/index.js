@@ -18,6 +18,8 @@ const backgroundShadow = require('../../../images/background-shadow.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
 
+import { emailSignIn } from '../../actions/user';
+
 const {
   MKButton,
   MKColor,
@@ -59,6 +61,7 @@ class SplashPage extends Component {
       name: '',
     };
   }
+
 
   pushRoute(route) {
       this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
@@ -145,6 +148,7 @@ class SplashPage extends Component {
 
 function bindAction(dispatch) {
   return {
+    emailSignIn: (data) => dispatch(emailSignIn(data)),
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),

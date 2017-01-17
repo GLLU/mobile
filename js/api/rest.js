@@ -51,6 +51,23 @@ export default reduxApi({
           }
       ]
   },
+  email_sign_in: {
+      url: "/auth",
+      options: {
+          method: "post"
+      },
+      postfetch: [
+          ({data, dispatch}) => {
+              console.log('data sign up rest',data)
+              console.log(`Logged in successfully: ${JSON.stringify(data)}`);
+              const attributes = data['data']['attributes'];
+              global.apiKey = attributes['api-key'];
+              const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
+              dispatch(setUser(user));
+              dispatch(navigateTo('feedscreen'));
+          }
+      ]
+  },
   sizes: {
     url: '/users/5/size',
     options: {

@@ -16,10 +16,6 @@ const {
   replaceAt,
 } = actions;
 
-const w = Dimensions.get('window').width;
-const h = Dimensions.get('window').height;
-const DIALOG_PADDING = 20;
-
 class FeedPage extends Component {
 
   static propTypes = {
@@ -48,7 +44,7 @@ class FeedPage extends Component {
   }
 
   render() {
-    const modalStyle = {justifyContent: 'flex-start', alignItems: 'center', height: h - DIALOG_PADDING * 2, width: w*.9, top: DIALOG_PADDING};
+    const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};
     return (
       <Container style={styles.container}>
         <View>
