@@ -21,6 +21,7 @@ export function setUser(user:string):Action {
 
 export function loginViaFacebook(data):Action {
   console.log('loginViaFacebook', data);
+
   return (dispatch) => {
     const entity = {
       "type": "facebook_auth",
@@ -29,7 +30,6 @@ export function loginViaFacebook(data):Action {
         "expiration_time": data['expiration_time']
       }
     }
-
     return dispatch(createEntity(entity)).then((response) => signInFromResponse(dispatch, response));
   };
 }

@@ -9,6 +9,7 @@ export type Action =
     | { type: 'SET_USER', name: string}
     | { type: 'SET_LIST', list: string}
     | { type: 'LOGIN_VIA_FACEBOOK'}
+    | { type: 'LOADER'}
 
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;
