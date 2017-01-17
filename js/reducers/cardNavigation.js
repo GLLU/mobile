@@ -6,7 +6,7 @@ const initialState = {
   index: 0,
   routes: [
     {
-      key: 'feedscreen',
+      key: 'splashscreen',
       index: 0,
     },
   ],

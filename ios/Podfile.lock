@@ -5,30 +5,27 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - FBSDKCoreKit (4.18.0):
+  - FBSDKCoreKit (4.17.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.18.0):
+  - FBSDKLoginKit (4.17.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.18.0):
+  - FBSDKShareKit (4.17.0):
     - FBSDKCoreKit
   - QBImagePickerController (3.4.0)
-  - RSKImageCropper (1.5.2)
 
 DEPENDENCIES:
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - FBSDKShareKit
+  - FBSDKCoreKit (= 4.17)
+  - FBSDKLoginKit (= 4.17)
+  - FBSDKShareKit (= 4.17)
   - QBImagePickerController
-  - RSKImageCropper
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  FBSDKCoreKit: 15fef8804a4629f98c6f4e55e81a76c9d725d85e
-  FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
-  FBSDKShareKit: 0b8d6cc3f103c75297eb3c62caec284a2ccf1b9e
+  FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
+  FBSDKLoginKit: 42b7129ac0373ca99eaf4cbebf4d07bd42371f59
+  FBSDKShareKit: 9b573d03fbee36cbaf42d5bb1f2bc019e0d72347
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  RSKImageCropper: 27d0e7efa800b509720163c3561fe08a04853780
 
-PODFILE CHECKSUM: 6c14d272c1db4d6c8fae1623beb914ff7ddde224
+PODFILE CHECKSUM: b649ea60bcaba6488120f75dab1c8675c1b6ad99
 
 COCOAPODS: 1.1.1

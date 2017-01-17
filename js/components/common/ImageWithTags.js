@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Dimensions, PanResponder, Animated } from 'react-native';
 import { View } from 'native-base';
+import _ from 'lodash';
 
 const tagBackground = require('../../../images/tag-background.png');
 const TAG_WIDTH = 100;
@@ -34,36 +35,56 @@ class ImageWithTags extends Component {
     addTag: React.PropTypes.func,
     image: React.PropTypes.object,
     tags: React.PropTypes.array,
-    editingTagIndex: React.PropTypes.number,
+    editingTag: React.PropTypes.object,
     width: React.PropTypes.number,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      newTag: false,
-    };
+    const { locationX, locationY } = this._parseEditingLocation(props);
+    this.state = { locationX, locationY };
   }
 
   componentWillMount() {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       onPanResponderRelease: (e) => {
         const { locationX, locationY } = e.nativeEvent;
-        console.log('location', locationX, locationY);
-        this.props.addTag({locationX, locationY});
-        this.setState({newTag: true})
+        this.setState({locationX, locationY})
       }
     });
   }
 
+  getTag() {
+    console.log('getTag');
+    return { locationX: this.state.locationX, locationY: this.state.locationY };
+  }
+
+  _parseEditingLocation(props) {
+    const tag = _.find(props.tags, (x) => x.editing);
+    if (!tag) {
+      return { locationX: 0, locationY: 0 };
+    }
+
+    return { locationX: tag.locationX, locationY: tag.locationY };
+  }
+
   _renderTags() {
-    const { tags, editingTagIndex } = this.props;
-    return tags.map((tag, i) => {
+    const { tags, editingTag } = this.props;
+    const coords = _.filter(tags, (x) => !x.editing);
+    const views = coords.map((tag, i) => {
       return (<Animated.View key={i} style={[styles.tagItem, { top: tag.locationY - BORDER_WIDTH - 5, left: tag.locationX - TAG_WIDTH }]}>
           <Image source={tagBackground} style={styles.tagBgImage} />
         </Animated.View>);
     });
+    const tag = {locationX: this.state.locationX, locationY: this.state.locationY};
+    const view = <Animated.View key={tags.length} style={[styles.tagItem, { top: tag.locationY - BORDER_WIDTH - 5, left: tag.locationX - TAG_WIDTH }]}>
+          <Image source={tagBackground} style={styles.tagBgImage} />
+        </Animated.View>;
+    views.push(view);
+    return views;
   }
 
   renderDraggable() {

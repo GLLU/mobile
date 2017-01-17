@@ -1,6 +1,7 @@
 export const ADD_NEW_LOOK = 'ADD_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const ADD_TAG = 'ADD_TAG';
+export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 
 // Actions
 export function addNewLook(image) {
@@ -12,16 +13,24 @@ export function addNewLook(image) {
   }
 }
 
-export function editTag(editingTagIndex) {
+export function editTag(editingTag) {
   return {
     type: EDIT_TAG,
     payload: {
-      editingTagIndex
+      editingTag
     }
   }
 }
 
+export function setTagPosition(payload) {
+  return {
+    type: SET_TAG_POSITION,
+    payload: payload
+  }
+}
+
 export function addTag(tag) {
+  console.log('addTag', tag);
   return {
     type: ADD_TAG,
     payload: {

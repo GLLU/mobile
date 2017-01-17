@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import {Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { addTag, navigateTo, popRoute } from '../../actions';
+import { addTag, setTagPosition, navigateTo, popRoute } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
 
 const TAG_WIDTH = 100;
@@ -42,25 +42,27 @@ class TagItemPage extends Component {
     navigateTo: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     addTag: React.PropTypes.func,
+    setTagPosition: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
     image: React.PropTypes.object,
     tags: React.PropTypes.array,
-    editingTagIndex: React.PropTypes.number,
+    editingTag: React.PropTypes.number,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      newTag: false,
       locationX: 0,
       locationY: 0,
     };
   }
 
   handleBackButton() {
-    if (this.props.tags.length > 0) {
+    const tag = this.imageEditor.getTag();
+    if (tag.locationX && tag.locationY) {
+      this.props.setTagPosition(tag);
       this.props.navigateTo('addItemScreen', 'feedscreen');
     } else {
       this.props.popRoute(this.props.navigation.key);
@@ -68,7 +70,8 @@ class TagItemPage extends Component {
   }
 
   render() {
-    const { tags, editingTagIndex, image, addTag } = this.props;
+    const { tags, image, addTag, setTagPosition } = this.props;
+    console.log('render with tags', tags);
     return (
       <Container style={styles.container}>
         <Header style={{backgroundColor: '#000000'}}>
@@ -79,7 +82,7 @@ class TagItemPage extends Component {
         </Header>
         <Content contentContainerStyle={{flex: 1, backgroundColor: '#000000', padding: 10}}>
           <View>
-            <ImageWithTags tags={tags} image={image} addTag={addTag}/>
+            <ImageWithTags ref={(ref) => this.imageEditor = ref} tags={tags} image={image} addTag={addTag} setTagPosition={setTagPosition}/>
           </View>
         </Content>
       </Container>
@@ -92,6 +95,7 @@ function bindActions(dispatch) {
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     popRoute: (key) => dispatch(popRoute(key)),
     addTag: (tag) => dispatch(addTag(tag)),
+    setTagPosition: (position) => dispatch(setTagPosition(position)),
   };
 }
 
