@@ -1,28 +1,21 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { Platform, Image } from 'react-native';
+import { Image } from 'react-native';
 import { View } from 'native-base';
-import IosSpinner from './Spinner.ios';
-import AndroidSpinner from './Spinner.android';
+import Spinner from './Spinner';
 import styles from './styles';
 const backgroundShadow = require('../../../images/background-shadow.png');
-
-const currentOS = Platform.OS;
 
 export default class SpinnerSwitch extends Component {
 
   render() {
-    if(currentOS === 'ios') {
       return (
             <View style={styles.container}>
               <Image source={backgroundShadow} style={styles.bgShadow} />
-              <IosSpinner />
+              <Spinner />
             </View>
           )
-    } else {
-      return <AndroidSpinner />
-    }
   }
 
 }

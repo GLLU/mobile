@@ -1,15 +1,16 @@
 /* @flow */
 
 import React from 'react';
-import ProgressBarAndroid from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import NativeBaseComponent from 'native-base/Components/Base/NativeBaseComponent';
 import computeProps from 'native-base/Utils/computeProps';
 
-export default class SpinnerNB extends NativeBaseComponent {
+
+export default class Spinner extends NativeBaseComponent {
 
   prepareRootProps() {
     const type = {
-      height: 40,
+      height: 80,
     };
 
     const defaultProps = {
@@ -21,6 +22,7 @@ export default class SpinnerNB extends NativeBaseComponent {
 
 
   render() {
+    console.log('this props',this.props)
     const getColor = () => {
       if (this.props.color) {
         return this.props.color;
@@ -32,10 +34,10 @@ export default class SpinnerNB extends NativeBaseComponent {
     };
 
     return (
-      <ProgressBarAndroid
+      <ActivityIndicator
         {...this.prepareRootProps()}
-        styleAttr={this.props.size ? this.props.size : 'Large'}
         color={getColor()}
+        size={this.props.size ? this.props.size : 'large'}
       />
         );
   }
