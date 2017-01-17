@@ -119,7 +119,6 @@ class SplashPage extends Component {
 
   render() {
     console.log('splash screen');
-    console.log('loader splash', this.props.isLoading);
     return (
       <Container>
         <View style={styles.container}>
@@ -154,7 +153,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-    isLoading: state.api.isCreating
+  isLoading: state.api.isCreating
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);
