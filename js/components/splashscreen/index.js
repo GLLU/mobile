@@ -46,7 +46,7 @@ class SplashPage extends Component {
 
   static propTypes = {
     pushRoute: React.PropTypes.func,
-    isLoading: React.PropTypes.bool,
+    isLoading: React.PropTypes.number,
     loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -135,7 +135,7 @@ class SplashPage extends Component {
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
               </View>
             </Image>
-              {this.props.isLoading ? <SpinnerSwitch /> : null}
+              {this.props.isLoading !== 0 ? <SpinnerSwitch /> : null}
           </Content>
         </View>
       </Container>
@@ -154,7 +154,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-    isLoading: state.loader.isLoading
+    isLoading: state.api.isCreating
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

@@ -3,7 +3,6 @@ import type { Action } from './types';
 
 import { createEntity, readEndpoint, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
-import loader from './loader';
 
 export const SET_USER = 'SET_USER';
 
@@ -18,7 +17,6 @@ export function loginViaFacebook(data):Action {
   console.log('loginViaFacebook', data);
 
   return (dispatch) => {
-    dispatch(loader(true));
     const entity = {
       "type": "facebook_auth",
       "attributes": {
@@ -30,7 +28,6 @@ export function loginViaFacebook(data):Action {
       console.log('response', response, response.data.attributes['api-key']);
       dispatch(setAccessToken(response.data.attributes['api-key']));
       dispatch(navigateTo('feedscreen'));
-      dispatch(loader(false));
     });
   };
 }
