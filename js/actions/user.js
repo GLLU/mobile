@@ -65,10 +65,3 @@ export function forgotPassword(email):Action {
     return dispatch(createEntity(entity));
   };
 }
-
-export function emailSignIn(data):Action {
-    return (dispatch) => {
-      console.log(data)
-        return dispatch(rest.actions.email_sign_in({data}))
-    };
-}
