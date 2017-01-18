@@ -10,11 +10,14 @@ import MyBodyModal from '../common/myBodyModal'
 import styles from './styles';
 import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
-import { getFeed } from '../../actions/feed';
+import getFeed from '../../actions/feed';
+import Util from '../../Util';
 
 import { actions } from 'react-native-navigation-redux-helpers';
 
 import navigateTo from '../../actions/sideBarNav';
+
+
 
 class TabContent extends Component {
 
@@ -33,7 +36,7 @@ class TabContent extends Component {
       imagesColumn1: [],
       imagesColumn2: []
     }
-
+    this.props.getFeed();
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
   }
@@ -95,8 +98,11 @@ class TabContent extends Component {
     this.props.navigateTo('itemScreen', 'feedscreen');
   }
 
+  componentDidUpdate() {
+    Util.sortDataFromJsonApi('look-images',this.props.looks,this.props.looksImages);
+  }
+
   render() {
-      //this.props.getFeed();
     const paddingBottom = 150;
     return(
       <View style={styles.tab} scrollEnabled={false}>
@@ -122,13 +128,20 @@ function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
-    getFeed: name => dispatch(getFeed())
+    getFeed: feedType => dispatch(getFeed(feedType))
   };
 }
 
-const mapStateToProps = state => ({
-  images: state.filters.images,
-  modalShowing: state.myBodyType.modalShowing
-});
+function mapStateToProps(state) {
+  const lookImages = `state.api.look-image`
+  console.log('stateee',state)
+  return {
+    images: state.filters.images,
+    modalShowing: state.myBodyType.modalShowing,
+    looks: state.api.look,
+    looksImages: state.api["look-image"]
+  }
+
+};
 
 export default connect(mapStateToProps, bindActions)(TabContent);

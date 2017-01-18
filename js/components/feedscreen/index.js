@@ -32,6 +32,7 @@ class FeedPage extends Component {
     this.state = {
       name: '',
     };
+
   }
 
   setUser(name) {
