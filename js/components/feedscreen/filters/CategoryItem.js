@@ -13,7 +13,7 @@ class CategoryItem extends Component {
 
   _renderIcon(icon, selected) {
     const uri = selected ? icon['url-hover'] : icon['url'];
-    return <Image source={{uri: uri}} style={styles.categoryItemImage} resizeMode={'contain'}/>;
+    return <Image source={{uri: uri}} style={styles.categoryItemImage}/>;
   }
 
   render() {

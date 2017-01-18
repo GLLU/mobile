@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { Image, ScrollView, Dimensions } from 'react-native';
 import { View } from 'native-base';
 import Modal from 'react-native-modalbox';
+import FilterBar from './filters/FilterBar';
 import ImagesView from './items/ImagesView';
 import MyBodyModal from '../common/myBodyModal'
 import styles from './styles';
 import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
-import { getFeed } from '../../actions/feed';
 
 import { actions } from 'react-native-navigation-redux-helpers';
 
@@ -22,7 +22,6 @@ class TabContent extends Component {
     images: React.PropTypes.array,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
-    getFeed: React.PropTypes.func
   }
 
   constructor(props) {
@@ -71,6 +70,14 @@ class TabContent extends Component {
     });
   }
 
+  openFilter(height) {
+    console.log('Open filter');
+    const filterHeight = height === 0 ? 200 : 0;
+    this.setState({ filterHeight }, () => {
+      this.props.handleSwipeTab(filterHeight === 0 ? false : true);
+    });
+  }
+
   handleScroll(event) {
     this.scrollCallAsync(event);
 
@@ -96,11 +103,10 @@ class TabContent extends Component {
   }
 
   render() {
-      //this.props.getFeed();
     const paddingBottom = 150;
     return(
       <View style={styles.tab} scrollEnabled={false}>
-
+        <FilterBar filterHeight={this.state.filterHeight} openFilter={this.openFilter.bind(this)} />
         <View style={[styles.mainGrid]}>
           <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
@@ -122,7 +128,6 @@ function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
-    getFeed: name => dispatch(getFeed())
   };
 }
 

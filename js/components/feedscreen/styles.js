@@ -1,11 +1,6 @@
 const React = require('react-native');
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
-const MK = require('react-native-material-kit');
-
-const {
-  MKColor,
-} = MK;
 
 module.exports = StyleSheet.create({
   container: {
@@ -60,49 +55,24 @@ module.exports = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   tab: {
+    flex: 1,
     backgroundColor: '#FFFFFF'
   },
   filter: {
     backgroundColor: '#F5F5F5',
     paddingLeft: 5,
     paddingBottom: 10,
-    height: 40,
+    height: 40
   },
   filterActions: {
     backgroundColor: '#F5F5F5',
     padding: 10,
     paddingTop: 0,
-    height: 0,
-    marginBottom: 10,
-    flex: 1,
-
+    height: 0
   },
   filterActionsGrid: {
     backgroundColor: '#FFFFFF',
-
-  },
-  radioView: {
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    flex: 1,
-  },
-  radioOption: { // the box
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  radioOptionSelected: {
-    borderBottomColor: MKColor.Teal,
-    borderBottomWidth: 2,
-  },
-  radioBtnText: { //the text
-    color: 'lightgrey',
-    fontSize: 17,
-    textAlign: 'center',
-    paddingBottom: 5
-  },
-  radioBtnTextSelected: { //the text
-    color: MKColor.Teal
+    height: 170
   },
   btnFilter: {
     position: 'absolute',
@@ -138,7 +108,7 @@ module.exports = StyleSheet.create({
     backgroundColor: '#1DE9B6'
   },
   filterCategories: {
-    flex: 1
+    height: 100
   },
   categoryItem: {
     width: 80,
@@ -149,22 +119,20 @@ module.exports = StyleSheet.create({
   categoryItemTitle: {
     color: '#757575',
     fontSize: 13,
-    textAlign: 'center',
-    height: 32
+    textAlign: 'center'
   },
   categoryItemImage: {
-    height: 50,
+    height: 100,
     width: 50,
     resizeMode: 'contain',
     alignSelf: 'center'
   },
   btncategoryItem: {
-    height: 80,
+    height: 100,
     width: 50,
     alignSelf: 'center'
   },
   sliderFilters: {
     marginTop: 10
   }
-
 });
