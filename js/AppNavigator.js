@@ -6,7 +6,6 @@ import { actions } from 'react-native-navigation-redux-helpers';
 
 import { closeDrawer } from './actions/drawer';
 
-import Login from './components/login/';
 import Home from './components/home/';
 import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
@@ -106,7 +105,7 @@ class AppNavigator extends Component {
       case 'itemScreen':
         return <ItemScreen />;
       default :
-        return <Login />;
+        return <SplashPage />;
     }
   }
 
