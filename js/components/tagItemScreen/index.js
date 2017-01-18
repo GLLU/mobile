@@ -80,11 +80,9 @@ class TagItemPage extends Component {
           </Button>
           <Title style={{fontFamily: 'PlayfairDisplay-Regular', color: '#ffffff'}}>Tap item to add</Title>
         </Header>
-        <Content contentContainerStyle={{flex: 1, backgroundColor: '#000000', padding: 10}}>
-          <View>
-            <ImageWithTags ref={(ref) => this.imageEditor = ref} tags={tags} image={image} addTag={addTag} setTagPosition={setTagPosition}/>
-          </View>
-        </Content>
+        <View contentContainerStyle={{backgroundColor: '#000000', padding: 10}}>
+          <ImageWithTags ref={(ref) => this.imageEditor = ref} editMode={true} tags={tags} image={image} addTag={addTag} setTagPosition={setTagPosition}/>
+        </View>
       </Container>
     );
   }

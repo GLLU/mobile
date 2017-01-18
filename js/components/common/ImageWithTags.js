@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Dimensions, PanResponder, Animated } from 'react-native';
+import { Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity } from 'react-native';
 import { View } from 'native-base';
 import _ from 'lodash';
 
@@ -11,7 +11,9 @@ const w = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   draggableContainer: {
     flex: 1,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    width: 500,
+    height: 500
   },
   tagBgImage: {
     height: 48,
@@ -37,23 +39,43 @@ class ImageWithTags extends Component {
     tags: React.PropTypes.array,
     editingTag: React.PropTypes.object,
     width: React.PropTypes.number,
+    editMode: React.PropTypes.bool
   }
 
   constructor(props) {
     super(props);
-    const { locationX, locationY } = this._parseEditingLocation(props);
-    this.state = { locationX, locationY };
+    this.state = {
+      locationX: 0,
+      locationY: 0,
+    }
   }
 
   componentWillMount() {
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderRelease: (e) => {
-        const { locationX, locationY } = e.nativeEvent;
-        this.setState({locationX, locationY})
-      }
+    if (this.props.editMode) {
+      const {locationX, locationY} = this.state;
+      this._setupPanResponder(locationX, locationY);
+    }
+  }
+
+  _setupPanResponder(locationX, locationY) {
+    this._pan = new Animated.ValueXY();
+    this._pan.addListener((value) => this._value = value);
+    this._pan.setOffset({x: locationX, y: locationY})
+
+    this.panResponder = PanResponder.create({
+        onStartShouldSetPanResponder : () => true,
+        onPanResponderMove           : Animated.event([null,{
+            dx : this._pan.x,
+            dy : this._pan.y
+        }]),
+        onPanResponderGrant: () => { },
+        onPanResponderRelease        : (e, gesture) => {
+          this._pan.setOffset(this._value);
+
+          console.log('values', this.state.locationX, this.state.locationY, this._value);
+          this._setupPanResponder(this._value.x, this._value.y);
+          this.setState({locationX: this._value.x, locationY: this._value.y})
+        }
     });
   }
 
@@ -62,46 +84,62 @@ class ImageWithTags extends Component {
     return { locationX: this.state.locationX, locationY: this.state.locationY };
   }
 
-  _parseEditingLocation(props) {
-    const tag = _.find(props.tags, (x) => x.editing);
-    if (!tag) {
-      return { locationX: 0, locationY: 0 };
+  _handlePress(e) {
+    const {locationX, locationY} = e.nativeEvent;
+    this._setupPanResponder(locationX, locationY);
+    this.setState({locationX: locationX, locationY: locationY});
+  }
+
+  renderTags() {
+    const tags = _.filter(this.props.tags, (x) => !x.editing);
+    return tags.map((tag, i) => {
+      return (<View key={i} style={[styles.tagItem, { top: tag.locationY, left: tag.locationX}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+          <Image source={tagBackground} style={styles.tagBgImage} />
+        </View>);
+    });
+  }
+
+  _hasTagEditing() {
+    if (!this.props.editMode) {
+      return false;
+    }
+    const {locationX, locationY} = this.state;
+    return locationY > 0 || locationY > 0;
+  }
+
+  renderEditingTag() {
+    if (this._hasTagEditing()) {
+      const layout = this._pan.getLayout();
+      console.log('layout', layout);
+      return (<Animated.View
+                    {...this.panResponder.panHandlers}
+                    style={[layout, styles.tagItem, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+                    <Image source={tagBackground} style={styles.tagBgImage} />
+                </Animated.View>);
     }
 
-    return { locationX: tag.locationX, locationY: tag.locationY };
+    return null;
   }
 
-  _renderTags() {
-    const { tags, editingTag } = this.props;
-    const coords = _.filter(tags, (x) => !x.editing);
-    const views = coords.map((tag, i) => {
-      return (<Animated.View key={i} style={[styles.tagItem, { top: tag.locationY - BORDER_WIDTH - 5, left: tag.locationX - TAG_WIDTH }]}>
-          <Image source={tagBackground} style={styles.tagBgImage} />
-        </Animated.View>);
-    });
-    const tag = {locationX: this.state.locationX, locationY: this.state.locationY};
-    const view = <Animated.View key={tags.length} style={[styles.tagItem, { top: tag.locationY - BORDER_WIDTH - 5, left: tag.locationX - TAG_WIDTH }]}>
-          <Image source={tagBackground} style={styles.tagBgImage} />
-        </Animated.View>;
-    views.push(view);
-    return views;
-  }
-
-  renderDraggable() {
-    return (<View style={[styles.draggableContainer]}>
-        {this._renderTags()}
-    </View>);
+  _render() {
+    const width = this.props.width ? this.props.width : w;
+    const height = width * 2848 / 4288;
+    return (<Image source={{uri: this.props.image.path}} style={[styles.tagsContainer, {width, height}]}>
+      <View style={[styles.draggableContainer, {width, height}]}>
+        {this.renderTags()}
+        {this.renderEditingTag()}
+      </View>
+    </Image>);
   }
 
   render() {
-    const image = this.props.image;
-    const width = this.props.width ? this.props.width : w;
-    const height = width * 2848 / 4288;
-    return (
-      <Image source={{uri: image.path}} style={[styles.tagsContainer, {width, height}]} {...this._panResponder.panHandlers}>
-        {this.renderDraggable()}
-      </Image>
-    );
+    if (!this._hasTagEditing() && this.props.editMode) {
+      return(<TouchableOpacity onPress={(e) => this._handlePress(e)}>
+            {this._render()}
+          </TouchableOpacity>);
+    }
+
+    return this._render();
   }
 }
 
