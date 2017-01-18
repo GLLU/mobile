@@ -6,7 +6,6 @@ let fontColor = '#000';
 const MK = require('react-native-material-kit');
 
 const {
-    MKButton,
     MKColor,
 } = MK;
 

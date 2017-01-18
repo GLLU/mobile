@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Switch, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, TouchableWithoutFeedback} from 'react-native';
 import myStyles from '../styles';
 import RadioButtons from 'react-native-radio-buttons';
 const MK = require('react-native-material-kit');

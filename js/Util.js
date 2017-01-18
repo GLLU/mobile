@@ -15,7 +15,7 @@ export default class Utils {
     obj1.data.map((mainItem) => {
       tempObj = {mainItemId: mainItem.id}
       if(mainItem.relationships[lookFor]) {
-        mainItem.relationships[lookFor].data.map((relatedObj, i) => {
+        mainItem.relationships[lookFor].data.map((relatedObj) => {
           obj2.data.map((subItem, index) => {
             if(relatedObj.id === subItem.id) {
               tempObj[index] = subItem.attributes
