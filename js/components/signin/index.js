@@ -6,6 +6,8 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
+import glluTheme from '../../themes/gllu-theme';
+
 const logo = require('../../../images/logo.png');
 
 import styles from './styles';
@@ -92,7 +94,7 @@ class SignInPage extends Component {
 
   render() {
     return (
-      <Container>
+      <Container theme={glluTheme}>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
           <Image source={backgroundShadow} style={styles.bgShadow} />
