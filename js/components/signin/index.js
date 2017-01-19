@@ -6,6 +6,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
+
 const logo = require('../../../images/logo.png');
 
 import styles from './styles';
@@ -22,7 +23,8 @@ const {
   MKColor,
 } = MK;
 
-
+import { emailRule, passwordRule } from '../../validators';
+ 
 class SignInPage extends Component {
 
   static propTypes = {
@@ -70,24 +72,24 @@ class SignInPage extends Component {
     this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
   }
 
-  validateEmailInput(value) {
-    this.setState({email: value});
-    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(re.test(value)){
-        this.setState({emailValid: 'check'});
-    } else {
-        this.setState({emailValid: 'times'});
-    }
+  validateEmailInput(email) {
+    emailRule.validate(email, (err) => {
+      if(!err){
+        this.setState({email, emailValid: 'check'});
+      } else {
+        this.setState({email, emailValid: 'times'});
+      }
+    });
   }
 
-  validatePasswordInput(value) {
-    this.setState({password: value});
-    let re = /^[a-zA-Z0-9]{3,30}$/;
-    if(re.test(value)){
-        this.setState({passwordValid: 'check'});
-    } else {
-        this.setState({passwordValid: 'times'});
-    }
+  validatePasswordInput(password) {
+    passwordRule.validate(password, (err) => {
+      if(!err){
+          this.setState({password, passwordValid: 'check'});
+      } else {
+          this.setState({password, passwordValid: 'times'});
+      }
+    });
   }
 
   render() {
@@ -137,10 +139,7 @@ class SignInPage extends Component {
       </Container>
     );
   }
-
 }
-
-
 
 function bindAction(dispatch) {
   return {
