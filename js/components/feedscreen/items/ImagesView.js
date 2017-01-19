@@ -6,7 +6,6 @@ import { View, Content } from 'native-base';
 
 import LikeView from './LikeView';
 import TypeView from './TypeView';
-import TagsView from './TagsView';
 
 class ImagesView extends Component {
 
@@ -24,15 +23,16 @@ class ImagesView extends Component {
 
   componentWillReceiveProps() {
     this.setState({
-      images: this.props.images
+      images: this.props.images,
+      imagesNew: this.props.imagesNew
     })
   }
 
-  _hndleLikeClick(index, img) {
+  _handleLikeClick(index, img) {
     let liked = !img.liked;
     let likes = liked ? img.likes + 1 : img.likes - 1;
     let images = this.state.images;
-    images[index] = { uri: img.uri, width: img.width, height: img.height, likes: likes, liked: liked, type: img.type, tags: img.tags };
+    images[index] = { uri: img.uri, width: img.width, height: img.height, likes: likes, liked: liked, type: img.type };
     this.setState({
       images: images
     })
@@ -51,8 +51,7 @@ class ImagesView extends Component {
             <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
               <Content scrollEnabled={false}>
                 <TypeView type={img.type} />
-                <LikeView index={index} item={img} onPress={this._hndleLikeClick.bind(this)} />
-                <TagsView tags={img.tags} />
+                <LikeView index={index} item={img} onPress={this._handleLikeClick.bind(this)} />
               </Content>
             </Image>
           </View>

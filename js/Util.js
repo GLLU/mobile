@@ -8,8 +8,6 @@ export default class Utils {
   }
 
   static sortDataFromJsonApi(lookFor,obj1,obj2) {
-    console.log('obj1: ',obj1);
-    console.log('obj2: ',obj2);
     const relationshipIdsArray = [];
     let tempObj = {}
     obj1.data.map((mainItem) => {
@@ -29,7 +27,6 @@ export default class Utils {
       }
 
     });
-    console.log('relationshipArr: ',relationshipIdsArray)
-
+    return relationshipIdsArray;
   }
 }

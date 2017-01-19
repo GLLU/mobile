@@ -74,7 +74,6 @@ class FilterView extends Component {
   }
 
   openFilter() {
-    console.log('Open filter', this.state.isOpen);
     this.setState({ isOpen: !this.state.isOpen });
   }
 
@@ -200,7 +199,6 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  console.log('mapStateToProps', state.api);
   const tags = state.api.tag ? state.api.tag.data : [];
   return {
     categories: tags,

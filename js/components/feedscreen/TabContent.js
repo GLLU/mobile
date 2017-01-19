@@ -4,14 +4,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, ScrollView, Dimensions } from 'react-native';
 import { View } from 'native-base';
-import Modal from 'react-native-modalbox';
 import ImagesView from './items/ImagesView';
-import MyBodyModal from '../common/myBodyModal'
 import styles from './styles';
 import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
-import getFeed from '../../actions/feed';
-import Util from '../../Util';
+import SpinnerSwitch from '../loaders/SpinnerSwitch'
 
 import { actions } from 'react-native-navigation-redux-helpers';
 
@@ -25,7 +22,6 @@ class TabContent extends Component {
     images: React.PropTypes.array,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
-    getFeed: React.PropTypes.func
   }
 
   constructor(props) {
@@ -36,23 +32,45 @@ class TabContent extends Component {
       imagesColumn1: [],
       imagesColumn2: []
     }
-    this.props.getFeed();
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
   }
 
+  createFlatLooksObj() {
+    let tempObj = {};
+    let tempImgObj = {};
+    let flatLooksArr = [];
+      this.props.looks.data.map((look, index) => {
+        tempObj = _.pick(look.attributes, ['user-id', 'likes', 'is-liked']);
+        tempObj.id = look.id;
+        tempObj.liked = tempObj["is-liked"];
+        tempObj.type = look.attributes["user-size"].body_type;
+        tempImgObj = _.pick(look.attributes.cover, ['width', 'height'])
+        tempImgObj.uri = look.attributes.cover.image.medium.url
+        Object.assign(tempObj, tempImgObj)
+        flatLooksArr.push(tempObj);
+      });
+      return flatLooksArr
+
+  }
+
+  componentWillReceiveProps() {
+    console.log('props reviceved',this.props);
+  }
+
   onColumnLayout(e, key) {
-    const layout = e.nativeEvent.layout;
-    const colW = layout.width;
-    const images = [];
-    this.props.images.map((img, index) => {
-      if (key % 2 == 0) {
-        return index % 2 == 0 ? images.push(img) : false;
-      } else {
-        return index % 2 != 0 ? images.push(img) : false;
-      }
-    });
-    this.arrangeImages(`imagesColumn${key}`, images, colW);
+      const flatImages = this.createFlatLooksObj();
+      const layout = e.nativeEvent.layout;
+      const colW = layout.width;
+      const images = [];
+      flatImages.map((img, index) => {
+        if (key % 2 === 0) {
+          return index % 2 === 0 ? images.push(img) : false;
+        } else {
+          return index % 2 !== 0 ? images.push(img) : false;
+        }
+      });
+      this.arrangeImages(`imagesColumn${key}`, images, colW);
   }
 
   arrangeImages(key, images, colW) {
@@ -98,29 +116,30 @@ class TabContent extends Component {
     this.props.navigateTo('itemScreen', 'feedscreen');
   }
 
-  componentDidUpdate() {
-    Util.sortDataFromJsonApi('look-images',this.props.looks,this.props.looksImages);
-  }
-
   render() {
-    const paddingBottom = 150;
-    return(
-      <View style={styles.tab} scrollEnabled={false}>
 
-        <View style={[styles.mainGrid]}>
-          <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
-            <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
-              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
-                <ImagesView images={this.state.imagesColumn1} onItemPress={this._handleItemPress.bind(this)}/>
+    if(this.props.looks.data){
+      return(
+        <View style={styles.tab} scrollEnabled={false}>
+          <View style={[styles.mainGrid]}>
+            <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
+              <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
+                <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
+                  <ImagesView imagesNew={this.state.imagesNew} images={this.state.imagesColumn1} onItemPress={this._handleItemPress.bind(this)}/>
+                </View>
+                <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 2)}>
+                  <ImagesView images={this.state.imagesColumn2} onItemPress={this._handleItemPress.bind(this)}/>
+                </View>
               </View>
-              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 2)}>
-                <ImagesView images={this.state.imagesColumn2} onItemPress={this._handleItemPress.bind(this)}/>
-              </View>
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    )
+      )
+    } else {
+      <SpinnerSwitch />
+    }
+    const paddingBottom = 150;
+
   }
 }
 
@@ -128,20 +147,12 @@ function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
-    getFeed: feedType => dispatch(getFeed(feedType))
   };
 }
 
-function mapStateToProps(state) {
-  const lookImages = `state.api.look-image`
-  console.log('stateee',state)
-  return {
-    images: state.filters.images,
-    modalShowing: state.myBodyType.modalShowing,
-    looks: state.api.look,
-    looksImages: state.api["look-image"]
-  }
-
-};
+const mapStateToProps = state => ({
+  images: state.filters.images,
+  modalShowing: state.myBodyType.modalShowing,
+});
 
 export default connect(mapStateToProps, bindActions)(TabContent);
