@@ -8,9 +8,8 @@ import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
 
 const logo = require('../../../images/logo.png');
-
 import styles from './styles';
-
+import glluTheme from '../../themes/gllu-theme';
 import { emailSignIn } from '../../actions/user';
 
 const { popRoute, pushRoute } = actions;
@@ -94,7 +93,7 @@ class SignInPage extends Component {
 
   render() {
     return (
-      <Container>
+      <Container theme={glluTheme}>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
           <Image source={backgroundShadow} style={styles.bgShadow} />

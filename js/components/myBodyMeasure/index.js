@@ -12,7 +12,7 @@ import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
 
 
-const { popRoute, pushRoute } = actions
+const { popRoute } = actions
 
 class MyBodyMeasure extends Component {
   constructor(props) {
