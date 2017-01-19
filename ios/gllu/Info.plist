@@ -72,6 +72,7 @@
 	<string>Sharing photos in GLLU</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Montserrat-Bold.ttf</string>
 		<string>PlayfairDisplay-Bold.ttf</string>
 		<string>Andale Mono.ttf</string>
 		<string>Arial Black.ttf</string>
