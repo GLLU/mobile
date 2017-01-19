@@ -11,7 +11,7 @@ const ACTION_HANDLERS = {
   },
   [ADD_TAG]: (state, action) => {
     const tags = state.tags;
-    tag = Object.assign({id: tags.length, editing: true}, action.payload.tag);
+    tag = Object.assign({id: tags.length}, action.payload.tag);
     tags.push(tag);
     return {
       ...state,

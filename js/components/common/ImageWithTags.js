@@ -87,7 +87,9 @@ class ImageWithTags extends Component {
   _handlePress(e) {
     const {locationX, locationY} = e.nativeEvent;
     this._setupPanResponder(locationX, locationY);
-    this.setState({locationX: locationX, locationY: locationY});
+    this.setState({locationX: locationX, locationY: locationY}, () => {
+      this.props.addTag({locationX, locationY});
+    });
   }
 
   renderTags() {

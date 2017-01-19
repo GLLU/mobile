@@ -69,6 +69,11 @@ class TagItemPage extends Component {
     }
   }
 
+  _handleAddTag(tag) {
+    this.props.addTag(tag);
+    // this.props.navigateTo('addItemScreen', 'feedscreen');
+  }
+
   render() {
     const { tags, image, addTag, setTagPosition } = this.props;
     console.log('render with tags', tags);
@@ -81,7 +86,7 @@ class TagItemPage extends Component {
           <Title style={{fontFamily: 'PlayfairDisplay-Regular', color: '#ffffff'}}>Tap item to add</Title>
         </Header>
         <View contentContainerStyle={{backgroundColor: '#000000', padding: 10}}>
-          <ImageWithTags ref={(ref) => this.imageEditor = ref} editMode={true} tags={tags} image={image} addTag={addTag} setTagPosition={setTagPosition}/>
+          <ImageWithTags ref={(ref) => this.imageEditor = ref} editMode={true} tags={tags} image={image} addTag={this._handleAddTag.bind(this)} setTagPosition={setTagPosition}/>
         </View>
       </Container>
     );
@@ -92,14 +97,18 @@ function bindActions(dispatch) {
   return {
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     popRoute: (key) => dispatch(popRoute(key)),
-    addTag: (tag) => dispatch(addTag(tag)),
+    addTag: (tag) => dispatch([addTag(tag), navigateTo('addItemScreen', 'feedscreen')]),
     setTagPosition: (position) => dispatch(setTagPosition(position)),
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  ...state.uploadLook,
-});
+const mapStateToProps = state => {
+  // const look = state.api.look
+
+  return {
+    navigation: state.cardNavigation,
+    ...state.uploadLook,
+  };
+};
 
 export default connect(mapStateToProps, bindActions)(TagItemPage);

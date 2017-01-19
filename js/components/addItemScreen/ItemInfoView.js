@@ -209,9 +209,12 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  categories: state.filters.categories,
-  ...state.uploadLook,
-});
+const mapStateToProps = state => {
+  const tags = state.api.tag ? state.api.tag.data : [];
+  return {
+    categories: tags,
+    ...state.uploadLook,
+  };
+};
 
 export default connect(mapStateToProps, bindActions)(ItemInfoView);

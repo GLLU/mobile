@@ -50,13 +50,13 @@ class Location extends Component {
                   </Col>
                   <Col size={20}>
                     <Picker
-                      style={styles.selectOptions}
-                      iosHeader="Select one"
-                      mode="dropdown"
-                      selectedValue={this.props.location}
-                      onValueChange={(value) => this.props.updateSelectValue('location', value)}>
-                      <Item label="UK" value="uk" />
-                      <Item label="US" value="us" />
+                        style={styles.selectOptions}
+                        iosHeader="Select one"
+                        mode="dropdown"
+                        selectedValue={this.props.location}
+                        onValueChange={(value) => this.props.updateSelectValue('location', value)}>
+                        <Item label="UK" value="uk" />
+                        <Item label="US" value="us" />
                     </Picker>
                   </Col>
                   <Col size={20}>

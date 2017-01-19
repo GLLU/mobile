@@ -92,7 +92,7 @@ class CategoryStrip extends Component {
     const categories = this.props.categories;
     return categories.map((item, index) => {
       const selected = selectedCategory && selectedCategory.id == item.id;
-      return (<CategoryItem key={index} item={item} selected={selected} onPress={() => this.scrollItemToMiddle()}/>);
+      return (<CategoryItem key={index} item={item} selected={selected} onPress={() => this.props.onCategorySelected(item)}/>);
     });
   }
 

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   describe: {
     flex: 1,
-    height: 100,
+    height: 60,
     fontSize: new FontSizeCalculator(18).getSize(),
     fontFamily: 'Times New Roman',
     color: '#9E9E9E',
@@ -167,13 +167,24 @@ class StepTwo extends Component {
     var height = this.getHeight(number);
     return (
         <Content scrollEnabled={false} style={{height: height, margin: 5}}>
-            <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
-            <Text adjustsFontSizeToFit={true} numberOfLines={4} style={styles.describe}>
-                {"Add some details about the items you've tagged and some relevant #hashtags to make it easier for people to find it"}
-            </Text>
-            <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
-            <TextInput onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)} returnKeyType="done" placeholder="" value={this.state.tmpValue} keyboardType="default" placeholderTextColor="#BDBDBD"  style={styles.textInput} onChangeText={(text) => this.setState({tmpValue: text})} />
-            <Tags tags={this.state.tags} removeTag={this.removeTag.bind(this)} />
+          <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
+          <TextInput
+              adjustsFontSizeToFit={true}
+              numberOfLines={4}
+              multiline={true}
+              placeholder="Add some details about the items you've tagged and some relevant #hashtags to make it easier for people to find it"
+              style={styles.describe}/>
+          <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
+          <TextInput
+              returnKeyType="done"
+              placeholder=""
+              value={this.state.tmpValue}
+              keyboardType="default"
+              placeholderTextColor="#BDBDBD"
+              style={styles.textInput}
+              onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
+              onChangeText={(text) => this.setState({tmpValue: text})} />
+          <Tags tags={this.state.tags} removeTag={this.removeTag.bind(this)} />
         </Content>
     )
   }

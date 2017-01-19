@@ -35,9 +35,8 @@ class NavigationBarView extends Component {
 
   openCamera() {
     ImagePicker.openPicker({
-      cropping: false
+      cropping: false,
     }).then(image => {
-      console.log('pick image:', image);
       this.props.goToAddNewItem(image);
     });
   }
