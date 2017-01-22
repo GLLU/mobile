@@ -44,6 +44,7 @@ class ImagesView extends Component {
   }
 
   _renderImages() {
+    console.log('rendered images');
     return this.state.images.map((img, index) => {
       return  (
         <TouchableOpacity key={index} onPress={(e) => this._handleItemClick(img)}>

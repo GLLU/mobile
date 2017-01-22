@@ -31,8 +31,6 @@ class FilterView extends Component {
     this.state = {
       selectedCategory: null,
       openFilter: true,
-      fromPrice: this.props.minPrice,
-      toPrice: this.props.maxPrice,
       feedTypeSelectedOption: 'Best Match',
       isOpen: false
     };
@@ -49,24 +47,22 @@ class FilterView extends Component {
     this.setState({
       selectedCategory: selected
     });
+    if(selected){
+      this.props.toggleFeedCategoryFilter(selected.attributes.name)
+    } else {
+      this.props.toggleFeedCategoryFilter('')
+    }
     console.log(`Filter by category Id: ${item.id}`);
   }
 
-  filterByPrice(min, max) {
-    console.log('Call API filter by price');
-    this.setState({
-      fromPrice: parseInt(min),
-      toPrice: parseInt(max),
-    });
-  }
+
 
   clearFilter() {
     console.log('Clear Filter');
     this.setState({
       selectedCategory: null,
-      fromPrice: this.props.minPrice,
-      toPrice: this.props.maxPrice
     });
+    this.props.toggleFeedCategoryFilter('')
   }
 
   openFilter() {
@@ -74,7 +70,7 @@ class FilterView extends Component {
   }
 
   _renderFilterHeader(){
-    const labelColor = this.state.selectedCategory || this.state.fromPrice !== 1 || this.state.toPrice !== 1000 ? '#1DE9B6' : '#212121';
+    const labelColor = this.state.selectedCategory  ? '#1DE9B6' : '#212121';
     return (
       <View>
         <Grid style={styles.filter}>
@@ -110,19 +106,9 @@ class FilterView extends Component {
 
   _rederFilterText() {
     const filterOnChangeCategory = this.state.selectedCategory;
-    const filterOnChangePrice = this.state.fromPrice !== this.props.minPrice || this.state.toPrice !== this.props.maxPrice;
-    if (filterOnChangePrice === false && filterOnChangeCategory === null) {
-      return (
-        <View>
-          <Text style={styles.TextResults}>All Results</Text>
-        </View>);
-    } else {
       const filters = [];
       if (filterOnChangeCategory) {
         filters.push(this.state.selectedCategory.attributes.name);
-      }
-      if (filterOnChangePrice) {
-        filters.push(`₤${this.state.fromPrice} - ₤${this.state.toPrice}`);
       }
       return (
         <View>
@@ -130,7 +116,7 @@ class FilterView extends Component {
             {filters.join(', ')}
           </Text>
         </View>);
-    }
+
   }
 
   renderRadioContainer(optionNodes){
@@ -154,10 +140,13 @@ class FilterView extends Component {
   }
 
   setFeedTypeSelectedOption(feedTypeSelectedOption){
+    let isCategorySelected = this.state.selectedCategory ? this.state.selectedCategory.attributes.name : '';
     this.setState({
       feedTypeSelectedOption
     })
-    feedTypeSelectedOption === 'Recent' ? this.props.toggleFeedType('recent') : this.props.toggleFeedType('relevant')
+    feedTypeSelectedOption === 'Recent' ? this.props.toggleFeedType('recent', isCategorySelected)
+      :
+      this.props.toggleFeedType('relevant', isCategorySelected)
   }
 
   _renderFilters() {
