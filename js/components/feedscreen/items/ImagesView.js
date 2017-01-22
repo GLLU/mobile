@@ -22,6 +22,7 @@ class ImagesView extends Component {
   }
 
   componentWillReceiveProps() {
+    console.log('2', this.props.images)
     this.setState({
       images: this.props.images,
       imagesNew: this.props.imagesNew

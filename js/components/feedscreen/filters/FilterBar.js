@@ -42,10 +42,6 @@ class FilterView extends Component {
     this.props.loadCategories();
   }
 
-  componentWillReceiveProps() {
-
-  }
-
   filterByCategory(item) {
     console.log('Call API filter by category');
     const selectedCategory = this.state.selectedCategory;
@@ -114,7 +110,7 @@ class FilterView extends Component {
 
   _rederFilterText() {
     const filterOnChangeCategory = this.state.selectedCategory;
-    const filterOnChangePrice = this.state.fromPrice != this.props.minPrice || this.state.toPrice != this.props.maxPrice;
+    const filterOnChangePrice = this.state.fromPrice !== this.props.minPrice || this.state.toPrice !== this.props.maxPrice;
     if (filterOnChangePrice === false && filterOnChangeCategory === null) {
       return (
         <View>
@@ -161,7 +157,7 @@ class FilterView extends Component {
     this.setState({
       feedTypeSelectedOption
     })
-    feedTypeSelectedOption === 'Best Match' ? this.props.toggleFeedType('Best Match') : this.props.toggleFeedType('Recent')
+    feedTypeSelectedOption === 'Recent' ? this.props.toggleFeedType('recent') : this.props.toggleFeedType('relevant')
   }
 
   _renderFilters() {

@@ -66,7 +66,7 @@ module.exports = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     paddingLeft: 5,
     paddingBottom: 10,
-    height: 40,
+    height: 45,
   },
   filterActions: {
     backgroundColor: '#F5F5F5',

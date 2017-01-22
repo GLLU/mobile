@@ -26,7 +26,6 @@ class TabContent extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       filterHeight: 0,
       imagesColumn1: [],
@@ -40,30 +39,25 @@ class TabContent extends Component {
     let tempObj = {};
     let tempImgObj = {};
     let flatLooksArr = [];
-      this.props.looks.data.map((look, index) => {
+      this.props.looks.map((look, index) => {
         tempObj = _.pick(look.attributes, ['user-id', 'likes', 'is-liked']);
-        tempObj.id = look.id;
         tempObj.liked = tempObj["is-liked"];
         tempObj.type = look.attributes["user-size"].body_type;
-        tempImgObj = _.pick(look.attributes.cover, ['width', 'height'])
-        tempImgObj.uri = look.attributes.cover.image.medium.url
-        Object.assign(tempObj, tempImgObj)
+        tempImgObj = _.pick(look.attributes.cover, ['width', 'height']);
+        tempImgObj.uri = look.attributes.cover.image.small.url;
+        Object.assign(tempObj, tempImgObj);
         flatLooksArr.push(tempObj);
       });
       return flatLooksArr
 
   }
 
-  componentWillReceiveProps() {
-    console.log('props reviceved',this.props);
-  }
-
   onColumnLayout(e, key) {
-      const flatImages = this.createFlatLooksObj();
+      const flatImagesObj = this.createFlatLooksObj();
       const layout = e.nativeEvent.layout;
       const colW = layout.width;
       const images = [];
-      flatImages.map((img, index) => {
+      flatImagesObj.map((img, index) => {
         if (key % 2 === 0) {
           return index % 2 === 0 ? images.push(img) : false;
         } else {
@@ -94,7 +88,6 @@ class TabContent extends Component {
 
   handleScroll(event) {
     this.scrollCallAsync(event);
-
     const contentSizeHeight = event.nativeEvent.contentSize.height;
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const currentScroll = event.nativeEvent.contentOffset.y
@@ -117,29 +110,23 @@ class TabContent extends Component {
   }
 
   render() {
-
-    if(this.props.looks.data){
-      return(
-        <View style={styles.tab} scrollEnabled={false}>
-          <View style={[styles.mainGrid]}>
-            <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
-              <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
-                <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
-                  <ImagesView imagesNew={this.state.imagesNew} images={this.state.imagesColumn1} onItemPress={this._handleItemPress.bind(this)}/>
-                </View>
-                <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 2)}>
-                  <ImagesView images={this.state.imagesColumn2} onItemPress={this._handleItemPress.bind(this)}/>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-        </View>
-      )
-    } else {
-      <SpinnerSwitch />
-    }
     const paddingBottom = 150;
-
+    return(
+      <View style={styles.tab} scrollEnabled={false}>
+        <View style={[styles.mainGrid]}>
+          <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
+            <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
+              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)} boom={this.props.looks}>
+                <ImagesView imagesNew={this.state.imagesNew} images={this.state.imagesColumn1} boom={this.props.looks} onItemPress={this._handleItemPress.bind(this)}/>
+              </View>
+              <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 2)} boom={this.props.looks}>
+                <ImagesView images={this.state.imagesColumn2} onItemPress={this._handleItemPress.bind(this)} boom={this.props.looks}/>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      </View>
+    )
   }
 }
 

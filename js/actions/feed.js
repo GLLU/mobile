@@ -1,16 +1,21 @@
 import type { Action } from '../actions/types';
-import rest from '../api/rest';
 
-import { readEndpoint, setHeaders } from 'redux-json-api';
+import { readEndpoint } from 'redux-json-api';
 
-export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
-export const SET_CATEGORIES = 'SET_CATEGORIES';
+export const SET_FEED_DATA = 'SET_FEED_DATA';
 
-export default function getFeed(feedType):Action {
+export function getFeed(feedType):Action {
     return (dispatch) => {
-        return dispatch(readEndpoint(`feed?type[`+feedType+`]`)).then((feedType) => {
-            console.log('feeds data', feedType);
+        return dispatch(readEndpoint(`feed?feed[type]=`+feedType+``)).then((feedData) => {
+            console.log('feeds data', feedData);
+            dispatch(setFeedData(feedData.data));
         });
     };
 }
 
+export function setFeedData(data):Action {
+  return {
+    type: SET_FEED_DATA,
+    payload: data
+  };
+}
