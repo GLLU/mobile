@@ -6,7 +6,6 @@ const initialState = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_FEED_DATA]: (state, action) => {
-    console.log('action payload feed', action.payload);
     return {
       ...state,
       looks: action.payload
