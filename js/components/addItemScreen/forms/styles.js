@@ -9,8 +9,9 @@ module.exports = StyleSheet.create({
     padding: 10
   },
   smallTextInput: {
-    color: '#757575',
-    fontWeight: '400',
+    fontFamily: 'Montserrat',
+    color: '#a6a6a6',
+    fontWeight: '300',
     fontSize: new FontSizeCalculator(13).getSize(),
     marginTop: 10,
   },
@@ -28,5 +29,12 @@ module.exports = StyleSheet.create({
     marginTop: 5,
     resizeMode: 'contain',
     alignSelf: 'center'
+  },
+  titleLabelInfo: {
+    fontFamily: 'Montserrat',
+    fontSize: new FontSizeCalculator(15).getSize(),
+    color: '#7f7f7f',
+    fontWeight: '300',
+    marginBottom: 8
   },
 });

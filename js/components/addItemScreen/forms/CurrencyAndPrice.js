@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
 import { View, Container, Content, Button, Text, Picker, Item, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 import FontSizeCalculator from './../../../calculators/FontSize';
@@ -9,8 +10,9 @@ const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   titleLabelInfo: {
-    color: '#757575',
-    fontWeight: '400',
+    fontFamily: 'Montserrat',
+    color: '#7f7f7f',
+    fontWeight: '300',
     marginBottom: 8
   },
   textHalfInput: {
@@ -51,7 +53,8 @@ class CurrencyAndPrice extends Component {
   static propTypes = {
     currency: React.PropTypes.string,
     price: React.PropTypes.string,
-    updateValue: React.PropTypes.func
+    updateValue: React.PropTypes.func,
+    currencies: React.PropTypes.array,
   }
 
   constructor(props) {
@@ -61,7 +64,7 @@ class CurrencyAndPrice extends Component {
   }
 
   _renderCurrency() {
-    return (<View style={{flex: 1, flexDirection: 'row', marginTop: 0, marginBottom: 0}}>
+    return (<View style={{flex: 1, flexDirection: 'row', marginTop: 10, marginBottom: -10}}>
               <View style={{flex: 0.5}}>
                 <Text style={[styles.titleLabelInfo]}>Currency</Text>
               </View>
@@ -74,7 +77,7 @@ class CurrencyAndPrice extends Component {
   render () {
     return (<View style={{flex: 1, marginBottom: 20, marginTop: 0}}>
                 {this._renderCurrency()}
-                <Grid>
+                <Grid style={{marginTop: 0}}>
                   <Col size={48}>
                     <Grid style={styles.fakeBtnContainer}>
                       <Col size={80}>
@@ -84,8 +87,9 @@ class CurrencyAndPrice extends Component {
                           mode="dropdown"
                           selectedValue={this.props.currency}
                           onValueChange={(value) => this.props.updateValue('currency', value)}>
-                          <Item label="£ GBP" value="LGP" />
-                          <Item label="$ USD" value="USD" />
+                          {this.props.currencies.map((c, i) => {
+                            return <Item key={i} label={c.name} value={c.value} />
+                          })}
                         </Picker>
                       </Col>
                       <Col size={20}>
@@ -95,7 +99,14 @@ class CurrencyAndPrice extends Component {
                   </Col>
                   <Col size={4} />
                   <Col size={48}>
-                    <TextInput placeholder="Type a price" keyboardType="numeric" placeholderTextColor="#BDBDBD"  style={styles.textHalfInput} value={this.props.price} onChangeText={(price) => this.props.updateValue('price', price)} />
+                    <Grid>
+                      <Col size={80}>
+                        <TextInput placeholder="Type a price" keyboardType="numeric" placeholderTextColor="#BDBDBD"  style={styles.textHalfInput} value={this.props.price} onChangeText={(price) => this.props.updateValue('price', price)} />
+                      </Col>
+                      <Col size={20}>
+                        <Icon style={[styles.arrowSelect, {marginTop: 15}]} name='ios-arrow-down' />
+                      </Col>
+                    </Grid>
                   </Col>
                 </Grid>
             </View>)
@@ -103,4 +114,15 @@ class CurrencyAndPrice extends Component {
 
 }
 
-export default CurrencyAndPrice;
+function bindActions(dispatch) {
+  return {
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    currencies: state.formData.currencies,
+  };
+};
+
+export default connect(mapStateToProps, bindActions)(CurrencyAndPrice);

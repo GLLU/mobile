@@ -65,7 +65,8 @@ class StepsBar extends Component {
   }
 
   getDisabled(step) {
-    return parseInt(step) < parseInt(this.props.currentStep) ? false : true;
+    //return parseInt(step) < parseInt(this.props.currentStep) ? false : true;
+    return true;
   }
 
   render () {

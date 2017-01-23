@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Image, StyleSheet, TextInput, Dimensions } from 'react-native';
 import { View, Container, Content, Button, Text, Picker, Item, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
@@ -9,10 +10,6 @@ const h = Dimensions.get('window').height;
 
 const us = require('../../../../images/flags/us.png');
 const uk = require('../../../../images/flags/uk.png');
-const FLAGS = [
-        {name: 'uk', icon: uk, text: 'UK'},
-        {name: 'us', icon: us, text: 'US'}
-      ];
 
 const styles = StyleSheet.create({
   selectOptions: {
@@ -30,8 +27,8 @@ const styles = StyleSheet.create({
     height: 50,
   },
   flagSelectOptions: {
-    width: 40,
-    height: 30,
+    width: new FontSizeCalculator(40).getSize(),
+    height: new FontSizeCalculator(30).getSize(),
     marginLeft: 10,
     marginTop: 5,
     resizeMode: 'contain',
@@ -44,21 +41,23 @@ class ItemSize extends Component {
   static propTypes = {
     itemSizeCountry: React.PropTypes.string,
     itemSizeNumber: React.PropTypes.string,
-    updateValue: React.PropTypes.func
+    updateValue: React.PropTypes.func,
+    countries: React.PropTypes.array,
+    itemSizes: React.PropTypes.array
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      
+
     }
   }
 
   render () {
     let flagIcon = uk;
-    FLAGS.map((flag) => {
-      if (flag.name == this.props.itemSizeCountry) {
-        flagIcon = flag.icon;
+    this.props.countries.map((c) => {
+      if (c.name == this.props.itemSizeCountry) {
+        flagIcon = c.icon;
       }
     });
     return (<Container style={{flex: 1, marginBottom: 0, marginTop: 0}}>
@@ -76,8 +75,8 @@ class ItemSize extends Component {
                           mode="dropdown"
                           selectedValue={this.props.itemSizeCountry}
                           onValueChange={(value) => this.props.updateValue('itemSizeCountry', value)}>
-                          {FLAGS.map((flag, i) => {
-                            return <Item key={i} label={flag.text} value={flag.name} />  
+                          {this.props.countries.map((c, i) => {
+                            return <Item key={i} label={c.text} value={c.name} />
                           })}
                         </Picker>
                       </Col>
@@ -96,10 +95,9 @@ class ItemSize extends Component {
                             mode="dropdown"
                             selectedValue={this.props.itemSizeNumber}
                             onValueChange={(value) => this.props.updateValue('itemSizeNumber', value)}>
-                            <Item label="1" value="1" />
-                            <Item label="2" value="2" />
-                            <Item label="3" value="3" />
-                            <Item label="4" value="4" />
+                            {this.props.itemSizes.map((s, i) => {
+                            return <Item key={i} label={s.name} value={s.value} />
+                          })}
                         </Picker>
                       </Col>
                       <Col size={20}>
@@ -114,4 +112,16 @@ class ItemSize extends Component {
 
 }
 
-export default ItemSize;
+function bindActions(dispatch) {
+  return {
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    countries: state.formData.countries,
+    itemSizes: state.formData.itemSizes,
+  };
+};
+
+export default connect(mapStateToProps, bindActions)(ItemSize);

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
+import { connect } from 'react-redux';
 import { View, Container, Content, Button, Text, Picker, Item, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 
@@ -11,7 +12,8 @@ class TrustLevel extends Component {
 
   static propTypes = {
     trustLevel: React.PropTypes.string,
-    updateSelectValue: React.PropTypes.func
+    updateSelectValue: React.PropTypes.func,
+    trustLevels: React.PropTypes.array,
   }
 
   constructor(props) {
@@ -32,22 +34,19 @@ class TrustLevel extends Component {
                       <Col size={35}>
                         <Text style={[styles.titleLabelInfo, {paddingTop: 10}]}>Trust Level</Text>
                       </Col>
-                      <Col size={30}>
+                      <Col size={34}>
                         <Picker
                           style={styles.selectOptions}
                           iosHeader="Select one"
                           mode="dropdown"
                           selectedValue={this.props.trustLevel}
                           onValueChange={(value) => this.props.updateSelectValue('trustLevel', value)}>
-                          <Item label="0/5" value="0" />
-                          <Item label="1/5" value="1" />
-                          <Item label="2/5" value="2" />
-                          <Item label="3/5" value="3" />
-                          <Item label="4/5" value="4" />
-                          <Item label="5/5" value="5" />
+                          {this.props.trustLevels.map((t, i) => {
+                            return <Item key={i} label={t.name} value={t.value} />
+                          })}
                         </Picker>
                       </Col>
-                      <Col size={20}>
+                      <Col size={10}>
                         <Icon style={[styles.arrowSelect, {textAlign: 'center'}]} name='ios-arrow-forward-outline' />
                       </Col>
                     </Grid>
@@ -65,4 +64,15 @@ class TrustLevel extends Component {
 
 }
 
-export default TrustLevel;
+function bindActions(dispatch) {
+  return {
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    trustLevels: state.formData.trustLevels,
+  };
+};
+
+export default connect(mapStateToProps, bindActions)(TrustLevel);

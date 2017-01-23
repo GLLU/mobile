@@ -10,6 +10,11 @@ import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
 import Tags from './forms/Tags';
+import {
+    addLocation,
+    addTrustLevel,
+    addPhotosVideo,
+} from '../../actions';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -24,13 +29,16 @@ const styles = StyleSheet.create({
     padding: 20
   },
   titleLabelInfo: {
-    color: '#757575',
-    fontWeight: '400',
+    fontFamily: 'Montserrat',
+    fontSize: new FontSizeCalculator(15).getSize(),
+    color: '#7f7f7f',
+    fontWeight: '300',
     marginBottom: 8
   },
   describe: {
     flex: 1,
     height: 60,
+    fontFamily: 'PlayfairDisplay',
     fontSize: new FontSizeCalculator(18).getSize(),
     fontFamily: 'Times New Roman',
     color: '#9E9E9E',
@@ -49,10 +57,11 @@ const styles = StyleSheet.create({
   confirmText: {
     flex: 1,
     height: 120,
+    fontFamily: 'Montserrat',
     fontSize: new FontSizeCalculator(15).getSize(),
     fontFamily: 'Times New Roman',
-    color: '#333333',
-    marginVertical:6,
+    fontWeight: '300',
+    color: '#000',
     backgroundColor: 'transparent',
     padding: 2
   },
@@ -67,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
     marginBottom: 20,
-    backgroundColor: '#1DE9B6',
+    backgroundColor: '#05d7b2',
     height: 45,
     width: (w / 8) * 6,
     borderRadius: 0,
@@ -75,10 +84,14 @@ const styles = StyleSheet.create({
   },
   btnGoToStep3Text: {
     color: '#FFFFFF',
+    fontFamily: 'Montserrat',
     fontSize: new FontSizeCalculator(18).getSize(),
-    fontWeight: '500',
+    fontWeight: '400',
     textAlign: 'center'
   },
+  hashTag: {
+    color: '#05d7b2'
+  }
 });
 
 class StepTwo extends Component {
@@ -88,7 +101,10 @@ class StepTwo extends Component {
     addTag: React.PropTypes.func,
     image: React.PropTypes.object,
     tags: React.PropTypes.array,
-    continueAction: React.PropTypes.func
+    continueAction: React.PropTypes.func,
+    addLocation: React.PropTypes.func,
+    addTrustLevel: React.PropTypes.func,
+    addPhotosVideo: React.PropTypes.func
   }
 
   constructor(props) {
@@ -97,6 +113,7 @@ class StepTwo extends Component {
         tags: ['dresses', 'black', 'red', 'white'],
         images:['', '', ''],
         video: '',
+        videoUrl: '',
         tmpValue: '',
         location: 'us',
         trustLevel: '0',
@@ -114,6 +131,7 @@ class StepTwo extends Component {
         let images = this.state.images;
         images[number - 1] = path;
         this.setState({images: images});
+        this.props.addPhotosVideo(images, this.state.videoUrl);
         console.log(this.state.images);
       }
     });
@@ -128,12 +146,22 @@ class StepTwo extends Component {
       var Extension = path.substring(path.lastIndexOf('.')+1).toLowerCase();
       if (Extension == "mp4" || Extension == "avi" || Extension == "flv" || Extension == "mov" || Extension == "webm") {
         console.log(`${path} will upload and get thumbnail via api`);
+        this.setState({videoUrl: path, video: ''});
+        this.props.addPhotosVideo(this.state.images, path);
       }
     });
   }
 
   updateSelectValue(key, value) {
     this.setState({[key]: value});
+    switch (key) {
+      case 'location':
+        this.props.addLocation(value);
+        break;
+      case 'trustLevel':
+        this.props.addTrustLevel(value);
+        break;
+    }
   }
 
   addTags(name) {
@@ -168,12 +196,9 @@ class StepTwo extends Component {
     return (
         <Content scrollEnabled={false} style={{height: height, margin: 5}}>
           <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
-          <TextInput
-              adjustsFontSizeToFit={true}
-              numberOfLines={4}
-              multiline={true}
-              placeholder="Add some details about the items you've tagged and some relevant #hashtags to make it easier for people to find it"
-              style={styles.describe}/>
+          <Text style={styles.describe}>
+            Add some details about the items you've tagged and some relevant <Text style={styles.hashTag}>#hashtags</Text> to make it easier for people to find it
+          </Text>
           <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
           <TextInput
               returnKeyType="done"
@@ -203,7 +228,7 @@ class StepTwo extends Component {
                 </Button>
               </Col>
               <Col size={85}>
-                <Text adjustsFontSizeToFit={true} numberOfLines={5} style={styles.confirmText}>
+                <Text adjustsFontSizeToFit={true} numberOfLines={6} style={styles.confirmText}>
                   {'You will now become a "Glluer Presenter" while your exact measurements will still be hiddden. People that will view this item. Will see a % value of matching between their measurements and yours.'}
                 </Text>
               </Col>
@@ -236,6 +261,9 @@ import { connect } from 'react-redux';
 function bindActions(dispatch) {
   return {
     addTag: (tag) => dispatch(addTag(tag)),
+    addLocation: (location) => dispatch([addLocation(location)]),
+    addTrustLevel: (number) => dispatch([addTrustLevel(number)]),
+    addPhotosVideo: (photos, video) => dispatch([addPhotosVideo(photos, video)]),
   };
 }
 

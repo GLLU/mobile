@@ -1,5 +1,18 @@
 import _ from 'lodash';
-import { ADD_NEW_LOOK, EDIT_TAG, ADD_TAG, SET_TAG_POSITION } from '../actions/uploadLook';
+import { ADD_NEW_LOOK,
+        EDIT_TAG, ADD_TAG,
+        SET_TAG_POSITION,
+        ADD_ITEM_TYPE,
+        ADD_BRAND_NAME,
+        ADD_ITEM_SIZE_COUNTRY,
+        ADD_ITEM_SIZE,
+        ADD_ITEM_CURRENCY,
+        ADD_ITEM_PRICE,
+        ADD_SHARING_INFO,
+        ADD_LOCATION,
+        ADD_TRUST_LEVEL,
+        ADD_PHOTOS_VIDEO,
+        } from '../actions/uploadLook';
 
 // Action Handlers
 const ACTION_HANDLERS = {
@@ -42,6 +55,69 @@ const ACTION_HANDLERS = {
       tags,
     }
   },
+  [ADD_ITEM_TYPE]: (state, action) => {
+    console.log('reducers ADD_ITEM_TYPE', state, action);
+    return {
+      ...state,
+      selectedCategory: action.payload
+    }
+  },
+  [ADD_BRAND_NAME]: (state, action) => {
+    return {
+      ...state,
+      brandName: action.payload
+    }
+  },
+  [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
+    return {
+      ...state,
+      itemSizeCountry: action.payload
+    }
+  },
+  [ADD_ITEM_SIZE]: (state, action) => {
+    return {
+      ...state,
+      itemSizeNumber: action.payload
+    }
+  },
+  [ADD_ITEM_CURRENCY]: (state, action) => {
+    return {
+      ...state,
+      currency: action.payload
+    }
+  },
+  [ADD_ITEM_PRICE]: (state, action) => {
+    return {
+      ...state,
+      price: action.payload
+    }
+  },
+  [ADD_SHARING_INFO]: (state, action) => {
+    return {
+      ...state,
+      sharingType: action.payload.sharingType,
+      sharingUrl: action.payload.sharingUrl
+    }
+  },
+  [ADD_LOCATION]: (state, action) => {
+    return {
+      ...state,
+      location: action.payload
+    }
+  },
+  [ADD_TRUST_LEVEL]: (state, action) => {
+    return {
+      ...state,
+      trustLevel: action.payload
+    }
+  },
+  [ADD_PHOTOS_VIDEO]: (state, action) => {
+    return {
+      ...state,
+      video: action.payload.video,
+      photos: action.payload.photos
+    }
+  },
 }
 
 // Reducer
@@ -51,11 +127,16 @@ const initialState = {
   posInCategories: 3,
   brandName: '',
   itemSizeCountry: 'us',
-  itemSizeNumber: '2',
+  itemSizeNumber: 2,
   currency: 'USD',
-  price: '40',
-  sharing: false,
+  price: 40,
+  sharingType: true,
+  sharingUrl: '',
   tags: [],
+  location: 'us',
+  trustLevel: 0,
+  photos: [],
+  video: '',
 }
 
 export default function mybodyTypeReducer (state = initialState, action) {

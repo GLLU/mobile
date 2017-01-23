@@ -2,7 +2,21 @@ import { openDrawer, closeDrawer } from './drawer';
 import { loadCategories, setCategories } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal } from './myBodyType';
-import { addNewLook, editTag, addTag, setTagPosition } from './uploadLook';
+import { addNewLook,
+         editTag,
+         addTag,
+         setTagPosition,
+         addItemType,
+         addBrandName,
+         addItemSizeCountry,
+         addItemSize,
+         addItemCurrency,
+         addItemPrice,
+         addSharingInfo,
+         addLocation,
+         addTrustLevel,
+         addPhotosVideo,
+} from './uploadLook';
 import { setUser, loginViaFacebook } from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -33,4 +47,14 @@ export {
   replaceAt,
   pushRoute,
   popRoute,
+  addItemType,
+  addBrandName,
+  addItemSizeCountry,
+  addItemSize,
+  addItemCurrency,
+  addItemPrice,
+  addSharingInfo,
+  addLocation,
+  addTrustLevel,
+  addPhotosVideo,
 };
