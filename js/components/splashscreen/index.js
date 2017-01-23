@@ -10,6 +10,7 @@ import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
+import glluTheme from '../../themes/gllu-theme';
 
 const { navigateTo } = actions;
 
@@ -123,7 +124,7 @@ class SplashPage extends Component {
   render() {
     console.log('splash screen');
     return (
-      <Container>
+      <Container theme={glluTheme}>
         <View style={styles.container}>
           <Content scrollEnabled={false}>
             <Image source={background} style={styles.shadow}>

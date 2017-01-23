@@ -12,6 +12,7 @@ import { emailSignUp } from '../../actions/user';
 
 
 import styles from './styles';
+import glluTheme from '../../themes/gllu-theme';
 
 const { popRoute, pushRoute } = actions;
 
@@ -147,7 +148,7 @@ class SignUpPage extends Component {
 
   render() {
     return (
-      <Container>
+      <Container theme={glluTheme}>
           <View style={styles.container}>
               <Image source={background} style={styles.shadow} blurRadius={5}>
                   <Image source={backgroundShadow} style={styles.bgShadow} />
