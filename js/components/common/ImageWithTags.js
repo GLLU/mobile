@@ -3,7 +3,7 @@ import { Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity
 import { View } from 'native-base';
 import _ from 'lodash';
 
-const tagBackground = require('../../../images/tag-background.png');
+const itemBackground = require('../../../images/tag-background.png');
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
 const w = Dimensions.get('window').width;
@@ -15,16 +15,16 @@ const styles = StyleSheet.create({
     width: 500,
     height: 500
   },
-  tagBgImage: {
+  itemBgImage: {
     height: 48,
     width: TAG_WIDTH,
   },
-  tagsContainer: {
+  itemsContainer: {
     backgroundColor: '#FFFFFF',
     borderWidth: BORDER_WIDTH,
     borderColor: '#FFFFFF'
   },
-  tagItem: {
+  itemItem: {
     position: 'absolute',
     height: 48,
     width: TAG_WIDTH,
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
 class ImageWithTags extends Component {
 
   static propTypes = {
-    addTag: React.PropTypes.func,
-    image: React.PropTypes.object,
-    tags: React.PropTypes.array,
+    createLookItem: React.PropTypes.func,
+    image: React.PropTypes.string,
+    items: React.PropTypes.array,
     editingTag: React.PropTypes.object,
     width: React.PropTypes.number,
     editMode: React.PropTypes.bool
@@ -88,15 +88,15 @@ class ImageWithTags extends Component {
     const {locationX, locationY} = e.nativeEvent;
     this._setupPanResponder(locationX, locationY);
     this.setState({locationX: locationX, locationY: locationY}, () => {
-      this.props.addTag({locationX, locationY});
+      this.props.createLookItem({locationX, locationY});
     });
   }
 
   renderTags() {
-    const tags = _.filter(this.props.tags, (x) => !x.editing);
-    return tags.map((tag, i) => {
-      return (<View key={i} style={[styles.tagItem, { top: tag.locationY, left: tag.locationX}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          <Image source={tagBackground} style={styles.tagBgImage} />
+    const items = _.filter(this.props.items, (x) => !x.editing);
+    return items.map((item, i) => {
+      return (<View key={i} style={[styles.itemItem, { top: item.locationY, left: item.locationX}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+          <Image source={itemBackground} style={styles.itemBgImage} />
         </View>);
     });
   }
@@ -112,11 +112,10 @@ class ImageWithTags extends Component {
   renderEditingTag() {
     if (this._hasTagEditing()) {
       const layout = this._pan.getLayout();
-      console.log('layout', layout);
       return (<Animated.View
                     {...this.panResponder.panHandlers}
-                    style={[layout, styles.tagItem, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                    <Image source={tagBackground} style={styles.tagBgImage} />
+                    style={[layout, styles.itemItem, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+                    <Image source={itemBackground} style={styles.itemBgImage} />
                 </Animated.View>);
     }
 
@@ -126,7 +125,7 @@ class ImageWithTags extends Component {
   _render() {
     const width = this.props.width ? this.props.width : w;
     const height = width * 2848 / 4288;
-    return (<Image source={{uri: this.props.image.path}} style={[styles.tagsContainer, {width, height}]}>
+    return (<Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
       <View style={[styles.draggableContainer, {width, height}]}>
         {this.renderTags()}
         {this.renderEditingTag()}

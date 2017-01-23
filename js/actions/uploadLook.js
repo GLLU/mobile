@@ -1,6 +1,7 @@
 export const ADD_NEW_LOOK = 'ADD_NEW_LOOK';
+export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
-export const ADD_TAG = 'ADD_TAG';
+export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
@@ -12,30 +13,40 @@ export const ADD_SHARING_INFO = 'ADD_SHARING_INFO';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
-import { createEntity } from 'redux-json-api';
+import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
+import _ from 'lodash';
 
 // Actions
 export function addNewLook(image) {
-
-  return {
-    type: ADD_NEW_LOOK,
-    payload: {
-      image: image
-    }
-  }
-
-  // const entity = {
-  //   "type": "looks",
-  //   "attributes": {
-  //     "data": image.data
+  console.log('addNewLook', image.path);
+  // return {
+  //   type: ADD_NEW_LOOK,
+  //   payload: {
+  //     image: image
   //   }
   // }
 
-  // return (dispatch) => {
-  //   return dispatch(createEntity(entity)).then((response) => {
-  //     console.log('create look', response);
-  //   });
-  // }
+  const entity = {
+    "type": "looks",
+    "attributes": {
+      "image": `data:image/jpeg;base64,${image.data}`
+    }
+  }
+
+  return (dispatch) => {
+    return dispatch(createEntity(entity)).then((response) => {
+      console.log('done create entity', response);
+      return dispatch(editNewLook(response, image.path))
+    });
+  }
+}
+
+export function editNewLook(data, imagePath) {
+  console.log('edit look', data);
+  return {
+    type: EDIT_NEW_LOOK,
+    payload: _.merge(data, {image: imagePath })
+  }
 }
 
 export function editTag(editingTag) {
@@ -54,13 +65,56 @@ export function setTagPosition(payload) {
   }
 }
 
-export function addTag(tag) {
-  console.log('addTag', tag);
-  return {
-    type: ADD_TAG,
-    payload: {
-      tag,
+export function createLookItem(lookId, position) {
+  console.log('createLookItem', lookId, position);
+  const entity = {
+    "type": "items",
+    "attributes": {
+      "look_id": lookId,
+      "cover_x_pos": position.locationX,
+      "cover_y_pos": position.locationY,
+    },
+    "relationships": {
+      "look": {
+        "data": {
+          "id": lookId,
+          "type": 'looks'
+        }
+      }
     }
+  }
+
+  return (dispatch) => {
+    return dispatch(createEntity(entity)).then(response => {
+      console.log('response', response);
+      dispatch(readEndpoint(`items/${response.data.id}`));
+      return dispatch({
+        type: CREATE_LOOK_ITEM_BY_POSITION,
+        payload: {
+          data: response.data
+        }
+      });
+    });
+  }
+}
+
+export function updateLookItem(item) {
+  console.log('actions updateLookItem', item);
+  const entity = {
+    "type": "items",
+    "id": item.itemId,
+    "attributes": {
+      "currency": item.currency,
+      "price": item.price,
+    }
+  }
+
+  console.log('before update entity', entity);
+
+  return (dispatch) => {
+    return dispatch(updateEntity(entity)).then(response => {
+      console.log('update item', response);
+    });
   }
 }
 

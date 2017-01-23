@@ -14,7 +14,7 @@ import { setEndpointPath, setEndpointHost, setHeaders, setAccessToken } from 're
 export default function configureStore(onCompletion:()=>void):any {
   const logger = createLogger();
   const enhancer = compose(
-    applyMiddleware(thunk, promise, sequenceAction, logger),
+    applyMiddleware(thunk, promise, sequenceAction),
     devTools({
       name: 'nativestarterkit', realtime: true,
     }),

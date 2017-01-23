@@ -98,7 +98,7 @@ class StepTwo extends Component {
   static propTypes = {
     image: React.PropTypes.string,
     continueAction: React.PropTypes.func,
-    addTag: React.PropTypes.func,
+    createLookItem: React.PropTypes.func,
     image: React.PropTypes.object,
     tags: React.PropTypes.array,
     continueAction: React.PropTypes.func,
@@ -238,11 +238,11 @@ class StepTwo extends Component {
   }
 
   render() {
-    const { tags, addTag, image} = this.props;
+    const { tags, createLookItem, image} = this.props;
     return(
       <ScrollView scrollEnabled={true}>
         <View style={{padding: 20}}>
-          <ImageWithTags tags={tags} image={image} addTag={addTag} width={w - 40}/>
+          <ImageWithTags tags={tags} image={image} createLookItem={createLookItem} width={w - 40}/>
         </View>
         <View style={styles.itemInfoView}>
             <AddMore video={this.state.video} images={this.state.images} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />
@@ -260,7 +260,7 @@ class StepTwo extends Component {
 import { connect } from 'react-redux';
 function bindActions(dispatch) {
   return {
-    addTag: (tag) => dispatch(addTag(tag)),
+    createLookItem: (tag) => dispatch(createLookItem(tag)),
     addLocation: (location) => dispatch([addLocation(location)]),
     addTrustLevel: (number) => dispatch([addTrustLevel(number)]),
     addPhotosVideo: (photos, video) => dispatch([addPhotosVideo(photos, video)]),

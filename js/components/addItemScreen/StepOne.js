@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Text, View, Dimensions } from 'react-native';
 import ImageWithTags from '../common/ImageWithTags';
 import ItemInfoView from './ItemInfoView';
-import { addTag } from '../../actions';
+import { createLookItem } from '../../actions';
 
 const w = Dimensions.get('window').width;
 
@@ -12,24 +12,20 @@ class StepOne extends Component {
       key: React.PropTypes.string,
     }),
     newTag: React.PropTypes.bool,
-    addTag: React.PropTypes.func,
+    createLookItem: React.PropTypes.func,
     image: React.PropTypes.object,
     tags: React.PropTypes.array,
     editingTagIndex: React.PropTypes.number,
   }
 
-  renderItemInfo() {
-    return <ItemInfoView/>;
-  }
-
   render() {
-    const { tags, editingTagIndex, image, addTag } = this.props;
+    const { tags, editingTagIndex, image, createLookItem } = this.props;
     return(
       <ScrollView scrollEnabled={true} style={{marginVertical: 10}}>
         <View style={{padding: 20}}>
-          <ImageWithTags tags={tags} image={image} addTag={addTag} width={w - 40}/>
+          <ImageWithTags tags={tags} image={image} createLookItem={createLookItem} width={w - 40}/>
         </View>
-        {this.renderItemInfo()}
+        <ItemInfoView/>
       </ScrollView>
     )
   }
@@ -38,7 +34,7 @@ class StepOne extends Component {
 import { connect } from 'react-redux';
 function bindActions(dispatch) {
   return {
-    addTag: (tag) => dispatch(addTag(tag)),
+    createLookItem: (tag) => dispatch(createLookItem(tag)),
   };
 }
 

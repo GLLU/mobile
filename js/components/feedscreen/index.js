@@ -41,9 +41,10 @@ class FeedPage extends Component {
   }
 
   goToAddNewItem(imagePath) {
-    this.props.addNewLook(imagePath);
-    this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
-  }
+    this.props.addNewLook(imagePath).then(() => {
+      this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
+    });
+  } 
 
   render() {
     const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};

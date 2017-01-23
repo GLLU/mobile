@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { setUser, replaceAt, popRoute, pushRoute } from '../../actions';
+import { setUser, replaceAt, popRoute, pushRoute, updateLookItem } from '../../actions';
 import { actions } from 'react-native-navigation-redux-helpers';
 import styles from './styles';
 import StepOne from './StepOne';
@@ -33,6 +33,7 @@ const selfStyles = StyleSheet.create({
 class AddItemPage extends Component {
 
   static propTypes = {
+    updateLookItem: React.PropTypes.func,
     setUser: React.PropTypes.func,
     replaceAt: React.PropTypes.func,
     popRoute: React.PropTypes.func,
@@ -40,7 +41,7 @@ class AddItemPage extends Component {
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
-    image: React.PropTypes.object
+    look: React.PropTypes.object
   }
 
   constructor(props) {
@@ -73,6 +74,10 @@ class AddItemPage extends Component {
 
   continueAction() {
     console.log('CONTINUE');
+    this.props.updateLookItem(this.props.look).then(response => {
+      console.log('done updateLookItem', response);
+      this.setState({currentStep: 2});
+    });
   }
 
   tagAnotherAction() {
@@ -119,8 +124,6 @@ class AddItemPage extends Component {
         <Content scrollEnabled={false} contentContainerStyle={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
           <View style={styles.mainView}>
             <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
-            {/*this.state.currentStep == 1 && <StepOne key={1}/>*/}
-            {/*this.state.currentStep == 2 && <StepTwo continueAction={this.publishAction.bind(this)} key={2}/>*/}
             <Swiper style={styles.wrapper}
                     onMomentumScrollEnd={(e, state, context) => this.setState({currentStep: state.index + 1})}
                     dot={<View style={{width: 0, height: 0}} />}
@@ -145,12 +148,13 @@ function bindActions(dispatch) {
     popRoute: (key) => dispatch(popRoute(key)),
     pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     setUser: name => dispatch(setUser(name)),
+    updateLookItem: (look) => dispatch(updateLookItem(look)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  ...state.uploadLook,
+  look: state.uploadLook,
 });
 
 export default connect(mapStateToProps, bindActions)(AddItemPage);

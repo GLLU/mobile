@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import {Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { addTag, setTagPosition, navigateTo, popRoute } from '../../actions';
+import { createLookItem, setTagPosition, navigateTo, popRoute } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
 
 const TAG_WIDTH = 100;
@@ -20,16 +20,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent'
   },
-  tagBgImage: {
+  itemBgImage: {
     height: 48,
     width: TAG_WIDTH,
   },
-  tagsContainer: {
+  itemsContainer: {
     backgroundColor: '#FFFFFF',
     borderWidth: BORDER_WIDTH,
     borderColor: '#FFFFFF'
   },
-  tagItem: {
+  itemItem: {
     position: 'absolute',
     height: 48,
     width: TAG_WIDTH,
@@ -41,13 +41,14 @@ class TagItemPage extends Component {
   static propTypes = {
     navigateTo: React.PropTypes.func,
     popRoute: React.PropTypes.func,
-    addTag: React.PropTypes.func,
+    createLookItem: React.PropTypes.func,
     setTagPosition: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
+    lookId: React.PropTypes.number,
     image: React.PropTypes.object,
-    tags: React.PropTypes.array,
+    items: React.PropTypes.array,
     editingTag: React.PropTypes.number,
   }
 
@@ -60,23 +61,26 @@ class TagItemPage extends Component {
   }
 
   handleBackButton() {
-    const tag = this.imageEditor.getTag();
-    if (tag.locationX && tag.locationY) {
-      this.props.setTagPosition(tag);
+    const item = this.imageEditor.getTag();
+    if (item.locationX && item.locationY) {
+      this.props.setTagPosition(item);
       this.props.navigateTo('addItemScreen', 'feedscreen');
     } else {
       this.props.popRoute(this.props.navigation.key);
     }
   }
 
-  _handleAddTag(tag) {
-    this.props.addTag(tag);
-    // this.props.navigateTo('addItemScreen', 'feedscreen');
+  _handleAddTag(position) {
+    console.log('_handleAddTag', position);
+    this.props.createLookItem(this.props.lookId, position).then(() => {
+      console.log('done createLookItem');
+      this.props.navigateTo('addItemScreen', 'feedscreen');
+    });
   }
 
   render() {
-    const { tags, image, addTag, setTagPosition } = this.props;
-    console.log('render with tags', tags);
+    const { items, image, createLookItem, setTagPosition } = this.props;
+    console.log('render with items', items);
     return (
       <Container style={styles.container}>
         <Header style={{backgroundColor: '#000000'}}>
@@ -86,7 +90,7 @@ class TagItemPage extends Component {
           <Title style={{fontFamily: 'PlayfairDisplay-Regular', color: '#ffffff'}}>Tap item to add</Title>
         </Header>
         <View contentContainerStyle={{backgroundColor: '#000000', padding: 10}}>
-          <ImageWithTags ref={(ref) => this.imageEditor = ref} editMode={true} tags={tags} image={image} addTag={this._handleAddTag.bind(this)} setTagPosition={setTagPosition}/>
+          <ImageWithTags ref={(ref) => this.imageEditor = ref} editMode={true} items={items} image={image} createLookItem={this._handleAddTag.bind(this)} setTagPosition={setTagPosition}/>
         </View>
       </Container>
     );
@@ -97,7 +101,7 @@ function bindActions(dispatch) {
   return {
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     popRoute: (key) => dispatch(popRoute(key)),
-    addTag: (tag) => dispatch([addTag(tag), navigateTo('addItemScreen', 'feedscreen')]),
+    createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     setTagPosition: (position) => dispatch(setTagPosition(position)),
   };
 }
