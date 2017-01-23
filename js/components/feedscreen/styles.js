@@ -16,8 +16,7 @@ module.exports = StyleSheet.create({
     right: 0
   },
   navigationBar: {
-    flex: 1,
-    position: 'absolute',
+    position: 'relative',
     top: 0,
     left: 0,
     right: 0,
@@ -50,10 +49,39 @@ module.exports = StyleSheet.create({
     fontWeight: 'normal',
     color: '#757575'
   },
+  searchBar: {
+    position: 'relative',
+    height: 60,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  searchInputGroup: {
+    borderBottomWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  searchInput: {
+    borderLeftWidth: 1,
+    backgroundColor: 'white',
+    borderLeftColor: 'black',
+    fontFamily: 'PlayfairDisplay-Regular',
+    fontSize: 18,
+    fontWeight: '800'
+  },
+  searchInputBorder: {
+    borderRightWidth: 2,
+    borderColor: '#7F7F7F',
+    height: 30,
+    marginLeft: 10
+  },
   mainView: {
     flex: 1,
-    position: 'absolute',
-    top: 60,
+    position: 'relative',
     bottom: 0,
     left: 0,
     right: 0,

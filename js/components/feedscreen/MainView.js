@@ -10,18 +10,32 @@ import tabTheme from './../../themes/tab';
 import styles from './styles';
 
 class MainView extends Component {
+  static propTypes = {
+    searchTerm: React.PropTypes.string,
+    clearSearchTerm: React.PropTypes.func,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       locked: false,
       isOpen: false,
       currFeedTypeSelected: 'relevant',
-      currFeedCategorySelected: ''
+      currFeedCategorySelected: '',
+      searchTerm: this.props.searchTerm
 
     }
     this.props.getFeed('relevant');
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.searchTerm !== this.props.searchTerm) {
+      this.setState({
+        searchTerm: nextProps.searchTerm
+      })
+      this._filterFeed(this.state.currFeedTypeSelected, this.state.currFeedCategorySelected, nextProps.searchTerm)
+    }
+  }
 
   handleSwipeTab(locked) {
     this.setState({
@@ -29,19 +43,19 @@ class MainView extends Component {
     })
   }
 
-  _toggleFeedType(currFeedTypeSelected, FeedCategorySelected) {
-    this.props.getFeed(currFeedTypeSelected, FeedCategorySelected);
-    this.setState({
-      currFeedTypeSelected
-    })
-  }
+  _filterFeed(type, category = '', term = this.state.searchTerm) {
+    if(type !== this.state.currFeedTypeSelected){
+      this.setState({
+        currFeedTypeSelected: type
+      })
+    }
 
-  _toggleFeedCategoryFilter(currFeedCategorySelected) {
-
-    this.setState({
-      currFeedCategorySelected
-    })
-    this.props.getFeed(this.state.currFeedTypeSelected, currFeedCategorySelected);
+    if(category !== this.state.currFeedCategorySelected){
+      this.setState({
+        currFeedCategorySelected: category
+      })
+    }
+    this.props.getFeed(type, category, term);
   }
 
   _renderFeed() {
@@ -57,8 +71,7 @@ class MainView extends Component {
       <View style={styles.mainView} scrollEnabled={false}>
         <Container>
             <Content theme={tabTheme} scrollEnabled={false}>
-              <FilterBar toggleFeedType={(FeedTypeSelected, FeedCategorySelected) => this._toggleFeedType(FeedTypeSelected,FeedCategorySelected)}
-                         toggleFeedCategoryFilter={(FeedCategorySelected) => this._toggleFeedCategoryFilter(FeedCategorySelected)}/>
+              <FilterBar filterFeed={(type, category, term) => this._filterFeed(type, category, term)} clearSearchTerm={this.props.clearSearchTerm}/>
               { this.props.isLoading === 0 ? this._renderFeed() : <SpinnerSwitch /> }
             </Content>
         </Container>
@@ -69,7 +82,7 @@ class MainView extends Component {
 
 function bindActions(dispatch) {
   return {
-    getFeed: (feedType,feedCategory) => dispatch(getFeed(feedType, feedCategory))
+    getFeed: (feedType,feedCategory, feedTerm) => dispatch(getFeed(feedType, feedCategory, feedTerm))
   };
 }
 

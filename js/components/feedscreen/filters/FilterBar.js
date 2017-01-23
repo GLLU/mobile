@@ -4,6 +4,7 @@ import {  Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import RadioButtons from 'react-native-radio-buttons';
 import {View, Text, Switch, TouchableWithoutFeedback} from 'react-native';
+import SearchBar from '../SearchBar'
 
 import CategoryStrip from './CategoryStrip';
 
@@ -23,7 +24,8 @@ class FilterView extends Component {
     categories: React.PropTypes.array,
     minPrice: React.PropTypes.number,
     maxPrice: React.PropTypes.number,
-    toggleFeedType: React.PropTypes.func
+    filterFeed: React.PropTypes.func,
+    clearSearchTerm: React.PropTypes.func
   }
 
   constructor(props) {
@@ -41,28 +43,25 @@ class FilterView extends Component {
   }
 
   filterByCategory(item) {
-    console.log('Call API filter by category');
     const selectedCategory = this.state.selectedCategory;
-    const selected = selectedCategory && selectedCategory.id === item.id ? null : item;
+    const selected = selectedCategory && selectedCategory.id === item.id ? '' : item;
     this.setState({
       selectedCategory: selected
     });
-    if(selected){
-      this.props.toggleFeedCategoryFilter(selected.attributes.name)
-    } else {
-      this.props.toggleFeedCategoryFilter('')
-    }
+    let category = selected === '' ? selected : item.attributes.name;
+    let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
+    this.props.filterFeed(type, category);
     console.log(`Filter by category Id: ${item.id}`);
   }
-
-
 
   clearFilter() {
     console.log('Clear Filter');
     this.setState({
       selectedCategory: null,
     });
-    this.props.toggleFeedCategoryFilter('')
+    let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent';
+    this.props.filterFeed(type, '')
+    this.props.clearSearchTerm();
   }
 
   openFilter() {
@@ -116,7 +115,6 @@ class FilterView extends Component {
             {filters.join(', ')}
           </Text>
         </View>);
-
   }
 
   renderRadioContainer(optionNodes){
@@ -140,13 +138,12 @@ class FilterView extends Component {
   }
 
   setFeedTypeSelectedOption(feedTypeSelectedOption){
-    let isCategorySelected = this.state.selectedCategory ? this.state.selectedCategory.attributes.name : '';
     this.setState({
       feedTypeSelectedOption
     })
-    feedTypeSelectedOption === 'Recent' ? this.props.toggleFeedType('recent', isCategorySelected)
-      :
-      this.props.toggleFeedType('relevant', isCategorySelected)
+    let isCategorySelected = this.state.selectedCategory ? this.state.selectedCategory.attributes.name : '';
+    let type = feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
+    this.props.filterFeed(type, isCategorySelected)
   }
 
   _renderFilters() {
