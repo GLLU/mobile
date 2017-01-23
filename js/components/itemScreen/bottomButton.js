@@ -25,7 +25,7 @@ export default class BottomButton extends Component {
 
   }
 
-  _onBubbleClicked() {
+  _onCommentClicked() {
 
   }
 
@@ -49,7 +49,7 @@ export default class BottomButton extends Component {
               <Image source={infoImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}></Image>
             </View>
           </TouchableHighlight>
-            <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onBubbleClicked()}>
+            <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onCommentClicked()}>
             <View style={[styles.footerButton, {width: 40}]}>
               <Image source={bubbleImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}></Image>
             </View>
