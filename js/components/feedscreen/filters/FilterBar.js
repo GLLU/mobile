@@ -44,7 +44,7 @@ class FilterView extends Component {
 
   filterByCategory(item) {
     const selectedCategory = this.state.selectedCategory;
-    const selected = selectedCategory && selectedCategory.id === item.id ? '' : item;
+    const selected = selectedCategory && selectedCategory.id === item.id ? false : item;
     this.setState({
       selectedCategory: selected
     });
