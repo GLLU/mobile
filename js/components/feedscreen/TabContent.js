@@ -85,7 +85,7 @@ class TabContent extends Component {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'feedscreen');
+    this.props.navigateTo('itemScreen', 'feedscreen', item);
   }
 
   render() {
@@ -112,7 +112,7 @@ class TabContent extends Component {
 function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     like: (id) => dispatch(like(id)),
     unlike: (id) => dispatch(unlike(id)),
   };

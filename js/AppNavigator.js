@@ -104,7 +104,7 @@ class AppNavigator extends Component {
       case 'myBodyMeasure':
         return <MyBodyMeasure />;
       case 'itemScreen':
-        return <ItemScreen />;
+        return <ItemScreen item={props.scene.route.optional}/>;
       default :
         return <Login />;
     }

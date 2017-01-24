@@ -19,6 +19,7 @@ export default class BottomButton extends Component {
   _onLikeClicked() {
     let likeToggle = !this.state.isLike;
     this.setState({isLike: likeToggle});
+    likeToggle ? this.props.toggleLike(true) : this.props.toggleLike(false);
   }
 
   _onInformationClicked() {
