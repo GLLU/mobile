@@ -77,10 +77,10 @@ class FeedPage extends Component {
           <NavigationBarView handleSearchStatus={() => this._handleSearchStatus(false)}/>
           {this.state.searchStatus ? <SearchBar handleSearchInput={(searchTerm) => this._handleSearchInput(searchTerm)} clearText={this.state.searchTerm}/> : null}
           <MainView searchTerm={this.state.searchTerm} handleSearchStatus={(newStatus) => this._handleSearchStatus(newStatus)} clearSearchTerm={() => this._clearSearchTerm()}/>
-          {/*<Modal isOpen={this.props.modalShowing} style={modalStyle}*/}
-            {/*position={"top"}>*/}
-            {/*<MyBodyModal />*/}
-          {/*</Modal>*/}
+          <Modal isOpen={this.props.modalShowing} style={modalStyle}
+            position={"top"}>
+            <MyBodyModal />
+          </Modal>
         </View>
       </Container>
     );
