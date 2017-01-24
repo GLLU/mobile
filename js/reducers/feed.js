@@ -1,14 +1,14 @@
-import { SET_FEED_DATA } from '../actions/feed';
+import { SET_FLAT_LOOKS_FEED_DATA } from '../actions/feed';
 
 const initialState = {
-  looks: {}
+  flatLooksData: {}
 };
 // Action Handlers
 const ACTION_HANDLERS = {
-  [SET_FEED_DATA]: (state, action) => {
+  [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
     return {
       ...state,
-      looks: action.payload
+      flatLooksData: action.payload
     }
   }
 }

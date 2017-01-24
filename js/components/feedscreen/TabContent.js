@@ -31,26 +31,8 @@ class TabContent extends Component {
     this.showBodyModal = _.once(this._showBodyModal);
   }
 
-  createFlatLooksObj() {
-    let tempObj = {};
-    let tempImgObj = {};
-    let flatLooksArr = [];
-      this.props.looks.map((look, index) => {
-        tempObj = _.pick(look.attributes, ['user-id', 'likes', 'is-liked']);
-        tempObj.liked = tempObj["is-liked"];
-        tempObj.type = look.attributes["user-size"].body_type;
-        tempObj.id = look.id;
-        tempImgObj = _.pick(look.attributes.cover, ['width', 'height']);
-        tempImgObj.uri = look.attributes.cover.image.small.url;
-        Object.assign(tempObj, tempImgObj);
-        flatLooksArr.push(tempObj);
-      });
-      return flatLooksArr
-
-  }
-
   onColumnLayout(e, key) {
-      const flatImagesObj = this.createFlatLooksObj();
+      const flatImagesObj = this.props.flatLooks;
       const layout = e.nativeEvent.layout;
       const colW = layout.width;
       const images = [];
@@ -139,6 +121,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => ({
   images: state.filters.images,
   modalShowing: state.myBodyType.modalShowing,
+  flatLooks: state.feed.flatLooksData
 });
 
 export default connect(mapStateToProps, bindActions)(TabContent);
