@@ -6,6 +6,7 @@ import { View, Content } from 'native-base';
 
 import LikeView from './LikeView';
 import TypeView from './TypeView';
+import { like } from '../../../actions/myBodyMeasure';
 
 class ImagesView extends Component {
 
@@ -35,6 +36,7 @@ class ImagesView extends Component {
     this.setState({
       images: images
     })
+    liked ? this.props.likeAction(img.id) : this.props.unlikeAction(img.id);
   }
 
   _handleItemClick(item) {

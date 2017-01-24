@@ -181,7 +181,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const tags = state.api.tag ? state.api.tag.data : [];
+  const tags = state.api.tags ? state.api.tags.data : [];
   return {
     categories: tags,
     minPrice: state.filters.minPrice,
