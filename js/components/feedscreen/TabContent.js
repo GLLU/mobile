@@ -8,13 +8,8 @@ import ImagesView from './items/ImagesView';
 import styles from './styles';
 import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
-import SpinnerSwitch from '../loaders/SpinnerSwitch'
-
 import { actions } from 'react-native-navigation-redux-helpers';
-
 import navigateTo from '../../actions/sideBarNav';
-
-
 
 class TabContent extends Component {
 
@@ -30,7 +25,7 @@ class TabContent extends Component {
       filterHeight: 0,
       imagesColumn1: [],
       imagesColumn2: []
-    }
+    };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
   }
@@ -117,7 +112,7 @@ class TabContent extends Component {
           <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
-                <ImagesView imagesNew={this.state.imagesNew} images={this.state.imagesColumn1} onItemPress={this._handleItemPress.bind(this)}/>
+                <ImagesView images={this.state.imagesColumn1} onItemPress={this._handleItemPress.bind(this)}/>
               </View>
               <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 2)}>
                 <ImagesView images={this.state.imagesColumn2} onItemPress={this._handleItemPress.bind(this)}/>

@@ -23,8 +23,7 @@ class MainView extends Component {
       currFeedTypeSelected: 'relevant',
       currFeedCategorySelected: '',
       searchTerm: this.props.searchTerm
-
-    }
+    };
     this.props.getFeed('relevant');
   }
 
@@ -32,7 +31,7 @@ class MainView extends Component {
     if(nextProps.searchTerm !== this.props.searchTerm) {
       this.setState({
         searchTerm: nextProps.searchTerm
-      })
+      });
       this._filterFeed(this.state.currFeedTypeSelected, this.state.currFeedCategorySelected, nextProps.searchTerm)
     }
   }
