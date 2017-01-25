@@ -51,16 +51,10 @@ class FeedPage extends Component {
       searchTerm
     })
   }
+
   _handleSearchStatus(newStatus) {
-    if(newStatus === 'close'){
-      this.setState({
-        searchStatus: false
-      })
-    } else {
-      this.setState({
-        searchStatus: !this.state.searchStatus
-      })
-    }
+    const searchStatus = newStatus === 'close' ? false : !this.state.searchStatus;
+    this.setState({searchStatus})
   }
 
   _clearSearchTerm() {
