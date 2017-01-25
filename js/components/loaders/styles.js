@@ -1,5 +1,5 @@
 
-import React , { Platform } from 'react-native';
+import React from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 

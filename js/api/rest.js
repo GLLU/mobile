@@ -4,7 +4,6 @@ const adapterFetch = require("redux-api/lib/adapters/fetch");
 import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
-
 export default reduxApi({
   email_sign_up: {
       url: "/signup",
@@ -89,7 +88,26 @@ export default reduxApi({
     url: '/users/:user_id/size',
     options: {
       headers: {
-        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`
+        "Authorization": `Bearer hFHv8LbPJIhB1HrUQ62rowtt`
+      }
+    },
+    crud: true
+  },
+  like: {
+    url: '/looks/:id/likes',
+    options: {
+      headers: {
+        "Authorization": `Bearer hFHv8LbPJIhB1HrUQ62rowtt`
+      }
+    },
+    crud: true
+  },
+  unlike: {
+    url: '/looks/:id/likes',
+    options: {
+      method: "delete",
+      headers: {
+        "Authorization": `Bearer hFHv8LbPJIhB1HrUQ62rowtt`
       }
     },
     crud: true

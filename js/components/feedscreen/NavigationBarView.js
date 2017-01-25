@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-
 import styles from './styles';
 
 const userIcon = require('../../../images/icons/user.png');
@@ -13,6 +12,9 @@ const searchIcon = require('../../../images/icons/search.png')
 const cameraIcon = require('../../../images/icons/camera.png')
 
 class NavigationBarView extends Component {
+  static propTypes = {
+    handleSearchStatus: React.PropTypes.func
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -60,7 +62,7 @@ class NavigationBarView extends Component {
           <Col>
             <Grid>
               <Col>
-                <Button transparent onPress={() => this.openSearch()}>
+                <Button transparent onPress={() => this.props.handleSearchStatus()}>
                   <Image source={searchIcon} style={styles.btnImage} />
                 </Button>
               </Col>

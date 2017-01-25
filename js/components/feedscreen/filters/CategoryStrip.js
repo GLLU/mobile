@@ -8,14 +8,17 @@ import styles from '../styles';
 class CategoryStrip extends Component {
   static propTypes = {
     categories: React.PropTypes.array,
-    selectedCategory: React.PropTypes.object,
+    selectedCategory: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.bool,
+    ]),
     onCategorySelected: React.PropTypes.func,
   }
 
   _drawCategoryItems() {
     const selectedCategory = this.props.selectedCategory;
     return this.props.categories.map((item, index) => {
-      const selected = selectedCategory && selectedCategory.id == item.id;
+      const selected = selectedCategory && selectedCategory.id === item.id;
       return (<CategoryItem key={index} item={item} selected={selected} onPress={() => this.props.onCategorySelected(item)}/>);
     });
   }

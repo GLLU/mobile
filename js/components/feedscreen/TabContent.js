@@ -4,17 +4,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, ScrollView, Dimensions } from 'react-native';
 import { View } from 'native-base';
-import Modal from 'react-native-modalbox';
-import FilterBar from './filters/FilterBar';
 import ImagesView from './items/ImagesView';
-import MyBodyModal from '../common/myBodyModal'
 import styles from './styles';
 import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
-
 import { actions } from 'react-native-navigation-redux-helpers';
-
 import navigateTo from '../../actions/sideBarNav';
+import { like, unlike } from '../../actions/likes';
 
 class TabContent extends Component {
 
@@ -26,29 +22,28 @@ class TabContent extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       filterHeight: 0,
       imagesColumn1: [],
       imagesColumn2: []
-    }
-
+    };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
   }
 
   onColumnLayout(e, key) {
-    const layout = e.nativeEvent.layout;
-    const colW = layout.width;
-    const images = [];
-    this.props.images.map((img, index) => {
-      if (key % 2 == 0) {
-        return index % 2 == 0 ? images.push(img) : false;
-      } else {
-        return index % 2 != 0 ? images.push(img) : false;
-      }
-    });
-    this.arrangeImages(`imagesColumn${key}`, images, colW);
+      const flatImagesObj = this.props.flatLooks;
+      const layout = e.nativeEvent.layout;
+      const colW = layout.width;
+      const images = [];
+      flatImagesObj.map((img, index) => {
+        if (key % 2 === 0) {
+          return index % 2 === 0 ? images.push(img) : false;
+        } else {
+          return index % 2 !== 0 ? images.push(img) : false;
+        }
+      });
+      this.arrangeImages(`imagesColumn${key}`, images, colW);
   }
 
   arrangeImages(key, images, colW) {
@@ -70,17 +65,8 @@ class TabContent extends Component {
     });
   }
 
-  openFilter(height) {
-    console.log('Open filter');
-    const filterHeight = height === 0 ? 200 : 0;
-    this.setState({ filterHeight }, () => {
-      this.props.handleSwipeTab(filterHeight === 0 ? false : true);
-    });
-  }
-
   handleScroll(event) {
     this.scrollCallAsync(event);
-
     const contentSizeHeight = event.nativeEvent.contentSize.height;
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const currentScroll = event.nativeEvent.contentOffset.y
@@ -106,15 +92,14 @@ class TabContent extends Component {
     const paddingBottom = 150;
     return(
       <View style={styles.tab} scrollEnabled={false}>
-        <FilterBar filterHeight={this.state.filterHeight} openFilter={this.openFilter.bind(this)} />
         <View style={[styles.mainGrid]}>
           <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 1)}>
-                <ImagesView images={this.state.imagesColumn1} onItemPress={this._handleItemPress.bind(this)}/>
+                <ImagesView images={this.state.imagesColumn1} onItemPress={this._handleItemPress.bind(this)} likeAction={(id) => this.props.like(id)} unlikeAction={(id) => this.props.unlike(id)} />
               </View>
               <View style={{flex: 0.5, flexDirection: 'column'}} onLayout={(e) => this.onColumnLayout(e, 2)}>
-                <ImagesView images={this.state.imagesColumn2} onItemPress={this._handleItemPress.bind(this)}/>
+                <ImagesView images={this.state.imagesColumn2} onItemPress={this._handleItemPress.bind(this)} likeAction={(id) => this.props.like(id)} unlikeAction={(id) => this.props.unlike(id)}/>
               </View>
             </View>
           </ScrollView>
@@ -128,12 +113,15 @@ function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    like: (id) => dispatch(like(id)),
+    unlike: (id) => dispatch(unlike(id)),
   };
 }
 
 const mapStateToProps = state => ({
   images: state.filters.images,
-  modalShowing: state.myBodyType.modalShowing
+  modalShowing: state.myBodyType.modalShowing,
+  flatLooks: state.feed.flatLooksData
 });
 
 export default connect(mapStateToProps, bindActions)(TabContent);
