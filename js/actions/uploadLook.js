@@ -8,8 +8,9 @@ export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
 export const ADD_ITEM_SIZE_COUNTRY = 'ADD_ITEM_SIZE_COUNTRY';
 export const ADD_ITEM_SIZE = 'ADD_ITEM_SIZE';
 export const ADD_ITEM_CURRENCY = 'ADD_ITEM_CURRENCY';
-export const ADD_ITEM_PRIiCE = 'ADD_ITEM_PRICE';
+export const ADD_ITEM_PRICE = 'ADD_ITEM_PRICE';
 export const ADD_SHARING_INFO = 'ADD_SHARING_INFO';
+export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
@@ -87,7 +88,7 @@ export function createLookItem(lookId, position) {
   return (dispatch) => {
     return dispatch(createEntity(entity)).then(response => {
       console.log('response', response);
-      dispatch(readEndpoint(`items/${response.data.id}`));
+      // dispatch(readEndpoint(`items/${response.data.id}`));
       return dispatch({
         type: CREATE_LOOK_ITEM_BY_POSITION,
         payload: {
@@ -100,21 +101,49 @@ export function createLookItem(lookId, position) {
 
 export function updateLookItem(item) {
   console.log('actions updateLookItem', item);
-  const entity = {
-    "type": "items",
-    "id": item.itemId,
-    "attributes": {
-      "currency": item.currency,
-      "price": item.price,
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const { brand, currency, price } = state.uploadLook;
+
+    const brand_id = brand ? brand.id : null;
+
+    const entity = {
+      "type": "items",
+      "id": item.itemId,
+      "attributes": {
+        "currency": currency,
+        "price": price,
+        "brand_id": brand_id,
+      }
     }
+    console.log('actions updateLookItem entity', entity)
+    return dispatch(updateEntity(entity));
   }
+}
 
-  console.log('before update entity', entity);
-
-  return (dispatch) => {
+export function publishLookItem() {
+  console.log('action publishLookItem');
+  return (dispatch, getState) => {
+    const state = getState();
+    const entity = {
+      "type": "looks",
+      "id": state.uploadLook.lookId,
+      "attributes": {
+        "description": state.uploadLook.description,
+      }
+    }
+    console.log('action publishLookItem entity', entity);
     return dispatch(updateEntity(entity)).then(response => {
-      console.log('update item', response);
-    });
+      const publish = {
+        "type": "look_publish",
+        "attributes": {
+          "look_id": state.uploadLook.lookId,
+        }
+      }
+      console.log('action publish publishLookItem', publish);
+      return dispatch(createEntity(publish));
+    })
   }
 }
 
@@ -126,10 +155,34 @@ export function addItemType(payload) {
 }
 
 export function addBrandName(payload) {
+  console.log('action addBrandName', payload);
   return {
     type: ADD_BRAND_NAME,
     payload: payload
   }
+}
+
+export function createBrandName(name) {
+  return (dispatch) => {
+    const entity = {
+      "type": "brands",
+      "attributes": {
+        "name": name
+      }
+    }
+    return dispatch(createEntity(entity)).then(response => {
+      console.log('done createBrandName', response);
+      const id = parseInt(response.data.id);
+      const name = response.data.attributes['name'];
+      return dispatch({
+        type: ADD_BRAND_NAME,
+        payload: {
+          id,
+          name,
+        }
+      })
+    });
+  };
 }
 
 export function addItemSizeCountry(payload) {
@@ -170,6 +223,13 @@ export function addSharingInfo(type, url) {
   }
 }
 
+export function addDescription(payload) {
+  return {
+    type: ADD_DESCRIPTION,
+    payload: payload
+  }
+}
+
 export function addLocation(payload) {
   return {
     type: ADD_LOCATION,
@@ -184,12 +244,9 @@ export function addTrustLevel(payload) {
   }
 }
 
-export function addPhotosVideo(photos, video) {
+export function addPhotosVideo(image) {
   return {
     type: ADD_PHOTOS_VIDEO,
-    payload: {
-      photos: photos,
-      video: video
-    }
-  }
+    payload: image
+  };
 }

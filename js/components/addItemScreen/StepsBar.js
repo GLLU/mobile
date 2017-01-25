@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     bottom: 0,
-    left: 0,
-    right: 0,
+    left: 40,
+    right: 40,
     backgroundColor: '#BDBDBD',
     height: 2,
     marginHorizontal: WIZARD_PADDING,
@@ -65,8 +65,7 @@ class StepsBar extends Component {
   }
 
   getDisabled(step) {
-    //return parseInt(step) < parseInt(this.props.currentStep) ? false : true;
-    return true;
+    return parseInt(step) == parseInt(this.props.currentStep) ? true : false;
   }
 
   render () {
@@ -74,13 +73,13 @@ class StepsBar extends Component {
               <View style={styles.stepsLine} />
               <Grid>
                 <Col size={40}>
-                  <Button disabled={this.getDisabled(1)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(1), {alignSelf: 'flex-start'}]} onPress={() => this.props.selectTab(1)} >
-                    <Text style={[styles.stepsLabel, {color: this.getStepTextColor(1)}]}>1</Text>
+                  <Button disabled={this.getDisabled(0)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(0), {alignSelf: 'flex-start'}]} onPress={() => this.props.selectTab(-1)} >
+                    <Text style={[styles.stepsLabel, {color: this.getStepTextColor(0)}]}>1</Text>
                   </Button>
                 </Col>
                 <Col size={40}>
-                  <Button disabled={this.getDisabled(2)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(2), {alignSelf: 'flex-end'}]} onPress={() => this.props.selectTab(2)}>
-                    <Text style={[styles.stepsLabel, {color: this.getStepTextColor(2)}]}>2</Text>
+                  <Button disabled={this.getDisabled(1)} bordered rounded large style={[styles.btnSteps, this.getStepStyle(1), {alignSelf: 'flex-end'}]} onPress={() => this.props.selectTab(1)}>
+                    <Text style={[styles.stepsLabel, {color: this.getStepTextColor(1)}]}>2</Text>
                   </Button>
                 </Col>
               </Grid>

@@ -2,10 +2,12 @@ import { openDrawer, closeDrawer } from './drawer';
 import { loadCategories, setCategories } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal } from './myBodyType';
+import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import { addNewLook,
          editTag,
          createLookItem,
          updateLookItem,
+         publishLookItem,
          setTagPosition,
          addItemType,
          addBrandName,
@@ -14,6 +16,7 @@ import { addNewLook,
          addItemCurrency,
          addItemPrice,
          addSharingInfo,
+         addDescription,
          addLocation,
          addTrustLevel,
          addPhotosVideo,
@@ -28,6 +31,10 @@ const {
 } = actions;
 
 export {
+  createEntity,
+  updateEntity,
+  readEndpoint,
+  deleteEntity,
   openDrawer,
   closeDrawer,
   loadCategories,
@@ -41,6 +48,7 @@ export {
   addNewLook,
   createLookItem,
   updateLookItem,
+  publishLookItem,
   editTag,
   setTagPosition,
   setUser,
@@ -56,6 +64,7 @@ export {
   addItemCurrency,
   addItemPrice,
   addSharingInfo,
+  addDescription,
   addLocation,
   addTrustLevel,
   addPhotosVideo,

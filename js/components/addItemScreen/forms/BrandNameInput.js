@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { View } from 'native-base';
 
 import Autocomplete from './CustomAutocomplete';
+import { readEndpoint } from '../../../actions';
 
 const styles = StyleSheet.create({
   inputContainerStyle: {
@@ -19,19 +20,26 @@ const styles = StyleSheet.create({
 
 class BrandNameInput extends Component {
   static propTypes = {
-    brandName:  React.PropTypes.string,
+    brand:  React.PropTypes.object,
     brands: React.PropTypes.array,
+    loadBrands: React.PropTypes.func,
     findOrCreateBrand: React.PropTypes.func,
     clearBrandName: React.PropTypes.func
   }
 
   constructor(props) {
     super(props);
+    const query = this.props.brand ? this.props.brand.name : '';
     this.state = {
-      brands: this.props.brands,
-      query: this.props.brandName,
+      query,
       selected: false
     };
+  }
+
+  componentWillMount() {
+    this.props.loadBrands().then(response => {
+      console.log('loadBrands', response);
+    });
   }
 
   componentDidMount() {
@@ -48,7 +56,7 @@ class BrandNameInput extends Component {
       return [];
     }
 
-    const { brands } = this.state;
+    const { brands } = this.props;
     const regex = new RegExp(`${query.trim()}`, 'i');
     let result = brands.filter(brand => brand.name.search(regex) >= 0);
     return result;
@@ -56,7 +64,8 @@ class BrandNameInput extends Component {
 
   onChangeText(text) {
     this.setState({ query: text, selected: false });
-    if (text != this.state.brandName || text == '') {
+    const name = this.props.brand ? this.props.brand.name : '';
+    if (text != name || text == '') {
       this.props.clearBrandName();
     }
   }
@@ -90,11 +99,22 @@ class BrandNameInput extends Component {
 }
 
 function bindActions(dispatch) {
-  return { };
+  return {
+    loadBrands: () => dispatch(readEndpoint('brands')),
+  }
 }
 
-const mapStateToProps = state => ({
-  brands: state.filters.brands
-});
+const mapStateToProps = state => {
+  let brands = [];
+  if (state.api.brands) {
+    brands = state.api.brands.data.map(x => {
+      return {id: x.id, name: x.attributes['name'] };
+    });
+  }
+  return ({
+    brands,
+    brand: state.uploadLook.brand
+  });
+};
 
 export default connect(mapStateToProps, bindActions)(BrandNameInput);

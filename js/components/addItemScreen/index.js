@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { setUser, replaceAt, popRoute, pushRoute, updateLookItem } from '../../actions';
+import { setUser, replaceAt, popRoute, pushRoute, updateLookItem, publishLookItem } from '../../actions';
 import { actions } from 'react-native-navigation-redux-helpers';
 import styles from './styles';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
-import ActionsBar from './ActionsBar';
 import StepsBar from './StepsBar';
 import Swiper from 'react-native-swiper';
 
 const h = Dimensions.get('window').height;
-const swiperH = h - 100;
+const swiperH = h - 120;
 
 const selfStyles = StyleSheet.create({
   header: {
@@ -47,7 +46,7 @@ class AddItemPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 1
+      currentStep: 0
     };
   }
 
@@ -66,36 +65,37 @@ class AddItemPage extends Component {
   }
 
   selectTab(step) {
-    console.log('Select Tab');
-    if (step > 0 && step < this.state.currentStep) {
-      this.setState({currentStep: step});
-    }
+    this.swiper.scrollBy(step);
   }
 
   continueAction() {
     console.log('CONTINUE');
+
     this.props.updateLookItem(this.props.look).then(response => {
       console.log('done updateLookItem', response);
-      this.setState({currentStep: 2});
+      this.selectTab(this.state.currentStep + 1);
     });
   }
 
   tagAnotherAction() {
     console.log(' TAG ANOTHER');
-    this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
+    this.props.pushRoute({ key: 'publishItem' }, this.props.navigation.key);
   }
 
   publishAction() {
     console.log('Publish');
+    this.props.publishLookItem().then(response => {
+      console.log('done publishLookItem', response);
+    });
   }
 
   getHeadingTitle() {
     let title = '';
     switch (this.state.currentStep) {
-      case 1:
+      case 0:
         title = 'Add New Item';
         break;
-      case 2:
+      case 1:
         title = 'Additional Info';
         break;
       default:
@@ -104,8 +104,12 @@ class AddItemPage extends Component {
     return title;
   }
 
-  _renderActionsContainer() {
-    return <ActionsBar continueAction={this.continueAction.bind(this)} tagAnotherAction={this.tagAnotherAction.bind(this)} />;
+  _handleSwiperScrollEnd(e, state, context) {
+    console.log('_handleSwiperScrollEnd');
+    const currentStep = this.state.currentStep;
+    const nextStep = currentStep == 0 ? 1 : 0;
+    this.setState({currentStep: nextStep});
+    return true;
   }
 
   popRoute() {
@@ -125,14 +129,16 @@ class AddItemPage extends Component {
           <View style={styles.mainView}>
             <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
             <Swiper style={styles.wrapper}
-                    onMomentumScrollEnd={(e, state, context) => this.setState({currentStep: state.index + 1})}
+                    ref={(ref) => this.swiper = ref }
+                    loop={false}
+                    index={this.state.currentStep}
+                    onMomentumScrollEnd={this._handleSwiperScrollEnd.bind(this)}
                     dot={<View style={{width: 0, height: 0}} />}
                     activeDot={<View style={{width: 0, height: 0}} />}
-                    height={swiperH} loop>
-              <StepOne key={1}/>
-              <StepTwo continueAction={this.publishAction.bind(this)} key={2}/>
+                    height={swiperH}>
+              <StepOne key={1} continueAction={this.continueAction.bind(this)} tagAnotherAction={this.tagAnotherAction.bind(this)}/>
+              <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>
             </Swiper>
-            {this.state.currentStep == 1 && this._renderActionsContainer()}
           </View>
         </Content>
       </Container>
@@ -149,6 +155,7 @@ function bindActions(dispatch) {
     pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     setUser: name => dispatch(setUser(name)),
     updateLookItem: (look) => dispatch(updateLookItem(look)),
+    publishLookItem: (look) => dispatch(publishLookItem(look)),
   };
 }
 

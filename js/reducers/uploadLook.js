@@ -10,6 +10,7 @@ import { ADD_NEW_LOOK,
         ADD_ITEM_CURRENCY,
         ADD_ITEM_PRICE,
         ADD_SHARING_INFO,
+        ADD_DESCRIPTION,
         ADD_LOCATION,
         ADD_TRUST_LEVEL,
         ADD_PHOTOS_VIDEO,
@@ -101,10 +102,25 @@ const ACTION_HANDLERS = {
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
     console.log('reducer CREATE_LOOK_ITEM_BY_POSITION', action.payload);
-    const itemId = parseInt(action.payload.data.id);
+    const item = action.payload.data;
+    const attr = item.attributes;
+    const itemId = parseInt(item.id);
+    const items = state.items;
+    items.push({
+      id: item.id,
+      locationX: attr['cover-x-pos'],
+      locationY: attr['cover-y-pos'],
+      currency: attr['currency'],
+      price: attr['price'],
+      userId: attr['user-id'],
+      lookId: attr['look-id'],
+      editing: false,
+    });
+    console.log('reducer items', items);
     return {
       ...state,
       itemId,
+      items,
     }
   },
   [EDIT_TAG]: (state, action) => {
@@ -141,7 +157,7 @@ const ACTION_HANDLERS = {
   [ADD_BRAND_NAME]: (state, action) => {
     return {
       ...state,
-      brandName: action.payload
+      brand: action.payload
     }
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
@@ -181,6 +197,12 @@ const ACTION_HANDLERS = {
       location: action.payload
     }
   },
+  [ADD_DESCRIPTION]: (state, action) => {
+    return {
+      ...state,
+      description: action.payload
+    }
+  },
   [ADD_TRUST_LEVEL]: (state, action) => {
     return {
       ...state,
@@ -188,10 +210,13 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_PHOTOS_VIDEO]: (state, action) => {
+    console.log('ADD_PHOTOS_VIDEO');
+    const photos = state.photos;
+    photos.push({path: action.payload.path, data: action.payload.data});
     return {
       ...state,
       video: action.payload.video,
-      photos: action.payload.photos
+      photos,
     }
   },
 }
@@ -202,14 +227,15 @@ const initialState = {
   image: null,
   selectedCategoryId: 24,
   posInCategories: 3,
-  brandName: '',
+  brand: null,
   itemSizeCountry: 'us',
   itemSizeNumber: 2,
   currency: 'USD',
   price: 40,
+  description: '',
   sharingType: true,
   sharingUrl: '',
-  tags: [],
+  items: [],
   location: 'us',
   trustLevel: 0,
   photos: [],

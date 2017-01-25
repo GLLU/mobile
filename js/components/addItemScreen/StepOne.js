@@ -3,6 +3,7 @@ import { ScrollView, Text, View, Dimensions } from 'react-native';
 import ImageWithTags from '../common/ImageWithTags';
 import ItemInfoView from './ItemInfoView';
 import { createLookItem } from '../../actions';
+import ActionsBar from './ActionsBar';
 
 const w = Dimensions.get('window').width;
 
@@ -13,20 +14,29 @@ class StepOne extends Component {
     }),
     newTag: React.PropTypes.bool,
     createLookItem: React.PropTypes.func,
-    image: React.PropTypes.object,
-    tags: React.PropTypes.array,
+    continueAction: React.PropTypes.func,
+    tagAnotherAction: React.PropTypes.func,
+    image: React.PropTypes.string,
+    items: React.PropTypes.array,
     editingTagIndex: React.PropTypes.number,
   }
 
+  _renderActionsContainer() {
+    return <ActionsBar continueAction={this.props.continueAction} tagAnotherAction={this.props.tagAnotherAction} />;
+  }
+
   render() {
-    const { tags, editingTagIndex, image, createLookItem } = this.props;
+    const { items, editingTagIndex, image, createLookItem } = this.props;
     return(
-      <ScrollView scrollEnabled={true} style={{marginVertical: 10}}>
-        <View style={{padding: 20}}>
-          <ImageWithTags tags={tags} image={image} createLookItem={createLookItem} width={w - 40}/>
-        </View>
-        <ItemInfoView/>
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <ScrollView scrollEnabled={true} style={{marginTop: 10, marginBottom: 50}}>
+          <View style={{padding: 20}}>
+            <ImageWithTags items={items} image={image} createLookItem={createLookItem} width={w - 40}/>
+          </View>
+          <ItemInfoView/>
+        </ScrollView>
+        {this._renderActionsContainer()}
+      </View>
     )
   }
 }

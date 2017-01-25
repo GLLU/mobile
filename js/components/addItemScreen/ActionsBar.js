@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: 'transparent',
     padding: 20,
-    paddingBottom: 0
   },
   btnTagAnother: {
     marginTop: 20,

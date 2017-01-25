@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, TextInput, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { View, Container, Content, Button, Text, Picker, Item, Icon} from 'native-base';
+import { View, Container, Content, Button, Text, Picker, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 import FontSizeCalculator from './../../../calculators/FontSize';
+const Item = Picker.Item;
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
@@ -52,7 +53,7 @@ class CurrencyAndPrice extends Component {
 
   static propTypes = {
     currency: React.PropTypes.string,
-    price: React.PropTypes.string,
+    price: React.PropTypes.number,
     updateValue: React.PropTypes.func,
     currencies: React.PropTypes.array,
   }
@@ -101,7 +102,7 @@ class CurrencyAndPrice extends Component {
                   <Col size={48}>
                     <Grid>
                       <Col size={80}>
-                        <TextInput placeholder="Type a price" keyboardType="numeric" placeholderTextColor="#BDBDBD"  style={styles.textHalfInput} value={this.props.price} onChangeText={(price) => this.props.updateValue('price', price)} />
+                        <TextInput placeholder="Type a price" keyboardType="numeric" placeholderTextColor="#BDBDBD"  style={styles.textHalfInput} value={`${this.props.price}`} onChangeText={(price) => this.props.updateValue('price', price)} />
                       </Col>
                       <Col size={20}>
                         <Icon style={[styles.arrowSelect, {marginTop: 15}]} name='ios-arrow-down' />

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, StyleSheet, TextInput, Dimensions } from 'react-native';
-import { View, Container, Content, Button, Text, Picker, Item, Icon} from 'native-base';
+import { View, Container, Content, Button, Text, Picker, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 import FontSizeCalculator from './../../../calculators/FontSize';
+const Item = Picker.Item;
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;

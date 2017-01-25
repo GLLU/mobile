@@ -11,6 +11,7 @@ import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
 import Tags from './forms/Tags';
 import {
+    addDescription,
     addLocation,
     addTrustLevel,
     addPhotosVideo,
@@ -97,11 +98,11 @@ const styles = StyleSheet.create({
 class StepTwo extends Component {
   static propTypes = {
     image: React.PropTypes.string,
-    continueAction: React.PropTypes.func,
+    publishItem: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
-    image: React.PropTypes.object,
-    tags: React.PropTypes.array,
-    continueAction: React.PropTypes.func,
+    description: React.PropTypes.string,
+    photos: React.PropTypes.array,
+    items: React.PropTypes.array,
     addLocation: React.PropTypes.func,
     addTrustLevel: React.PropTypes.func,
     addPhotosVideo: React.PropTypes.func
@@ -123,16 +124,13 @@ class StepTwo extends Component {
 
   addPhoto(number) {
     ImagePicker.openPicker({
+      includeBase64: true,
       cropping: false
     }).then(image => {
       var path = image.path;
       var Extension = path.substring(path.lastIndexOf('.')+1).toLowerCase();
       if (Extension == "gif" || Extension == "png" || Extension == "bmp" || Extension == "jpeg" || Extension == "jpg") {
-        let images = this.state.images;
-        images[number - 1] = path;
-        this.setState({images: images});
-        this.props.addPhotosVideo(images, this.state.videoUrl);
-        console.log(this.state.images);
+        this.props.addPhotosVideo(image);
       }
     });
   }
@@ -160,6 +158,9 @@ class StepTwo extends Component {
         break;
       case 'trustLevel':
         this.props.addTrustLevel(value);
+        break;
+      case 'description':
+        this.props.addDescription(value);
         break;
     }
   }
@@ -190,15 +191,18 @@ class StepTwo extends Component {
     return numR == 0 ? 250 : numR * rH + 270;
   }
 
+  _handlePublishItem() {
+    this.props.publishItem();    
+  }
+
   _renderDescribeAndTags() {
     var number = w < 375 ? 2 : 3;
     var height = this.getHeight(number);
+    const tags = this.state.tags;
     return (
         <Content scrollEnabled={false} style={{height: height, margin: 5}}>
           <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
-          <Text style={styles.describe}>
-            Add some details about the items you've tagged and some relevant <Text style={styles.hashTag}>#hashtags</Text> to make it easier for people to find it
-          </Text>
+          <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
           <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
           <TextInput
               returnKeyType="done"
@@ -238,17 +242,17 @@ class StepTwo extends Component {
   }
 
   render() {
-    const { tags, createLookItem, image} = this.props;
+    const { items, createLookItem, image} = this.props;
     return(
       <ScrollView scrollEnabled={true}>
         <View style={{padding: 20}}>
-          <ImageWithTags tags={tags} image={image} createLookItem={createLookItem} width={w - 40}/>
+          <ImageWithTags items={items} image={image} createLookItem={createLookItem} width={w - 40}/>
         </View>
         <View style={styles.itemInfoView}>
-            <AddMore video={this.state.video} images={this.state.images} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />
+            <AddMore video={this.state.video} photos={this.props.photos} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />
             {this._renderDescribeAndTags()}
             {this._renderSelections()}
-            <Button transparent onPress={() => this.props.continueAction()} style={styles.btnGoToStep3}>
+            <Button transparent onPress={() => this._handlePublishItem()} style={styles.btnGoToStep3}>
                 <Text style={styles.btnGoToStep3Text}>PUBLISH</Text>
             </Button>
         </View>
@@ -261,9 +265,10 @@ import { connect } from 'react-redux';
 function bindActions(dispatch) {
   return {
     createLookItem: (tag) => dispatch(createLookItem(tag)),
-    addLocation: (location) => dispatch([addLocation(location)]),
-    addTrustLevel: (number) => dispatch([addTrustLevel(number)]),
-    addPhotosVideo: (photos, video) => dispatch([addPhotosVideo(photos, video)]),
+    addDescription: (description) => dispatch(addDescription(description)),
+    addLocation: (location) => dispatch(addLocation(location)),
+    addTrustLevel: (number) => dispatch(addTrustLevel(number)),
+    addPhotosVideo: (photos, video) => dispatch(addPhotosVideo(photos, video)),
   };
 }
 

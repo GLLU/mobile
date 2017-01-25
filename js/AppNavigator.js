@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackAndroid, StatusBar, NavigationExperimental } from 'react-native';
+import { View, BackAndroid, StatusBar, NavigationExperimental } from 'react-native';
 import { connect } from 'react-redux';
 import { Drawer } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -21,7 +21,7 @@ import SignInPage from './components/signin';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import ItemScreen from './components/itemScreen';
-
+import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 
 import { statusBarColor } from './themes/base-theme';
 
@@ -118,43 +118,46 @@ class AppNavigator extends Component {
 
   render() {
     return (
-      <Drawer
-        ref={(ref) => { this._drawer = ref; }}
-        type="overlay"
-        tweenDuration={150}
-        content={<SideBar />}
-        tapToClose
-        acceptPan={false}
-        onClose={() => this.closeDrawer()}
-        openDrawerOffset={0.2}
-        panCloseMask={0.2}
-        styles={{
-          drawer: {
-            shadowColor: '#000000',
-            shadowOpacity: 0.8,
-            shadowRadius: 3,
-          },
-        }}
-        tweenHandler={(ratio) => {  //eslint-disable-line
-          return {
-            drawer: { shadowRadius: ratio < 0.2 ? ratio * 5 * 5 : 5 },
-            main: {
-              opacity: (2 - ratio) / 2,
+      <View style={{flex: 1}}>
+        <Drawer
+          ref={(ref) => { this._drawer = ref; }}
+          type="overlay"
+          tweenDuration={150}
+          content={<SideBar />}
+          tapToClose
+          acceptPan={false}
+          onClose={() => this.closeDrawer()}
+          openDrawerOffset={0.2}
+          panCloseMask={0.2}
+          styles={{
+            drawer: {
+              shadowColor: '#000000',
+              shadowOpacity: 0.8,
+              shadowRadius: 3,
             },
-          };
-        }}
-        negotiatePan
-      >
-        <StatusBar
-          backgroundColor={statusBarColor}
-          barStyle="default"
-        />
-        <NavigationCardStack
-          navigationState={this.props.navigation}
-          renderOverlay={this._renderOverlay}
-          renderScene={this._renderScene}
-        />
-      </Drawer>
+          }}
+          tweenHandler={(ratio) => {  //eslint-disable-line
+            return {
+              drawer: { shadowRadius: ratio < 0.2 ? ratio * 5 * 5 : 5 },
+              main: {
+                opacity: (2 - ratio) / 2,
+              },
+            };
+          }}
+          negotiatePan
+        >
+          <StatusBar
+            backgroundColor={statusBarColor}
+            barStyle="default"
+          />
+          <NavigationCardStack
+            navigationState={this.props.navigation}
+            renderOverlay={this._renderOverlay}
+            renderScene={this._renderScene}
+          />
+        </Drawer>
+        {this.props.isLoading !== 0 ? <SpinnerSwitch /> : null}
+      </View>
     );
   }
 }
@@ -166,9 +169,13 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  drawerState: state.drawer.drawerState,
-  navigation: state.cardNavigation,
-});
+const mapStateToProps = state => {
+  const isLoading = state.api.isCreating || state.api.isUpdating;
+  return ({
+    drawerState: state.drawer.drawerState,
+    navigation: state.cardNavigation,
+    isLoading: isLoading,
+  });
+};
 
 export default connect(mapStateToProps, bindAction)(AppNavigator);

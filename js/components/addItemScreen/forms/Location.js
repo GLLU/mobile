@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image } from 'react-native';
-import { View, Container, Content, Button, Text, Picker, Item, Icon} from 'native-base';
+import { View, Container, Content, Button, Text, Picker, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
-
+const Item = Picker.Item;
 import styles from './styles';
 
 const us = require('../../../../images/flags/us.png');

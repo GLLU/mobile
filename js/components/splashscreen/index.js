@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
-import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
@@ -137,7 +136,6 @@ class SplashPage extends Component {
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
               </View>
             </Image>
-              {this.props.isLoading !== 0 ? <SpinnerSwitch /> : null}
           </Content>
         </View>
       </Container>
@@ -157,7 +155,6 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  isLoading: state.api.isCreating
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

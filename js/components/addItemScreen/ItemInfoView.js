@@ -104,14 +104,15 @@ class ItemInfoView extends Component {
     categories: React.PropTypes.array,
     selectedCategoryId: React.PropTypes.number,
     posInCategories: React.PropTypes.number,
-    brandName: React.PropTypes.string,
+    brand: React.PropTypes.object,
     itemSizeCountry: React.PropTypes.string,
-    itemSizeNumber: React.PropTypes.string,
+    itemSizeNumber: React.PropTypes.number,
     currency: React.PropTypes.string,
-    price: React.PropTypes.string,
+    price: React.PropTypes.number,
     sharingType: React.PropTypes.bool,
     sharingUrl: React.PropTypes.string,
     addItemType: React.PropTypes.func,
+    createBrandName: React.PropTypes.func,
     addBrandName: React.PropTypes.func,
     addItemSizeCountry: React.PropTypes.func,
     addItemSize: React.PropTypes.func,
@@ -161,14 +162,9 @@ class ItemInfoView extends Component {
 
   findOrCreateBrand(value, act) {
     if (act) {
-      this.props.addBrandName(value);
-      this.callApiCreateNewBrand(value);
+      this.props.createBrandName(value);
     } else {
-      this.setState({
-        brandName: value.name
-      });
-      this.props.addBrandName(value.name);
-      console.log(`Save brand ID: ${value.id}`);
+      this.props.addBrandName(value);
     }
   }
 
@@ -176,12 +172,7 @@ class ItemInfoView extends Component {
     this.setState({brandName: ''});
   }
 
-  callApiCreateNewBrand(brandName) {
-    console.log(`Call Api create new brand: ${brandName}`);
-  }
-
   updateValue(key, value) {
-    this.setState({[key]: value});
     switch (key) {
       case 'itemSizeCountry':
         this.props.addItemSizeCountry(value);
@@ -243,16 +234,21 @@ class ItemInfoView extends Component {
 
   render() {
     const { categories, selectedCategory } = this.state;
+    const { brand, itemSizeCountry, currency, price } = this.props;
     return(<Container style={styles.itemInfoView}>
               <Content scrollEnabled={false}>
+                {/*
                   <Text style={styles.titleLabelInfo}>Item Type</Text>
                   <Category categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
+                  */}
                   <Text style={styles.titleLabelInfo}>Brand Name</Text>
-                  <BrandNameInput brandName={this.state.brandName} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
+                  <BrandNameInput brand={brand} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
+                  {/*
                   <Text style={styles.titleLabelInfo}>Item Size</Text>
                   <ItemSize itemSizeCountry={this.state.itemSizeCountry} itemSizeNumber={this.state.itemSizeNumber} updateValue={this.updateValue.bind(this)} />
-                  <CurrencyAndPrice currency={this.state.currency} price={this.state.price} updateValue={this.updateValue.bind(this)} />
-                  {this._renderSharing()}
+                */}
+                  <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
+                  {/*this._renderSharing()*/}
               </Content>
         </Container>)
   }

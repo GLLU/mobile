@@ -47,7 +47,7 @@ class TagItemPage extends Component {
       key: React.PropTypes.string,
     }),
     lookId: React.PropTypes.number,
-    image: React.PropTypes.object,
+    image: React.PropTypes.string,
     items: React.PropTypes.array,
     editingTag: React.PropTypes.number,
   }

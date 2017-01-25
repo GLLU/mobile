@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 class AddMore extends Component {
 
   static propTypes = {
-    images: React.PropTypes.array,
+    photos: React.PropTypes.array,
     video: React.PropTypes.string,
     addPhoto: React.PropTypes.func,
     addVideo: React.PropTypes.func
@@ -47,8 +47,13 @@ class AddMore extends Component {
   }
 
   _renderPhotoOrIcon(number) {
-    let images = this.props.images;
-    return images[number-1] == '' ? <Image source={addMorePhotoIcon} style={styles.btnWithImage} /> : <Image source={{uri: images[number-1]}} style={styles.morePhotoItem} />
+    const photos = this.props.photos;
+    console.log('photos', photos);
+    if (photos.length > number - 1) {
+      return <Image source={{uri: photos[number-1].path}} style={styles.morePhotoItem} />;
+    } else {
+      return <Image source={addMorePhotoIcon} style={styles.btnWithImage} />;
+    }
   }
 
 
