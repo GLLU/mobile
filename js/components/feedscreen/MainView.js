@@ -1,20 +1,38 @@
 import React, { Component } from 'react';
 import { View, Container, Content } from 'native-base';
-var ScrollableTabView = require('react-native-scrollable-tab-view');
-var CustomTabBar = require('./CustomTabBar');
-
-import NewTab from './NewTab';
-import FollowingTab from './FollowingTab';
-import AllTab from './AllTab';
-
+import { connect } from 'react-redux';
+import { getFeed } from '../../actions/feed';
+import SpinnerSwitch from '../loaders/SpinnerSwitch'
+import FilterBar from './filters/FilterBar';
+import RecentTab from './RecentTab';
+import BestMatchTab from './BestMatchTab';
 import tabTheme from './../../themes/tab';
 import styles from './styles';
 
 class MainView extends Component {
+  static propTypes = {
+    searchTerm: React.PropTypes.string,
+    clearSearchTerm: React.PropTypes.func,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      locked: false
+      locked: false,
+      isOpen: false,
+      currFeedTypeSelected: 'relevant',
+      currFeedCategorySelected: '',
+      searchTerm: this.props.searchTerm
+    };
+    this.props.getFeed('relevant');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.searchTerm !== this.props.searchTerm) {
+      this.setState({
+        searchTerm: nextProps.searchTerm
+      });
+      this._filterFeed(this.state.currFeedTypeSelected, this.state.currFeedCategorySelected, nextProps.searchTerm)
     }
   }
 
@@ -24,8 +42,27 @@ class MainView extends Component {
     })
   }
 
-  _renderTabBar() {
-    return <CustomTabBar underlineStyle={styles.customTabBar} inactiveTextColor={'#9E9E9E'} />;
+  _filterFeed(type, category = '', term = this.state.searchTerm) {
+    if(type !== this.state.currFeedTypeSelected){
+      this.setState({
+        currFeedTypeSelected: type
+      })
+    }
+
+    if(category !== this.state.currFeedCategorySelected){
+      this.setState({
+        currFeedCategorySelected: category
+      })
+    }
+    this.props.getFeed(type, category, term);
+  }
+
+  _renderFeed() {
+    if(this.state.currFeedTypeSelected === 'relevant') {
+      return <BestMatchTab handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH' looks={this.props.looks}/>
+    } else {
+      return <RecentTab tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)} looks={this.props.looks}/>
+    }
   }
 
   render() {
@@ -33,11 +70,8 @@ class MainView extends Component {
       <View style={styles.mainView} scrollEnabled={false}>
         <Container>
             <Content theme={tabTheme} scrollEnabled={false}>
-                <ScrollableTabView initialPage={2} locked={this.state.locked} renderTabBar={() => this._renderTabBar()}>
-                    <NewTab tabLabel='NEW' />
-                    <FollowingTab tabLabel='FOLLOWING' />
-                    <AllTab handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='ALL' />
-                </ScrollableTabView>
+              <FilterBar filterFeed={(type, category, term) => this._filterFeed(type, category, term)} clearSearchTerm={this.props.clearSearchTerm}/>
+              { this.props.isLoading === 0 ? this._renderFeed() : <SpinnerSwitch /> }
             </Content>
         </Container>
       </View>
@@ -45,4 +79,16 @@ class MainView extends Component {
   }
 }
 
-export default MainView;
+function bindActions(dispatch) {
+  return {
+    getFeed: (feedType,feedCategory, feedTerm) => dispatch(getFeed(feedType, feedCategory, feedTerm))
+  };
+}
+
+const mapStateToProps = state => ({
+  isLoading: state.api.isReading,
+  looks: state.feed.looks,
+});
+
+export default connect(mapStateToProps, bindActions)(MainView);
+

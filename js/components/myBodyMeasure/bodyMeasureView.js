@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, TouchableWithoutFeedback, Slider, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';

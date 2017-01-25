@@ -10,7 +10,7 @@ import NavigationBarView from './NavigationBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
-import { showBodyTypeModal } from '../../actions/myBodyType';
+import SearchBar from './SearchBar'
 
 const {
   replaceAt,
@@ -31,7 +31,10 @@ class FeedPage extends Component {
     super(props);
     this.state = {
       name: '',
+      searchTerm: '',
+      searchStatus: false
     };
+
   }
 
   setUser(name) {
@@ -43,13 +46,31 @@ class FeedPage extends Component {
     this.props.replaceAt('login', { key: route }, this.props.navigation.key);
   }
 
+  _handleSearchInput(searchTerm) {
+    this.setState({
+      searchTerm
+    })
+  }
+
+  _handleSearchStatus(newStatus) {
+    const searchStatus = newStatus === 'close' ? false : !this.state.searchStatus;
+    this.setState({searchStatus})
+  }
+
+  _clearSearchTerm() {
+    this.setState({
+      searchTerm: ''
+    })
+  }
+
   render() {
     const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};
     return (
       <Container style={styles.container}>
         <View>
-          <NavigationBarView />
-          <MainView />
+          <NavigationBarView handleSearchStatus={() => this._handleSearchStatus(false)}/>
+          {this.state.searchStatus ? <SearchBar handleSearchInput={(searchTerm) => this._handleSearchInput(searchTerm)} clearText={this.state.searchTerm}/> : null}
+          <MainView searchTerm={this.state.searchTerm} handleSearchStatus={(newStatus) => this._handleSearchStatus(newStatus)} clearSearchTerm={() => this._clearSearchTerm()}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
             <MyBodyModal />
