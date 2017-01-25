@@ -10,8 +10,9 @@ import ModalPicker from 'react-native-modal-picker';
 import { countries } from './countries'
 import { emailSignUp } from '../../actions/user';
 
-
+import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
+import { emailRule, passwordRule, textInput } from '../../validators';
 
 const { popRoute, pushRoute } = actions;
 
@@ -27,7 +28,7 @@ const {
 class SignUpPage extends Component {
 
   static propTypes = {
-      gender: React.PropTypes.string,
+    gender: React.PropTypes.string,
     popRoute: React.PropTypes.func,
     emailSignUp: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
@@ -91,7 +92,6 @@ class SignUpPage extends Component {
           nameValid } = this.state;
 
       let validationArray = [usernameValid, passwordValid, emailValid, nameValid, countryValid];
-
       return (validationArray.indexOf('times') === -1)
   }
 
@@ -101,43 +101,43 @@ class SignUpPage extends Component {
   }
 
   validateTextInput(value, type) {
-      this.setState({[type]: value});
-      let toValidString = type+'Valid';
-      if(value.length > 2){
-          this.setState({[toValidString]: 'check'});
-      } else {
-          this.setState({[toValidString]: 'times'});
-      }
+      textInput.validate(value, (err) => {
+        if(!err){
+          this.setState({ [type+'Valid']: 'check' });
+        } else {
+          this.setState({ [type]: value, [type+'Valid']: 'times' });
+        }
+      })
+
   }
 
 
-  validateEmailInput(value) {
-      this.setState({email: value});
-      let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-       if(re.test(value)){
-          this.setState({emailValid: 'check'});
+  validateEmailInput(email) {
+    emailRule.validate(email, (err) => {
+      if(!err){
+        this.setState({ email, emailValid: 'check' });
       } else {
-          this.setState({emailValid: 'times'});
+        this.setState({ email, emailValid: 'times' });
       }
+    });
   }
 
-  validatePasswordInput(value) {
-      this.setState({password: value});
-      let re = /^[a-zA-Z0-9]{3,30}$/;
-      if(re.test(value)){
-          this.setState({passwordValid: 'check'});
+  validatePasswordInput(password) {
+    passwordRule.validate(password, (err) => {
+      if(!err){
+        this.setState({ password, passwordValid: 'check' });
       } else {
-          this.setState({passwordValid: 'times'});
+        this.setState({ password, passwordValid: 'times' });
       }
+    });
   }
 
-  confirmPasswordInput(value) {
-      this.setState({confirmPassword: value});
+  confirmPasswordInput(confirmPassword) {
       let pass = this.state.password
-      if(value === pass){
-          this.setState({confirmPasswordValid: 'check'});
+      if(confirmPassword === pass){
+          this.setState({ confirmPasswordValid: 'check' });
       } else {
-          this.setState({confirmPasswordValid: 'times'});
+          this.setState({ confirmPassword, confirmPasswordValid: 'times' });
       }
   }
 
@@ -147,7 +147,7 @@ class SignUpPage extends Component {
 
   render() {
     return (
-      <Container>
+      <Container theme={glluTheme}>
           <View style={styles.container}>
               <Image source={background} style={styles.shadow} blurRadius={5}>
                   <Image source={backgroundShadow} style={styles.bgShadow} />

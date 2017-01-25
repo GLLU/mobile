@@ -10,6 +10,7 @@ import myBodyType from './myBodyType';
 import filters from './filters';
 import uploadLook from './uploadLook';
 import formData from './formData';
+import feed from './feed';
 
 import { reducer as api } from 'redux-json-api';
 
@@ -22,6 +23,7 @@ export default combineReducers({
   myBodyMeasure,
   filters,
   uploadLook,
+  feed,
   api,
   formData
 });

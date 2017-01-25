@@ -1,6 +1,11 @@
 const React = require('react-native');
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
+const MK = require('react-native-material-kit');
+
+const {
+  MKColor,
+} = MK;
 
 module.exports = StyleSheet.create({
   container: {
@@ -11,8 +16,7 @@ module.exports = StyleSheet.create({
     right: 0
   },
   navigationBar: {
-    flex: 1,
-    position: 'absolute',
+    position: 'relative',
     top: 0,
     left: 0,
     right: 0,
@@ -45,34 +49,88 @@ module.exports = StyleSheet.create({
     fontWeight: 'normal',
     color: '#757575'
   },
+  searchBar: {
+    position: 'relative',
+    height: 60,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  searchInputGroup: {
+    borderBottomWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  searchInput: {
+    borderLeftWidth: 1,
+    backgroundColor: 'white',
+    borderLeftColor: 'black',
+    fontFamily: 'PlayfairDisplay-Regular',
+    fontSize: 18,
+    fontWeight: '800'
+  },
+  searchInputBorder: {
+    borderRightWidth: 2,
+    borderColor: '#7F7F7F',
+    height: 30,
+    marginLeft: 10
+  },
   mainView: {
     flex: 1,
-    position: 'absolute',
-    top: 60,
+    position: 'relative',
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: '#FFFFFF'
   },
   tab: {
-    flex: 1,
     backgroundColor: '#FFFFFF'
   },
   filter: {
     backgroundColor: '#F5F5F5',
     paddingLeft: 5,
     paddingBottom: 10,
-    height: 40
+    height: 45,
   },
   filterActions: {
     backgroundColor: '#F5F5F5',
     padding: 10,
     paddingTop: 0,
-    height: 0
+    height: 0,
+    marginBottom: 10,
+    flex: 1,
+
   },
   filterActionsGrid: {
     backgroundColor: '#FFFFFF',
-    height: 170
+
+  },
+  radioView: {
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  radioOption: { // the box
+    flex: 1,
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  radioOptionSelected: {
+    borderBottomColor: MKColor.Teal,
+    borderBottomWidth: 2,
+  },
+  radioBtnText: { //the text
+    color: 'lightgrey',
+    fontSize: 17,
+    textAlign: 'center',
+    paddingBottom: 5
+  },
+  radioBtnTextSelected: { //the text
+    color: MKColor.Teal
   },
   btnFilter: {
     position: 'absolute',
@@ -108,7 +166,7 @@ module.exports = StyleSheet.create({
     backgroundColor: '#1DE9B6'
   },
   filterCategories: {
-    height: 100
+    flex: 1
   },
   categoryItem: {
     width: 80,
@@ -119,20 +177,22 @@ module.exports = StyleSheet.create({
   categoryItemTitle: {
     color: '#757575',
     fontSize: 13,
-    textAlign: 'center'
+    textAlign: 'center',
+    height: 32
   },
   categoryItemImage: {
-    height: 100,
+    height: 50,
     width: 50,
     resizeMode: 'contain',
     alignSelf: 'center'
   },
   btncategoryItem: {
-    height: 100,
+    height: 80,
     width: 50,
     alignSelf: 'center'
   },
   sliderFilters: {
     marginTop: 10
   }
+
 });

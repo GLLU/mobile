@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, Button, Icon } from 'native-base';
+import {  Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-import {
-  MKRangeSlider
-} from 'react-native-material-kit';
+import RadioButtons from 'react-native-radio-buttons';
+import {View, Text, Switch, TouchableWithoutFeedback} from 'react-native';
+import SearchBar from '../SearchBar'
 
-import ValueText from './ValueText';
 import CategoryStrip from './CategoryStrip';
 
 import styles from '../styles';
 
 import { loadCategories } from '../../../actions/filters';
+const MK = require('react-native-material-kit');
 
+const {
+  MKColor,
+} = MK;
+
+const feedTypes = [ 'Best Match', 'Recent' ];
 class FilterView extends Component {
   static propTypes = {
     loadCategories: React.PropTypes.func,
-    openFilter: React.PropTypes.func,
     categories: React.PropTypes.array,
     minPrice: React.PropTypes.number,
     maxPrice: React.PropTypes.number,
-    filterHeight: React.PropTypes.number
+    filterFeed: React.PropTypes.func,
+    clearSearchTerm: React.PropTypes.func
   }
 
   constructor(props) {
@@ -28,8 +33,8 @@ class FilterView extends Component {
     this.state = {
       selectedCategory: null,
       openFilter: true,
-      fromPrice: this.props.minPrice,
-      toPrice: this.props.maxPrice,
+      feedTypeSelectedOption: 'Best Match',
+      isOpen: false
     };
   }
 
@@ -37,49 +42,44 @@ class FilterView extends Component {
     this.props.loadCategories();
   }
 
-  componentWillReceiveProps() {
-
-  }
-
   filterByCategory(item) {
-    console.log('Call API filter by category');
     const selectedCategory = this.state.selectedCategory;
-    const selected = selectedCategory && selectedCategory.id === item.id ? null : item;
+    const selected = selectedCategory && selectedCategory.id === item.id ? false : item;
     this.setState({
       selectedCategory: selected
     });
+    let category = selected === '' ? selected : item.attributes.name;
+    let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
+    this.props.filterFeed(type, category);
     console.log(`Filter by category Id: ${item.id}`);
-  }
-
-  filterByPrice(min, max) {
-    console.log('Call API filter by price');
-    this.setState({
-      fromPrice: parseInt(min),
-      toPrice: parseInt(max),
-    });
   }
 
   clearFilter() {
     console.log('Clear Filter');
     this.setState({
       selectedCategory: null,
-      fromPrice: this.props.minPrice,
-      toPrice: this.props.maxPrice
     });
+    let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent';
+    this.props.filterFeed(type, '')
+    this.props.clearSearchTerm();
+  }
+
+  openFilter() {
+    this.setState({ isOpen: !this.state.isOpen });
   }
 
   _renderFilterHeader(){
-    const labelColor = this.state.selectedCategory || this.state.fromPrice != 1 || this.state.toPrice != 1000 ? '#1DE9B6' : '#212121';
+    const labelColor = this.state.selectedCategory  ? '#1DE9B6' : '#212121';
     return (
       <View>
         <Grid style={styles.filter}>
           <Col size={10}>
-            <Button transparent onPress={() => this.props.openFilter(this.props.filterHeight)} style={styles.btnFilter}>
+            <Button transparent onPress={() => this.openFilter()} style={styles.btnFilter}>
               <Icon name="md-options" style={[styles.normalBtn, { color: labelColor }]} />
             </Button>
           </Col>
           <Col size={20}>
-            <Button transparent onPress={() => this.props.openFilter(this.props.filterHeight)} style={styles.btnFilter}>
+            <Button transparent onPress={() => this.openFilter()} style={styles.btnFilter}>
               <Text style={[styles.Textlabel, { color: labelColor }]}>Filter by</Text>
             </Button>
           </Col>
@@ -102,42 +102,12 @@ class FilterView extends Component {
       <CategoryStrip categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
   }
 
-  _renderSlider() {
-    const { minPrice, maxPrice } = this.props;
-    return (
-      <View style={styles.sliderFilters}>
-        <MKRangeSlider
-          ref="rangeSlider"
-          step={1}
-          min={minPrice}
-          max={maxPrice}
-          minValue={this.state.fromPrice}
-          maxValue={this.state.toPrice}
-          upperTrackColor={'#212121'}
-          lowerTrackColor={'#212121'}
-          thumbRadius={6}
-          onChange={(curValue) => this.rangeValueText.onChange(curValue.min.toFixed(0), curValue.max.toFixed(0))}
-          onConfirm={(curValue) => this.filterByPrice(curValue.min, curValue.max)}
-          />
-        <ValueText ref={(ref) => this.rangeValueText = ref} min={this.state.fromPrice} max={this.state.toPrice} rangeText={`${minPrice}~${maxPrice}`} />
-      </View>)
-  }
 
   _rederFilterText() {
     const filterOnChangeCategory = this.state.selectedCategory;
-    const filterOnChangePrice = this.state.fromPrice != this.props.minPrice || this.state.toPrice != this.props.maxPrice;
-    if (filterOnChangePrice === false && filterOnChangeCategory === null) {
-      return (
-        <View>
-          <Text style={styles.TextResults}>All Results</Text>
-        </View>);
-    } else {
       const filters = [];
       if (filterOnChangeCategory) {
         filters.push(this.state.selectedCategory.attributes.name);
-      }
-      if (filterOnChangePrice) {
-        filters.push(`₤${this.state.fromPrice} - ₤${this.state.toPrice}`);
       }
       return (
         <View>
@@ -145,19 +115,60 @@ class FilterView extends Component {
             {filters.join(', ')}
           </Text>
         </View>);
-    }
+  }
+
+  renderRadioContainer(optionNodes){
+    return (
+      <View style={styles.radioView}>
+        {optionNodes}
+      </View>
+    )
+  }
+
+  renderRadioOption(option, selected, onSelect, index) {
+    return (
+      <View key={index} style={[styles.radioOption, selected ? styles.radioOptionSelected : null]}>
+        <TouchableWithoutFeedback onPress={onSelect} >
+          <View >
+            <Text style={[ styles.radioBtnText, selected ? styles.radioBtnTextSelected : null]}>{option}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    )
+  }
+
+  setFeedTypeSelectedOption(feedTypeSelectedOption){
+    this.setState({
+      feedTypeSelectedOption
+    })
+    let isCategorySelected = this.state.selectedCategory ? this.state.selectedCategory.attributes.name : '';
+    let type = feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
+    this.props.filterFeed(type, isCategorySelected)
+  }
+
+  _renderFilters() {
+    return(
+      <View style={[styles.filterActions, {height: this.props.filterHeight}]}>
+        <View style={styles.filterActionsGrid}>
+          {this._renderCategories()}
+        </View>
+        <RadioButtons
+          options={ feedTypes }
+          onSelection={ this.setFeedTypeSelectedOption.bind(this) }
+          selectedOption={ this.state.feedTypeSelectedOption }
+          renderOption={ this.renderRadioOption }
+          renderContainer={ this.renderRadioContainer }
+        />
+      </View>
+    )
   }
 
   render() {
     return(
       <View>
         {this._renderFilterHeader()}
-        <View style={[styles.filterActions, {height: this.props.filterHeight}]}>
-          <View style={styles.filterActionsGrid}>
-            {this._renderCategories()}
-            {this._renderSlider()}
-          </View>
-        </View>
+        {this.state.isOpen ? this._renderFilters() : null}
+        {/*{true ? this._renderFilters() : null}*/}
       </View>
     )
   }
@@ -170,7 +181,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const tags = state.api.tag ? state.api.tag.data : [];
+  const tags = state.api.tags ? state.api.tags.data : [];
   return {
     categories: tags,
     minPrice: state.filters.minPrice,

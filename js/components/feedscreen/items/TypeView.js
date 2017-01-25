@@ -26,13 +26,13 @@ class TypeView extends Component {
     super(props);
     this.state = {
       types: [
-        { name: '1', img: RECTANGLE_SHAPE, text: 'M' },
-        { name: '2', img: APPLE_SHAPE, text: 'M' },
-        { name: '3', img: FULL_HOURGLASS_SHAPE, text: 'M' },
-        { name: '4', img: INVERTED_TRIANGLE, text: 'M' },
-        { name: '5', img: LEAN_COLUMN_SHAPE, text: 'M' },
-        { name: '6', img: NEAT_HOURGLASS_SHAPE, text: 'XS' },
-        { name: '7', img: PEAR_SHAPE, text: 'M' }
+        { name: 'rectangle', img: RECTANGLE_SHAPE },
+        { name: 'apple', img: APPLE_SHAPE },
+        { name: 'full hour glass', img: FULL_HOURGLASS_SHAPE },
+        { name: 'inverted triangle', img: INVERTED_TRIANGLE },
+        { name: 'lean column', img: LEAN_COLUMN_SHAPE },
+        { name: 'neat hourglass', img: NEAT_HOURGLASS_SHAPE },
+        { name: 'pear', img: PEAR_SHAPE }
       ]
     }
   }
@@ -51,9 +51,6 @@ class TypeView extends Component {
               <Grid>
                 <Col>
                   <Image source={bgContainer} style={styles.typeImage} />
-                </Col>
-                <Col>
-                  <Text style={styles.typeLabel}>{typeLabel}</Text>
                 </Col>
               </Grid>
             </View>)

@@ -3,7 +3,6 @@ import { Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
-
 import styles from './styles';
 
 const userIcon = require('../../../images/icons/user.png');
@@ -16,6 +15,7 @@ const cameraIcon = require('../../../images/icons/camera.png')
 class NavigationBarView extends Component {
   static propTypes = {
     goToAddNewItem: React.PropTypes.func
+    handleSearchStatus: React.PropTypes.func
   }
 
   constructor(props) {
@@ -74,7 +74,7 @@ class NavigationBarView extends Component {
           <Col>
             <Grid>
               <Col>
-                <Button transparent onPress={() => this.openSearch()}>
+                <Button transparent onPress={() => this.props.handleSearchStatus()}>
                   <Image source={searchIcon} style={styles.btnImage} />
                 </Button>
               </Col>

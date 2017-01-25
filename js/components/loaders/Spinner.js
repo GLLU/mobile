@@ -22,7 +22,6 @@ export default class Spinner extends NativeBaseComponent {
 
 
   render() {
-    console.log('this props',this.props)
     const getColor = () => {
       if (this.props.color) {
         return this.props.color;
