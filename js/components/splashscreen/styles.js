@@ -82,8 +82,8 @@ module.exports = StyleSheet.create({
   },
   btnFB: {
     marginTop: 0,
-    height: 40,
-    backgroundColor: '#1565C0',
+    paddingTop: 2,
+    paddingBottom: 2,
     alignSelf: 'center',
     borderRadius: 0
   },
