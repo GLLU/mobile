@@ -4,51 +4,25 @@ const adapterFetch = require("redux-api/lib/adapters/fetch");
 import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
+
+const API_URL = 'https://sam.gllu.com/v1';
+
 export default reduxApi({
-  email_sign_up: {
-      url: "/signup",
-      options: {
-          method: "post"
-      },
-      postfetch: [
-          ({data, dispatch}) => {
-              console.log('data sign up rest',data)
-              console.log(`Logged in successfully: ${JSON.stringify(data)}`);
-              const attributes = data['data']['attributes'];
-              global.apiKey = attributes['api-key'];
-              const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
-              dispatch(setUser(user));
-              dispatch(navigateTo('feedscreen'));
-          }
-      ]
-  },
-  email_sign_in: {
-      url: "/login",
-      options: {
-          method: "post"
-      },
-      postfetch: [
-          ({data, dispatch}) => {
-              console.log('data sign up rest',data)
-              console.log(`Logged in successfully: ${JSON.stringify(data)}`);
-              const attributes = data['data']['attributes'];
-              global.apiKey = attributes['api-key'];
-              const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
-              dispatch(setUser(user));
-              dispatch(navigateTo('feedscreen'));
-          }
-      ]
-  },
-  forgot_password: {
-      url: "/password_recovery",
-      options: {
-          method: "post"
-      },
-      postfetch: [
-          ({data}) => {
-              console.log('data forgot password rest',data)
-          }
-      ]
+  facebook_sign_in: {
+    url: "/login/facebook_sign_in",
+    options: {
+      method: "post"
+    },
+    postfetch: [
+      ({data, dispatch}) => {
+        console.log(`Logged in successfully: ${JSON.stringify(data)}`);
+        const attributes = data['data']['attributes'];
+        global.apiKey = attributes['api-key'];
+        const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
+        dispatch(setUser(user));
+        dispatch(navigateTo('feedscreen'));
+      }
+    ]
   },
   email_sign_in: {
       url: "/auth",
@@ -112,9 +86,23 @@ export default reduxApi({
     },
     crud: true
   },
+  categories: {
+    url: '/tags?kind=category',
+    options: {
+      method: 'get',
+      headers: {
+        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
+      }
+    },
+    postfetch: [
+      ({data, dispatch}) => {
+        dispatch(setCategories(data.data));
+      }
+    ]
+  }
 }).use("fetch", adapterFetch(fetch))
-    .use('rootUrl', "https://sam.gllu.com/v1")
-    .use("options", () => {
+    .use('rootUrl', API_URL)
+    .use("options", function() {
       return { headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"

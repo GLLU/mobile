@@ -7,9 +7,12 @@ import sequenceAction from 'redux-sequence-action';
 import { persistStore } from 'redux-persist';
 import reducer from './reducers';
 import promise from './promise';
-import { setEndpointPath, setEndpointHost, setHeaders } from 'redux-json-api';
+import createLogger from 'redux-logger';
+
+import { setEndpointPath, setEndpointHost, setHeaders, setAccessToken } from 'redux-json-api';
 
 export default function configureStore(onCompletion:()=>void):any {
+  const logger = createLogger();
   const enhancer = compose(
     applyMiddleware(thunk, promise, sequenceAction),
     devTools({
@@ -23,6 +26,7 @@ export default function configureStore(onCompletion:()=>void):any {
   store.dispatch(setHeaders({
     'Content-Type': 'application/json',
   }));
+  store.dispatch(setAccessToken('ZPIx61AMcqNv007YCYECrQtt'));
   persistStore(store, { storage: AsyncStorage }, onCompletion);
 
   return store;
