@@ -12,26 +12,29 @@ export default class BottomButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLike: false
+      isLiked: false,
+      likes: this.props.likes
     }
   }
 
   _onLikeClicked() {
-    let likeToggle = !this.state.isLike;
-    this.setState({isLike: likeToggle});
+    let likeToggle = !this.state.isLiked;
+    let likes = this.state.likes
+    this.state.isLiked === true ? likes-- : likes++;
+    this.setState({isLiked: likeToggle, likes});
     likeToggle ? this.props.toggleLike(true) : this.props.toggleLike(false);
   }
 
   _onInformationClicked() {
-
+    console.log('Information Button clicked');
   }
 
   _onBubbleClicked() {
-
+    console.log('comments Button clicked');
   }
 
   _onShareClicked() {
-
+    console.log('share Button clicked');
   }
 
   render() {
@@ -41,8 +44,8 @@ export default class BottomButton extends Component {
           <View style={styles.horizontalContainer}>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onLikeClicked()}>
               <View style={[styles.footerButton, {paddingLeft: 0}]}>
-                <Image source={this.state.isLike ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}} />
-                <Text style={styles.footerButtonText}>{this.props.likes}</Text>
+                <Image source={this.state.isLiked ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}} />
+                <Text style={styles.footerButtonText}>{this.state.likes}</Text>
               </View>
             </TouchableHighlight>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onInformationClicked()}>

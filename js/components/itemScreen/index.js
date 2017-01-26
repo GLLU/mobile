@@ -110,9 +110,9 @@ class ItemScreen extends Component {
                     source={{uri: this.props.flatLook.uriMedium}}
                     onLoad={this.onLoad()}
                   >
-                    <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
-                      <Icon style={{color: 'green', marginTop: 10, marginLeft: 10}} name="ios-arrow-back" />
-                    </TouchableOpacity>
+                  <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
+                    <Icon style={{color: 'green', marginTop: 10, marginLeft: 10}} name="ios-arrow-back" />
+                  </TouchableOpacity>
                     { Object.keys(this.props.look.screenLookData).length === 0 ? null : this._renderItemLoader(item) }
                   </Animated.Image>
                   <Animated.Image

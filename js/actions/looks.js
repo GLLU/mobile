@@ -1,5 +1,4 @@
 import type { Action } from '../actions/types';
-import Util from '../Util';
 
 import { readEndpoint } from 'redux-json-api';
 

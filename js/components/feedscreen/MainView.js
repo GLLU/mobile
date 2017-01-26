@@ -69,7 +69,6 @@ class MainView extends Component {
   }
 
   _renderLoading() {
-    console.log('spinner')
     if(this.props.navigation.index === 0){
       return <SpinnerSwitch />
     } else {
@@ -77,7 +76,6 @@ class MainView extends Component {
     }
   }
   render() {
-    console.log('is loading?!', this.props.isLoading, 'cardid', this.props.navigation.index);
     return(
       <View style={styles.mainView} scrollEnabled={false}>
         <Container>
