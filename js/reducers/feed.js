@@ -9,18 +9,15 @@ const initialState = {
 const ACTION_HANDLERS = {
   [SET_LOOK_LIKE_STATE]: (state, action) => {
     const { look_id, liked } = action.payload;
-    const flatLooksData = state.flatLooksData;
-    const look = _.find(flatLooksData, x => x.id == look_id);
-    console.log('found look', look);
-    if (look) {
-      look.liked = liked;
-      return {
-        ...state,
-        flatLooksData,
-      }
+    return {
+      ...state,
+      flatLooksData: state.flatLooksData.map((look, index) => {
+        if (look.id == look_id) {
+          look.liked = liked;
+        }
+        return look;
+      })
     }
-
-    return state;
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
     console.log('reducers SET_FLAT_LOOKS_FEED_DATA', action.payload)
