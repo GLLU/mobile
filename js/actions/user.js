@@ -48,8 +48,10 @@ export function loginViaFacebook(data):Action {
     console.log('body', body);
 
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
-      console.log('response', err, data, data.users.api_key);
-      signInFromRest(dispatch, data.users.api_key)
+      console.log('response', err, data);
+      if (!err && data) {
+        signInFromRest(dispatch, data.users.api_key);
+      }
     }));
 
     const entity = {
@@ -65,23 +67,30 @@ export function loginViaFacebook(data):Action {
 
 export function emailSignUp(data):Action {
   return (dispatch) => {
-    const entity = {
-      "type": "users",
-      "attributes": data
-    }
+    const body = {user: data };
 
-    return dispatch(createEntity(entity)).then((response) => signInFromResponse(dispatch, response));
+    console.log('action emailSignUp', body);
+
+    return dispatch(rest.actions.users.post(body, (err, data) => {
+      console.log('response', err, data);
+      if (!err && data) {
+        signInFromRest(dispatch, data.users.api_key);
+      }
+    }));
   };
 }
 
 export function emailSignIn(data):Action {
   return (dispatch) => {
-    const entity = {
-      "type": "auth",
-      "attributes": data
-    }
+    const body = { auth: data };
+    console.log('action emailSignIn', body);
 
-    return dispatch(createEntity(entity)).then((response) => signInFromResponse(dispatch, response));
+    return dispatch(rest.actions.auth.post(body, (err, data) => {
+      console.log('response', err, data);
+      if (!err && data) {
+        signInFromRest(dispatch, data.users.api_key);
+      }
+    }));
   };
 }
 
