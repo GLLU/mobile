@@ -5,22 +5,21 @@ import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
 
-const API_URL = 'https://sam.gllu.com/v1';
+const API_URL = 'https://staging-api.gllu.com/v1';
+// const API_URL = 'http://localhost:9292/v1';
 
 export default reduxApi({
-  facebook_sign_in: {
-    url: "/login/facebook_sign_in",
-    options: {
-      method: "post"
-    },
+  facebook_auth: {
+    url: "/facebook_auth",
+    crud: true,
     postfetch: [
       ({data, dispatch}) => {
-        console.log(`Logged in successfully: ${JSON.stringify(data)}`);
-        const attributes = data['data']['attributes'];
-        global.apiKey = attributes['api-key'];
-        const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
-        dispatch(setUser(user));
-        dispatch(navigateTo('feedscreen'));
+        // console.log(`Logged in successfully: ${JSON.stringify(data)}`);
+        // const attributes = data['data']['attributes'];
+        // global.apiKey = attributes['api-key'];
+        // const user = _.merge({ id: data['data']['id'] }, { name: attributes['name'], email: attributes['email'] });
+        // dispatch(setUser(user));
+        // dispatch(navigateTo('feedscreen'));
       }
     ]
   },

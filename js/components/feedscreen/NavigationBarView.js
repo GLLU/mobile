@@ -14,7 +14,7 @@ const cameraIcon = require('../../../images/icons/camera.png')
 
 class NavigationBarView extends Component {
   static propTypes = {
-    goToAddNewItem: React.PropTypes.func
+    goToAddNewItem: React.PropTypes.func,
     handleSearchStatus: React.PropTypes.func
   }
 

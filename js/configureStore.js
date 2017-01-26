@@ -21,12 +21,12 @@ export default function configureStore(onCompletion:()=>void):any {
   );
 
   const store = createStore(reducer, enhancer);
-  store.dispatch(setEndpointHost('https://sam.gllu.com'));
-  store.dispatch(setEndpointPath('/v1'))
-  store.dispatch(setHeaders({
-    'Content-Type': 'application/json',
-  }));
-  store.dispatch(setAccessToken('ZPIx61AMcqNv007YCYECrQtt'));
+  // store.dispatch(setEndpointHost('http://localhost:9292'));
+  // store.dispatch(setEndpointPath('/v1'))
+  // store.dispatch(setHeaders({
+  //   'Content-Type': 'application/json',
+  // }));
+  // store.dispatch(setAccessToken('ZPIx61AMcqNv007YCYECrQtt'));
   persistStore(store, { storage: AsyncStorage }, onCompletion);
 
   return store;
