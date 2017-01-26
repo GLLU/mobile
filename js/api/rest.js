@@ -21,6 +21,10 @@ export default reduxApi({
     url: '/users',
     crud: true,
   },
+  likes: {
+    url: '/looks/:look_id/likes',
+    crud: true,
+  },
   // sizes: {
   //   url: '/users/5/size',
   //   options: {
@@ -66,19 +70,8 @@ export default reduxApi({
   //   },
   //   crud: true
   // },
-  categories: {
-    url: '/tags?kind=category',
-    options: {
-      method: 'get',
-      headers: {
-        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
-      }
-    },
-    postfetch: [
-      ({data, dispatch}) => {
-        dispatch(setCategories(data.data));
-      }
-    ]
+  tags: {
+    url: '/tags'
   },
   feeds: {
     url: '/feed',
@@ -90,6 +83,7 @@ export default reduxApi({
     .use('rootUrl', API_URL)
     .use("options", function() {
       return { headers: {
+        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }};

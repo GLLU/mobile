@@ -11,10 +11,8 @@ export function getFeed(type, category='', term=''):Action {
     const params = { type, category, term };
     console.log('params', params);
     return dispatch(rest.actions.feeds(params, (err, data) => {
-      console.log('feeds data', data);
-      if (!err) {
-        const looks = Util.createFlatLooksObj(data.data);
-        dispatch(setFeedData(looks));
+      if (!err && data) {
+        dispatch(setFeedData(data));
       }
     }));
   };
