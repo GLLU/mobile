@@ -30,4 +30,3 @@ export function saveUserSize(data) {
     ]);
   };
 }
-
