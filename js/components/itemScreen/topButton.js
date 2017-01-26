@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import {Button} from 'native-base';
+import {Button, Icon} from 'native-base';
 import styles from './styles';
 
 const bagItImage = require('../../../images/bagItImage.png');
@@ -41,24 +41,24 @@ export default class TopButton extends Component {
         return false;
       }
     });
-    console.log(bgContainer);
     return (
-      <View style={styles.fakeContainer}>
-        <View style={styles.topLeft}>
-          <TouchableOpacity style={[styles.topButton,styles.avatarButton]}>
-            <Image source={{uri: this.props.avatar.imageUri}} style={{height:64, width: 64, borderRadius: 32}} />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.topButton,styles.bodyTypeButton]}>
-            <Image style={styles.bodyTypeButtonIcon} source={bgContainer} resizeMode={'contain'}/>
-          </TouchableOpacity>
+        <View style={styles.topContainer}>
+
+          <View style={styles.topLeft}>
+            <TouchableOpacity style={[styles.topButton,styles.avatarButton]}>
+              <Image source={{uri: this.props.avatar.imageUri}} style={{height:64, width: 64, borderRadius: 32}} />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.topButton,styles.bodyTypeButton]}>
+              <Image style={styles.bodyTypeButtonIcon} source={bgContainer} resizeMode={'contain'}/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.topRight}>
+            <TouchableOpacity style={[styles.topButton,styles.bagItButton]}>
+              <Image source={bagItImage} style={styles.bagItButtonIcon} />
+              <Text style={styles.bagItButtonText}>Bag It</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.topRight}>
-          <TouchableOpacity style={[styles.topButton,styles.bagItButton]}>
-            <Image source={bagItImage} style={styles.bagItButtonIcon} />
-            <Text style={styles.bagItButtonText}>Bag It</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     )
   }
 }

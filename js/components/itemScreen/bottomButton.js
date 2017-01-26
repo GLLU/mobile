@@ -36,30 +36,28 @@ export default class BottomButton extends Component {
 
   render() {
     return (
-      <View style={styles.fakeContainer}>
+      <View style={styles.bottomContainer}>
         <View style={styles.bottomLeft}>
           <View style={styles.horizontalContainer}>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onLikeClicked()}>
               <View style={[styles.footerButton, {paddingLeft: 0}]}>
-                <Image source={this.state.isLike ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}}></Image>
-                <Text style={styles.footerButtonText}>543</Text>
+                <Image source={this.state.isLike ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}} />
+                <Text style={styles.footerButtonText}>{this.props.likes}</Text>
               </View>
             </TouchableHighlight>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onInformationClicked()}>
             <View style={[styles.footerButton, {width: 40}]}>
-              <Image source={infoImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}></Image>
+              <Image source={infoImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}} />
             </View>
           </TouchableHighlight>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onBubbleClicked()}>
             <View style={[styles.footerButton, {width: 40}]}>
-              <Image source={bubbleImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}></Image>
+              <Image source={bubbleImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}} />
             </View>
           </TouchableHighlight>
           <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onShareClicked()}>
             <View style={[styles.footerButton, {width: 40}]}>
-              <Image source={shareImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}></Image>
-
-              {/* <EvilIcon name='share-google' style={{color: '#fff', fontSize: 40, marginLeft: -10}}/> */}
+              <Image source={shareImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}} />
             </View>
           </TouchableHighlight>
           </View>

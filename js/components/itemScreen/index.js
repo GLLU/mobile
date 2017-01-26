@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image, Animated, InteractionManager } from 'react-native';
+import {View, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'native-base';
 import Swiper from 'react-native-swiper';
 import styles from './styles';
@@ -94,8 +94,9 @@ class ItemScreen extends Component {
     }).start();
   }
   _renderItems() {
-    console.log('look',Object.keys(this.props.look.screenLookData).length === 0 ? true : false);
     return (
+      <View>
+
       <Swiper style={styles.container} horizontal={false} loop={false}
               renderPagination={renderPagination}
       >
@@ -103,15 +104,16 @@ class ItemScreen extends Component {
           dataSample.map((item, i) => {
             return item.type === 'image' ? (
                 <View style={styles.itemContainer} key={i}>
-                  <Button transparent onPress={() => this._tempPopRoute()}>
-                    <Icon style={{color: 'green', marginTop: 10}} name="ios-arrow-back" />
-                  </Button>
+
                   <Animated.Image
                     style={[{opacity: this.state.thumbnailOpacity},styles.itemImage]}
                     source={{uri: this.props.flatLook.uriMedium}}
                     onLoad={this.onLoad()}
                   >
-                    { Object.keys(this.props.look.screenLookData).length === 0 ? null : this._renderItemLoader() }
+                    <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
+                      <Icon style={{color: 'green', marginTop: 10, marginLeft: 10}} name="ios-arrow-back" />
+                    </TouchableOpacity>
+                    { Object.keys(this.props.look.screenLookData).length === 0 ? null : this._renderItemLoader(item) }
                   </Animated.Image>
                   <Animated.Image
                     resizeMode={'contain'}
@@ -137,10 +139,12 @@ class ItemScreen extends Component {
           })
         }
       </Swiper>
+      </View>
     )
   }
 
-  _renderItemLoader() {
+  _renderItemLoader(item) {
+    console.log('item',item);
     Animated.timing(          // Uses easing functions
       this.state.fadeAnim,    // The value to drive
       {
@@ -152,11 +156,12 @@ class ItemScreen extends Component {
     avatar.imageUri = this.props.look.screenLookData.data.attributes.cover.image.small.url
     let lookBodyType = _.find(this.props.look.screenLookData.included, {type: 'sizes'});
     avatar.bodyType = lookBodyType.attributes['body-type'];
+    let lookInfoLikes = this.props.look.screenLookData.data.attributes.likes
     return (
-      <Animated.View style={{opacity: this.state.fadeAnim}}>
+      <Animated.View style={{opacity: this.state.fadeAnim, flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
         <TopButton avatar={avatar} />
-        <BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)}/>
-        <BuyItButton title={'zara'} price={50} positionTop={35} positionLeft={20} />
+        <BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={lookInfoLikes}/>
+        {/*<BuyItButton title={'zara'} price={50} positionTop={35} positionLeft={20} />*/}
       </Animated.View>
     )
   }
