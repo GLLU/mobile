@@ -58,9 +58,7 @@ export default reduxApi({
   },
   looks: {
     url: '/looks/:id',
-    options: {
-      method: 'get'
-    }
+    crud: true
   },
   publish: {
     url: '/looks/:look_id/publish',
@@ -68,19 +66,9 @@ export default reduxApi({
       method: 'post'
     }
   },
-  like: {
+  likes: {
     url: '/looks/:look_id/likes',
     crud: true,
-    options: {
-      method: 'post'
-    }
-  },
-  unlike: {
-    url: '/looks/:look_id/likes',
-    crud: true,
-    options: {
-      method: 'delete'
-    }
   },
   items: {
     url: '/looks/:look_id/items/:id',
