@@ -11,6 +11,7 @@ import { showBodyTypeModal } from '../../actions/myBodyType';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import { like, unlike } from '../../actions/likes';
+import { getLook } from '../../actions/looks';
 
 class TabContent extends Component {
 
@@ -85,7 +86,9 @@ class TabContent extends Component {
   }
 
   _handleItemPress(item) {
+    console.log('itemm',item)
     this.props.navigateTo('itemScreen', 'feedscreen', item);
+
   }
 
   render() {
@@ -115,6 +118,7 @@ function bindActions(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     like: (id) => dispatch(like(id)),
     unlike: (id) => dispatch(unlike(id)),
+    getLook: (lookId) => dispatch(getLook(lookId))
   };
 }
 

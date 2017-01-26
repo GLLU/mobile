@@ -5,13 +5,13 @@ import { actions } from 'react-native-navigation-redux-helpers';
 // Actions
 
 export function like(id) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(rest.actions.like.post({id}))
   };
 }
 
 export function unlike(id) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(rest.actions.unlike.delete({id}))
   };
 }

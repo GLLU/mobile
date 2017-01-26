@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import {View, Image, Animated, InteractionManager } from 'react-native';
+import { Button, Icon } from 'native-base';
 import Swiper from 'react-native-swiper';
 import styles from './styles';
 import BottomButton from './bottomButton';
@@ -7,8 +8,8 @@ import TopButton from './topButton';
 import BuyItButton from './buyItButton';
 import IndicatorButton from './indicatorButton';
 import VideoPlayer from './videoPlayer/videoPlayer';
-import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import { like, unlike } from '../../actions/likes';
+import { getLook } from '../../actions/looks';
 
 const dataSample = [
   {
@@ -51,15 +52,49 @@ const renderPagination = (index) => { // total, context
 }
 
 class ItemScreen extends Component {
+  static propTypes = {
+    flatLook: React.PropTypes.object,
+  }
   constructor(props) {
     super(props);
+    this.state = {
+      thumbnailOpacity: new Animated.Value(0.35),
+      fadeAnim: new Animated.Value(0),
+    }
+    //this.props.getLook(this.props.flatLook.id);
+  }
+
+  componentDidMount() {
+    let that = this
+    InteractionManager.runAfterInteractions(() => {
+      that.props.getLook(that.props.flatLook.id);
+    });
+    this.props.getLook(this.props.flatLook.id);
   }
 
   _toggleLike(isLiked){
-    isLiked ? this.props.like(2) : this.props.unlike(2);
+    isLiked ? this.props.like(this.props.flatLook.id) : this.props.unlike(this.props.flatLook.id);
   }
 
+  _tempPopRoute() {
+    this.props.popRoute(this.props.navigation.key);
+  }
+
+  onLoad() {
+    Animated.timing(this.state.thumbnailOpacity, {
+      toValue: 1,
+      duration: 750
+    }).start();
+  }
+
+  onThumbnailLoad() {
+    Animated.timing(this.state.thumbnailOpacity, {
+      toValue: 1,
+      duration: 250
+    }).start();
+  }
   _renderItems() {
+    console.log('look',Object.keys(this.props.look.screenLookData).length === 0 ? true : false);
     return (
       <Swiper style={styles.container} horizontal={false} loop={false}
               renderPagination={renderPagination}
@@ -68,11 +103,30 @@ class ItemScreen extends Component {
           dataSample.map((item, i) => {
             return item.type === 'image' ? (
                 <View style={styles.itemContainer} key={i}>
-                  <Image source={{uri: 'https://s3.amazonaws.com/gllu-assets/uploads/look_image/image/5/large_3dd9fd71-4c39-4d6a-9608-ca856c1c9959.jpg'}} style={styles.itemImage}>
-                    <TopButton avatar={item.avatar}/>
-                    <BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)}/>
-                    <BuyItButton title={item.brand} price={item.price} positionTop={item.top} positionLeft={item.left}/>
-                  </Image>
+                  <Button transparent onPress={() => this._tempPopRoute()}>
+                    <Icon style={{color: 'green', marginTop: 10}} name="ios-arrow-back" />
+                  </Button>
+                  <Animated.Image
+                    style={[{opacity: this.state.thumbnailOpacity},styles.itemImage]}
+                    source={{uri: this.props.flatLook.uriMedium}}
+                    onLoad={this.onLoad()}
+                  >
+                    { Object.keys(this.props.look.screenLookData).length === 0 ? null : this._renderItemLoader() }
+                  </Animated.Image>
+                  <Animated.Image
+                    resizeMode={'contain'}
+                    style={[styles.itemImage, {opacity: this.state.thumbnailOpacity}]}
+                    source={{uri: this.props.flatLook.uri}}
+                    onLoad={this.onThumbnailLoad()}
+                  />
+                  {/*<Image source={{uri: 'https://s3.amazonaws.com/gllu-assets/uploads/look_image/image/5/large_3dd9fd71-4c39-4d6a-9608-ca856c1c9959.jpg'}} style={styles.itemImage}>*/}
+                    {/*<Button transparent onPress={() => this._tempPopRoute()}>*/}
+                      {/*<Icon style={{color: 'green', marginTop: 10}} name="ios-arrow-back" />*/}
+                    {/*</Button>*/}
+                    {/*<TopButton avatar={item.avatar} />*/}
+                    {/*<BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)}/>*/}
+                    {/*<BuyItButton title={item.brand} price={item.price} positionTop={item.top} positionLeft={item.left} />*/}
+                  {/*</Image>*/}
                 </View>
               ) :
               <VideoPlayer source={{uri: item.source}} key={i}/>
@@ -87,19 +141,28 @@ class ItemScreen extends Component {
   }
 
   _renderItemLoader() {
-    console.log('uri',this.props.item.uri)
+    Animated.timing(          // Uses easing functions
+      this.state.fadeAnim,    // The value to drive
+      {
+        toValue: 1,
+        delay: 500
+      }            // Configuration
+    ).start();
+    const avatar = {}
+    avatar.imageUri = this.props.look.screenLookData.data.attributes.cover.image.small.url
+    let lookBodyType = _.find(this.props.look.screenLookData.included, {type: 'sizes'});
+    avatar.bodyType = lookBodyType.attributes['body-type'];
     return (
-      <View>
-        <Image source={{uri: this.props.item.uri}} style={styles.itemImage}>
-           <SpinnerSwitch />
-        </Image>
-      </View>
+      <Animated.View style={{opacity: this.state.fadeAnim}}>
+        <TopButton avatar={avatar} />
+        <BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)}/>
+        <BuyItButton title={'zara'} price={50} positionTop={35} positionLeft={20} />
+      </Animated.View>
     )
   }
   render() {
-    console.log('item', this.props)
 
-    return this.props.isLoading === 0 ? this._renderItems() : this._renderItemLoader();
+    return this.props.isLoading === 0 ? this._renderItems() : this._renderItems();
   }
 
 }
@@ -115,12 +178,14 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     like: (id) => dispatch(like(id)),
     unlike: (id) => dispatch(unlike(id)),
+    getLook: (lookId) => dispatch(getLook(lookId))
   };
 }
 
 const mapStateToProps = state => ({
   isLoading: state.api.isReading,
-  navigation: state.cardNavigation
+  navigation: state.cardNavigation,
+  look: state.screenLook
 });
 
 export default connect(mapStateToProps, bindAction)(ItemScreen);

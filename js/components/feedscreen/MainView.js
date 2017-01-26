@@ -57,6 +57,9 @@ class MainView extends Component {
     this.props.getFeed(type, category, term);
   }
 
+  componentWillUnmount(){
+    console.log('main un mount')
+  }
   _renderFeed() {
     if(this.state.currFeedTypeSelected === 'relevant') {
       return <BestMatchTab handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH' looks={this.props.looks}/>
@@ -65,13 +68,22 @@ class MainView extends Component {
     }
   }
 
+  _renderLoading() {
+    console.log('spinner')
+    if(this.props.navigation.index === 0){
+      return <SpinnerSwitch />
+    } else {
+      this._renderFeed()
+    }
+  }
   render() {
+    console.log('is loading?!', this.props.isLoading, 'cardid', this.props.navigation.index);
     return(
       <View style={styles.mainView} scrollEnabled={false}>
         <Container>
             <Content theme={tabTheme} scrollEnabled={false}>
               <FilterBar filterFeed={(type, category, term) => this._filterFeed(type, category, term)} clearSearchTerm={this.props.clearSearchTerm}/>
-              { this.props.isLoading === 0 ? this._renderFeed() : <SpinnerSwitch /> }
+              { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }
             </Content>
         </Container>
       </View>
@@ -88,6 +100,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => ({
   isLoading: state.api.isReading,
   looks: state.feed.looks,
+  navigation: state.cardNavigation,
 });
 
 export default connect(mapStateToProps, bindActions)(MainView);

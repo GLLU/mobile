@@ -7,8 +7,11 @@ export default StyleSheet.create({
   container: {
 
   },
+  tempBtn: {
+    position: 'absolute',width: 50, height: 50, backgroundColor :'green'
+  },
   itemContainer: {
-    position: 'relative'
+    position: 'absolute'
   },
   itemImage: {
     width: w,
@@ -27,14 +30,14 @@ export default StyleSheet.create({
   },
   bottomLeft: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 50,
     left: 10
   },
   bottomRight: {
     flexWrap: 'wrap',
     flexDirection:'row',
     position: 'absolute',
-    bottom: 10,
+    bottom: 50,
     right: 10
   },
   footerButton: {
@@ -95,7 +98,9 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(5, 215, 178,.5)'
   },
   bodyTypeButtonIcon: {
-
+    width: 50,
+    height: 50,
+    opacity: 0.8
   },
   bodyTypeButtonText: {
     fontSize: 20,
