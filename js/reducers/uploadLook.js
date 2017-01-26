@@ -24,76 +24,10 @@ const ACTION_HANDLERS = {
       image: action.payload.image
     }
   },
-
-// { id: '11',
-//      type: 'look',
-//      attributes: 
-//       { 'user-id': 2,
-//         'created-at': '2017-01-22T13:46:24.000Z',
-//         description: '',
-//         'is-liked': false,
-//         'is-bagged': false,
-//         likes: 0,
-//         state: 'draft',
-//         cover: 
-//          { id: 11,
-//            created_at: '2017-01-22T13:46:24.000Z',
-//            updated_at: '2017-01-22T13:46:24.000Z',
-//            user_id: 2,
-//            look_id: 11,
-//            image: 
-//             { url: null,
-//               large: { url: null },
-//               medium: { url: null },
-//               small: { url: null },
-//               thumb: { url: null } },
-//            file_size: null,
-//            content_type: null,
-//            width: null,
-//            height: null },
-//         'user-size': 
-//          { id: 14,
-//            created_at: '2017-01-03T07:35:14.000Z',
-//            updated_at: '2017-01-11T13:17:43.000Z',
-//            user_id: 2,
-//            body_type: 'pear',
-//            chest: 42,
-//            waist: 40,
-//            hips: 45,
-//            height: 68,
-//            measurements_scale: 'in' } },
-//      relationships: 
-//       { user: { data: { id: '2', type: 'user' } },
-//         'user-size': { data: { id: '14', type: 'size' } },
-//         'look-images': { data: [ { id: '11', type: 'look-image' } ] },
-//         items: { data: [] } } },
-//   included: 
-//    [ { id: '11',
-//        type: 'look-image',
-//        attributes: 
-//         { 'created-at': '2017-01-22T13:46:24.000Z',
-//           'look-id': 11,
-//           image: 
-//            { url: null,
-//              large: { url: null },
-//              medium: { url: null },
-//              small: { url: null },
-//              thumb: { url: null } },
-//           'file-size': null,
-//           'content-type': null,
-//           width: null,
-//           height: null },
-//        relationships: { look: { data: { id: '11', type: 'look' } } } } ] }
-
-
-
   [EDIT_NEW_LOOK]: (state, action) => {
-    console.log('reducer edit new look', action);
-    const look = action.payload.data;
-    const lookId = parseInt(look.id);
-    // const image = look.attributes.cover.image.url;
+    console.log('reducer edit new look', action.payload);
+    const lookId = action.payload.look.id;
     const image = action.payload.image;
-    // console.log('image', image);
     return {
       ...state,
       image,
@@ -102,18 +36,17 @@ const ACTION_HANDLERS = {
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
     console.log('reducer CREATE_LOOK_ITEM_BY_POSITION', action.payload);
-    const item = action.payload.data;
-    const attr = item.attributes;
-    const itemId = parseInt(item.id);
+    const item = action.payload.item;
+    const itemId = item.id
     const items = state.items;
     items.push({
       id: item.id,
-      locationX: attr['cover-x-pos'],
-      locationY: attr['cover-y-pos'],
-      currency: attr['currency'],
-      price: attr['price'],
-      userId: attr['user-id'],
-      lookId: attr['look-id'],
+      locationX: item.cover_x_pos,
+      locationY: item.cover_y_pos,
+      currency: item.currency,
+      price: item.price,
+      userId: item.user_id,
+      lookId: item.look_id,
       editing: false,
     });
     console.log('reducer items', items);

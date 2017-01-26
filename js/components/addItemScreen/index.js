@@ -71,7 +71,7 @@ class AddItemPage extends Component {
   continueAction() {
     console.log('CONTINUE');
 
-    this.props.updateLookItem(this.props.look).then(response => {
+    this.props.updateLookItem().then(response => {
       console.log('done updateLookItem', response);
       this.selectTab(this.state.currentStep + 1);
     });
@@ -85,7 +85,7 @@ class AddItemPage extends Component {
   publishAction() {
     console.log('Publish');
     this.props.publishLookItem().then(response => {
-      console.log('done publishLookItem', response);
+      this.replaceRoute('feedscreen');
     });
   }
 

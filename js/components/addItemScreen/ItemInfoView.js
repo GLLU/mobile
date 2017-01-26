@@ -5,6 +5,7 @@ import { View, Container, Content, Text, Picker, Item, Icon } from 'native-base'
 import { Col, Grid } from "react-native-easy-grid";
 import { addItemType,
          addBrandName,
+         createBrandName,
          addItemSizeCountry,
          addItemSize,
          addItemCurrency,
@@ -258,13 +259,14 @@ class ItemInfoView extends Component {
 function bindActions(dispatch) {
   return {
     loadCategories: () => dispatch(loadCategories()),
-    addItemType: (typeId) => dispatch([addItemType(typeId)]),
-    addBrandName: (name) => dispatch([addBrandName(name)]),
-    addItemSizeCountry: (size) => dispatch([addItemSizeCountry(size)]),
-    addItemSize: (number) => dispatch([addItemSize(number)]),
-    addItemCurrency: (currency) => dispatch([addItemCurrency(currency)]),
-    addItemPrice: (price) => dispatch([addItemPrice(price)]),
-    addSharingInfo: (type, url) => dispatch([addSharingInfo(type, url)]),
+    addItemType: (typeId) => dispatch(addItemType(typeId)),
+    createBrandName: (name) => dispatch(createBrandName(name)),
+    addBrandName: (brand) => dispatch(addBrandName(brand)),
+    addItemSizeCountry: (size) => dispatch(addItemSizeCountry(size)),
+    addItemSize: (number) => dispatch(addItemSize(number)),
+    addItemCurrency: (currency) => dispatch(addItemCurrency(currency)),
+    addItemPrice: (price) => dispatch(addItemPrice(price)),
+    addSharingInfo: (type, url) => dispatch(addSharingInfo(type, url)),
   };
 }
 
