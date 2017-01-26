@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { setUser, replaceAt, popRoute, pushRoute, updateLookItem, publishLookItem } from '../../actions';
+import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
 import { actions } from 'react-native-navigation-redux-helpers';
 import styles from './styles';
 import StepOne from './StepOne';
@@ -37,6 +37,7 @@ class AddItemPage extends Component {
     replaceAt: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
+    navigateTo: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
@@ -85,7 +86,7 @@ class AddItemPage extends Component {
   publishAction() {
     console.log('Publish');
     this.props.publishLookItem().then(response => {
-      this.replaceRoute('feedscreen');
+      this.popRoute();
     });
   }
 
@@ -153,6 +154,8 @@ function bindActions(dispatch) {
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
     popRoute: (key) => dispatch(popRoute(key)),
     pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
+    pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
+    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     setUser: name => dispatch(setUser(name)),
     updateLookItem: (look) => dispatch(updateLookItem(look)),
     publishLookItem: (look) => dispatch(publishLookItem(look)),
