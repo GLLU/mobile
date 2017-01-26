@@ -30,7 +30,7 @@ class LikeView extends Component {
                 <Image source={bgShadow} style={styles.bgShadow} />
                 <Grid>
                     <Col>
-                      <Button transparent onPress={() => this.props.onPress(this.props.index, img)} style={styles.btnWithImage}>
+                      <Button transparent onPress={() => this.props.onPress(img)} style={styles.btnWithImage}>
                         <Image source={likeIconView} style={styles.iconWithImage} />
                       </Button>
                     </Col>
