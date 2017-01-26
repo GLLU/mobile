@@ -6,9 +6,10 @@ target 'gllu' do
   # use_frameworks!
 
   # Pods for gllu
-  
+
   pod 'FBSDKCoreKit', '4.17'
   pod 'FBSDKLoginKit', '4.17'
   pod 'FBSDKShareKit', '4.17'
+  pod 'QBImagePickerController'
 
 end
