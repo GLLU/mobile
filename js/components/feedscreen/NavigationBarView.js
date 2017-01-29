@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
+import ImagePicker from 'react-native-image-crop-picker';
 import styles from './styles';
 
 const userIcon = require('../../../images/icons/user.png');
@@ -13,8 +14,10 @@ const cameraIcon = require('../../../images/icons/camera.png')
 
 class NavigationBarView extends Component {
   static propTypes = {
+    goToAddNewItem: React.PropTypes.func,
     handleSearchStatus: React.PropTypes.func
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,12 +25,21 @@ class NavigationBarView extends Component {
     };
   }
 
+  componentDidMount() {
+
+  }
+
   goToProfile() {
     console.log('Go To Profile');
   }
 
   openCamera() {
-    console.log('Open Camera');
+    ImagePicker.openPicker({
+      includeBase64: true,
+      cropping: false,
+    }).then(image => {
+      this.props.goToAddNewItem(image);
+    });
   }
 
   openSearch() {

@@ -27,17 +27,17 @@ export function saveUserSize(data) {
     ]);
   };
 }
-
-export function like(id) {
-  return (dispatch, getState) => {
-    const Authorization = getState().api.endpoint.headers.Authorization;
-    dispatch(rest.actions.like.post({id}, { Authorization }))
-  };
-}
-
-export function unlike(id) {
-  return (dispatch, getState) => {
-    const Authorization = getState().api.endpoint.headers.Authorization;
-    dispatch(rest.actions.unlike.post({id}, { Authorization }))
-  };
-}
+//
+// export function like(id) {
+//   return (dispatch, getState) => {
+//     const Authorization = getState().api.endpoint.headers.Authorization;
+//     dispatch(rest.actions.like.post({id}, { Authorization }))
+//   };
+// }
+//
+// export function unlike(id) {
+//   return (dispatch, getState) => {
+//     const Authorization = getState().api.endpoint.headers.Authorization;
+//     dispatch(rest.actions.unlike.post({id}, { Authorization }))
+//   };
+// }

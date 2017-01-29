@@ -6,7 +6,8 @@ export type State = {
     minPrice: number,
     maxPrice: number,
     categories: array,
-    images: array
+    images: array,
+    brands: array
 }
 
 const dress = require('../../images/categories/dress.png');
@@ -29,8 +30,21 @@ const initialState = {
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/d5/a5/a5/d5a5a5c60c6a1befbf3ee6d346ce5c59.jpg', width: 385, height: 244, likes: 44, liked: false, type: '2', tags: [ { price: 88, x: 30, y: 50 } ] },
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/c9/cc/d9/c9ccd926889c5bfb7decbff5b7de3eb9.jpg', width: 215, height: 245, likes: 123, liked: false, type: '3', tags: [ { price: 88, x: 10, y: 140 } ] }
   ],
-  categories: [
-    {id: 1, type: 'tag', attributes: { name: 'Tops', gender: 'male', kind: 'category', icon: { url: 'https://s3.amazonaws.com/gllu-assets/categories_icons/tops.png', width: 134, height: 150 }}}
+  categories: [],
+  brands: [
+    { id: 0, name: 'zara'},
+    { id: 1, name: 'zapora' },
+    { id: 2, name: 'Dolce & Gabbana' },
+    { id: 3, name: 'Armani' },
+    { id: 4, name: 'Versace' },
+    { id: 5, name: 'Gucci' },
+    { id: 6, name: 'Burberry' },
+    { id: 7, name: 'Hermès' },
+    { id: 8, name: 'Dior' },
+    { id: 9, name: 'Prada' },
+    { id: 10, name: 'Chanel' },
+    { id: 11, name: 'Louis Vuitton' },
+    { id: 12, name: 'Bottega Veneta' }
   ]
 };
 

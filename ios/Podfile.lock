@@ -11,18 +11,21 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.17.0):
     - FBSDKCoreKit
+  - QBImagePickerController (3.4.0)
 
 DEPENDENCIES:
   - FBSDKCoreKit (= 4.17)
   - FBSDKLoginKit (= 4.17)
   - FBSDKShareKit (= 4.17)
+  - QBImagePickerController
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
   FBSDKLoginKit: 42b7129ac0373ca99eaf4cbebf4d07bd42371f59
   FBSDKShareKit: 9b573d03fbee36cbaf42d5bb1f2bc019e0d72347
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
 
-PODFILE CHECKSUM: d4c7e023e5f36f962ff221b690e83ecb40e9042c
+PODFILE CHECKSUM: b649ea60bcaba6488120f75dab1c8675c1b6ad99
 
 COCOAPODS: 1.1.1

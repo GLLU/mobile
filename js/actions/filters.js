@@ -8,9 +8,15 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 
 export function loadCategories(data):Action {
   return (dispatch) => {
-    return dispatch(readEndpoint('tags?kind=category')).then((data) => {
-      console.log('tags category', data);
-    });
+
+    const params = {kind: 'category'};
+
+    return dispatch(rest.actions.tags(params, (err, data) => {
+      console.log('data',data)
+      if (!err && data) {
+        dispatch(setCategories(data));
+      }
+    }));
   };
 }
 

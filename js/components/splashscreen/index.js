@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
-import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
@@ -18,6 +17,7 @@ const backgroundShadow = require('../../../images/background-shadow.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
 
+import glluTheme from '../../themes/gllu-theme';
 import { emailSignIn } from '../../actions/user';
 
 const {
@@ -35,7 +35,7 @@ const SignUpEmailButton = MKButton.coloredFlatButton()
   .withBackgroundColor(MKColor.Teal)
   .withTextStyle({
     color: 'white',
-    fontWeight: 'normal',
+    fontWeight: '600',
   })
   .withStyle({
     height: 40,
@@ -106,7 +106,8 @@ class SplashPage extends Component {
         <View style={styles.signupContainer}>
           <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
           <Text style={styles.label}>Or</Text>
-          <Icon.Button style={styles.btnFB}
+          <Icon.Button iconStyle={styles.btnFB}
+                       borderRadius={0}
                        name="facebook"
                        backgroundColor="#3b5998"
                        onPress={this.connectWithFB.bind(this)}>
@@ -123,7 +124,7 @@ class SplashPage extends Component {
   render() {
     console.log('splash screen');
     return (
-      <Container>
+      <Container theme={glluTheme}>
         <View style={styles.container}>
           <Content scrollEnabled={false}>
             <Image source={background} style={styles.shadow}>
@@ -135,7 +136,6 @@ class SplashPage extends Component {
                 {this.renderMainView()}
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
             </Image>
-              {this.props.isLoading !== 0 ? <SpinnerSwitch /> : null}
           </Content>
         </View>
       </Container>
@@ -155,7 +155,6 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  isLoading: state.api.isCreating
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

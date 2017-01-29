@@ -8,8 +8,9 @@ import list from './list';
 import myBodyMeasure from './myBodyMeasure';
 import myBodyType from './myBodyType';
 import filters from './filters';
+import uploadLook from './uploadLook';
+import formData from './formData';
 import feed from './feed';
-import screenLook from './look';
 
 import { reducer as api } from 'redux-json-api';
 
@@ -21,7 +22,8 @@ export default combineReducers({
   myBodyType,
   myBodyMeasure,
   filters,
+  uploadLook,
   feed,
-  screenLook,
   api,
+  formData
 });

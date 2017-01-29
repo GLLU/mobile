@@ -6,6 +6,8 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
 
+import glluTheme from '../../themes/gllu-theme';
+import { emailRule } from '../../validators';
 import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
@@ -50,14 +52,15 @@ class forgotPasswordPage extends Component {
 
     return (emailValid !== 'times')
   }
-  validateEmailInput(value) {
-    this.setState({email: value});
-    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(re.test(value)){
-        this.setState({emailValid: 'check'});
-    } else {
-        this.setState({emailValid: 'times'});
-    }
+
+  validateEmailInput(email) {
+    emailRule.validate(email, (err) => {
+      if(!err){
+        this.setState({email, emailValid: 'check'});
+      } else {
+        this.setState({email, emailValid: 'times'});
+      }
+    });
   }
 
   popRoute() {
@@ -67,7 +70,7 @@ class forgotPasswordPage extends Component {
   render() {
       if(this.state.emailWasSent){
           return (
-              <Container>
+              <Container theme={glluTheme}>
                   <View style={styles.container}>
                       <Image source={background} style={styles.shadow} blurRadius={5}>
                           <Image source={backgroundShadow} style={styles.bgShadow} />
@@ -89,7 +92,7 @@ class forgotPasswordPage extends Component {
       }
 
     return (
-      <Container>
+      <Container theme={glluTheme}>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
           <Image source={backgroundShadow} style={styles.bgShadow} />

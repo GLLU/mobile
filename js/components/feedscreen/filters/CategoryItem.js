@@ -19,9 +19,9 @@ class CategoryItem extends Component {
   render() {
     const { item, selected, onPress } = this.props;
     return (<View style={styles.categoryItem}>
-              <Text style={styles.categoryItemTitle}>{item.attributes.name}</Text>
+              <Text style={styles.categoryItemTitle}>{item.name}</Text>
               <Button transparent style={styles.btncategoryItem} onPress={() => this.props.onPress(item)} >
-                {this._renderIcon(item.attributes.icon, selected)}
+                {this._renderIcon(item.icon, selected)}
               </Button>
             </View>);
     }
