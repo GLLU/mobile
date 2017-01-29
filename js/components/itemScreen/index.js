@@ -58,10 +58,9 @@ class ItemScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      thumbnailOpacity: new Animated.Value(0.35),
-      fadeAnim: new Animated.Value(0),
+      fadeAnim: new Animated.Value(0.35),
+      fadeAnimContent: new Animated.Value(0),
     }
-    //this.props.getLook(this.props.flatLook.id);
   }
 
   componentDidMount() {
@@ -69,7 +68,7 @@ class ItemScreen extends Component {
     InteractionManager.runAfterInteractions(() => {
       that.props.getLook(that.props.flatLook.id);
     });
-    this.props.getLook(this.props.flatLook.id);
+    //this.props.getLook(this.props.flatLook.id);
   }
 
   _toggleLike(isLiked){
@@ -81,93 +80,64 @@ class ItemScreen extends Component {
   }
 
   onLoad() {
-    Animated.timing(this.state.thumbnailOpacity, {
+    Animated.timing(this.state.fadeAnim, {
       toValue: 1,
       duration: 750
     }).start();
   }
 
   onThumbnailLoad() {
-    Animated.timing(this.state.thumbnailOpacity, {
+    Animated.timing(this.state.fadeAnim, {
       toValue: 1,
       duration: 250
     }).start();
   }
   _renderItems() {
     return (
-      <View>
-
-      <Swiper style={styles.container} horizontal={false} loop={false}
-              renderPagination={renderPagination}
-      >
-        {
-          dataSample.map((item, i) => {
-            return item.type === 'image' ? (
-                <View style={styles.itemContainer} key={i}>
-
-                  <Animated.Image
-                    style={[{opacity: this.state.thumbnailOpacity},styles.itemImage]}
-                    source={{uri: this.props.flatLook.uriMedium}}
-                    onLoad={this.onLoad()}
-                  >
-                  <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
-                    <Icon style={{color: 'green', marginTop: 10, marginLeft: 10}} name="ios-arrow-back" />
-                  </TouchableOpacity>
-                    { Object.keys(this.props.look.screenLookData).length === 0 ? null : this._renderItemLoader(item) }
-                  </Animated.Image>
-                  <Animated.Image
-                    resizeMode={'contain'}
-                    style={[styles.itemImage, {opacity: this.state.thumbnailOpacity}]}
-                    source={{uri: this.props.flatLook.uri}}
-                    onLoad={this.onThumbnailLoad()}
-                  />
-                  {/*<Image source={{uri: 'https://s3.amazonaws.com/gllu-assets/uploads/look_image/image/5/large_3dd9fd71-4c39-4d6a-9608-ca856c1c9959.jpg'}} style={styles.itemImage}>*/}
-                    {/*<Button transparent onPress={() => this._tempPopRoute()}>*/}
-                      {/*<Icon style={{color: 'green', marginTop: 10}} name="ios-arrow-back" />*/}
-                    {/*</Button>*/}
-                    {/*<TopButton avatar={item.avatar} />*/}
-                    {/*<BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)}/>*/}
-                    {/*<BuyItButton title={item.brand} price={item.price} positionTop={item.top} positionLeft={item.left} />*/}
-                  {/*</Image>*/}
-                </View>
-              ) :
-              <VideoPlayer source={{uri: item.source}} key={i}/>
-            // (<View style={styles.itemContainer} key={i}>
-            //   {/**/}
-            //   <Text>Video put here</Text>
-            // </View>)
-          })
-        }
-      </Swiper>
-      </View>
+        <View style={styles.itemContainer}>
+          <Animated.Image
+            style={[{opacity: this.state.fadeAnim},styles.itemImage]}
+            source={{uri: this.props.flatLook.uri}}
+            onLoad={this.onLoad()}>
+          <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
+            <Icon style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent'}} name="ios-arrow-back" />
+          </TouchableOpacity>
+          { this.props.flatLook.id !== this.props.look.id ? null : this._renderItemContent() }
+          </Animated.Image>
+          <Animated.Image
+            resizeMode={'contain'}
+            style={[styles.itemImage, {opacity: this.state.fadeAnim}]}
+            source={{uri: this.props.flatLook.uri}}
+            onLoad={this.onThumbnailLoad()}/>
+        </View>
     )
   }
 
-  _renderItemLoader(item) {
-    console.log('item',item);
+  _renderItemContent() {
     Animated.timing(          // Uses easing functions
-      this.state.fadeAnim,    // The value to drive
+      this.state.fadeAnimContent,    // The value to drive
       {
         toValue: 1,
         delay: 500
       }            // Configuration
     ).start();
     const avatar = {}
-    avatar.imageUri = this.props.look.screenLookData.data.attributes.cover.image.small.url
-    let lookBodyType = _.find(this.props.look.screenLookData.included, {type: 'sizes'});
-    avatar.bodyType = lookBodyType.attributes['body-type'];
-    let lookInfoLikes = this.props.look.screenLookData.data.attributes.likes
+    avatar.imageUri = this.props.flatLook.uri
+    avatar.bodyType = this.props.look["user_size"]["body_type"];;
+    let lookLikes = this.props.look.likes
+    console.log('likes: ',lookLikes, 'avatar:',avatar);
     return (
-      <Animated.View style={{opacity: this.state.fadeAnim, flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
+      <Animated.View style={{opacity: this.state.fadeAnimContent, flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
         <TopButton avatar={avatar} />
-        <BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={lookInfoLikes}/>
+        <BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={lookLikes}/>
         {/*<BuyItButton title={'zara'} price={50} positionTop={35} positionLeft={20} />*/}
       </Animated.View>
     )
   }
-  render() {
 
-    return this.props.isLoading === 0 ? this._renderItems() : this._renderItems();
+  render() {
+    return this.props.flatLook.id !== this.props.look.id ? this._renderItems() : this._renderItems();
+    //return <View></View>
   }
 
 }
@@ -187,10 +157,14 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  isLoading: state.api.isReading,
-  navigation: state.cardNavigation,
-  look: state.screenLook
-});
+const mapStateToProps = state => {
+  const lookData = state.look.screenLookData.look ? state.look.screenLookData.look : [];
+  return {
+    isLoading: state.loader.loading,
+    navigation: state.cardNavigation,
+    look: lookData
+  };
+
+};
 
 export default connect(mapStateToProps, bindAction)(ItemScreen);

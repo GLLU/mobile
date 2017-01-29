@@ -17,36 +17,39 @@ export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import _ from 'lodash';
 
+import rest from '../api/rest';
+import { showLoader, hideLoader, loadBrands } from './index';
+
 // Actions
 export function addNewLook(image) {
   console.log('addNewLook', image.path);
-  // return {
-  //   type: ADD_NEW_LOOK,
-  //   payload: {
-  //     image: image
-  //   }
-  // }
-
-  const entity = {
-    "type": "looks",
-    "attributes": {
-      "image": `data:image/jpeg;base64,${image.data}`
-    }
-  }
-
   return (dispatch) => {
-    return dispatch(createEntity(entity)).then((response) => {
-      console.log('done create entity', response);
-      return dispatch(editNewLook(response, image.path))
+    dispatch(showLoader());
+    const body = {
+      look: {
+        image: `data:image/jpeg;base64,${image.data}`
+      }
+    };
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
+        dispatch(hideLoader());
+        if (!err) {
+          const payload = _.merge(data, {image: image.path });
+          resolve(dispatch(editNewLook(payload)));
+        } else {
+          reject(err);
+        }
+      }));
     });
   }
 }
 
-export function editNewLook(data, imagePath) {
-  console.log('edit look', data);
-  return {
-    type: EDIT_NEW_LOOK,
-    payload: _.merge(data, {image: imagePath })
+export function editNewLook(payload) {
+  return (dispatch) => {
+    return dispatch({
+      type: EDIT_NEW_LOOK,
+      payload: payload
+    });
   }
 }
 
@@ -66,59 +69,61 @@ export function setTagPosition(payload) {
   }
 }
 
-export function createLookItem(lookId, position) {
-  console.log('createLookItem', lookId, position);
-  const entity = {
-    "type": "items",
-    "attributes": {
-      "look_id": lookId,
-      "cover_x_pos": position.locationX,
-      "cover_y_pos": position.locationY,
-    },
-    "relationships": {
-      "look": {
-        "data": {
-          "id": lookId,
-          "type": 'looks'
-        }
+export function createLookItem(position) {
+  console.log('action createLookItem', position);
+  return (dispatch, getState) => {
+    dispatch(showLoader());
+    const state = getState();
+    const lookId = state.uploadLook.lookId;
+    const body = {
+      item: {
+        cover_x_pos: position.locationX,
+        cover_y_pos: position.locationY,
       }
-    }
-  }
-
-  return (dispatch) => {
-    return dispatch(createEntity(entity)).then(response => {
-      console.log('response', response);
-      // dispatch(readEndpoint(`items/${response.data.id}`));
-      return dispatch({
-        type: CREATE_LOOK_ITEM_BY_POSITION,
-        payload: {
-          data: response.data
+    };
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.items.post({look_id: lookId}, { body: JSON.stringify(body) } , (err, data) => {
+        dispatch(hideLoader());
+        if (!err) {
+          resolve(dispatch({
+              type: CREATE_LOOK_ITEM_BY_POSITION,
+              payload: data
+            })
+          );
+        } else {
+          reject(err);
         }
-      });
+      }));
     });
   }
 }
 
-export function updateLookItem(item) {
-  console.log('actions updateLookItem', item);
+export function updateLookItem() {
+  console.log('actions updateLookItem');
   return (dispatch, getState) => {
     const state = getState();
 
-    const { brand, currency, price } = state.uploadLook;
+    const { lookId, itemId, brand, currency, price } = state.uploadLook;
 
     const brand_id = brand ? brand.id : null;
 
-    const entity = {
-      "type": "items",
-      "id": item.itemId,
-      "attributes": {
-        "currency": currency,
-        "price": price,
-        "brand_id": brand_id,
+    const body = {
+      item: {
+        currency: currency,
+        price: price,
+        brand_id: brand_id,
       }
     }
-    console.log('actions updateLookItem entity', entity)
-    return dispatch(updateEntity(entity));
+    return new Promise((resolve, reject) => {
+      return dispatch(rest.actions.items.put({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+        if (!err) {
+          console.log('item updated');
+          resolve();
+        } else {
+          reject(err);
+        }
+      }));
+    });
   }
 }
 
@@ -126,14 +131,29 @@ export function publishLookItem() {
   console.log('action publishLookItem');
   return (dispatch, getState) => {
     const state = getState();
-    const entity = {
-      "type": "looks",
-      "id": state.uploadLook.lookId,
-      "attributes": {
-        "description": state.uploadLook.description,
+
+    const { lookId, itemId, description } = state.uploadLook;
+
+    const body = {
+      look: {
+        description
       }
     }
-    console.log('action publishLookItem entity', entity);
+    return new Promise((resolve, reject) => {
+      return dispatch(rest.actions.looks.put({id: lookId}, { body: JSON.stringify(body)}, (err, data) => {
+        if (!err) {
+          dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
+            if (!err) {
+              resolve();
+            } else {
+              reject();
+            }
+          }));
+        } else {
+          reject(err);
+        }
+      }));
+    });
     return dispatch(updateEntity(entity)).then(response => {
       const publish = {
         "type": "look_publish",
@@ -164,23 +184,20 @@ export function addBrandName(payload) {
 
 export function createBrandName(name) {
   return (dispatch) => {
-    const entity = {
-      "type": "brands",
-      "attributes": {
-        "name": name
+    const body = {
+      brand: {
+        name: name
       }
     }
-    return dispatch(createEntity(entity)).then(response => {
-      console.log('done createBrandName', response);
-      const id = parseInt(response.data.id);
-      const name = response.data.attributes['name'];
-      return dispatch({
-        type: ADD_BRAND_NAME,
-        payload: {
-          id,
-          name,
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
+        if (!err) {
+          dispatch(loadBrands());
+          dispatch(addBrandName({ id: data.brands.id, name: data.brands.name }));
+        } else {
+          reject(err);
         }
-      })
+      }));
     });
   };
 }

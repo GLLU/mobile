@@ -22,7 +22,7 @@ export default class TopButton extends Component {
       types: [
         { name: 'rectangle', img: RECTANGLE_SHAPE },
         { name: 'apple', img: APPLE_SHAPE },
-        { name: 'full hour glass', img: FULL_HOURGLASS_SHAPE },
+        { name: 'fullhourglass', img: FULL_HOURGLASS_SHAPE },
         { name: 'inverted triangle', img: INVERTED_TRIANGLE },
         { name: 'lean column', img: LEAN_COLUMN_SHAPE },
         { name: 'neat hourglass', img: NEAT_HOURGLASS_SHAPE },

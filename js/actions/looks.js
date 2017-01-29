@@ -1,17 +1,15 @@
 import type { Action } from '../actions/types';
-
-import { readEndpoint } from 'redux-json-api';
+import rest from '../api/rest';
 
 export const SET_LOOK_DATA = 'SET_LOOK_DATA';
 
 export function getLook(lookId):Action {
-  console.log('lokkid',lookId)
     return (dispatch) => {
-        return dispatch(readEndpoint(`looks/`+lookId+``)).then((screenLookData) => {
-            console.log('look data', screenLookData);
-            // const looks = Util.createFlatLooksObj(feedData.data);
-             dispatch(setLookData(screenLookData));
-        });
+      return dispatch(rest.actions.looks({id: lookId},{}, (err, screenLookData) => {
+        if (!err && screenLookData) {
+          dispatch(setLookData(screenLookData));
+        }
+      }));
     };
 }
 

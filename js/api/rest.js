@@ -21,10 +21,6 @@ export default reduxApi({
     url: '/users',
     crud: true,
   },
-  likes: {
-    url: '/looks/:look_id/likes',
-    crud: true,
-  },
   // sizes: {
   //   url: '/users/5/size',
   //   options: {
@@ -51,33 +47,46 @@ export default reduxApi({
   //   },
   //   crud: true
   // },
-  // like: {
-  //   url: '/looks/:id/likes',
-  //   options: {
-  //     headers: {
-  //       "Authorization": `Bearer hFHv8LbPJIhB1HrUQ62rowtt`
-  //     }
-  //   },
-  //   crud: true
-  // },
-  // unlike: {
-  //   url: '/looks/:id/likes',
-  //   options: {
-  //     method: "delete",
-  //     headers: {
-  //       "Authorization": `Bearer hFHv8LbPJIhB1HrUQ62rowtt`
-  //     }
-  //   },
-  //   crud: true
-  // },
-  tags: {
-    url: '/tags'
+  tags: '/tags',
+  brands: {
+    url: '/brands',
+    crud: true,
   },
   feeds: {
     url: '/feed',
     options: {
       method: 'get'
     }
+  },
+  looks: {
+    url: '/looks/:id',
+    options: {
+      method: 'get'
+    }
+  },
+  publish: {
+    url: '/looks/:look_id/publish',
+    options: {
+      method: 'post'
+    }
+  },
+  like: {
+    url: '/looks/:look_id/likes',
+    crud: true,
+    options: {
+      method: 'post'
+    }
+  },
+  unlike: {
+    url: '/looks/:look_id/likes',
+    crud: true,
+    options: {
+      method: 'delete'
+    }
+  },
+  items: {
+    url: '/looks/:look_id/items/:id',
+    crud: true,
   }
 }).use("fetch", adapterFetch(fetch))
     .use('rootUrl', API_URL)

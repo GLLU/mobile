@@ -8,7 +8,7 @@ export const SET_LOOK_LIKE_STATE = 'SET_LOOK_LIKE_STATE';
 export function like(id) {
   console.log('action like', id);
   return (dispatch, getState) => {
-    dispatch(rest.actions.likes.post({look_id: id}, {}, (err, data) => {
+    dispatch(rest.actions.like.post({look_id: id}, {}, (err, data) => {
       console.log('done like, dispatching', data);
       if (!err) {
         dispatch({
@@ -25,7 +25,7 @@ export function like(id) {
 
 export function unlike(id) {
   return (dispatch, getState) => {
-    dispatch(rest.actions.likes.delete({look_id: id}, {}, (err, data) => {
+    dispatch(rest.actions.unlike.delete({look_id: id}, {}, (err, data) => {
       if (!err) {
         dispatch({
           type: SET_LOOK_LIKE_STATE,

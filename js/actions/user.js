@@ -53,15 +53,6 @@ export function loginViaFacebook(data):Action {
         signInFromRest(dispatch, data.user.api_key);
       }
     }));
-
-    const entity = {
-      "type": "facebook_auth",
-      "attributes": {
-        "access_token": data['access_token'],
-        "expiration_time": data['expiration_time']
-      }
-    }
-    return dispatch(createEntity(entity)).then((response) => signInFromResponse(dispatch, response));
   };
 }
 

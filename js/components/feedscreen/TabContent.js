@@ -85,7 +85,7 @@ class TabContent extends Component {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'feedscreen');
+    this.props.navigateTo('itemScreen', 'feedscreen', item);
   }
 
   toggleLikeAction(item) {
@@ -98,7 +98,6 @@ class TabContent extends Component {
 
   _renderImages(images) {
     return images.map((img, index) => {
-      console.log('render image', img);
       return  (
         <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
           <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
@@ -146,14 +145,13 @@ const styles = StyleSheet.create({
 function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     like: (id) => dispatch(like(id)),
     unlike: (id) => dispatch(unlike(id)),
   };
 }
 
 const mapStateToProps = state => {
-  const flatLooks = state.feed.flatLooksData;
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData
