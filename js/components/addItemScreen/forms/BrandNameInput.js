@@ -100,7 +100,6 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  console.log('brand', state.uploadLook.brand);
   return ({
     brands: state.filters.brands,
     brand: state.uploadLook.brand

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import type { Action } from '../actions/types';
-import { SET_BRANDS, SET_CATEGORIES } from '../actions/filters';
+import { SET_BRANDS, SET_CATEGORIES, SET_ITEM_SIZES } from '../actions/filters';
 
 export type State = {
     minPrice: number,
@@ -31,7 +31,25 @@ const initialState = {
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/c9/cc/d9/c9ccd926889c5bfb7decbff5b7de3eb9.jpg', width: 215, height: 245, likes: 123, liked: false, type: '3', tags: [ { price: 88, x: 10, y: 140 } ] }
   ],
   categories: [],
-  brands: []
+  brands: [],
+  countries: [
+    {name: 'us', text: 'US', icon: require('../../images/flags/us.png')},
+    {name: 'uk', text: 'UK', icon: require('../../images/flags/uk.png')},
+    {name: 'eu', text: 'EU', icon: require('../../images/flags/eu.png')},
+  ],
+  itemSizes: [],
+  currencies: [
+    {name: '£ GBP', value: 'LGP'},
+    {name: '$ USD', value: 'USD'},
+  ],
+  trustLevels: [
+    {name: '0/5', value: 0},
+    {name: '1/5', value: 1},
+    {name: '2/5', value: 2},
+    {name: '3/5', value: 3},
+    {name: '4/5', value: 4},
+    {name: '5/5', value: 5},
+  ],
 };
 
 // Action Handlers
@@ -57,6 +75,15 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       brands
+    }
+  },
+  [SET_ITEM_SIZES]: (state, action) => {
+    console.log('reducer SET_ITEM_SIZES', action.payload);
+    const sizes = action.payload.sizes;
+    console.log('sizes', sizes);
+    return {
+      ...state,
+      itemSizes: sizes,
     }
   },
 }

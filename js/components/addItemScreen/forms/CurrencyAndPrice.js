@@ -122,7 +122,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    currencies: state.formData.currencies,
+    currencies: state.filters.currencies,
   };
 };
 
