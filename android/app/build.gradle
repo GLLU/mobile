@@ -139,7 +139,6 @@ dependencies {
     compile project(':react-native-video')
     compile project(':react-native-orientation')
     compile project(':react-native-image-crop-picker')
-    compile project(':react-native-image-picker')
     compile project(':react-native-material-kit')
     compile project(':react-native-vector-icons')
     compile project(':react-native-code-push')
