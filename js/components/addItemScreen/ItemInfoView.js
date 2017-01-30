@@ -123,22 +123,11 @@ class ItemInfoView extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      categories: [],
-      selectedCategory: null,
-      ...props
-    }
+    this.state = {}
   }
 
   componentDidMount() {
-    var self = this;
-    var categories = this.props.loadCategories();
-    new Promise((resolve, reject) => {
-      resolve(categories);
-    }).then((data) => {
-      var category = self.findCategoryById(categories, this.props.selectedCategoryId)
-      self.setState({categories: categories, selectCategory: category});
-    });
+    this.props.loadCategories();
   }
 
   findCategoryById(categories, id) {
@@ -152,13 +141,10 @@ class ItemInfoView extends Component {
   }
 
   selectCategory(item) {
-    const selectedCategory = this.state.selectedCategory;
-    const selected = selectedCategory && selectedCategory.id === item.id ? selectedCategory : item;
-    this.setState({
-      selectedCategory: selected
-    });
-    this.props.addItemType(selected);
-    console.log(`Selet category Id: ${item.id}`);
+    if (item.id != this.props.selectedCategoryId) {
+      this.props.addItemType(item.id);
+      console.log(`Selet category Id: ${item.id}`);
+    }
   }
 
   findOrCreateBrand(value, act) {
@@ -234,16 +220,14 @@ class ItemInfoView extends Component {
   }
 
   render() {
-    const { categories, selectedCategory } = this.state;
+    const { categories, selectedCategoryId } = this.props;
     const { brand, itemSizeCountry, currency, price } = this.props;
     return(<Container style={styles.itemInfoView}>
               <Content scrollEnabled={false}>
-                {/*
-                  <Text style={styles.titleLabelInfo}>Item Type</Text>
-                  <Category categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
-                  */}
-                  <Text style={styles.titleLabelInfo}>Brand Name</Text>
-                  <BrandNameInput brand={brand} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
+                <Text style={styles.titleLabelInfo}>Item Type</Text>
+                <Category categories={categories} selectedCategoryId={selectedCategoryId} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
+                <Text style={styles.titleLabelInfo}>Brand Name</Text>
+                <BrandNameInput brand={brand} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
                   {/*
                   <Text style={styles.titleLabelInfo}>Item Size</Text>
                   <ItemSize itemSizeCountry={this.state.itemSizeCountry} itemSizeNumber={this.state.itemSizeNumber} updateValue={this.updateValue.bind(this)} />
@@ -271,9 +255,8 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const tags = state.api.tag ? state.api.tag.data : [];
   return {
-    categories: tags,
+    categories: state.filters.categories,
     ...state.uploadLook,
   };
 };

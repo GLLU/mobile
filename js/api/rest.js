@@ -6,6 +6,7 @@ import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
 
 const API_URL = 'https://sam.gllu.com/v1';
+// const API_URL = 'https://staging-api.gllu.com/v1';
 // const API_URL = 'http://localhost:9292/v1';
 
 export default reduxApi({
@@ -53,7 +54,10 @@ export default reduxApi({
   feeds: {
     url: '/feed',
     options: {
-      method: 'get'
+      method: 'get',
+      headers: {
+        "Authorization": `Token token=kfPCZlx9HeV7i3J6oloiigtt`,
+      }
     }
   },
   looks: {

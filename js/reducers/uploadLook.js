@@ -81,10 +81,11 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {
-    console.log('reducers ADD_ITEM_TYPE', state, action);
+    console.log('reducers ADD_ITEM_TYPE', action.payload);
+    const selectedCategoryId = action.payload;
     return {
       ...state,
-      selectedCategory: action.payload
+      selectedCategoryId,
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
@@ -158,7 +159,6 @@ const ACTION_HANDLERS = {
 const initialState = {
   editingLookId: null,
   image: null,
-  selectedCategoryId: 24,
   posInCategories: 3,
   brand: null,
   itemSizeCountry: 'us',

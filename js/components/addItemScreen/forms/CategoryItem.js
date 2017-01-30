@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'center'
   },
-  btncategoryItem: {
+  btnCategoryItem: {
     height: 100,
     width: 50,
     alignSelf: 'center'
@@ -51,12 +51,12 @@ class CategoryItem extends Component {
     onPress: React.PropTypes.func,
   }
 
-  _renderIcon(url, selected) {
-    if (url) {
+  _renderIcon(icon, selected) {
+    if (icon) {
      return selected ?
-        <Image source={{uri: url}} style={styles.categoryItemImage} />
+        <Image source={{uri: icon.url_hover}} style={styles.categoryItemImage} />
         :
-        <Image source={{uri: url}} style={styles.categoryItemImage} />;
+        <Image source={{uri: icon.url}} style={styles.categoryItemImage} />;
     }
 
     return null;
@@ -65,11 +65,10 @@ class CategoryItem extends Component {
   render() {
     const { item, selected, onPress } = this.props;
     const categoryItemTitle = selected ? styles.categoryItemSelectedTitle : styles.categoryItemTitle;
-    const url = item.icon ? item.icon.url : false;
     return (<View style={styles.categoryItem}>
-              <Text style={categoryItemTitle}>{item.attributes.name}</Text>
-              <Button transparent style={styles.btncategoryItem} onPress={() => onPress(item)} >
-                {this._renderIcon(url, selected)}
+              <Text style={categoryItemTitle}>{item.name}</Text>
+              <Button transparent style={styles.btnCategoryItem} onPress={() => onPress(item)} >
+                {this._renderIcon(item.icon, selected)}
               </Button>
             </View>);
   }
