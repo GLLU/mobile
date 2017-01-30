@@ -31,31 +31,18 @@ const initialState = {
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/c9/cc/d9/c9ccd926889c5bfb7decbff5b7de3eb9.jpg', width: 215, height: 245, likes: 123, liked: false, type: '3', tags: [ { price: 88, x: 10, y: 140 } ] }
   ],
   categories: [],
-  brands: [
-    { id: 0, name: 'zara'},
-    { id: 1, name: 'zapora' },
-    { id: 2, name: 'Dolce & Gabbana' },
-    { id: 3, name: 'Armani' },
-    { id: 4, name: 'Versace' },
-    { id: 5, name: 'Gucci' },
-    { id: 6, name: 'Burberry' },
-    { id: 7, name: 'Hermès' },
-    { id: 8, name: 'Dior' },
-    { id: 9, name: 'Prada' },
-    { id: 10, name: 'Chanel' },
-    { id: 11, name: 'Louis Vuitton' },
-    { id: 12, name: 'Bottega Veneta' }
-  ]
+  brands: []
 };
 
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_CATEGORIES]: (state, action) => {
     console.log('reducer SET_CATEGORIES');
-    const categories = _.filter((item) => item['parent-id'] == null);
+    const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
+    console.log('categories', categories);
     return {
       ...state,
-      categories: action.payload
+      categories,
     }
   },
   [SET_BRANDS]: (state, action) => {

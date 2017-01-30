@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 class CategoryStrip extends Component {
   static propTypes = {
     categories: React.PropTypes.array,
-    selectedCategoryId: React.PropTypes.object,
+    selectedCategoryId: React.PropTypes.number,
     onCategorySelected: React.PropTypes.func,
     posInCategories: React.PropTypes.number
   }
