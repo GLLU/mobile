@@ -200,7 +200,7 @@ class StepTwo extends Component {
     var height = this.getHeight(number);
     const tags = this.state.tags;
     return (
-        <Content scrollEnabled={false} style={{height: height, margin: 5}}>
+        <View style={{height: height, margin: 5}}>
           <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
           <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
           <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
@@ -214,14 +214,14 @@ class StepTwo extends Component {
               onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
               onChangeText={(text) => this.setState({tmpValue: text})} />
           <Tags tags={this.state.tags} removeTag={this.removeTag.bind(this)} />
-        </Content>
+        </View>
     )
   }
 
   _renderSelections(){
     const checkBoxIcon = this.state.confirm ? checkboxCheckedIcon : checkboxUncheckIcon;
     return (
-        <Content scrollEnabled={false} style={{height: 400, margin: 5}}>
+        <View style={{height: 400, margin: 5}}>
             <Text style={[styles.titleLabelInfo, {color: '#333333'}]}>Improve your sales experience</Text>
             <Location location={this.state.location} updateSelectValue={this.updateSelectValue.bind(this)} />
             <TrustLevel trustLevel={this.state.trustLevel} updateSelectValue={this.updateSelectValue.bind(this)} />
@@ -237,7 +237,7 @@ class StepTwo extends Component {
                 </Text>
               </Col>
             </Grid>
-        </Content>
+        </View>
     )
   }
 

@@ -107,7 +107,7 @@ class ItemInfoView extends Component {
     posInCategories: React.PropTypes.number,
     brand: React.PropTypes.object,
     itemSizeCountry: React.PropTypes.string,
-    itemSizeNumber: React.PropTypes.number,
+    itemSizeValue: React.PropTypes.string,
     currency: React.PropTypes.string,
     price: React.PropTypes.number,
     sharingType: React.PropTypes.bool,
@@ -164,7 +164,7 @@ class ItemInfoView extends Component {
       case 'itemSizeCountry':
         this.props.addItemSizeCountry(value);
         break;
-      case 'itemSizeNumber':
+      case 'itemSizeValue':
         this.props.addItemSize(value);
         break;
       case 'currency':
@@ -221,21 +221,17 @@ class ItemInfoView extends Component {
 
   render() {
     const { categories, selectedCategoryId } = this.props;
-    const { brand, itemSizeCountry, currency, price } = this.props;
-    return(<Container style={styles.itemInfoView}>
-              <Content scrollEnabled={false}>
-                <Text style={styles.titleLabelInfo}>Item Type</Text>
-                <Category categories={categories} selectedCategoryId={selectedCategoryId} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
-                <Text style={styles.titleLabelInfo}>Brand Name</Text>
-                <BrandNameInput brand={brand} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
-                  {/*
-                  <Text style={styles.titleLabelInfo}>Item Size</Text>
-                  <ItemSize itemSizeCountry={this.state.itemSizeCountry} itemSizeNumber={this.state.itemSizeNumber} updateValue={this.updateValue.bind(this)} />
-                */}
-                  <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
-                  {/*this._renderSharing()*/}
-              </Content>
-        </Container>)
+    const { brand, itemSizeCountry, itemSizeValue, currency, price } = this.props;
+    return(<View style={styles.itemInfoView}>
+              <Text style={styles.titleLabelInfo}>Item Type</Text>
+              <Category categories={categories} selectedCategoryId={selectedCategoryId} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
+              <Text style={styles.titleLabelInfo}>Brand Name</Text>
+              <BrandNameInput brand={brand} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
+              <Text style={styles.titleLabelInfo}>Item Size</Text>
+              <ItemSize itemSizeCountry={itemSizeCountry} itemSizeValue={itemSizeValue} updateValue={this.updateValue.bind(this)} />
+              <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
+              {/*this._renderSharing()*/}
+        </View>)
   }
 
 }

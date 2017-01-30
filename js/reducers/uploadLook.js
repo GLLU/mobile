@@ -15,6 +15,7 @@ import { ADD_NEW_LOOK,
         ADD_TRUST_LEVEL,
         ADD_PHOTOS_VIDEO,
         } from '../actions/uploadLook';
+import { SET_ITEM_SIZES } from '../actions/filters';
 
 // Action Handlers
 const ACTION_HANDLERS = {
@@ -95,15 +96,18 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
+    const { itemSizeCountry, itemSizeValue } = action.payload;
+    console.log('reducer, ADD_ITEM_SIZE_COUNTRY', itemSizeCountry, itemSizeValue)
     return {
       ...state,
-      itemSizeCountry: action.payload
+      itemSizeCountry,
+      itemSizeValue,
     }
   },
   [ADD_ITEM_SIZE]: (state, action) => {
     return {
       ...state,
-      itemSizeNumber: action.payload
+      itemSizeValue: action.payload
     }
   },
   [ADD_ITEM_CURRENCY]: (state, action) => {
@@ -153,6 +157,27 @@ const ACTION_HANDLERS = {
       photos,
     }
   },
+  [SET_ITEM_SIZES]: (state, action) => {
+    console.log('reducer SET_ITEM_SIZES', action.payload);
+    const sizes = action.payload.sizes;
+    console.log('sizes', sizes);
+    if (sizes.length > 0 && !state.itemSizeCountry && !state.itemSizeValue) {
+      const item = _.first(sizes);
+      const itemSizeCountry = item.region;
+      const itemSizeValue = item.value;
+      return {
+        ...state,
+        itemSizes: sizes,
+        itemSizeCountry,
+        itemSizeValue,
+      }
+    } else {
+      return {
+        ...state,
+        itemSizes: sizes,
+      }
+    }
+  },
 }
 
 // Reducer
@@ -161,8 +186,8 @@ const initialState = {
   image: null,
   posInCategories: 3,
   brand: null,
-  itemSizeCountry: 'us',
-  itemSizeNumber: 2,
+  itemSizeCountry: null,
+  itemSizeValue: null,
   currency: 'USD',
   price: 40,
   description: '',

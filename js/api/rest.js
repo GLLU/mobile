@@ -51,6 +51,7 @@ export default reduxApi({
     url: '/brands',
     crud: true,
   },
+  sizes: '/sizes',
   feeds: {
     url: '/feed',
     options: {

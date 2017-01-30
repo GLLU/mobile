@@ -18,7 +18,7 @@ import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-js
 import _ from 'lodash';
 
 import rest from '../api/rest';
-import { showLoader, hideLoader, loadBrands } from './index';
+import { showLoader, hideLoader, loadBrands, loadItemSizes } from './index';
 
 // Actions
 export function addNewLook(image) {
@@ -167,11 +167,15 @@ export function publishLookItem() {
   }
 }
 
-export function addItemType(payload) {
-  return {
-    type: ADD_ITEM_TYPE,
-    payload: payload
-  }
+export function addItemType(categoryId) {
+  return (dispatch) => {
+
+    dispatch({
+        type: ADD_ITEM_TYPE,
+        payload: categoryId
+      });
+    dispatch(loadItemSizes(categoryId));
+  };
 }
 
 export function addBrandName(payload) {
@@ -202,14 +206,25 @@ export function createBrandName(name) {
   };
 }
 
-export function addItemSizeCountry(payload) {
-  return {
-    type: ADD_ITEM_SIZE_COUNTRY,
-    payload: payload
+export function addItemSizeCountry(region) {
+  console.log('actions addItemSizeCountry', region);
+
+  return (dispatch, getState) => {
+    const itemSizes = getState().filters.itemSizes;
+    const sizesByCountry = _.filter(itemSizes, x => x.region == region);
+    const itemSizeValue = sizesByCountry.length > 0 ? _.first(sizesByCountry.map(x => x.value)) : null;
+    return dispatch({
+      type: ADD_ITEM_SIZE_COUNTRY,
+      payload: {
+        itemSizeCountry: region,
+        itemSizeValue,
+      }
+    });
   }
 }
 
 export function addItemSize(payload) {
+  console.log('action addItemSize', payload);
   return {
     type: ADD_ITEM_SIZE,
     payload: payload
