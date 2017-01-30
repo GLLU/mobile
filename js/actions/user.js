@@ -14,6 +14,7 @@ const signInFromResponse = function(dispatch, response) {
 };
 
 const signInFromRest = function(dispatch, apiKey) {
+  console.log('api key', apiKey)
   rest.use("options", function() {
     return { headers: {
       "Authorization": `Token token=${apiKey}`,
@@ -50,7 +51,7 @@ export function loginViaFacebook(data):Action {
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
       console.log('response', err, data);
       if (!err && data) {
-        signInFromRest(dispatch, data.users.api_key);
+        signInFromRest(dispatch, data.user.api_key);
       }
     }));
 
@@ -74,7 +75,7 @@ export function emailSignUp(data):Action {
     return dispatch(rest.actions.users.post(body, (err, data) => {
       console.log('response', err, data);
       if (!err && data) {
-        signInFromRest(dispatch, data.users.api_key);
+        signInFromRest(dispatch, data.user.api_key);
       }
     }));
   };
@@ -88,7 +89,7 @@ export function emailSignIn(data):Action {
     return dispatch(rest.actions.auth.post(body, (err, data) => {
       console.log('response', err, data);
       if (!err && data) {
-        signInFromRest(dispatch, data.users.api_key);
+        signInFromRest(dispatch, data.user.api_key);
       }
     }));
   };
