@@ -1,19 +1,26 @@
 import { SET_LOOK_DATA } from '../actions/looks';
+import { GET_LOOK_LIKES } from '../actions/likes';
 
 const initialState = {
-  screenLookData: {}
+  screenLookData: {},
+  likes: 999,
+  liked: false
 };
-// Action Handlers
-const ACTION_HANDLERS = {
-  [SET_LOOK_DATA]: (state, action) => {
-    return {
-      ...state,
-      screenLookData: action.payload
-    }
-  }
-}
 
-export default function reducers (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
-  return handler ? handler(state, action) : state
+export default function (state:State = initialState, action:Action): State {
+  switch(action.type){
+    case SET_LOOK_DATA:
+      return {
+        ...state,
+        screenLookData: action.payload
+      };
+    case GET_LOOK_LIKES:
+      return {
+        ...state,
+        ...action.payload
+
+      };
+    default:
+      return state
+  }
 }

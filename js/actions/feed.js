@@ -10,10 +10,6 @@ export function getFeed(type, category='', term=''):Action {
   return (dispatch) => {
     const params = { type, category, term };
     console.log('params', params);
-    const feedTypeQuery = `feed[type]=`+type;
-    const feedCategoryQuery = `&feed[category]=`+category
-    const feedTermQuery = `&feed[term]=`+term;
-    const query = feedTypeQuery+feedCategoryQuery+feedTermQuery
     return dispatch(rest.actions.feeds(params, (err, data) => {
       console.log('dataaa',data);
       if (!err && data) {

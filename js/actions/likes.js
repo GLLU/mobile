@@ -1,9 +1,8 @@
 import rest from '../api/rest';
 
-import { actions } from 'react-native-navigation-redux-helpers';
-
 // Actions
 export const SET_LOOK_LIKE_STATE = 'SET_LOOK_LIKE_STATE';
+export const GET_LOOK_LIKES = 'GET_LOOK_LIKES';
 
 export function like(id) {
   console.log('action like', id);
@@ -11,13 +10,6 @@ export function like(id) {
     dispatch(rest.actions.like.post({look_id: id}, {}, (err, data) => {
       console.log('done like, dispatching', data);
       if (!err) {
-        dispatch({
-          type: SET_LOOK_LIKE_STATE,
-          payload: {
-            look_id: id,
-            liked: true
-          }
-        });
       }
     }));
   };
@@ -27,12 +19,18 @@ export function unlike(id) {
   return (dispatch, getState) => {
     dispatch(rest.actions.unlike.delete({look_id: id}, {}, (err, data) => {
       if (!err) {
+      }
+    }));
+  };
+}
+
+export function getLikes(id) {
+  return (dispatch) => {
+    dispatch(rest.actions.getLikes.get({look_id: id}, {}, (err, data) => {
+      if (!err) {
         dispatch({
-          type: SET_LOOK_LIKE_STATE,
-          payload: {
-            look_id: id,
-            liked: false
-          }
+          type: GET_LOOK_LIKES,
+          payload: data
         });
       }
     }));

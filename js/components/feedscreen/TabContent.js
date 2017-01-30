@@ -88,16 +88,17 @@ class TabContent extends Component {
     this.props.navigateTo('itemScreen', 'feedscreen', item);
   }
 
-  toggleLikeAction(item) {
-    if (item.liked) {
-      this.props.unlike(item.id);
-    } else {
+  toggleLikeAction(item, isLiked) {
+    if (isLiked) {
       this.props.like(item.id);
+    } else {
+      this.props.unlike(item.id);
     }
   }
 
   _renderImages(images) {
     return images.map((img, index) => {
+      console.log('img',img)
       return  (
         <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
           <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>

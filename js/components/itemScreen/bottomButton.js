@@ -17,6 +17,13 @@ export default class BottomButton extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+
+    this.setState({
+      likes: nextProps.likes
+    })
+  }
+
   _onLikeClicked() {
     let likeToggle = !this.state.isLiked;
     let likes = this.state.likes
@@ -38,13 +45,14 @@ export default class BottomButton extends Component {
   }
 
   render() {
+    console.log('is?',this.props.isLiked)
     return (
       <View style={styles.bottomContainer}>
         <View style={styles.bottomLeft}>
           <View style={styles.horizontalContainer}>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onLikeClicked()}>
               <View style={[styles.footerButton, {paddingLeft: 0}]}>
-                <Image source={this.state.isLiked ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}} />
+                <Image source={this.props.isLiked ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}} />
                 <Text style={styles.footerButtonText}>{this.state.likes}</Text>
               </View>
             </TouchableHighlight>

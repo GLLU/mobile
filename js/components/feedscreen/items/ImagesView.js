@@ -36,7 +36,6 @@ class ImagesView extends Component {
     this.setState({
       images: images
     })
-    liked ? this.props.likeAction(img.id) : this.props.unlikeAction(img.id);
   }
 
   _handleItemClick(item) {

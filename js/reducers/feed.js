@@ -7,31 +7,20 @@ const initialState = {
 };
 // Action Handlers
 const ACTION_HANDLERS = {
-  [SET_LOOK_LIKE_STATE]: (state, action) => {
-    const { look_id, liked } = action.payload;
-    return {
-      ...state,
-      flatLooksData: state.flatLooksData.map((look, index) => {
-        if (look.id == look_id) {
-          look.liked = liked;
-        }
-        return look;
-      })
-    }
-  },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
     console.log('reducers SET_FLAT_LOOKS_FEED_DATA', action.payload)
     const flatLooksData = action.payload.looks.map(look => {
-      let coverImg = _.find(look.cover, 'medium')
+      let coverImg = _.find(look.cover, image => image.version == 'medium')
+      console.log('cover1:',coverImg)
       return Object.assign({}, {
         liked: look.is_liked,
         type: look.user_size.body_type,
         id: look.id,
         likes: look.likes,
         user_id: look.user_id,
-        uri: coverImg.medium.url,
-        width: coverImg.medium.width,
-        height: coverImg.medium.height,
+        uri: coverImg.url,
+        width: coverImg.width,
+        height: coverImg.height,
       });
     });
     console.log('flat',flatLooksData);

@@ -8,7 +8,7 @@ import TopButton from './topButton';
 import BuyItButton from './buyItButton';
 import IndicatorButton from './indicatorButton';
 import VideoPlayer from './videoPlayer/videoPlayer';
-import { like, unlike } from '../../actions/likes';
+import { like, unlike, getLikes } from '../../actions/likes';
 import { getLook } from '../../actions/looks';
 
 const dataSample = [
@@ -68,7 +68,6 @@ class ItemScreen extends Component {
     InteractionManager.runAfterInteractions(() => {
       that.props.getLook(that.props.flatLook.id);
     });
-    //this.props.getLook(this.props.flatLook.id);
   }
 
   _toggleLike(isLiked){
@@ -114,6 +113,7 @@ class ItemScreen extends Component {
   }
 
   _renderItemContent() {
+    this.props.getLikes(this.props.flatLook.id)
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -122,14 +122,13 @@ class ItemScreen extends Component {
       }            // Configuration
     ).start();
     const avatar = {}
-    avatar.imageUri = this.props.flatLook.uri
-    avatar.bodyType = this.props.look["user_size"]["body_type"];;
-    let lookLikes = this.props.look.likes
-    console.log('likes: ',lookLikes, 'avatar:',avatar);
+    avatar.imageUri = this.props.flatLook.uri;
+    avatar.bodyType = this.props.flatLook.type;
+    console.log(this.props.isLiked, 'likes')
     return (
       <Animated.View style={{opacity: this.state.fadeAnimContent, flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
         <TopButton avatar={avatar} />
-        <BottomButton toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={lookLikes}/>
+        <BottomButton isLiked={this.props.isLiked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.props.likes}/>
         {/*<BuyItButton title={'zara'} price={50} positionTop={35} positionLeft={20} />*/}
       </Animated.View>
     )
@@ -137,7 +136,6 @@ class ItemScreen extends Component {
 
   render() {
     return this.props.flatLook.id !== this.props.look.id ? this._renderItems() : this._renderItems();
-    //return <View></View>
   }
 
 }
@@ -153,6 +151,7 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     like: (id) => dispatch(like(id)),
     unlike: (id) => dispatch(unlike(id)),
+    getLikes: (id) => dispatch(getLikes(id)),
     getLook: (lookId) => dispatch(getLook(lookId))
   };
 }
@@ -162,7 +161,9 @@ const mapStateToProps = state => {
   return {
     isLoading: state.loader.loading,
     navigation: state.cardNavigation,
-    look: lookData
+    look: lookData,
+    likes: state.look.likes,
+    isLiked: state.look.is_liked
   };
 
 };
