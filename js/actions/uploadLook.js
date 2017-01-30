@@ -193,7 +193,7 @@ export function createBrandName(name) {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
           dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brands.id, name: data.brands.name }));
+          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name }));
         } else {
           reject(err);
         }
