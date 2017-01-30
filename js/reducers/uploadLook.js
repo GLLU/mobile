@@ -96,11 +96,11 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
-    const { itemSizeCountry, itemSizeValue } = action.payload;
-    console.log('reducer, ADD_ITEM_SIZE_COUNTRY', itemSizeCountry, itemSizeValue)
+    const { itemSizeRegion, itemSizeValue } = action.payload;
+    console.log('reducer, ADD_ITEM_SIZE_COUNTRY', itemSizeRegion, itemSizeValue)
     return {
       ...state,
-      itemSizeCountry,
+      itemSizeRegion,
       itemSizeValue,
     }
   },
@@ -161,14 +161,14 @@ const ACTION_HANDLERS = {
     console.log('reducer SET_ITEM_SIZES', action.payload);
     const sizes = action.payload.sizes;
     console.log('sizes', sizes);
-    if (sizes.length > 0 && !state.itemSizeCountry && !state.itemSizeValue) {
+    if (sizes.length > 0 && !state.itemSizeRegion && !state.itemSizeValue) {
       const item = _.first(sizes);
-      const itemSizeCountry = item.region;
+      const itemSizeRegion = item.region;
       const itemSizeValue = item.value;
       return {
         ...state,
         itemSizes: sizes,
-        itemSizeCountry,
+        itemSizeRegion,
         itemSizeValue,
       }
     } else {
@@ -186,7 +186,7 @@ const initialState = {
   image: null,
   posInCategories: 3,
   brand: null,
-  itemSizeCountry: null,
+  itemSizeRegion: null,
   itemSizeValue: null,
   currency: 'USD',
   price: 40,

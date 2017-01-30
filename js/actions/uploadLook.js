@@ -216,7 +216,7 @@ export function addItemSizeCountry(region) {
     return dispatch({
       type: ADD_ITEM_SIZE_COUNTRY,
       payload: {
-        itemSizeCountry: region,
+        itemSizeRegion: region,
         itemSizeValue,
       }
     });

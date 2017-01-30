@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 class ItemSize extends Component {
 
   static propTypes = {
-    itemSizeCountry: React.PropTypes.string,
+    itemSizeRegion: React.PropTypes.string,
     itemSizeValue: React.PropTypes.string,
     updateValue: React.PropTypes.func,
     countries: React.PropTypes.array,
@@ -55,15 +55,15 @@ class ItemSize extends Component {
     }
   }
 
-  _renderRegionPicker(regions, itemSizeCountry) {
-    console.log('_renderRegionPicker', regions, itemSizeCountry);
+  _renderRegionPicker(regions, itemSizeRegion) {
+    console.log('_renderRegionPicker', regions, itemSizeRegion);
     if (regions.length > 0) {
       return <Picker
                   style={styles.selectOptions}
                   iosHeader="Select one"
                   mode="dropdown"
-                  selectedValue={itemSizeCountry}
-                  onValueChange={(value) => this.props.updateValue('itemSizeCountry', value)}>
+                  selectedValue={itemSizeRegion}
+                  onValueChange={(value) => this.props.updateValue('itemSizeRegion', value)}>
                 {regions.map((region, i) => {
                   return <Item key={i} label={region.toUpperCase()} value={region} />
                 })}
@@ -95,13 +95,13 @@ class ItemSize extends Component {
     console.log('render regions', itemSizes, regions);
     let flagIcon = uk;
     this.props.countries.map((c) => {
-      if (c.name == this.props.itemSizeCountry) {
+      if (c.name == this.props.itemSizeRegion) {
         flagIcon = c.icon;
       }
     });
 
-    const itemSizeCountry = this.props.itemSizeCountry ? this.props.itemSizeCountry : _.first(regions);
-    const sizesByCountry = _.filter(itemSizes, x => x.region == itemSizeCountry);
+    const itemSizeRegion = this.props.itemSizeRegion ? this.props.itemSizeRegion : _.first(regions);
+    const sizesByCountry = _.filter(itemSizes, x => x.region == itemSizeRegion);
     const values = _.uniq(sizesByCountry.map(x => x.value));
     const itemSizeValue = this.props.itemSizeValue ? this.props.itemSizeValue : _.first(values);
 
@@ -114,7 +114,7 @@ class ItemSize extends Component {
                         <Image source={flagIcon} style={styles.flagSelectOptions} />
                       </Col>
                       <Col size={60}>
-                        {this._renderRegionPicker(regions, itemSizeCountry)}
+                        {this._renderRegionPicker(regions, itemSizeRegion)}
                       </Col>
                       <Col size={20}>
                         <Icon style={styles.arrowSelect} name='ios-arrow-down' />
@@ -149,7 +149,7 @@ const mapStateToProps = state => {
   return {
     countries: state.filters.countries,
     itemSizes: state.filters.itemSizes,
-    itemSizeCountry: state.uploadLook.itemSizeCountry,
+    itemSizeRegion: state.uploadLook.itemSizeRegion,
     itemSizeValue: state.uploadLook.itemSizeValue,
   };
 };
