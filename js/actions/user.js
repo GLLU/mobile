@@ -14,6 +14,7 @@ const signInFromResponse = function(dispatch, response) {
 };
 
 const signInFromRest = function(dispatch, apiKey) {
+  console.log('api key', apiKey)
   rest.use("options", function() {
     return { headers: {
       "Authorization": `Token token=${apiKey}`,
