@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
-import { like, unlike } from '../../actions/likes';
+import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -92,7 +92,13 @@ class TabContent extends Component {
   }
 
   toggleLikeAction(item, isLiked) {
-    isLiked ? this.props.like(item.id) : this.props.unlike(item.id);
+    if (isLiked) {
+      let data = {id: item.id, likes: item.likes+1, liked: true}
+      this.props.likeUpdate(data);
+    } else {
+      let data = {id: item.id, likes: item.likes-1, liked: false}
+      this.props.unLikeUpdate(data);
+    }
   }
 
   _renderImages(images) {
@@ -102,7 +108,7 @@ class TabContent extends Component {
           <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
             <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
               <TypeView type={img.type} />
-              <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)} itemScreenLook={this.state.itemScreenLook}/>
+              <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
             </Image>
           </View>
         </TouchableOpacity>);
@@ -145,8 +151,8 @@ function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    like: (id) => dispatch(like(id)),
-    unlike: (id) => dispatch(unlike(id)),
+    likeUpdate: (id) => dispatch(likeUpdate(id)),
+    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
   };
 }
 

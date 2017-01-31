@@ -28,20 +28,18 @@ class LikeView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.itemScreenLook === this.props.item.id && !this.props.isLoading) {
-      this.setState({ likes: this.props.itemScreenLikes, liked: this.props.itemScreenIsLiked });
-    }
+    console.log('next',nextProps)
+      //this.setState({ likes: nextProps.item.likes, liked: nextProps.item.liked });
+
   }
 
   handleLikePress() {
-    const likes = !this.state.liked ? this.state.likes+1 : this.state.likes-1;
-    this.setState({ likes: likes, liked: !this.state.liked });
-    this.props.onPress(this.props.item , !this.state.liked)
+    this.props.onPress(this.props.item , !this.props.item.liked)
   }
 
   render() {
     const img = this.props.item;
-    const likeIconView = this.state.liked ? likedIcon : likeIcon;
+    const likeIconView = this.props.item.liked ? likedIcon : likeIcon;
     return (
       <View style={[styles.likeContainer, { marginTop: img.height - 35 }]}>
         <Image source={bgShadow} style={styles.bgShadow} />
@@ -52,7 +50,7 @@ class LikeView extends Component {
               </Button>
             </Col>
             <Col>
-              <Text style={styles.countLikeLabel}>{this.state.likes}</Text>
+              <Text style={styles.countLikeLabel}>{this.props.item.likes}</Text>
             </Col>
         </Grid>
       </View>
@@ -68,8 +66,6 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     isLoading: state.loader.loading,
-    itemScreenLikes: state.look.likes,
-    itemScreenIsLiked: state.look.is_liked
   }
 };
 

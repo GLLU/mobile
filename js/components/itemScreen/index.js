@@ -6,7 +6,7 @@ import BottomButton from './bottomButton';
 import TopButton from './topButton';
 import BuyItButton from './buyItButton';
 import VideoPlayer from './videoPlayer/videoPlayer';
-import { like, unlike, getLikes } from '../../actions/likes';
+import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 import { getLook } from '../../actions/looks';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -22,11 +22,13 @@ class ItemScreen extends Component {
     this.state = {
       fadeAnim: new Animated.Value(0.35),
       fadeAnimContent: new Animated.Value(0),
+      likes: this.props.flatLook.likes,
+      liked: this.props.flatLook.liked,
     }
+    console.log('construct');
   }
 
   componentWillMount() {
-    this.props.getLikes(this.props.flatLook.id)
   }
 
   componentDidMount() {
@@ -38,9 +40,11 @@ class ItemScreen extends Component {
 
   _toggleLike(isLiked){
     if (isLiked) {
-      this.props.like(this.props.flatLook.id);
+      let data = {id: this.props.flatLook.id, likes: this.state.likes+1, liked: true}
+      this.props.likeUpdate(data);
     } else {
-      this.props.unlike(this.props.flatLook.id);
+      let data = {id: this.props.flatLook.id, likes: this.state.likes-1, liked: false}
+      this.props.unLikeUpdate(data);
     }
   }
 
@@ -99,7 +103,7 @@ class ItemScreen extends Component {
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flex: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this._tempPopRoute()}/>
-          <BottomButton isLiked={this.props.isLiked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.props.likes}/>
+          <BottomButton isLiked={this.state.liked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.state.likes}/>
         </View>
         {this._renderBuyItButtons()}
       </Animated.View>
@@ -122,9 +126,8 @@ function bindAction(dispatch) {
   return {
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
-    like: (id) => dispatch(like(id)),
-    unlike: (id) => dispatch(unlike(id)),
-    getLikes: (id) => dispatch(getLikes(id)),
+    likeUpdate: (id) => dispatch(likeUpdate(id)),
+    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     getLook: (lookId) => dispatch(getLook(lookId))
   };
 }
@@ -135,8 +138,6 @@ const mapStateToProps = state => {
     isLoading: state.loader.loading,
     navigation: state.cardNavigation,
     look: lookData,
-    likes: state.look.likes,
-    isLiked: state.look.is_liked
   };
 
 };
