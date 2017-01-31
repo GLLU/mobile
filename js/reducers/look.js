@@ -3,11 +3,11 @@ import { GET_LOOK_LIKES } from '../actions/likes';
 
 const initialState = {
   screenLookData: {},
-  likes: 999,
+  likes: -1,
   liked: false
 };
 
-export default function (state:State = initialState, action:Action): State {
+export default function (state:State = initialState, action): State {
   switch(action.type){
     case SET_LOOK_DATA:
       return {

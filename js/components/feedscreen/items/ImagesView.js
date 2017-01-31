@@ -6,7 +6,6 @@ import { View, Content } from 'native-base';
 
 import LikeView from './LikeView';
 import TypeView from './TypeView';
-import { like } from '../../../actions/myBodyMeasure';
 
 class ImagesView extends Component {
 

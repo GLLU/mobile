@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { SET_FLAT_LOOKS_FEED_DATA } from '../actions/feed';
-import { SET_LOOK_LIKE_STATE } from '../actions/likes';
 
 const initialState = {
   flatLooksData: []
@@ -8,7 +7,7 @@ const initialState = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
-    console.log('reducers SET_FLAT_LOOKS_FEED_DATA', action.payload)
+    console.log('looks data before "Flating"', action.payload)
     const flatLooksData = action.payload.looks.map(look => {
       let coverImg = _.find(look.cover, image => image.version == 'large')
       return Object.assign({}, {
@@ -22,7 +21,6 @@ const ACTION_HANDLERS = {
         height: coverImg.height,
       });
     });
-    console.log('flat',flatLooksData);
     return {
       ...state,
       flatLooksData,

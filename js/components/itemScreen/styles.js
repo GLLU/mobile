@@ -99,7 +99,13 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     backgroundColor: 'transparent'
   },
-  BuyItButton: {
-    position: 'absolute'
+  lookInfo: {
+    height: h-35,
+    justifyContent: 'space-between'
+  },
+  buyItContainer: {
+    position: 'absolute',
+    height: h,
+    top: 0
   }
 });

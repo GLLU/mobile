@@ -42,13 +42,15 @@ export default class BuyItButton extends Component {
 
   render() {
     return(
-      <Image source={buyItImage} style={{width: 120, height: 140, resizeMode: 'contain',
-        top: (this.props.positionTop / 100 * h), left: (this.props.positionLeft / 100 * w),
-        paddingRight: 20, alignItems: 'center'}}>
-        <Text style={{fontFamily: 'Montserrat-Bold', color: '#000', marginTop: 34}}>{this.props.title}</Text>
-        <Text style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10}}>{this.props.currency} {this.props.price}</Text>
-        <Text style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a',marginTop: 8}}>{this.props.btnText}</Text>
-      </Image>
+      <View style={{ flex: 1 , top: (this.props.positionTop / 100 * h), left: (this.props.positionLeft / 100 * w), position: 'absolute'}}>
+        <Image source={buyItImage} style={{width: 120, height: 140, resizeMode: 'contain',
+
+          paddingRight: 20, alignItems: 'center'}}>
+          <Text style={{fontFamily: 'Montserrat-Bold', color: '#000', marginTop: 34}}>{this.props.title}</Text>
+          <Text style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10}}>{this.props.currency} {this.props.price}</Text>
+          <Text style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a',marginTop: 8}}>{this.props.btnText}</Text>
+        </Image>
+      </View>
     );
   }
 }

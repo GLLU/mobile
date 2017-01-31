@@ -5,7 +5,6 @@ import styles from './styles';
 import BottomButton from './bottomButton';
 import TopButton from './topButton';
 import BuyItButton from './buyItButton';
-import IndicatorButton from './indicatorButton';
 import VideoPlayer from './videoPlayer/videoPlayer';
 import { like, unlike, getLikes } from '../../actions/likes';
 import { getLook } from '../../actions/looks';
@@ -64,23 +63,21 @@ class ItemScreen extends Component {
   }
   _renderItems() {
     return (
-        <View style={styles.itemContainer}>
-          <Animated.Image
-            resizeMode={'cover'}
-            style={[{opacity: this.state.fadeAnim},styles.itemImage]}
-            source={{uri: this.props.flatLook.uri}}
-            onLoad={this.onLoad()}>
-          <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
-            <Icon style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent'}} name="ios-arrow-back" />
-          </TouchableOpacity>
-          { this.props.flatLook.id !== this.props.look.id && !this.props.isLoading ? null : this._renderItemContent() }
-          </Animated.Image>
-          {/*<Animated.Image*/}
-            {/*resizeMode={'contain'}*/}
-            {/*style={[styles.itemImage, {opacity: this.state.fadeAnim}]}*/}
-            {/*source={{uri: this.props.flatLook.uri}}*/}
-            {/*onLoad={this.onThumbnailLoad()}/>*/}
-        </View>
+      <View>
+        <Animated.Image
+          resizeMode={'cover'}
+          style={[{opacity: this.state.fadeAnim},styles.itemImage]}
+          source={{uri: this.props.flatLook.uri}}
+          onLoad={this.onLoad()}>
+
+        { this.props.flatLook.id === this.props.look.id ? this._renderItemContent() : null }
+        </Animated.Image>
+        <Animated.Image
+          resizeMode={'contain'}
+          style={[styles.itemImage, {opacity: this.state.fadeAnim}]}
+          source={{uri: this.props.flatLook.uri}}
+          onLoad={this.onThumbnailLoad()}/>
+      </View>
     )
   }
 
@@ -96,14 +93,25 @@ class ItemScreen extends Component {
     avatar.imageUri = this.props.flatLook.uri;
     avatar.bodyType = this.props.flatLook.type;
     return (
-      <Animated.View style={{opacity: this.state.fadeAnimContent, flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
-        <TopButton avatar={avatar} />
-        <BottomButton isLiked={this.props.isLiked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.props.likes}/>
-        {/*<BuyItButton title={'zara'} price={50} positionTop={35} positionLeft={20} style={styles.BuyItButton}/>*/}
+      <Animated.View style={{opacity: this.state.fadeAnimContent, justifyContent: 'space-between'}}>
+        <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
+          <Icon style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute'}} name="ios-arrow-back" />
+        </TouchableOpacity>
+        <View style={[styles.lookInfo,{flex: 1, flexDirection: 'column',marginTop: 40}]}>
+          <TopButton avatar={avatar} onPress={() => this._tempPopRoute()}/>
+          <BottomButton isLiked={this.props.isLiked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.props.likes}/>
+        </View>
+        {this._renderBuyItButtons()}
       </Animated.View>
     )
   }
-
+  _renderBuyItButtons() {
+    return this.props.look.items.map((item, index) => {
+      return  (
+        <BuyItButton key={index} title={'zara'} price={item.price} positionTop={item["cover_y_pos"]} positionLeft={item["cover_x_pos"]}/>
+      )
+    });
+  }
   render() {
     return  this._renderItems();
   }
