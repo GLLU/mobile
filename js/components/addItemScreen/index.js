@@ -79,8 +79,8 @@ class AddItemPage extends Component {
   }
 
   tagAnotherAction() {
-    console.log(' TAG ANOTHER');
-    this.props.pushRoute({ key: 'publishItem' }, this.props.navigation.key);
+    console.log('TAG ANOTHER');
+    this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
   }
 
   publishAction() {
