@@ -10,8 +10,7 @@ const ACTION_HANDLERS = {
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
     console.log('reducers SET_FLAT_LOOKS_FEED_DATA', action.payload)
     const flatLooksData = action.payload.looks.map(look => {
-      let coverImg = _.find(look.cover, image => image.version == 'medium')
-      console.log('cover1:',coverImg)
+      let coverImg = _.find(look.cover, image => image.version == 'large')
       return Object.assign({}, {
         liked: look.is_liked,
         type: look.user_size.body_type,

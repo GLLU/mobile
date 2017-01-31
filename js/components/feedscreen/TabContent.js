@@ -32,6 +32,7 @@ class TabContent extends Component {
       filterHeight: 0,
       imagesColumn1,
       imagesColumn2,
+      itemScreenLook: 0
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
@@ -39,7 +40,6 @@ class TabContent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(nextProps.flatLooks);
     this.setState({
       imagesColumn1,
@@ -86,25 +86,23 @@ class TabContent extends Component {
 
   _handleItemPress(item) {
     this.props.navigateTo('itemScreen', 'feedscreen', item);
+    this.setState({
+      itemScreenLook: item.id,
+    })
   }
 
   toggleLikeAction(item, isLiked) {
-    if (isLiked) {
-      this.props.like(item.id);
-    } else {
-      this.props.unlike(item.id);
-    }
+    isLiked ? this.props.like(item.id) : this.props.unlike(item.id);
   }
 
   _renderImages(images) {
     return images.map((img, index) => {
-      console.log('img',img)
       return  (
         <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
           <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
             <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
               <TypeView type={img.type} />
-              <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)} />
+              <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)} itemScreenLook={this.state.itemScreenLook}/>
             </Image>
           </View>
         </TouchableOpacity>);

@@ -5,16 +5,15 @@ import { showLoader, hideLoader } from './index';
 export const SET_LOOK_DATA = 'SET_LOOK_DATA';
 
 export function getLook(lookId):Action {
-
-    return (dispatch) => {
-      dispatch(showLoader());
-      return dispatch(rest.actions.looks({id: lookId},{}, (err, screenLookData) => {
-        if (!err && screenLookData) {
-          dispatch(setLookData(screenLookData));
-          dispatch(hideLoader());
-        }
-      }));
-    };
+  return (dispatch) => {
+    dispatch(showLoader());
+    return dispatch(rest.actions.looks({id: lookId},{}, (err, screenLookData) => {
+      if (!err && screenLookData) {
+        dispatch(setLookData(screenLookData));
+        dispatch(hideLoader());
+      }
+    }));
+  };
 }
 
 

@@ -12,24 +12,24 @@ export default class BottomButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLiked: false,
-      likes: this.props.likes
+      likes: this.props.likes,
+      isLiked: this.props.isLiked
     }
   }
 
-  componentWillReceiveProps(nextProps) {
 
-    this.setState({
-      likes: nextProps.likes
-    })
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.likes !== this.props.likes || nextProps.isLiked !== this.props.isLiked) {
+      this.setState({likes: nextProps.likes, isLiked: nextProps.isLiked})
+    }
   }
 
+
   _onLikeClicked() {
-    let likeToggle = !this.state.isLiked;
-    let likes = this.state.likes
-    this.state.isLiked === true ? likes-- : likes++;
-    this.setState({isLiked: likeToggle, likes});
-    likeToggle ? this.props.toggleLike(true) : this.props.toggleLike(false);
+    const likes = !this.state.isLiked ? this.state.likes+1 : this.state.likes-1;
+    this.setState({likes: likes, isLiked: !this.state.isLiked,
+    });
+    this.props.toggleLike(!this.state.isLiked)
   }
 
   _onInformationClicked() {
@@ -45,14 +45,13 @@ export default class BottomButton extends Component {
   }
 
   render() {
-    console.log('is?',this.props.isLiked)
     return (
       <View style={styles.bottomContainer}>
         <View style={styles.bottomLeft}>
           <View style={styles.horizontalContainer}>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onLikeClicked()}>
               <View style={[styles.footerButton, {paddingLeft: 0}]}>
-                <Image source={this.props.isLiked ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}} />
+                <Image source={this.state.isLiked ? likeClickedImage : likeImage} style={{width: 40, height: 40,top: 2, resizeMode: 'stretch'}} />
                 <Text style={styles.footerButtonText}>{this.state.likes}</Text>
               </View>
             </TouchableHighlight>

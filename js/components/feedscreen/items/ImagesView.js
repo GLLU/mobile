@@ -39,7 +39,6 @@ class ImagesView extends Component {
   }
 
   _handleItemClick(item) {
-    console.log('click on item', item);
     this.props.onItemPress(item);
   }
 

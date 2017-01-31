@@ -13,7 +13,6 @@ export default StyleSheet.create({
   itemImage: {
     width: w,
     height: h,
-    resizeMode: 'cover'
   },
   topContainer: {
     flexDirection: 'row',
@@ -99,5 +98,8 @@ export default StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     backgroundColor: 'transparent'
+  },
+  BuyItButton: {
+    position: 'absolute'
   }
 });
