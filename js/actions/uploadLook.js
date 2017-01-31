@@ -7,6 +7,8 @@ export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
 export const ADD_ITEM_SIZE_COUNTRY = 'ADD_ITEM_SIZE_COUNTRY';
 export const ADD_ITEM_SIZE = 'ADD_ITEM_SIZE';
+export const ADD_ITEM_TAG = 'ADD_ITEM_TAG';
+export const REMOVE_ITEM_TAG = 'REMOVE_ITEM_TAG';
 export const ADD_ITEM_CURRENCY = 'ADD_ITEM_CURRENCY';
 export const ADD_ITEM_PRICE = 'ADD_ITEM_PRICE';
 export const ADD_SHARING_INFO = 'ADD_SHARING_INFO';
@@ -229,6 +231,26 @@ export function addItemSize(payload) {
     type: ADD_ITEM_SIZE,
     payload: payload
   }
+}
+
+export function addItemTag(tag) {
+  console.log('action addItemTag', tag);
+  return (dispatch) => {
+    return dispatch({
+      type: ADD_ITEM_TAG,
+      payload: tag
+    });
+  };
+}
+
+export function removeItemTag(tag) {
+  console.log('action removeItemTag', tag);
+  return (dispatch) => {
+    return dispatch({
+      type: REMOVE_ITEM_TAG,
+      payload: tag
+    });
+  };
 }
 
 export function addItemCurrency(payload) {

@@ -8,6 +8,8 @@ import { addItemType,
          createBrandName,
          addItemSizeCountry,
          addItemSize,
+         addItemTag,
+         removeItemTag,
          addItemCurrency,
          addItemPrice,
          addSharingInfo,
@@ -17,8 +19,8 @@ import Category from './forms/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
 import CurrencyAndPrice from './forms/CurrencyAndPrice';
 import ItemSize from './forms/ItemSize';
+import Tags from './forms/Tags';
 import FontSizeCalculator from './../../calculators/FontSize';
-
 import { loadCategories } from '../../actions/filters';
 
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
@@ -77,7 +79,6 @@ const styles = StyleSheet.create({
     paddingTop: 15
   },
   textInput: {
-    width: w - 20,
     height: 50,
     backgroundColor: '#FFFFFF',
     padding: 10,
@@ -108,6 +109,7 @@ class ItemInfoView extends Component {
     brand: React.PropTypes.object,
     itemSizeRegion: React.PropTypes.string,
     itemSizeValue: React.PropTypes.string,
+    tags: React.PropTypes.array,
     currency: React.PropTypes.string,
     price: React.PropTypes.number,
     sharingType: React.PropTypes.bool,
@@ -117,13 +119,18 @@ class ItemInfoView extends Component {
     addBrandName: React.PropTypes.func,
     addItemSizeCountry: React.PropTypes.func,
     addItemSize: React.PropTypes.func,
+    addItemTag: React.PropTypes.func,
+    removeItemTag: React.PropTypes.func,
     addItemPrice: React.PropTypes.func,
     addSharingInfo: React.PropTypes.func
   }
 
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      tmpValue: '',
+      tags: ['dresses', 'black', 'red', 'white'],
+    }
   }
 
   componentDidMount() {
@@ -179,6 +186,19 @@ class ItemInfoView extends Component {
     }
   }
 
+  addTags(name) {
+    const tags = this.props.tags;
+    const existing = _.find(tags, t => t.toLowerCase() == name.toLowerCase());
+    if (!existing) {
+      this.props.addItemTag(name);
+    }
+    this.setState({tmpValue: ''});
+  }
+
+  removeTag(name) {
+    this.props.removeItemTag(name);
+  }
+
   _renderSharing() {
     const sharingWP = this.state.sharingType ? checkboxChecked : checkboxUncheck;
     const sharingFB = !this.state.sharingType ? checkboxChecked : checkboxUncheck;
@@ -221,7 +241,7 @@ class ItemInfoView extends Component {
 
   render() {
     const { categories, selectedCategoryId } = this.props;
-    const { brand, itemSizeRegion, itemSizeValue, currency, price } = this.props;
+    const { brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
     return(<View style={styles.itemInfoView}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
               <Category categories={categories} selectedCategoryId={selectedCategoryId} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
@@ -229,6 +249,19 @@ class ItemInfoView extends Component {
               <BrandNameInput brand={brand} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
               <Text style={styles.titleLabelInfo}>Item Size</Text>
               <ItemSize itemSizeRegion={itemSizeRegion} itemSizeValue={itemSizeValue} updateValue={this.updateValue.bind(this)} />
+              <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
+              <View style={{margin: 5}}>
+                <TextInput
+                    returnKeyType="done"
+                    placeholder=""
+                    value={this.state.tmpValue}
+                    keyboardType="default"
+                    placeholderTextColor="#BDBDBD"
+                    style={styles.textInput}
+                    onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
+                    onChangeText={(text) => this.setState({tmpValue: text})} />
+                <Tags tags={tags} removeTag={this.removeTag.bind(this)} />
+              </View>
               <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
               {/*this._renderSharing()*/}
         </View>)
@@ -244,6 +277,8 @@ function bindActions(dispatch) {
     addBrandName: (brand) => dispatch(addBrandName(brand)),
     addItemSizeCountry: (size) => dispatch(addItemSizeCountry(size)),
     addItemSize: (number) => dispatch(addItemSize(number)),
+    addItemTag: (tag) => dispatch(addItemTag(tag)),
+    removeItemTag: (tag) => dispatch(removeItemTag(tag)),
     addItemCurrency: (currency) => dispatch(addItemCurrency(currency)),
     addItemPrice: (price) => dispatch(addItemPrice(price)),
     addSharingInfo: (type, url) => dispatch(addSharingInfo(type, url)),

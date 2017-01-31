@@ -7,6 +7,8 @@ import { ADD_NEW_LOOK,
         ADD_BRAND_NAME,
         ADD_ITEM_SIZE_COUNTRY,
         ADD_ITEM_SIZE,
+        ADD_ITEM_TAG,
+        REMOVE_ITEM_TAG,
         ADD_ITEM_CURRENCY,
         ADD_ITEM_PRICE,
         ADD_SHARING_INFO,
@@ -110,6 +112,24 @@ const ACTION_HANDLERS = {
       itemSizeValue: action.payload
     }
   },
+  [ADD_ITEM_TAG]: (state, action) => {
+    console.log('reducer ADD_ITEM_TAG', action.payload);
+    let tags = state.tags;
+    tags.push(action.payload);
+    tags = _.uniq(tags);
+    return {
+      ...state,
+      tags,
+    }
+  },
+  [REMOVE_ITEM_TAG]: (state, action) => {
+    console.log('reducer REMOVE_ITEM_TAG', action.payload);
+    let tags = _.filter(state.tags, x => x.toLowerCase() != action.payload.toLowerCase());
+    return {
+      ...state,
+      tags,
+    }
+  },
   [ADD_ITEM_CURRENCY]: (state, action) => {
     return {
       ...state,
@@ -198,6 +218,7 @@ const initialState = {
   trustLevel: 0,
   photos: [],
   video: '',
+  tags: []
 }
 
 export default function mybodyTypeReducer (state = initialState, action) {

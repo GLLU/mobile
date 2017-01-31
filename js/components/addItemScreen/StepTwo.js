@@ -9,7 +9,6 @@ import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
-import Tags from './forms/Tags';
 import {
     addDescription,
     addLocation,
@@ -111,11 +110,9 @@ class StepTwo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        tags: ['dresses', 'black', 'red', 'white'],
         images:['', '', ''],
         video: '',
         videoUrl: '',
-        tmpValue: '',
         location: 'us',
         trustLevel: '0',
         confirm: true,
@@ -165,55 +162,15 @@ class StepTwo extends Component {
     }
   }
 
-  addTags(name) {
-    var tags = this.state.tags;
-    var pos = tags.indexOf(name);
-    if (pos < 0) {
-      tags.push(name);
-      this.setState({tags: tags, tmpValue: ''});
-    }
-  }
-
-  removeTag(name) {
-    var tags = this.state.tags;
-    var pos = tags.indexOf(name);
-    tags.splice(pos, 1);
-    this.setState({tags: tags});
-  }
-
-  getHeight(number) {
-    var l = this.state.tags.length;
-    var rH = 80;
-    var numR = Math.round(l / number);
-    if (l > numR * number) {
-      numR = numR + 1;
-    }
-    return numR == 0 ? 250 : numR * rH + 270;
-  }
-
   _handlePublishItem() {
     this.props.publishItem();    
   }
 
   _renderDescribeAndTags() {
-    var number = w < 375 ? 2 : 3;
-    var height = this.getHeight(number);
-    const tags = this.state.tags;
     return (
-        <View style={{height: height, margin: 5}}>
+        <View style={{margin: 5}}>
           <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
           <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
-          <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
-          <TextInput
-              returnKeyType="done"
-              placeholder=""
-              value={this.state.tmpValue}
-              keyboardType="default"
-              placeholderTextColor="#BDBDBD"
-              style={styles.textInput}
-              onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
-              onChangeText={(text) => this.setState({tmpValue: text})} />
-          <Tags tags={this.state.tags} removeTag={this.removeTag.bind(this)} />
         </View>
     )
   }
