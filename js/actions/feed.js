@@ -9,7 +9,6 @@ export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export function getFeed(type, category='', term=''):Action {
   return (dispatch) => {
     const params = { type, category, term };
-    console.log('params', params);
     return dispatch(rest.actions.feeds(params, (err, data) => {
       if (!err && data) {
         dispatch(setFeedData(data));

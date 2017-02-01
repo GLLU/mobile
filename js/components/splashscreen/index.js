@@ -134,9 +134,7 @@ class SplashPage extends Component {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
                 {this.renderMainView()}
-              <View style={styles.bottomContainer}>
                 <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
-              </View>
             </Image>
           </Content>
         </View>

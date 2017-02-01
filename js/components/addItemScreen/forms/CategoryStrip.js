@@ -99,7 +99,7 @@ class CategoryStrip extends Component {
   render() {
     const bottom = this.props.selectedCategory ? 0 : -10000;
     const containerHeight = this.props.selectedCategory ? 220 : 160;
-    const description = this.props.selectedCategory ? this.props.selectedCategory.attributes.name : '';
+    const description = this.props.selectedCategory ? this.props.selectedCategory.name : '';
     return (
       <View style={[styles.container, {height: containerHeight}]}>
         <View style={[styles.categoriesContainer]}>

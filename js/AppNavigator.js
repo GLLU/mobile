@@ -110,7 +110,7 @@ class AppNavigator extends Component {
       case 'myBodyMeasure':
         return <MyBodyMeasure />;
       case 'itemScreen':
-        return <ItemScreen />;
+        return <ItemScreen flatLook={props.scene.route.optional}/>;
       default :
         return <Login />;
     }
@@ -156,7 +156,7 @@ class AppNavigator extends Component {
             renderScene={this._renderScene}
           />
         </Drawer>
-        {this.props.isLoading !== 0 ? <SpinnerSwitch /> : null}
+        {this.props.isLoading ? <SpinnerSwitch /> : null}
       </View>
     );
   }
@@ -170,7 +170,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const isLoading = state.api.isCreating || state.api.isUpdating;
+  const isLoading = state.loading || false;
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,

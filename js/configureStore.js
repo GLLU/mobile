@@ -9,8 +9,6 @@ import reducer from './reducers';
 import promise from './promise';
 import createLogger from 'redux-logger';
 
-import { setEndpointPath, setEndpointHost, setHeaders, setAccessToken } from 'redux-json-api';
-
 export default function configureStore(onCompletion:()=>void):any {
   const logger = createLogger();
   const enhancer = compose(

@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
-import { like, unlike } from '../../actions/likes';
+import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -32,6 +32,7 @@ class TabContent extends Component {
       filterHeight: 0,
       imagesColumn1,
       imagesColumn2,
+      itemScreenLook: 0
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
@@ -39,7 +40,6 @@ class TabContent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(nextProps.flatLooks);
     this.setState({
       imagesColumn1,
@@ -85,26 +85,30 @@ class TabContent extends Component {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'feedscreen');
+    this.props.navigateTo('itemScreen', 'feedscreen', item);
+    this.setState({
+      itemScreenLook: item.id,
+    })
   }
 
-  toggleLikeAction(item) {
-    if (item.liked) {
-      this.props.unlike(item.id);
+  toggleLikeAction(item, isLiked) {
+    if (isLiked) {
+      let data = {id: item.id, likes: item.likes+1, liked: true}
+      this.props.likeUpdate(data);
     } else {
-      this.props.like(item.id);
+      let data = {id: item.id, likes: item.likes-1, liked: false}
+      this.props.unLikeUpdate(data);
     }
   }
 
   _renderImages(images) {
     return images.map((img, index) => {
-      console.log('render image', img);
       return  (
         <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
           <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
             <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
               <TypeView type={img.type} />
-              <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)} />
+              <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
             </Image>
           </View>
         </TouchableOpacity>);
@@ -146,14 +150,13 @@ const styles = StyleSheet.create({
 function bindActions(dispatch) {
   return {
     showBodyTypeModal: name => dispatch(showBodyTypeModal()),
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
-    like: (id) => dispatch(like(id)),
-    unlike: (id) => dispatch(unlike(id)),
+    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
+    likeUpdate: (id) => dispatch(likeUpdate(id)),
+    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
   };
 }
 
 const mapStateToProps = state => {
-  const flatLooks = state.feed.flatLooksData;
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData
