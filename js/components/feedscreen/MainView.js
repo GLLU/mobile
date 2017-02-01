@@ -57,10 +57,6 @@ class MainView extends Component {
     this.props.getFeed(type, category, term);
   }
 
-  componentWillUnmount(){
-    console.log('main un mount')
-  }
-
   _renderFeed() {
     if(this.state.currFeedTypeSelected === 'relevant') {
       return <BestMatchTab handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH' looks={this.props.looks}/>

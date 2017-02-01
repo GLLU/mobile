@@ -25,10 +25,6 @@ class ItemScreen extends Component {
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
     }
-    console.log('construct');
-  }
-
-  componentWillMount() {
   }
 
   componentDidMount() {
@@ -90,8 +86,7 @@ class ItemScreen extends Component {
       this.state.fadeAnimContent,    // The value to drive
       {
         toValue: 1,
-        delay: 500
-      }            // Configuration
+        delay: 250      }            // Configuration
     ).start();
     const avatar = {};
     avatar.imageUri = this.props.flatLook.uri;
@@ -119,7 +114,6 @@ class ItemScreen extends Component {
   render() {
     return  this._renderItems();
   }
-
 }
 
 function bindAction(dispatch) {
@@ -139,7 +133,6 @@ const mapStateToProps = state => {
     navigation: state.cardNavigation,
     look: lookData,
   };
-
 };
 
 export default connect(mapStateToProps, bindAction)(ItemScreen);

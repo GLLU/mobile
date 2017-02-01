@@ -84,13 +84,6 @@ export default reduxApi({
       method: 'delete'
     }
   },
-  getLikes: {
-    url: '/looks/:look_id/likes',
-    crud: true,
-    options: {
-      method: 'get'
-    }
-  },
   items: {
     url: '/looks/:look_id/items/:id',
     crud: true,

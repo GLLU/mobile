@@ -1,5 +1,4 @@
 import { SET_LOOK_DATA } from '../actions/looks';
-import { GET_LOOK_LIKES } from '../actions/likes';
 
 const initialState = {
   screenLookData: {},

@@ -21,16 +21,6 @@ class LikeView extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      likes: this.props.item.likes,
-      liked: this.props.item.liked
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('next',nextProps)
-      //this.setState({ likes: nextProps.item.likes, liked: nextProps.item.liked });
-
   }
 
   handleLikePress() {
@@ -58,16 +48,5 @@ class LikeView extends Component {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-  };
-}
-
-const mapStateToProps = state => {
-  return {
-    isLoading: state.loader.loading,
-  }
-};
-
-export default connect(mapStateToProps, bindActions)(LikeView);
+export default LikeView
 

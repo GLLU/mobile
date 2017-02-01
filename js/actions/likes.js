@@ -34,7 +34,7 @@ export function like(id) {
 }
 
 export function unlike(id) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(rest.actions.unlike.delete({look_id: id}, (err, data) => {
       if (!err) {
       }

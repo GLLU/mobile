@@ -25,30 +25,13 @@ export default class BuyItButton extends Component {
     btnText: 'BUY'
   }
 
-  _renderByCode() {
-    <View style={{width: 80, top: (this.props.positionTop / 100 * h), left: (this.props.positionLeft / 100 * w)}}>
-      <View style={{backgroundColor: '#fff',position: 'relative', height:30, justifyContent: 'center'}}>
-        <Text style={{fontFamily: 'Montserrat-Bold', color: '#000', alignSelf: 'center'}}>{this.props.title}</Text>
-        <View></View>
-      </View>
-      <View style={{backgroundColor: '#f4b85a', height:30, justifyContent: 'center'}}>
-        <Text style={{fontFamily: 'Montserrat-Regular', color: '#fff', alignSelf: 'center'}}>{this.props.currency} {this.props.price}</Text>
-      </View>
-      <View style={{backgroundColor: '#000', height:30, justifyContent: 'center'}}>
-        <Text style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a', alignSelf: 'center'}}>{this.props.btnText}</Text>
-      </View>
-    </View>
-  }
-
   render() {
     return(
       <View style={{ flex: 1 , top: (this.props.positionTop / 100 * h), left: (this.props.positionLeft / 100 * w), position: 'absolute'}}>
-        <Image source={buyItImage} style={{width: 120, height: 140, resizeMode: 'contain',
-
-          paddingRight: 20, alignItems: 'center'}}>
-          <Text style={{fontFamily: 'Montserrat-Bold', color: '#000', marginTop: 34}}>{this.props.title}</Text>
-          <Text style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10}}>{this.props.currency} {this.props.price}</Text>
-          <Text style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a',marginTop: 8}}>{this.props.btnText}</Text>
+        <Image source={buyItImage} style={{width: 120, height: 140, resizeMode: 'contain', paddingRight: 20, alignItems: 'center'}}>
+          <Text style={{fontFamily: 'Montserrat-Bold', color: '#000', marginTop: 34, backgroundColor: 'transparent'}}>{this.props.title}</Text>
+          <Text style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10, backgroundColor: 'transparent'}}>{this.props.currency} {this.props.price}</Text>
+          <Text style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a',marginTop: 8, backgroundColor: 'transparent'}}>{this.props.btnText}</Text>
         </Image>
       </View>
     );
