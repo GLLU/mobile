@@ -1,4 +1,4 @@
-import AppConfig from './appConfig';
+import AppConfig from '../appConfig';
 import reduxApi from "redux-api";
 import _ from 'lodash';
 const adapterFetch = require("redux-api/lib/adapters/fetch");

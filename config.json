@@ -1,0 +1,12 @@
+// config.json
+{
+  "development": {
+    "API_URL": "http://api.gllu.dev/v1"
+  },
+  "staging": {
+    "API_URL": "https://staging-api.gllu.com/v1"
+  },
+  "production": {
+    "API_URL": "https://sam.gllu.com/v1"
+  }
+}
