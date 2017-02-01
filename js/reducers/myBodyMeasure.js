@@ -97,20 +97,18 @@ var commonSizeTypes = ['chest','waist','hips', 'height'];
 
 // Action Handlers
 const ACTION_HANDLERS = {
-  [COMPLETE_EDIT_BODY_MEASURE]: (state, action) => {
-    return ({ ...state, current: action.payload.sizeInfo})
-  },
+
   [SET_MIN_MAX_BODY_MEASURE]: (state, action) => {
     return ({ ...state, sliderMinValue: action.payload.min,
                         sliderMaxValue: action.payload.max})
   }
+
 }
 
 // Reducer
 const initialState = {
   sizeList: sizeList,
   sizeTypes: commonSizeTypes,
-  current: null,
   sliderMinValue: 0,
   sliderMaxValue: 400
 }

@@ -1,24 +1,30 @@
 
 import type { Action } from '../actions/types';
 import { SET_USER } from '../actions/user';
+import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 
 export type State = {
     name: string
 }
 
 const initialState = {
-  id: null,
-  name: '',
-  email: ''
+  id: -1
 };
 
 export default function (state:State = initialState, action:Action): State {
   if (action.type === SET_USER) {
     return {
       ...state,
-      name: action.payload,
+      ...action.payload
     };
   }
+  if(action.type === COMPLETE_EDIT_BODY_MEASURE){
+    console.log('2', action.payload);
+    return {
+      ...state,
+      user_size: action.payload.sizeInfo
+      };
+    }
 
   return state;
 }

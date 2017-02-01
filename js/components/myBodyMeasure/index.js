@@ -24,7 +24,7 @@ class MyBodyMeasure extends Component {
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
-    currentSize: React.PropTypes.object,
+    user_size: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     gender: React.PropTypes.string,
     popRoute: React.PropTypes.func,
@@ -36,14 +36,14 @@ class MyBodyMeasure extends Component {
   }
 
   _saveUserSize() {
-    const { currentSize, currentBodyType } = this.props;
+    const { user_size, currentBodyType } = this.props;
     const data = {
       body_type: currentBodyType.uniqueName,
-      chest: currentSize.chest,
-      waist: currentSize.waist,
-      hips: currentSize.hips,
-      height: currentSize.height,
-      measurements_scale: currentSize.measurements_scale
+      chest: user_size.chest,
+      waist: user_size.waist,
+      hips: user_size.hips,
+      height: user_size.height,
+      measurements_scale: user_size.measurements_scale
     };
     this.props.saveUserSize(data);
   }
@@ -65,7 +65,7 @@ class MyBodyMeasure extends Component {
           <View style={{marginTop: 15}}>
             <InformationTextIcon text={'This information is private to you only'} />
           </View>
-          <Button block primary style={myStyles.continueButton} onPress={(e) => this._saveUserSize(e)}>All Set. Let's GLLU!</Button>
+          <Button block primary style={myStyles.continueButton} onPress={() => this._saveUserSize()}>All Set. Let's GLLU!</Button>
         </Content>
       </Container>
     )
@@ -79,11 +79,14 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  currentBodyType: state.myBodyType.currentBodyType,
-  gender: state.myBodyType.gender,
-  currentSize: state.myBodyMeasure.current
-});
+const mapStateToProps = state => {
+  const userSize = state.user.user_size ? state.user.user_size : {};
+  return {
+    navigation: state.cardNavigation,
+    currentBodyType: state.myBodyType.currentBodyType,
+    gender: state.myBodyType.gender,
+    user_size: userSize
+  }
+};
 
 export default connect(mapStateToProps, bindAction)(MyBodyMeasure);
