@@ -37,14 +37,25 @@ class BrandNameInput extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const query = nextProps.brand ? nextProps.brand.name : '';
+    console.log('componentWillReceiveProps query', query, nextProps.brand);
+    this.setState({
+      query,
+      selected: (nextProps.brand != null)
+    });
+  }
+
   componentWillMount() {
     this.props.loadBrands();
   }
 
   handleFindOrCreateBrand(value, act) {
-    this.state.query = act ? value : value.name;
-    this.state.selected = true;
-    this.props.findOrCreateBrand(value, act);
+    const query = act ? value : value.name;
+    const selected = true;
+    this.setState({query, selected}, () => {
+      this.props.findOrCreateBrand(value, act);
+    });
   }
 
   findBrand(query) {
@@ -59,11 +70,12 @@ class BrandNameInput extends Component {
   }
 
   onChangeText(text) {
+    console.log('onChangeText', text, this.state.query);
     this.setState({ query: text, selected: false });
-    const name = this.props.brand ? this.props.brand.name : '';
-    if (text != name || text == '') {
-      this.props.clearBrandName();
-    }
+    // const name = this.props.brand ? this.props.brand.name : '';
+    // if (text != name || text == '') {
+    //   this.props.clearBrandName();
+    // }
   }
 
   render() {
@@ -78,18 +90,19 @@ class BrandNameInput extends Component {
     return (
       <View style={{marginBottom: 20}}>
         <Autocomplete
-          query={this.state.query}
-          autoCapitalize="none"
-          autoCorrect={false}
-          selected={this.state.selected}
-          inputContainerStyle={styles.inputContainerStyle}
-          containerStyle={[styles.autocompleteContainer, {height: height}]}
-          listStyle={styles.slistStyle}
-          data={brands.length === 1 && comp(query, brands[0].name) ? [] : brands}
-          defaultValue={query}
-          onChangeText={text => this.onChangeText(text)}
-          placeholder="Type a brand name"
-          findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}/>
+            query={this.state.query}
+            autoCapitalize="none"
+            autoCorrect={false}
+            selected={this.state.selected}
+            inputContainerStyle={styles.inputContainerStyle}
+            containerStyle={[styles.autocompleteContainer, {height: height}]}
+            listStyle={styles.slistStyle}
+            data={brands.length === 1 && comp(query, brands[0].name) ? [] : brands}
+            defaultValue={query}
+            value={query}
+            onChangeText={text => this.onChangeText(text)}
+            placeholder="Type a brand name"
+            findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}/>
       </View>);
   }
 }
