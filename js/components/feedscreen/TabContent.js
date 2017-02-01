@@ -66,7 +66,7 @@ class TabContent extends Component {
   }
 
   handleScroll(event) {
-    Object.keys(this.props.user_size).length !== 0 ? this.scrollCallAsync(event) : null;
+    Object.keys(this.props.user_size).length === 0 ? this.scrollCallAsync(event) : null;
     const contentSizeHeight = event.nativeEvent.contentSize.height;
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const currentScroll = event.nativeEvent.contentOffset.y
