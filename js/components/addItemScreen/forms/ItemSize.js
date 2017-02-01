@@ -41,11 +41,8 @@ const styles = StyleSheet.create({
 class ItemSize extends Component {
 
   static propTypes = {
-    itemSizeRegion: React.PropTypes.string,
-    itemSizeValue: React.PropTypes.string,
+    item: React.PropTypes.object,
     updateValue: React.PropTypes.func,
-    countries: React.PropTypes.array,
-    itemSizes: React.PropTypes.array
   }
 
   constructor(props) {
@@ -90,20 +87,20 @@ class ItemSize extends Component {
   }
 
   render () {
-    const { itemSizes } = this.props;
+    const { itemSizes, countries, item } = this.props;
     const regions = _.uniq(itemSizes.map(x => x.region));
-    console.log('render regions', itemSizes, regions);
-    let flagIcon = uk;
-    this.props.countries.map((c) => {
-      if (c.name == this.props.itemSizeRegion) {
+    const itemSizeRegion = item.itemSizeRegion ? item.itemSizeRegion : _.first(regions);
+    const sizesByCountry = _.filter(itemSizes, x => x.region == itemSizeRegion);
+    const values = _.uniq(sizesByCountry.map(x => x.value));
+    const itemSizeValue = item.itemSizeValue ? item.itemSizeValue : _.first(values);
+    let flagIcon = us;
+    countries.map((c) => {
+      if (c.name == itemSizeRegion) {
         flagIcon = c.icon;
       }
     });
 
-    const itemSizeRegion = this.props.itemSizeRegion ? this.props.itemSizeRegion : _.first(regions);
-    const sizesByCountry = _.filter(itemSizes, x => x.region == itemSizeRegion);
-    const values = _.uniq(sizesByCountry.map(x => x.value));
-    const itemSizeValue = this.props.itemSizeValue ? this.props.itemSizeValue : _.first(values);
+    console.log('item ItemSize', item);
 
     return (<Container style={{flex: 1, marginBottom: 0, marginTop: 0}}>
               <Content scrollEnabled={false}>
@@ -149,8 +146,6 @@ const mapStateToProps = state => {
   return {
     countries: state.filters.countries,
     itemSizes: state.filters.itemSizes,
-    itemSizeRegion: state.uploadLook.itemSizeRegion,
-    itemSizeValue: state.uploadLook.itemSizeValue,
   };
 };
 

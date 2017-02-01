@@ -17,7 +17,16 @@ import { ADD_NEW_LOOK,
         ADD_TRUST_LEVEL,
         ADD_PHOTOS_VIDEO,
         } from '../actions/uploadLook';
-import { SET_ITEM_SIZES } from '../actions/filters';
+import { SET_ITEM_SIZES, SET_CATEGORIES } from '../actions/filters';
+
+const mutateItem = function(state, key, value) {
+  return state.items.map(item => {
+    if (item.id == state.itemId) {
+      item[key] = value;
+    }
+    return item;
+  })
+}
 
 // Action Handlers
 const ACTION_HANDLERS = {
@@ -51,6 +60,20 @@ const ACTION_HANDLERS = {
       userId: item.user_id,
       lookId: item.look_id,
       editing: false,
+      selectedCategoryId: null,
+      brand: null,
+      itemSizeRegion: null,
+      itemSizeValue: null,
+      currency: 'USD',
+      price: 0,
+      description: '',
+      sharingType: true,
+      sharingUrl: '',
+      location: 'us',
+      trustLevel: 0,
+      photos: [],
+      video: '',
+      tags: []
     });
     console.log('reducer items', items);
     return {
@@ -88,28 +111,29 @@ const ACTION_HANDLERS = {
     const selectedCategoryId = action.payload;
     return {
       ...state,
-      selectedCategoryId,
+      items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
     return {
       ...state,
-      brand: action.payload
+      items: mutateItem(state, 'brand', action.payload)
     }
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
     const { itemSizeRegion, itemSizeValue } = action.payload;
     console.log('reducer, ADD_ITEM_SIZE_COUNTRY', itemSizeRegion, itemSizeValue)
+    state.items = mutateItem(state, 'itemSizeRegion', itemSizeRegion)
+    state.items = mutateItem(state, 'itemSizeValue', itemSizeValue)
     return {
       ...state,
-      itemSizeRegion,
-      itemSizeValue,
+      items: state.items,
     }
   },
   [ADD_ITEM_SIZE]: (state, action) => {
     return {
       ...state,
-      itemSizeValue: action.payload
+      items: mutateItem(state, 'itemSizeValue', action.payload)
     }
   },
   [ADD_ITEM_TAG]: (state, action) => {
@@ -119,7 +143,7 @@ const ACTION_HANDLERS = {
     tags = _.uniq(tags);
     return {
       ...state,
-      tags,
+      items: mutateItem(state, 'tags', tags)
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
@@ -127,32 +151,33 @@ const ACTION_HANDLERS = {
     let tags = _.filter(state.tags, x => x.toLowerCase() != action.payload.toLowerCase());
     return {
       ...state,
-      tags,
+      items: mutateItem(state, 'tags', tags)
     }
   },
   [ADD_ITEM_CURRENCY]: (state, action) => {
     return {
       ...state,
-      currency: action.payload
+      items: mutateItem(state, 'currency', action.payload)
     }
   },
   [ADD_ITEM_PRICE]: (state, action) => {
     return {
       ...state,
-      price: action.payload
+      items: mutateItem(state, 'price', price)
     }
   },
   [ADD_SHARING_INFO]: (state, action) => {
+    state.items = mutateItem(state, 'sharingType', action.payload.sharingType)
+    state.items = mutateItem(state, 'sharingUrl', action.payload.sharingUrl)
     return {
       ...state,
-      sharingType: action.payload.sharingType,
-      sharingUrl: action.payload.sharingUrl
+      items: state.items
     }
   },
   [ADD_LOCATION]: (state, action) => {
     return {
       ...state,
-      location: action.payload
+      items: mutateItem(state, 'location', action.payload)
     }
   },
   [ADD_DESCRIPTION]: (state, action) => {
@@ -164,7 +189,7 @@ const ACTION_HANDLERS = {
   [ADD_TRUST_LEVEL]: (state, action) => {
     return {
       ...state,
-      trustLevel: action.payload
+      items: mutateItem(state, 'trustLevel', action.payload)
     }
   },
   [ADD_PHOTOS_VIDEO]: (state, action) => {
@@ -173,8 +198,19 @@ const ACTION_HANDLERS = {
     photos.push({path: action.payload.path, data: action.payload.data});
     return {
       ...state,
-      video: action.payload.video,
-      photos,
+      items: mutateItem(state, 'photos', photos),
+    }
+  },
+  [SET_CATEGORIES]: (state, action) => {
+    console.log('reducer SET_CATEGORIES');
+
+    const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
+    const selectedCategoryId = categories[parseInt(categories.length / 2)].id;
+    console.log('selectedCategoryId', selectedCategoryId);
+
+    return {
+      ...state,
+      items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
     }
   },
   [SET_ITEM_SIZES]: (state, action) => {
@@ -185,17 +221,15 @@ const ACTION_HANDLERS = {
       const item = _.first(sizes);
       const itemSizeRegion = item.region;
       const itemSizeValue = item.value;
+      state.items = mutateItem(state, 'itemSizeRegion', itemSizeRegion)
+      state.items = mutateItem(state, 'itemSizeValue', itemSizeValue)
       return {
         ...state,
-        itemSizes: sizes,
-        itemSizeRegion,
-        itemSizeValue,
+        items: state.items
       }
-    } else {
-      return {
-        ...state,
-        itemSizes: sizes,
-      }
+    }
+    return {
+      ...state,
     }
   },
 }
@@ -204,12 +238,9 @@ const ACTION_HANDLERS = {
 const initialState = {
   editingLookId: null,
   image: null,
-  posInCategories: 3,
   brand: null,
-  itemSizeRegion: null,
-  itemSizeValue: null,
   currency: 'USD',
-  price: 40,
+  price: 0,
   description: '',
   sharingType: true,
   sharingUrl: '',

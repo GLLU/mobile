@@ -22,6 +22,7 @@ import ItemSize from './forms/ItemSize';
 import Tags from './forms/Tags';
 import FontSizeCalculator from './../../calculators/FontSize';
 import { loadCategories } from '../../actions/filters';
+import _ from 'lodash';
 
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxChecked = require('../../../images/icons/checkbox-checked-black.png');
@@ -102,7 +103,6 @@ const styles = StyleSheet.create({
 class ItemInfoView extends Component {
 
   static propTypes = {
-    loadCategories: React.PropTypes.func,
     categories: React.PropTypes.array,
     selectedCategoryId: React.PropTypes.number,
     posInCategories: React.PropTypes.number,
@@ -114,6 +114,7 @@ class ItemInfoView extends Component {
     price: React.PropTypes.number,
     sharingType: React.PropTypes.bool,
     sharingUrl: React.PropTypes.string,
+    loadCategories: React.PropTypes.func,
     addItemType: React.PropTypes.func,
     createBrandName: React.PropTypes.func,
     addBrandName: React.PropTypes.func,
@@ -240,15 +241,23 @@ class ItemInfoView extends Component {
   }
 
   render() {
-    const { categories, selectedCategoryId } = this.props;
-    const { brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
+    const { categories, countries, itemSizes, item } = this.props;
+    const { selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props.item;
     return(<View style={styles.itemInfoView}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
-              <Category categories={categories} selectedCategoryId={selectedCategoryId} onCategorySelected={(cat) => this.selectCategory(cat)} posInCategories={this.props.posInCategories} />
+              <Category
+                  categories={categories}
+                  selectedCategoryId={selectedCategoryId}
+                  onCategorySelected={(cat) => this.selectCategory(cat)}/>
               <Text style={styles.titleLabelInfo}>Brand Name</Text>
-              <BrandNameInput brand={brand} findOrCreateBrand={this.findOrCreateBrand.bind(this)} clearBrandName={this.clearBrandName.bind(this)} />
+              <BrandNameInput
+                  brand={brand}
+                  findOrCreateBrand={this.findOrCreateBrand.bind(this)}
+                  clearBrandName={this.clearBrandName.bind(this)} />
               <Text style={styles.titleLabelInfo}>Item Size</Text>
-              <ItemSize itemSizeRegion={itemSizeRegion} itemSizeValue={itemSizeValue} updateValue={this.updateValue.bind(this)} />
+              <ItemSize
+                  item={item}
+                  updateValue={this.updateValue.bind(this)} />
               <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
               <View style={{margin: 5}}>
                 <TextInput
@@ -286,9 +295,19 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
+  const { itemId, items } = state.uploadLook;
+  const item = _.find(items, item => item.id == itemId);
+  console.log('item selected', item);
   return {
     categories: state.filters.categories,
     ...state.uploadLook,
+    brand: item.brand,
+    itemSizeRegion: item.itemSizeRegion,
+    itemSizeValue: item.itemSizeValue,
+    tags: item.tags,
+    currency: item.currency,
+    price: item.price,
+    item: item
   };
 };
 

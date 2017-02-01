@@ -55,21 +55,24 @@ class CategoryStrip extends Component {
     categories: React.PropTypes.array,
     selectedCategoryId: React.PropTypes.number,
     onCategorySelected: React.PropTypes.func,
-    posInCategories: React.PropTypes.number
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      positionX: this.getPositionX()
+      positionX: this.getPositionX(props.categories, props.selectedCategoryId)
     }
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    const positionX = this.getPositionX(nextProps.categories, nextProps.selectedCategoryId);
+    this.setState({positionX});
   }
 
-  getPositionX() {
-    let itemTypeCalculator = new ItemTypeCalculator(this.props.posInCategories - 1);
+  getPositionX(categories, selectedCategoryId) {
+    let posInCategories = _.findIndex(categories, { 'id': selectedCategoryId });
+    posInCategories = posInCategories == -1 ? 3 : posInCategories;
+    let itemTypeCalculator = new ItemTypeCalculator(posInCategories);
     let x = itemTypeCalculator.findCurrentPosition();
     return x;
   }

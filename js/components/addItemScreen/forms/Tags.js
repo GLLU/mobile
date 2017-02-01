@@ -41,7 +41,7 @@ class Tags extends Component {
     return this.props.tags.map((tag, index) => {
       return (
         <View key={index+1} style={[styles.tagTextContainer]}>
-          <Button iconRight style={{color: '#FFFFFF', backgroundColor: 'transparent'}}>
+          <Button iconRight style={{backgroundColor: 'transparent'}}>
             {tag}
             <Icon name='ios-close' style={{justifyContent: 'flex-end'}} onPress={() => this.props.removeTag(tag)}/>
           </Button>

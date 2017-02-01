@@ -5,6 +5,7 @@ import { View } from 'native-base';
 
 import Autocomplete from './CustomAutocomplete';
 import { loadBrands } from '../../../actions';
+import _ from 'lodash';
 
 const styles = StyleSheet.create({
   inputContainerStyle: {
@@ -100,9 +101,11 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
+  const look = state.uploadLook;
+  const item = _.find(look.items, item => item.id == look.itemId);
   return ({
     brands: state.filters.brands,
-    brand: state.uploadLook.brand
+    brand: item.brand
   });
 };
 
