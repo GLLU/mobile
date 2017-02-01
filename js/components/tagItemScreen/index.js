@@ -61,7 +61,6 @@ class TagItemPage extends Component {
   }
 
   handleBackButton() {
-    console.log('handleBackButton', this.props.navigation.key);
     const item = this.imageEditor.getTag();
     if (item.locationX && item.locationY) {
       this.props.setTagPosition(item);
@@ -72,10 +71,7 @@ class TagItemPage extends Component {
   }
 
   _handleAddTag(position) {
-    console.log('_handleAddTag', this.props.navigation.key);
-    console.log('_handleAddTag', position);
     this.props.createLookItem(position).then(() => {
-      console.log('done createLookItem');
       if (this.props.items.length > 1) {
         this.props.popRoute(this.props.navigation.key);
       } else {
@@ -86,7 +82,6 @@ class TagItemPage extends Component {
 
   render() {
     const { items, image, createLookItem, setTagPosition } = this.props;
-    console.log('render with items', items);
     return (
       <Container style={styles.container}>
         <Header style={{backgroundColor: '#000000'}}>

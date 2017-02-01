@@ -72,8 +72,6 @@ class ImageWithTags extends Component {
         onPanResponderGrant: () => { },
         onPanResponderRelease        : (e, gesture) => {
           this._pan.setOffset(this._value);
-
-          console.log('values', this.state.locationX, this.state.locationY, this._value);
           this._setupPanResponder(this._value.x, this._value.y);
           this.setState({locationX: this._value.x, locationY: this._value.y})
         }
@@ -81,7 +79,6 @@ class ImageWithTags extends Component {
   }
 
   getTag() {
-    console.log('getTag');
     return { locationX: this.state.locationX, locationY: this.state.locationY };
   }
 

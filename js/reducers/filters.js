@@ -55,32 +55,26 @@ const initialState = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_CATEGORIES]: (state, action) => {
-    console.log('reducer SET_CATEGORIES');
     const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
-    console.log('categories', categories);
     return {
       ...state,
       categories,
     }
   },
   [SET_BRANDS]: (state, action) => {
-    console.log('reducer SET_BRANDS');
     const brands = action.payload.brands.map(brand => {
       return {
         id: brand.id,
         name: brand.name
       };
     });
-    console.log('brands', brands);
     return {
       ...state,
       brands
     }
   },
   [SET_ITEM_SIZES]: (state, action) => {
-    console.log('reducer SET_ITEM_SIZES', action.payload);
     const sizes = action.payload.sizes;
-    console.log('sizes', sizes);
     return {
       ...state,
       itemSizes: sizes,

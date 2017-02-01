@@ -151,7 +151,6 @@ class ItemInfoView extends Component {
   selectCategory(item) {
     if (item.id != this.props.selectedCategoryId) {
       this.props.addItemType(item.id);
-      console.log(`Selet category Id: ${item.id}`);
     }
   }
 
@@ -300,7 +299,6 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
-  console.log('item selected', item);
   return {
     categories: state.filters.categories,
     ...state.uploadLook,

@@ -53,7 +53,6 @@ class ItemSize extends Component {
   }
 
   _renderRegionPicker(regions, itemSizeRegion) {
-    console.log('_renderRegionPicker', regions, itemSizeRegion);
     if (regions.length > 0) {
       return <Picker
                   style={styles.selectOptions}
@@ -70,7 +69,6 @@ class ItemSize extends Component {
   }
 
   _renderValuePicker(values, itemSizeValue) {
-    console.log('_renderValuePicker', values, itemSizeValue);
     if (values.length > 0) {
       return <Picker
         style={[styles.selectOptions, {width: 100}]}
@@ -99,8 +97,6 @@ class ItemSize extends Component {
         flagIcon = c.icon;
       }
     });
-
-    console.log('item ItemSize', item);
 
     return (<Container style={{flex: 1, marginBottom: 0, marginTop: 0}}>
               <Content scrollEnabled={false}>

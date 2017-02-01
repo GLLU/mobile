@@ -43,7 +43,6 @@ const ACTION_HANDLERS = {
     }
   },
   [EDIT_NEW_LOOK]: (state, action) => {
-    console.log('reducer edit new look', action.payload);
     const lookId = action.payload.look.id;
     const image = action.payload.image;
     return {
@@ -59,7 +58,6 @@ const ACTION_HANDLERS = {
     }
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
-    console.log('reducer CREATE_LOOK_ITEM_BY_POSITION', action.payload);
     const item = action.payload.item;
     const itemId = item.id
     const items = state.items;
@@ -87,7 +85,6 @@ const ACTION_HANDLERS = {
       video: '',
       tags: []
     });
-    console.log('reducer items', items);
     return {
       ...state,
       itemId,
@@ -101,10 +98,8 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_TAG_POSITION]: (state, action) => {
-    console.log('reducers SET_TAG_POSITION', state, action);
     const tags = state.tags;
     let tag = _.find(tags, (tag) => tag.editing);
-    console.log('tag', tag);
     if (!tag) {
       tag = {};
       tags.push(tag);
@@ -119,7 +114,6 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {
-    console.log('reducers ADD_ITEM_TYPE', action.payload);
     const selectedCategoryId = action.payload;
     return {
       ...state,
@@ -134,7 +128,6 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
     const { itemSizeRegion, itemSizeValue } = action.payload;
-    console.log('reducer, ADD_ITEM_SIZE_COUNTRY', itemSizeRegion, itemSizeValue)
     state.items = mutateItem(state, 'itemSizeRegion', itemSizeRegion)
     state.items = mutateItem(state, 'itemSizeValue', itemSizeValue)
     return {
@@ -149,14 +142,12 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TAG]: (state, action) => {
-    console.log('reducer ADD_ITEM_TAG', action.payload);
     return {
       ...state,
       items: mutateItem(state, 'tags', action.payload)
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
-    console.log('reducer REMOVE_ITEM_TAG', action.payload);
     let tags = _.filter(state.tags, x => x.toLowerCase() != action.payload.toLowerCase());
     return {
       ...state,
@@ -202,7 +193,6 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_PHOTOS_VIDEO]: (state, action) => {
-    console.log('ADD_PHOTOS_VIDEO');
     const photos = state.photos;
     photos.push({path: action.payload.path, data: action.payload.data});
     return {
@@ -211,21 +201,15 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_CATEGORIES]: (state, action) => {
-    console.log('reducer SET_CATEGORIES');
-
     const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
     const selectedCategoryId = categories[parseInt(categories.length / 2)].id;
-    console.log('selectedCategoryId', selectedCategoryId);
-
     return {
       ...state,
       items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
     }
   },
   [SET_ITEM_SIZES]: (state, action) => {
-    console.log('reducer SET_ITEM_SIZES', action.payload);
     const sizes = action.payload.sizes;
-    console.log('sizes', sizes);
     if (sizes.length > 0 && !state.itemSizeRegion && !state.itemSizeValue) {
       const item = _.first(sizes);
       const itemSizeRegion = item.region;

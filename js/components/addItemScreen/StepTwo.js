@@ -133,7 +133,6 @@ class StepTwo extends Component {
   }
 
   addVideo() {
-    console.log('Add video');
     ImagePicker.openPicker({
       cropping: false
     }).then(video => {

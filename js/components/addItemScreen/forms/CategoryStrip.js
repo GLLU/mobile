@@ -84,14 +84,12 @@ class CategoryStrip extends Component {
       let prev = itemTypeCalculator.findPrevPosition();
       let next = itemTypeCalculator.findNextPosition();
       if ( prev <= currentScrollX && currentScrollX <= next ) {
-        console.log(`Select ${cate.name}`);
         this.props.onCategorySelected(cate);
       }
     });
   }
 
   _handleSelectCategory(item) {
-    console.log('_handleSelectCategory', item);
     this.props.onCategorySelected(item);
   }
 
@@ -108,7 +106,6 @@ class CategoryStrip extends Component {
     const { selectedCategoryId, categories } = this.props;
     if (selectedCategoryId) {
       const category = _.find(categories, item => item.id == selectedCategoryId);
-      console.log('_renderSelection', selectedCategoryId, category)
       return (<View style={{}}>
           <View style={[styles.triangleContainer, {bottom: 50}]}>
             <Triangle

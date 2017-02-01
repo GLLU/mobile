@@ -61,7 +61,6 @@ class AddItemPage extends Component {
   }
 
   backToFeedScreen() {
-    console.log('Back to FeedScreen');
     this.replaceRoute('feedscreen');
   }
 
@@ -70,21 +69,16 @@ class AddItemPage extends Component {
   }
 
   continueAction() {
-    console.log('CONTINUE');
-
     this.props.updateLookItem().then(response => {
-      console.log('done updateLookItem', response);
       this.selectTab(this.state.currentStep + 1);
     });
   }
 
   tagAnotherAction() {
-    console.log('TAG ANOTHER');
     this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
   }
 
   publishAction() {
-    console.log('Publish');
     this.props.publishLookItem().then(response => {
       this.popRoute();
     });
@@ -106,7 +100,6 @@ class AddItemPage extends Component {
   }
 
   _handleSwiperScrollEnd(e, state, context) {
-    console.log('_handleSwiperScrollEnd');
     const currentStep = this.state.currentStep;
     const nextStep = currentStep == 0 ? 1 : 0;
     this.setState({currentStep: nextStep});

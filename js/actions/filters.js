@@ -56,11 +56,8 @@ export function loadItemSizes(categoryId):Action {
       tag_id: categoryId
     };
 
-    console.log('loadItemSizes', params);
-
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.sizes(params, (err, data) => {
-        console.log('item sizes', err, data);
         if (!err && data) {
           resolve(dispatch({
             type: SET_ITEM_SIZES,

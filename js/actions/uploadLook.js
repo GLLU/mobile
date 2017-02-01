@@ -25,7 +25,6 @@ import { showLoader, hideLoader, loadBrands, loadItemSizes } from './index';
 
 // Actions
 export function addNewLook(image) {
-  console.log('addNewLook', image.path);
   return (dispatch) => {
     dispatch(showLoader());
     const body = {
@@ -73,7 +72,6 @@ export function setTagPosition(payload) {
 }
 
 export function createLookItem(position) {
-  console.log('action createLookItem', position);
   return (dispatch, getState) => {
     dispatch(showLoader());
     const state = getState();
@@ -102,7 +100,6 @@ export function createLookItem(position) {
 }
 
 export function selectLookItem(itemId) {
-  console.log('action selectLookItem', itemId);
   return {
     type: SELECT_LOOK_ITEM,
     payload: itemId
@@ -110,7 +107,6 @@ export function selectLookItem(itemId) {
 }
 
 export function updateLookItem() {
-  console.log('actions updateLookItem');
   return (dispatch, getState) => {
     const state = getState();
 
@@ -128,7 +124,6 @@ export function updateLookItem() {
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.items.put({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
-          console.log('item updated');
           resolve();
         } else {
           reject(err);
@@ -139,7 +134,6 @@ export function updateLookItem() {
 }
 
 export function publishLookItem() {
-  console.log('action publishLookItem');
   return (dispatch, getState) => {
     const state = getState();
 
@@ -172,7 +166,6 @@ export function publishLookItem() {
           "look_id": state.uploadLook.lookId,
         }
       }
-      console.log('action publish publishLookItem', publish);
       return dispatch(createEntity(publish));
     })
   }
@@ -190,7 +183,6 @@ export function addItemType(categoryId) {
 }
 
 export function addBrandName(payload) {
-  console.log('action addBrandName', payload);
   return {
     type: ADD_BRAND_NAME,
     payload: payload
@@ -218,8 +210,6 @@ export function createBrandName(name) {
 }
 
 export function addItemSizeCountry(region) {
-  console.log('actions addItemSizeCountry', region);
-
   return (dispatch, getState) => {
     const itemSizes = getState().filters.itemSizes;
     const sizesByCountry = _.filter(itemSizes, x => x.region == region);
@@ -235,7 +225,6 @@ export function addItemSizeCountry(region) {
 }
 
 export function addItemSize(payload) {
-  console.log('action addItemSize', payload);
   return {
     type: ADD_ITEM_SIZE,
     payload: payload
@@ -243,7 +232,6 @@ export function addItemSize(payload) {
 }
 
 export function addItemTag(tags) {
-  console.log('action addItemTag', tags);
   return (dispatch) => {
     return dispatch({
       type: ADD_ITEM_TAG,
@@ -253,7 +241,6 @@ export function addItemTag(tags) {
 }
 
 export function removeItemTag(tag) {
-  console.log('action removeItemTag', tag);
   return (dispatch) => {
     return dispatch({
       type: REMOVE_ITEM_TAG,
