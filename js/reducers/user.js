@@ -19,7 +19,6 @@ export default function (state:State = initialState, action:Action): State {
     };
   }
   if(action.type === COMPLETE_EDIT_BODY_MEASURE){
-    console.log('2', action.payload);
     return {
       ...state,
       user_size: action.payload.sizeInfo
