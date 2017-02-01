@@ -2,6 +2,7 @@ export const ADD_NEW_LOOK = 'ADD_NEW_LOOK';
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
+export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
@@ -97,6 +98,14 @@ export function createLookItem(position) {
         }
       }));
     });
+  }
+}
+
+export function selectLookItem(itemId) {
+  console.log('action selectLookItem', itemId);
+  return {
+    type: SELECT_LOOK_ITEM,
+    payload: itemId
   }
 }
 
@@ -233,12 +242,12 @@ export function addItemSize(payload) {
   }
 }
 
-export function addItemTag(tag) {
-  console.log('action addItemTag', tag);
+export function addItemTag(tags) {
+  console.log('action addItemTag', tags);
   return (dispatch) => {
     return dispatch({
       type: ADD_ITEM_TAG,
-      payload: tag
+      payload: tags
     });
   };
 }

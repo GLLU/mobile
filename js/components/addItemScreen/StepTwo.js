@@ -229,9 +229,14 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  ...state.uploadLook,
-});
+const mapStateToProps = state => {
+  const { itemId, items } = state.uploadLook;
+  const item = _.find(items, item => item.id == itemId);
+  return {
+    navigation: state.cardNavigation,
+    ...state.uploadLook,
+    photos: item.photos
+  }
+};
 
 export default connect(mapStateToProps, bindActions)(StepTwo);

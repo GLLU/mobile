@@ -34,12 +34,13 @@ const styles = StyleSheet.create({
 class ImageWithTags extends Component {
 
   static propTypes = {
-    createLookItem: React.PropTypes.func,
     image: React.PropTypes.string,
     items: React.PropTypes.array,
     editingTag: React.PropTypes.object,
     width: React.PropTypes.number,
-    editMode: React.PropTypes.bool
+    editMode: React.PropTypes.bool,
+    createLookItem: React.PropTypes.func,
+    selectLookItem: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -92,12 +93,21 @@ class ImageWithTags extends Component {
     });
   }
 
+  _handleMarkerPress(item) {
+    if (!this.props.editMode && this.props.selectLookItem) {
+      this.props.selectLookItem(item.id);
+    }
+  }
+
   renderTags() {
     const items = _.filter(this.props.items, (x) => !x.editing);
     return items.map((item, i) => {
-      return (<View key={i} style={[styles.itemItem, { top: item.locationY, left: item.locationX}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          <Image source={itemBackground} style={styles.itemBgImage} />
-        </View>);
+      return (
+        <TouchableOpacity key={i} onPress={(e) => this._handleMarkerPress(item)}>
+          <View style={[styles.itemItem, { top: item.locationY, left: item.locationX}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+            <Image source={itemBackground} style={styles.itemBgImage} />
+          </View>
+        </TouchableOpacity>);
     });
   }
 
@@ -115,7 +125,7 @@ class ImageWithTags extends Component {
       return (<Animated.View
                     {...this.panResponder.panHandlers}
                     style={[layout, styles.itemItem, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                    <Image source={itemBackground} style={styles.itemBgImage} />
+                  <Image source={itemBackground} style={styles.itemBgImage} />
                 </Animated.View>);
     }
 

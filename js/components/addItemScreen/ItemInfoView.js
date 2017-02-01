@@ -191,13 +191,16 @@ class ItemInfoView extends Component {
     const tags = this.props.tags;
     const existing = _.find(tags, t => t.toLowerCase() == name.toLowerCase());
     if (!existing) {
-      this.props.addItemTag(name);
+      tags.push(name);
+      this.props.addItemTag(tags);
     }
     this.setState({tmpValue: ''});
   }
 
   removeTag(name) {
-    this.props.removeItemTag(name);
+    const { tags } = this.props;
+    let newTags = _.filter(tags, x => x.toLowerCase() != name.toLowerCase());
+    this.props.addItemTag(newTags);
   }
 
   _renderSharing() {

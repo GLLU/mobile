@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import { ADD_NEW_LOOK,
         EDIT_NEW_LOOK,
-        EDIT_TAG, CREATE_LOOK_ITEM_BY_POSITION,
+        EDIT_TAG,
+        CREATE_LOOK_ITEM_BY_POSITION,
+        SELECT_LOOK_ITEM,
         SET_TAG_POSITION,
         ADD_ITEM_TYPE,
         ADD_BRAND_NAME,
@@ -28,6 +30,10 @@ const mutateItem = function(state, key, value) {
   })
 }
 
+const findItem = function(state) {
+  return _.find(state.items, x => x.id == state.itemId);
+}
+
 // Action Handlers
 const ACTION_HANDLERS = {
   [ADD_NEW_LOOK]: (state, action) => {
@@ -44,6 +50,12 @@ const ACTION_HANDLERS = {
       ...state,
       image,
       lookId,
+    }
+  },
+  [SELECT_LOOK_ITEM] :(state, action) => {
+    return {
+      ...state,
+      itemId: action.payload
     }
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
@@ -138,12 +150,9 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_TAG]: (state, action) => {
     console.log('reducer ADD_ITEM_TAG', action.payload);
-    let tags = state.tags;
-    tags.push(action.payload);
-    tags = _.uniq(tags);
     return {
       ...state,
-      items: mutateItem(state, 'tags', tags)
+      items: mutateItem(state, 'tags', action.payload)
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
@@ -238,18 +247,9 @@ const ACTION_HANDLERS = {
 const initialState = {
   editingLookId: null,
   image: null,
-  brand: null,
-  currency: 'USD',
-  price: 0,
   description: '',
-  sharingType: true,
-  sharingUrl: '',
   items: [],
-  location: 'us',
-  trustLevel: 0,
-  photos: [],
   video: '',
-  tags: []
 }
 
 export default function mybodyTypeReducer (state = initialState, action) {
