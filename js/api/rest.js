@@ -38,15 +38,13 @@ export default reduxApi({
   //     }
   //   ]
   // },
-  // size: {
-  //   url: '/users/:user_id/size',
-  //   options: {
-  //     headers: {
-  //       "Authorization": `Bearer hFHv8LbPJIhB1HrUQ62rowtt`
-  //     }
-  //   },
-  //   crud: true
-  // },
+  size: {
+    url: '/users/:user_id/size',
+    options: {
+      method: 'post'
+    },
+    crud: true
+  },
   tags: '/tags',
   brands: {
     url: '/brands',
