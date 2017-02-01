@@ -7,34 +7,35 @@ export default StyleSheet.create({
   container: {
 
   },
-  itemContainer: {
-    position: 'relative'
+  tempBtn: {
+    position: 'absolute',width: 50, height: 50, backgroundColor :'green'
   },
   itemImage: {
     width: w,
     height: h,
-    resizeMode: 'cover'
+  },
+  topContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   topLeft: {
-    position: 'absolute',
-    top: 20,
     left: 10
   },
   topRight: {
-    position: 'absolute',
-    top: 20,
     right: 10
   },
+  bottomContainer: {
+    flexDirection: 'row',
+    bottom: 20
+  },
+
   bottomLeft: {
-    position: 'absolute',
-    bottom: 10,
     left: 10
   },
   bottomRight: {
     flexWrap: 'wrap',
     flexDirection:'row',
     position: 'absolute',
-    bottom: 10,
     right: 10
   },
   footerButton: {
@@ -61,11 +62,6 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection:'row',
   },
-  fakeContainer: {
-    position: 'absolute',
-    width: w,
-    height: h
-  },
   topButton: {
     width: 84,
     height: 84,
@@ -90,17 +86,26 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,.5)'
   },
   bodyTypeButton: {
-    flexWrap: 'wrap',
-    flexDirection:'row',
     backgroundColor: 'rgba(5, 215, 178,.5)'
   },
   bodyTypeButtonIcon: {
-
+    width: 50,
+    height: 50,
+    opacity: 0.8
   },
   bodyTypeButtonText: {
     fontSize: 20,
     color: '#fff',
     fontWeight: 'bold',
     backgroundColor: 'transparent'
+  },
+  lookInfo: {
+    height: h-35,
+    justifyContent: 'space-between'
+  },
+  buyItContainer: {
+    position: 'absolute',
+    height: h,
+    top: 0
   }
 });

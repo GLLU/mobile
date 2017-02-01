@@ -65,13 +65,20 @@ class MainView extends Component {
     }
   }
 
+  _renderLoading() {
+    if(this.props.navigation.index === 0){
+      return <SpinnerSwitch />
+    } else {
+      this._renderFeed()
+    }
+  }
   render() {
     return(
       <View style={styles.mainView} scrollEnabled={false}>
         <Container>
             <Content theme={tabTheme} scrollEnabled={false}>
               <FilterBar filterFeed={(type, category, term) => this._filterFeed(type, category, term)} clearSearchTerm={this.props.clearSearchTerm}/>
-              { this.props.isLoading === 0 ? this._renderFeed() : <SpinnerSwitch /> }
+              { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }
             </Content>
         </Container>
       </View>
@@ -88,6 +95,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => ({
   isLoading: state.api.isReading,
   looks: state.feed.looks,
+  navigation: state.cardNavigation,
 });
 
 export default connect(mapStateToProps, bindActions)(MainView);

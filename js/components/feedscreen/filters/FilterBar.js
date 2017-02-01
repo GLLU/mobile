@@ -48,7 +48,7 @@ class FilterView extends Component {
     this.setState({
       selectedCategory: selected
     });
-    let category = selected === '' ? selected : item.attributes.name;
+    let category = selected === '' ? selected : item.name;
     let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
     this.props.filterFeed(type, category);
     console.log(`Filter by category Id: ${item.id}`);
@@ -107,7 +107,7 @@ class FilterView extends Component {
     const filterOnChangeCategory = this.state.selectedCategory;
       const filters = [];
       if (filterOnChangeCategory) {
-        filters.push(this.state.selectedCategory.attributes.name);
+        filters.push(this.state.selectedCategory.name);
       }
       return (
         <View>
@@ -141,7 +141,7 @@ class FilterView extends Component {
     this.setState({
       feedTypeSelectedOption
     })
-    let isCategorySelected = this.state.selectedCategory ? this.state.selectedCategory.attributes.name : '';
+    let isCategorySelected = this.state.selectedCategory ? this.state.selectedCategory.name : '';
     let type = feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
     this.props.filterFeed(type, isCategorySelected)
   }
@@ -181,7 +181,8 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const tags = state.api.tags ? state.api.tags.data : [];
+  const tags = state.filters.categories.tags ? state.filters.categories.tags : [];
+  console.log();
   return {
     categories: tags,
     minPrice: state.filters.minPrice,

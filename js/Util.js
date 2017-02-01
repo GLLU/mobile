@@ -18,6 +18,7 @@ export default class Utils {
       tempObj.id = look.id;
       tempImgObj = _.pick(look.attributes.cover, ['width', 'height']);
       tempImgObj.uri = look.attributes.cover.image.small.url;
+      tempImgObj.uriMedium = look.attributes.cover.image.medium.url;
       Object.assign(tempObj, tempImgObj);
       flatLooksArr.push(tempObj);
     });

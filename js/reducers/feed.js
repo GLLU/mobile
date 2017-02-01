@@ -8,32 +8,33 @@ const initialState = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_LOOK_LIKE_STATE]: (state, action) => {
-    const { look_id, liked } = action.payload;
+    const { id, likes, liked } = action.payload;
     return {
       ...state,
       flatLooksData: state.flatLooksData.map((look, index) => {
-        if (look.id == look_id) {
+        if (look.id == id) {
           look.liked = liked;
+          look.likes = likes;
         }
         return look;
       })
     }
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
-    console.log('reducers SET_FLAT_LOOKS_FEED_DATA', action.payload)
     const flatLooksData = action.payload.looks.map(look => {
+      let coverImg = _.find(look.cover, image => image.version == 'large')
+      let coverImgUrl = coverImg.url ? coverImg.url : 'http://blog.adsy.me/wp-content/uploads/2015/06/how-to-fix-error-404.jpg';
       return Object.assign({}, {
         liked: look.is_liked,
         type: look.user_size.body_type,
         id: look.id,
         likes: look.likes,
         user_id: look.user_id,
-        uri: look.cover.image.url,
-        width: look.cover.width,
-        height: look.cover.height,
+        uri: coverImgUrl,
+        width: coverImg.width,
+        height: coverImg.height,
       });
     });
-    console.log('flatLooksData', flatLooksData)
     return {
       ...state,
       flatLooksData,

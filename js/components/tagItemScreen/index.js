@@ -72,7 +72,7 @@ class TagItemPage extends Component {
 
   _handleAddTag(position) {
     console.log('_handleAddTag', position);
-    this.props.createLookItem(this.props.lookId, position).then(() => {
+    this.props.createLookItem(position).then(() => {
       console.log('done createLookItem');
       this.props.navigateTo('addItemScreen', 'feedscreen');
     });

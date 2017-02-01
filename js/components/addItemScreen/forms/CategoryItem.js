@@ -65,7 +65,7 @@ class CategoryItem extends Component {
   render() {
     const { item, selected, onPress } = this.props;
     const categoryItemTitle = selected ? styles.categoryItemSelectedTitle : styles.categoryItemTitle;
-    const url = item.attributes.icon ? item.attributes.icon.url : false;
+    const url = item.icon ? item.icon.url : false;
     return (<View style={styles.categoryItem}>
               <Text style={categoryItemTitle}>{item.attributes.name}</Text>
               <Button transparent style={styles.btncategoryItem} onPress={() => onPress(item)} >

@@ -6,6 +6,7 @@ import { View, Button, Text } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
+import { connect } from 'react-redux';
 
 const likeIcon = require('../../../../images/icons/like.png');
 const likedIcon = require('../../../../images/icons/liked.png');
@@ -14,7 +15,6 @@ const bgShadow = require('../../../../images/background-shadow.png');
 class LikeView extends Component {
 
   static propTypes = {
-    index: React.PropTypes.number,
     item: React.PropTypes.object,
     onPress: React.PropTypes.func
   }
@@ -23,23 +23,30 @@ class LikeView extends Component {
     super(props);
   }
 
+  handleLikePress() {
+    this.props.onPress(this.props.item , !this.props.item.liked)
+  }
+
   render() {
     const img = this.props.item;
-    const likeIconView = img.liked ? likedIcon : likeIcon;
-    return (<View style={[styles.likeContainer, { marginTop: img.height - 35 }]}>
-                <Image source={bgShadow} style={styles.bgShadow} />
-                <Grid>
-                    <Col>
-                      <Button transparent onPress={() => this.props.onPress(img)} style={styles.btnWithImage}>
-                        <Image source={likeIconView} style={styles.iconWithImage} />
-                      </Button>
-                    </Col>
-                    <Col>
-                      <Text style={styles.countLikeLabel}>{img.likes}</Text>
-                    </Col>
-                </Grid>
-              </View>)
+    const likeIconView = this.props.item.liked ? likedIcon : likeIcon;
+    return (
+      <View style={[styles.likeContainer, { marginTop: img.height - 35 }]}>
+        <Image source={bgShadow} style={styles.bgShadow} />
+        <Grid>
+            <Col>
+              <Button transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
+                <Image source={likeIconView} style={styles.iconWithImage} />
+              </Button>
+            </Col>
+            <Col>
+              <Text style={styles.countLikeLabel}>{this.props.item.likes}</Text>
+            </Col>
+        </Grid>
+      </View>
+    )
   }
 }
 
-export default LikeView;
+export default LikeView
+

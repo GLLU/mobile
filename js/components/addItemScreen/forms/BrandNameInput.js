@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { View } from 'native-base';
 
 import Autocomplete from './CustomAutocomplete';
-import { readEndpoint } from '../../../actions';
+import { loadBrands } from '../../../actions';
 
 const styles = StyleSheet.create({
   inputContainerStyle: {
@@ -32,22 +32,17 @@ class BrandNameInput extends Component {
     const query = this.props.brand ? this.props.brand.name : '';
     this.state = {
       query,
-      selected: false
+      selected: (this.props.brand != null)
     };
   }
 
   componentWillMount() {
-    this.props.loadBrands().then(response => {
-      console.log('loadBrands', response);
-    });
-  }
-
-  componentDidMount() {
+    this.props.loadBrands();
   }
 
   handleFindOrCreateBrand(value, act) {
     this.state.query = act ? value : value.name;
-    this.state.selected = !act;
+    this.state.selected = true;
     this.props.findOrCreateBrand(value, act);
   }
 
@@ -100,19 +95,14 @@ class BrandNameInput extends Component {
 
 function bindActions(dispatch) {
   return {
-    loadBrands: () => dispatch(readEndpoint('brands')),
+    loadBrands: () => dispatch(loadBrands()),
   }
 }
 
 const mapStateToProps = state => {
-  let brands = [];
-  if (state.api.brands) {
-    brands = state.api.brands.data.map(x => {
-      return {id: x.id, name: x.attributes['name'] };
-    });
-  }
+  console.log('brand', state.uploadLook.brand);
   return ({
-    brands,
+    brands: state.filters.brands,
     brand: state.uploadLook.brand
   });
 };
