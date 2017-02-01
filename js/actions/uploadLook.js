@@ -159,15 +159,6 @@ export function publishLookItem() {
         }
       }));
     });
-    return dispatch(updateEntity(entity)).then(response => {
-      const publish = {
-        "type": "look_publish",
-        "attributes": {
-          "look_id": state.uploadLook.lookId,
-        }
-      }
-      return dispatch(createEntity(publish));
-    })
   }
 }
 

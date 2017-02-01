@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native'
+import { Image, Dimensions } from 'react-native'
 import { View, Text, Button } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import styles from './styles';
+
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 const userIcon = require('../../../images/icons/user.png');
 const userWithNotifyIcon = require('../../../images/icons/user-with-notify.png');
@@ -34,9 +37,13 @@ class NavigationBarView extends Component {
   }
 
   openCamera() {
+    const width = deviceWidth - 40;
+    const height = width * 16 / 9;
     ImagePicker.openPicker({
+      width: width,
+      height: height,
       includeBase64: true,
-      cropping: false,
+      cropping: true,
     }).then(image => {
       this.props.goToAddNewItem(image);
     });

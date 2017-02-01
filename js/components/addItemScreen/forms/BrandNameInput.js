@@ -118,7 +118,7 @@ const mapStateToProps = state => {
   const item = _.find(look.items, item => item.id == look.itemId);
   return ({
     brands: state.filters.brands,
-    brand: item.brand
+    brand: item ? item.brand : null
   });
 };
 

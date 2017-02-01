@@ -107,7 +107,7 @@ class AddItemPage extends Component {
   }
 
   popRoute() {
-    this.props.popRoute(this.props.navigation.key);
+    return this.props.popRoute(this.props.navigation.key);
   }
 
   render() {

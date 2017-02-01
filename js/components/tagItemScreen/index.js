@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {Container, Header, Content, Button, Icon, Title, View } from 'native-base';
 import { createLookItem, setTagPosition, navigateTo, popRoute } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
+import glluTheme from '../../themes/gllu-theme';
 
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
@@ -83,16 +84,22 @@ class TagItemPage extends Component {
   render() {
     const { items, image, createLookItem, setTagPosition } = this.props;
     return (
-      <Container style={styles.container}>
+      <Container style={styles.container} theme={glluTheme}>
         <Header style={{backgroundColor: '#000000'}}>
           <Button transparent onPress={() => this.handleBackButton()}>
             <Icon name="ios-arrow-back" />
           </Button>
           <Title style={{fontFamily: 'PlayfairDisplay-Regular', color: '#ffffff'}}>Tap item to add</Title>
         </Header>
-        <View contentContainerStyle={{backgroundColor: '#000000', padding: 10}}>
-          <ImageWithTags ref={(ref) => this.imageEditor = ref} editMode={true} items={items} image={image} createLookItem={this._handleAddTag.bind(this)} setTagPosition={setTagPosition}/>
-        </View>
+        <Content contentContainerStyle={{backgroundColor: '#000000', alignItems: 'center'}}>
+          <ImageWithTags
+              ref={(ref) => this.imageEditor = ref}
+              editMode={true}
+              items={items}
+              image={image}
+              createLookItem={this._handleAddTag.bind(this)}
+              setTagPosition={setTagPosition}/>
+        </Content>
       </Container>
     );
   }

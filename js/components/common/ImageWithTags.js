@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity } from 'react-native';
 import { View } from 'native-base';
 import _ from 'lodash';
+import glluTheme from '../../themes/gllu-theme';
 
 const itemBackground = require('../../../images/tag-background.png');
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
 const w = Dimensions.get('window').width;
+const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   draggableContainer: {
@@ -130,8 +132,17 @@ class ImageWithTags extends Component {
   }
 
   _render() {
-    const width = this.props.width ? this.props.width : w;
-    const height = width * 2848 / 4288;
+    let width = 300;
+    let height = 400;
+    if (this.props.width) {
+      width = this.props.width;
+      height = width * 16 / 9;
+    } else {
+      height = h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight;
+      width = height * 9 / 16;
+    }
+    
+    console.log('width height', width, height);
     return (<Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
       <View style={[styles.draggableContainer, {width, height}]}>
         {this.renderTags()}

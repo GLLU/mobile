@@ -41,7 +41,10 @@ const styles = StyleSheet.create({
 class ItemSize extends Component {
 
   static propTypes = {
-    item: React.PropTypes.object,
+    itemSizeRegion: React.PropTypes.string,
+    itemSizeValue: React.PropTypes.string,
+    countries: React.PropTypes.array,
+    itemSizes: React.PropTypes.array,
     updateValue: React.PropTypes.func,
   }
 
@@ -85,12 +88,12 @@ class ItemSize extends Component {
   }
 
   render () {
-    const { itemSizes, countries, item } = this.props;
+    const { itemSizes, countries } = this.props;
     const regions = _.uniq(itemSizes.map(x => x.region));
-    const itemSizeRegion = item.itemSizeRegion ? item.itemSizeRegion : _.first(regions);
+    const itemSizeRegion = this.props.itemSizeRegion ? this.props.itemSizeRegion : _.first(regions);
     const sizesByCountry = _.filter(itemSizes, x => x.region == itemSizeRegion);
     const values = _.uniq(sizesByCountry.map(x => x.value));
-    const itemSizeValue = item.itemSizeValue ? item.itemSizeValue : _.first(values);
+    const itemSizeValue = this.props.itemSizeValue ? this.props.itemSizeValue : _.first(values);
     let flagIcon = us;
     countries.map((c) => {
       if (c.name == itemSizeRegion) {

@@ -234,7 +234,7 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
-    photos: item.photos
+    photos: item ? item.photos : [],
   }
 };
 

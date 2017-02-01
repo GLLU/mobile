@@ -39,7 +39,9 @@ const ACTION_HANDLERS = {
   [ADD_NEW_LOOK]: (state, action) => {
     return {
       ...state,
-      image: action.payload.image
+      image: action.payload.image,
+      items: [],
+      itemId: null,
     }
   },
   [EDIT_NEW_LOOK]: (state, action) => {
@@ -49,6 +51,8 @@ const ACTION_HANDLERS = {
       ...state,
       image,
       lookId,
+      items: [],
+      itemId: null,
     }
   },
   [SELECT_LOOK_ITEM] :(state, action) => {
@@ -230,6 +234,7 @@ const ACTION_HANDLERS = {
 // Reducer
 const initialState = {
   editingLookId: null,
+  itemId: null,
   image: null,
   description: '',
   items: [],

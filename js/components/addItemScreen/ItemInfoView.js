@@ -243,8 +243,8 @@ class ItemInfoView extends Component {
   }
 
   render() {
-    const { categories, countries, itemSizes, item } = this.props;
-    const { selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props.item;
+    const { categories, countries, itemSizes } = this.props;
+    const { selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
     return(<View style={styles.itemInfoView}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
               <Category
@@ -258,7 +258,8 @@ class ItemInfoView extends Component {
                   clearBrandName={this.clearBrandName.bind(this)} />
               <Text style={styles.titleLabelInfo}>Item Size</Text>
               <ItemSize
-                  item={item}
+                  itemSizeRegion={itemSizeRegion}
+                  itemSizeValue={itemSizeValue}
                   updateValue={this.updateValue.bind(this)} />
               <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
               <View style={{margin: 5}}>
@@ -299,17 +300,31 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
+  if (item) {
+    return {
+      categories: state.filters.categories,
+      ...state.uploadLook,
+      selectedCategoryId: item.selectedCategoryId,
+      brand: item.brand,
+      itemSizeRegion: item.itemSizeRegion,
+      itemSizeValue: item.itemSizeValue,
+      tags: item.tags,
+      currency: item.currency,
+      price: item.price,
+    };
+  }
+
   return {
     categories: state.filters.categories,
     ...state.uploadLook,
-    brand: item.brand,
-    itemSizeRegion: item.itemSizeRegion,
-    itemSizeValue: item.itemSizeValue,
-    tags: item.tags,
-    currency: item.currency,
-    price: item.price,
-    item: item
-  };
+    selectedCategoryId: null,
+    brand: null,
+    itemSizeRegion: null,
+    itemSizeValue: null,
+    tags: [],
+    currency: 'USD',
+    price: 0,
+  }
 };
 
 export default connect(mapStateToProps, bindActions)(ItemInfoView);
