@@ -38,9 +38,8 @@ const styles = StyleSheet.create({
   describe: {
     flex: 1,
     height: 60,
-    fontFamily: 'PlayfairDisplay',
+    fontFamily: 'PlayfairDisplay-Regular',
     fontSize: new FontSizeCalculator(18).getSize(),
-    fontFamily: 'Times New Roman',
     color: '#9E9E9E',
     marginVertical:6,
     backgroundColor: '#FFFFFF',
@@ -59,7 +58,6 @@ const styles = StyleSheet.create({
     height: 120,
     fontFamily: 'Montserrat',
     fontSize: new FontSizeCalculator(15).getSize(),
-    fontFamily: 'Times New Roman',
     fontWeight: '300',
     color: '#000',
     backgroundColor: 'transparent',
