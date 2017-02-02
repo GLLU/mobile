@@ -22,27 +22,61 @@ import _ from 'lodash';
 
 import rest from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes } from './index';
-
+var FileUpload = require('NativeModules').FileUpload;
 // Actions
 export function addNewLook(image) {
   return (dispatch) => {
     dispatch(showLoader());
-    const body = {
-      look: {
-        image: `data:image/jpeg;base64,${image.data}`
-      }
+
+    var obj = {
+      uploadUrl: 'https://sam.gllu.com/v1/looks',
+      method: 'POST', // default 'POST',support 'POST' and 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
+      },
+      fields: {},
+      files: [
+        {
+          name: 'image',
+          filename: _.last(image.path.split('/')), // require, file name
+          filepath: image.path, // require, file absoluete path
+        },
+      ]
     };
+
+    console.log('object obj', obj)
+
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
+      FileUpload.upload(obj, function(err, result) {
+        console.log('upload:', err, result);
         dispatch(hideLoader());
-        if (!err) {
+        if (result.status == 201) {
+          const data = JSON.parse(result.data);
           const payload = _.merge(data, {image: image.path });
           resolve(dispatch(editNewLook(payload)));
         } else {
           reject(err);
         }
-      }));
+      })
     });
+
+    // const body = {
+    //   look: {
+    //     image: `data:image/jpeg;base64,${image.data}`
+    //   }
+    // };
+    // return new Promise((resolve, reject) => {
+    //   dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
+    //     dispatch(hideLoader());
+    //     if (!err) {
+    //       const payload = _.merge(data, {image: image.path });
+    //       resolve(dispatch(editNewLook(payload)));
+    //     } else {
+    //       reject(err);
+    //     }
+    //   }));
+    // });
   }
 }
 
