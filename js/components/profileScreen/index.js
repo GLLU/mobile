@@ -36,10 +36,11 @@ class ProfileScreen extends Component {
     return (
       <View style={styles.container}>
         <Image source={this.state.isMyProfile ? profileBackground : userbBackground}>
-          <Image source={backgroundShadow} style={styles.bgShadow} />
+          <Image source={backgroundShadow} style={styles.bgShadow} >
           <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
-            <Image source={toFeedScreen} style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute', width: 30, height: 30}} name="ios-arrow-back" />
+            <Image source={toFeedScreen} style={{marginTop: 30, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute', width: 30, height: 30}} name="ios-arrow-back" />
           </TouchableOpacity>
+          </Image>
         </Image>
       </View>
     )
