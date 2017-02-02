@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
-import { actions } from 'react-native-navigation-redux-helpers';
 import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import StepOne from './StepOne';
@@ -33,6 +32,7 @@ const selfStyles = StyleSheet.create({
 class AddItemPage extends Component {
 
   static propTypes = {
+    publishLookItem: React.PropTypes.func,
     updateLookItem: React.PropTypes.func,
     setUser: React.PropTypes.func,
     replaceAt: React.PropTypes.func,
@@ -147,7 +147,6 @@ function bindActions(dispatch) {
   return {
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
     popRoute: (key) => dispatch(popRoute(key)),
-    pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     setUser: name => dispatch(setUser(name)),

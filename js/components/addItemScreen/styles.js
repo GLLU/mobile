@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet } = React;
 
 export default StyleSheet.create({
   container: {
