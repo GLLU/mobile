@@ -101,13 +101,25 @@ class ImageWithTags extends Component {
   renderTags() {
     const items = _.filter(this.props.items, (x) => !x.editing);
     return items.map((item, i) => {
-      console.log('renderTags', item);
-      return (
-        <TouchableNativeFeedback key={i} onPress={(e) => this._handleMarkerPress(item)}>
-          <View style={[styles.itemMarker, { top: parseInt(item.locationY), left: parseInt(item.locationX)}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+      const renderContent = function() {
+        return (<View style={[styles.itemMarker, { top: parseInt(item.locationY), left: parseInt(item.locationX)}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
             <Image source={itemBackground} style={styles.itemBgImage} />
-          </View>
-        </TouchableNativeFeedback>);
+          </View>);
+      };
+
+      if (Platform.OS === 'ios') {
+        return (
+          <TouchableOpacity key={i} onPress={(e) => this._handleMarkerPress(item)}>
+            {renderContent()}
+          </TouchableOpacity>
+        );
+      } else {
+        return (
+          <TouchableNativeFeedback key={i} onPress={(e) => this._handleMarkerPress(item)}>
+            {renderContent()}
+          </TouchableNativeFeedback>
+        );
+      }
     });
   }
 

@@ -40,17 +40,16 @@ const styles = StyleSheet.create({
 class TagItemPage extends Component {
 
   static propTypes = {
-    navigateTo: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
-    createLookItem: React.PropTypes.func,
-    setTagPosition: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
     lookId: React.PropTypes.number,
     image: React.PropTypes.string,
     items: React.PropTypes.array,
-    editingTag: React.PropTypes.number,
+    navigateTo: React.PropTypes.func,
+    popRoute: React.PropTypes.func,
+    createLookItem: React.PropTypes.func,
+    setTagPosition: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -115,11 +114,13 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  // const look = state.api.look
-
+  const { itemId, items } = state.uploadLook;
+  const item = _.find(items, item => item.id == itemId);
   return {
     navigation: state.cardNavigation,
-    ...state.uploadLook,
+    lookId: state.uploadLook.lookId,
+    image: state.uploadLook.image,
+    items: state.uploadLook.items
   };
 };
 
