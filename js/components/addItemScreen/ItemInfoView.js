@@ -23,6 +23,7 @@ import Tags from './forms/Tags';
 import FontSizeCalculator from './../../calculators/FontSize';
 import { loadCategories } from '../../actions/filters';
 import _ from 'lodash';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxChecked = require('../../../images/icons/checkbox-checked-black.png');
@@ -33,7 +34,8 @@ const h = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   itemInfoView: {
     backgroundColor: 'transparent',
-    padding: 20
+    padding: 20,
+    paddingBottom: ExtraDimensions.get('STATUS_BAR_HEIGHT')
   },
   titleLabelInfo: {
     fontFamily: 'Montserrat',
@@ -149,6 +151,7 @@ class ItemInfoView extends Component {
   }
 
   selectCategory(item) {
+    console.log('selectCategory', item);
     if (item.id != this.props.selectedCategoryId) {
       this.props.addItemType(item.id);
     }
@@ -301,9 +304,9 @@ const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
   if (item) {
+    console.log('item selectedCategoryId', item.selectedCategoryId);
     return {
       categories: state.filters.categories,
-      ...state.uploadLook,
       selectedCategoryId: item.selectedCategoryId,
       brand: item.brand,
       itemSizeRegion: item.itemSizeRegion,
@@ -316,7 +319,6 @@ const mapStateToProps = state => {
 
   return {
     categories: state.filters.categories,
-    ...state.uploadLook,
     selectedCategoryId: null,
     brand: null,
     itemSizeRegion: null,

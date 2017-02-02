@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { View } from 'native-base';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderWidth: BORDER_WIDTH,
     borderColor: '#FFFFFF'
   },
-  itemItem: {
+  itemMarker: {
     position: 'absolute',
     height: 48,
     width: TAG_WIDTH,
@@ -101,12 +101,13 @@ class ImageWithTags extends Component {
   renderTags() {
     const items = _.filter(this.props.items, (x) => !x.editing);
     return items.map((item, i) => {
+      console.log('renderTags', item);
       return (
-        <TouchableOpacity key={i} onPress={(e) => this._handleMarkerPress(item)}>
-          <View style={[styles.itemItem, { top: item.locationY, left: item.locationX}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+        <TouchableNativeFeedback key={i} onPress={(e) => this._handleMarkerPress(item)}>
+          <View style={[styles.itemMarker, { top: parseInt(item.locationY), left: parseInt(item.locationX)}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
             <Image source={itemBackground} style={styles.itemBgImage} />
           </View>
-        </TouchableOpacity>);
+        </TouchableNativeFeedback>);
     });
   }
 
@@ -123,7 +124,7 @@ class ImageWithTags extends Component {
       const layout = this._pan.getLayout();
       return (<Animated.View
                     {...this.panResponder.panHandlers}
-                    style={[layout, styles.itemItem, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+                    style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
                   <Image source={itemBackground} style={styles.itemBgImage} />
                 </Animated.View>);
     }
@@ -135,11 +136,11 @@ class ImageWithTags extends Component {
     let width = 300;
     let height = 400;
     if (this.props.width) {
-      width = this.props.width;
-      height = width * 16 / 9;
+      width = parseInt(this.props.width);
+      height = parseInt(width * 16 / 9);
     } else {
-      height = h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight;
-      width = height * 9 / 16;
+      height = parseInt(h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight);
+      width = parseInt(height * 9 / 16);
     }
     
     console.log('width height', width, height);

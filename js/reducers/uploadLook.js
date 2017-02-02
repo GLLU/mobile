@@ -51,8 +51,6 @@ const ACTION_HANDLERS = {
       ...state,
       image,
       lookId,
-      items: [],
-      itemId: null,
     }
   },
   [SELECT_LOOK_ITEM] :(state, action) => {

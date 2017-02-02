@@ -37,8 +37,8 @@ class NavigationBarView extends Component {
   }
 
   openCamera() {
-    const width = deviceWidth - 40;
-    const height = width * 16 / 9;
+    const width = parseInt(deviceWidth - 40);
+    const height = parseInt(width * 16 / 9);
     ImagePicker.openPicker({
       width: width,
       height: height,

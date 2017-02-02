@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
 import { actions } from 'react-native-navigation-redux-helpers';
+import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
@@ -112,7 +113,7 @@ class AddItemPage extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <Container style={styles.container} theme={glluTheme}>
         <Header style={{height: 60}}>
           <Button transparent onPress={() => this.popRoute()}>
             <Icon style={selfStyles.backIcon} name="ios-arrow-back" />

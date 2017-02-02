@@ -84,7 +84,7 @@ class CategoryStrip extends Component {
       let prev = itemTypeCalculator.findPrevPosition();
       let next = itemTypeCalculator.findNextPosition();
       if ( prev <= currentScrollX && currentScrollX <= next ) {
-        this.props.onCategorySelected(cate);
+        // this.props.onCategorySelected(cate);
       }
     });
   }
