@@ -1,3 +1,4 @@
+import AppConfig from '../appConfig';
 import reduxApi from "redux-api";
 import _ from 'lodash';
 const adapterFetch = require("redux-api/lib/adapters/fetch");
@@ -5,7 +6,7 @@ import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
 
-const API_URL = 'https://sam.gllu.com/v1';
+const API_URL = AppConfig.API_URL;
 // const API_URL = 'http://localhost:9292/v1';
 
 export default reduxApi({
