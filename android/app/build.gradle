@@ -95,7 +95,6 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        signingConfig signingConfigs.debug
     }
     splits {
         abi {
@@ -112,21 +111,12 @@ android {
             keyAlias MYAPP_RELEASE_KEY_ALIAS
             keyPassword MYAPP_RELEASE_KEY_PASSWORD
         }
-        debug {
-            keyAlias 'my-key-alias'
-            keyPassword 'gllugllu'
-            storeFile file('/Users/udi/.android/debug2.keystore')
-            storePassword 'gllugllu'
-        }
     }
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
-        }
-        debug {
-            signingConfig signingConfigs.debug
         }
     }
     // applicationVariants are e.g. debug, release
@@ -147,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fileupload')
     compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-video')
     compile project(':react-native-orientation')

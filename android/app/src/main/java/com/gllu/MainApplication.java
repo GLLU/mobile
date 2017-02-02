@@ -16,6 +16,7 @@ import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactInstanceManager;
+import com.yoloci.fileupload.FileUploadPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -52,12 +53,13 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
-            new ReactVideoPackage(),
-            new ExtraDimensionsPackage(),
-            new PickerPackage(),
-            new ReactMaterialKitPackage(),
-            new VectorIconsPackage(),
-            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
+                            new ReactVideoPackage(),
+                            new FileUploadPackage(),
+                            new ExtraDimensionsPackage(),
+                            new PickerPackage(),
+                            new ReactMaterialKitPackage(),
+                            new VectorIconsPackage(),
+                            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
                             new FBSDKPackage(mCallbackManager)
                     );
                 }

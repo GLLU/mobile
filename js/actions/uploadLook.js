@@ -54,7 +54,7 @@ export function addNewLook(image) {
         FileUpload.upload(obj, function(err, result) {
           console.log('upload:', err, result);
           dispatch(hideLoader());
-          if (result.status == 201) {
+          if (result && result.status == 201) {
             const data = JSON.parse(result.data);
             const payload = _.merge(data, {image: image.path });
             resolve(dispatch(editNewLook(payload)));
