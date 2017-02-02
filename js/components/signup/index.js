@@ -78,7 +78,6 @@ class SignUpPage extends Component {
                 confirmPassword,
                 country: country.toLowerCase()
             }
-            console.log('passed');
             this.props.emailSignUp(data);
         }
   }

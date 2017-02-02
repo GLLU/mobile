@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 
 const Window = Dimensions.get('window');
 const deviceWidth = Window.width;
+const deviceHeight = Window.height;
 import FontSizeCalculator from './../../calculators/FontSize';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const styles = StyleSheet.create({
   actionsContainer: {
@@ -13,7 +15,7 @@ const styles = StyleSheet.create({
     width: deviceWidth,
     height: 100,
     position: 'absolute',
-    bottom: 0,
+    bottom: (Platform.OS === 'ios') ? 0 : ExtraDimensions.get('STATUS_BAR_HEIGHT'),
     left: 0,
     backgroundColor: 'transparent',
     padding: 20,

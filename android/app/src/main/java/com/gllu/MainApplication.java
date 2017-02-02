@@ -12,7 +12,6 @@ import android.util.Log;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.imagepicker.ImagePickerPackage;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -20,6 +19,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,8 +53,8 @@ public class MainApplication extends Application
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
             new ReactVideoPackage(),
+            new ExtraDimensionsPackage(),
             new PickerPackage(),
-            new ImagePickerPackage(),
             new ReactMaterialKitPackage(),
             new VectorIconsPackage(),
             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),

@@ -10,7 +10,6 @@ import myBodyMeasure from './myBodyMeasure';
 import myBodyType from './myBodyType';
 import filters from './filters';
 import uploadLook from './uploadLook';
-import formData from './formData';
 import feed from './feed';
 import look from './look';
 
@@ -29,5 +28,4 @@ export default combineReducers({
   feed,
   look,
   api,
-  formData
 });

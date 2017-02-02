@@ -82,7 +82,6 @@ class SplashPage extends Component {
                   if (error) {
                     alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
                   } else {
-                    console.log('user info from facebook', result);
                     const jsonData = { access_token: data["accessToken"], expiration_time: data["expirationTime"], data: result };
                     this.props.loginViaFacebook(jsonData);
                   }
@@ -122,7 +121,6 @@ class SplashPage extends Component {
   }
 
   render() {
-    console.log('splash screen');
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>

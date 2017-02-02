@@ -71,7 +71,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    trustLevels: state.formData.trustLevels,
+    trustLevels: state.filters.trustLevels,
   };
 };
 

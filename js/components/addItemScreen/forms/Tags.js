@@ -1,32 +1,26 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet } from 'react-native';
-import { View, Container, Button, Text} from 'native-base';
+import { View, Container, Button, Text, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 
 import FontSizeCalculator from './../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
   tagTextContainer: {
-    height: 30,
-    padding: 5,
-    margin: 10,
-    marginLeft: 0,
+    margin: 5,
     backgroundColor: 'black',
-    borderRadius: 5
+    borderRadius: 5,
+    flexDirection: 'row'
   },
   tagRemove: {
-    margin: 0,
-    padding: 0,
-    width: 30,
-    height: 30,
-    backgroundColor: 'transparent'
+    marginLeft: 5,
+    marginRight: 5,
+    padding: 5,
+    backgroundColor: 'transparent',
   },
   tagRemoveText: {
     textAlign: 'center',
     color: '#FFFFFF',
-    position: 'absolute',
-    right: 5,
-    top: 0,
     fontSize: new FontSizeCalculator(15).getSize(),
   }
 });
@@ -45,26 +39,12 @@ class Tags extends Component {
 
   _renderTags() {
     return this.props.tags.map((tag, index) => {
-      var width = tag.length * 15;
-      var left = 70;
-      var right = 30;
-      if (width < 90) {
-          width = width + 20;
-          left = 50;
-          right = 50;
-      }
       return (
-        <View key={index+1} style={[styles.tagTextContainer, {width: width}]}>
-          <Grid>
-            <Col size={left}>
-              <Text style={{color: '#FFFFFF', textAlign: 'center'}}>{tag}</Text>
-            </Col>
-            <Col size={right}>
-              <Button transparent onPress={() => this.props.removeTag(tag)} style={styles.tagRemove}>
-                <Text style={styles.tagRemoveText}>x</Text>
-              </Button>
-            </Col>
-          </Grid>
+        <View key={index+1} style={[styles.tagTextContainer]}>
+          <Button iconRight style={{backgroundColor: 'transparent'}}>
+            {tag}
+            <Icon name='ios-close' style={{justifyContent: 'flex-end'}} onPress={() => this.props.removeTag(tag)}/>
+          </Button>
         </View>
       )
     })

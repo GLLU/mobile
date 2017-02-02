@@ -112,6 +112,8 @@ class CustomAutocomplete extends Autocomplete {
       ...this.props
     };
 
+    console.log('props value', props.value);
+
     return renderTextInput
       ? renderTextInput(props)
       : (<TextInput {...props} />);
@@ -153,7 +155,7 @@ class CustomAutocomplete extends Autocomplete {
 
   _renderCompleteTyping() {
     return (<View style={styles.iconCheckCompleteContainer}>
-            <Icon name="md-checkmark-circle" style={styles.iconCheckComplete} />
+              <Icon name="md-checkmark-circle" style={styles.iconCheckComplete} />
             </View>)
   }
 
