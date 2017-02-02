@@ -22,7 +22,7 @@ const ACTION_HANDLERS = {
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
     const flatLooksData = action.payload.looks.map(look => {
-      const cover = _.find(look.cover, x => x.version == 'thumb');
+      const cover = _.find(look.cover, x => x.version == 'medium');
       return Object.assign({}, {
         liked: look.is_liked,
         type: look.user_size.body_type,
