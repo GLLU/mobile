@@ -8,21 +8,21 @@ import rest from '../api/rest';
 export const SET_USER = 'SET_USER';
 
 const signInFromResponse = function(dispatch, response) {
-  console.log('response', response, response.data.attributes['api-key']);
   dispatch(setAccessToken(response.data.attributes['api-key']));
   dispatch(navigateTo('feedscreen'));
 };
 
-const signInFromRest = function(dispatch, apiKey) {
-  console.log('api key', apiKey)
+const signInFromRest = function(dispatch, data) {
+  console.log('api key', data.user.api_key)
   rest.use("options", function() {
     return { headers: {
-      "Authorization": `Token token=${apiKey}`,
+      "Authorization": `Token token=${data.user.api_key}`,
       "Accept": "application/json",
       "Content-Type": "application/json"
     }};
   });
   dispatch(navigateTo('feedscreen'));
+  dispatch(setUser(data.user));
 };
 
 export function setUser(user:string):Action {
@@ -33,9 +33,6 @@ export function setUser(user:string):Action {
 }
 
 export function loginViaFacebook(data):Action {
-  console.log('action loginViaFacebook', data);
-
-
   return (dispatch) => {
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
@@ -46,12 +43,9 @@ export function loginViaFacebook(data):Action {
       }
     };
 
-    console.log('body', body);
-
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
-      console.log('response', err, data);
       if (!err && data) {
-        signInFromRest(dispatch, data.user.api_key);
+        signInFromRest(dispatch, data);
       }
     }));
   };
@@ -60,13 +54,9 @@ export function loginViaFacebook(data):Action {
 export function emailSignUp(data):Action {
   return (dispatch) => {
     const body = {user: data };
-
-    console.log('action emailSignUp', body);
-
     return dispatch(rest.actions.users.post(body, (err, data) => {
-      console.log('response', err, data);
       if (!err && data) {
-        signInFromRest(dispatch, data.user.api_key);
+        signInFromRest(dispatch, data);
       }
     }));
   };
@@ -75,12 +65,9 @@ export function emailSignUp(data):Action {
 export function emailSignIn(data):Action {
   return (dispatch) => {
     const body = { auth: data };
-    console.log('action emailSignIn', body);
-
     return dispatch(rest.actions.auth.post(body, (err, data) => {
-      console.log('response', err, data);
       if (!err && data) {
-        signInFromRest(dispatch, data.user.api_key);
+        signInFromRest(dispatch, data);
       }
     }));
   };

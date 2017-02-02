@@ -9,7 +9,6 @@ import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
-import Tags from './forms/Tags';
 import {
     addDescription,
     addLocation,
@@ -39,9 +38,8 @@ const styles = StyleSheet.create({
   describe: {
     flex: 1,
     height: 60,
-    fontFamily: 'PlayfairDisplay',
+    fontFamily: 'PlayfairDisplay-Regular',
     fontSize: new FontSizeCalculator(18).getSize(),
-    fontFamily: 'Times New Roman',
     color: '#9E9E9E',
     marginVertical:6,
     backgroundColor: '#FFFFFF',
@@ -60,7 +58,6 @@ const styles = StyleSheet.create({
     height: 120,
     fontFamily: 'Montserrat',
     fontSize: new FontSizeCalculator(15).getSize(),
-    fontFamily: 'Times New Roman',
     fontWeight: '300',
     color: '#000',
     backgroundColor: 'transparent',
@@ -111,11 +108,9 @@ class StepTwo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        tags: ['dresses', 'black', 'red', 'white'],
         images:['', '', ''],
         video: '',
         videoUrl: '',
-        tmpValue: '',
         location: 'us',
         trustLevel: '0',
         confirm: true,
@@ -136,7 +131,6 @@ class StepTwo extends Component {
   }
 
   addVideo() {
-    console.log('Add video');
     ImagePicker.openPicker({
       cropping: false
     }).then(video => {
@@ -165,63 +159,23 @@ class StepTwo extends Component {
     }
   }
 
-  addTags(name) {
-    var tags = this.state.tags;
-    var pos = tags.indexOf(name);
-    if (pos < 0) {
-      tags.push(name);
-      this.setState({tags: tags, tmpValue: ''});
-    }
-  }
-
-  removeTag(name) {
-    var tags = this.state.tags;
-    var pos = tags.indexOf(name);
-    tags.splice(pos, 1);
-    this.setState({tags: tags});
-  }
-
-  getHeight(number) {
-    var l = this.state.tags.length;
-    var rH = 80;
-    var numR = Math.round(l / number);
-    if (l > numR * number) {
-      numR = numR + 1;
-    }
-    return numR == 0 ? 250 : numR * rH + 270;
-  }
-
   _handlePublishItem() {
     this.props.publishItem();    
   }
 
   _renderDescribeAndTags() {
-    var number = w < 375 ? 2 : 3;
-    var height = this.getHeight(number);
-    const tags = this.state.tags;
     return (
-        <Content scrollEnabled={false} style={{height: height, margin: 5}}>
+        <View style={{margin: 5}}>
           <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
           <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
-          <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
-          <TextInput
-              returnKeyType="done"
-              placeholder=""
-              value={this.state.tmpValue}
-              keyboardType="default"
-              placeholderTextColor="#BDBDBD"
-              style={styles.textInput}
-              onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
-              onChangeText={(text) => this.setState({tmpValue: text})} />
-          <Tags tags={this.state.tags} removeTag={this.removeTag.bind(this)} />
-        </Content>
+        </View>
     )
   }
 
   _renderSelections(){
     const checkBoxIcon = this.state.confirm ? checkboxCheckedIcon : checkboxUncheckIcon;
     return (
-        <Content scrollEnabled={false} style={{height: 400, margin: 5}}>
+        <View style={{height: 400, margin: 5}}>
             <Text style={[styles.titleLabelInfo, {color: '#333333'}]}>Improve your sales experience</Text>
             <Location location={this.state.location} updateSelectValue={this.updateSelectValue.bind(this)} />
             <TrustLevel trustLevel={this.state.trustLevel} updateSelectValue={this.updateSelectValue.bind(this)} />
@@ -237,7 +191,7 @@ class StepTwo extends Component {
                 </Text>
               </Col>
             </Grid>
-        </Content>
+        </View>
     )
   }
 
@@ -272,9 +226,14 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  ...state.uploadLook,
-});
+const mapStateToProps = state => {
+  const { itemId, items } = state.uploadLook;
+  const item = _.find(items, item => item.id == itemId);
+  return {
+    navigation: state.cardNavigation,
+    ...state.uploadLook,
+    photos: item ? item.photos : [],
+  }
+};
 
 export default connect(mapStateToProps, bindActions)(StepTwo);

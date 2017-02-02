@@ -6,7 +6,8 @@ import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
 
-const API_URL = AppConfig.API_URL;
+const API_URL = 'https://sam.gllu.com/v1';
+// const API_URL = 'https://staging-api.gllu.com/v1';
 // const API_URL = 'http://localhost:9292/v1';
 
 export default reduxApi({
@@ -39,31 +40,31 @@ export default reduxApi({
   //     }
   //   ]
   // },
-  // size: {
-  //   url: '/users/:user_id/size',
-  //   options: {
-  //     headers: {
-  //       "Authorization": `Bearer hFHv8LbPJIhB1HrUQ62rowtt`
-  //     }
-  //   },
-  //   crud: true
-  // },
+  size: {
+    url: '/users/:user_id/size',
+    options: {
+      method: 'post'
+    },
+    crud: true
+  },
   tags: '/tags',
   brands: {
     url: '/brands',
     crud: true,
   },
+  sizes: '/sizes',
   feeds: {
     url: '/feed',
     options: {
-      method: 'get'
+      method: 'get',
+      headers: {
+        "Authorization": `Token token=kfPCZlx9HeV7i3J6oloiigtt`,
+      }
     }
   },
   looks: {
     url: '/looks/:id',
-    options: {
-      method: 'get'
-    }
+    crud: true
   },
   publish: {
     url: '/looks/:look_id/publish',
@@ -71,19 +72,9 @@ export default reduxApi({
       method: 'post'
     }
   },
-  like: {
+  likes: {
     url: '/looks/:look_id/likes',
     crud: true,
-    options: {
-      method: 'post'
-    }
-  },
-  unlike: {
-    url: '/looks/:look_id/likes',
-    crud: true,
-    options: {
-      method: 'delete'
-    }
   },
   items: {
     url: '/looks/:look_id/items/:id',

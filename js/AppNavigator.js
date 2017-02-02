@@ -170,7 +170,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const isLoading = state.loading || false;
+  const isLoading = state.loader.loading || false;
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,

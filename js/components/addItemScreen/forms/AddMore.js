@@ -48,7 +48,6 @@ class AddMore extends Component {
 
   _renderPhotoOrIcon(number) {
     const photos = this.props.photos;
-    console.log('photos', photos);
     if (photos.length > number - 1) {
       return <Image source={{uri: photos[number-1].path}} style={styles.morePhotoItem} />;
     } else {

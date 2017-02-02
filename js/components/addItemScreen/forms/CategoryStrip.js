@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { ScrollView, Dimensions, StyleSheet } from 'react-native';
 import { View, Text } from 'native-base';
 import Triangle from 'react-native-triangle';
-
 import CategoryItem from './CategoryItem';
+import _ from 'lodash';
 
 import ItemTypeCalculator from './../../../calculators/ItemType';
 import FontSizeCalculator from './../../../calculators/FontSize';
@@ -13,13 +13,13 @@ const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
-    height: 220,
+    height: 200,
     backgroundColor: '#FFFFFF',
     marginTop: 10,
-    marginBottom: 20
+    marginBottom: 10
   },
   categoriesContainer: {
-    flex: 1,
+    height: 200,
     padding: 10
   },
   descContainer: {
@@ -53,23 +53,26 @@ const styles = StyleSheet.create({
 class CategoryStrip extends Component {
   static propTypes = {
     categories: React.PropTypes.array,
-    selectedCategory: React.PropTypes.object,
+    selectedCategoryId: React.PropTypes.number,
     onCategorySelected: React.PropTypes.func,
-    posInCategories: React.PropTypes.number
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      positionX: this.getPositionX()
+      positionX: this.getPositionX(props.categories, props.selectedCategoryId)
     }
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    const positionX = this.getPositionX(nextProps.categories, nextProps.selectedCategoryId);
+    this.setState({positionX});
   }
 
-  getPositionX() {
-    let itemTypeCalculator = new ItemTypeCalculator(this.props.posInCategories - 1);
+  getPositionX(categories, selectedCategoryId) {
+    let posInCategories = _.findIndex(categories, { 'id': selectedCategoryId });
+    posInCategories = posInCategories == -1 ? 3 : posInCategories;
+    let itemTypeCalculator = new ItemTypeCalculator(posInCategories);
     let x = itemTypeCalculator.findCurrentPosition();
     return x;
   }
@@ -81,57 +84,69 @@ class CategoryStrip extends Component {
       let prev = itemTypeCalculator.findPrevPosition();
       let next = itemTypeCalculator.findNextPosition();
       if ( prev <= currentScrollX && currentScrollX <= next ) {
-        console.log(`Select ${cate.name}`);
-        this.props.onCategorySelected(cate);
+        // this.props.onCategorySelected(cate);
       }
     });
   }
 
+  _handleSelectCategory(item) {
+    this.props.onCategorySelected(item);
+  }
+
   _drawCategoryItems() {
-    const selectedCategory = this.props.selectedCategory;
+    const selectedCategoryId = this.props.selectedCategoryId;
     const categories = this.props.categories;
     return categories.map((item, index) => {
-      const selected = selectedCategory && selectedCategory.id == item.id;
-      return (<CategoryItem key={index} item={item} selected={selected} onPress={() => this.props.onCategorySelected(item)}/>);
+      const selected = selectedCategoryId && selectedCategoryId == item.id;
+      return (<CategoryItem key={index} item={item} selected={selected} onPress={this._handleSelectCategory.bind(this)}/>);
     });
   }
 
+  _renderSelection() {
+    const { selectedCategoryId, categories } = this.props;
+    if (selectedCategoryId) {
+      const category = _.find(categories, item => item.id == selectedCategoryId);
+      return (<View style={{}}>
+          <View style={[styles.triangleContainer, {bottom: 50}]}>
+            <Triangle
+              width={30}
+              height={15}
+              color={'black'}
+              direction={'up'}
+              style={{alignSelf: 'center'}}
+            />
+          </View>
+          <View style={[styles.descContainer, {bottom: 0}]}>
+            <Text style={[styles.textDesc]}>{category.name}</Text>
+          </View>
+        </View>);
+    }
+
+    return null;
+  }
+
   render() {
-    const bottom = this.props.selectedCategory ? 0 : -10000;
-    const containerHeight = this.props.selectedCategory ? 220 : 160;
-    const description = this.props.selectedCategory ? this.props.selectedCategory.name : '';
     return (
-      <View style={[styles.container, {height: containerHeight}]}>
+      <View style={[styles.container]}>
         <View style={[styles.categoriesContainer]}>
           <ScrollView
-            onScroll={this.handleScroll.bind(this)}
-            ref="categories"
-            keyboardShouldPersistTap={true}
-            pagingEnabled={false}
-            horizontal={true}
-            decelerationRate={'fast'}
-            scrollEventThrottle={32}
-            directionalLockEnabled={true}
-            contentInset={{top: 0, left: -20, bottom: 0, right: -20}}
-            contentOffset={{x: this.state.positionX, y:0}}
-            showsHorizontalScrollIndicator={false}>
+              onScroll={this.handleScroll.bind(this)}
+              ref="categories"
+              keyboardShouldPersistTap={true}
+              pagingEnabled={false}
+              horizontal={true}
+              decelerationRate={'fast'}
+              scrollEventThrottle={32}
+              directionalLockEnabled={true}
+              contentInset={{top: 0, left: -20, bottom: 0, right: -20}}
+              contentOffset={{x: this.state.positionX, y:0}}
+              showsHorizontalScrollIndicator={false}>
             <View style={styles.blankItem} />
             {this._drawCategoryItems()}
             <View style={styles.blankItem} />
           </ScrollView>
         </View>
-        <View style={[styles.triangleContainer, {bottom: bottom + 50}]}>
-          <Triangle
-            width={30}
-            height={15}
-            color={'black'}
-            direction={'up'}
-            style={{alignSelf: 'center'}}
-          />
-        </View>
-        <View style={[styles.descContainer, {bottom: bottom, }]}>
-          <Text style={[styles.textDesc]}>{description}</Text>
-        </View>
+        {this._renderSelection()}
       </View>)
   }
 }
