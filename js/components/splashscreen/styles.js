@@ -2,6 +2,7 @@
 import React , { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 module.exports = StyleSheet.create({
   container: {
@@ -15,7 +16,7 @@ module.exports = StyleSheet.create({
   shadow: {
     flex: 1,
     width: null,
-    height: deviceHeight
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
   },
   bg: {
     flex: 1,
