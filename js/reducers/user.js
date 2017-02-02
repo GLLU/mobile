@@ -8,7 +8,14 @@ export type State = {
 }
 
 const initialState = {
-  id: -1
+  id: -1,
+  name: null,
+  email: null,
+  username: null,
+  country: null,
+  avatar: null,
+  can_simple_login: null,
+  api_key: null
 };
 
 export default function (state:State = initialState, action:Action): State {
