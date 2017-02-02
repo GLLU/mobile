@@ -10,6 +10,7 @@ import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 import { getLook } from '../../actions/looks';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
+import navigateTo from '../../actions/sideBarNav';
 
 const { popRoute, pushRoute } = actions
 
@@ -46,6 +47,11 @@ class ItemScreen extends Component {
 
   _tempPopRoute() {
     this.props.popRoute(this.props.navigation.key);
+  }
+
+  _goToProfile() {
+    console.log('goToProfile');
+    this.props.navigateTo('profileScreen', 'itemScreen', this.props.look);
   }
 
   onLoad() {
@@ -97,7 +103,7 @@ class ItemScreen extends Component {
           <Icon style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute'}} name="ios-arrow-back" />
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flex: 1, flexDirection: 'column',marginTop: 40}]}>
-          <TopButton avatar={avatar} onPress={() => this._tempPopRoute()}/>
+          <TopButton avatar={avatar} onPress={() => this._goToProfile()}/>
           <BottomButton isLiked={this.state.liked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.state.likes}/>
         </View>
         {this._renderBuyItButtons()}
@@ -118,6 +124,7 @@ class ItemScreen extends Component {
 
 function bindAction(dispatch) {
   return {
+    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),

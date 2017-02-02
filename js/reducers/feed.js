@@ -22,7 +22,7 @@ const ACTION_HANDLERS = {
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
     const flatLooksData = action.payload.looks.map(look => {
-      let coverImg = _.find(look.cover, image => image.version == 'large')
+      let coverImg = _.find(look.cover, image => image.version == 'medium')
       let coverImgUrl = coverImg.url ? coverImg.url : 'http://blog.adsy.me/wp-content/uploads/2015/06/how-to-fix-error-404.jpg';
       return Object.assign({}, {
         liked: look.is_liked,

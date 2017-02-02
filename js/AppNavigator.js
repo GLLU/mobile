@@ -21,6 +21,7 @@ import SignInPage from './components/signin';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import ItemScreen from './components/itemScreen';
+import ProfileScreen from './components/profileScreen';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 
 import { statusBarColor } from './themes/base-theme';
@@ -111,6 +112,8 @@ class AppNavigator extends Component {
         return <MyBodyMeasure />;
       case 'itemScreen':
         return <ItemScreen flatLook={props.scene.route.optional}/>;
+      case 'profileScreen':
+        return <ProfileScreen userData={props.scene.route.optional}/>;
       default :
         return <Login />;
     }
