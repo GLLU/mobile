@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import { Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
+import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
 import styles from './styles';
-import { Container, Content, Header, Title, Text, View, Button, Icon } from 'native-base';
+import { Container, Content, Header, Title, View, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
-import glluTheme from '../../themes/gllu-theme';
-
-const backgroundShadow = require('../../../images/background-shadow.png');
+import LinearGradient from 'react-native-linear-gradient';
+import ProfileView  from './ProfileView';
 const userbBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
@@ -31,20 +30,50 @@ class ProfileScreen extends Component {
   _tempPopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
+  _tempBtn(){
+    console.log('_tempBtn was pressed');
+  }
+
+  _renderleftBtn() {
+   return this.state.isMyProfile ?
+     <Image source={toFeedScreen} style={styles.toFeedScreenBtn} />
+     :
+     <Icon style={styles.backBtn} name="ios-arrow-back" />
+  }
+  _renderRightBtn() {
+   return this.state.isMyProfile ?
+     <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn} />
+     :
+     <Text style={styles.reportBtn}>REPORT</Text>
+  }
 
   render() {
     return (
       <View style={styles.container}>
-        <Image source={this.state.isMyProfile ? profileBackground : userbBackground}>
-          <Image source={backgroundShadow} style={styles.bgShadow} >
-          <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
-            <Image source={toFeedScreen} style={{marginTop: 30, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute', width: 30, height: 30}} name="ios-arrow-back" />
-          </TouchableOpacity>
-          </Image>
+        <Image source={userbBackground} style={styles.bg}>
+          <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0}]} />
+          <View style={styles.header}>
+            <TouchableOpacity transparent onPress={() => this._tempPopRoute()} style={styles.headerBtn}>
+            { this._renderleftBtn() }
+            </TouchableOpacity>
+            <ProfileView profilePic={this.props.userData.avatar.url}
+                         name={this.props.userData.name}
+                         username={this.props.userData.username}
+                         onPress={() => this._tempBtn()}
+                         isMyProfile={this.state.isMyProfile}
+            />
+            <TouchableOpacity transparent onPress={() => this._tempPopRoute()} style={styles.headerBtn}>
+              { this._renderRightBtn() }
+            </TouchableOpacity>
+          </View>
+          <View style={styles.description}>
+            <Text ellipsizeMode="middle" style={styles.descriptionText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. bal bal balkjdna sdckasm dlcjkasdackls mda;ksmxsxsxsxs mda;ksmxsxsxsxs mda;ksmxsxsxsxs </Text>
+          </View>
         </Image>
       </View>
     )
   }
+
 }
 
 function bindAction(dispatch) {
