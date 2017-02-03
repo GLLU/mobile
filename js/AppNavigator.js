@@ -23,6 +23,7 @@ import ForgotPassword from './components/forgotPassword';
 import ItemScreen from './components/itemScreen';
 import ProfileScreen from './components/profileScreen';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
+import ProcessCropping from './components/common/Cropping';
 
 import { statusBarColor } from './themes/base-theme';
 
@@ -43,7 +44,7 @@ class AppNavigator extends Component {
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
       routes: React.PropTypes.array,
-    }),
+    })
   }
 
   componentDidMount() {
@@ -119,7 +120,7 @@ class AppNavigator extends Component {
     }
   }
 
-  render() {
+  _renderMainView() {
     return (
       <View style={{flex: 1}}>
         <Drawer
@@ -163,6 +164,14 @@ class AppNavigator extends Component {
       </View>
     );
   }
+
+  _renderProcessCropping() {
+    return <ProcessCropping />
+  }
+
+  render() {
+    return this.props.isProcessing ? this._renderProcessCropping() : this._renderMainView();
+  }
 }
 
 function bindAction(dispatch) {
@@ -174,10 +183,12 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   const isLoading = state.loader.loading || false;
+  const isProcessing = state.loader.processing || false;
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,
     isLoading: isLoading,
+    isProcessing: isProcessing,
   });
 };
 

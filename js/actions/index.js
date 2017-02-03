@@ -1,5 +1,5 @@
 import { openDrawer, closeDrawer } from './drawer';
-import { showLoader, hideLoader } from './loader';
+import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
 import { loadCategories, loadBrands, loadItemSizes } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal } from './myBodyType';
@@ -81,4 +81,6 @@ export {
   addPhotosVideo,
   showLoader,
   hideLoader,
+  showProcessing,
+  hideProcessing,
 };
