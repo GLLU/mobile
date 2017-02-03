@@ -248,7 +248,7 @@ class ItemInfoView extends Component {
   render() {
     const { categories, countries, itemSizes } = this.props;
     const { selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
-    return(<View style={styles.itemInfoView}>
+    return(<View style={[styles.itemInfoView, { paddingBottom: 100}]}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
               <Category
                   categories={categories}

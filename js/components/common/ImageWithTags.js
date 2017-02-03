@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { View } from 'native-base';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
@@ -155,7 +155,7 @@ class ImageWithTags extends Component {
       width = parseInt(height * 9 / 16);
     }
     
-    console.log('width height', width, height);
+    console.log('width height', width, height, this.props.image);
     return (<Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
       <View style={[styles.draggableContainer, {width, height}]}>
         {this.renderTags()}

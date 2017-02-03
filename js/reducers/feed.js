@@ -29,9 +29,9 @@ const ACTION_HANDLERS = {
         id: look.id,
         likes: look.likes,
         user_id: look.user_id,
-        uri: cover.url,
-        width: cover.width,
-        height: cover.height,
+        uri: cover ? cover.url : null,
+        width: cover ? cover.width : null,
+        height: cover ? cover.height : null,
       });
     });
     return {

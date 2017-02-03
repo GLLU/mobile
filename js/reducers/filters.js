@@ -10,11 +10,6 @@ export type State = {
     brands: array
 }
 
-const dress = require('../../images/categories/dress.png');
-const coat = require('../../images/categories/coat.png');
-const boot = require('../../images/categories/boot.png');
-const coatSelected = require('../../images/categories/coat-selected.png');
-
 const initialState = {
   minPrice: 1,
   maxPrice: 1000,

@@ -114,8 +114,6 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id == itemId);
   return {
     navigation: state.cardNavigation,
     lookId: state.uploadLook.lookId,

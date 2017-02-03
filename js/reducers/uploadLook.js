@@ -78,8 +78,6 @@ const ACTION_HANDLERS = {
       brand: null,
       itemSizeRegion: null,
       itemSizeValue: null,
-      currency: 'USD',
-      price: 0,
       description: '',
       sharingType: true,
       sharingUrl: '',
@@ -167,7 +165,7 @@ const ACTION_HANDLERS = {
   [ADD_ITEM_PRICE]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'price', price)
+      items: mutateItem(state, 'price', action.payload)
     }
   },
   [ADD_SHARING_INFO]: (state, action) => {

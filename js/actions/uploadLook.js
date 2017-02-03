@@ -20,29 +20,69 @@ export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import _ from 'lodash';
 
-import rest from '../api/rest';
+import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes } from './index';
 
+var FileUpload = require('NativeModules').FileUpload;
 // Actions
 export function addNewLook(image) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(showLoader());
-    const body = {
-      look: {
-        image: `data:image/jpeg;base64,${image.data}`
-      }
-    };
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
-        dispatch(hideLoader());
-        if (!err) {
-          const payload = _.merge(data, {image: image.path });
-          resolve(dispatch(editNewLook(payload)));
-        } else {
-          reject(err);
-        }
-      }));
+      const user = getState().user;
+      console.log('user', user);
+      if (user && user.api_key) {
+        var obj = {
+          uploadUrl: `${API_URL}/looks`,
+          method: 'POST', // default 'POST',support 'POST' and 'PUT'
+          headers: {
+            'Accept': 'application/json',
+            "Authorization": `Token token=${user.api_key}`,
+          },
+          fields: {},
+          files: [
+            {
+              name: 'look[image]',
+              filename: _.last(image.path.split('/')), // require, file name
+              filepath: image.path, // require, file absoluete path
+            },
+          ]
+        };
+
+        console.log('object obj', obj)
+
+        FileUpload.upload(obj, function(err, result) {
+          console.log('upload:', err, result);
+          dispatch(hideLoader());
+          if (result && result.status == 201) {
+            const data = JSON.parse(result.data);
+            const payload = _.merge(data, {image: image.path });
+            resolve(dispatch(editNewLook(payload)));
+          } else {
+            reject(err);
+          }
+        })
+      } else {
+        reject('Authorization error')
+      }
     });
+
+    // const body = {
+    //   look: {
+    //     image: `data:image/jpeg;base64,${image.data}`
+    //   }
+    // };
+    // return new Promise((resolve, reject) => {
+    //   dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
+    //     dispatch(hideLoader());
+    //     if (!err) {
+    //       const payload = _.merge(data, {image: image.path });
+    //       resolve(dispatch(editNewLook(payload)));
+    //     } else {
+    //       reject(err);
+    //     }
+    //   }));
+    // });
   }
 }
 
