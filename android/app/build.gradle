@@ -1,5 +1,12 @@
 apply plugin: "com.android.application"
 
+project.ext.envConfigFiles = [
+    debug: "config/.env",
+    release: "config/.env.production",
+    staging: "config/.env.staging",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 import com.android.build.OutputFile
 
 /**
@@ -117,6 +124,13 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+            debuggable false
+            applicationIdSuffix 'release'
+        }
+        staging {
+            debuggable false
+            signingConfig signingConfigs.release
+            applicationIdSuffix 'staging'
         }
     }
     // applicationVariants are e.g. debug, release
