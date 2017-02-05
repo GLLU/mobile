@@ -4,6 +4,7 @@ import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import rest from '../api/rest';
+import { showLoader, hideLoader } from './index';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
@@ -104,12 +105,12 @@ export function statsUpdate(data) {
 }
 
 export function getStats(id) {
-  console.log('id action', id);
   return (dispatch) => {
+    dispatch(showLoader());
     dispatch(rest.actions.stats({id}, (err, data) => {
       if (!err) {
-        console.log('data',data)
         dispatch(statsUpdate(data));
+        dispatch(hideLoader());
       }
     }));
   };

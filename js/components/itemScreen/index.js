@@ -26,6 +26,7 @@ class ItemScreen extends Component {
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
     }
+
   }
 
   componentDidMount() {
@@ -50,8 +51,8 @@ class ItemScreen extends Component {
   }
 
   _goToProfile() {
-    console.log('goToProfile');
-    this.props.navigateTo('profileScreen', 'itemScreen', this.props.look);
+    console.log('goToProfile', this.props.look.user);
+    this.props.navigateTo('profileScreen', 'itemScreen', this.props.look.user);
   }
 
   onLoad() {

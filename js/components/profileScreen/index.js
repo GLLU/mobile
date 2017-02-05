@@ -7,8 +7,10 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
+import ItemsGallery  from './ItemsGallery';
+import StatsView  from './StatsView';
 import { getStats } from '../../actions/user'
-const userbBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
+const userBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
@@ -24,13 +26,10 @@ class ProfileScreen extends Component {
     this.state = {
       isMyProfile: this.props.userData.id === this.props.myUserId
     }
-    console.log('props',this.props)
-    console.log('state',this.state)
-    console.log('idddd',this.props.userData.id)
-    this.props.getStats(1);
+    this.props.getStats(this.props.userData.id);
   }
 
-  _tempPopRoute() {
+  _PopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
   _tempBtn(){
@@ -50,42 +49,28 @@ class ProfileScreen extends Component {
      <Text style={styles.reportBtn}>REPORT</Text>
   }
 
-  componentWillReceiveProps() {
-    //this.getGalleryItems();
+  _handleItemPress(item) {
+    this.props.navigateTo('itemScreen', 'feedscreen', item);
   }
 
-  getGalleryItems() {
-    let limiter = this.state.isMyProfile ? 3 : 4;
-     return (
-       this.props.stats.latest_looks.map((look, index) => {
-         let thumbImage = _.find(look.cover, image => image.version == 'thumb');
-         if(index < limiter){
-           return (
-             <TouchableOpacity>
-               <Image key={index} source={{uri: thumbImage.url}} style={styles.itemPic} />
-             </TouchableOpacity>
-           )
-         }
-         return  this.state.isMyProfile ?
-           (
-             <TouchableOpacity key={index}  style={styles.addItemContainer}>
-               <Image source={require('../../../images/icons/plus.png')} style={[styles.itemPic, styles.addItem]} />
-             </TouchableOpacity>
-           )
-
-           :
-           null
-      })
-     )
+  _renderStats() {
+    if(this.props.stats.latest_looks && this.props.stats.user_id === this.props.userData.id) {
+      return (
+        <View>
+          <ItemsGallery isMyProfile={this.state.isMyProfile} latest_looks={this.props.stats.latest_looks} looksCount={this.props.stats.looks_count}/>
+          <StatsView following={this.props.stats.following} followers={this.props.stats.followers} likes={this.props.stats.likes_count} />
+        </View>
+      )
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Image source={userbBackground} style={styles.bg}>
-          <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0}]} />
+        <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
+          <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
           <View style={styles.header}>
-            <TouchableOpacity transparent onPress={() => this._tempPopRoute()} style={styles.headerBtn}>
+            <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
             { this._renderleftBtn() }
             </TouchableOpacity>
             <ProfileView profilePic={this.props.userData.avatar.url}
@@ -94,45 +79,14 @@ class ProfileScreen extends Component {
                          onPress={() => this._tempBtn()}
                          isMyProfile={this.state.isMyProfile}
             />
-            <TouchableOpacity transparent onPress={() => this._tempPopRoute()} style={styles.headerBtn}>
+            <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
               { this._renderRightBtn() }
             </TouchableOpacity>
           </View>
           <View style={styles.description}>
             <Text ellipsizeMode="middle" style={styles.descriptionText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. bal bal balkjdna sdckasm dlcjkasdackls mda;ksmxsxsxsxs mda;ksmxsxsxsxs mda;ksmxsxsxsxs </Text>
           </View>
-          <View style={styles.itemsContainer}>
-            <View style={styles.itemsSeparator}>
-              <View style={styles.itemsTotal}>
-                <Text style={[styles.text, styles.number]}>{this.props.stats.looks_count}</Text>
-                <Text style={styles.text}>Items</Text>
-              </View>
-              <View style={styles.itemsRow}>
-
-                {/*<Image source={{uri: this.props.userData.avatar.url}} style={styles.itemPic} />*/}
-                {/*<Image source={{uri: this.props.userData.avatar.url}} style={styles.itemPic} />*/}
-                {/*<Image source={{uri: this.props.userData.avatar.url}} style={styles.itemPic} />*/}
-                {this.props.stats.latest_looks ?
-                  this.getGalleryItems()
-                  :
-                  null}
-              </View>
-            </View>
-          </View>
-          <View style={styles.statsContainer}>
-            <View style={styles.statsTotal}>
-              <Text style={[styles.text, styles.number]}>{this.props.stats.following}</Text>
-              <Text style={styles.text}>Following</Text>
-            </View>
-            <View style={styles.statsTotal}>
-              <Text style={[styles.text, styles.number]}>{this.props.stats.followers}</Text>
-              <Text style={styles.text}>Followers</Text>
-            </View>
-            <View style={styles.statsTotal}>
-              <Text style={[styles.text, styles.number]}>{this.props.stats.followers}</Text>
-              <Text style={styles.text}>Reviews</Text>
-            </View>
-          </View>
+          { this._renderStats() }
         </Image>
       </View>
     )
