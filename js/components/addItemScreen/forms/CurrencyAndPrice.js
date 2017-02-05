@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { View, Container, Content, Button, Text, Picker, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 import FontSizeCalculator from './../../../calculators/FontSize';
+import _ from 'lodash';
 const Item = Picker.Item;
 
 const w = Dimensions.get('window').width;
@@ -75,23 +76,42 @@ class CurrencyAndPrice extends Component {
           </View>)
   }
 
+  _renderCurrencyPicker(currencies, currency) {
+    if (currencies.length > 0) {
+      let selection = currency;
+      if (currency) {
+        const found = _.find(currencies, x => x.value.toLowerCase() == currency.toLowerCase());
+        if (found) {
+          selection = found.value;
+        }
+      }
+      if (!selection) {
+        selection = _.first(currencies).value;
+      }
+      return (<Picker
+                  style={[styles.selectOptions, {width: 100}]}
+                  iosHeader="Select one"
+                  mode="dropdown"
+                  selectedValue={selection}
+                  onValueChange={(value) => this.props.updateValue('currency', value)}>
+                {currencies.map((c, i) => {
+                  return <Item key={i} label={c.name} value={c.value} />
+                })}
+              </Picker>);
+    }
+
+    return null;
+  }
+
   render () {
+    const { currencies, currency } = this.props;
     return (<View style={{flex: 1, marginBottom: 20, marginTop: 0}}>
                 {this._renderCurrency()}
                 <Grid style={{marginTop: 0}}>
                   <Col size={48}>
                     <Grid style={styles.fakeBtnContainer}>
                       <Col size={80}>
-                        <Picker
-                          style={[styles.selectOptions, {width: 100}]}
-                          iosHeader="Select one"
-                          mode="dropdown"
-                          selectedValue={this.props.currency}
-                          onValueChange={(value) => this.props.updateValue('currency', value)}>
-                          {this.props.currencies.map((c, i) => {
-                            return <Item key={i} label={c.name} value={c.value} />
-                          })}
-                        </Picker>
+                        {this._renderCurrencyPicker(currencies, currency)}
                       </Col>
                       <Col size={20}>
                         <Icon style={styles.arrowSelect} name='ios-arrow-down' />
@@ -122,7 +142,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    currencies: state.formData.currencies,
+    currencies: state.filters.currencies,
   };
 };
 

@@ -10,7 +10,6 @@ export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
 
 const signInFromResponse = function(dispatch, response) {
-  console.log('response', response, response.data.attributes['api-key']);
   dispatch(setAccessToken(response.data.attributes['api-key']));
   dispatch(navigateTo('feedscreen'));
 };
@@ -36,7 +35,6 @@ export function setUser(user:string):Action {
 }
 
 export function loginViaFacebook(data):Action {
-  console.log('action loginViaFacebook', data);
   return (dispatch) => {
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
@@ -48,7 +46,6 @@ export function loginViaFacebook(data):Action {
     };
 
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
-      console.log('response', err, data);
       if (!err && data) {
         signInFromRest(dispatch, data);
       }
@@ -59,11 +56,7 @@ export function loginViaFacebook(data):Action {
 export function emailSignUp(data):Action {
   return (dispatch) => {
     const body = {user: data };
-
-    console.log('action emailSignUp', body);
-
     return dispatch(rest.actions.users.post(body, (err, data) => {
-      console.log('response', err, data);
       if (!err && data) {
         signInFromRest(dispatch, data);
       }
@@ -74,10 +67,7 @@ export function emailSignUp(data):Action {
 export function emailSignIn(data):Action {
   return (dispatch) => {
     const body = { auth: data };
-    console.log('action emailSignIn', body);
-
     return dispatch(rest.actions.auth.post(body, (err, data) => {
-      console.log('response', err, data);
       if (!err && data) {
         signInFromRest(dispatch, data);
       }

@@ -1,12 +1,13 @@
 import { openDrawer, closeDrawer } from './drawer';
 import { showLoader, hideLoader } from './loader';
-import { loadCategories, loadBrands } from './filters';
+import { loadCategories, loadBrands, loadItemSizes } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal } from './myBodyType';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import { addNewLook,
          editTag,
          createLookItem,
+         selectLookItem,
          updateLookItem,
          publishLookItem,
          setTagPosition,
@@ -15,6 +16,8 @@ import { addNewLook,
          addBrandName,
          addItemSizeCountry,
          addItemSize,
+         addItemTag,
+         removeItemTag,
          addItemCurrency,
          addItemPrice,
          addSharingInfo,
@@ -41,6 +44,7 @@ export {
   closeDrawer,
   loadCategories,
   loadBrands,
+  loadItemSizes,
   setMinMax,
   completeEdit,
   saveUserSize,
@@ -49,6 +53,7 @@ export {
   hideBodyTypeModal,
   addNewLook,
   createLookItem,
+  selectLookItem,
   updateLookItem,
   publishLookItem,
   editTag,
@@ -64,6 +69,8 @@ export {
   addBrandName,
   addItemSizeCountry,
   addItemSize,
+  addItemTag,
+  removeItemTag,
   addItemCurrency,
   addItemPrice,
   addSharingInfo,

@@ -82,7 +82,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    countries: state.formData.countries,
+    countries: state.filters.countries,
   };
 };
 

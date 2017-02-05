@@ -22,17 +22,16 @@ const ACTION_HANDLERS = {
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
     const flatLooksData = action.payload.looks.map(look => {
-      let coverImg = _.find(look.cover, image => image.version == 'medium')
-      let coverImgUrl = coverImg.url ? coverImg.url : 'http://blog.adsy.me/wp-content/uploads/2015/06/how-to-fix-error-404.jpg';
+      const cover = _.find(look.cover, x => x.version == 'medium');
       return Object.assign({}, {
         liked: look.is_liked,
         type: look.user_size.body_type,
         id: look.id,
         likes: look.likes,
         user_id: look.user_id,
-        uri: coverImgUrl,
-        width: coverImg.width,
-        height: coverImg.height,
+        uri: cover ? cover.url : null,
+        width: cover ? cover.width : null,
+        height: cover ? cover.height : null,
       });
     });
     return {

@@ -25,8 +25,8 @@ export function unLikeUpdate(data) {
 }
 
 export function like(id) {
-  return (dispatch) => {
-    dispatch(rest.actions.like.post({look_id: id}, (err, data) => {
+  return (dispatch, getState) => {
+    dispatch(rest.actions.likes.post({look_id: id}, {}, (err, data) => {
       if (!err) {
       }
     }));

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, StyleSheet, TextInput, Dimensions } from 'react-native';
-import { View, Container, Content, Button, Text, Picker, Icon} from 'native-base';
+import { Container, Content, Button, Text, Picker, Icon} from 'native-base';
 import { Row, Col, Grid } from "react-native-easy-grid";
 import FontSizeCalculator from './../../../calculators/FontSize';
 const Item = Picker.Item;
@@ -11,6 +11,7 @@ const h = Dimensions.get('window').height;
 
 const us = require('../../../../images/flags/us.png');
 const uk = require('../../../../images/flags/uk.png');
+const eu = require('../../../../images/flags/eu.png');
 
 const styles = StyleSheet.create({
   selectOptions: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     fontSize: new FontSizeCalculator(18).getSize(),
     paddingTop: 10
   },
-  fakeBtnContainer: {
+  fakeBtnView: {
     backgroundColor: '#FFFFFF',
     marginTop: 10,
     paddingTop: 5,
@@ -40,11 +41,11 @@ const styles = StyleSheet.create({
 class ItemSize extends Component {
 
   static propTypes = {
-    itemSizeCountry: React.PropTypes.string,
-    itemSizeNumber: React.PropTypes.string,
-    updateValue: React.PropTypes.func,
+    itemSizeRegion: React.PropTypes.string,
+    itemSizeValue: React.PropTypes.string,
     countries: React.PropTypes.array,
-    itemSizes: React.PropTypes.array
+    itemSizes: React.PropTypes.array,
+    updateValue: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -54,32 +55,62 @@ class ItemSize extends Component {
     }
   }
 
+  _renderRegionPicker(regions, itemSizeRegion) {
+    if (regions.length > 0) {
+      return <Picker
+                  style={styles.selectOptions}
+                  iosHeader="Select one"
+                  mode="dropdown"
+                  selectedValue={itemSizeRegion}
+                  onValueChange={(value) => this.props.updateValue('itemSizeRegion', value)}>
+                {regions.map((region, i) => {
+                  return <Item key={i} label={region.toUpperCase()} value={region} />
+                })}
+              </Picker>;
+    }
+    return null;
+  }
+
+  _renderValuePicker(values, itemSizeValue) {
+    if (values.length > 0) {
+      return <Picker
+        style={[styles.selectOptions, {width: 100}]}
+        iosHeader="Select one"
+        mode="dropdown"
+        selectedValue={itemSizeValue}
+        onValueChange={(value) => this.props.updateValue('itemSizeValue', value)}>
+        {values.map((value, i) => {
+          return <Item key={i} label={value} value={value} />
+        })}
+    </Picker>;  
+    }
+    return null;
+  }
+
   render () {
-    let flagIcon = uk;
-    this.props.countries.map((c) => {
-      if (c.name == this.props.itemSizeCountry) {
+    const { itemSizes, countries } = this.props;
+    const regions = _.uniq(itemSizes.map(x => x.region));
+    const itemSizeRegion = this.props.itemSizeRegion ? this.props.itemSizeRegion : _.first(regions);
+    const sizesByCountry = _.filter(itemSizes, x => x.region == itemSizeRegion);
+    const values = _.uniq(sizesByCountry.map(x => x.value));
+    const itemSizeValue = this.props.itemSizeValue ? this.props.itemSizeValue : _.first(values);
+    let flagIcon = us;
+    countries.map((c) => {
+      if (c.name == itemSizeRegion) {
         flagIcon = c.icon;
       }
     });
+
     return (<Container style={{flex: 1, marginBottom: 0, marginTop: 0}}>
               <Content scrollEnabled={false}>
                 <Grid>
                   <Col size={48}>
-                    <Grid style={styles.fakeBtnContainer}>
+                    <Grid style={styles.fakeBtnView}>
                       <Col size={20}>
                         <Image source={flagIcon} style={styles.flagSelectOptions} />
                       </Col>
                       <Col size={60}>
-                        <Picker
-                          style={styles.selectOptions}
-                          iosHeader="Select one"
-                          mode="dropdown"
-                          selectedValue={this.props.itemSizeCountry}
-                          onValueChange={(value) => this.props.updateValue('itemSizeCountry', value)}>
-                          {this.props.countries.map((c, i) => {
-                            return <Item key={i} label={c.text} value={c.name} />
-                          })}
-                        </Picker>
+                        {this._renderRegionPicker(regions, itemSizeRegion)}
                       </Col>
                       <Col size={20}>
                         <Icon style={styles.arrowSelect} name='ios-arrow-down' />
@@ -88,18 +119,9 @@ class ItemSize extends Component {
                   </Col>
                   <Col size={4} />
                   <Col size={48}>
-                    <Grid style={styles.fakeBtnContainer}>
+                    <Grid style={styles.fakeBtnView}>
                       <Col size={80}>
-                        <Picker
-                            style={[styles.selectOptions, {width: 100}]}
-                            iosHeader="Select one"
-                            mode="dropdown"
-                            selectedValue={this.props.itemSizeNumber}
-                            onValueChange={(value) => this.props.updateValue('itemSizeNumber', value)}>
-                            {this.props.itemSizes.map((s, i) => {
-                            return <Item key={i} label={s.name} value={s.value} />
-                          })}
-                        </Picker>
+                        {this._renderValuePicker(values, itemSizeValue)}
                       </Col>
                       <Col size={20}>
                         <Icon style={styles.arrowSelect} name='ios-arrow-down' />
@@ -119,9 +141,10 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
+  console.log('ItemSize state', state.filters.countries, state.filters.itemSizes);
   return {
-    countries: state.formData.countries,
-    itemSizes: state.formData.itemSizes,
+    countries: state.filters.countries,
+    itemSizes: state.filters.itemSizes,
   };
 };
 
