@@ -23,25 +23,27 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   headerBtn: {
-    marginLeft: 20,
-    marginRight: 20,
     backgroundColor: 'transparent',
   },
   toFeedScreenBtn: {
+    marginLeft: 20,
     width: 25,
     height: 25,
   },
   settingsBtn: {
+    marginRight: 20,
     width: 25,
     height: 25,
   },
   reportBtn: {
+    marginRight: 20,
     color: 'red',
     fontWeight: 'bold',
     fontSize: 14,
 
   },
   backBtn: {
+    marginLeft: 20,
     color: 'white',
     backgroundColor: 'transparent'
   },
