@@ -7,12 +7,13 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
+import { getStats } from '../../actions/user'
 const userbBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const plus = require('../../../images/icons/plus.png');
-const { popRoute } = actions
+const { popRoute } = actions;
 
 class ProfileScreen extends Component {
   static propTypes = {
@@ -25,6 +26,8 @@ class ProfileScreen extends Component {
     }
     console.log('props',this.props)
     console.log('state',this.state)
+    console.log('idddd',this.props.userData.id)
+    this.props.getStats(1);
   }
 
   _tempPopRoute() {
@@ -45,6 +48,35 @@ class ProfileScreen extends Component {
      <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn} />
      :
      <Text style={styles.reportBtn}>REPORT</Text>
+  }
+
+  componentWillReceiveProps() {
+    //this.getGalleryItems();
+  }
+
+  getGalleryItems() {
+    let limiter = this.state.isMyProfile ? 3 : 4;
+     return (
+       this.props.stats.latest_looks.map((look, index) => {
+         let thumbImage = _.find(look.cover, image => image.version == 'thumb');
+         if(index < limiter){
+           return (
+             <TouchableOpacity>
+               <Image key={index} source={{uri: thumbImage.url}} style={styles.itemPic} />
+             </TouchableOpacity>
+           )
+         }
+         return  this.state.isMyProfile ?
+           (
+             <TouchableOpacity key={index}  style={styles.addItemContainer}>
+               <Image source={require('../../../images/icons/plus.png')} style={[styles.itemPic, styles.addItem]} />
+             </TouchableOpacity>
+           )
+
+           :
+           null
+      })
+     )
   }
 
   render() {
@@ -69,25 +101,57 @@ class ProfileScreen extends Component {
           <View style={styles.description}>
             <Text ellipsizeMode="middle" style={styles.descriptionText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. bal bal balkjdna sdckasm dlcjkasdackls mda;ksmxsxsxsxs mda;ksmxsxsxsxs mda;ksmxsxsxsxs </Text>
           </View>
+          <View style={styles.itemsContainer}>
+            <View style={styles.itemsSeparator}>
+              <View style={styles.itemsTotal}>
+                <Text style={[styles.text, styles.number]}>{this.props.stats.looks_count}</Text>
+                <Text style={styles.text}>Items</Text>
+              </View>
+              <View style={styles.itemsRow}>
+
+                {/*<Image source={{uri: this.props.userData.avatar.url}} style={styles.itemPic} />*/}
+                {/*<Image source={{uri: this.props.userData.avatar.url}} style={styles.itemPic} />*/}
+                {/*<Image source={{uri: this.props.userData.avatar.url}} style={styles.itemPic} />*/}
+                {this.props.stats.latest_looks ?
+                  this.getGalleryItems()
+                  :
+                  null}
+              </View>
+            </View>
+          </View>
+          <View style={styles.statsContainer}>
+            <View style={styles.statsTotal}>
+              <Text style={[styles.text, styles.number]}>{this.props.stats.following}</Text>
+              <Text style={styles.text}>Following</Text>
+            </View>
+            <View style={styles.statsTotal}>
+              <Text style={[styles.text, styles.number]}>{this.props.stats.followers}</Text>
+              <Text style={styles.text}>Followers</Text>
+            </View>
+            <View style={styles.statsTotal}>
+              <Text style={[styles.text, styles.number]}>{this.props.stats.followers}</Text>
+              <Text style={styles.text}>Reviews</Text>
+            </View>
+          </View>
         </Image>
       </View>
     )
   }
-
 }
 
 function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
-
+    getStats: (id) => dispatch(getStats(id))
   };
 }
 
 const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
-    myUserId: state.user.id
+    myUserId: state.user.id,
+    stats: state.stats,
   };
 };
 

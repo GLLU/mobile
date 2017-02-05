@@ -100,4 +100,67 @@ export default StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20
   },
+  itemsContainer: {
+    flexDirection: 'row',
+    marginLeft: 15,
+    marginRight: 15,
+    backgroundColor: 'transparent',
+    // borderWidth: 2,
+    // borderColor: 'red'
+  },
+  itemsSeparator:{
+    flexDirection: 'row',
+    flexGrow: 1,
+    height: 75
+  },
+  itemsTotal: {
+    backgroundColor: '#00D7B2',
+    justifyContent: 'center',
+    opacity: 0.8
+  },
+  text: {
+    color: 'white',
+    fontWeight: '500',
+    textAlign: 'center',
+    width: 75,
+  },
+  number: {
+    fontSize: 30
+  },
+  itemsRow: {
+    backgroundColor: 'white',
+    flexGrow: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10
+  },
+  itemPic: {
+    width: 55,
+    height: 55,
+  },
+  statsContainer:{
+    flexDirection: 'row',
+    height: 75,
+    justifyContent: 'space-between',
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 30,
+    backgroundColor: 'transparent',
+
+  },
+  statsTotal: {
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    opacity: 0.8
+  },
+  addItemContainer: {
+    backgroundColor: '#00D7B2',
+    width: 55,
+    justifyContent: 'center'
+  },
+  addItem: {
+    width: 15,
+    height: 15,
+    alignSelf: 'center'
+  },
 });

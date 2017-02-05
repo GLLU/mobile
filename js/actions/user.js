@@ -6,6 +6,7 @@ import navigateTo from './sideBarNav';
 import rest from '../api/rest';
 
 export const SET_USER = 'SET_USER';
+export const UPDATE_STATS = 'UPDATE_STATS';
 
 const signInFromResponse = function(dispatch, response) {
   console.log('response', response, response.data.attributes['api-key']);
@@ -92,3 +93,25 @@ export function forgotPassword(email):Action {
     return dispatch(createEntity(entity));
   };
 }
+
+export function statsUpdate(data) {
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_STATS,
+      payload: data
+    });
+  };
+}
+
+export function getStats(id) {
+  console.log('id action', id);
+  return (dispatch) => {
+    dispatch(rest.actions.stats({id}, (err, data) => {
+      if (!err) {
+        console.log('data',data)
+        dispatch(statsUpdate(data));
+      }
+    }));
+  };
+}
+
