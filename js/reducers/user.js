@@ -2,6 +2,7 @@
 import type { Action } from '../actions/types';
 import { SET_USER } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
+import { REHYDRATE } from 'redux-persist/constants'
 
 export type State = {
     name: string
@@ -18,19 +19,30 @@ const initialState = {
   api_key: null
 };
 
-export default function (state:State = initialState, action:Action): State {
-  if (action.type === SET_USER) {
+// Action Handlers
+const ACTION_HANDLERS = {
+  [SET_USER]: (state, action) => {
     return {
       ...state,
       ...action.payload
     };
-  }
-  if(action.type === COMPLETE_EDIT_BODY_MEASURE){
+  },
+  [COMPLETE_EDIT_BODY_MEASURE]: (state, action) => {
     return {
       ...state,
       user_size: action.payload.sizeInfo
-      };
+    };
+  },
+  [REHYDRATE]: (state, action) => {
+    console.log('REHYDRATE', action.payload.user);
+    return {
+      ...state,
+      ...action.payload.user
     }
+  }
+}
 
-  return state;
+export default function reducers (state = initialState, action) {
+  const handler = ACTION_HANDLERS[action.type]
+  return handler ? handler(state, action) : state
 }

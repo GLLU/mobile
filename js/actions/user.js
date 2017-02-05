@@ -106,3 +106,13 @@ export function getStats(id) {
   };
 }
 
+export function checkLogin() {
+  return (dispatch, getState) => {
+    const user = getState().user;
+    if (user && user.api_key) {
+      dispatch(navigateTo('feedscreen'));
+    } else {
+      console.log('user does not exist');  
+    }
+  }
+}

@@ -1,8 +1,12 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
+import { actions } from 'react-native-navigation-redux-helpers';
+import { checkLogin } from './actions';
 
 import App from './App';
+import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import configureStore from './configureStore';
 
 function setup():React.Component {
@@ -11,12 +15,21 @@ function setup():React.Component {
     constructor() {
       super();
       this.state = {
-        isLoading: false,
-        store: configureStore(() => this.setState({ isLoading: false })),
+        isLoading: true,
+        store: configureStore(() => {
+          this.state.store.dispatch(checkLogin());
+          this.setState({ isLoading: false });
+        }),
       };
     }
 
     render() {
+      const { isLoading } = this.state;
+      
+      if (isLoading) {
+        return <SpinnerSwitch/>;
+      }
+      
       return (
         <Provider store={this.state.store}>
           <App />
