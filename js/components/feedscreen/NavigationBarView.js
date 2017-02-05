@@ -4,6 +4,8 @@ import { View, Text, Button } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import styles from './styles';
+import { connect } from 'react-redux';
+import navigateTo from '../../actions/sideBarNav';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -34,6 +36,7 @@ class NavigationBarView extends Component {
 
   goToProfile() {
     console.log('Go To Profile');
+    this.props.navigateTo('profileScreen', 'feedscreen', this.props.user);
   }
 
   openCamera() {
@@ -108,4 +111,16 @@ class NavigationBarView extends Component {
   }
 }
 
-export default NavigationBarView;
+function bindActions(dispatch) {
+  return {
+    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+};
+
+export default connect(mapStateToProps, bindActions)(NavigationBarView);

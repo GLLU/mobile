@@ -4,8 +4,10 @@ import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import rest from '../api/rest';
+import { showLoader, hideLoader } from './index';
 
 export const SET_USER = 'SET_USER';
+export const UPDATE_STATS = 'UPDATE_STATS';
 
 const signInFromResponse = function(dispatch, response) {
   dispatch(setAccessToken(response.data.attributes['api-key']));
@@ -82,3 +84,25 @@ export function forgotPassword(email):Action {
     return dispatch(createEntity(entity));
   };
 }
+
+export function statsUpdate(data) {
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_STATS,
+      payload: data
+    });
+  };
+}
+
+export function getStats(id) {
+  return (dispatch) => {
+    dispatch(showLoader());
+    dispatch(rest.actions.stats({id}, (err, data) => {
+      if (!err) {
+        dispatch(statsUpdate(data));
+        dispatch(hideLoader());
+      }
+    }));
+  };
+}
+

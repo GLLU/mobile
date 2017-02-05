@@ -12,6 +12,7 @@ import filters from './filters';
 import uploadLook from './uploadLook';
 import feed from './feed';
 import look from './look';
+import stats from './stats';
 
 import { reducer as api } from 'redux-json-api';
 
@@ -27,5 +28,6 @@ export default combineReducers({
   uploadLook,
   feed,
   look,
+  stats,
   api,
 });

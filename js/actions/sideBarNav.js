@@ -16,7 +16,7 @@ export default function navigateTo(route, homeRoute, optional) {
     dispatch(closeDrawer());
 
     if (currentRouteKey !== homeRoute && route !== homeRoute) {
-      dispatch(replaceAt(currentRouteKey, { key: route, index: 1 }, navigation.key));
+      dispatch(replaceAt(currentRouteKey, { key: route, index: 1, optional }, navigation.key));
     } else if (currentRouteKey !== homeRoute && route === homeRoute) {
       dispatch(popRoute(navigation.key));
     } else if (currentRouteKey === homeRoute && route !== homeRoute) {
