@@ -93,10 +93,11 @@ export default StyleSheet.create({
   description: {
     backgroundColor: 'transparent',
     margin: 15,
+    height: 80,
   },
   descriptionText: {
     color: 'white',
     textAlign: 'center',
-    height: 70
+    lineHeight: 20
   },
 });
