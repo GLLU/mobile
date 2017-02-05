@@ -18,6 +18,7 @@ const deviceWidth = Dimensions.get('window').width;
 class TabContent extends Component {
 
   static propTypes = {
+    hasUserSize: React.PropTypes.bool,
     flatLooks: React.PropTypes.array,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
@@ -66,13 +67,16 @@ class TabContent extends Component {
   }
 
   handleScroll(event) {
-    Object.keys(this.props.user_size).length === 0 ? this.scrollCallAsync(event) : null;
-    const contentSizeHeight = event.nativeEvent.contentSize.height;
-    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-    const currentScroll = event.nativeEvent.contentOffset.y
-    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-    if (compare >= 1) {
-      // console.log('Load more items');
+    if (this.props.hasUserSize) {
+      this.scrollCallAsync(event);
+    } else {
+      const contentSizeHeight = event.nativeEvent.contentSize.height;
+      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+      const currentScroll = event.nativeEvent.contentOffset.y
+      const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
+      if (compare >= 1) {
+        // console.log('Load more items');
+      }
     }
   }
 
@@ -157,11 +161,11 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const userSize = state.user.user_size ? state.user.user_size : {};
+  const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData,
-    user_size: userSize
+    hasUserSize
   }
 };
 
