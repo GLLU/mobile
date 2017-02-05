@@ -11,6 +11,7 @@ export function getFeed(type, category='', term=''):Action {
     const params = { type, category, term };
     return dispatch(rest.actions.feeds(params, (err, data) => {
       if (!err && data) {
+        console.log('feed data',data)
         dispatch(setFeedData(data));
       }
     }));

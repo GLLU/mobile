@@ -10,6 +10,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
@@ -53,6 +54,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+                            new LinearGradientPackage(),
                             new ReactVideoPackage(),
                             new FileUploadPackage(),
                             new ExtraDimensionsPackage(),
