@@ -96,7 +96,7 @@ class ItemScreen extends Component {
         delay: 250      }            // Configuration
     ).start();
     const avatar = {};
-    avatar.imageUri = this.props.flatLook.uri;
+    avatar.imageUri = this.props.look.user.avatar.url;
     avatar.bodyType = this.props.flatLook.type;
     return (
       <Animated.View style={{opacity: this.state.fadeAnimContent, justifyContent: 'space-between'}}>

@@ -28,7 +28,7 @@ class ProfileView extends Component {
             <Text style={styles.editText}>Edit</Text>
           </TouchableOpacity>
           :
-          <TouchableOpacity style={styles.editBtn} onPress={() => this.props.onPress()}>
+          <TouchableOpacity style={styles.followBtn} onPress={() => this.props.onPress()}>
             <Text style={styles.followText}>Follow</Text>
           </TouchableOpacity>
         }

@@ -71,7 +71,7 @@ class ItemsGallery extends Component {
       <View style={styles.itemsContainer}>
         <View style={styles.itemsSeparator}>
           <View style={styles.itemsTotal}>
-            <Text style={[styles.text, styles.number]}>{this.props.looks_count}</Text>
+            <Text style={[styles.text, styles.number]}>{this.props.looksCount}</Text>
             <Text style={styles.text}>Items</Text>
           </View>
           <View style={styles.itemsRow}>

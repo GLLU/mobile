@@ -73,6 +73,7 @@ class ProfileScreen extends Component {
             <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
             { this._renderleftBtn() }
             </TouchableOpacity>
+
             <ProfileView profilePic={this.props.userData.avatar.url}
                          name={this.props.userData.name}
                          username={this.props.userData.username}
