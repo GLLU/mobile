@@ -6,6 +6,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
 
 import com.facebook.react.ReactActivity;
+import com.yoloci.fileupload.FileUploadPackage;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -32,6 +34,8 @@ public class MainActivity extends ReactActivity {
         mCallbackManager = new CallbackManager.Factory().create();
         ReactPackage packages[] = new ReactPackage[]{
                 new MainReactPackage(),
+            new FileUploadPackage(),
+            new ExtraDimensionsPackage(),
             new OrientationPackage(),
                 new FBSDKPackage(mCallbackManager),
         };

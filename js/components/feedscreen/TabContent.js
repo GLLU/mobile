@@ -51,7 +51,7 @@ class TabContent extends Component {
     const imagesColumn1 = [];
     const imagesColumn2 = [];
     const colW = (deviceWidth - 10) / 2;
-    looks.map((look, index) => {
+    _.filter(looks, x => x.width && x.height).map((look, index) => {
       const { width, height } = look;
       look.width = colW;
       look.height = height * colW / width ;

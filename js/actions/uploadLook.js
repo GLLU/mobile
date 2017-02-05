@@ -2,11 +2,14 @@ export const ADD_NEW_LOOK = 'ADD_NEW_LOOK';
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
+export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
 export const ADD_ITEM_SIZE_COUNTRY = 'ADD_ITEM_SIZE_COUNTRY';
 export const ADD_ITEM_SIZE = 'ADD_ITEM_SIZE';
+export const ADD_ITEM_TAG = 'ADD_ITEM_TAG';
+export const REMOVE_ITEM_TAG = 'REMOVE_ITEM_TAG';
 export const ADD_ITEM_CURRENCY = 'ADD_ITEM_CURRENCY';
 export const ADD_ITEM_PRICE = 'ADD_ITEM_PRICE';
 export const ADD_SHARING_INFO = 'ADD_SHARING_INFO';
@@ -17,30 +20,69 @@ export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import _ from 'lodash';
 
-import rest from '../api/rest';
-import { showLoader, hideLoader, loadBrands } from './index';
+import rest, { API_URL } from '../api/rest';
+import { showLoader, hideLoader, loadBrands, loadItemSizes } from './index';
 
+var FileUpload = require('NativeModules').FileUpload;
 // Actions
 export function addNewLook(image) {
-  console.log('addNewLook', image.path);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(showLoader());
-    const body = {
-      look: {
-        image: `data:image/jpeg;base64,${image.data}`
-      }
-    };
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
-        dispatch(hideLoader());
-        if (!err) {
-          const payload = _.merge(data, {image: image.path });
-          resolve(dispatch(editNewLook(payload)));
-        } else {
-          reject(err);
-        }
-      }));
+      const user = getState().user;
+      console.log('user', user);
+      if (user && user.api_key) {
+        var obj = {
+          uploadUrl: `${API_URL}/looks`,
+          method: 'POST', // default 'POST',support 'POST' and 'PUT'
+          headers: {
+            'Accept': 'application/json',
+            "Authorization": `Token token=${user.api_key}`,
+          },
+          fields: {},
+          files: [
+            {
+              name: 'look[image]',
+              filename: _.last(image.path.split('/')), // require, file name
+              filepath: image.path, // require, file absoluete path
+            },
+          ]
+        };
+
+        console.log('object obj', obj)
+
+        FileUpload.upload(obj, function(err, result) {
+          console.log('upload:', err, result);
+          dispatch(hideLoader());
+          if (result && result.status == 201) {
+            const data = JSON.parse(result.data);
+            const payload = _.merge(data, {image: image.path });
+            resolve(dispatch(editNewLook(payload)));
+          } else {
+            reject(err);
+          }
+        })
+      } else {
+        reject('Authorization error')
+      }
     });
+
+    // const body = {
+    //   look: {
+    //     image: `data:image/jpeg;base64,${image.data}`
+    //   }
+    // };
+    // return new Promise((resolve, reject) => {
+    //   dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
+    //     dispatch(hideLoader());
+    //     if (!err) {
+    //       const payload = _.merge(data, {image: image.path });
+    //       resolve(dispatch(editNewLook(payload)));
+    //     } else {
+    //       reject(err);
+    //     }
+    //   }));
+    // });
   }
 }
 
@@ -70,7 +112,6 @@ export function setTagPosition(payload) {
 }
 
 export function createLookItem(position) {
-  console.log('action createLookItem', position);
   return (dispatch, getState) => {
     dispatch(showLoader());
     const state = getState();
@@ -98,8 +139,14 @@ export function createLookItem(position) {
   }
 }
 
+export function selectLookItem(itemId) {
+  return {
+    type: SELECT_LOOK_ITEM,
+    payload: itemId
+  }
+}
+
 export function updateLookItem() {
-  console.log('actions updateLookItem');
   return (dispatch, getState) => {
     const state = getState();
 
@@ -117,7 +164,6 @@ export function updateLookItem() {
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.items.put({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
-          console.log('item updated');
           resolve();
         } else {
           reject(err);
@@ -128,7 +174,6 @@ export function updateLookItem() {
 }
 
 export function publishLookItem() {
-  console.log('action publishLookItem');
   return (dispatch, getState) => {
     const state = getState();
 
@@ -154,28 +199,21 @@ export function publishLookItem() {
         }
       }));
     });
-    return dispatch(updateEntity(entity)).then(response => {
-      const publish = {
-        "type": "look_publish",
-        "attributes": {
-          "look_id": state.uploadLook.lookId,
-        }
-      }
-      console.log('action publish publishLookItem', publish);
-      return dispatch(createEntity(publish));
-    })
   }
 }
 
-export function addItemType(payload) {
-  return {
-    type: ADD_ITEM_TYPE,
-    payload: payload
-  }
+export function addItemType(categoryId) {
+  return (dispatch) => {
+
+    dispatch({
+        type: ADD_ITEM_TYPE,
+        payload: categoryId
+      });
+    dispatch(loadItemSizes(categoryId));
+  };
 }
 
 export function addBrandName(payload) {
-  console.log('action addBrandName', payload);
   return {
     type: ADD_BRAND_NAME,
     payload: payload
@@ -193,7 +231,7 @@ export function createBrandName(name) {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
           dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brands.id, name: data.brands.name }));
+          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name }));
         } else {
           reject(err);
         }
@@ -202,10 +240,18 @@ export function createBrandName(name) {
   };
 }
 
-export function addItemSizeCountry(payload) {
-  return {
-    type: ADD_ITEM_SIZE_COUNTRY,
-    payload: payload
+export function addItemSizeCountry(region) {
+  return (dispatch, getState) => {
+    const itemSizes = getState().filters.itemSizes;
+    const sizesByCountry = _.filter(itemSizes, x => x.region == region);
+    const itemSizeValue = sizesByCountry.length > 0 ? _.first(sizesByCountry.map(x => x.value)) : null;
+    return dispatch({
+      type: ADD_ITEM_SIZE_COUNTRY,
+      payload: {
+        itemSizeRegion: region,
+        itemSizeValue,
+      }
+    });
   }
 }
 
@@ -214,6 +260,24 @@ export function addItemSize(payload) {
     type: ADD_ITEM_SIZE,
     payload: payload
   }
+}
+
+export function addItemTag(tags) {
+  return (dispatch) => {
+    return dispatch({
+      type: ADD_ITEM_TAG,
+      payload: tags
+    });
+  };
+}
+
+export function removeItemTag(tag) {
+  return (dispatch) => {
+    return dispatch({
+      type: REMOVE_ITEM_TAG,
+      payload: tag
+    });
+  };
 }
 
 export function addItemCurrency(payload) {
