@@ -5,6 +5,7 @@ import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import rest from '../api/rest';
 import { showLoader, hideLoader } from './index';
+import Utils from '../Util';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
@@ -16,15 +17,21 @@ const signInFromResponse = function(dispatch, response) {
 
 const signInFromRest = function(dispatch, data) {
   console.log('api key', data.user.api_key)
-  rest.use("options", function() {
-    return { headers: {
-      "Authorization": `Token token=${data.user.api_key}`,
-      "Accept": "application/json",
-      "Content-Type": "application/json"
-    }};
-  });
-  dispatch(navigateTo('feedscreen'));
-  dispatch(setUser(data.user));
+  Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+    console.log('saved to key chain');
+    rest.use("options", function() {
+      return {
+        headers: {
+          "Authorization": `Token token=${data.user.api_key}`,
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        }
+      };
+    });
+    dispatch(navigateTo('feedscreen'));
+    dispatch(setUser(data.user));
+  })
+  
 };
 
 export function setUser(user:string):Action {
