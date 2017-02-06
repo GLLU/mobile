@@ -5,7 +5,9 @@ import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
 
-export const API_URL = 'https://sam.gllu.com/v1';
+import Config from 'react-native-config'
+
+// export const API_URL = 'https://sam.gllu.com/v1';
 // const API_URL = 'https://staging-api.gllu.com/v1';
 // const API_URL = 'http://localhost:9292/v1';
 
@@ -86,7 +88,7 @@ export default reduxApi({
     crud: true,
   }
 }).use("fetch", adapterFetch(fetch))
-    .use('rootUrl', API_URL)
+    .use('rootUrl', Config.API_URL)
     .use("options", function() {
       return { headers: {
         "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
