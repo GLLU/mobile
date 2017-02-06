@@ -57,7 +57,7 @@ class ProfileScreen extends Component {
     if(this.props.stats.latest_looks && this.props.stats.user_id === this.props.userData.id) {
       return (
         <View>
-          <ItemsGallery isMyProfile={this.state.isMyProfile} latest_looks={this.props.stats.latest_looks} looksCount={this.props.stats.looks_count}/>
+          <ItemsGallery isMyProfile={this.state.isMyProfile} latest_looks={this.props.stats.latest_looks} looksCount={this.props.stats.looks_count} itemPress={(item) => this._handleItemPress(item) }/>
           <StatsView following={this.props.stats.following} followers={this.props.stats.followers} likes={this.props.stats.likes_count} />
         </View>
       )
@@ -73,7 +73,6 @@ class ProfileScreen extends Component {
             <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
             { this._renderleftBtn() }
             </TouchableOpacity>
-
             <ProfileView profilePic={this.props.userData.avatar.url}
                          name={this.props.userData.name}
                          username={this.props.userData.username}

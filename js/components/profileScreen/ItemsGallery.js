@@ -57,7 +57,7 @@ class ItemsGallery extends Component {
             height: coverImg.height,
           });
           return (
-            <TouchableOpacity onPress={(e) => this._handleItemPress(flatLooksArr[index])} key={index}>
+            <TouchableOpacity onPress={(e) => this.props.itemPress(flatLooksArr[index])} key={index}>
               <Image  source={{uri: thumbImage.url}} style={styles.itemPic} />
             </TouchableOpacity>
           )
