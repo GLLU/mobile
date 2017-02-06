@@ -1,7 +1,8 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const w = Dimensions.get('window').width
-const h = Dimensions.get('window').height
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
 export default StyleSheet.create({
   container: {
