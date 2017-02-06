@@ -165,4 +165,25 @@ export default StyleSheet.create({
     height: 15,
     alignSelf: 'center'
   },
+  editProfileBg: {
+    flex: 1,
+    width: null,
+    height: 150
+  },
+  cancelEdit: {
+    marginLeft: 20,
+    width: 40,
+    height: 40,
+  },
+  profilePicBtn: {
+    width: 30,
+    height: 20,
+  },
+  editProfileAvatarImg: {
+    position: 'absolute',
+    top: 100,
+    left: w / 2 - 50,
+    borderWidth: 2,
+    borderColor: 'white'
+  },
 });

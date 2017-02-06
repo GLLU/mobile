@@ -26,14 +26,18 @@ class ProfileScreen extends Component {
     this.state = {
       isMyProfile: this.props.userData.id === this.props.myUserId
     }
+  }
+
+  componentWillMount() {
     this.props.getStats(this.props.userData.id);
   }
 
   _PopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
-  _tempBtn(){
-    console.log('_tempBtn was pressed');
+  _goToEditProfileScreen(){
+    console.log('go to edit profile screen');
+    this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 
   _renderleftBtn() {
@@ -76,7 +80,7 @@ class ProfileScreen extends Component {
             <ProfileView profilePic={this.props.userData.avatar.url}
                          name={this.props.userData.name}
                          username={this.props.userData.username}
-                         onPress={() => this._tempBtn()}
+                         onPress={() => this._goToEditProfileScreen()}
                          isMyProfile={this.state.isMyProfile}
             />
             <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
