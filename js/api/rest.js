@@ -67,6 +67,12 @@ export default reduxApi({
     url: '/looks/:id',
     crud: true
   },
+  stats: {
+    url: '/users/:id/stats',
+    options: {
+      method: 'get'
+    }
+  },
   publish: {
     url: '/looks/:look_id/publish',
     options: {

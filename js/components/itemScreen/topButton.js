@@ -45,7 +45,7 @@ export default class TopButton extends Component {
         <View style={styles.topContainer}>
 
           <View style={styles.topLeft}>
-            <TouchableOpacity style={[styles.topButton,styles.avatarButton]}>
+            <TouchableOpacity style={[styles.topButton,styles.avatarButton]} onPress={() => this.props.onPress()}>
               <Image source={{uri: this.props.avatar.imageUri}} style={{height:64, width: 64, borderRadius: 32}} />
             </TouchableOpacity>
             <TouchableOpacity style={[styles.topButton,styles.bodyTypeButton]}>
