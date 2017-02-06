@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import LinearGradient from 'react-native-linear-gradient';
-
+import ImagePicker from 'react-native-image-crop-picker';
 import { getStats } from '../../actions/user'
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
 const cancelEdit = require('../../../images/icons/cancelEdit.png');
 const cameraWhite = require('../../../images/icons/cameraWhite.png');
 import Icon from 'react-native-vector-icons/FontAwesome';
 const { popRoute } = actions;
+import BodyMeasureView from '../myBodyMeasure/bodyMeasureView';
 
 class EditProfile extends Component {
   static propTypes = {
@@ -30,6 +31,15 @@ class EditProfile extends Component {
     console.log('_tempBtn was pressed');
   }
 
+  addItem() {
+    ImagePicker.openPicker({
+      includeBase64: true,
+      cropping: false,
+    }).then(image => {
+      this.props.goToAddNewItem(image);
+    });
+  }
+
   _renderleftBtn() {
     return  <Image source={cancelEdit} style={styles.cancelEdit} />
   }
@@ -43,7 +53,7 @@ class EditProfile extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <Image source={profileBackground} style={styles.editProfileBg}>
           <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7}]} />
           <View style={styles.header}>
@@ -55,11 +65,17 @@ class EditProfile extends Component {
             </TouchableOpacity>
           </View>
         </Image>
-        <Image source={{uri: this.props.user.avatar.url}} style={[styles.avatarImg, styles.editProfileAvatarImg]} >
-          <View style={{width: 100, height: 100, opacity: 0.8, backgroundColor: '#00D7B2', borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 20}}>
-            <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
-          </View>
-        </Image>
+        <TouchableOpacity transparent onPress={() => this.addItem()} style={styles.editProfileAvatarImg}>
+          <Image source={{uri: this.props.user.avatar.url}} style={[styles.avatarImg, styles.editAvatarImage]} >
+            <View style={{width: 100, height: 100, opacity: 0.8, backgroundColor: '#00D7B2', borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginRight: 20}}>
+              <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
+            </View>
+          </Image>
+        </TouchableOpacity>
+        <View style={styles.container}>
+          <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size}/>
+        </View>
+
       </View>
     )
   }
@@ -78,7 +94,8 @@ const mapStateToProps = state => {
     navigation: state.cardNavigation,
     myUserId: state.user.id,
     stats: state.stats,
-    user: state.user
+    user: state.user,
+    bodyType: state.myBodyType.currentBodyType
   };
 };
 

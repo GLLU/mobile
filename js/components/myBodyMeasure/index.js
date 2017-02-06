@@ -37,6 +37,9 @@ class MyBodyMeasure extends Component {
 
   _saveUserSize() {
     const { user_size, currentBodyType } = this.props;
+    if(Object.keys(this.props.user_size).length !== 0) {
+      console.log('start');
+    }
     const data = {
       body_type: currentBodyType.uniqueName,
       chest: user_size.chest,
@@ -84,7 +87,7 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     currentBodyType: state.myBodyType.currentBodyType,
-    gender: state.myBodyType.gender,
+    gender: state.user.gender,
     user_size: userSize
   }
 };

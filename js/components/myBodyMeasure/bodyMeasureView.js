@@ -16,8 +16,7 @@ class BodyMeasureView extends Component {
       isEdit: false,
       typeEdit: null, // 'chest','hip','height'
       isInchSelect: false,
-
-      currentSize: Object.assign({} , this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName]),
+      currentSize: Object.assign({} , this.props.userSize ? this.props.userSize : this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName]),
       sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.uniqueName],
       updateTextColor: 'black',
       // edit
@@ -26,6 +25,7 @@ class BodyMeasureView extends Component {
       sliderMaxValue: 0,
       sliderMinValue: 0,
     }
+    console.log('size state',this.state.currentSize);
   }
 
   static propTypes = {

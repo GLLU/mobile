@@ -5,6 +5,7 @@ import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import rest from '../api/rest';
 import { showLoader, hideLoader } from './index';
+import { getUserBodyType } from './myBodyType';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
@@ -15,7 +16,6 @@ const signInFromResponse = function(dispatch, response) {
 };
 
 const signInFromRest = function(dispatch, data) {
-  console.log('api key', data.user.api_key)
   rest.use("options", function() {
     return { headers: {
       "Authorization": `Token token=${data.user.api_key}`,
@@ -25,6 +25,13 @@ const signInFromRest = function(dispatch, data) {
   });
   dispatch(navigateTo('feedscreen'));
   dispatch(setUser(data.user));
+  if(Object.keys(data.user.user_size).length !== 0) {
+    const userDetails = {
+      gender: data.user.gender,
+      bodyType: data.user.user_size.body_type
+    }
+    dispatch(getUserBodyType(userDetails));
+  }
 };
 
 export function setUser(user:string):Action {
@@ -46,6 +53,7 @@ export function loginViaFacebook(data):Action {
     };
 
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
+      console.log('data after facebook', data)
       if (!err && data) {
         signInFromRest(dispatch, data);
       }

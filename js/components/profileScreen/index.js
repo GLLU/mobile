@@ -70,7 +70,7 @@ class ProfileScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
           <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
           <View style={styles.header}>

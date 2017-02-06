@@ -166,7 +166,6 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   editProfileBg: {
-    flex: 1,
     width: null,
     height: 150
   },
@@ -183,7 +182,17 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 100,
     left: w / 2 - 50,
+
+  },
+  editAvatarImage: {
     borderWidth: 2,
     borderColor: 'white'
+  },
+  container: {
+    top: 60,
+    backgroundColor: '#ffffff',
+    paddingTop: 25,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
   },
 });
