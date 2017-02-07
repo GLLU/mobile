@@ -1,6 +1,4 @@
-
 import type { Action } from './types';
-
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import rest from '../api/rest';
