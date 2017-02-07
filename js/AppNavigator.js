@@ -120,7 +120,7 @@ class AppNavigator extends Component {
     }
   }
 
-  _renderMainView() {
+  render() {
     return (
       <View style={{flex: 1}}>
         <Drawer
@@ -161,16 +161,9 @@ class AppNavigator extends Component {
           />
         </Drawer>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
+        {this.props.isProcessing ? <ProcessCropping /> : null}
       </View>
     );
-  }
-
-  _renderProcessCropping() {
-    return <ProcessCropping />
-  }
-
-  render() {
-    return this.props.isProcessing ? this._renderProcessCropping() : this._renderMainView();
   }
 }
 

@@ -22,7 +22,7 @@ export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import _ from 'lodash';
 
-import rest from '../api/rest';
+import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
 import Util from '../Util';
 
@@ -69,6 +69,7 @@ export function addNewLook(image) {
               }
             })
           } else {
+            dispatch(hideProcessing());
             reject('Authorization error')  
           }
         }).catch(reject);

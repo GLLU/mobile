@@ -9,22 +9,35 @@ import glluTheme from '../../themes/gllu-theme';
 
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
+const bg = require('../../../images/background-shadow.png');
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'transparent'
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(192,192,192, .4)',
+    height: h
   },
   bgImage: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
     width: w,
     height: h,
     resizeMode: 'cover'
   },
-  modal: {
-    width: 150,
-    height: 60,
+  text: {
     backgroundColor: '#fff',
+    color: '#000000',
+    padding: 20,
     justifyContent: 'center',
-    alignItems: 'center',
     borderRadius: 12,
     overflow: 'hidden',
   }
@@ -40,21 +53,12 @@ class Cropping extends Component {
   }
 
   render() {
-    const bg = require('../../../images/background.png');
+    
     return(
-        <Container style={styles.container} theme={glluTheme}>
-          <Content scrollEnabled={false} contentContainerStyle={{backgroundColor: '#000000', alignItems: 'center'}}>
-            <Image source={bg} style={styles.bgImage}  />
-            <Modal isOpen={true}
-              style={styles.modal}
-              backdropPressToClose ={false}
-              swipeToClose={false}
-              animationDuration={0}
-              position={"center"}>
-              <Text>Processing...</Text>
-            </Modal>
-          </Content>
-        </Container>
+      <View style={styles.container}>
+        <Image source={bg} style={styles.bgImage} />
+        <Text style={styles.text}>Processing...</Text>
+      </View>
     );
   }
 }
