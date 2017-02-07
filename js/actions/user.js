@@ -115,7 +115,7 @@ export function getStats(id) {
 export function checkLogin() {
   return (dispatch, getState) => {
     const user = getState().user;
-    if (user) {
+    if (user && user.id != -1) {
       Util.getKeychainData().then(credentials => {
         console.log('credentials', credentials);
         setRestOptions(rest, credentials.password);

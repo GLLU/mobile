@@ -43,7 +43,7 @@ const ACTION_HANDLERS = {
       ...state,
       ...action.payload.user
     }
-  }
+  },
 }
 
 export default function reducers (state = initialState, action) {

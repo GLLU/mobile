@@ -2,21 +2,14 @@
 import React, { Component } from 'react';
 import { Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, View } from 'native-base';
-import { setUser } from '../../actions/user';
 import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
-import { showBodyTypeModal } from '../../actions/myBodyType';
-import { addNewLook } from '../../actions/uploadLook';
+import { addNewLook, showBodyTypeModal, setUser, pushRoute, navigateTo } from '../../actions';
 import SearchBar from './SearchBar'
-
-const {
-  pushRoute,
-} = actions;
 
 class FeedPage extends Component {
 
@@ -38,6 +31,12 @@ class FeedPage extends Component {
       searchStatus: false
     };
 
+  }
+
+  componentWillMount() {
+    if (!this.props.user || this.props.user.id == -1) {
+      this.props.navigateTo('splashscreen');
+    }
   }
 
   setUser(name) {
@@ -87,6 +86,7 @@ class FeedPage extends Component {
 
 function bindActions(dispatch) {
   return {
+    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),
@@ -94,6 +94,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => ({
+  user: state.user,
   navigation: state.cardNavigation,
   modalShowing: state.myBodyType.modalShowing
 });
