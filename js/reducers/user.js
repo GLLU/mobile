@@ -22,9 +22,13 @@ const initialState = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_USER]: (state, action) => {
+    const user = Object.assign({}, action.payload);
+    delete user.api_key
+    console.log('user after delete');
+    console.log(user)
     return {
       ...state,
-      ...action.payload
+      ...user
     };
   },
   [COMPLETE_EDIT_BODY_MEASURE]: (state, action) => {

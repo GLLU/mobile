@@ -5,29 +5,28 @@ import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import rest from '../api/rest';
 import { showLoader, hideLoader } from './index';
-import Utils from '../Util';
+import Util from '../Util';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
 
-const signInFromResponse = function(dispatch, response) {
-  dispatch(setAccessToken(response.data.attributes['api-key']));
-  dispatch(navigateTo('feedscreen'));
-};
+const setRestOptions = function(rest, key) {
+  rest.use("options", function() {
+    return {
+      headers: {
+        "Authorization": `Token token=${key}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      }
+    };
+  });
+}
 
 const signInFromRest = function(dispatch, data) {
   console.log('api key', data.user.api_key)
-  Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+  Util.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     console.log('saved to key chain');
-    rest.use("options", function() {
-      return {
-        headers: {
-          "Authorization": `Token token=${data.user.api_key}`,
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        }
-      };
-    });
+    setRestOptions(rest, data.user.api_key);
     dispatch(navigateTo('feedscreen'));
     dispatch(setUser(data.user));
   })
@@ -116,8 +115,12 @@ export function getStats(id) {
 export function checkLogin() {
   return (dispatch, getState) => {
     const user = getState().user;
-    if (user && user.api_key) {
-      dispatch(navigateTo('feedscreen'));
+    if (user) {
+      Util.getKeychainData().then(credentials => {
+        console.log('credentials', credentials);
+        setRestOptions(rest, credentials.password);
+        dispatch(navigateTo('feedscreen'));
+      })
     } else {
       console.log('user does not exist');  
     }

@@ -13,4 +13,8 @@ export default class Utils {
     return Keychain.setGenericPassword(email, api_key);
   }
 
+  static getKeychainData() {
+    return Keychain.getGenericPassword();
+  }
+
 }
