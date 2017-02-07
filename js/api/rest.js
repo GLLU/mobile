@@ -7,9 +7,7 @@ import { setCategories } from '../actions/filters';
 
 import Config from 'react-native-config'
 
-// export const API_URL = 'https://sam.gllu.com/v1';
-// const API_URL = 'https://staging-api.gllu.com/v1';
-// const API_URL = 'http://localhost:9292/v1';
+export const API_URL = Config.API_URL;
 
 export default reduxApi({
   facebook_auth: {
@@ -24,23 +22,6 @@ export default reduxApi({
     url: '/users',
     crud: true,
   },
-  // sizes: {
-  //   url: '/users/5/size',
-  //   options: {
-  //     method: "get",
-  //     headers: {
-  //       "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/json"
-  //     }
-  //   },
-  //   postfetch: [
-  //     ({data, dispatch}) => {
-  //       alert('got size');
-  //       alert(data);
-  //     }
-  //   ]
-  // },
   size: {
     url: '/users/:user_id/size',
     options: {

@@ -22,6 +22,7 @@ import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes } from './index';
+import Util from '../Util';
 
 var FileUpload = require('NativeModules').FileUpload;
 // Actions
@@ -31,37 +32,45 @@ export function addNewLook(image) {
     return new Promise((resolve, reject) => {
       const user = getState().user;
       console.log('user', user);
-      if (user && user.api_key) {
-        var obj = {
-          uploadUrl: `${API_URL}/looks`,
-          method: 'POST', // default 'POST',support 'POST' and 'PUT'
-          headers: {
-            'Accept': 'application/json',
-            "Authorization": `Token token=${user.api_key}`,
-          },
-          fields: {},
-          files: [
-            {
-              name: 'look[image]',
-              filename: _.last(image.path.split('/')), // require, file name
-              filepath: image.path, // require, file absoluete path
-            },
-          ]
-        };
+      if (user && user.id != -1) {
+        Util.getKeychainData().then(credentials => {
+          const api_key = credentials.password;
+          if (api_key) {
+            var obj = {
+              uploadUrl: `${API_URL}/looks`,
+              method: 'POST', // default 'POST',support 'POST' and 'PUT'
+              headers: {
+                'Accept': 'application/json',
+                "Authorization": `Token token=${api_key}`,
+              },
+              fields: {},
+              files: [
+                {
+                  name: 'look[image]',
+                  filename: _.last(image.path.split('/')), // require, file name
+                  filepath: image.path, // require, file absoluete path
+                },
+              ]
+            };
 
-        console.log('object obj', obj)
+            console.log('object obj', obj)
 
-        FileUpload.upload(obj, function(err, result) {
-          console.log('upload:', err, result);
-          dispatch(hideLoader());
-          if (result && result.status == 201) {
-            const data = JSON.parse(result.data);
-            const payload = _.merge(data, {image: image.path });
-            resolve(dispatch(editNewLook(payload)));
+            FileUpload.upload(obj, function(err, result) {
+              console.log('upload:', err, result);
+              dispatch(hideLoader());
+              if (result && result.status == 201) {
+                const data = JSON.parse(result.data);
+                const payload = _.merge(data, {image: image.path });
+                resolve(dispatch(editNewLook(payload)));
+              } else {
+                reject(err);
+              }
+            })
           } else {
-            reject(err);
+            reject('Authorization error')  
           }
-        })
+        }).catch(reject);
+        
       } else {
         reject('Authorization error')
       }
