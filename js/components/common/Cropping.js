@@ -1,10 +1,7 @@
 
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, Dimensions } from 'react-native';
-import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { Container, Content, Text } from 'native-base';
-import Modal from 'react-native-modalbox';
+import { View, Image, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import { Text } from 'native-base';
 import glluTheme from '../../themes/gllu-theme';
 
 const w = Dimensions.get('window').width;
@@ -33,13 +30,18 @@ const styles = StyleSheet.create({
     height: h,
     resizeMode: 'cover'
   },
-  text: {
+  textView: {
     backgroundColor: '#fff',
-    color: '#000000',
     padding: 20,
     justifyContent: 'center',
     borderRadius: 12,
-    overflow: 'hidden',
+    flexDirection: 'row',
+  },
+  spinner: {
+    marginRight: 10,
+  },
+  text: {
+    color: '#000000',
   }
 });
 
@@ -57,19 +59,17 @@ class Cropping extends Component {
     return(
       <View style={styles.container}>
         <Image source={bg} style={styles.bgImage} />
-        <Text style={styles.text}>Processing...</Text>
+        <View style={styles.textView}>
+          <ActivityIndicator
+              style={styles.spinner}
+              color={glluTheme.defaultSpinnerColor}
+              size={'small'}
+            />
+          <Text style={styles.text}>Processing...</Text>
+        </View>
       </View>
     );
   }
 }
 
-function bindAction(dispatch) {
-  return {
-  };
-}
-
-const mapStateToProps = state => ({
-});
-
-
-export default connect(mapStateToProps, bindAction)(Cropping);
+export default Cropping;
