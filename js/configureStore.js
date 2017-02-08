@@ -13,7 +13,6 @@ export default function configureStore(onCompletion:()=>void):any {
   const logger = createLogger();
   const enhancer = compose(
     applyMiddleware(thunk, promise, sequenceAction),
-    autoRehydrate({ log: true }),
     devTools({
       name: 'nativestarterkit', realtime: true,
     }),

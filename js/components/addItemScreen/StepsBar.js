@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 
@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderColor: '#BDBDBD',
-    borderWidth: 2
+    borderWidth: 2,
+    alignItems: 'center'
   },
   stepsLabel: {
+    paddingTop: (Platform.OS === 'ios') ? 0 : -5,
     textAlign: 'center',
     color: '#BDBDBD',
-    fontWeight: '500',
-    fontFamily: 'Times New Roman'
   },
   stepsLine: {
     flex: 1,

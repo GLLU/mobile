@@ -17,18 +17,20 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+
+
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
-import { showLoader, hideLoader, loadBrands, loadItemSizes } from './index';
+import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
 import Util from '../Util';
 
 var FileUpload = require('NativeModules').FileUpload;
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
-    dispatch(showLoader());
+    dispatch(showProcessing());
     return new Promise((resolve, reject) => {
       const user = getState().user;
       console.log('user', user);
@@ -57,7 +59,7 @@ export function addNewLook(image) {
 
             FileUpload.upload(obj, function(err, result) {
               console.log('upload:', err, result);
-              dispatch(hideLoader());
+              dispatch(hideProcessing());
               if (result && result.status == 201) {
                 const data = JSON.parse(result.data);
                 const payload = _.merge(data, {image: image.path });
@@ -67,6 +69,7 @@ export function addNewLook(image) {
               }
             })
           } else {
+            dispatch(hideProcessing());
             reject('Authorization error')  
           }
         }).catch(reject);
@@ -75,23 +78,6 @@ export function addNewLook(image) {
         reject('Authorization error')
       }
     });
-
-    // const body = {
-    //   look: {
-    //     image: `data:image/jpeg;base64,${image.data}`
-    //   }
-    // };
-    // return new Promise((resolve, reject) => {
-    //   dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
-    //     dispatch(hideLoader());
-    //     if (!err) {
-    //       const payload = _.merge(data, {image: image.path });
-    //       resolve(dispatch(editNewLook(payload)));
-    //     } else {
-    //       reject(err);
-    //     }
-    //   }));
-    // });
   }
 }
 
