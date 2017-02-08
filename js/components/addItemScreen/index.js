@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -15,11 +15,13 @@ const swiperH = h - 120;
 const selfStyles = StyleSheet.create({
   header: {
     fontFamily: 'PlayfairDisplay-Regular',
+    lineHeight: glluTheme.toolbarLineHeight,
     fontSize: 24,
     fontWeight: '400',
     color: '#000000',
-    height: 50,
-    paddingTop: 20
+    marginLeft: glluTheme.tooolbarTextMarginLeft,
+    textAlign: 'center',
+    alignSelf: 'center'
   },
   backIcon: {
     color: '#000'
@@ -114,7 +116,7 @@ class AddItemPage extends Component {
   render() {
     return (
       <Container style={styles.container} theme={glluTheme}>
-        <Header style={{height: 60}}>
+        <Header>
           <Button transparent onPress={() => this.popRoute()}>
             <Icon style={selfStyles.backIcon} name="ios-arrow-back" />
           </Button>

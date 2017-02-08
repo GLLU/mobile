@@ -117,10 +117,12 @@ export default {
   iosToolbarBtnColor: '#007aff',
   toolbarDefaultBg: (Platform.OS === 'ios') ? 'transparent' : 'transparent',
   toolbarHeight: (Platform.OS === 'ios') ? 64 : 56,
+  toolbarLineHeight: (Platform.OS === 'ios') ? 64 : 40,
   toolbarIconSize: (Platform.OS === 'ios') ? 20 : 22,
   toolbarInputColor: '#CECDD2',
   toolbarInverseBg: '#222',
   toolbarTextColor: (Platform.OS === 'ios') ? '#000' : '#000',
+  tooolbarTextMarginLeft: (Platform.OS === 'ios') ? 0 : -40,
   get statusBarColor() {
     return color(this.toolbarDefaultBg).darken(0.2).hexString();
   },
