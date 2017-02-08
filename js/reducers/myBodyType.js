@@ -1,4 +1,5 @@
-import { BODY_TYPE_CHANGE_SLIDING, BODY_TYPE_SHOW_MODAL, BODY_TYPE_HIDE_MODAL } from '../actions/myBodyType';
+import _ from 'lodash';
+import { BODY_TYPE_CHANGE_SLIDING, BODY_TYPE_SHOW_MODAL, BODY_TYPE_HIDE_MODAL, GET_CURRENT_USER_BODY_TYPE } from '../actions/myBodyType';
 
 // Data sample
 const bodyTypeList = {
@@ -78,8 +79,8 @@ const bodyTypeList = {
       imageUrl: require('../../images/neathourglass.png')
     },
     {
-      name: 'Ractangle',
-      uniqueName: 'ractangle',
+      name: 'Rectangle',
+      uniqueName: 'rectangle',
       description: 'Your shoulders are roughly the same width as your waist and hips. Chances are that you’re also tall and thin.',
       imageUrl: require('../../images/neathourglass.png')
     },
@@ -102,6 +103,14 @@ const bodyTypeList = {
 const ACTION_HANDLERS = {
   [BODY_TYPE_CHANGE_SLIDING]: (state, action) => {
     const currentItem = Object.assign({},bodyTypeList[state.gender][action.payload.selectedIndex]);
+    return { ...state
+      , currentBodyType: currentItem
+      , currentIndex: action.payload.selectedIndex
+    }
+  },
+  [GET_CURRENT_USER_BODY_TYPE]: (state, action) => {
+    const usersBodyType = _.find(bodyTypeList[action.payload.gender], {uniqueName: action.payload.bodyType});
+    const currentItem = Object.assign({},usersBodyType);
     return { ...state
       , currentBodyType: currentItem
       , currentIndex: action.payload.selectedIndex

@@ -76,22 +76,6 @@ export function addNewLook(image) {
       }
     });
 
-    // const body = {
-    //   look: {
-    //     image: `data:image/jpeg;base64,${image.data}`
-    //   }
-    // };
-    // return new Promise((resolve, reject) => {
-    //   dispatch(rest.actions.looks.post({}, { body: JSON.stringify(body) } , (err, data) => {
-    //     dispatch(hideLoader());
-    //     if (!err) {
-    //       const payload = _.merge(data, {image: image.path });
-    //       resolve(dispatch(editNewLook(payload)));
-    //     } else {
-    //       reject(err);
-    //     }
-    //   }));
-    // });
   }
 }
 

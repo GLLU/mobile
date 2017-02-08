@@ -165,4 +165,69 @@ export default StyleSheet.create({
     height: 15,
     alignSelf: 'center'
   },
+  editProfileBg: {
+    width: null,
+    height: 150
+  },
+  cancelEdit: {
+    marginLeft: 20,
+    width: 40,
+    height: 40,
+  },
+  profilePicBtn: {
+    width: 30,
+    height: 20,
+  },
+  editProfileAvatarImg: {
+    position: 'absolute',
+    top: 100,
+    left: w / 2 - 50,
+
+  },
+  editAvatarImage: {
+    borderWidth: 2,
+    borderColor: 'white'
+  },
+  container: {
+    top: 60,
+    backgroundColor: '#ffffff',
+    paddingTop: 25,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+  },
+  editName: {
+    textAlign: 'center',
+    fontSize: 25,
+    fontFamily: 'Times New Roman',
+  },
+  editUsername: {
+    textAlign: 'center',
+    color: '#00ABED',
+    padding: 20,
+    fontSize: 18
+  },
+  editNameContainer: {
+    borderBottomWidth: 2,
+    borderColor : '#D9D9D9',
+    paddingBottom: 5,
+    marginHorizontal: 10,
+  },
+  editDescriptionContainer: {
+    top: 60,
+    marginHorizontal: 10,
+    marginBottom: 30,
+    padding: 10,
+    borderWidth: 1,
+    borderColor : '#D9D9D9',
+    backgroundColor: 'white',
+  },
+  editBodyTypeTitleContainer: {
+    top: 60,
+    marginBottom: 20
+  },
+  editBodyTypeTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'grey'
+  }
 });

@@ -84,7 +84,7 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     currentBodyType: state.myBodyType.currentBodyType,
-    gender: state.myBodyType.gender,
+    gender: state.user.gender,
     user_size: userSize
   }
 };
