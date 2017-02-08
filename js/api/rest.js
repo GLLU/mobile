@@ -39,9 +39,6 @@ export default reduxApi({
     url: '/feed',
     options: {
       method: 'get',
-      headers: {
-        "Authorization": `Token token=kfPCZlx9HeV7i3J6oloiigtt`,
-      }
     }
   },
   looks: {
@@ -72,7 +69,6 @@ export default reduxApi({
     .use('rootUrl', Config.API_URL)
     .use("options", function() {
       return { headers: {
-        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }};
