@@ -1,53 +1,21 @@
 import React, { Component } from 'react';
-import { ScrollView, Dimensions, StyleSheet } from 'react-native';
-import { View, Text } from 'native-base';
-import Triangle from 'react-native-triangle';
+import { ScrollView, StyleSheet } from 'react-native';
+import { View} from 'native-base';
 import CategoryItem from './CategoryItem';
 import _ from 'lodash';
 
-import ItemTypeCalculator from './../../../calculators/ItemType';
-import FontSizeCalculator from './../../../calculators/FontSize';
-
-const w = Dimensions.get('window').width;
-const h = Dimensions.get('window').height;
+import { ITEM_WIDTH } from './styles';
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
     backgroundColor: '#FFFFFF',
     marginTop: 10,
     marginBottom: 10
   },
   categoriesContainer: {
-    height: 200,
+    flex: 1,
     padding: 10
   },
-  descContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    height: 50,
-    width: w - 40,
-    backgroundColor: 'black'
-  },
-  textDesc: {
-    color: '#BDBDBD',
-    textAlign: 'left',
-    fontSize: new FontSizeCalculator(15).getSize(),
-    fontWeight: '500',
-    padding: 15
-  },
-  triangleContainer: {
-    position: 'absolute',
-    bottom: 50,
-    left: 0,
-    height: 15,
-    width: w - 40,
-    backgroundColor: 'transparent'
-  },
-  blankItem: {
-    width: ((w - 40) / 5) * 2 + 20
-  }
 });
 
 class CategoryStrip extends Component {
@@ -62,31 +30,51 @@ class CategoryStrip extends Component {
     this.state = {
       positionX: this.getPositionX(props.categories, props.selectedCategoryId)
     }
+    this.scrollViewWidth = 315;
   }
 
   componentWillReceiveProps(nextProps) {
     const positionX = this.getPositionX(nextProps.categories, nextProps.selectedCategoryId);
+    // this._categoryScrollView.scrollTo({x: positionX, y: 0});
     this.setState({positionX});
   }
 
-  getPositionX(categories, selectedCategoryId) {
-    let posInCategories = _.findIndex(categories, { 'id': selectedCategoryId });
-    posInCategories = posInCategories == -1 ? 3 : posInCategories;
-    let itemTypeCalculator = new ItemTypeCalculator(posInCategories);
-    let x = itemTypeCalculator.findCurrentPosition();
-    return x;
+  componentDidUpdate(prevProps, prevState) {
+    this.normalizeContentOffsetX();
   }
 
-  handleScroll(event) {
-    let currentScrollX = event.nativeEvent.contentOffset.x + (w - 40) / 2;
-    this.props.categories.map((cate, index) => {
-      let itemTypeCalculator = new ItemTypeCalculator(index);
-      let prev = itemTypeCalculator.findPrevPosition();
-      let next = itemTypeCalculator.findNextPosition();
-      if ( prev <= currentScrollX && currentScrollX <= next ) {
-        // this.props.onCategorySelected(cate);
-      }
-    });
+  componentDidMount() {
+    this.normalizeContentOffsetX();
+  }
+
+  normalizeContentOffsetX() {
+    const positionX = this.state.positionX;
+    const midPoint = this.scrollViewWidth / 2;
+    const maxLeft = this.props.categories.length * ITEM_WIDTH - this.scrollViewWidth;
+    let x = 0;
+    if (positionX < midPoint) {
+      x = 0;
+    } else {
+      x = positionX - midPoint + ITEM_WIDTH / 2;
+      
+      console.log('left', maxLeft, this.scrollViewWidth);
+      x = Math.min(x, maxLeft);
+    }
+    
+    console.log('values', x, positionX, midPoint, maxLeft);
+    this._categoryScrollView.scrollTo({x: x, y: 0});
+  }
+
+  getPositionX(categories, selectedCategoryId) {
+    let posInCategories = 0;
+    if (selectedCategoryId) {
+      posInCategories = _.findIndex(categories, { 'id': selectedCategoryId });
+    }
+    return posInCategories * ITEM_WIDTH;
+  }
+
+  _handleCategoryScrollViewLayout(contentWidth, contentHeight) {
+    console.log('contentWidth contentHeight', contentWidth, contentHeight);
   }
 
   _handleSelectCategory(item) {
@@ -94,59 +82,39 @@ class CategoryStrip extends Component {
   }
 
   _drawCategoryItems() {
-    const selectedCategoryId = this.props.selectedCategoryId;
+    let selectedCategoryId = this.props.selectedCategoryId;
     const categories = this.props.categories;
+    if (!selectedCategoryId && categories.length > 0) {
+      selectedCategoryId = _.first(categories).id;
+    }
     return categories.map((item, index) => {
       const selected = selectedCategoryId && selectedCategoryId == item.id;
-      return (<CategoryItem key={index} item={item} selected={selected} onPress={this._handleSelectCategory.bind(this)}/>);
+      return (<CategoryItem key={index} item={item} itemWidth={ITEM_WIDTH} selected={selected} onPress={this._handleSelectCategory.bind(this)}/>);
     });
   }
 
-  _renderSelection() {
-    const { selectedCategoryId, categories } = this.props;
-    if (selectedCategoryId) {
-      const category = _.find(categories, item => item.id == selectedCategoryId);
-      return (<View style={{}}>
-          <View style={[styles.triangleContainer, {bottom: 50}]}>
-            <Triangle
-              width={30}
-              height={15}
-              color={'black'}
-              direction={'up'}
-              style={{alignSelf: 'center'}}
-            />
-          </View>
-          <View style={[styles.descContainer, {bottom: 0}]}>
-            <Text style={[styles.textDesc]}>{category.name}</Text>
-          </View>
-        </View>);
-    }
-
-    return null;
-  }
-
   render() {
+
+    // const contentOffsetX = this.normalizeContentOffsetX(this.state.positionX);
+
     return (
       <View style={[styles.container]}>
         <View style={[styles.categoriesContainer]}>
           <ScrollView
-              onScroll={this.handleScroll.bind(this)}
-              ref="categories"
+              onLayout={(e) => this.scrollViewWidth = e.nativeEvent.layout.width}
+              ref={(ref) => this._categoryScrollView = ref}
               keyboardShouldPersistTap={true}
               pagingEnabled={false}
               horizontal={true}
               decelerationRate={'fast'}
-              scrollEventThrottle={32}
+              scrollEventThrottle={0}
               directionalLockEnabled={true}
-              contentInset={{top: 0, left: -20, bottom: 0, right: -20}}
-              contentOffset={{x: this.state.positionX, y:0}}
+              alwaysBounceHorizontal={true}
+              contentInset={{top: 0, left: 0, bottom: 0, right: 0}}
               showsHorizontalScrollIndicator={false}>
-            <View style={styles.blankItem} />
             {this._drawCategoryItems()}
-            <View style={styles.blankItem} />
           </ScrollView>
         </View>
-        {this._renderSelection()}
       </View>)
   }
 }
