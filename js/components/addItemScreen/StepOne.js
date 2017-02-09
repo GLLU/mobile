@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, View, Dimensions } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import ImageWithTags from '../common/ImageWithTags';
 import ItemInfoView from './ItemInfoView';
 import { createLookItem, selectLookItem } from '../../actions';
 import ActionsBar from './ActionsBar';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
-const w = Dimensions.get('window').width;
 import { IMAGE_VIEW_WIDTH } from './styles';
 
 class StepOne extends Component {
@@ -21,7 +20,6 @@ class StepOne extends Component {
     tagAnotherAction: React.PropTypes.func,
     image: React.PropTypes.string,
     items: React.PropTypes.array,
-    editingTagIndex: React.PropTypes.number,
   }
 
   _renderActionsContainer() {
@@ -29,7 +27,7 @@ class StepOne extends Component {
   }
 
   render() {
-    const { items, editingTagIndex, image, createLookItem, selectLookItem } = this.props;
+    const { items, image, createLookItem, selectLookItem } = this.props;
     return(
       <View style={{flex: 1}}>
         <ScrollView scrollEnabled={true} style={{marginTop: 10, marginBottom: 50 + ExtraDimensions.get('STATUS_BAR_HEIGHT')}}>

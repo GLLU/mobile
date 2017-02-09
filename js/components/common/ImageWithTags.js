@@ -7,7 +7,6 @@ import glluTheme from '../../themes/gllu-theme';
 const itemBackground = require('../../../images/tag-background.png');
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
-const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
@@ -140,7 +139,7 @@ class ImageWithTags extends Component {
       return false;
     }
     const {locationX, locationY} = this.state;
-    return locationY > 0 || locationY > 0;
+    return locationX > 0 || locationY > 0;
   }
 
   getRenderingDimensions() {

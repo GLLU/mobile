@@ -2,19 +2,21 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet } from 'react-native';
-import { View, Content, Button, Text, Picker, Item, Icon } from 'native-base';
-import { Row, Col, Grid } from "react-native-easy-grid";
+import { View, Button, Text } from 'native-base';
+import { Col, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
 import {
+    createLookItem,
     addDescription,
     addLocation,
     addTrustLevel,
     addPhotosVideo,
 } from '../../actions';
+import _ from 'lodash';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -101,6 +103,7 @@ class StepTwo extends Component {
     description: React.PropTypes.string,
     photos: React.PropTypes.array,
     items: React.PropTypes.array,
+    addDescription: React.PropTypes.func,
     addLocation: React.PropTypes.func,
     addTrustLevel: React.PropTypes.func,
     addPhotosVideo: React.PropTypes.func
