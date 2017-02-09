@@ -203,7 +203,7 @@ class StepTwo extends Component {
     const { items, createLookItem, image} = this.props;
     return(
       <ScrollView scrollEnabled={true}>
-        <View style={{padding: 20}}>
+        <View style={{padding: 15, alignItems: 'center'}}>
           <ImageWithTags
               items={items}
               image={image}

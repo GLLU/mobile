@@ -30,8 +30,8 @@ class StepOne extends Component {
     const { items, image, createLookItem, selectLookItem } = this.props;
     return(
       <View style={{flex: 1}}>
-        <ScrollView scrollEnabled={true} style={{marginTop: 10, marginBottom: 50 + ExtraDimensions.get('STATUS_BAR_HEIGHT')}}>
-          <View style={{padding: 20, alignItems: 'center'}}>
+        <ScrollView scrollEnabled={true} style={{marginTop: 0, marginBottom: ExtraDimensions.get('STATUS_BAR_HEIGHT')}}>
+          <View style={{padding: 15, alignItems: 'center'}}>
             <ImageWithTags
                 items={items}
                 image={image}
@@ -40,8 +40,8 @@ class StepOne extends Component {
                 width={IMAGE_VIEW_WIDTH}/>
           </View>
           <ItemInfoView/>
+          {this._renderActionsContainer()}
         </ScrollView>
-        {this._renderActionsContainer()}
       </View>
     )
   }
