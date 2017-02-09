@@ -35,7 +35,12 @@ export function resetUserNavigation() {
   console.log('resetUserNavigation');
   return (dispatch, getState) => {
     const navigation = getState().cardNavigation;
-    dispatch(reset(navigation.routes, navigation.key, 0));
+    dispatch(reset([
+      {
+        key: 'feedscreen',
+        index: 0,
+      },
+    ], navigation.key, 0));
     dispatch(navigateTo('feedscreen'));
   }
 }
