@@ -22,6 +22,7 @@ const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png'
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 
 const w = Dimensions.get('window').width;
+import { IMAGE_VIEW_WIDTH } from './styles';
 
 const styles = StyleSheet.create({
   itemInfoView: {
@@ -200,7 +201,11 @@ class StepTwo extends Component {
     return(
       <ScrollView scrollEnabled={true}>
         <View style={{padding: 20}}>
-          <ImageWithTags items={items} image={image} createLookItem={createLookItem} width={w - 40}/>
+          <ImageWithTags
+              items={items}
+              image={image}
+              createLookItem={createLookItem}
+              width={IMAGE_VIEW_WIDTH}/>
         </View>
         <View style={styles.itemInfoView}>
             <AddMore video={this.state.video} photos={this.props.photos} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />

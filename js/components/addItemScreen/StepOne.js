@@ -7,6 +7,7 @@ import ActionsBar from './ActionsBar';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const w = Dimensions.get('window').width;
+import { IMAGE_VIEW_WIDTH } from './styles';
 
 class StepOne extends Component {
   static propTypes = {
@@ -32,13 +33,13 @@ class StepOne extends Component {
     return(
       <View style={{flex: 1}}>
         <ScrollView scrollEnabled={true} style={{marginTop: 10, marginBottom: 50 + ExtraDimensions.get('STATUS_BAR_HEIGHT')}}>
-          <View style={{padding: 20}}>
+          <View style={{padding: 20, alignItems: 'center'}}>
             <ImageWithTags
                 items={items}
                 image={image}
                 createLookItem={createLookItem}
                 selectLookItem={selectLookItem}
-                width={w - 40}/>
+                width={IMAGE_VIEW_WIDTH}/>
           </View>
           <ItemInfoView/>
         </ScrollView>

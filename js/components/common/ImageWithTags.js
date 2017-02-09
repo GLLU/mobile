@@ -86,9 +86,16 @@ class ImageWithTags extends Component {
 
   _handlePress(e) {
     const {locationX, locationY} = e.nativeEvent;
+    const { width, height } = this.getRenderingDimensions();
+    console.log('preset image', e.nativeEvent, width, height);
     this._setupPanResponder(locationX, locationY);
-    this.setState({locationX: locationX, locationY: locationY}, () => {
-      this.props.createLookItem({locationX, locationY});
+
+    // convert location into relative positions
+    const left = locationX / width;
+    const top = locationY / height;
+
+    this.setState({locationX: left, locationY: top}, () => {
+      this.props.createLookItem({locationX: left, locationY: top});
     });
   }
 
@@ -100,9 +107,14 @@ class ImageWithTags extends Component {
 
   renderTags() {
     const items = _.filter(this.props.items, (x) => !x.editing);
+
+    const { width, height } = this.getRenderingDimensions();
+
     return items.map((item, i) => {
+      const left = parseInt(item.locationX * width);
+      const top = parseInt(item.locationY * height);
       const renderContent = function() {
-        return (<View style={[styles.itemMarker, { top: parseInt(item.locationY), left: parseInt(item.locationX)}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+        return (<View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
             <Image source={itemBackground} style={styles.itemBgImage} />
           </View>);
       };
@@ -131,6 +143,20 @@ class ImageWithTags extends Component {
     return locationY > 0 || locationY > 0;
   }
 
+  getRenderingDimensions() {
+    let width = 300;
+    let height = 400;
+    if (this.props.width) {
+      width = parseInt(this.props.width);
+      height = parseInt(width * 16 / 9);
+    } else {
+      height = parseInt(h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight);
+      width = parseInt(height * 9 / 16);
+    }
+
+    return { width, height };
+  }
+
   renderEditingTag() {
     if (this._hasTagEditing()) {
       const layout = this._pan.getLayout();
@@ -145,15 +171,7 @@ class ImageWithTags extends Component {
   }
 
   _render() {
-    let width = 300;
-    let height = 400;
-    if (this.props.width) {
-      width = parseInt(this.props.width);
-      height = parseInt(width * 16 / 9);
-    } else {
-      height = parseInt(h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight);
-      width = parseInt(height * 9 / 16);
-    }
+    const { width, height } = this.getRenderingDimensions();
     
     console.log('width height', width, height, this.props.image);
     return (<Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
