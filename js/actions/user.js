@@ -2,7 +2,7 @@ import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import rest from '../api/rest';
-import { showLoader, hideLoader } from './index';
+import { showLoader, hideLoader, reset } from './index';
 import Util from '../Util';
 
 export const SET_USER = 'SET_USER';
@@ -25,11 +25,20 @@ const signInFromRest = function(dispatch, data) {
   Util.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     console.log('saved to key chain');
     setRestOptions(rest, data.user.api_key);
-    dispatch(navigateTo('feedscreen'));
     dispatch(setUser(data.user));
+    dispatch(resetUserNavigation());
   })
   
 };
+
+export function resetUserNavigation() {
+  console.log('resetUserNavigation');
+  return (dispatch, getState) => {
+    const navigation = getState().cardNavigation;
+    dispatch(reset(navigation.routes, navigation.key, 0));
+    dispatch(navigateTo('feedscreen'));
+  }
+}
 
 export function setUser(user:string):Action {
   return {
@@ -117,7 +126,7 @@ export function checkLogin() {
       Util.getKeychainData().then(credentials => {
         console.log('credentials', credentials);
         setRestOptions(rest, credentials.password);
-        dispatch(navigateTo('feedscreen'));
+        dispatch(resetUserNavigation());
       })
     } else {
       console.log('user does not exist');  
