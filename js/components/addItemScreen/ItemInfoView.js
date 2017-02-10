@@ -273,11 +273,15 @@ class ItemInfoView extends Component {
                     keyboardType="default"
                     placeholderTextColor="#BDBDBD"
                     style={styles.textInput}
+                    autoCorrect={false}
+                    underlineColorAndroid='transparent'
                     onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
                     onChangeText={(text) => this.setState({tmpValue: text})} />
                 <Tags tags={tags} removeTag={this.removeTag.bind(this)} />
               </View>
-              <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
+              {/*
+                <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
+              */}
               {/*this._renderSharing()*/}
         </View>)
   }
