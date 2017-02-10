@@ -30,6 +30,7 @@ import { setUser, loginViaFacebook, checkLogin } from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
+  reset,
   replaceAt,
   popRoute,
   pushRoute,
@@ -62,6 +63,7 @@ export {
   checkLogin,
   loginViaFacebook,
   navigateTo,
+  reset,
   replaceAt,
   pushRoute,
   popRoute,
