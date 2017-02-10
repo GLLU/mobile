@@ -93,6 +93,7 @@ class BrandNameInput extends Component {
             query={this.state.query}
             autoCapitalize="none"
             autoCorrect={false}
+            underlineColorAndroid='transparent'
             selected={this.state.selected}
             inputContainerStyle={styles.inputContainerStyle}
             containerStyle={[styles.autocompleteContainer, {height: height}]}
