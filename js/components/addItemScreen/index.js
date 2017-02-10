@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform, Alert } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -109,15 +109,33 @@ class AddItemPage extends Component {
     return true;
   }
 
-  popRoute() {
-    return this.props.popRoute(this.props.navigation.key);
+  _handleBack() {
+    Alert.alert(
+      '',
+      'Are you sure you want to go back?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            console.log('Cancel Pressed');
+          },
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            this.props.popRoute(this.props.navigation.key);
+          }
+        }
+      ]
+    );
   }
 
   render() {
     return (
       <Container style={styles.container} theme={glluTheme}>
         <Header>
-          <Button transparent onPress={() => this.popRoute()}>
+          <Button transparent onPress={() => this._handleBack()}>
             <Icon style={selfStyles.backIcon} name="ios-arrow-back" />
           </Button>
           <Title style={selfStyles.header}>{this.getHeadingTitle()}</Title>

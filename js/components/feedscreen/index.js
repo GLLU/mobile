@@ -51,7 +51,7 @@ class FeedPage extends Component {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
+        this.props.navigateTo('tagItemScreen', 'feedscreen');
       });  
     })
   } 
