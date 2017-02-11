@@ -140,7 +140,9 @@ class AddItemPage extends Component {
           </Button>
           <Title style={selfStyles.header}>{this.getHeadingTitle()}</Title>
         </Header>
-        <Content scrollEnabled={false} contentContainerStyle={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
+        <Content
+            scrollEnabled={false}
+            contentContainerStyle={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
           <View style={styles.mainView}>
             <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
             <Swiper style={styles.wrapper}
