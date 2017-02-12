@@ -148,6 +148,6 @@ module.exports = StyleSheet.create({
       flex: 1,
       width: 200,
       height: 200,
-      resizeMode: 'contain'
+      resizeMode: 'contain',
   },
 });
