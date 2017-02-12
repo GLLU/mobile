@@ -189,7 +189,6 @@ export default StyleSheet.create({
     borderColor: 'white'
   },
   container: {
-    top: 60,
     backgroundColor: '#ffffff',
     paddingTop: 25,
     paddingHorizontal: 10,
@@ -213,7 +212,6 @@ export default StyleSheet.create({
     marginHorizontal: 10,
   },
   editAboutMeContainer: {
-    top: 60,
     marginHorizontal: 10,
     marginBottom: 30,
     padding: 10,
@@ -222,7 +220,6 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   editBodyTypeTitleContainer: {
-    top: 60,
     marginBottom: 20
   },
   editBodyTypeTitle: {
@@ -252,5 +249,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 20
+  },
+  scrollView: {
+    marginTop: 60
+  },
+  privateInfoContainer: {
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'center'
   },
 });

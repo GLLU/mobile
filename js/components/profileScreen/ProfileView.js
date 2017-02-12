@@ -9,7 +9,10 @@ import styles from './styles';
 class ProfileView extends Component {
 
   static propTypes = {
-    item: React.PropTypes.object,
+    isMyProfile: React.PropTypes.bool,
+    profilePic: React.PropTypes.string,
+    name: React.PropTypes.string,
+    username: React.PropTypes.string,
     onPress: React.PropTypes.func
   }
 

@@ -10,8 +10,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 class ItemsGallery extends Component {
 
   static propTypes = {
-    item: React.PropTypes.object,
-    onPress: React.PropTypes.func
+    isMyProfile: React.PropTypes.bool,
+    goToAddNewItem: React.PropTypes.func,
+    latest_looks: React.PropTypes.array,
+    itemPress: React.PropTypes.func,
+    looksCount: React.PropTypes.number,
   }
 
   constructor(props) {

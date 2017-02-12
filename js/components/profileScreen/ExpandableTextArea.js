@@ -9,8 +9,8 @@ import styles from './styles';
 class ExpandableTextArea extends Component {
 
   static propTypes = {
-    item: React.PropTypes.object,
-    onPress: React.PropTypes.func
+    text: React.PropTypes.string,
+    handleTextInput: React.PropTypes.func
   }
 
   constructor(props) {

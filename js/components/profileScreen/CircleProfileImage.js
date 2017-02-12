@@ -14,6 +14,7 @@ class CircleProfileImage extends Component {
   static propTypes = {
     avatarUrl: React.PropTypes.string,
     editable: React.PropTypes.bool,
+    changeUserAvatar: React.PropTypes.func,
   }
 
   constructor(props) {

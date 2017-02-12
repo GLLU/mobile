@@ -12,8 +12,8 @@ const cancelEdit = require('../../../images/icons/cancelEdit.png');
 class ProfileHeader extends Component {
 
   static propTypes = {
-    item: React.PropTypes.object,
-    onPress: React.PropTypes.func
+    popRoute: React.PropTypes.func,
+    save: React.PropTypes.func
   }
 
   constructor(props) {

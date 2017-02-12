@@ -9,8 +9,8 @@ import styles from './styles';
 class ExpandableTextArea extends Component {
 
   static propTypes = {
-    item: React.PropTypes.object,
-    onPress: React.PropTypes.func
+    name: React.PropTypes.string,
+    username: React.PropTypes.string
   }
 
   constructor(props) {
@@ -23,7 +23,7 @@ class ExpandableTextArea extends Component {
 
   render() {
     return (
-      <View style={{top: 60}}>
+      <View>
         <View style={styles.editNameContainer}>
           <Text style={styles.editName}>{this.props.name}</Text>
         </View>

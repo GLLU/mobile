@@ -24,19 +24,13 @@ class ProfileScreen extends Component {
     super(props);
     this.state = {
       isMyProfile: this.props.userData.id === this.props.myUser.id,
-      about_me: this.props.userData.id === this.props.myUser.id ? this.props.myUser.about_me : this.props.userData.about_me,
-      avatarUrl: this.props.userData.id === this.props.myUser.id ? this.props.myUser.avatar.url : this.props.userData.avatar.url,
     }
+    console.log('blab');
   }
 
   componentWillMount() {
     this.props.getStats(this.props.userData.id);
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(this.state.isMyProfile){
-      this.setState({about_me: nextProps.myUser.about_me, avatarUrl: nextProps.myUser.avatar.url})
-    }
+    console.log('blab2');
   }
 
   _PopRoute() {
@@ -75,6 +69,9 @@ class ProfileScreen extends Component {
   }
 
   render() {
+    const { isMyProfile } = this.state
+    let about_me = isMyProfile ? this.props.myUser.about_me : this.props.userData.about_me
+    let avatarUrl = isMyProfile ? this.props.myUser.avatar.url : this.props.userData.avatar.url
     return (
       <View>
         <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
@@ -83,7 +80,7 @@ class ProfileScreen extends Component {
             <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
             { this._renderleftBtn() }
             </TouchableOpacity>
-            <ProfileView profilePic={this.state.avatarUrl}
+            <ProfileView profilePic={avatarUrl}
                          name={this.props.userData.name}
                          username={this.props.userData.username}
                          onPress={() => this._goToEditProfileScreen()}
@@ -94,7 +91,7 @@ class ProfileScreen extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.description}>
-            <Text ellipsizeMode="middle" style={styles.descriptionText}>{this.state.about_me}</Text>
+            <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
           </View>
           { this._renderStats() }
         </Image>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput} from 'react-native';
+import { Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput, ScrollView} from 'react-native';
 import styles from './styles';
 import { View } from 'native-base';
 import { connect } from 'react-redux';
@@ -11,6 +11,8 @@ import ExpandableTextArea from './ExpandableTextArea';
 import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
 import CircleProfileImage from './CircleProfileImage';
+import InformationTextIcon from '../common/informationTextIcon';
+
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 
@@ -20,12 +22,17 @@ const { popRoute } = actions;
 class EditProfile extends Component {
   static propTypes = {
     user: React.PropTypes.object,
+    navigation: React.PropTypes.object,
+    bodyType: React.PropTypes.object,
+    popRoute: React.PropTypes.func,
+    saveUserSize: React.PropTypes.func,
+    changeUserAvatar: React.PropTypes.func,
+    changeUserAboutMe: React.PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      about_me: this.props.user.about_me.length > 0 ? this.props.user.about_me : 'Please add About me',
-      height: 0
+      about_me: this.props.user.about_me ? this.props.user.about_me : 'Please add About me',
     }
   }
 
@@ -61,7 +68,6 @@ class EditProfile extends Component {
   }
 
   _handleAboutMeTextInput(text) {
-    console.log('add text');
     this.setState({about_me: text})
   }
 
@@ -73,14 +79,21 @@ class EditProfile extends Component {
         <EditProfileHeader popRoute={() => this._PopRoute()} save={() => this._saveChanges()} />
         </Image>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
-        <EditProfileName name={this.props.user.name} username={this.props.user.username} />
-        <ExpandableTextArea text={this.state.about_me} handleTextInput={(text) => this._handleAboutMeTextInput(text)}/>
-        <View style={styles.editBodyTypeTitleContainer}>
-          <Text style={styles.editBodyTypeTitle}>EDIT BODY TYPE</Text>
-        </View>
-        <View style={styles.container}>
-          <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size}/>
-        </View>
+        <ScrollView
+          style={[styles.scrollView]}
+        >
+          <EditProfileName name={this.props.user.name} username={this.props.user.username} />
+          <ExpandableTextArea text={this.state.about_me} handleTextInput={(text) => this._handleAboutMeTextInput(text)}/>
+          <View style={styles.editBodyTypeTitleContainer}>
+            <Text style={styles.editBodyTypeTitle}>EDIT BODY TYPE</Text>
+          </View>
+          <View style={styles.container}>
+            <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size}/>
+          </View>
+          <View style={styles.privateInfoContainer}>
+            <InformationTextIcon text={'This information is private to you only'} />
+          </View>
+        </ScrollView>
       </View>
     )
   }
