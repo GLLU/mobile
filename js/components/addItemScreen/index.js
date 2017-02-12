@@ -83,7 +83,7 @@ class AddItemPage extends Component {
 
   publishAction() {
     this.props.publishLookItem().then(response => {
-      this.popRoute();
+      this.props.popRoute(this.props.navigation.key);
     });
   }
 
