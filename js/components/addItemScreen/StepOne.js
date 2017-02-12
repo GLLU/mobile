@@ -175,8 +175,8 @@ class StepOne extends Component {
     }
   }
 
-  findOrCreateBrand(value, act) {
-    if (act) {
+  findOrCreateBrand(value, createNew) {
+    if (createNew) {
       this.props.createBrandName(value);
     } else {
       this.props.addBrandName(value);

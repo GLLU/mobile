@@ -27,21 +27,22 @@ export function loadCategories(data):Action {
   };
 }
 
-export function loadBrands(data):Action {
+export function loadBrands(term):Action {
   return (dispatch) => {
     const params = {
       brand: {
-        term: ''
+        term: term
       }
     };
 
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.brands(params, (err, data) => {
         if (!err && data) {
-          resolve(dispatch({
+          dispatch({
             type: SET_BRANDS,
             payload: data
-          }));
+          });
+          resolve(data.brands);
         } else {
           reject(err);
         }
