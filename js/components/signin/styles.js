@@ -11,8 +11,8 @@ const {
 
 module.exports = StyleSheet.create({
   header: {
-      backgroundColor: 'transparent',
-      shadowOpacity: 0,
+    backgroundColor: 'transparent',
+    shadowOpacity: 0,
   },
   headerTitle: {
     fontSize: 22,
@@ -53,19 +53,19 @@ module.exports = StyleSheet.create({
     left: 0
   },
   uploadImgContainer: {
-      marginTop: 15,
-      alignSelf: 'center',
-      marginBottom: 15
+    marginTop: 15,
+    alignSelf: 'center',
+    marginBottom: 15
   },
-   uploadImgBtn: {
-       borderRadius: 50,
-       backgroundColor: '#FFFFFF',
-       height: 100,
-       width: 100
-   },
+  uploadImgBtn: {
+   borderRadius: 50,
+   backgroundColor: '#FFFFFF',
+   height: 100,
+   width: 100
+  },
   uploadImgIcon: {
-      backgroundColor: 'transparent',
-      marginBottom: 5
+    backgroundColor: 'transparent',
+    marginBottom: 5
   },
   formItem: {
     flex: 1,
@@ -85,13 +85,13 @@ module.exports = StyleSheet.create({
   },
   label: {
     color: 'lightgrey',
-      fontSize: 16,
-      alignSelf: 'center',
-      marginTop: 20,
-      width: 100
+    fontSize: 16,
+    alignSelf: 'center',
+    marginTop: 20,
+    width: 100
   },
   addOpacity: {
-      opacity: 0.8
+    opacity: 0.8
   },
   formInput: {
     flex: 1,
@@ -114,7 +114,7 @@ module.exports = StyleSheet.create({
     opacity: 0.8
   },
   validationPassed: {
-      backgroundColor: MKColor.Teal
+    backgroundColor: MKColor.Teal
   },
   alreadyBox: {
     alignSelf: 'center',
@@ -131,25 +131,23 @@ module.exports = StyleSheet.create({
     paddingHorizontal: 5,
     alignItems: 'flex-start',
     shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0,
-      paddingTop: (Platform.OS === 'ios') ? 0 : 5,
+    shadowRadius: 0,
+    elevation: 0,
+    paddingTop: (Platform.OS === 'ios') ? 2 : 7,
   },
-    logoContainer: {
-        flex: 1,
-        marginTop: 0,
-        paddingTop: 30,
-        paddingLeft: 10,
-        paddingRight: 10,
-        bottom: 0,
-        alignSelf: 'center'
-    },
-    logo: {
-        flex: 1,
-        width: 200,
-        height: 200,
-        resizeMode: 'contain'
-    },
-
-
+  logoContainer: {
+    flex: 1,
+    marginTop: 0,
+    paddingTop: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    bottom: 0,
+    alignSelf: 'center'
+  },
+  logo: {
+      flex: 1,
+      width: 200,
+      height: 200,
+      resizeMode: 'contain'
+  },
 });

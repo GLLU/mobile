@@ -57,14 +57,14 @@ module.exports = StyleSheet.create({
     fontWeight: '300',
     fontFamily: 'Times New Roman',
     color: '#FFFFFF',
-    marginTop: 20,
+    marginTop: (Platform.OS === 'ios') ? 20 : 0,
     paddingTop: 20,
     textAlign: 'center'
   },
   signupContainer: {
     flex: 1,
     marginTop: 0,
-    paddingTop: (Platform.OS === 'ios') ? 120 : 80,
+    paddingTop: (Platform.OS === 'ios') ? 120 : 120,
     paddingLeft: 10,
     paddingRight: 10,
     bottom: 0,
@@ -73,8 +73,8 @@ module.exports = StyleSheet.create({
   label: {
     textAlign: 'center',
     color: 'white',
-    marginTop: (Platform.OS === 'ios') ? 20 : 0,
-    marginBottom: 25,
+    marginTop: (Platform.OS === 'ios') ? 25 : 10,
+    marginBottom: (Platform.OS === 'ios') ? 25 : 15,
     fontSize: 15,
     fontWeight: 'bold',
   },
@@ -86,7 +86,11 @@ module.exports = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 2,
     alignSelf: 'center',
-    borderRadius: 0
+    borderRadius: 0,
+
+  },
+  fbIcon: {
+    justifyContent: 'center'
   },
   btnContent: {
     color: 'white',
@@ -98,8 +102,11 @@ module.exports = StyleSheet.create({
   },
   bottomContainerContent: {
     color: '#E0E0E0',
-    fontSize: 15,
-    fontWeight: 'normal'
+    fontSize: 12,
+    fontWeight: 'normal',
+    textAlign: 'center',
+    marginBottom: 15,
+    opacity: 0.8
   },
     alreadyBox: {
         alignSelf: 'center',
@@ -120,6 +127,6 @@ module.exports = StyleSheet.create({
         shadowOpacity: 0,
         shadowRadius: 0,
         elevation: 0,
-        paddingTop: (Platform.OS === 'ios') ? 0 : 5,
+        paddingTop: (Platform.OS === 'ios') ? 2 : 7,
     },
 });
