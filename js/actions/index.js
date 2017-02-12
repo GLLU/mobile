@@ -1,5 +1,5 @@
 import { openDrawer, closeDrawer } from './drawer';
-import { showLoader, hideLoader } from './loader';
+import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
 import { loadCategories, loadBrands, loadItemSizes } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal } from './myBodyType';
@@ -30,6 +30,7 @@ import { setUser, loginViaFacebook, checkLogin } from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
+  reset,
   replaceAt,
   popRoute,
   pushRoute,
@@ -62,6 +63,7 @@ export {
   checkLogin,
   loginViaFacebook,
   navigateTo,
+  reset,
   replaceAt,
   pushRoute,
   popRoute,
@@ -81,4 +83,6 @@ export {
   addPhotosVideo,
   showLoader,
   hideLoader,
+  showProcessing,
+  hideProcessing,
 };

@@ -3,7 +3,9 @@ const { StyleSheet } = React;
 
 import FontSizeCalculator from './../../../calculators/FontSize';
 
-module.exports = StyleSheet.create({
+export const ITEM_WIDTH = 80;
+
+export default StyleSheet.create({
   gridInput: {
     backgroundColor: '#FFFFFF',
     padding: 10

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderTopWidth: 0,
     borderBottomWidth: 0,
-    backgroundColor: '#F5F5F5'
+    backgroundColor: '#FAFAFA'
   },
   resultItem: {
     height: 40,
