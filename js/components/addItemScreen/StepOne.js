@@ -353,6 +353,8 @@ const mapStateToProps = state => {
   if (item) {
     console.log('item selectedCategoryId', item.selectedCategoryId);
     return {
+      navigation: state.cardNavigation,
+      ...state.uploadLook,
       categories: state.filters.categories,
       selectedCategoryId: item.selectedCategoryId,
       brand: item.brand,
@@ -366,6 +368,7 @@ const mapStateToProps = state => {
 
   return {
     navigation: state.cardNavigation,
+    ...state.uploadLook,
     categories: state.filters.categories,
     selectedCategoryId: null,
     brand: null,
