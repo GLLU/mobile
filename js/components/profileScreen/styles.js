@@ -212,7 +212,7 @@ export default StyleSheet.create({
     paddingBottom: 5,
     marginHorizontal: 10,
   },
-  editDescriptionContainer: {
+  editAboutMeContainer: {
     top: 60,
     marginHorizontal: 10,
     marginBottom: 30,
@@ -229,5 +229,28 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     color: 'grey'
-  }
+  },
+  editAboutMeInput: {
+    fontSize: 14,
+    lineHeight: 20
+  },
+  saveChangesContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#00D7B2',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 20
+  },
+  changeImageIconContainer: {
+    width: 100,
+    height: 100,
+    opacity: 0.8,
+    backgroundColor: '#00D7B2',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 20
+  },
 });
