@@ -106,6 +106,7 @@ class SplashPage extends Component {
           <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
           <Text style={styles.label}>Or</Text>
           <Icon.Button iconStyle={styles.btnFB}
+                       style={styles.fbIcon}
                        borderRadius={0}
                        name="facebook"
                        backgroundColor="#3b5998"
