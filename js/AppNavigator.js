@@ -24,6 +24,7 @@ import ItemScreen from './components/itemScreen';
 import ProfileScreen from './components/profileScreen';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
+import ErrorHandler from './components/errorHandler';
 
 import { statusBarColor } from './themes/base-theme';
 
@@ -162,6 +163,8 @@ class AppNavigator extends Component {
         </Drawer>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
         {this.props.isProcessing ? <ProcessCropping /> : null}
+        {this.props.error ? <ErrorHandler /> : null}
+        {this.props.warning ? <ErrorHandler /> : null}
       </View>
     );
   }
@@ -177,11 +180,15 @@ function bindAction(dispatch) {
 const mapStateToProps = state => {
   const isLoading = state.loader.loading || false;
   const isProcessing = state.loader.processing || false;
+  const isError = state.errorHandler.error || false;
+  const isWarning = state.errorHandler.warning || false;
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,
     isLoading: isLoading,
     isProcessing: isProcessing,
+    error: isError,
+    warning: isWarning,
   });
 };
 
