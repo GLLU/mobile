@@ -2,19 +2,21 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet } from 'react-native';
-import { View, Content, Button, Text, Picker, Item, Icon } from 'native-base';
-import { Row, Col, Grid } from "react-native-easy-grid";
+import { View, Button, Text } from 'native-base';
+import { Col, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
 import {
+    createLookItem,
     addDescription,
     addLocation,
     addTrustLevel,
     addPhotosVideo,
 } from '../../actions';
+import _ from 'lodash';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -22,6 +24,7 @@ const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png'
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 
 const w = Dimensions.get('window').width;
+import { IMAGE_VIEW_WIDTH } from './styles';
 
 const styles = StyleSheet.create({
   itemInfoView: {
@@ -100,6 +103,7 @@ class StepTwo extends Component {
     description: React.PropTypes.string,
     photos: React.PropTypes.array,
     items: React.PropTypes.array,
+    addDescription: React.PropTypes.func,
     addLocation: React.PropTypes.func,
     addTrustLevel: React.PropTypes.func,
     addPhotosVideo: React.PropTypes.func
@@ -199,8 +203,12 @@ class StepTwo extends Component {
     const { items, createLookItem, image} = this.props;
     return(
       <ScrollView scrollEnabled={true}>
-        <View style={{padding: 20}}>
-          <ImageWithTags items={items} image={image} createLookItem={createLookItem} width={w - 40}/>
+        <View style={{padding: 15, alignItems: 'center'}}>
+          <ImageWithTags
+              items={items}
+              image={image}
+              createLookItem={createLookItem}
+              width={IMAGE_VIEW_WIDTH}/>
         </View>
         <View style={styles.itemInfoView}>
             <AddMore video={this.state.video} photos={this.props.photos} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />

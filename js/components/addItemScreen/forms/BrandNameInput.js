@@ -30,77 +30,66 @@ class BrandNameInput extends Component {
 
   constructor(props) {
     super(props);
-    const query = this.props.brand ? this.props.brand.name : '';
     this.state = {
-      query,
-      selected: (this.props.brand != null)
+      query: '',
+      data: props.brands
     };
-  }
 
-  componentWillReceiveProps(nextProps) {
-    const query = nextProps.brand ? nextProps.brand.name : '';
-    console.log('componentWillReceiveProps query', query, nextProps.brand);
-    this.setState({
-      query,
-      selected: (nextProps.brand != null)
-    });
+    this.doFilterAsync = _.debounce(this.doFilter, 200)
   }
 
   componentWillMount() {
     this.props.loadBrands();
   }
 
-  handleFindOrCreateBrand(value, act) {
-    const query = act ? value : value.name;
-    const selected = true;
-    this.setState({query, selected}, () => {
-      this.props.findOrCreateBrand(value, act);
+  handleFindOrCreateBrand(value, createNew) {
+    const query = createNew ? value : value.name;
+    this.setState({query}, () => {
+      this.props.findOrCreateBrand(value, createNew);
     });
   }
 
-  findBrand(query) {
-    if (query === '') {
-      return [];
-    }
-
-    const { brands } = this.props;
-    const regex = new RegExp(`${query.trim()}`, 'i');
-    let result = brands.filter(brand => brand.name.search(regex) >= 0);
-    return result;
+  onChangeText(text) {
+    this.setState({
+      query: text
+    }, () => {
+      this.doFilterAsync(text);  
+    })
   }
 
-  onChangeText(text) {
-    console.log('onChangeText', text, this.state.query);
-    this.setState({ query: text, selected: false });
-    // const name = this.props.brand ? this.props.brand.name : '';
-    // if (text != name || text == '') {
-    //   this.props.clearBrandName();
-    // }
+  onEndEditing(e) {
+    console.log('onEndEditing', e);
+  }
+
+  doFilter(text) {
+    this.props.loadBrands(text).then(response => {
+      this.setState({
+        data: response,
+      });  
+    });
+    
   }
 
   render() {
-    const { query } = this.state;
-    const brands = this.findBrand(query);
-    const comp = (s, s2) => s.toLowerCase().trim() === s2.toLowerCase().trim();
-    let l = Object.keys(brands).length;
-    let height = (l == 0 || this.state.selected ? 40 : 220);
-    if ( l == 0 && this.state.query !== '') {
-      height = 80;
-    }
+    const { query, data } = this.state;
+    const { brand } = this.props;
+    const selected = brand && query.toLowerCase() === brand.name.toLowerCase();
     return (
       <View style={{marginBottom: 20}}>
         <Autocomplete
-            query={this.state.query}
+            query={query}
             autoCapitalize="none"
             autoCorrect={false}
-            selected={this.state.selected}
+            underlineColorAndroid='transparent'
+            selected={selected}
             inputContainerStyle={styles.inputContainerStyle}
-            containerStyle={[styles.autocompleteContainer, {height: height}]}
+            containerStyle={[styles.autocompleteContainer]}
             listStyle={styles.slistStyle}
-            data={brands.length === 1 && comp(query, brands[0].name) ? [] : brands}
+            data={data}
             defaultValue={query}
             value={query}
             onChangeText={text => this.onChangeText(text)}
+            onEndEditing={e => this.onEndEditing(e)}
             placeholder="Type a brand name"
             findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}/>
       </View>);
@@ -109,13 +98,14 @@ class BrandNameInput extends Component {
 
 function bindActions(dispatch) {
   return {
-    loadBrands: () => dispatch(loadBrands()),
+    loadBrands: (term) => dispatch(loadBrands(term)),
   }
 }
 
 const mapStateToProps = state => {
   const look = state.uploadLook;
   const item = _.find(look.items, item => item.id == look.itemId);
+  console.log('mapStateToProps', item, look.items);
   return ({
     brands: state.filters.brands,
     brand: item ? item.brand : null

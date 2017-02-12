@@ -157,7 +157,9 @@ export function updateLookItem() {
       }
     }
     return new Promise((resolve, reject) => {
+      dispatch(showLoader());
       return dispatch(rest.actions.items.put({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+        dispatch(hideLoader());
         if (!err) {
           resolve();
         } else {
@@ -180,9 +182,11 @@ export function publishLookItem() {
       }
     }
     return new Promise((resolve, reject) => {
+      dispatch(showLoader());
       return dispatch(rest.actions.looks.put({id: lookId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
           dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
+            dispatch(hideLoader());
             if (!err) {
               resolve();
             } else {
@@ -190,6 +194,7 @@ export function publishLookItem() {
             }
           }));
         } else {
+          dispatch(hideLoader());
           reject(err);
         }
       }));

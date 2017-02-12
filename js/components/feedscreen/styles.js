@@ -193,6 +193,5 @@ module.exports = StyleSheet.create({
   },
   sliderFilters: {
     marginTop: 10
-  }
-
+  },
 });

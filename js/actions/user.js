@@ -66,6 +66,8 @@ export function loginViaFacebook(data):Action {
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
       if (!err && data) {
         signInFromRest(dispatch, data);
+      } else {
+        alert('Unable to login via Facebook');
       }
     }));
   };

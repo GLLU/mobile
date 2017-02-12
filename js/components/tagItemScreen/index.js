@@ -90,7 +90,7 @@ class TagItemPage extends Component {
           </Button>
           <Title style={{fontFamily: 'PlayfairDisplay-Regular', color: '#ffffff'}}>Tap item to add</Title>
         </Header>
-        <Content contentContainerStyle={{backgroundColor: '#000000', alignItems: 'center'}}>
+        <Content scrollEnabled={false} contentContainerStyle={{backgroundColor: '#000000', alignItems: 'center'}}>
           <ImageWithTags
               ref={(ref) => this.imageEditor = ref}
               editMode={true}

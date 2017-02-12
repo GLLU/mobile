@@ -11,12 +11,8 @@ import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const styles = StyleSheet.create({
   actionsContainer: {
-    flex: 1,
     width: deviceWidth,
     height: 100,
-    position: 'absolute',
-    bottom: (Platform.OS === 'ios') ? 0 : ExtraDimensions.get('STATUS_BAR_HEIGHT'),
-    left: 0,
     backgroundColor: 'transparent',
     padding: 20,
   },
