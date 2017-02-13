@@ -20,7 +20,20 @@ const setRestOptions = function(rest, key) {
         "Content-Type": "application/json"
       }
     };
-  });
+  }).use("responseHandler", (err, data) => {
+    if (err) {
+      console.log("ERROR 222", err)
+      if (err.errors.length > 0) {
+        const error = _.first(err.errors);
+        console.log(error);
+        if (error == "Bad Credentials") {
+          dispatch(navigateTo('splashscreen'));
+        }
+      }
+    } else {
+      console.log("SUCCESS", data)
+    }
+  });;
 }
 
 const signInFromRest = function(dispatch, data) {
@@ -138,20 +151,6 @@ export function checkLogin() {
         if (credentials) {
           setRestOptions(rest, credentials.password);
           dispatch(resetUserNavigation());
-          rest.use("responseHandler", (err, data) => {
-            if (err) {
-              console.log("ERROR 222", err)
-              if (err.errors.length > 0) {
-                const error = _.first(err.errors);
-                console.log(error);
-                if (error == "Bad Credentials") {
-                  dispatch(navigateTo('splashscreen'));
-                }
-              }
-            } else {
-              console.log("SUCCESS", data)
-            }
-          });
         }
       })
     } else {

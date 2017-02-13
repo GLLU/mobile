@@ -82,7 +82,6 @@ export default reduxApi({
     .use('rootUrl', Config.API_URL)
     .use("options", function() {
       return { headers: {
-        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }};
