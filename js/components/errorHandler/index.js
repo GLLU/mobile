@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import { TouchableOpacity, Image} from 'react-native';
-
 import { View, Text } from 'native-base';
 import styles from './styles';
 import { connect } from 'react-redux';

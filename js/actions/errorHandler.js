@@ -26,7 +26,6 @@ export function showWarning(warn):Action {
 }
 
 export function hideWarning():Action {
-  console.log('hide warning action');
   return {
     type: HIDE_WARNING,
   };
