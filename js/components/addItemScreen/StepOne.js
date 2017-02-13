@@ -23,7 +23,6 @@ import BrandNameInput from './forms/BrandNameInput';
 import TagInput from './forms/TagInput';
 import CurrencyAndPrice from './forms/CurrencyAndPrice';
 import ItemSize from './forms/ItemSize';
-import Tags from './forms/Tags';
 import ImageWithTags from '../common/ImageWithTags';
 import ActionsBar from './ActionsBar';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -34,8 +33,6 @@ import { IMAGE_VIEW_WIDTH } from './styles';
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxChecked = require('../../../images/icons/checkbox-checked-black.png');
 
-const w = Dimensions.get('window').width;
-const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   itemInfoView: {
@@ -206,22 +203,6 @@ class StepOne extends Component {
     }
   }
 
-  addTags(name) {
-    const tags = this.props.tags;
-    const existing = _.find(tags, t => t.toLowerCase() == name.toLowerCase());
-    if (!existing) {
-      tags.push(name);
-      this.props.addItemTag(tags);
-    }
-    this.setState({tmpValue: ''});
-  }
-
-  removeTag(name) {
-    const { tags } = this.props;
-    let newTags = _.filter(tags, x => x.toLowerCase() != name.toLowerCase());
-    this.props.addItemTag(newTags);
-  }
-
   _renderActionsContainer() {
     return <ActionsBar continueAction={this.props.continueAction} tagAnotherAction={this.props.tagAnotherAction} />;
   }
@@ -267,8 +248,7 @@ class StepOne extends Component {
   }
 
   _renderInfoView() {
-    const { categories, countries, itemSizes } = this.props;
-    const { selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
+    const { categories, countries, itemSizes, selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
     return(<View style={[styles.itemInfoView]}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
               <Category
@@ -287,21 +267,7 @@ class StepOne extends Component {
                   updateValue={this.updateValue.bind(this)} />
               <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
               <View style={{margin: 5}}>
-                {/*<TextInput
-                    returnKeyType="done"
-                    placeholder=""
-                    value={this.state.tmpValue}
-                    keyboardType="default"
-                    placeholderTextColor="#BDBDBD"
-                    style={styles.textInput}
-                    autoCorrect={false}
-                    underlineColorAndroid='transparent'
-                    onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
-                    onChangeText={(text) => this.setState({tmpValue: text})} />*/}
-                <TagInput
-                  brand={brand}
-                  addTags={this.addTags.bind(this)} />
-                <Tags tags={tags} removeTag={this.removeTag.bind(this)} />
+                <TagInput tags={tags}/>
               </View>
               {/*
                 <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
@@ -353,7 +319,7 @@ const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
   if (item) {
-    console.log('item selectedCategoryId', item.selectedCategoryId);
+    console.log('item tags', item.tags);
     return {
       navigation: state.cardNavigation,
       ...state.uploadLook,

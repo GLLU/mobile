@@ -144,16 +144,31 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TAG]: (state, action) => {
+    console.log('ADD_ITEM_TAG', action.payload)
     return {
       ...state,
-      items: mutateItem(state, 'tags', action.payload)
+      items: state.items.map(x => {
+        if (x.id == state.itemId) {
+          const tag = _.find(x.tags, t => t.id == action.payload.id);
+          if (!tag) {
+            x.tags.push(action.payload);
+          }
+        }
+        return x;
+      })
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
-    let tags = _.filter(state.tags, x => x.toLowerCase() != action.payload.toLowerCase());
+    console.log('REMOVE_ITEM_TAG', action.payload)
     return {
       ...state,
-      items: mutateItem(state, 'tags', tags)
+      items: state.items.map(x => {
+        if (x.id == state.itemId) {
+          const tags = _.filter(x.tags, t => t.name.toLowerCase() != action.payload.toLowerCase());
+          x.tags = tags;
+        }
+        return x;
+      })
     }
   },
   [ADD_ITEM_CURRENCY]: (state, action) => {

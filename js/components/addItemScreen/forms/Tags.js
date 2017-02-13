@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet } from 'react-native';
-import { View, Container, Button, Text, Icon} from 'native-base';
-import { Row, Col, Grid } from "react-native-easy-grid";
+import { StyleSheet } from 'react-native';
+import { View, Container, Button, Icon} from 'native-base';
 
 import FontSizeCalculator from './../../../calculators/FontSize';
 
@@ -39,10 +38,11 @@ class Tags extends Component {
 
   _renderTags() {
     return this.props.tags.map((tag, index) => {
+      console.log('tag', tag);
       return (
         <View key={index+1} style={[styles.tagTextContainer]}>
           <Button iconRight style={{backgroundColor: 'transparent'}}>
-            {tag}
+            {tag.name}
             <Icon name='ios-close' style={{justifyContent: 'flex-end'}} onPress={() => this.props.removeTag(tag)}/>
           </Button>
         </View>

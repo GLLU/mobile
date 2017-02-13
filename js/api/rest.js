@@ -65,14 +65,24 @@ export default reduxApi({
     url: '/looks/:look_id/items/:id',
     crud: true,
   },
-  changeUserAboutMe: {
-    url: '/users/:id',
-    crud: true
-  }
-}).use("fetch", adapterFetch(fetch))
+  item_tags: {
+    url: '/looks/:look_id/items/:id/item_tags',
+    crud: true,
+  },
+  remove_item_tags: {
+    url: '/looks/:look_id/items/:id/item_tags',
+    options: {
+      method: 'post'
+    }
+  },
+}).use("fetch", (url, options) => {
+  console.log('making request', url, options);
+  return adapterFetch(fetch)(url, options);
+})
     .use('rootUrl', Config.API_URL)
     .use("options", function() {
       return { headers: {
+        "Authorization": `Token token=ZPIx61AMcqNv007YCYECrQtt`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }};
