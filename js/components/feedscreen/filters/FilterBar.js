@@ -48,7 +48,7 @@ class FilterView extends Component {
     this.setState({
       selectedCategory: selected
     });
-    let category = selected === '' ? selected : item.name;
+    let category = selected === false ? '' : item.name;
     let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
     this.props.filterFeed(type, category);
     console.log(`Filter by category Id: ${item.id}`);
