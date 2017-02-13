@@ -9,11 +9,10 @@ import { hideBodyTypeModal } from './myBodyType';
 import { setUser} from './user';
 // Actions
 export function completeEdit(sizeInfo) {
+  delete sizeInfo.user;
   return {
     type: COMPLETE_EDIT_BODY_MEASURE,
-    payload: {
-      sizeInfo: sizeInfo
-    }
+    payload: sizeInfo
   }
 }
 export function saveUserSize(data) {
@@ -22,6 +21,7 @@ export function saveUserSize(data) {
     const user_id = getState().user.id;
     dispatch(rest.actions.size.post({user_id}, { body: JSON.stringify(data)}, (err, data) => {
       if (!err && data) {
+        dispatch(completeEdit(data.user_size));
       }
     }));
     dispatch([

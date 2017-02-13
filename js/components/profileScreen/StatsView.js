@@ -9,8 +9,9 @@ import styles from './styles';
 class StatsView extends Component {
 
   static propTypes = {
-    item: React.PropTypes.object,
-    onPress: React.PropTypes.func
+    following: React.PropTypes.number,
+    followers: React.PropTypes.number,
+    likes: React.PropTypes.number,
   }
 
   constructor(props) {

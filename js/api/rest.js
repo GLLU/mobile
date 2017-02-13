@@ -64,6 +64,10 @@ export default reduxApi({
   items: {
     url: '/looks/:look_id/items/:id',
     crud: true,
+  },
+  changeUserAboutMe: {
+    url: '/users/:id',
+    crud: true
   }
 }).use("fetch", adapterFetch(fetch))
     .use('rootUrl', Config.API_URL)

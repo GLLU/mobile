@@ -165,4 +165,97 @@ export default StyleSheet.create({
     height: 15,
     alignSelf: 'center'
   },
+  editProfileBg: {
+    width: null,
+    height: 150
+  },
+  cancelEdit: {
+    marginLeft: 20,
+    width: 40,
+    height: 40,
+  },
+  profilePicBtn: {
+    width: 30,
+    height: 20,
+  },
+  editProfileAvatarImg: {
+    position: 'absolute',
+    top: 100,
+    left: w / 2 - 50,
+
+  },
+  editAvatarImage: {
+    borderWidth: 2,
+    borderColor: 'white'
+  },
+  container: {
+    backgroundColor: '#ffffff',
+    paddingTop: 25,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+  },
+  editName: {
+    textAlign: 'center',
+    fontSize: 25,
+    fontFamily: 'Times New Roman',
+  },
+  editUsername: {
+    textAlign: 'center',
+    color: '#00ABED',
+    padding: 20,
+    fontSize: 18
+  },
+  editNameContainer: {
+    borderBottomWidth: 2,
+    borderColor : '#D9D9D9',
+    paddingBottom: 5,
+    marginHorizontal: 10,
+  },
+  editAboutMeContainer: {
+    marginHorizontal: 10,
+    marginBottom: 30,
+    padding: 10,
+    borderWidth: 1,
+    borderColor : '#D9D9D9',
+    backgroundColor: 'white',
+  },
+  editBodyTypeTitleContainer: {
+    marginBottom: 20
+  },
+  editBodyTypeTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'grey'
+  },
+  editAboutMeInput: {
+    fontSize: 14,
+    lineHeight: 20
+  },
+  saveChangesContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#00D7B2',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 20
+  },
+  changeImageIconContainer: {
+    width: 100,
+    height: 100,
+    opacity: 0.8,
+    backgroundColor: '#00D7B2',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 20
+  },
+  scrollView: {
+    marginTop: 60
+  },
+  privateInfoContainer: {
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'center'
+  },
 });

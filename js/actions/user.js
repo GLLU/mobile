@@ -4,6 +4,9 @@ import navigateTo from './sideBarNav';
 import rest from '../api/rest';
 import { showLoader, hideLoader, reset } from './index';
 import Util from '../Util';
+import { getUserBodyType } from './myBodyType';
+var FileUpload = require('NativeModules').FileUpload;
+import rest, { API_URL } from '../api/rest';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
@@ -28,7 +31,6 @@ const signInFromRest = function(dispatch, data) {
     dispatch(setUser(data.user));
     dispatch(resetUserNavigation());
   })
-  
 };
 
 export function resetUserNavigation() {
@@ -64,6 +66,7 @@ export function loginViaFacebook(data):Action {
     };
 
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
+      console.log('data after facebook', data)
       if (!err && data) {
         signInFromRest(dispatch, data);
       } else {
@@ -136,7 +139,81 @@ export function checkLogin() {
         dispatch(resetUserNavigation());
       })
     } else {
-      console.log('user does not exist');  
+      console.log('user does not exist');
     }
   }
 }
+
+export function changeUserAboutMe(data) {
+  return (dispatch) => {
+    dispatch(showLoader());
+    console.log('datassss',data)
+    dispatch(rest.actions.changeUserAboutMe.put({ id: data.id }, { body: JSON.stringify(data) }, (err, data) => {
+      if (!err) {
+        dispatch(setUser(data.user));
+        dispatch(hideLoader());
+      }
+    }))
+  }
+}
+
+export function changeUserAvatar(data) {
+  const image = data.image;
+  console.log('image',image)
+  const id = data.id;
+  return (dispatch, getState) => {
+    dispatch(showLoader());
+    return new Promise((resolve, reject) => {
+      const user = getState().user;
+      console.log('user', user);
+      if (user && user.id != -1) {
+        Util.getKeychainData().then(credentials => {
+          const api_key = credentials.password;
+          if (api_key) {
+            var obj = {
+              uploadUrl: `${API_URL}/users/${id}`,
+              method: 'PUT', // default 'POST',support 'POST' and 'PUT'
+              headers: {
+                'Accept': 'application/json',
+                "Authorization": `Token token=${api_key}`,
+              },
+              fields: {},
+              files: [
+                {
+                  name: 'user[avatar]',
+                  filename: _.last(image.path.split('/')), // require, file name
+                  filepath: image.path, // require, file absoluete path
+                },
+              ]
+            };
+
+            console.log('object obj', obj)
+
+            FileUpload.upload(obj, function(err, result) {
+              console.log('upload:', err, result);
+              if (result && result.status == 200) {
+                const data = JSON.parse(result.data);
+                const payload = _.merge(data, {image: image.path });
+                console.log('payload',payload);
+                console.log('result',data);
+                resolve(dispatch(setUser(data.user)));
+                dispatch(hideLoader());
+              } else {
+                console.log('errr',err)
+                reject(err);
+              }
+            })
+          } else {
+            reject('Authorization error')
+          }
+        }).catch(reject);
+
+      } else {
+        reject('Authorization error')
+      }
+    });
+
+  }
+
+}
+

@@ -32,9 +32,10 @@ const ACTION_HANDLERS = {
     };
   },
   [COMPLETE_EDIT_BODY_MEASURE]: (state, action) => {
+    console.log('action',action);
     return {
       ...state,
-      user_size: action.payload.sizeInfo
+      user_size: action.payload
     };
   },
   [REHYDRATE]: (state, action) => {

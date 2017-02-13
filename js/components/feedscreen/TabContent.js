@@ -7,7 +7,7 @@ import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
 import _ from 'lodash';
-import { showBodyTypeModal } from '../../actions/myBodyType';
+import { showBodyTypeModal, getUserBodyType } from '../../actions/myBodyType';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import { likeUpdate, unLikeUpdate } from '../../actions/likes';
@@ -46,6 +46,17 @@ class TabContent extends Component {
       imagesColumn1,
       imagesColumn2,
     })
+  }
+
+  componentDidMount() {
+    if(Object.keys(this.props.user_size).length !== 0) {
+      const data = {
+        gender: this.props.user_gender,
+        bodyType: this.props.user_size.body_type
+      }
+      this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
+    }
+
   }
 
   distributeImages(looks) {
@@ -157,6 +168,7 @@ function bindActions(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    getUserBodyType: (data) => dispatch(getUserBodyType(data)),
   };
 }
 
@@ -165,7 +177,9 @@ const mapStateToProps = state => {
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData,
-    hasUserSize
+    hasUserSize,
+    user_size: hasUserSize,
+    user_gender: state.user.gender
   }
 };
 
