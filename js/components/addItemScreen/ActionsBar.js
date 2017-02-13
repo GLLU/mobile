@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: 'transparent',
     padding: 20,
+    alignItems: 'center',
   },
   btnTagAnother: {
     marginTop: 20,
@@ -30,7 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#1DE9B6',
     height: 50,
     width: deviceWidth / 2 - 28,
-    borderRadius: 0
+    borderRadius: 0,
+    alignSelf: 'center',
   },
   textBtn: {
     fontWeight: '500',
@@ -53,19 +55,9 @@ class ActionsBar extends Component {
 
   render () {
     return (<View style={styles.actionsContainer}>
-              <Grid>
-                <Col size={48}>
-                  <Button transparent onPress={() => this.props.tagAnotherAction()} style={styles.btnTagAnother}>
-                    <Text style={styles.textBtn}>TAG ANOTHER</Text>
-                  </Button>
-                </Col>
-                <Col size={4}></Col>
-                <Col size={48}>
-                  <Button transparent onPress={() => this.props.continueAction()} style={styles.btnContinue}>
-                    <Text style={styles.textBtn}>CONTINUE</Text>
-                  </Button>
-                </Col>
-              </Grid>
+              <Button transparent onPress={() => this.props.continueAction()} style={styles.btnContinue}>
+                <Text style={styles.textBtn}>CONTINUE</Text>
+              </Button>
           </View>)
   }
 

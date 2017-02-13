@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { View, Container, Content, Text, Picker, Item, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-import { 
+import {
   createLookItem,
   selectLookItem,
   addItemType,
@@ -20,6 +20,7 @@ import {
 
 import Category from './forms/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
+import TagInput from './forms/TagInput';
 import CurrencyAndPrice from './forms/CurrencyAndPrice';
 import ItemSize from './forms/ItemSize';
 import Tags from './forms/Tags';
@@ -286,7 +287,7 @@ class StepOne extends Component {
                   updateValue={this.updateValue.bind(this)} />
               <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
               <View style={{margin: 5}}>
-                <TextInput
+                {/*<TextInput
                     returnKeyType="done"
                     placeholder=""
                     value={this.state.tmpValue}
@@ -296,7 +297,10 @@ class StepOne extends Component {
                     autoCorrect={false}
                     underlineColorAndroid='transparent'
                     onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
-                    onChangeText={(text) => this.setState({tmpValue: text})} />
+                    onChangeText={(text) => this.setState({tmpValue: text})} />*/}
+                <TagInput
+                  brand={brand}
+                  addTags={this.addTags.bind(this)} />
                 <Tags tags={tags} removeTag={this.removeTag.bind(this)} />
               </View>
               {/*
