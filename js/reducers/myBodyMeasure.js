@@ -69,7 +69,7 @@ const sizeList = {
       measurements_scale: 'cm',
       select: false
     },
-    ractangle: {
+    rectangle: {
       chest: '102', waist: '83', hips: '94', height: '170',
       minValue: '0',
       maxValue: '300',
