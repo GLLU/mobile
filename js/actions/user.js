@@ -1,7 +1,6 @@
 import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
-import rest from '../api/rest';
 import { showLoader, hideLoader, reset } from './index';
 import Util from '../Util';
 import { getUserBodyType } from './myBodyType';
