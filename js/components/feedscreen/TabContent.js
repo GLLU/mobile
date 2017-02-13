@@ -174,6 +174,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
+  console.log('has',hasUserSize)
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData,
