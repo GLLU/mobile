@@ -9,10 +9,11 @@ import { Row, Grid } from "react-native-easy-grid";
 import ModalPicker from 'react-native-modal-picker';
 import { countries } from './countries'
 import { emailSignUp } from '../../actions/user';
-
 import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
+import { changeUserAvatar } from '../../actions/user';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const { popRoute, pushRoute } = actions;
 
@@ -46,6 +47,7 @@ class SignUpPage extends Component {
           password: '',
           confirmPassword: '',
           name: '',
+          avatar: '',
           country: '',
           gender: this.props.gender,
           usernameValid: 'times',
@@ -65,6 +67,7 @@ class SignUpPage extends Component {
           confirmPassword,
           email,
           name,
+          avatar,
           gender,
           country } = this.state;
 
@@ -72,10 +75,11 @@ class SignUpPage extends Component {
             let data = {
                 email,
                 username,
+                avatar,
                 name,
                 gender: gender.toLowerCase(),
                 password,
-                confirmPassword,
+                confirmPassword: password,
                 country: country.toLowerCase()
             }
             this.props.emailSignUp(data);
@@ -144,6 +148,19 @@ class SignUpPage extends Component {
       this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
   }
 
+  addUserAvatar() {
+    ImagePicker.openPicker({
+      includeBase64: true,
+      cropping: false,
+    }).then(image => {
+      data = {
+        image,
+      }
+      this.setState({avatar: data})
+
+    });
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -158,7 +175,7 @@ class SignUpPage extends Component {
                   </Header>
                   <Content scrollEnabled={false}>
                       <View style={styles.uploadImgContainer}>
-                          <Button large style={styles.uploadImgBtn} warning>
+                          <Button large style={styles.uploadImgBtn} warning onPress={() => this.addUserAvatar()}>
                               <IconB size={30} color={MKColor.Teal} name='camera' style={styles.uploadImgIcon}/>
                           </Button>
                       </View>
@@ -230,6 +247,7 @@ function bindAction(dispatch) {
     emailSignUp: (data) => dispatch(emailSignUp(data)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
+    changeUserAvatar: (data) => dispatch(changeUserAvatar(data)),
   };
 }
 
