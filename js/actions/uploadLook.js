@@ -268,9 +268,9 @@ export function addItemTag(tag) {
       tag_name: tag
     }
     return new Promise((resolve, reject) => {
-      dispatch(showLoader());
+      // dispatch(showLoader());
       return dispatch(rest.actions.item_tags.post({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
-        dispatch(hideLoader());
+        // dispatch(hideLoader());
         if (!err) {
           dispatch({
             type: ADD_ITEM_TAG,
@@ -293,9 +293,9 @@ export function removeItemTag(tag) {
       tag_name: tag
     }
     return new Promise((resolve, reject) => {
-      dispatch(showLoader());
+      // dispatch(showLoader());
       return dispatch(rest.actions.remove_item_tags({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
-        dispatch(hideLoader());
+        // dispatch(hideLoader());
         if (!err) {
           dispatch({
             type: REMOVE_ITEM_TAG,
