@@ -35,7 +35,7 @@ export function like(id) {
 
 export function unlike(id) {
   return (dispatch) => {
-    dispatch(rest.actions.unlike.delete({look_id: id}, (err, data) => {
+    dispatch(rest.actions.likes.delete({look_id: id}, (err, data) => {
       if (!err) {
       }
     }));
