@@ -10,6 +10,8 @@ import ProfileView  from './ProfileView';
 import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
 import { getStats } from '../../actions/user'
+import { getUserBodyType } from '../../actions/myBodyType';
+import _ from 'lodash';
 const userBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
@@ -25,12 +27,20 @@ class ProfileScreen extends Component {
     this.state = {
       isMyProfile: this.props.userData.id === this.props.myUser.id,
     }
-    console.log('blab');
+  }
+
+  componentDidMount() {
+    if(this.props.hasUserSize) {
+      const data = {
+        gender: this.props.myUser.gender,
+        bodyType: this.props.myUser.user_size.body_type
+      }
+      this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
+    }
   }
 
   componentWillMount() {
     this.props.getStats(this.props.userData.id);
-    console.log('blab2');
   }
 
   _PopRoute() {
@@ -104,15 +114,21 @@ function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
-    getStats: (id) => dispatch(getStats(id))
+    getStats: (id) => dispatch(getStats(id)),
+    getUserBodyType: (data) => dispatch(getUserBodyType(data)),
+
   };
 }
 
 const mapStateToProps = state => {
+  const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
+  const user_size = hasUserSize ? state.user.user_size : '';
   return {
     navigation: state.cardNavigation,
     myUser: state.user,
     stats: state.stats,
+    hasUserSize,
+    user_size: user_size,
 
   };
 };
