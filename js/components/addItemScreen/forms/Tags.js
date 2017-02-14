@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 class Tags extends Component {
 
   static propTypes = {
-    tags: React.PropTypes.array,
+    itemTags: React.PropTypes.array,
     removeTag: React.PropTypes.func
   }
 
@@ -37,11 +37,10 @@ class Tags extends Component {
   }
 
   _renderTags() {
-    return this.props.tags.map((tag, index) => {
-      console.log('tag', tag);
+    return this.props.itemTags.map((tag, index) => {
       return (
-        <View key={index+1} style={[styles.tagTextContainer]}>
-          <Button iconRight style={{backgroundColor: 'transparent'}}>
+        <View key={index} style={[styles.tagTextContainer]}>
+          <Button iconRight style={{backgroundColor: '#000'}}>
             {tag.name}
             <Icon name='ios-close' style={{justifyContent: 'flex-end'}} onPress={() => this.props.removeTag(tag)}/>
           </Button>

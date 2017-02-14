@@ -111,8 +111,6 @@ class CustomAutocomplete extends Autocomplete {
       ...this.props
     };
 
-    console.log('props value', props.value);
-
     return renderTextInput
       ? renderTextInput(props)
       : (<TextInput {...props} />);

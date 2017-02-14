@@ -31,22 +31,15 @@ class TagInput extends Component {
     addItemTag: React.PropTypes.func,
     removeItemTag: React.PropTypes.func,
     loadTags: React.PropTypes.func,
-    tags: React.PropTypes.array,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      tmpValue: ''
-    };
+    itemTags: React.PropTypes.array,
   }
 
   addTag(name) {
-    const tags = this.props.tags;
-    const existing = _.find(tags, t => t.name.toLowerCase() == name.toLowerCase());
+    const itemTags = this.props.itemTags;
+    const existing = _.find(itemTags, t => t.name.toLowerCase() == name.toLowerCase());
     if (!existing) {
       this.props.addItemTag(name).then(() => {
-        this.setState({tmpValue: ''});  
+        this.textInput.clear();
       })
     }
   }
@@ -56,22 +49,20 @@ class TagInput extends Component {
   }
 
   render() {
-    const { tmpValue } = this.state;
-    const { tags } = this.props;
+    const { itemTags } = this.props;
     return (
       <View style={{flex: 1}}>
         <TextInput
+          ref={ref => this.textInput = ref}
           returnKeyType="done"
           placeholder=""
-          value={tmpValue}
           keyboardType="default"
           placeholderTextColor="#BDBDBD"
           style={styles.textInput}
           autoCorrect={false}
           underlineColorAndroid='transparent'
-          onSubmitEditing={(event) => this.addTag(event.nativeEvent.text)}
-          onChangeText={(text) => this.setState({tmpValue: text})} />
-        <Tags tags={tags} removeTag={this.removeTag.bind(this)} />
+          onSubmitEditing={(event) => this.addTag(event.nativeEvent.text)}/>
+        <Tags itemTags={itemTags} removeTag={this.removeTag.bind(this)} />
       </View>);
   }
 }
@@ -85,7 +76,11 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
+  const { itemId, items } = state.uploadLook;
+  const item = _.find(items, item => item.id == itemId);
+  const itemTags = item ? item.itemTags : [];
   return ({
+    itemTags,
   });
 };
 

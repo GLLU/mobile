@@ -85,7 +85,7 @@ const ACTION_HANDLERS = {
       trustLevel: 0,
       photos: [],
       video: '',
-      tags: []
+      itemTags: []
     });
     return {
       ...state,
@@ -144,31 +144,21 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TAG]: (state, action) => {
-    console.log('ADD_ITEM_TAG', action.payload)
+    const item = findItem(state);
+    let itemTags = item.itemTags;
+    itemTags.push(action.payload);
+    itemTags = _.uniqBy(itemTags, 'id');
     return {
       ...state,
-      items: state.items.map(x => {
-        if (x.id == state.itemId) {
-          const tag = _.find(x.tags, t => t.id == action.payload.id);
-          if (!tag) {
-            x.tags.push(action.payload);
-          }
-        }
-        return x;
-      })
+      items: mutateItem(state, 'itemTags', itemTags)
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
-    console.log('REMOVE_ITEM_TAG', action.payload)
+    const item = findItem(state);
+    let itemTags = _.filter(item.itemTags, t => t.name.toLowerCase() != action.payload.toLowerCase());
     return {
       ...state,
-      items: state.items.map(x => {
-        if (x.id == state.itemId) {
-          const tags = _.filter(x.tags, t => t.name.toLowerCase() != action.payload.toLowerCase());
-          x.tags = tags;
-        }
-        return x;
-      })
+      items: mutateItem(state, 'itemTags', itemTags)
     }
   },
   [ADD_ITEM_CURRENCY]: (state, action) => {
@@ -217,14 +207,14 @@ const ACTION_HANDLERS = {
       items: mutateItem(state, 'photos', photos),
     }
   },
-  [SET_CATEGORIES]: (state, action) => {
-    const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
-    const selectedCategoryId = categories[parseInt(categories.length / 2)].id;
-    return {
-      ...state,
-      items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
-    }
-  },
+  // [SET_CATEGORIES]: (state, action) => {
+  //   const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
+  //   const selectedCategoryId = categories[parseInt(categories.length / 2)].id;
+  //   return {
+  //     ...state,
+  //     items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
+  //   }
+  // },
   [SET_ITEM_SIZES]: (state, action) => {
     const sizes = action.payload.sizes;
     if (sizes.length > 0 && !state.itemSizeRegion && !state.itemSizeValue) {
@@ -251,6 +241,7 @@ const initialState = {
   image: null,
   description: '',
   items: [],
+  itemTags: [],
   video: '',
 }
 

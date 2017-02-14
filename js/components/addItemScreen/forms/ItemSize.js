@@ -51,7 +51,6 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  console.log('ItemSize state', state.filters.countries, state.filters.itemSizes);
   return {
     countries: state.filters.countries,
     itemSizes: state.filters.itemSizes,

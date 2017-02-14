@@ -114,16 +114,13 @@ class StepOne extends Component {
     newTag: React.PropTypes.bool,
     categories: React.PropTypes.array,
     selectedCategoryId: React.PropTypes.number,
-    posInCategories: React.PropTypes.number,
     brand: React.PropTypes.object,
     itemSizeRegion: React.PropTypes.string,
     itemSizeValue: React.PropTypes.string,
-    tags: React.PropTypes.array,
     currency: React.PropTypes.string,
     price: React.PropTypes.number,
     sharingType: React.PropTypes.bool,
     sharingUrl: React.PropTypes.string,
-    loadCategories: React.PropTypes.func,
     addItemType: React.PropTypes.func,
     createBrandName: React.PropTypes.func,
     addBrandName: React.PropTypes.func,
@@ -143,16 +140,7 @@ class StepOne extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      tmpValue: '',
-      tags: ['dresses', 'black', 'red', 'white'],
-    }
   }
-
-  componentDidMount() {
-    this.props.loadCategories();
-  }
-
 
   findCategoryById(categories, id) {
     let category = null;
@@ -165,9 +153,8 @@ class StepOne extends Component {
   }
 
   selectCategory(item) {
-    console.log('selectCategory', item);
     if (item.id != this.props.selectedCategoryId) {
-      this.props.addItemType(item.id);
+      this.props.addItemType(item);
     }
   }
 
@@ -248,11 +235,10 @@ class StepOne extends Component {
   }
 
   _renderInfoView() {
-    const { categories, countries, itemSizes, selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
+    const { categories, countries, itemSizes, selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price } = this.props;
     return(<View style={[styles.itemInfoView]}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
               <Category
-                  categories={categories}
                   selectedCategoryId={selectedCategoryId}
                   onCategorySelected={(cat) => this.selectCategory(cat)}/>
               <Text style={styles.titleLabelInfo}>Brand Name</Text>
@@ -267,7 +253,7 @@ class StepOne extends Component {
                   updateValue={this.updateValue.bind(this)} />
               <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
               <View style={{margin: 5}}>
-                <TagInput tags={tags}/>
+                <TagInput/>
               </View>
               {/*
                 <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
@@ -301,8 +287,7 @@ function bindActions(dispatch) {
   return {
     createLookItem: (tag) => dispatch(createLookItem(tag)),
     selectLookItem: (tag) => dispatch(selectLookItem(tag)),
-    loadCategories: () => dispatch(loadCategories()),
-    addItemType: (typeId) => dispatch(addItemType(typeId)),
+    addItemType: (type) => dispatch(addItemType(type)),
     createBrandName: (name) => dispatch(createBrandName(name)),
     addBrandName: (brand) => dispatch(addBrandName(brand)),
     addItemSizeCountry: (size) => dispatch(addItemSizeCountry(size)),
@@ -319,16 +304,13 @@ const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
   if (item) {
-    console.log('item tags', item.tags);
     return {
       navigation: state.cardNavigation,
       ...state.uploadLook,
-      categories: state.filters.categories,
       selectedCategoryId: item.selectedCategoryId,
       brand: item.brand,
       itemSizeRegion: item.itemSizeRegion,
       itemSizeValue: item.itemSizeValue,
-      tags: item.tags,
       currency: item.currency,
       price: item.price,
     };
@@ -337,12 +319,10 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
-    categories: state.filters.categories,
     selectedCategoryId: null,
     brand: null,
     itemSizeRegion: null,
     itemSizeValue: null,
-    tags: [],
     currency: 'USD',
     price: 0,
   }

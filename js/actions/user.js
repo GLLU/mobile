@@ -209,12 +209,9 @@ export function changeUserAvatar(data) {
               if (result && result.status == 200) {
                 const data = JSON.parse(result.data);
                 const payload = _.merge(data, {image: image.path });
-                console.log('payload',payload);
-                console.log('result',data);
                 resolve(dispatch(setUser(data.user)));
                 dispatch(hideLoader());
               } else {
-                console.log('errr',err)
                 reject(err);
               }
             })

@@ -18,8 +18,6 @@ export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 
-
-import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
@@ -33,7 +31,6 @@ export function addNewLook(image) {
     dispatch(showProcessing());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      console.log('user', user);
       if (user && user.id != -1) {
         Util.getKeychainData().then(credentials => {
           const api_key = credentials.password;
@@ -55,10 +52,7 @@ export function addNewLook(image) {
               ]
             };
 
-            console.log('object obj', obj)
-
             FileUpload.upload(obj, function(err, result) {
-              console.log('upload:', err, result);
               dispatch(hideProcessing());
               if (result && result.status == 201) {
                 const data = JSON.parse(result.data);
@@ -202,22 +196,26 @@ export function publishLookItem() {
   }
 }
 
-export function addItemType(categoryId) {
+export function addItemType(categoryItem) {
   return (dispatch) => {
 
     dispatch({
         type: ADD_ITEM_TYPE,
-        payload: categoryId
+        payload: categoryItem.id
       });
-    dispatch(loadItemSizes(categoryId));
+    dispatch(loadItemSizes(categoryItem.id));
+    dispatch(addItemTag(categoryItem.name));
   };
 }
 
 export function addBrandName(payload) {
-  return {
-    type: ADD_BRAND_NAME,
-    payload: payload
-  }
+  return (dispatch, getState) => {
+    dispatch({
+      type: ADD_BRAND_NAME,
+      payload: payload
+    });
+    dispatch(addItemTag(payload.name));
+  };
 }
 
 export function createBrandName(name) {
@@ -272,7 +270,6 @@ export function addItemTag(tag) {
     return new Promise((resolve, reject) => {
       dispatch(showLoader());
       return dispatch(rest.actions.item_tags.post({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
-        console.log('finish adding tags', err, data);
         dispatch(hideLoader());
         if (!err) {
           dispatch({
@@ -298,7 +295,6 @@ export function removeItemTag(tag) {
     return new Promise((resolve, reject) => {
       dispatch(showLoader());
       return dispatch(rest.actions.remove_item_tags({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
-        console.log('finish remove tags', err, data);
         dispatch(hideLoader());
         if (!err) {
           dispatch({
@@ -310,14 +306,6 @@ export function removeItemTag(tag) {
           reject(err);
         }
       }));
-    });
-  };
-
-
-  return (dispatch) => {
-    return dispatch({
-      type: REMOVE_ITEM_TAG,
-      payload: tag
     });
   };
 }
