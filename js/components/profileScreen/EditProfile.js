@@ -43,7 +43,7 @@ class EditProfile extends Component {
   _saveChanges(){
     const { user, bodyType } = this.props;
     const data = {
-      body_type: bodyType.uniqueName,
+      body_type: bodyType.body_type,
       chest: user.user_size.chest,
       waist: user.user_size.waist,
       hips: user.user_size.hips,

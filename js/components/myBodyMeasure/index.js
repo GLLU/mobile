@@ -38,7 +38,7 @@ class MyBodyMeasure extends Component {
   _saveUserSize() {
     const { user_size, currentBodyType } = this.props;
     const data = {
-      body_type: currentBodyType.uniqueName,
+      body_type: currentBodyType.body_type,
       chest: user_size.chest,
       waist: user_size.waist,
       hips: user_size.hips,

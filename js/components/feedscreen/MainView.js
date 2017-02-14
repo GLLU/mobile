@@ -24,6 +24,7 @@ class MainView extends Component {
       currFeedCategorySelected: '',
       searchTerm: this.props.searchTerm
     };
+
   }
 
   componentWillMount() {
