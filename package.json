@@ -14,14 +14,14 @@
     "install": "^0.8.4",
     "lodash": "^4.13.1",
     "moment": "^2.13.0",
-    "native-base": "0.5.11",
+    "native-base": "0.5.20",
     "npm": "^4.1.2",
-    "react": "15.3.2",
-    "react-native": "0.35.0",
+    "react": "^15.4.2",
+    "react-native": "^0.39.2",
     "react-native-autocomplete-input": "github:l-urence/react-native-autocomplete-input",
     "react-native-code-push": "1.15.0-beta",
     "react-native-config": "git+https://github.com/thethanghn/react-native-config.git",
-    "react-native-easy-grid": "0.1.6",
+    "react-native-easy-grid": "^0.1.6",
     "react-native-extra-dimensions-android": "git+https://github.com/Sunhat/react-native-extra-dimensions-android.git",
     "react-native-fbsdk": "^0.4.0",
     "react-native-fileupload": "git+https://github.com/thethanghn/react-native-fileupload.git",
@@ -51,7 +51,8 @@
     "redux-thunk": "^2.1.0",
     "remote-redux-devtools": "^0.3.3",
     "remote-redux-devtools-on-debugger": "^0.4.6",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "whatwg-fetch": "^1.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
