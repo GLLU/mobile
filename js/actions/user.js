@@ -6,6 +6,7 @@ import Util from '../Util';
 import { getUserBodyType } from './myBodyType';
 var FileUpload = require('NativeModules').FileUpload;
 import rest, { API_URL } from '../api/rest';
+import _ from 'lodash';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
@@ -19,7 +20,20 @@ const setRestOptions = function(rest, key) {
         "Content-Type": "application/json"
       }
     };
-  });
+  }).use("responseHandler", (err, data) => {
+    if (err) {
+      console.log("ERROR 222", err)
+      if (err.errors.length > 0) {
+        const error = _.first(err.errors);
+        console.log(error);
+        if (error == "Bad Credentials") {
+          dispatch(navigateTo('splashscreen'));
+        }
+      }
+    } else {
+      console.log("SUCCESS", data)
+    }
+  });;
 }
 
 const signInFromRest = function(dispatch, data) {
@@ -134,8 +148,10 @@ export function checkLogin() {
     if (user && user.id != -1) {
       Util.getKeychainData().then(credentials => {
         console.log('credentials', credentials);
-        setRestOptions(rest, credentials.password);
-        dispatch(resetUserNavigation());
+        if (credentials) {
+          setRestOptions(rest, credentials.password);
+          dispatch(resetUserNavigation());
+        }
       })
     } else {
       console.log('user does not exist');
@@ -193,12 +209,9 @@ export function changeUserAvatar(data) {
               if (result && result.status == 200) {
                 const data = JSON.parse(result.data);
                 const payload = _.merge(data, {image: image.path });
-                console.log('payload',payload);
-                console.log('result',data);
                 resolve(dispatch(setUser(data.user)));
                 dispatch(hideLoader());
               } else {
-                console.log('errr',err)
                 reject(err);
               }
             })

@@ -4,13 +4,18 @@ import { View} from 'native-base';
 import CategoryItem from './CategoryItem';
 import _ from 'lodash';
 
+import {
+  loadCategories,
+} from '../../../actions';
+
 import { ITEM_WIDTH } from './styles';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    height: 120,
   },
   categoriesContainer: {
     flex: 1,
@@ -23,6 +28,7 @@ class CategoryStrip extends Component {
     categories: React.PropTypes.array,
     selectedCategoryId: React.PropTypes.number,
     onCategorySelected: React.PropTypes.func,
+    loadCategories: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -45,6 +51,7 @@ class CategoryStrip extends Component {
 
   componentDidMount() {
     this.normalizeContentOffsetX();
+    this.props.loadCategories();
   }
 
   normalizeContentOffsetX() {
@@ -56,12 +63,9 @@ class CategoryStrip extends Component {
       x = 0;
     } else {
       x = positionX - midPoint + ITEM_WIDTH / 2;
-      
-      console.log('left', maxLeft, this.scrollViewWidth);
       x = Math.min(x, maxLeft);
     }
     
-    console.log('values', x, positionX, midPoint, maxLeft);
     this._categoryScrollView.scrollTo({x: x, y: 0});
   }
 
@@ -82,11 +86,7 @@ class CategoryStrip extends Component {
   }
 
   _drawCategoryItems() {
-    let selectedCategoryId = this.props.selectedCategoryId;
-    const categories = this.props.categories;
-    if (!selectedCategoryId && categories.length > 0) {
-      selectedCategoryId = _.first(categories).id;
-    }
+    const { selectedCategoryId, categories } = this.props;
     return categories.map((item, index) => {
       const selected = selectedCategoryId && selectedCategoryId == item.id;
       return (<CategoryItem key={index} item={item} itemWidth={ITEM_WIDTH} selected={selected} onPress={this._handleSelectCategory.bind(this)}/>);
@@ -119,4 +119,17 @@ class CategoryStrip extends Component {
   }
 }
 
-export default CategoryStrip;
+import { connect } from 'react-redux';
+function bindActions(dispatch) {
+  return {
+    loadCategories: () => dispatch(loadCategories()),
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    categories: state.filters.categories,
+  };
+};
+
+export default connect(mapStateToProps, bindActions)(CategoryStrip);

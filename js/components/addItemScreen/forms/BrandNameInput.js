@@ -105,7 +105,6 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   const look = state.uploadLook;
   const item = _.find(look.items, item => item.id == look.itemId);
-  console.log('mapStateToProps', item, look.items);
   return ({
     brands: state.filters.brands,
     brand: item ? item.brand : null

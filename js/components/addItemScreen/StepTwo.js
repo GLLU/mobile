@@ -24,6 +24,7 @@ const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png'
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 
 const w = Dimensions.get('window').width;
+const BTN_RADIO_MARGIN_TOP = w < 375 ? 0 : 10;
 import { IMAGE_VIEW_WIDTH } from './styles';
 
 const styles = StyleSheet.create({
@@ -92,6 +93,9 @@ const styles = StyleSheet.create({
   },
   hashTag: {
     color: '#05d7b2'
+  },
+  fakeCheckbox: {
+    marginTop: BTN_RADIO_MARGIN_TOP,
   }
 });
 
@@ -117,7 +121,7 @@ class StepTwo extends Component {
         videoUrl: '',
         location: 'us',
         trustLevel: '0',
-        confirm: true,
+        confirm: false,
     }
   }
 
@@ -164,7 +168,7 @@ class StepTwo extends Component {
   }
 
   _handlePublishItem() {
-    this.props.publishItem();    
+    this.props.publishItem();
   }
 
   _renderDescribeAndTags() {
@@ -179,10 +183,12 @@ class StepTwo extends Component {
   _renderSelections(){
     const checkBoxIcon = this.state.confirm ? checkboxCheckedIcon : checkboxUncheckIcon;
     return (
-        <View style={{height: 400, margin: 5}}>
+        <View style={{height: 150, margin: 5}}>
+            {/*
             <Text style={[styles.titleLabelInfo, {color: '#333333'}]}>Improve your sales experience</Text>
             <Location location={this.state.location} updateSelectValue={this.updateSelectValue.bind(this)} />
             <TrustLevel trustLevel={this.state.trustLevel} updateSelectValue={this.updateSelectValue.bind(this)} />
+          */}
             <Grid>
               <Col size={15}>
                 <Button transparent onPress={() => this.setState({confirm: !this.state.confirm})} style={styles.fakeCheckbox}>
@@ -190,7 +196,7 @@ class StepTwo extends Component {
                 </Button>
               </Col>
               <Col size={85}>
-                <Text adjustsFontSizeToFit={true} numberOfLines={6} style={styles.confirmText}>
+                <Text adjustsFontSizeToFit={true} numberOfLines={8} style={styles.confirmText}>
                   {'You will now become a "Glluer Presenter" while your exact measurements will still be hiddden. People that will view this item. Will see a % value of matching between their measurements and yours.'}
                 </Text>
               </Col>
@@ -211,10 +217,10 @@ class StepTwo extends Component {
               width={IMAGE_VIEW_WIDTH}/>
         </View>
         <View style={styles.itemInfoView}>
-            <AddMore video={this.state.video} photos={this.props.photos} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />
+            {/*<AddMore video={this.state.video} photos={this.props.photos} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />*/}
             {this._renderDescribeAndTags()}
             {this._renderSelections()}
-            <Button transparent onPress={() => this._handlePublishItem()} style={styles.btnGoToStep3}>
+            <Button disabled={!this.state.confirm} transparent onPress={() => this._handlePublishItem()} style={styles.btnGoToStep3}>
                 <Text style={styles.btnGoToStep3Text}>PUBLISH</Text>
             </Button>
         </View>

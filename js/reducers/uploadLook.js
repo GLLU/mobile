@@ -85,7 +85,7 @@ const ACTION_HANDLERS = {
       trustLevel: 0,
       photos: [],
       video: '',
-      tags: []
+      itemTags: []
     });
     return {
       ...state,
@@ -144,16 +144,21 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TAG]: (state, action) => {
+    const item = findItem(state);
+    let itemTags = item.itemTags;
+    itemTags.push(action.payload);
+    itemTags = _.uniqBy(itemTags, 'id');
     return {
       ...state,
-      items: mutateItem(state, 'tags', action.payload)
+      items: mutateItem(state, 'itemTags', itemTags)
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
-    let tags = _.filter(state.tags, x => x.toLowerCase() != action.payload.toLowerCase());
+    const item = findItem(state);
+    let itemTags = _.filter(item.itemTags, t => t.name.toLowerCase() != action.payload.toLowerCase());
     return {
       ...state,
-      items: mutateItem(state, 'tags', tags)
+      items: mutateItem(state, 'itemTags', itemTags)
     }
   },
   [ADD_ITEM_CURRENCY]: (state, action) => {
@@ -202,14 +207,14 @@ const ACTION_HANDLERS = {
       items: mutateItem(state, 'photos', photos),
     }
   },
-  [SET_CATEGORIES]: (state, action) => {
-    const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
-    const selectedCategoryId = categories[parseInt(categories.length / 2)].id;
-    return {
-      ...state,
-      items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
-    }
-  },
+  // [SET_CATEGORIES]: (state, action) => {
+  //   const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
+  //   const selectedCategoryId = categories[parseInt(categories.length / 2)].id;
+  //   return {
+  //     ...state,
+  //     items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
+  //   }
+  // },
   [SET_ITEM_SIZES]: (state, action) => {
     const sizes = action.payload.sizes;
     if (sizes.length > 0 && !state.itemSizeRegion && !state.itemSizeValue) {
@@ -236,6 +241,7 @@ const initialState = {
   image: null,
   description: '',
   items: [],
+  itemTags: [],
   video: '',
 }
 

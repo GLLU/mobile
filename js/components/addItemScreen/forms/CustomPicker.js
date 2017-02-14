@@ -89,8 +89,6 @@ class CustomPicker extends Component {
 
   render() {
     const { items, selectedValue } = this.props;
-
-    console.log('items', items, selectedValue);
     
     return (<Grid style={btnStyles.container}>
                       <Col size={20}>

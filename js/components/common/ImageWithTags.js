@@ -86,7 +86,6 @@ class ImageWithTags extends Component {
   _handlePress(e) {
     const {locationX, locationY} = e.nativeEvent;
     const { width, height } = this.getRenderingDimensions();
-    console.log('preset image', e.nativeEvent, width, height);
     this._setupPanResponder(locationX, locationY);
 
     // convert location into relative positions
@@ -171,8 +170,6 @@ class ImageWithTags extends Component {
 
   _render() {
     const { width, height } = this.getRenderingDimensions();
-    
-    console.log('width height', width, height, this.props.image);
     return (<Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
       <View style={[styles.draggableContainer, {width, height}]}>
         {this.renderTags()}

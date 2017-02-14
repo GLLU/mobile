@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { View, Container, Content, Text, Picker, Item, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-import { 
+import {
   createLookItem,
   selectLookItem,
   addItemType,
@@ -20,9 +20,9 @@ import {
 
 import Category from './forms/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
+import TagInput from './forms/TagInput';
 import CurrencyAndPrice from './forms/CurrencyAndPrice';
 import ItemSize from './forms/ItemSize';
-import Tags from './forms/Tags';
 import ImageWithTags from '../common/ImageWithTags';
 import ActionsBar from './ActionsBar';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -33,8 +33,6 @@ import { IMAGE_VIEW_WIDTH } from './styles';
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxChecked = require('../../../images/icons/checkbox-checked-black.png');
 
-const w = Dimensions.get('window').width;
-const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   itemInfoView: {
@@ -116,16 +114,13 @@ class StepOne extends Component {
     newTag: React.PropTypes.bool,
     categories: React.PropTypes.array,
     selectedCategoryId: React.PropTypes.number,
-    posInCategories: React.PropTypes.number,
     brand: React.PropTypes.object,
     itemSizeRegion: React.PropTypes.string,
     itemSizeValue: React.PropTypes.string,
-    tags: React.PropTypes.array,
     currency: React.PropTypes.string,
     price: React.PropTypes.number,
     sharingType: React.PropTypes.bool,
     sharingUrl: React.PropTypes.string,
-    loadCategories: React.PropTypes.func,
     addItemType: React.PropTypes.func,
     createBrandName: React.PropTypes.func,
     addBrandName: React.PropTypes.func,
@@ -145,16 +140,7 @@ class StepOne extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      tmpValue: '',
-      tags: ['dresses', 'black', 'red', 'white'],
-    }
   }
-
-  componentDidMount() {
-    this.props.loadCategories();
-  }
-
 
   findCategoryById(categories, id) {
     let category = null;
@@ -167,9 +153,8 @@ class StepOne extends Component {
   }
 
   selectCategory(item) {
-    console.log('selectCategory', item);
     if (item.id != this.props.selectedCategoryId) {
-      this.props.addItemType(item.id);
+      this.props.addItemType(item);
     }
   }
 
@@ -203,22 +188,6 @@ class StepOne extends Component {
         this.props.addSharingInfo(this.state.sharingType, value);
         break;
     }
-  }
-
-  addTags(name) {
-    const tags = this.props.tags;
-    const existing = _.find(tags, t => t.toLowerCase() == name.toLowerCase());
-    if (!existing) {
-      tags.push(name);
-      this.props.addItemTag(tags);
-    }
-    this.setState({tmpValue: ''});
-  }
-
-  removeTag(name) {
-    const { tags } = this.props;
-    let newTags = _.filter(tags, x => x.toLowerCase() != name.toLowerCase());
-    this.props.addItemTag(newTags);
   }
 
   _renderActionsContainer() {
@@ -266,12 +235,10 @@ class StepOne extends Component {
   }
 
   _renderInfoView() {
-    const { categories, countries, itemSizes } = this.props;
-    const { selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price, tags } = this.props;
+    const { categories, countries, itemSizes, selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price } = this.props;
     return(<View style={[styles.itemInfoView]}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
               <Category
-                  categories={categories}
                   selectedCategoryId={selectedCategoryId}
                   onCategorySelected={(cat) => this.selectCategory(cat)}/>
               <Text style={styles.titleLabelInfo}>Brand Name</Text>
@@ -286,18 +253,7 @@ class StepOne extends Component {
                   updateValue={this.updateValue.bind(this)} />
               <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
               <View style={{margin: 5}}>
-                <TextInput
-                    returnKeyType="done"
-                    placeholder=""
-                    value={this.state.tmpValue}
-                    keyboardType="default"
-                    placeholderTextColor="#BDBDBD"
-                    style={styles.textInput}
-                    autoCorrect={false}
-                    underlineColorAndroid='transparent'
-                    onSubmitEditing={(event) => this.addTags(event.nativeEvent.text)}
-                    onChangeText={(text) => this.setState({tmpValue: text})} />
-                <Tags tags={tags} removeTag={this.removeTag.bind(this)} />
+                <TagInput/>
               </View>
               {/*
                 <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
@@ -331,8 +287,7 @@ function bindActions(dispatch) {
   return {
     createLookItem: (tag) => dispatch(createLookItem(tag)),
     selectLookItem: (tag) => dispatch(selectLookItem(tag)),
-    loadCategories: () => dispatch(loadCategories()),
-    addItemType: (typeId) => dispatch(addItemType(typeId)),
+    addItemType: (type) => dispatch(addItemType(type)),
     createBrandName: (name) => dispatch(createBrandName(name)),
     addBrandName: (brand) => dispatch(addBrandName(brand)),
     addItemSizeCountry: (size) => dispatch(addItemSizeCountry(size)),
@@ -349,16 +304,13 @@ const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
   if (item) {
-    console.log('item selectedCategoryId', item.selectedCategoryId);
     return {
       navigation: state.cardNavigation,
       ...state.uploadLook,
-      categories: state.filters.categories,
       selectedCategoryId: item.selectedCategoryId,
       brand: item.brand,
       itemSizeRegion: item.itemSizeRegion,
       itemSizeValue: item.itemSizeValue,
-      tags: item.tags,
       currency: item.currency,
       price: item.price,
     };
@@ -367,12 +319,10 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
-    categories: state.filters.categories,
     selectedCategoryId: null,
     brand: null,
     itemSizeRegion: null,
     itemSizeValue: null,
-    tags: [],
     currency: 'USD',
     price: 0,
   }
