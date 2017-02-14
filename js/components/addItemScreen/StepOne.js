@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { View, Container, Content, Text, Picker, Item, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { 
   createLookItem,
   selectLookItem,
