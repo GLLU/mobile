@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BasePage from '../common/BasePage';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import {Container, Header, Content, Button, Icon, Title, View } from 'native-base';
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class TagItemPage extends Component {
+class TagItemPage extends BasePage {
 
   static propTypes = {
     navigation: React.PropTypes.shape({

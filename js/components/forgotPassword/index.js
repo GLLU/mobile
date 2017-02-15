@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import BasePage from '../common/BasePage';
 import { Image } from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -18,7 +19,7 @@ const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow.png');
 
 
-class forgotPasswordPage extends Component {
+class forgotPasswordPage extends BasePage {
 
   static propTypes = {
     forgotPassword: React.PropTypes.func,

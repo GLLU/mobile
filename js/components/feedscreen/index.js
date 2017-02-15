@@ -1,5 +1,5 @@
-
 import React, { Component } from 'react';
+import BasePage from '../common/BasePage';
 import { Dimensions, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, View } from 'native-base';
@@ -13,7 +13,7 @@ import SearchBar from './SearchBar';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from './SelectPhoto';
 
-class FeedPage extends Component {
+class FeedPage extends BasePage {
 
   static propTypes = {
     user: React.PropTypes.object,
@@ -34,7 +34,9 @@ class FeedPage extends Component {
       searchTerm: '',
       searchStatus: false,
       photoModal: false,
-    }; 
+    };
+
+    this.notifyError(new Error("Test Error after merge"));
   }
 
   componentWillMount() {

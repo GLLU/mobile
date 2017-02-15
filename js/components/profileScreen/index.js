@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import BasePage from '../common/BasePage';
 import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
 import styles from './styles';
 import { View, Icon } from 'native-base';
@@ -18,7 +19,7 @@ const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const { popRoute } = actions;
 
-class ProfileScreen extends Component {
+class ProfileScreen extends BasePage {
   static propTypes = {
     userData: React.PropTypes.object,
   };
