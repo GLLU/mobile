@@ -6,8 +6,6 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
-import ModalPicker from 'react-native-modal-picker';
-import { countries } from './countries'
 import { emailSignUp } from '../../actions/user';
 import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
@@ -49,15 +47,12 @@ class SignUpPage extends Component {
           name: '',
           avatar: '',
           avatarIcon: 'camera',
-          country: '',
           gender: this.props.gender,
           usernameValid: 'times',
           nameValid: 'times',
           passwordValid: 'times',
           confirmPasswordValid: 'times',
           emailValid: 'times',
-          countryValid: 'times',
-
       };
   }
 
@@ -69,8 +64,7 @@ class SignUpPage extends Component {
           email,
           name,
           avatar,
-          gender,
-          country } = this.state;
+          gender } = this.state;
 
         if(this.checkValidations()) {
             let data = {
@@ -81,7 +75,6 @@ class SignUpPage extends Component {
                 gender: gender.toLowerCase(),
                 password,
                 confirmPassword: password,
-                country: country.toLowerCase()
             }
             this.props.emailSignUp(data);
         }
@@ -89,13 +82,12 @@ class SignUpPage extends Component {
 
   checkValidations() {
       let {
-          countryValid,
           usernameValid,
           passwordValid,
           emailValid,
           nameValid } = this.state;
 
-      let validationArray = [usernameValid, passwordValid, emailValid, nameValid, countryValid];
+      let validationArray = [usernameValid, passwordValid, emailValid, nameValid];
       return (validationArray.indexOf('times') === -1)
   }
 
@@ -162,7 +154,6 @@ class SignUpPage extends Component {
   }
 
   render() {
-    console.log(this.state,'avatar')
     return (
       <Container theme={glluTheme}>
           <View style={styles.container}>
@@ -210,22 +201,6 @@ class SignUpPage extends Component {
                                   </InputGroup>
                                   {this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                               </Row>
-                              <Row style={styles.formItem}>
-                                  <Text style={[styles.label, this.state.country.length > 0 ? styles.addOpacity : null]}>Country</Text>
-                                  <View style={styles.countrySelectView}>
-                                      <ModalPicker
-                                          data={countries}
-                                          initValue="Select Country"
-                                          onChange={(country)=>{ this.setState({country: country.label}); this.validateTextInput(country.label, 'country')}}>
-                                          <Text
-                                              style={[styles.formInput, styles.countrySelectInput]}
-                                              editable={false}
-                                          >{this.state.country}</Text>
-                                      </ModalPicker>
-                                  </View>
-                                  {this.state.country.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.countryValid} style={styles.uploadImgIcon}/>  : null}
-                              </Row>
-
                           </Grid>
                           <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.singupWithEmail()}>
                               Let's GLLU
