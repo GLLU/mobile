@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import BasePage from '../common/BasePage';
 import {View, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
 import styles from './styles';
@@ -14,7 +15,7 @@ import navigateTo from '../../actions/sideBarNav';
 
 const { popRoute, pushRoute } = actions
 
-class ItemScreen extends Component {
+class ItemScreen extends BasePage {
   static propTypes = {
     flatLook: React.PropTypes.object,
   }

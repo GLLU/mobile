@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import BasePage from '../common/BasePage';
 import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -15,7 +16,7 @@ const {
 
 const background = require('../../../images/shadow.png');
 
-class Login extends Component {
+class Login extends BasePage {
 
   static propTypes = {
     setUser: React.PropTypes.func,
