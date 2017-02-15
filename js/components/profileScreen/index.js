@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
+import { Image, TouchableOpacity, Text, } from 'react-native';
 import styles from './styles';
 import { View, Icon } from 'native-base';
 import { connect } from 'react-redux';
@@ -9,8 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
-import { getStats } from '../../actions/user'
-import { getUserBodyType } from '../../actions/myBodyType';
+import { getStats, getUserBodyType } from '../../actions';
 import _ from 'lodash';
 const userBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
@@ -21,6 +20,15 @@ const { popRoute } = actions;
 class ProfileScreen extends Component {
   static propTypes = {
     userData: React.PropTypes.object,
+    navigation: React.PropTypes.object,
+    myUser: React.PropTypes.object,
+    stats: React.PropTypes.object,
+    hasUserSize: React.PropTypes.bool,
+    user_size: React.PropTypes.object,
+    navigateTo: React.PropTypes.func,
+    popRoute: React.PropTypes.func,
+    getUserBodyType: React.PropTypes.func,
+    getStats: React.PropTypes.func,
   };
   constructor(props) {
     super(props);

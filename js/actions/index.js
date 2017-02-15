@@ -2,7 +2,7 @@ import { openDrawer, closeDrawer } from './drawer';
 import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
 import { loadCategories, loadBrands, loadItemSizes } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
-import { changeBodyType, showBodyTypeModal, hideBodyTypeModal } from './myBodyType';
+import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import { addNewLook,
          editTag,
@@ -26,7 +26,7 @@ import { addNewLook,
          addTrustLevel,
          addPhotosVideo,
 } from './uploadLook';
-import { setUser, loginViaFacebook, checkLogin } from './user';
+import { setUser, loginViaFacebook, checkLogin, getStats } from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
@@ -49,6 +49,7 @@ export {
   setMinMax,
   completeEdit,
   saveUserSize,
+  getUserBodyType,
   changeBodyType,
   showBodyTypeModal,
   hideBodyTypeModal,
@@ -60,6 +61,7 @@ export {
   editTag,
   setTagPosition,
   setUser,
+  getStats,
   checkLogin,
   loginViaFacebook,
   navigateTo,
