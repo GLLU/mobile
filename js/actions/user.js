@@ -27,12 +27,9 @@ const setRestOptions = function(rest, user) {
         const error = _.first(err.errors);
         if (error == "Bad Credentials") {
           dispatch(navigateTo('splashscreen'));
-        } else {
-          Utils.notifyRequestError(new Error(error), data, user);
         }
-      } else {
-        Utils.notifyRequestError(new Error('Server error'), data, user);
       }
+      Utils.notifyRequestError(new Error(JSON.stringify(err)), data, user);
     } else {
       console.log("SUCCESS", data)
     }

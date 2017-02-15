@@ -90,7 +90,7 @@ export default reduxApi({
     use("responseHandler", (err, data) => {
       if (err) {
         console.log("ERROR", err);
-        Utils.notifyRequestError(err, data);
+        Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
       } else {
         console.log("SUCCESS", data)
       }
