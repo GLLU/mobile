@@ -107,12 +107,9 @@ class CustomAutocomplete extends Autocomplete {
       style: [styles.input, style],
        placeholderTextColor: '#E0E0E0',
       ref: ref => (this.textInput = ref),
-      onEndEditing: e =>
-        this._showResults(false) || (onEndEditing && onEndEditing(e)),
+      onEndEditing: e => (onEndEditing && onEndEditing(e)),
       ...this.props
     };
-
-    console.log('props value', props.value);
 
     return renderTextInput
       ? renderTextInput(props)
@@ -160,12 +157,12 @@ class CustomAutocomplete extends Autocomplete {
   }
 
   render() {
-    const { containerStyle, inputContainerStyle } = this.props;
+    const { containerStyle, inputContainerStyle, query, selected } = this.props;
     const { dataSource } = this.state;
     const brands = dataSource._dataBlob.s1;
     let l = Object.keys(brands).length;
-    let show = l == 0 ? false : true;
-    let showCreate = show === false && this.props.query !== '' && !this.props.selected;
+    let show = query !== '' && l > 0 && !selected;
+    let showCreate = show === false && query !== '' && !selected;
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.inputContainer, inputContainerStyle]}>

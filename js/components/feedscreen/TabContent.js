@@ -48,6 +48,8 @@ class TabContent extends Component {
     })
   }
 
+
+
   distributeImages(looks) {
     const imagesColumn1 = [];
     const imagesColumn2 = [];
@@ -162,10 +164,13 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
+  const user_size = hasUserSize ? state.user.user_size : '';
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData,
-    hasUserSize
+    hasUserSize,
+    user_size: user_size,
+    user_gender: state.user.gender
   }
 };
 

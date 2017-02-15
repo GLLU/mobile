@@ -1,5 +1,8 @@
-const React = require('react-native');
-const { StyleSheet } = React;
+import React, { Component } from 'react';
+import { ScrollView, Image, TextInput, Dimensions, StyleSheet } from 'react-native';
+
+const w = Dimensions.get('window').width;
+export const IMAGE_VIEW_WIDTH = parseInt(w - w * 0.5);
 
 export default StyleSheet.create({
   container: {

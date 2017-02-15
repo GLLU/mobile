@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import { Image, Dimensions } from 'react-native'
+import { Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-import ImagePicker from 'react-native-image-crop-picker';
 import styles from './styles';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
-
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
 
 const userIcon = require('../../../images/icons/user.png');
 const userWithNotifyIcon = require('../../../images/icons/user-with-notify.png');
@@ -19,8 +15,10 @@ const cameraIcon = require('../../../images/icons/camera.png')
 
 class NavigationBarView extends Component {
   static propTypes = {
-    goToAddNewItem: React.PropTypes.func,
-    handleSearchStatus: React.PropTypes.func
+    user: React.PropTypes.object,
+    handleSearchStatus: React.PropTypes.func,
+    handleOpenPhotoModal: React.PropTypes.func,
+    navigateTo: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -40,16 +38,7 @@ class NavigationBarView extends Component {
   }
 
   openCamera() {
-    const width = parseInt(deviceWidth - 40);
-    const height = parseInt(width * 16 / 9);
-    ImagePicker.openPicker({
-      width: width,
-      height: height,
-      includeBase64: true,
-      cropping: true,
-    }).then(image => {
-      this.props.goToAddNewItem(image);
-    });
+    this.props.handleOpenPhotoModal();
   }
 
   openSearch() {

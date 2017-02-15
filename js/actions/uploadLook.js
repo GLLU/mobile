@@ -18,8 +18,6 @@ export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 
-
-import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
@@ -33,7 +31,6 @@ export function addNewLook(image) {
     dispatch(showProcessing());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      console.log('user', user);
       if (user && user.id != -1) {
         Util.getKeychainData().then(credentials => {
           const api_key = credentials.password;
@@ -55,10 +52,7 @@ export function addNewLook(image) {
               ]
             };
 
-            console.log('object obj', obj)
-
             FileUpload.upload(obj, function(err, result) {
-              console.log('upload:', err, result);
               dispatch(hideProcessing());
               if (result && result.status == 201) {
                 const data = JSON.parse(result.data);
@@ -157,7 +151,9 @@ export function updateLookItem() {
       }
     }
     return new Promise((resolve, reject) => {
+      dispatch(showLoader());
       return dispatch(rest.actions.items.put({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+        dispatch(hideLoader());
         if (!err) {
           resolve();
         } else {
@@ -180,9 +176,11 @@ export function publishLookItem() {
       }
     }
     return new Promise((resolve, reject) => {
+      dispatch(showLoader());
       return dispatch(rest.actions.looks.put({id: lookId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
           dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
+            dispatch(hideLoader());
             if (!err) {
               resolve();
             } else {
@@ -190,6 +188,7 @@ export function publishLookItem() {
             }
           }));
         } else {
+          dispatch(hideLoader());
           reject(err);
         }
       }));
@@ -197,22 +196,26 @@ export function publishLookItem() {
   }
 }
 
-export function addItemType(categoryId) {
+export function addItemType(categoryItem) {
   return (dispatch) => {
 
     dispatch({
         type: ADD_ITEM_TYPE,
-        payload: categoryId
+        payload: categoryItem.id
       });
-    dispatch(loadItemSizes(categoryId));
+    dispatch(loadItemSizes(categoryItem.id));
+    dispatch(addItemTag(categoryItem.name));
   };
 }
 
 export function addBrandName(payload) {
-  return {
-    type: ADD_BRAND_NAME,
-    payload: payload
-  }
+  return (dispatch, getState) => {
+    dispatch({
+      type: ADD_BRAND_NAME,
+      payload: payload
+    });
+    dispatch(addItemTag(payload.name));
+  };
 }
 
 export function createBrandName(name) {
@@ -257,20 +260,52 @@ export function addItemSize(payload) {
   }
 }
 
-export function addItemTag(tags) {
-  return (dispatch) => {
-    return dispatch({
-      type: ADD_ITEM_TAG,
-      payload: tags
+export function addItemTag(tag) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { lookId, itemId } = state.uploadLook;
+    const body = {
+      tag_name: tag
+    }
+    return new Promise((resolve, reject) => {
+      // dispatch(showLoader());
+      return dispatch(rest.actions.item_tags.post({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+        // dispatch(hideLoader());
+        if (!err) {
+          dispatch({
+            type: ADD_ITEM_TAG,
+            payload: data.item_tag.tag
+          });
+          resolve();
+        } else {
+          reject(err);
+        }
+      }));
     });
   };
 }
 
 export function removeItemTag(tag) {
-  return (dispatch) => {
-    return dispatch({
-      type: REMOVE_ITEM_TAG,
-      payload: tag
+  return (dispatch, getState) => {
+    const state = getState();
+    const { lookId, itemId } = state.uploadLook;
+    const body = {
+      tag_name: tag
+    }
+    return new Promise((resolve, reject) => {
+      // dispatch(showLoader());
+      return dispatch(rest.actions.remove_item_tags({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+        // dispatch(hideLoader());
+        if (!err) {
+          dispatch({
+            type: REMOVE_ITEM_TAG,
+            payload: tag
+          });
+          resolve();
+        } else {
+          reject(err);
+        }
+      }));
     });
   };
 }

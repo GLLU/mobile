@@ -1,18 +1,19 @@
 import type { Action } from '../actions/types';
-import Util from '../Util';
+import { showLoader, hideLoader } from './index';
 
-import { readEndpoint } from 'redux-json-api';
 import rest from '../api/rest';
 
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 
 export function getFeed(type, category='', term=''):Action {
   return (dispatch) => {
+    dispatch(showLoader());
     const params = { type, category, term };
     return dispatch(rest.actions.feeds(params, (err, data) => {
       if (!err && data) {
         console.log('feed data',data)
         dispatch(setFeedData(data));
+        dispatch(hideLoader());
       }
     }));
   };

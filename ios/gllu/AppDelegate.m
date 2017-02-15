@@ -13,7 +13,6 @@
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -61,8 +60,5 @@
   return handled;
 }
 
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  return [Orientation getOrientation];
-}
 
 @end

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
 import styles from './styles';
-import { Container, Content, Header, Title, View, Button, Icon } from 'native-base';
+import { View, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
@@ -10,30 +10,44 @@ import ProfileView  from './ProfileView';
 import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
 import { getStats } from '../../actions/user'
+import { getUserBodyType } from '../../actions/myBodyType';
+import _ from 'lodash';
 const userBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
-const plus = require('../../../images/icons/plus.png');
 const { popRoute } = actions;
 
 class ProfileScreen extends Component {
   static propTypes = {
     userData: React.PropTypes.object,
-  }
+  };
   constructor(props) {
     super(props);
     this.state = {
-      isMyProfile: this.props.userData.id === this.props.myUserId
+      isMyProfile: this.props.userData.id === this.props.myUser.id,
     }
+  }
+
+  componentDidMount() {
+    if(this.props.hasUserSize) {
+      const data = {
+        gender: this.props.myUser.gender,
+        bodyType: this.props.myUser.user_size.body_type
+      }
+      this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
+    }
+  }
+
+  componentWillMount() {
     this.props.getStats(this.props.userData.id);
   }
 
   _PopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
-  _tempBtn(){
-    console.log('_tempBtn was pressed');
+  _goToEditProfileScreen(){
+    this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 
   _renderleftBtn() {
@@ -65,18 +79,21 @@ class ProfileScreen extends Component {
   }
 
   render() {
+    const { isMyProfile } = this.state
+    let about_me = isMyProfile ? this.props.myUser.about_me : this.props.userData.about_me
+    let avatarUrl = isMyProfile ? this.props.myUser.avatar.url : this.props.userData.avatar.url
     return (
-      <View style={styles.container}>
+      <View>
         <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
           <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
           <View style={styles.header}>
             <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
             { this._renderleftBtn() }
             </TouchableOpacity>
-            <ProfileView profilePic={this.props.userData.avatar.url}
+            <ProfileView profilePic={avatarUrl}
                          name={this.props.userData.name}
                          username={this.props.userData.username}
-                         onPress={() => this._tempBtn()}
+                         onPress={() => this._goToEditProfileScreen()}
                          isMyProfile={this.state.isMyProfile}
             />
             <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
@@ -84,7 +101,7 @@ class ProfileScreen extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.description}>
-            <Text ellipsizeMode="middle" style={styles.descriptionText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. bal bal balkjdna sdckasm dlcjkasdackls mda;ksmxsxsxsxs mda;ksmxsxsxsxs mda;ksmxsxsxsxs </Text>
+            <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
           </View>
           { this._renderStats() }
         </Image>
@@ -97,15 +114,22 @@ function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
-    getStats: (id) => dispatch(getStats(id))
+    getStats: (id) => dispatch(getStats(id)),
+    getUserBodyType: (data) => dispatch(getUserBodyType(data)),
+
   };
 }
 
 const mapStateToProps = state => {
+  const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
+  const user_size = hasUserSize ? state.user.user_size : '';
   return {
     navigation: state.cardNavigation,
-    myUserId: state.user.id,
+    myUser: state.user,
     stats: state.stats,
+    hasUserSize,
+    user_size: user_size,
+
   };
 };
 

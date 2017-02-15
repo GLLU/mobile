@@ -24,8 +24,6 @@ const ACTION_HANDLERS = {
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
     delete user.api_key
-    console.log('user after delete');
-    console.log(user)
     return {
       ...state,
       ...user
@@ -34,7 +32,7 @@ const ACTION_HANDLERS = {
   [COMPLETE_EDIT_BODY_MEASURE]: (state, action) => {
     return {
       ...state,
-      user_size: action.payload.sizeInfo
+      user_size: action.payload
     };
   },
   [REHYDRATE]: (state, action) => {
