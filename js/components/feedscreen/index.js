@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import BaseComponent from '../common/BaseComponent';
+import BasePage from '../common/BasePage';
 import { Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, View } from 'native-base';
@@ -14,7 +14,7 @@ import SearchBar from './SearchBar';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from './SelectPhoto';
 
-class FeedPage extends BaseComponent {
+class FeedPage extends BasePage {
 
   static propTypes = {
     user: React.PropTypes.object,
@@ -37,7 +37,7 @@ class FeedPage extends BaseComponent {
       photoModal: false,
     };
 
-    this.notifyError(new Error("Test Error feedscreen"));
+    this.notifyError(new Error("Test Error page done"));
   }
 
   componentWillMount() {

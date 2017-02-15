@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Client } from 'bugsnag-react-native';
-import Config from 'react-native-config'
+import Config from 'react-native-config';
 
 class BaseComponent extends Component {
   constructor(props) {
@@ -8,15 +8,23 @@ class BaseComponent extends Component {
 
     this.bugsnag = new Client(Config.BUGSNAG_API_KEY);
     this.setBugsnagUser(props.user);
+    this.setLeaveBreadcrumb(props);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setBugsnagUser(nextProps.user);
+    this.setLeaveBreadcrumb(nextProps);
+  }
+
+  setLeaveBreadcrumb(props) {
+    this.bugsnag.leaveBreadcrumb("Component", {
+      component: this.constructor.name,
+      props: props,
+    })
   }
 
   setBugsnagUser(user) {
     if (user) {
-      console.log('user', user);
       this.bugsnag.setUser(user.id.toString(), user.username, user.email);
     }
   }
@@ -29,6 +37,10 @@ class BaseComponent extends Component {
         }
       }
     });
+  }
+
+  getBugsnagClient() {
+    return this.bugsnag;
   }
 }
 
