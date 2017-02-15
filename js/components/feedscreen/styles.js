@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 const deviceHeight = Dimensions.get('window').height;
 const MK = require('react-native-material-kit');
 
@@ -42,7 +42,7 @@ module.exports = StyleSheet.create({
     fontSize: 24
   },
   wallet: {
-    paddingTop: 10,
+    paddingTop: (Platform.OS === 'ios' ? 10 : 0),
     marginTop: 5,
     textAlign: 'left',
     fontSize: 12,

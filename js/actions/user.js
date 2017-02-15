@@ -93,11 +93,12 @@ export function loginViaFacebook(data):Action {
 
 export function emailSignUp(data):Action {
   return (dispatch) => {
-    const body = {user: data };
-    return dispatch(rest.actions.users.post(body, (err, data) => {
-      if (!err && data) {
-        signInFromRest(dispatch, data);
-      } else {
+    if(!data.avatar) {
+      const body = {user: data };
+      return dispatch(rest.actions.users.post(body, (err, data) => {
+        if (!err && data) {
+          signInFromRest(dispatch, data);
+        } else {
         const pointers = [];
         let errorString = '';
         err.errors.map((error, index) => {
@@ -112,7 +113,60 @@ export function emailSignUp(data):Action {
           dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
         }
       }
-    }));
+      }));
+    } else {
+      const image = data.avatar.image;
+        delete data.avatar
+        dispatch(showLoader());
+      return new Promise((resolve, reject) => {
+            var obj = {
+              uploadUrl: `${API_URL}/users`,
+              method: 'POST', // default 'POST',support 'POST' and 'PUT'
+              headers: {
+                'Accept': 'application/json',
+              },
+              fields: {
+                "user[gender]": data.gender,
+                "user[email]": data.email,
+                "user[username]": data.username,
+                "user[password]": data.password,
+                "user[password_confirmation]": data.password_confirmation,
+                "user[country]": data.country
+              },
+              files: [
+                {
+                  name: 'user[avatar]',
+                  filename: _.last(image.path.split('/')), // require, file name
+                  filepath: image.path, // require, file absoluete path
+                },
+              ]
+            };
+            FileUpload.upload(obj, function(err, result) {
+              console.log('upload:', err, result);
+              if (result && result.status == 201) {
+                const data = JSON.parse(result.data);
+                let body = {user: data.user}
+                signInFromRest(dispatch, body);
+                dispatch(hideLoader());
+              } else {
+        const pointers = [];
+        let errorString = '';
+        err.errors.map((error, index) => {
+          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+        });
+        if(pointers.length === 1){
+          dispatch(showError(pointers[0]+' has already taken'))
+        } else {
+          for(let i = 0; i<pointers.length-1; i++) {
+            errorString += pointers[i]+' & ';
+          }
+          dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
+        }
+      }
+            })
+
+        });
+    }
   };
 }
 
@@ -192,17 +246,12 @@ export function changeUserAboutMe(data) {
 
 export function changeUserAvatar(data) {
   const image = data.image;
-  console.log('image',image)
   const id = data.id;
   return (dispatch, getState) => {
     dispatch(showLoader());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      console.log('api_key', api_key);
       if (user && user.id != -1) {
-        Util.getKeychainData().then(credentials => {
-          const api_key = credentials.password;
-          if (api_key) {
             var obj = {
               uploadUrl: `${API_URL}/users/${id}`,
               method: 'PUT', // default 'POST',support 'POST' and 'PUT'
@@ -219,9 +268,6 @@ export function changeUserAvatar(data) {
                 },
               ]
             };
-
-            console.log('object obj', obj)
-
             FileUpload.upload(obj, function(err, result) {
               console.log('upload:', err, result);
               if (result && result.status == 200) {
@@ -233,10 +279,6 @@ export function changeUserAvatar(data) {
                 reject(err);
               }
             })
-          } else {
-            reject('Authorization error')
-          }
-        }).catch(reject);
 
       } else {
         reject('Authorization error')
