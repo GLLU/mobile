@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Image, TouchableOpacity, Text, } from 'react-native';
 import styles from './styles';
-import { View, Icon } from 'native-base';
+import { Container, Content, View, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
@@ -16,6 +16,8 @@ const profileBackground = require('../../../images/backgrounds/profile-screen-ba
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const { popRoute } = actions;
+
+import glluTheme from '../../themes/gllu-theme';
 
 class ProfileScreen extends Component {
   static propTypes = {
@@ -54,6 +56,7 @@ class ProfileScreen extends Component {
   _PopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
+
   _goToEditProfileScreen(){
     this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
@@ -91,29 +94,30 @@ class ProfileScreen extends Component {
     let about_me = isMyProfile ? this.props.myUser.about_me : this.props.userData.about_me
     let avatarUrl = isMyProfile ? this.props.myUser.avatar.url : this.props.userData.avatar.url
     return (
-      <View>
-        <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
-          <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
-          <View style={styles.header}>
-            <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
-            { this._renderleftBtn() }
-            </TouchableOpacity>
-            <ProfileView profilePic={avatarUrl}
-                         name={this.props.userData.name}
-                         username={this.props.userData.username}
-                         onPress={() => this._goToEditProfileScreen()}
-                         isMyProfile={this.state.isMyProfile}
-            />
-            <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
-              { this._renderRightBtn() }
-            </TouchableOpacity>
-          </View>
-          <View style={styles.description}>
-            <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
-          </View>
-          { this._renderStats() }
-        </Image>
-      </View>
+      <Container theme={glluTheme}>
+        <Content>
+          <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
+            <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
+            <View style={styles.header}>
+              <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
+              { this._renderleftBtn() }
+              </TouchableOpacity>
+              <ProfileView profilePic={avatarUrl}
+                           name={this.props.userData.name}
+                           username={this.props.userData.username}
+                           isMyProfile={this.state.isMyProfile}
+              />
+              <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
+                { this._renderRightBtn() }
+              </TouchableOpacity>
+            </View>
+            <View style={styles.description}>
+              <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
+            </View>
+            { this._renderStats() }
+          </Image>
+        </Content>
+      </Container>
     )
   }
 }

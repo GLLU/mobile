@@ -17,4 +17,8 @@ export default class Utils {
     return Keychain.getGenericPassword();
   }
 
+  static resetKeychainData() {
+    return Keychain.resetGenericPassword();
+  }
+
 }

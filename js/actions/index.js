@@ -26,7 +26,7 @@ import { addNewLook,
          addTrustLevel,
          addPhotosVideo,
 } from './uploadLook';
-import { setUser, loginViaFacebook, checkLogin, getStats } from './user';
+import { setUser, loginViaFacebook, checkLogin, getStats, logout } from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
@@ -63,6 +63,7 @@ export {
   setUser,
   getStats,
   checkLogin,
+  logout,
   loginViaFacebook,
   navigateTo,
   reset,
