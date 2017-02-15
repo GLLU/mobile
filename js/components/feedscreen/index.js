@@ -1,7 +1,6 @@
-
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Dimensions } from 'react-native';
+import { Dimensions, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, View } from 'native-base';
 import styles from './styles';
@@ -37,13 +36,24 @@ class FeedPage extends BasePage {
       photoModal: false,
     };
 
-    this.notifyError(new Error("Test Error Utils"));
+    this.notifyError(new Error("Test Error after merge"));
   }
 
   componentWillMount() {
     if (!this.props.user || this.props.user.id == -1) {
       this.props.navigateTo('splashscreen');
     }
+
+    BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
+  }
+
+  handleHardwareBackPress() {
+    this.setState({photoModal: false});
+    return true;
   }
 
   setUser(name) {
