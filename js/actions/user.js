@@ -11,7 +11,9 @@ import _ from 'lodash';
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
 
+let api_key = ''
 const setRestOptions = function(rest, key) {
+  api_key = key;
   rest.use("options", function() {
     return {
       headers: {
@@ -196,7 +198,7 @@ export function changeUserAvatar(data) {
     dispatch(showLoader());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      console.log('user', user);
+      console.log('api_key', api_key);
       if (user && user.id != -1) {
         Util.getKeychainData().then(credentials => {
           const api_key = credentials.password;
