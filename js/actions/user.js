@@ -2,7 +2,7 @@ import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import { showLoader, hideLoader, reset } from './index';
-import Util from '../Util';
+import Utils from '../Utils';
 import { getUserBodyType } from './myBodyType';
 var FileUpload = require('NativeModules').FileUpload;
 import rest, { API_URL } from '../api/rest';
@@ -11,24 +11,27 @@ import _ from 'lodash';
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
 
-const setRestOptions = function(rest, key) {
+const setRestOptions = function(rest, user) {
+  console.log('setRestOptions', user);
   rest.use("options", function() {
     return {
       headers: {
-        "Authorization": `Token token=${key}`,
+        "Authorization": `Token token=${user.api_key}`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }
     };
   }).use("responseHandler", (err, data) => {
     if (err) {
-      console.log("ERROR 222", err)
-      if (err.errors.length > 0) {
+      if (err.errors && err.errors.length > 0) {
         const error = _.first(err.errors);
-        console.log(error);
         if (error == "Bad Credentials") {
           dispatch(navigateTo('splashscreen'));
+        } else {
+          Utils.notifyRequestError(new Error(error), data, user);
         }
+      } else {
+        Utils.notifyRequestError(new Error('Server error'), data, user);
       }
     } else {
       console.log("SUCCESS", data)
@@ -38,9 +41,9 @@ const setRestOptions = function(rest, key) {
 
 const signInFromRest = function(dispatch, data) {
   console.log('api key', data.user.api_key)
-  Util.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+  Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     console.log('saved to key chain');
-    setRestOptions(rest, data.user.api_key);
+    setRestOptions(rest, data.user);
     dispatch(setUser(data.user));
     dispatch(resetUserNavigation());
   })
@@ -146,10 +149,10 @@ export function checkLogin() {
   return (dispatch, getState) => {
     const user = getState().user;
     if (user && user.id != -1) {
-      Util.getKeychainData().then(credentials => {
+      Utils.getKeychainData().then(credentials => {
         console.log('credentials', credentials);
         if (credentials) {
-          setRestOptions(rest, credentials.password);
+          setRestOptions(rest, _.merge(user, {api_key: credentials.password}));
           dispatch(resetUserNavigation());
         }
       })
@@ -182,7 +185,7 @@ export function changeUserAvatar(data) {
       const user = getState().user;
       console.log('user', user);
       if (user && user.id != -1) {
-        Util.getKeychainData().then(credentials => {
+        Utils.getKeychainData().then(credentials => {
           const api_key = credentials.password;
           if (api_key) {
             var obj = {

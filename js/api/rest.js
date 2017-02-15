@@ -5,7 +5,8 @@ import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
 
-import Config from 'react-native-config'
+import Utils from '../Utils';
+import Config from 'react-native-config';
 
 export const API_URL = Config.API_URL;
 
@@ -86,4 +87,11 @@ export default reduxApi({
         "Content-Type": "application/json"
       }};
     }).
-    use("responseHandler", (err, data) => err ? console.log("ERROR", err) : console.log("SUCCESS", data));
+    use("responseHandler", (err, data) => {
+      if (err) {
+        console.log("ERROR", err);
+        Utils.notifyRequestError(err, data);
+      } else {
+        console.log("SUCCESS", data)
+      }
+    });

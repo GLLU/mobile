@@ -22,7 +22,7 @@ import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
-import Util from '../Util';
+import Utils from '../Utils';
 
 var FileUpload = require('NativeModules').FileUpload;
 // Actions
@@ -32,7 +32,7 @@ export function addNewLook(image) {
     return new Promise((resolve, reject) => {
       const user = getState().user;
       if (user && user.id != -1) {
-        Util.getKeychainData().then(credentials => {
+        Utils.getKeychainData().then(credentials => {
           const api_key = credentials.password;
           if (api_key) {
             var obj = {

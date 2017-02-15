@@ -36,6 +36,8 @@ class FeedPage extends BasePage {
       searchStatus: false,
       photoModal: false,
     };
+
+    this.notifyError(new Error("Test Error Utils"));
   }
 
   componentWillMount() {

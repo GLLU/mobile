@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Client } from 'bugsnag-react-native';
+import Utils from '../../Utils';
 import Config from 'react-native-config';
 
 class BaseComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.bugsnag = new Client(Config.BUGSNAG_API_KEY);
+    this.bugsnag = Utils.getBugsnagClient();
     this.setBugsnagUser(props.user);
     this.setLeaveBreadcrumb(props);
   }
