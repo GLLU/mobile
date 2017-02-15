@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 
 import drawer from './drawer';
 import loader from './loader';
+import errorHandler from './errorHandler';
 import cardNavigation from './cardNavigation';
 import user from './user';
 import list from './list';
@@ -19,6 +20,7 @@ import { reducer as api } from 'redux-json-api';
 export default combineReducers({
   drawer,
   loader,
+  errorHandler,
   user,
   list,
   cardNavigation,
