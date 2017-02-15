@@ -48,6 +48,7 @@ class SignUpPage extends Component {
           confirmPassword: '',
           name: '',
           avatar: '',
+          avatarIcon: 'camera',
           country: '',
           gender: this.props.gender,
           usernameValid: 'times',
@@ -156,12 +157,12 @@ class SignUpPage extends Component {
       data = {
         image,
       }
-      this.setState({avatar: data})
-
+      this.setState({avatar: data, avatarIcon: 'check'})
     });
   }
 
   render() {
+    console.log(this.state,'avatar')
     return (
       <Container theme={glluTheme}>
           <View style={styles.container}>
@@ -176,7 +177,7 @@ class SignUpPage extends Component {
                   <Content scrollEnabled={false}>
                       <View style={styles.uploadImgContainer}>
                           <Button large style={styles.uploadImgBtn} warning onPress={() => this.addUserAvatar()}>
-                              <IconB size={30} color={MKColor.Teal} name='camera' style={styles.uploadImgIcon}/>
+                              <IconB size={30} color={MKColor.Teal} name={this.state.avatarIcon} style={styles.uploadImgIcon}/>
                           </Button>
                       </View>
                       <View>

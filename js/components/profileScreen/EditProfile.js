@@ -73,9 +73,9 @@ class EditProfile extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{backgroundColor: '#E9E9EF'}}>
         <Image source={profileBackground} style={styles.editProfileBg}>
-          <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7}]} />
+          <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7, height: 150}]} />
         <EditProfileHeader popRoute={() => this._PopRoute()} save={() => this._saveChanges()} />
         </Image>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
@@ -87,7 +87,7 @@ class EditProfile extends Component {
           <View style={styles.editBodyTypeTitleContainer}>
             <Text style={styles.editBodyTypeTitle}>EDIT BODY TYPE</Text>
           </View>
-          <View style={styles.container}>
+          <View style={styles.bodyMeasureContainer}>
             <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size}/>
           </View>
           <View style={styles.privateInfoContainer}>

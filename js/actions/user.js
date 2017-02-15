@@ -210,6 +210,7 @@ export function checkLogin() {
 export function changeUserAboutMe(data) {
   return (dispatch) => {
     dispatch(showLoader());
+    console.log('datassss',data)
     dispatch(rest.actions.changeUserAboutMe.put({ id: data.id }, { body: JSON.stringify(data) }, (err, data) => {
       if (!err) {
         dispatch(setUser(data.user));
