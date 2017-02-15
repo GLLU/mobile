@@ -12,7 +12,11 @@ const ICONS = {
 
 const btnStyles = StyleSheet.create({
   selectOptions: {
-    backgroundColor: 'transparent',
+    width: 100,
+    marginTop: (Platform.OS === 'ios') ? 8 : 0,
+  },
+  selectOptionsWithoutIcon: {
+    width: 120,
     marginTop: (Platform.OS === 'ios') ? 8 : 0,
   },
   arrowSelect: {
@@ -43,6 +47,7 @@ class MyPicker extends Picker {
 class CustomPicker extends Component {
   static propTypes = {
     selectedValue: React.PropTypes.string,
+    showIcon: React.PropTypes.bool,
     items: React.PropTypes.array,
     onValueChange: React.PropTypes.func,
   }
@@ -50,7 +55,7 @@ class CustomPicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      width: 200
     }
   }
 
@@ -60,15 +65,16 @@ class CustomPicker extends Component {
 
   _renderPicker(items, selectedValue) {
     if (items.length > 0) {
+      const style = this.props.showIcon ? btnStyles.selectOptions : btnStyles.selectOptionsWithoutIcon;
       return <MyPicker
                   ref={ref => this.pickerModal = ref}
-                  style={btnStyles.selectOptions}
+                  style={style}
                   iosHeader="Select one"
                   mode="dropdown"
                   selectedValue={selectedValue}
                   onValueChange={(value) => this._handleValueChange(value)}>
                 {items.map((item, i) => {
-                  return <Item key={i} label={item.toUpperCase()} value={item} />
+                  return <Item style={{width: 200}} key={i} label={item.toUpperCase()} value={item} />
                 })}
               </MyPicker>;
     }
@@ -87,10 +93,17 @@ class CustomPicker extends Component {
     return null;
   }
 
+  _renderArrow() {
+    return <TouchableWithoutFeedback onPress={(e) => this.pickerModal.showModal()}>
+              <Icon style={btnStyles.arrowSelect} name='ios-arrow-down' />
+            </TouchableWithoutFeedback>;
+  }
+
   render() {
-    const { items, selectedValue } = this.props;
+    const { items, selectedValue, showIcon } = this.props;
     
-    return (<Grid style={btnStyles.container}>
+    if (showIcon) {
+      return (<Grid style={btnStyles.container}>
                       <Col size={20}>
                         {this._renderIcon(selectedValue)}
                       </Col>
@@ -98,11 +111,19 @@ class CustomPicker extends Component {
                         {this._renderPicker(items, selectedValue)}
                       </Col>
                       <Col size={20}>
-                        <TouchableWithoutFeedback onPress={(e) => this.pickerModal.showModal()}>
-                          <Icon style={btnStyles.arrowSelect} name='ios-arrow-down' />
-                        </TouchableWithoutFeedback>
+                        {this._renderArrow()}
                       </Col>
                     </Grid>);
+    } else {
+      return (<Grid style={btnStyles.container}>
+                  <Col size={80} style={{paddingLeft: 20}}>
+                    {this._renderPicker(items, selectedValue)}
+                  </Col>
+                  <Col size={20}>
+                    {this._renderArrow()}
+                  </Col>
+                </Grid>);
+    }
   }
 }
 

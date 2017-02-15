@@ -1,7 +1,7 @@
 import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
-import { showLoader, hideLoader, reset } from './index';
+import { showLoader, hideLoader, reset, showError, showWarning, hideError, hideWarning } from './index';
 import Util from '../Util';
 import { getUserBodyType } from './myBodyType';
 var FileUpload = require('NativeModules').FileUpload;
@@ -98,7 +98,21 @@ export function emailSignUp(data):Action {
       return dispatch(rest.actions.users.post(body, (err, data) => {
         if (!err && data) {
           signInFromRest(dispatch, data);
+        } else {
+        const pointers = [];
+        let errorString = '';
+        err.errors.map((error, index) => {
+          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+        });
+        if(pointers.length === 1){
+          dispatch(showError(pointers[0]+' has already taken'))
+        } else {
+          for(let i = 0; i<pointers.length-1; i++) {
+            errorString += pointers[i]+' & ';
+          }
+          dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
         }
+      }
       }));
     } else {
       const image = data.avatar.image;
@@ -135,16 +149,24 @@ export function emailSignUp(data):Action {
                 signInFromRest(dispatch, body);
                 dispatch(hideLoader());
               } else {
-                reject(err);
-              }
+        const pointers = [];
+        let errorString = '';
+        err.errors.map((error, index) => {
+          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+        });
+        if(pointers.length === 1){
+          dispatch(showError(pointers[0]+' has already taken'))
+        } else {
+          for(let i = 0; i<pointers.length-1; i++) {
+            errorString += pointers[i]+' & ';
+          }
+          dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
+        }
+      }
             })
 
         });
-
-
     }
-
-
   };
 }
 
@@ -154,6 +176,8 @@ export function emailSignIn(data):Action {
     return dispatch(rest.actions.auth.post(body, (err, data) => {
       if (!err && data) {
         signInFromRest(dispatch, data);
+      } else {
+        dispatch(showError('Email/Password are incorrect'))
       }
     }));
   };
