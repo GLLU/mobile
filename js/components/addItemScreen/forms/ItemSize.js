@@ -28,6 +28,7 @@ class ItemSize extends Component {
               <Grid>
                 <Col size={48}>
                   <CustomPicker
+                      showIcon
                       items={regions}
                       selectedValue={itemSizeRegion}
                       onValueChange={(value) => this.props.updateValue('itemSizeRegion', value)}/>
