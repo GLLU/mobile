@@ -55,8 +55,14 @@ const styles = StyleSheet.create({
   logoutBtn: {
     borderWidth: 2,
     borderColor: '#00D7B2',
+    justifyContent: 'center',
+    width: 75,
     height: 25,
     margin: 5,
+  },
+  logoutText: {
+    textAlign: 'center',
+    color: '#00D7B2',
   }
 });
 
@@ -97,7 +103,9 @@ class ProfileView extends Component {
               <Text style={styles.followText}>Follow</Text>
             </TouchableOpacity>
           }
-          <Button bordered style={styles.logoutBtn} onPress={this.handleLogoutPress.bind(this)}> Log Out </Button>
+          <TouchableOpacity style={styles.logoutBtn} onPress={this.handleLogoutPress.bind(this)}>
+            <Text style={styles.logoutText}>Log Out</Text>
+          </TouchableOpacity>
         </View>
       </View>
     )
