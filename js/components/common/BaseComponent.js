@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Utils from '../../Utils';
 import Config from 'react-native-config';
+import _ from 'lodash';
 
 class BaseComponent extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class BaseComponent extends Component {
   }
 
   setBugsnagUser(user) {
-    if (user) {
+    if (!_.isEmpty(user) && user.id && user.username && user.email) {
       this.bugsnag.setUser(user.id.toString(), user.username, user.email);
     }
   }

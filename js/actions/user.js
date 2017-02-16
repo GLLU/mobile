@@ -31,7 +31,7 @@ const setRestOptions = function(rest, user) {
           dispatch(navigateTo('splashscreen'));
         }
       }
-      Utils.notifyRequestError(new Error(JSON.stringify(err)), data, user);
+      Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
       console.log("SUCCESS", data)
     }
@@ -289,8 +289,8 @@ export function changeUserAvatar(data) {
 
 export function logout() {
   return (dispatch, getState) => {
-    Util.resetKeychainData().then(() => {
-      dispatch(navigateTo('splashscreen'))
+    dispatch(navigateTo('splashscreen'))
+    Utils.resetKeychainData().then(() => {
       dispatch({
         type: RESET_STATE
       });
