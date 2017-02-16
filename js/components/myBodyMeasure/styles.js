@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 const deviceWidth = Dimensions.get('window').width;
 const w = deviceWidth / 2 - 50;
 let fontSizeDefault = 14;
@@ -72,7 +72,7 @@ export default StyleSheet.create({
     fontSize: fontSizeDefault * 1.2,
     color: '#ccc',
     alignSelf: 'flex-end',
-    marginBottom: 7
+    marginBottom: (Platform.OS === 'ios') ? 16 : 5,
   },
   infoDetailTouch: {
     flexDirection: 'column',
@@ -96,7 +96,7 @@ export default StyleSheet.create({
   },
   sizeLineIcons: {
     color: '#00c497',
-    fontSize: 35,
+    fontSize: (Platform.OS === 'ios') ? 35 : 28,
   },
   infoDetailText: {
     fontSize: fontSizeDefault,

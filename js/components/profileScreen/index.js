@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Image, TouchableOpacity, Text, } from 'react-native';
+import BasePage from '../common/BasePage';
+import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
 import styles from './styles';
 import { Container, Content, View, Icon } from 'native-base';
 import { connect } from 'react-redux';
@@ -19,7 +20,7 @@ const { popRoute } = actions;
 
 import glluTheme from '../../themes/gllu-theme';
 
-class ProfileScreen extends Component {
+class ProfileScreen extends BasePage {
   static propTypes = {
     userData: React.PropTypes.object,
     navigation: React.PropTypes.object,

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BasePage from '../common/BasePage';
 import { StyleSheet, Dimensions, Platform, Alert } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
@@ -31,7 +32,7 @@ const selfStyles = StyleSheet.create({
   }
 });
 
-class AddItemPage extends Component {
+class AddItemPage extends BasePage {
 
   static propTypes = {
     publishLookItem: React.PropTypes.func,

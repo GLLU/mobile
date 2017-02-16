@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import BasePage from '../common/BasePage';
 import {Container, Header, Content, Button, Icon, Title } from 'native-base';
 import {Text, View} from 'react-native';
 import myStyles from './styles';
@@ -14,7 +15,7 @@ import InformationTextIcon from '../common/informationTextIcon';
 
 const { popRoute } = actions
 
-class MyBodyMeasure extends Component {
+class MyBodyMeasure extends BasePage {
   constructor(props) {
     super(props);
 

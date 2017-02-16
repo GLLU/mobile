@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, TextInput } from 'react-native';
+import { Image, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { View } from 'native-base';
 
 import styles from './styles';
@@ -28,9 +28,9 @@ class CircleProfileImage extends Component {
   render() {
     return (
       <TouchableOpacity transparent onPress={() => this.props.changeUserAvatar()} style={styles.editProfileAvatarImg}>
-        <Image source={{uri: this.props.avatarUrl}} style={[styles.avatarImg, styles.editAvatarImage]} >
+        <Image source={{uri: this.props.avatarUrl}} style={[styles.avatarImg, (Platform.OS === 'ios') ? styles.editAvatarImage : null]} borderRadius={50} >
           { this.props.editable ?
-            <View style={styles.changeImageIconContainer}>
+            <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
               <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
             </View>
             : null

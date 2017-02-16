@@ -143,7 +143,8 @@ export default StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white'
   },
-  container: {
+  bodyMeasureContainer: {
+    flexBasis: 1,
     backgroundColor: '#ffffff',
     paddingTop: 25,
     paddingHorizontal: 10,
@@ -200,10 +201,10 @@ export default StyleSheet.create({
     height: 100,
     opacity: 0.8,
     backgroundColor: '#00D7B2',
-    borderRadius: 20,
+    borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 20
+    marginRight: 20,
   },
   scrollView: {
     marginTop: 60

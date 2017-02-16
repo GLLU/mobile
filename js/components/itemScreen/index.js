@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import BasePage from '../common/BasePage';
 import {View, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
 import styles from './styles';
@@ -14,7 +15,7 @@ import navigateTo from '../../actions/sideBarNav';
 
 const { popRoute, pushRoute } = actions
 
-class ItemScreen extends Component {
+class ItemScreen extends BasePage {
   static propTypes = {
     flatLook: React.PropTypes.object,
   }
@@ -103,7 +104,7 @@ class ItemScreen extends Component {
         <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
           <Icon style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute'}} name="ios-arrow-back" />
         </TouchableOpacity>
-        <View style={[styles.lookInfo,{flex: 1, flexDirection: 'column',marginTop: 40}]}>
+        <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this._goToProfile()}/>
           <BottomButton isLiked={this.state.liked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.state.likes}/>
         </View>

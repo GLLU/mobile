@@ -1,8 +1,8 @@
 import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
-import { showLoader, hideLoader, reset } from './index';
-import Util from '../Util';
+import { showLoader, hideLoader, reset, showError, showWarning, hideError, hideWarning } from './index';
+import Utils from '../Utils';
 import { getUserBodyType } from './myBodyType';
 var FileUpload = require('NativeModules').FileUpload;
 import rest, { API_URL } from '../api/rest';
@@ -12,25 +12,26 @@ export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 
-const setRestOptions = function(rest, key) {
+let api_key = ''
+const setRestOptions = function(rest, user) {
+  api_key = user.api_key;
   rest.use("options", function() {
     return {
       headers: {
-        "Authorization": `Token token=${key}`,
+        "Authorization": `Token token=${user.api_key}`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }
     };
   }).use("responseHandler", (err, data) => {
     if (err) {
-      console.log("ERROR 222", err)
-      if (err.errors.length > 0) {
+      if (err.errors && err.errors.length > 0) {
         const error = _.first(err.errors);
-        console.log(error);
         if (error == "Bad Credentials") {
           dispatch(navigateTo('splashscreen'));
         }
       }
+      Utils.notifyRequestError(new Error(JSON.stringify(err)), data, user);
     } else {
       console.log("SUCCESS", data)
     }
@@ -39,9 +40,9 @@ const setRestOptions = function(rest, key) {
 
 const signInFromRest = function(dispatch, data) {
   console.log('api key', data.user.api_key)
-  Util.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+  Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     console.log('saved to key chain');
-    setRestOptions(rest, data.user.api_key);
+    setRestOptions(rest, data.user);
     dispatch(setUser(data.user));
     dispatch(resetUserNavigation());
   })
@@ -92,12 +93,80 @@ export function loginViaFacebook(data):Action {
 
 export function emailSignUp(data):Action {
   return (dispatch) => {
-    const body = {user: data };
-    return dispatch(rest.actions.users.post(body, (err, data) => {
-      if (!err && data) {
-        signInFromRest(dispatch, data);
+    if(!data.avatar) {
+      const body = {user: data };
+      return dispatch(rest.actions.users.post(body, (err, data) => {
+        if (!err && data) {
+          signInFromRest(dispatch, data);
+        } else {
+        const pointers = [];
+        let errorString = '';
+        err.errors.map((error, index) => {
+          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+        });
+        if(pointers.length === 1){
+          dispatch(showError(pointers[0]+' has already taken'))
+        } else {
+          for(let i = 0; i<pointers.length-1; i++) {
+            errorString += pointers[i]+' & ';
+          }
+          dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
+        }
       }
-    }));
+      }));
+    } else {
+      const image = data.avatar.image;
+        delete data.avatar
+        dispatch(showLoader());
+      return new Promise((resolve, reject) => {
+            var obj = {
+              uploadUrl: `${API_URL}/users`,
+              method: 'POST', // default 'POST',support 'POST' and 'PUT'
+              headers: {
+                'Accept': 'application/json',
+              },
+              fields: {
+                "user[gender]": data.gender,
+                "user[email]": data.email,
+                "user[username]": data.username,
+                "user[password]": data.password,
+                "user[password_confirmation]": data.password_confirmation,
+                "user[country]": data.country
+              },
+              files: [
+                {
+                  name: 'user[avatar]',
+                  filename: _.last(image.path.split('/')), // require, file name
+                  filepath: image.path, // require, file absoluete path
+                },
+              ]
+            };
+            FileUpload.upload(obj, function(err, result) {
+              console.log('upload:', err, result);
+              if (result && result.status == 201) {
+                const data = JSON.parse(result.data);
+                let body = {user: data.user}
+                signInFromRest(dispatch, body);
+                dispatch(hideLoader());
+              } else {
+        const pointers = [];
+        let errorString = '';
+        err.errors.map((error, index) => {
+          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+        });
+        if(pointers.length === 1){
+          dispatch(showError(pointers[0]+' has already taken'))
+        } else {
+          for(let i = 0; i<pointers.length-1; i++) {
+            errorString += pointers[i]+' & ';
+          }
+          dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
+        }
+      }
+            })
+
+        });
+    }
   };
 }
 
@@ -107,6 +176,8 @@ export function emailSignIn(data):Action {
     return dispatch(rest.actions.auth.post(body, (err, data) => {
       if (!err && data) {
         signInFromRest(dispatch, data);
+      } else {
+        dispatch(showError('Email/Password are incorrect'))
       }
     }));
   };
@@ -147,10 +218,10 @@ export function checkLogin() {
   return (dispatch, getState) => {
     const user = getState().user;
     if (user && user.id != -1) {
-      Util.getKeychainData().then(credentials => {
+      Utils.getKeychainData().then(credentials => {
         console.log('credentials', credentials);
         if (credentials) {
-          setRestOptions(rest, credentials.password);
+          setRestOptions(rest, _.merge(user, {api_key: credentials.password}));
           dispatch(resetUserNavigation());
         }
       })
@@ -175,52 +246,39 @@ export function changeUserAboutMe(data) {
 
 export function changeUserAvatar(data) {
   const image = data.image;
-  console.log('image',image)
   const id = data.id;
   return (dispatch, getState) => {
     dispatch(showLoader());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      console.log('user', user);
       if (user && user.id != -1) {
-        Util.getKeychainData().then(credentials => {
-          const api_key = credentials.password;
-          if (api_key) {
-            var obj = {
-              uploadUrl: `${API_URL}/users/${id}`,
-              method: 'PUT', // default 'POST',support 'POST' and 'PUT'
-              headers: {
-                'Accept': 'application/json',
-                "Authorization": `Token token=${api_key}`,
-              },
-              fields: {},
-              files: [
-                {
-                  name: 'user[avatar]',
-                  filename: _.last(image.path.split('/')), // require, file name
-                  filepath: image.path, // require, file absoluete path
-                },
-              ]
-            };
-
-            console.log('object obj', obj)
-
-            FileUpload.upload(obj, function(err, result) {
-              console.log('upload:', err, result);
-              if (result && result.status == 200) {
-                const data = JSON.parse(result.data);
-                const payload = _.merge(data, {image: image.path });
-                resolve(dispatch(setUser(data.user)));
-                dispatch(hideLoader());
-              } else {
-                reject(err);
-              }
-            })
+        var obj = {
+          uploadUrl: `${API_URL}/users/${id}`,
+          method: 'PUT', // default 'POST',support 'POST' and 'PUT'
+          headers: {
+            'Accept': 'application/json',
+            "Authorization": `Token token=${api_key}`,
+          },
+          fields: {},
+          files: [
+            {
+              name: 'user[avatar]',
+              filename: _.last(image.path.split('/')), // require, file name
+              filepath: image.path, // require, file absoluete path
+            },
+          ]
+        };
+        FileUpload.upload(obj, function(err, result) {
+          console.log('upload:', err, result);
+          if (result && result.status == 200) {
+            const data = JSON.parse(result.data);
+            const payload = _.merge(data, {image: image.path });
+            resolve(dispatch(setUser(data.user)));
+            dispatch(hideLoader());
           } else {
-            reject('Authorization error')
+            reject(err);
           }
-        }).catch(reject);
-
+        })
       } else {
         reject('Authorization error')
       }

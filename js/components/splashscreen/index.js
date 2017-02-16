@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import BasePage from '../common/BasePage';
 import { Image } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -44,7 +45,7 @@ const SignUpEmailButton = MKButton.coloredFlatButton()
   .withText('Signup with Email')
   .build();
 
-class SplashPage extends Component {
+class SplashPage extends BasePage {
 
   static propTypes = {
     pushRoute: React.PropTypes.func,
