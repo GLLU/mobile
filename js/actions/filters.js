@@ -8,6 +8,7 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const LOAD_BRANDS = 'LOAD_BRANDS';
 export const SET_BRANDS = 'SET_BRANDS';
 export const SET_ITEM_SIZES = 'SET_ITEM_SIZES';
+export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
 
 export function loadCategories(data):Action {
   return (dispatch) => {
@@ -62,6 +63,24 @@ export function loadItemSizes(categoryId):Action {
         if (!err && data) {
           resolve(dispatch({
             type: SET_ITEM_SIZES,
+            payload: data
+          }));
+        } else {
+          reject(err);
+        }
+      }));
+    });
+  };
+}
+
+export function loadOccasionTags(data):Action {
+  return (dispatch) => {
+    const params = {kind: 'occasion'};
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.tags(params, (err, data) => {
+        if (!err && data) {
+          resolve(dispatch({
+            type: SET_OCCASION_TAGS,
             payload: data
           }));
         } else {
