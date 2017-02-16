@@ -10,6 +10,7 @@ import _ from 'lodash';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
+export const RESET_STATE = 'RESET_STATE';
 
 let api_key = ''
 const setRestOptions = function(rest, user) {
@@ -284,6 +285,15 @@ export function changeUserAvatar(data) {
     });
 
   }
-
 }
 
+export function logout() {
+  return (dispatch, getState) => {
+    Util.resetKeychainData().then(() => {
+      dispatch(navigateTo('splashscreen'))
+      dispatch({
+        type: RESET_STATE
+      });
+    });
+  };
+}
