@@ -40,12 +40,21 @@ export default StyleSheet.create({
     color: 'red',
     fontWeight: 'bold',
     fontSize: 14,
-
   },
   backBtn: {
     marginLeft: 20,
     color: 'white',
     backgroundColor: 'transparent'
+  },
+  avatar: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarImg: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
   },
   description: {
     backgroundColor: 'transparent',
