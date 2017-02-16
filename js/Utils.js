@@ -1,6 +1,7 @@
 import * as Keychain from 'react-native-keychain';
 import { Client } from 'bugsnag-react-native';
 import Config from 'react-native-config';
+import _ from 'lodash';
 
 export default class Utils {
   static format_measurement(value, measurements_scale) {
@@ -23,13 +24,17 @@ export default class Utils {
     return new Client(Config.BUGSNAG_API_KEY)
   }
 
+  static resetKeychainData() {
+    return Keychain.resetGenericPassword();
+  }
+
   static notifyRequestError(err, data, user) {
     const client = this.getBugsnagClient();
     client.leaveBreadcrumb("REST request", {
       type: 'request',
       data: data,
     });
-    if (user && user.id) {
+    if (!_.isEmpty(user) && user.id && user.username && user.email) {
       client.setUser(user.id.toString(), user.username, user.email);
     }
     client.notify(err);

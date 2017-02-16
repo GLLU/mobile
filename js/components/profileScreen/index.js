@@ -92,34 +92,43 @@ class ProfileScreen extends BasePage {
 
   render() {
     const { isMyProfile } = this.state
-    let about_me = isMyProfile ? this.props.myUser.about_me : this.props.userData.about_me
-    let avatarUrl = isMyProfile ? this.props.myUser.avatar.url : this.props.userData.avatar.url
-    return (
-      <Container theme={glluTheme}>
-        <Content>
-          <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
-            <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
-            <View style={styles.header}>
-              <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
-              { this._renderleftBtn() }
-              </TouchableOpacity>
-              <ProfileView profilePic={avatarUrl}
-                           name={this.props.userData.name}
-                           username={this.props.userData.username}
-                           isMyProfile={this.state.isMyProfile}
-              />
-              <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
-                { this._renderRightBtn() }
-              </TouchableOpacity>
-            </View>
-            <View style={styles.description}>
-              <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
-            </View>
-            { this._renderStats() }
-          </Image>
-        </Content>
-      </Container>
-    )
+    const { myUser, userData } = this.props;
+    const user = isMyProfile ? myUser : userData;
+
+    let about_me = user.about_me;
+    let avatar = user.avatar;
+    if (!_.isEmpty(user)) {
+      let avatarUrl = avatar ? avatar.url : null;
+      return (
+        <Container theme={glluTheme}>
+          <Content>
+            <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
+              <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
+              <View style={styles.header}>
+                <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
+                { this._renderleftBtn() }
+                </TouchableOpacity>
+                { avatarUrl ? 
+                  <ProfileView profilePic={avatarUrl}
+                               name={userData.name}
+                               username={userData.username}
+                               isMyProfile={this.state.isMyProfile}
+                  /> : null }
+                <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
+                  { this._renderRightBtn() }
+                </TouchableOpacity>
+              </View>
+              <View style={styles.description}>
+                <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
+              </View>
+              { this._renderStats() }
+            </Image>
+          </Content>
+        </Container>
+      )
+    }
+
+    return null;
   }
 }
 
@@ -135,7 +144,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
-  const user_size = hasUserSize ? state.user.user_size : '';
+  const user_size = hasUserSize ? state.user.user_size : {};
   return {
     navigation: state.cardNavigation,
     myUser: state.user,

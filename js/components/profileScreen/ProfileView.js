@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { View, Button } from 'native-base';
 import { connect } from 'react-redux';
-import { logout } from '../../actions';
+import { logout, navigateTo } from '../../actions';
 
 const styles = StyleSheet.create({
   avatar: {
