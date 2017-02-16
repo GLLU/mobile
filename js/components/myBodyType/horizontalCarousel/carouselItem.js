@@ -15,9 +15,9 @@ export default class CarouselItem extends Component {
     const {item, itemActive} = this.props;
     return (
       <View style={styles.imagePlaceHolder}>
-        <Image style={{flex: 1, width: w*.350, height: h*.5, resizeMode: 'contain', marginRight: w*.125 , alignItems:'center', justifyContent: 'center'}}
+        <Image style={{ width: w*.370*0.75, height: h*.6*0.8, marginRight: w*.125,resizeMode:'contain' , alignItems:'center', justifyContent: 'center'}}
           source={item.imageUrl}>
-            <Image source={itemActive ? item.shapeActive : item.shapeDeactive} style={{width:50, height: 80, resizeMode: 'stretch', bottom: 50}}></Image>
+            <Image source={itemActive ? item.shapeActive : item.shapeDeactive} style={{width:50, height: 80, resizeMode: 'stretch', bottom: 50}} />
           </Image>
       </View>
     )

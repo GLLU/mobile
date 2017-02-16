@@ -93,10 +93,13 @@ export function loginViaFacebook(data):Action {
 
 export function emailSignUp(data):Action {
   return (dispatch) => {
-    if(!data.avatar) {
-      const body = {user: data };
-      return dispatch(rest.actions.users.post(body, (err, data) => {
+    dispatch(hideError());
+    console.log('data2',data)
+    if(data) {
+      const body = {user: data._parts[0][0] };
+      return dispatch(rest.actions.users.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err && data) {
+          console.log('data after signup',data)
           signInFromRest(dispatch, data);
         } else {
         const pointers = [];
@@ -114,58 +117,6 @@ export function emailSignUp(data):Action {
         }
       }
       }));
-    } else {
-      const image = data.avatar.image;
-        delete data.avatar
-        dispatch(showLoader());
-      return new Promise((resolve, reject) => {
-            var obj = {
-              uploadUrl: `${API_URL}/users`,
-              method: 'POST', // default 'POST',support 'POST' and 'PUT'
-              headers: {
-                'Accept': 'application/json',
-              },
-              fields: {
-                "user[gender]": data.gender,
-                "user[email]": data.email,
-                "user[username]": data.username,
-                "user[password]": data.password,
-                "user[password_confirmation]": data.password_confirmation,
-                "user[country]": data.country
-              },
-              files: [
-                {
-                  name: 'user[avatar]',
-                  filename: _.last(image.path.split('/')), // require, file name
-                  filepath: image.path, // require, file absoluete path
-                },
-              ]
-            };
-            FileUpload.upload(obj, function(err, result) {
-              console.log('upload:', err, result);
-              if (result && result.status == 201) {
-                const data = JSON.parse(result.data);
-                let body = {user: data.user}
-                signInFromRest(dispatch, body);
-                dispatch(hideLoader());
-              } else {
-        const pointers = [];
-        let errorString = '';
-        err.errors.map((error, index) => {
-          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
-        });
-        if(pointers.length === 1){
-          dispatch(showError(pointers[0]+' has already taken'))
-        } else {
-          for(let i = 0; i<pointers.length-1; i++) {
-            errorString += pointers[i]+' & ';
-          }
-          dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
-        }
-      }
-            })
-
-        });
     }
   };
 }
@@ -256,7 +207,8 @@ export function changeUserAvatar(data) {
               uploadUrl: `${API_URL}/users/${id}`,
               method: 'PUT', // default 'POST',support 'POST' and 'PUT'
               headers: {
-                'Accept': 'application/json',
+                "Accept": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": `Token token=${api_key}`,
               },
               fields: {},

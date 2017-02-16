@@ -65,7 +65,7 @@ class SignUpPage extends Component {
           name,
           avatar,
           gender } = this.state;
-
+        console.log('state',this.state)
         if(this.checkValidations()) {
             let data = {
                 email,
@@ -76,7 +76,9 @@ class SignUpPage extends Component {
                 password,
                 confirmPassword: password,
             }
-            this.props.emailSignUp(data);
+          let formdata = new FormData();
+          formdata.append(data)
+            this.props.emailSignUp(formdata);
         }
   }
 
@@ -99,7 +101,7 @@ class SignUpPage extends Component {
   validateTextInput(value, type) {
       textInput.validate(value, (err) => {
         if(!err){
-          this.setState({ [type+'Valid']: 'check' });
+          this.setState({ [type]: value, [type+'Valid']: 'check' });
         } else {
           this.setState({ [type]: value, [type+'Valid']: 'times' });
         }
@@ -143,13 +145,16 @@ class SignUpPage extends Component {
 
   addUserAvatar() {
     ImagePicker.openPicker({
-      includeBase64: true,
       cropping: false,
     }).then(image => {
       data = {
         image,
       }
-      this.setState({avatar: data, avatarIcon: 'check'})
+
+      image.type = 'multipart/form-data'
+      image.uri = image.path;
+      console.log('image',image)
+      this.setState({avatar: image, avatarIcon: 'check'})
     });
   }
 

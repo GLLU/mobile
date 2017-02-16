@@ -26,7 +26,6 @@ class BodyMeasureView extends Component {
       sliderMaxValue: 0,
       sliderMinValue: 0,
     }
-    console.log('props',props)
   }
 
   static propTypes = {
@@ -41,8 +40,6 @@ class BodyMeasureView extends Component {
   }
 
   componentDidMount() {
-    console.log('state',this.state)
-
     let { currentSize } = this.state
       this.props.completeEdit(currentSize);
   }
