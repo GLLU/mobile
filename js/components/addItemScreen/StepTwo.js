@@ -176,8 +176,10 @@ class StepTwo extends Component {
   _renderDescribeAndTags() {
     return (
         <View style={{margin: 5}}>
+        {/*
           <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
           <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
+        */}
           <OccasionTags selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
         </View>
     )
