@@ -2,7 +2,7 @@ import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
 import { showLoader, hideLoader, reset, showError, showWarning, hideError, hideWarning } from './index';
-import Util from '../Util';
+import Utils from '../Utils';
 import { getUserBodyType } from './myBodyType';
 var FileUpload = require('NativeModules').FileUpload;
 import rest, { API_URL } from '../api/rest';
@@ -10,28 +10,28 @@ import _ from 'lodash';
 
 export const SET_USER = 'SET_USER';
 export const UPDATE_STATS = 'UPDATE_STATS';
+export const RESET_STATE = 'RESET_STATE';
 
 let api_key = ''
-const setRestOptions = function(rest, key) {
-  api_key = key;
+const setRestOptions = function(rest, user) {
+  api_key = user.api_key;
   rest.use("options", function() {
     return {
       headers: {
-        "Authorization": `Token token=${key}`,
+        "Authorization": `Token token=${user.api_key}`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }
     };
   }).use("responseHandler", (err, data) => {
     if (err) {
-      console.log("ERROR 222", err)
-      if (err.errors.length > 0) {
+      if (err.errors && err.errors.length > 0) {
         const error = _.first(err.errors);
-        console.log(error);
         if (error == "Bad Credentials") {
           dispatch(navigateTo('splashscreen'));
         }
       }
+      Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
       console.log("SUCCESS", data)
     }
@@ -40,9 +40,9 @@ const setRestOptions = function(rest, key) {
 
 const signInFromRest = function(dispatch, data) {
   console.log('api key', data.user.api_key)
-  Util.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+  Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     console.log('saved to key chain');
-    setRestOptions(rest, data.user.api_key);
+    setRestOptions(rest, data.user);
     dispatch(setUser(data.user));
     dispatch(resetUserNavigation());
   })
@@ -169,10 +169,10 @@ export function checkLogin() {
   return (dispatch, getState) => {
     const user = getState().user;
     if (user && user.id != -1) {
-      Util.getKeychainData().then(credentials => {
+      Utils.getKeychainData().then(credentials => {
         console.log('credentials', credentials);
         if (credentials) {
-          setRestOptions(rest, credentials.password);
+          setRestOptions(rest, _.merge(user, {api_key: credentials.password}));
           dispatch(resetUserNavigation());
         }
       })
@@ -203,41 +203,48 @@ export function changeUserAvatar(data) {
     return new Promise((resolve, reject) => {
       const user = getState().user;
       if (user && user.id != -1) {
-            var obj = {
-              uploadUrl: `${API_URL}/users/${id}`,
-              method: 'PUT', // default 'POST',support 'POST' and 'PUT'
-              headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": `Token token=${api_key}`,
-              },
-              fields: {},
-              files: [
-                {
-                  name: 'user[avatar]',
-                  filename: _.last(image.path.split('/')), // require, file name
-                  filepath: image.path, // require, file absoluete path
-                },
-              ]
-            };
-            FileUpload.upload(obj, function(err, result) {
-              console.log('upload:', err, result);
-              if (result && result.status == 200) {
-                const data = JSON.parse(result.data);
-                const payload = _.merge(data, {image: image.path });
-                resolve(dispatch(setUser(data.user)));
-                dispatch(hideLoader());
-              } else {
-                reject(err);
-              }
-            })
-
+        var obj = {
+          uploadUrl: `${API_URL}/users/${id}`,
+          method: 'PUT', // default 'POST',support 'POST' and 'PUT'
+          headers: {
+            'Accept': 'application/json',
+            "Authorization": `Token token=${api_key}`,
+          },
+          fields: {},
+          files: [
+            {
+              name: 'user[avatar]',
+              filename: _.last(image.path.split('/')), // require, file name
+              filepath: image.path, // require, file absoluete path
+            },
+          ]
+        };
+        FileUpload.upload(obj, function(err, result) {
+          console.log('upload:', err, result);
+          if (result && result.status == 200) {
+            const data = JSON.parse(result.data);
+            const payload = _.merge(data, {image: image.path });
+            resolve(dispatch(setUser(data.user)));
+            dispatch(hideLoader());
+          } else {
+            reject(err);
+          }
+        })
       } else {
         reject('Authorization error')
       }
     });
 
   }
-
 }
 
+export function logout() {
+  return (dispatch, getState) => {
+    dispatch(navigateTo('splashscreen'))
+    Utils.resetKeychainData().then(() => {
+      dispatch({
+        type: RESET_STATE
+      });
+    });
+  };
+}

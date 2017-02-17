@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { SET_USER } from '../actions/user';
+import { SET_USER, RESET_STATE } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants'
 
@@ -42,6 +42,10 @@ const ACTION_HANDLERS = {
       ...action.payload.user
     }
   },
+  [RESET_STATE]: (state, action) => {
+    console.log('reset user state');
+    return initialState;
+  }
 }
 
 export default function reducers (state = initialState, action) {

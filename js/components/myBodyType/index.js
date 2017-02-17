@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import BasePage from '../common/BasePage';
 import {Container, Header, Content, Button, Icon, Title } from 'native-base';
 import {Text, View} from 'react-native';
 import styles from './styles';
@@ -15,7 +16,7 @@ import ArrowTextBox from './arrowTextBox';
 import InformationTextIcon from '../common/informationTextIcon';
 
 
-class MyBodyType extends Component {
+class MyBodyType extends BasePage {
   constructor(props) {
     super(props);
   }

@@ -40,7 +40,6 @@ export default StyleSheet.create({
     color: 'red',
     fontWeight: 'bold',
     fontSize: 14,
-
   },
   backBtn: {
     marginLeft: 20,
@@ -56,41 +55,6 @@ export default StyleSheet.create({
     height: 100,
     borderRadius: 50,
     justifyContent: 'center',
-  },
-  name:{
-    color: 'white',
-    fontSize: 35,
-    fontFamily: 'Times New Roman',
-    marginTop: 5,
-  },
-  username:{
-    color: '#00ABED',
-    fontSize: 20,
-    fontFamily: 'Times New Roman',
-  },
-  followBtn: {
-    backgroundColor: '#00D7B2',
-    width: 75,
-    height: 25,
-    justifyContent: 'center',
-    marginTop: 15
-  },
-  followText: {
-    textAlign: 'center',
-    color: 'white'
-  },
-  editBtn: {
-    backgroundColor: 'transparent',
-    width: 75,
-    height: 25,
-    justifyContent: 'center',
-    marginTop: 15,
-    borderWidth: 2,
-    borderColor: '#00D7B2',
-  },
-  editText: {
-    textAlign: 'center',
-    color: '#00D7B2'
   },
   description: {
     backgroundColor: 'transparent',

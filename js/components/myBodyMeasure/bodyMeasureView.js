@@ -5,7 +5,7 @@ import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';
 import myStyles from './styles';
-import Util from '../../Util';
+import Utils from '../../Utils';
 import convert from 'convert-units';
 import { completeEdit } from '../../actions/myBodyMeasure';
 import _ from 'lodash';
@@ -103,7 +103,7 @@ class BodyMeasureView extends Component {
                   <Icon name='minus' style={myStyles.sizeLineIcons}/>
                 </TouchableOpacity>
                 <Text style={[myStyles.infoDetailText, this.state.updateTextColorFor === item ? myStyles.infoDetailTextColorChange : null]}>{this.state.currentSize
-                    ? Util.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
+                    ? Utils.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
                     : null}</Text>
                 <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.increasSize(item) }>
                   <Icon name='plus' style={myStyles.sizeLineIcons}/>

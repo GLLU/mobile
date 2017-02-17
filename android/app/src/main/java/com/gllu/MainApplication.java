@@ -10,6 +10,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.bugsnag.BugsnagReactNative;
 import com.oblador.keychain.KeychainPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -56,6 +57,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            BugsnagReactNative.getPackage(),
             new KeychainPackage(),
                             new ReactNativeConfigPackage(),
                             new LinearGradientPackage(),

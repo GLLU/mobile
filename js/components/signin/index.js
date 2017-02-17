@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import BasePage from '../common/BasePage';
 import { Image } from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -24,7 +25,7 @@ const {
 
 import { emailRule, passwordRule } from '../../validators';
  
-class SignInPage extends Component {
+class SignInPage extends BasePage {
 
   static propTypes = {
     emailSignIn: React.PropTypes.func,

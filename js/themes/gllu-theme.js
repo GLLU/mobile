@@ -79,7 +79,7 @@ export default {
 
 
   // Color
-  brandPrimary: '#05d7b2',
+  brandPrimary: '#00D7B2',
   brandInfo: '#5bc0de',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
@@ -212,7 +212,7 @@ export default {
 
 
   // Other
-  borderRadiusBase: (Platform.OS === 'ios') ? 5 : 2,
+  borderRadiusBase: (Platform.OS === 'ios') ? 0 : 0,
   borderWidth: 1,
   contentPadding: 10,
 
