@@ -68,18 +68,16 @@ class SignUpPage extends BasePage {
           gender } = this.state;
         console.log('state',this.state)
         if(this.checkValidations()) {
-            let data = {
-                email,
-                username,
-                avatar,
-                name,
-                gender: gender.toLowerCase(),
-                password,
-                confirmPassword: password,
-            }
-          let formdata = new FormData();
-          formdata.append(data)
-            this.props.emailSignUp(formdata);
+          let data = {
+              email,
+              username,
+              avatar,
+              name,
+              gender: gender.toLowerCase(),
+              password,
+              confirmPassword: password,
+          }
+          this.props.emailSignUp(data);
         }
   }
 
@@ -178,43 +176,43 @@ class SignUpPage extends BasePage {
                           </Button>
                       </View>
                       <View>
-                          <Grid>
-                              <Row style={styles.formItem}>
-                                  <Text style={[styles.label,  this.state.username.length !== 0 ? styles.addOpacity : null]}>Username</Text>
-                                  <InputGroup style={styles.formGroup}>
-                                      <Input style={styles.formInput} ref="username" onChangeText={(username) => this.validateTextInput(username, 'username')}/>
-                                  </InputGroup>
-                                  {this.state.username.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
-                              </Row>
-                              <Row style={styles.formItem}>
-                                  <Text style={[styles.label,  this.state.name.length !== 0 ? styles.addOpacity : null]}>Name</Text>
-                                  <InputGroup style={styles.formGroup}>
-                                      <Input style={styles.formInput} onChangeText={(name) => this.validateTextInput(name, 'name')}/>
-                                  </InputGroup>
-                                  {this.state.name.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
-                              </Row>
-                              <Row style={styles.formItem}>
-                                  <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
-                                  <InputGroup style={styles.formGroup}>
-                                      <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
-                                  </InputGroup>
-                                  {this.state.email.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
-                              </Row>
-                              <Row style={styles.formItem}>
-                                  <Text style={[styles.label, this.state.password.length > 0 ? styles.addOpacity : null]}>Password</Text>
-                                  <InputGroup style={styles.formGroup}>
-                                      <Input style={styles.formInput} secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
-                                  </InputGroup>
-                                  {this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
-                              </Row>
-                          </Grid>
-                          <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.singupWithEmail()}>
-                              Let's GLLU
-                          </Button>
-                          <View style={styles.alreadyBox}>
-                              <Text style={styles.alreadyTxt}>Already a user?</Text>
-                              <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
-                          </View>
+                        <Grid>
+                            <Row style={styles.formItem}>
+                                <Text style={[styles.label,  this.state.username.length !== 0 ? styles.addOpacity : null]}>Username</Text>
+                                <InputGroup style={styles.formGroup}>
+                                    <Input style={styles.formInput} ref="username" onChangeText={(username) => this.validateTextInput(username, 'username')}/>
+                                </InputGroup>
+                                {this.state.username.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
+                            </Row>
+                            <Row style={styles.formItem}>
+                                <Text style={[styles.label,  this.state.name.length !== 0 ? styles.addOpacity : null]}>Name</Text>
+                                <InputGroup style={styles.formGroup}>
+                                    <Input style={styles.formInput} onChangeText={(name) => this.validateTextInput(name, 'name')}/>
+                                </InputGroup>
+                                {this.state.name.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
+                            </Row>
+                            <Row style={styles.formItem}>
+                                <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
+                                <InputGroup style={styles.formGroup}>
+                                    <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
+                                </InputGroup>
+                                {this.state.email.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
+                            </Row>
+                            <Row style={styles.formItem}>
+                                <Text style={[styles.label, this.state.password.length > 0 ? styles.addOpacity : null]}>Password</Text>
+                                <InputGroup style={styles.formGroup}>
+                                    <Input style={styles.formInput} secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
+                                </InputGroup>
+                                {this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
+                            </Row>
+                        </Grid>
+                        <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.singupWithEmail()}>
+                            Let's GLLU
+                        </Button>
+                        <View style={styles.alreadyBox}>
+                            <Text style={styles.alreadyTxt}>Already a user?</Text>
+                            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+                        </View>
                       </View>
                   </Content>
               </Image>

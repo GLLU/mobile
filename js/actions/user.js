@@ -39,6 +39,9 @@ const setRestOptions = function(rest, user) {
 }
 
 const signInFromRest = function(dispatch, data) {
+  if (!data || _.isEmpty(data)) {
+    return;
+  }
   console.log('api key', data.user.api_key)
   Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     console.log('saved to key chain');
@@ -57,8 +60,8 @@ export function resetUserNavigation() {
         key: 'feedscreen',
         index: 0,
       },
-    ], navigation.key, 0));
-    dispatch(navigateTo('feedscreen'));
+    ], navigation.key));
+    dispatch(navigateTo('feedscreen', 'feedscreen'));
   }
 }
 
@@ -91,17 +94,41 @@ export function loginViaFacebook(data):Action {
   };
 }
 
+const signUp = function(dispatch, data) {
+  return new Promise((resolve, reject) => {
+    const avatar = data['avatar']
+    if (avatar) {
+      // do post with file upload
+      delete data['avatar'];
+      const fields = {};
+      Object.keys(data).forEach(function (key) {
+        fields[`user[${key}]`] = data[key];
+      });
+      Utils.postMultipartForm('', '/users', fields, 'user[avatar]', avatar).then(resolve, reject);
+    } else {
+      // normal rest
+      const body = {user: data};
+      dispatch(rest.actions.users.post({}, { body: JSON.stringify(body) }, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      }));
+    }
+  });
+}
+
 export function emailSignUp(data):Action {
   return (dispatch) => {
     dispatch(hideError());
     console.log('data2',data)
     if(data) {
-      const body = {user: data._parts[0][0] };
-      return dispatch(rest.actions.users.post({}, { body: JSON.stringify(body) }, (err, data) => {
-        if (!err && data) {
-          console.log('data after signup',data)
-          signInFromRest(dispatch, data);
-        } else {
+      signUp(dispatch, data).then(data => {
+        console.log('sign up successful', data);
+        signInFromRest(dispatch, data);
+      }).catch(err => {
+        console.log('errr', err);
         const pointers = [];
         let errorString = '';
         err.errors.map((error, index) => {
@@ -115,8 +142,7 @@ export function emailSignUp(data):Action {
           }
           dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
         }
-      }
-      }));
+      });
     }
   };
 }
@@ -229,7 +255,7 @@ export function changeUserAvatar(data) {
           } else {
             reject(err);
           }
-        })
+        });
       } else {
         reject('Authorization error')
       }

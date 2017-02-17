@@ -24,39 +24,6 @@ import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
 import Utils from '../Utils';
 
-let api_key = null;
-
-const postMultipartForm = function(path, fields, fileField, file) {
-  return new Promise((resolve, reject) => {
-    var obj = {
-      uploadUrl: `${API_URL}/${path}`,
-      method: 'POST', // default 'POST',support 'POST' and 'PUT'
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": `Token token=${api_key}`,
-      },
-      fields: fields,
-      files: [
-        {
-          name: fileField,
-          filename: _.last(file.path.split('/')), // require, file name
-          filepath: file.path, // require, file absoluete path
-        },
-      ]
-    };
-
-    FileUpload.upload(obj, function(err, result) {
-      if (result && result.status == 201) {
-        const data = JSON.parse(result.data);
-        resolve(data);
-      } else {
-        reject(err);
-      }
-    });
-  });
-}
-
-
 
 var FileUpload = require('NativeModules').FileUpload;
 // Actions
@@ -69,7 +36,7 @@ export function addNewLook(image) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
-            postMultipartForm('/looks', {}, 'look[image]', image).then((data) => {
+            Utils.postMultipartForm(api_key, '/looks', {}, 'look[image]', image).then((data) => {
               dispatch(hideProcessing());
               const payload = _.merge(data, {image: image.path });
               resolve(dispatch(editNewLook(payload)));
