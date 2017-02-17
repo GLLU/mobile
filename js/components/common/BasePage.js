@@ -11,7 +11,7 @@ class BasePage extends BaseComponent {
     this.bugsnag.leaveBreadcrumb("Page", {
       type: 'navigation',
       component: this.constructor.name,
-      props: this.props,
+      props: props,
     });
   }
 }

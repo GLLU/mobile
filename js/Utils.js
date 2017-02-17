@@ -74,7 +74,7 @@ export default class Utils {
           const data = JSON.parse(result.data);
           resolve(data);
         } else {
-          reject(err);
+          reject(JSON.parse(err));
         }
       });
     });

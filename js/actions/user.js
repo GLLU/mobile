@@ -35,7 +35,7 @@ const setRestOptions = function(rest, user) {
     } else {
       console.log("SUCCESS", data)
     }
-  });;
+  });
 }
 
 const signInFromRest = function(dispatch, data) {
