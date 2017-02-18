@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   tagButtonTextActive: {
-    color: 'black',
+    color: '#333333',
   },
 });
 
@@ -44,7 +44,9 @@ class OccasionTags extends Component {
   }
 
   componentWillMount() {
-    this.props.loadOccasionTags();
+    this.props.loadOccasionTags().catch(err => {
+      console.log('unable to load occasionTags');
+    });
   }
 
   _toggleOccasionTag(tag, selected) {
@@ -69,9 +71,9 @@ class OccasionTags extends Component {
   }
 
   render () {
-    return (<Container style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center'}}>
+    return (<View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center'}}>
               {this._renderOccasionTags()}
-            </Container>)
+            </View>)
   }
 
 }

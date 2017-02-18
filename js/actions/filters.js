@@ -74,7 +74,6 @@ export function loadItemSizes(categoryId):Action {
 
 export function loadOccasionTags(data):Action {
   return (dispatch) => {
-    const params = {kind: 'occasion'};
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.occasion_tags({}, (err, data) => {
         if (!err && data) {
