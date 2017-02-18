@@ -30,7 +30,8 @@ export default reduxApi({
     },
     crud: true
   },
-  tags: '/tags',
+  category_tags: '/tags?kind=category',
+  occasion_tags: '/tags?kind=occasion',
   brands: {
     url: '/brands',
     crud: true,
