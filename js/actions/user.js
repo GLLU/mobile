@@ -100,11 +100,11 @@ const signUp = function(dispatch, data) {
     if (avatar) {
       // do post with file upload
       delete data['avatar'];
-      const fields = {};
-      Object.keys(data).forEach(function (key) {
-        fields[`user[${key}]`] = data[key];
-      });
-      Utils.postMultipartForm('', '/users', fields, 'user[avatar]', avatar).then(resolve, reject);
+      // const fields = {};
+      // Object.keys(data).forEach(function (key) {
+      //   fields[`user[${key}]`] = data[key];
+      // });
+      Utils.postMultipartForm('', '/users', data, 'user[avatar]', avatar).then(resolve, reject);
     } else {
       // normal rest
       const body = {user: data};
@@ -129,18 +129,22 @@ export function emailSignUp(data):Action {
         signInFromRest(dispatch, data);
       }).catch(err => {
         console.log('errr', err);
-        const pointers = [];
-        let errorString = '';
-        err.errors.map((error, index) => {
-          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
-        });
-        if(pointers.length === 1){
-          dispatch(showError(pointers[0]+' has already taken'))
-        } else {
-          for(let i = 0; i<pointers.length-1; i++) {
-            errorString += pointers[i]+' & ';
+        if (err.errors && err.errors.length > 0) {
+          const pointers = [];
+          let errorString = '';
+          err.errors.map((error, index) => {
+            pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+          });
+          if(pointers.length === 1){
+            dispatch(showError(pointers[0]+' has already taken'))
+          } else {
+            for(let i = 0; i<pointers.length-1; i++) {
+              errorString += pointers[i]+' & ';
+            }
+            dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
           }
-          dispatch(showError(errorString+pointers[pointers.length-1]+' are already taken'))
+        } else {
+          dispatch(showError(`Unknown error: ${err}`));
         }
       });
     }

@@ -4,6 +4,7 @@ import Config from 'react-native-config';
 import _ from 'lodash';
 
 var FileUpload = require('NativeModules').FileUpload;
+import RNFetchBlob from 'react-native-fetch-blob'
 
 export default class Utils {
   static format_measurement(value, measurements_scale) {
@@ -45,6 +46,46 @@ export default class Utils {
   static postMultipartForm(api_key, path, fields, fileField, file) {
     console.log('postMultipartForm', api_key, path, fields, fileField, file);
     return new Promise((resolve, reject) => {
+
+      const formData = [];
+      Object.keys(fields).forEach(function (key) {
+        formData.push({
+          name: `user[${key}]`,
+          data: fields[key], 
+        });
+      });
+
+      formData.push({
+        name : 'user[avatar]',
+        filename : _.last(file.path.split('/')),
+        type:'image/*',
+        data: RNFetchBlob.wrap(file.path)
+      });
+
+      console.log('formData', formData);
+
+
+      return RNFetchBlob.fetch('POST', `${Config.API_URL}${path}`, {
+        Authorization : `Token token=${api_key}`,
+        'Content-Type' : 'multipart/form-data',
+      }, formData).then((resp) => {
+        console.log('resp', resp);
+        const json = JSON.parse(resp.data);
+        const status = resp.respInfo.status;
+        if (status === 200 || status === 201) {
+          resolve(json); 
+        } else if (status === 422) { //validation error
+          reject(json);
+        } else { //generic error
+          reject(json.error);
+        }
+      }).catch((err) => {
+        // ...
+        console.log('File upload error:', err);
+        reject(err);
+      });
+
+
       let headers = {
         'Accept': 'application/json',
       }
