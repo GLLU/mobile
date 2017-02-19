@@ -82,7 +82,6 @@ class UserLooks extends Component {
           id: 2,
           page: this.state.pagination
         }
-         console.log('Load more items',this.state.pagination);
         this.props.getUserLooksData(data);
       }
   }
@@ -139,7 +138,6 @@ class UserLooks extends Component {
 
   _onRefresh() {
     this.setState({refreshing: true});
-    console.log('stateeee',this.state)
   }
 
   render() {

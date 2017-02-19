@@ -34,7 +34,7 @@ class UserLookScreen extends BasePage {
           <Button transparent onPress={() => this._PopRoute()}>
             <Icon style={styles.headerArrow} name="ios-arrow-back" />
           </Button>
-          <Title style={styles.headerTitle}>My Items <Text style={styles.headerTitleNumber}>{17}</Text></Title>
+          <Title style={styles.headerTitle}>My Items <Text style={styles.headerTitleNumber}>{this.props.userData.looksCount}</Text></Title>
         </Header>
         <Content scrollEnabled={false}>
           <View>
