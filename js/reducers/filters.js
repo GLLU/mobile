@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import type { Action } from '../actions/types';
-import { SET_BRANDS, SET_CATEGORIES, SET_ITEM_SIZES } from '../actions/filters';
+import { SET_BRANDS, SET_CATEGORIES, SET_OCCASION_TAGS, SET_ITEM_SIZES } from '../actions/filters';
 
 export type State = {
     minPrice: number,
@@ -25,6 +25,7 @@ const initialState = {
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/d5/a5/a5/d5a5a5c60c6a1befbf3ee6d346ce5c59.jpg', width: 385, height: 244, likes: 44, liked: false, type: '2', tags: [ { price: 88, x: 30, y: 50 } ] },
     { uri: 'https://s-media-cache-ak0.pinimg.com/564x/c9/cc/d9/c9ccd926889c5bfb7decbff5b7de3eb9.jpg', width: 215, height: 245, likes: 123, liked: false, type: '3', tags: [ { price: 88, x: 10, y: 140 } ] }
   ],
+  occasion_tags: [],
   categories: [],
   brands: [],
   countries: [
@@ -54,6 +55,14 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       categories,
+    }
+  },
+  [SET_OCCASION_TAGS]: (state, action) => {
+    const occasion_tags = _.filter(action.payload.tags, (item) => item.parent_id == null);
+    console.log('reducer SET_OCCASION_TAGS', action.payload.tags);
+    return {
+      ...state,
+      occasion_tags,
     }
   },
   [SET_BRANDS]: (state, action) => {

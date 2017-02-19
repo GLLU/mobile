@@ -13,7 +13,6 @@ const initialState = {
 };
 
 export default function manageStackReducer(state = initialState, action) {
-  console.log('manageStackReducer', action.type);
   switch (action.type) {
     case REHYDRATE:
       // do nothing

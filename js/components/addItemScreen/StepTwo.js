@@ -9,12 +9,14 @@ import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
+import OccasionTags from './forms/OccasionTags';
 import {
     createLookItem,
     addDescription,
     addLocation,
     addTrustLevel,
     addPhotosVideo,
+    toggleOccasionTag
 } from '../../actions';
 import _ from 'lodash';
 
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
   },
   fakeCheckbox: {
     marginTop: BTN_RADIO_MARGIN_TOP,
-  }
+  },
 });
 
 class StepTwo extends Component {
@@ -174,8 +176,11 @@ class StepTwo extends Component {
   _renderDescribeAndTags() {
     return (
         <View style={{margin: 5}}>
+        {/*
           <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
           <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
+        */}
+          <OccasionTags selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
         </View>
     )
   }
@@ -237,6 +242,7 @@ function bindActions(dispatch) {
     addLocation: (location) => dispatch(addLocation(location)),
     addTrustLevel: (number) => dispatch(addTrustLevel(number)),
     addPhotosVideo: (photos, video) => dispatch(addPhotosVideo(photos, video)),
+    toggleOccasionTag: (tag, selected) => dispatch(toggleOccasionTag(tag, selected)),
   };
 }
 
@@ -246,6 +252,7 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
+    occasionTags: item ? item.occasionTags : [],
     photos: item ? item.photos : [],
   }
 };

@@ -1,7 +1,7 @@
 import { openDrawer, closeDrawer } from './drawer';
 import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
 import { showError, hideError, showWarning, hideWarning } from './errorHandler';
-import { loadCategories, loadBrands, loadItemSizes } from './filters';
+import { loadCategories, loadBrands, loadItemSizes, loadOccasionTags } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
@@ -26,6 +26,7 @@ import { addNewLook,
          addLocation,
          addTrustLevel,
          addPhotosVideo,
+         toggleOccasionTag
 } from './uploadLook';
 import { setUser, loginViaFacebook, checkLogin, getStats, logout } from './user';
 import navigateTo from './sideBarNav';
@@ -45,6 +46,7 @@ export {
   openDrawer,
   closeDrawer,
   loadCategories,
+  loadOccasionTags,
   loadBrands,
   loadItemSizes,
   setMinMax,
@@ -84,6 +86,7 @@ export {
   addDescription,
   addLocation,
   addTrustLevel,
+  toggleOccasionTag,
   addPhotosVideo,
   showLoader,
   hideLoader,
