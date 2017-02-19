@@ -2,9 +2,7 @@ import * as Keychain from 'react-native-keychain';
 import { Client } from 'bugsnag-react-native';
 import Config from 'react-native-config';
 import _ from 'lodash';
-
-var FileUpload = require('NativeModules').FileUpload;
-import RNFetchBlob from 'react-native-fetch-blob'
+import RNFetchBlob from 'react-native-fetch-blob';
 
 export default class Utils {
   static format_measurement(value, measurements_scale) {
@@ -43,27 +41,14 @@ export default class Utils {
     client.notify(err);
   }
 
-  static postMultipartForm(api_key, path, fields, fileField, file) {
-    console.log('postMultipartForm', api_key, path, fields, fileField, file);
+  static postMultipartForm(api_key, path, formData, fileField, file) {
     return new Promise((resolve, reject) => {
-
-      const formData = [];
-      Object.keys(fields).forEach(function (key) {
-        formData.push({
-          name: `user[${key}]`,
-          data: fields[key], 
-        });
-      });
-
       formData.push({
-        name : 'user[avatar]',
+        name : fileField,
         filename : _.last(file.path.split('/')),
         type:'image/*',
         data: RNFetchBlob.wrap(file.path)
       });
-
-      console.log('formData', formData);
-
 
       return RNFetchBlob.fetch('POST', `${Config.API_URL}${path}`, {
         Authorization : `Token token=${api_key}`,
@@ -80,43 +65,8 @@ export default class Utils {
           reject(json.error);
         }
       }).catch((err) => {
-        // ...
         console.log('File upload error:', err);
         reject(err);
-      });
-
-
-      let headers = {
-        'Accept': 'application/json',
-      }
-      if (api_key && api_key != '') {
-        headers = Object.assign(headers, {
-          "Authorization": `Token token=${api_key}`,
-        });
-      }
-
-      var obj = {
-        uploadUrl: `${Config.API_URL}/${path}`,
-        method: 'POST', // default 'POST',support 'POST' and 'PUT'
-        headers: headers,
-        fields: fields,
-        files: [
-          {
-            name: fileField,
-            filename: _.last(file.path.split('/')), // require, file name
-            filepath: file.path, // require, file absoluete path
-          },
-        ]
-      };
-
-      FileUpload.upload(obj, function(err, result) {
-        console.log('FileUpload', err, result);
-        if (result && (result.status == 201 || result.status == 200)) {
-          const data = JSON.parse(result.data);
-          resolve(data);
-        } else {
-          reject(JSON.parse(err));
-        }
       });
     });
   }

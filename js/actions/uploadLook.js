@@ -36,7 +36,7 @@ export function addNewLook(image) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
-            Utils.postMultipartForm(api_key, '/looks', {}, 'look[image]', image).then((data) => {
+            Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
               dispatch(hideProcessing());
               const payload = _.merge(data, {image: image.path });
               resolve(dispatch(editNewLook(payload)));

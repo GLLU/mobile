@@ -100,11 +100,14 @@ const signUp = function(dispatch, data) {
     if (avatar) {
       // do post with file upload
       delete data['avatar'];
-      // const fields = {};
-      // Object.keys(data).forEach(function (key) {
-      //   fields[`user[${key}]`] = data[key];
-      // });
-      Utils.postMultipartForm('', '/users', data, 'user[avatar]', avatar).then(resolve, reject);
+      const formData = [];
+      Object.keys(data).forEach(function (key) {
+        formData.push({
+          name: `user[${key}]`,
+          data: data[key], 
+        });
+      });
+      Utils.postMultipartForm('', '/users', formData, 'user[avatar]', avatar).then(resolve, reject);
     } else {
       // normal rest
       const body = {user: data};
