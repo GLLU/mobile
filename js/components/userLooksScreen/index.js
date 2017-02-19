@@ -28,7 +28,6 @@ class UserLookScreen extends BasePage {
   }
 
   render() {
-    console.log('props',this.props)
     return (
       <Container style={styles.container} theme={glluTheme}>
         <Header style={styles.header}>

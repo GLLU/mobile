@@ -1,13 +1,12 @@
 import { SET_USER_LOOKS_DATA } from '../actions/looks';
 
 const initialState = {
-  userLooksData: {},
+  userLooksData: [],
 };
 
 export default function (state:State = initialState, action): State {
   switch(action.type){
     case SET_USER_LOOKS_DATA:
-
       console.log('payload',action.payload);
         let userLooksData = action.payload.map(look => {
           const cover = _.find(look.cover, x => x.version == 'medium');
@@ -22,16 +21,11 @@ export default function (state:State = initialState, action): State {
             height: cover ? cover.height : null,
           });
         });
-      console.log('user',userLooksData)
-      //userLooksData = Object.assign(state.userLooksData, userLooksData);
-      userLooksData.concat(state.userLooksData)
-      console.log('...state',state.userLooksData)
-      console.log('userLooksData',userLooksData)
+      userLooksData.unshift(...state.userLooksData)
         return {
           ...state,
           userLooksData,
-        }
-
+        };
     default:
       return state
   }

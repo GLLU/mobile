@@ -16,7 +16,6 @@ export function getLook(lookId):Action {
 }
 
 export function getUserLooksData(data):Action {
-  console.log('page',data)
   return (dispatch) => {
     dispatch(showLoader());
     return dispatch(rest.actions.looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
