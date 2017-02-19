@@ -3,12 +3,42 @@ import { connect } from 'react-redux';
 import {  Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import RadioButtons from 'react-native-radio-buttons';
-import {View, Text, Switch, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, Switch, TouchableWithoutFeedback, Dimensions, StyleSheet} from 'react-native';
 import SearchBar from '../SearchBar'
 
 import CategoryStrip from './CategoryStrip';
 
 import styles from '../styles';
+
+const myStyles = StyleSheet.create({
+  filter: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#F5F5F5',
+    padding: 5,
+    paddingBottom: 10,
+    height: 45,
+  },
+  btnFilter: {
+    marginLeft: 5,
+  },
+  btnCloseFilter: {
+    alignSelf: 'center',
+  },
+  btnReset: {
+    alignSelf: 'center',
+    marginRight: 5,
+  },
+  TextlabelReset: {
+    color: '#757575',
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  smallBtn: {
+    fontSize: 15
+  },
+});
 
 import { loadCategories } from '../../../actions/filters';
 const MK = require('react-native-material-kit');
@@ -64,34 +94,39 @@ class FilterView extends Component {
     this.props.clearSearchTerm();
   }
 
-  openFilter() {
+  toggleFilter() {
     this.setState({ isOpen: !this.state.isOpen });
+  }
+
+  _handleCloseFilter() {
+    this.setState({ isOpen: false });
   }
 
   _renderFilterHeader(){
     const labelColor = this.state.selectedCategory  ? '#1DE9B6' : '#212121';
     return (
-      <View>
-        <Grid style={styles.filter}>
-          <Col size={10}>
-            <Button transparent onPress={() => this.openFilter()} style={styles.btnFilter}>
+      <View style={myStyles.filter}>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
               <Icon name="md-options" style={[styles.normalBtn, { color: labelColor }]} />
             </Button>
-          </Col>
-          <Col size={20}>
-            <Button transparent onPress={() => this.openFilter()} style={styles.btnFilter}>
+          <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
               <Text style={[styles.Textlabel, { color: labelColor }]}>Filter by</Text>
             </Button>
-          </Col>
-          <Col size={50}>
             {this._rederFilterText()}
-          </Col>
-          <Col size={20}>
-            <Button transparent onPress={() => this.clearFilter()} style={styles.btnFilter}>
-              <Text style={styles.TextlabelReset}>RESET</Text>
+        </View>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
+          <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
+            RESET
             </Button>
-          </Col>
-        </Grid>
+          {this.state.isOpen ?
+            <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
+                <Icon name="ios-close-circle-outline" style={[myStyles.smallBtn]} />
+            </Button>
+            :
+            null
+          }
+        </View>
       </View>);
   }
 
@@ -168,7 +203,6 @@ class FilterView extends Component {
       <View>
         {this._renderFilterHeader()}
         {this.state.isOpen ? this._renderFilters() : null}
-        {/*{true ? this._renderFilters() : null}*/}
       </View>
     )
   }
