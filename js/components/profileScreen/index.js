@@ -5,13 +5,13 @@ import styles from './styles';
 import { Container, Content, View, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
-import navigateTo from '../../actions/sideBarNav';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, navigateTo } from '../../actions';
 import _ from 'lodash';
+import SelectPhoto from '../feedscreen/SelectPhoto';
 const userBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
@@ -37,6 +37,7 @@ class ProfileScreen extends BasePage {
     super(props);
     this.state = {
       isMyProfile: this.props.userData.id === this.props.myUser.id,
+      photoModal: false
     }
   }
 
@@ -58,10 +59,6 @@ class ProfileScreen extends BasePage {
     this.props.popRoute(this.props.navigation.key);
   }
 
-  _goToEditProfileScreen(){
-    this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
-  }
-
   _renderleftBtn() {
    return this.state.isMyProfile ?
      <Image source={toFeedScreen} style={styles.toFeedScreenBtn} />
@@ -76,14 +73,39 @@ class ProfileScreen extends BasePage {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'feedscreen', item);
+    this.props.navigateTo('itemScreen', 'profileScreen', item);
+  }
+  _handleItemsPress() {
+    const userData = {
+      id: this.props.userData.id,
+      looksCount: this.props.stats.looks_count
+    }
+    this.props.navigateTo('userLookScreen', 'profileScreen', userData);
+  }
+
+  goToAddNewItem(imagePath) {
+    this.setState({photoModal: false}, () => {
+      this.props.addNewLook(imagePath).then(() => {
+        this.props.navigateTo('tagItemScreen', 'profileScreen');
+      });
+    })
+  }
+
+  _handleOpenPhotoModal() {
+    this.setState({photoModal: true});
   }
 
   _renderStats() {
     if(this.props.stats.latest_looks && this.props.stats.user_id === this.props.userData.id) {
       return (
         <View>
-          <ItemsGallery isMyProfile={this.state.isMyProfile} latest_looks={this.props.stats.latest_looks} looksCount={this.props.stats.looks_count} itemPress={(item) => this._handleItemPress(item) }/>
+          <ItemsGallery isMyProfile={this.state.isMyProfile}
+                        latest_looks={this.props.stats.latest_looks}
+                        looksCount={this.props.stats.looks_count}
+                        itemPress={(item) => this._handleItemPress(item) }
+                        itemsPress={(item) => this._handleItemsPress(item) }
+                        addNewItem={() => this._handleOpenPhotoModal() }
+          />
           <StatsView following={this.props.stats.following} followers={this.props.stats.followers} likes={this.props.stats.likes_count} />
         </View>
       )
@@ -94,7 +116,6 @@ class ProfileScreen extends BasePage {
     const { isMyProfile } = this.state
     const { myUser, userData } = this.props;
     const user = isMyProfile ? myUser : userData;
-
     let about_me = user.about_me;
     let avatar = user.avatar;
     if (!_.isEmpty(user)) {
@@ -109,11 +130,11 @@ class ProfileScreen extends BasePage {
                 { this._renderleftBtn() }
                 </TouchableOpacity>
                 { avatarUrl ? 
-                  <ProfileView profilePic={avatarUrl}
-                               name={userData.name}
-                               username={userData.username}
-                               isMyProfile={this.state.isMyProfile}
-                  /> : null }
+                <ProfileView profilePic={avatarUrl}
+                             name={userData.name}
+                             username={userData.username}
+                             isMyProfile={this.state.isMyProfile}
+                /> : null }
                 <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
                   { this._renderRightBtn() }
                 </TouchableOpacity>
@@ -123,6 +144,7 @@ class ProfileScreen extends BasePage {
               </View>
               { this._renderStats() }
             </Image>
+            <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} />
           </Content>
         </Container>
       )
@@ -138,7 +160,7 @@ function bindAction(dispatch) {
     popRoute: key => dispatch(popRoute(key)),
     getStats: (id) => dispatch(getStats(id)),
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
-
+    addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
   };
 }
 

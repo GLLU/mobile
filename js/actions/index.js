@@ -4,6 +4,7 @@ import { showError, hideError, showWarning, hideWarning } from './errorHandler';
 import { loadCategories, loadBrands, loadItemSizes } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
+import { getUserLooksData } from './looks';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import { addNewLook,
          editTag,
@@ -92,5 +93,6 @@ export {
   showError,
   hideError,
   showWarning,
-  hideWarning
+  hideWarning,
+  getUserLooksData
 };

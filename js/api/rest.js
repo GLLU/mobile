@@ -42,8 +42,12 @@ export default reduxApi({
       method: 'get',
     }
   },
-  looks: {
+  look: {
     url: '/looks/:id',
+    crud: true
+  },
+  looks: {
+    url: '/users/:id/looks/:page[number]:page[size]',
     crud: true
   },
   stats: {
