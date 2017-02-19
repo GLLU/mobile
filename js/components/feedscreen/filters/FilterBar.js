@@ -24,11 +24,12 @@ const myStyles = StyleSheet.create({
     marginLeft: 5,
   },
   btnCloseFilter: {
+    marginLeft: 15,
     alignSelf: 'center',
+    marginRight: 5,
   },
   btnReset: {
     alignSelf: 'center',
-    marginRight: 5,
   },
   TextlabelReset: {
     color: '#757575',
