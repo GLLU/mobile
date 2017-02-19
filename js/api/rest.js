@@ -76,6 +76,10 @@ export default reduxApi({
       method: 'post'
     }
   },
+  changeUserAboutMe: {
+    url: '/users/:id',
+    crud: true
+  },
 }).use("fetch", (url, options) => {
   console.log('making request', url, options);
   return adapterFetch(fetch)(url, options);
