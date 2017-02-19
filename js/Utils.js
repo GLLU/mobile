@@ -41,7 +41,7 @@ export default class Utils {
     client.notify(err);
   }
 
-  static postMultipartForm(api_key, path, formData, fileField, file) {
+  static postMultipartForm(api_key, path, formData, fileField, file, method = 'POST') {
     return new Promise((resolve, reject) => {
       formData.push({
         name : fileField,
@@ -50,7 +50,7 @@ export default class Utils {
         data: RNFetchBlob.wrap(file.path)
       });
 
-      return RNFetchBlob.fetch('POST', `${Config.API_URL}${path}`, {
+      return RNFetchBlob.fetch(method, `${Config.API_URL}${path}`, {
         Authorization : `Token token=${api_key}`,
         'Content-Type' : 'multipart/form-data',
       }, formData).then((resp) => {

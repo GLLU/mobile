@@ -236,33 +236,11 @@ export function changeUserAvatar(data) {
     return new Promise((resolve, reject) => {
       const user = getState().user;
       if (user && user.id != -1) {
-        var obj = {
-          uploadUrl: `${API_URL}/users/${id}`,
-          method: 'PUT', // default 'POST',support 'POST' and 'PUT'
-          headers: {
-            'Accept': 'application/json',
-            "Authorization": `Token token=${api_key}`,
-          },
-          fields: {},
-          files: [
-            {
-              name: 'user[avatar]',
-              filename: _.last(image.path.split('/')), // require, file name
-              filepath: image.path, // require, file absoluete path
-            },
-          ]
-        };
-        FileUpload.upload(obj, function(err, result) {
-          console.log('upload:', err, result);
-          if (result && result.status == 200) {
-            const data = JSON.parse(result.data);
-            const payload = _.merge(data, {image: image.path });
-            resolve(dispatch(setUser(data.user)));
-            dispatch(hideLoader());
-          } else {
-            reject(err);
-          }
-        });
+        Utils.postMultipartForm(api_key, `/users/${id}`, [], 'user[avatar]', image, 'PUT').then(data => {
+          const payload = _.merge(data, {image: image.path });
+          resolve(dispatch(setUser(data.user)));
+          dispatch(hideLoader());
+        }).catch(reject);
       } else {
         reject('Authorization error')
       }
