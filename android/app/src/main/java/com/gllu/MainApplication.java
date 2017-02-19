@@ -21,7 +21,6 @@ import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactInstanceManager;
-import com.yoloci.fileupload.FileUploadPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -64,7 +63,6 @@ public class MainApplication extends Application
                             new ReactNativeConfigPackage(),
                             new LinearGradientPackage(),
                             new ReactVideoPackage(),
-                            new FileUploadPackage(),
                             new ExtraDimensionsPackage(),
                             new PickerPackage(),
                             new ReactMaterialKitPackage(),
