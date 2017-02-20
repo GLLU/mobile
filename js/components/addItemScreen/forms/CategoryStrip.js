@@ -51,7 +51,9 @@ class CategoryStrip extends Component {
 
   componentDidMount() {
     this.normalizeContentOffsetX();
-    this.props.loadCategories();
+    this.props.loadCategories().catch(err => {
+      console.log('unable to load categories');
+    });
   }
 
   normalizeContentOffsetX() {

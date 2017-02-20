@@ -18,7 +18,9 @@ import { ADD_NEW_LOOK,
         ADD_LOCATION,
         ADD_TRUST_LEVEL,
         ADD_PHOTOS_VIDEO,
-        } from '../actions/uploadLook';
+        ADD_ITEM_OCCASION_TAG,
+        REMOVE_ITEM_OCCASION_TAG,
+      } from '../actions/uploadLook';
 import { SET_ITEM_SIZES, SET_CATEGORIES } from '../actions/filters';
 
 const mutateItem = function(state, key, value) {
@@ -85,7 +87,8 @@ const ACTION_HANDLERS = {
       trustLevel: 0,
       photos: [],
       video: '',
-      itemTags: []
+      occasionTags: [],
+      itemTags: [],
     });
     return {
       ...state,
@@ -232,6 +235,24 @@ const ACTION_HANDLERS = {
       ...state,
     }
   },
+  [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {
+    const item = findItem(state);
+    let occasionTags = _.filter(item.occasionTags, t => t.id !== action.payload.id);
+    return {
+      ...state,
+      items: mutateItem(state, 'occasionTags', occasionTags)
+    }
+  },
+  [ADD_ITEM_OCCASION_TAG]: (state, action) => {
+    const item = findItem(state);
+    let occasionTags = item.occasionTags;
+    occasionTags.push(action.payload);
+    occasionTags = _.uniqBy(occasionTags, 'id');
+    return {
+      ...state,
+      items: mutateItem(state, 'occasionTags', occasionTags)
+    }
+  },
 }
 
 // Reducer
@@ -241,7 +262,6 @@ const initialState = {
   image: null,
   description: '',
   items: [],
-  itemTags: [],
   video: '',
 }
 

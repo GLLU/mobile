@@ -30,7 +30,8 @@ export default reduxApi({
     },
     crud: true
   },
-  tags: '/tags',
+  category_tags: '/tags?kind=category',
+  occasion_tags: '/tags?kind=occasion',
   brands: {
     url: '/brands',
     crud: true,
@@ -80,6 +81,10 @@ export default reduxApi({
     url: '/users/:id',
     crud: true
   },
+  item_occasions: {
+    url: '/looks/:look_id/items/:item_id/item_occasions/:id',
+    crud: true,
+  }
 }).use("fetch", (url, options) => {
   console.log('making request', url, options);
   return adapterFetch(fetch)(url, options);

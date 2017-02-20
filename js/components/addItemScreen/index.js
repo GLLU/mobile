@@ -149,6 +149,7 @@ class AddItemPage extends BasePage {
             <Swiper style={styles.wrapper}
                     ref={(ref) => this.swiper = ref }
                     loop={false}
+                    scrollEnabled={false}
                     index={this.state.currentStep}
                     onMomentumScrollEnd={this._handleSwiperScrollEnd.bind(this)}
                     dot={<View style={{width: 0, height: 0}} />}

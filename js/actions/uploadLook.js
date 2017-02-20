@@ -9,6 +9,8 @@ export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
 export const ADD_ITEM_SIZE_COUNTRY = 'ADD_ITEM_SIZE_COUNTRY';
 export const ADD_ITEM_SIZE = 'ADD_ITEM_SIZE';
 export const ADD_ITEM_TAG = 'ADD_ITEM_TAG';
+export const ADD_ITEM_OCCASION_TAG = 'ADD_ITEM_OCCASION_TAG';
+export const REMOVE_ITEM_OCCASION_TAG = 'REMOVE_ITEM_OCCASION_TAG';
 export const REMOVE_ITEM_TAG = 'REMOVE_ITEM_TAG';
 export const ADD_ITEM_CURRENCY = 'ADD_ITEM_CURRENCY';
 export const ADD_ITEM_PRICE = 'ADD_ITEM_PRICE';
@@ -338,5 +340,39 @@ export function addPhotosVideo(image) {
   return {
     type: ADD_PHOTOS_VIDEO,
     payload: image
+  };
+}
+
+export function toggleOccasionTag(tag, selected) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { lookId, itemId } = state.uploadLook;
+    if (selected) {
+      // remove
+      dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tag.id}, (err, data) => {
+        if (!err) {
+          dispatch({
+            type: REMOVE_ITEM_OCCASION_TAG,
+            payload: tag
+          });
+        } else {
+          throw err;  
+        }
+      }));
+    } else { // add
+      const body = {
+        tag_id: tag.id
+      }
+      dispatch(rest.actions.item_occasions.post({look_id: lookId, item_id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+        if (!err) {
+          dispatch({
+            type: ADD_ITEM_OCCASION_TAG,
+            payload: data.item_tag.tag
+          });
+        } else {
+          throw err;  
+        }
+      }));
+    }
   };
 }
