@@ -17,11 +17,13 @@ export function getLook(lookId):Action {
 
 export function getUserLooksData(data):Action {
   return (dispatch) => {
-    dispatch(showLoader());
     return dispatch(rest.actions.looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
       if (!err && userLooksData) {
-        dispatch(setUserLooksData(userLooksData.looks));
-        dispatch(hideLoader());
+        let looksData = {
+          currId: data.id,
+          looks: userLooksData.looks
+        }
+        dispatch(setUserLooksData(looksData));
       }
     }));
   };

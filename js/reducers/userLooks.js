@@ -2,13 +2,13 @@ import { SET_USER_LOOKS_DATA } from '../actions/looks';
 
 const initialState = {
   userLooksData: [],
+  currId: -1
 };
 
 export default function (state:State = initialState, action): State {
   switch(action.type){
     case SET_USER_LOOKS_DATA:
-      console.log('payload',action.payload);
-        let userLooksData = action.payload.map(look => {
+        let userLooksData = action.payload.looks.map(look => {
           const cover = _.find(look.cover, x => x.version == 'medium');
           return Object.assign({}, {
             liked: look.is_liked,
@@ -21,10 +21,13 @@ export default function (state:State = initialState, action): State {
             height: cover ? cover.height : null,
           });
         });
-      userLooksData.unshift(...state.userLooksData)
+        if(action.payload.currId === state.currId){
+          userLooksData.unshift(...state.userLooksData)
+        }
         return {
           ...state,
           userLooksData,
+          currId: action.payload.currId
         };
     default:
       return state

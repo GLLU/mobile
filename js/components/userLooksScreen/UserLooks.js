@@ -9,21 +9,21 @@ import { actions } from 'react-native-navigation-redux-helpers';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
-import ImagePicker from 'react-native-image-crop-picker';
 import SelectPhoto from '../feedscreen/SelectPhoto';
 import { addNewLook, navigateTo, getUserLooksData } from '../../actions';
 
 class UserLooks extends Component {
 
   static propTypes = {
-    flatLooks: React.PropTypes.array,
+    userLooks: React.PropTypes.array,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
+    userId: React.PropTypes.number,
   }
 
   constructor(props) {
     super(props);
-    const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.flatLooks);
+    const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.userLooks);
     this.state = {
       filterHeight: 0,
       imagesColumn1,
@@ -33,14 +33,6 @@ class UserLooks extends Component {
       refreshing: false,
       pagination: 1
     };
-  }
-
-  componentWillMount(){
-    const data = {
-      id: 2,
-      page: this.state.pagination
-    }
-    this.props.getUserLooksData(data);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,7 +71,7 @@ class UserLooks extends Component {
           pagination: this.state.pagination+=1,
         })
         let data = {
-          id: 2,
+          id: this.props.userId,
           page: this.state.pagination
         }
         this.props.getUserLooksData(data);
@@ -138,6 +130,8 @@ class UserLooks extends Component {
 
   _onRefresh() {
     this.setState({refreshing: true});
+    let that = this
+    setTimeout(function(){ that.setState({refreshing: false}); }, 2000);
   }
 
   render() {
@@ -146,7 +140,7 @@ class UserLooks extends Component {
       <View style={styles.tab}>
         <View style={[styles.mainGrid]}>
           <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}
-                      pagingEnabled={true}
+                      pagingEnabled={false}
                       refreshControl={
                         <RefreshControl
                           refreshing={this.state.refreshing}

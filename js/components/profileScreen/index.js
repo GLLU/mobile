@@ -9,7 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, navigateTo } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData } from '../../actions';
 import _ from 'lodash';
 import SelectPhoto from '../feedscreen/SelectPhoto';
 const userBackground = require('../../../images/backgrounds/user-profile-background.jpeg');
@@ -48,6 +48,13 @@ class ProfileScreen extends BasePage {
         bodyType: this.props.myUser.user_size.body_type
       }
       this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
+    }
+    if(this.props.userData.id !== this.props.currLookScreenId){ //here for performance - relate to user looks screen
+      const looksDataCall = {
+        id: this.props.userData.id,
+        page: 1
+      }
+      this.props.getUserLooksData(looksDataCall);
     }
   }
 
@@ -161,6 +168,7 @@ function bindAction(dispatch) {
     getStats: (id) => dispatch(getStats(id)),
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
+    getUserLooksData: data => dispatch(getUserLooksData(data)),
   };
 }
 
@@ -173,7 +181,7 @@ const mapStateToProps = state => {
     stats: state.stats,
     hasUserSize,
     user_size: user_size,
-
+    currLookScreenId: state.userLooks.currId
   };
 };
 
