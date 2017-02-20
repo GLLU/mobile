@@ -14,6 +14,8 @@ class ItemsGallery extends Component {
     goToAddNewItem: React.PropTypes.func,
     latest_looks: React.PropTypes.array,
     itemPress: React.PropTypes.func,
+    itemsPress: React.PropTypes.func,
+    addNewItem: React.PropTypes.func,
     looksCount: React.PropTypes.number,
   }
 
@@ -24,20 +26,11 @@ class ItemsGallery extends Component {
   renderAddItemBtn() {
     if(this.props.isMyProfile) {
       return (
-        <TouchableOpacity style={styles.addItemContainer} onPress={(e) => this.addItem()}>
+        <TouchableOpacity style={styles.addItemContainer} onPress={(e) => this.props.addNewItem()}>
           <Image source={require('../../../images/icons/plus.png')} style={[styles.itemPic, styles.addItem]}/>
         </TouchableOpacity>
       )
     }
-  }
-
-  addItem() {
-    ImagePicker.openPicker({
-      includeBase64: true,
-      cropping: false,
-    }).then(image => {
-      this.props.goToAddNewItem(image);
-    });
   }
 
   getGalleryItems() {
@@ -73,10 +66,10 @@ class ItemsGallery extends Component {
     return (
       <View style={styles.itemsContainer}>
         <View style={styles.itemsSeparator}>
-          <View style={styles.itemsTotal}>
-            <Text style={[styles.text, styles.number]}>{this.props.looksCount}</Text>
-            <Text style={styles.text}>Items</Text>
-          </View>
+          <TouchableOpacity onPress={(e) => this.props.itemsPress()} style={styles.itemsTotal}>
+              <Text style={[styles.text, styles.number]}>{this.props.looksCount}</Text>
+              <Text style={styles.text}>Items</Text>
+          </TouchableOpacity>
           <View style={styles.itemsRow}>
             {this.getGalleryItems()}
             {this.renderAddItemBtn()}

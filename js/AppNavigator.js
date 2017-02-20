@@ -23,6 +23,7 @@ import ForgotPassword from './components/forgotPassword';
 import ItemScreen from './components/itemScreen';
 import ProfileScreen from './components/profileScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
+import UserLookScreen from './components/userLooksScreen/index.js';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
 import ErrorHandler from './components/errorHandler';
@@ -115,6 +116,8 @@ class AppNavigator extends Component {
         return <MyBodyMeasure />;
       case 'itemScreen':
         return <ItemScreen flatLook={props.scene.route.optional}/>;
+      case 'userLookScreen':
+        return <UserLookScreen userData={props.scene.route.optional}/>;
       case 'profileScreen':
         return <ProfileScreen userData={props.scene.route.optional}/>;
       case 'editProfileScreen':
