@@ -132,10 +132,6 @@ module.exports = StyleSheet.create({
   radioBtnTextSelected: { //the text
     color: MKColor.Teal
   },
-  btnFilter: {
-    position: 'absolute',
-    left: 5
-  },
   Textlabel: {
     paddingTop: 0,
     fontSize: 15,
@@ -148,14 +144,6 @@ module.exports = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'normal',
     color: '#757575'
-  },
-  TextlabelReset: {
-    paddingTop: 8,
-    textAlign: 'right',
-    color: '#757575',
-    fontSize: 13,
-    fontWeight: '500',
-    marginBottom: 6
   },
   mainGrid: {
     backgroundColor: '#FFFFFF',

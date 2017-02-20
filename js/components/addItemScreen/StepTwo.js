@@ -212,6 +212,7 @@ class StepTwo extends Component {
 
   render() {
     const { items, createLookItem, image} = this.props;
+    const bgColorBtn = this.state.confirm ? '#05d7b2' : '#ADADAD';
     return(
       <ScrollView scrollEnabled={true}>
         <View style={{padding: 15, alignItems: 'center'}}>
@@ -225,7 +226,7 @@ class StepTwo extends Component {
             {/*<AddMore video={this.state.video} photos={this.props.photos} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />*/}
             {this._renderDescribeAndTags()}
             {this._renderSelections()}
-            <Button disabled={!this.state.confirm} transparent onPress={() => this._handlePublishItem()} style={styles.btnGoToStep3}>
+            <Button disabled={!this.state.confirm} transparent onPress={() => this._handlePublishItem()} style={[styles.btnGoToStep3, {backgroundColor: bgColorBtn}]}>
                 <Text style={styles.btnGoToStep3Text}>PUBLISH</Text>
             </Button>
         </View>
