@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput, ScrollView} from 'react-native';
+import { Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput, ScrollView, FormData} from 'react-native';
 import styles from './styles';
 import { View } from 'native-base';
 import { connect } from 'react-redux';

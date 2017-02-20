@@ -26,6 +26,7 @@ import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
 import Utils from '../Utils';
 
+
 var FileUpload = require('NativeModules').FileUpload;
 // Actions
 export function addNewLook(image) {
@@ -35,35 +36,13 @@ export function addNewLook(image) {
       const user = getState().user;
       if (user && user.id != -1) {
         Utils.getKeychainData().then(credentials => {
-          const api_key = credentials.password;
+          api_key = credentials.password;
           if (api_key) {
-            var obj = {
-              uploadUrl: `${API_URL}/looks`,
-              method: 'POST', // default 'POST',support 'POST' and 'PUT'
-              headers: {
-                'Accept': 'application/json',
-                "Authorization": `Token token=${api_key}`,
-              },
-              fields: {},
-              files: [
-                {
-                  name: 'look[image]',
-                  filename: _.last(image.path.split('/')), // require, file name
-                  filepath: image.path, // require, file absoluete path
-                },
-              ]
-            };
-
-            FileUpload.upload(obj, function(err, result) {
+            Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
               dispatch(hideProcessing());
-              if (result && result.status == 201) {
-                const data = JSON.parse(result.data);
-                const payload = _.merge(data, {image: image.path });
-                resolve(dispatch(editNewLook(payload)));
-              } else {
-                reject(err);
-              }
-            })
+              const payload = _.merge(data, {image: image.path });
+              resolve(dispatch(editNewLook(payload)));
+            }).catch(reject); 
           } else {
             dispatch(hideProcessing());
             reject('Authorization error')  

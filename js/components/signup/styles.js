@@ -110,7 +110,6 @@ module.exports = StyleSheet.create({
     alignItems: 'stretch',
     color: '#FFFFFF',
     marginLeft: 10,
-
   },
   formBtn: {
     alignSelf: 'center',

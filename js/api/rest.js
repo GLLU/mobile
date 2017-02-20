@@ -77,6 +77,10 @@ export default reduxApi({
       method: 'post'
     }
   },
+  changeUserAboutMe: {
+    url: '/users/:id',
+    crud: true
+  },
   item_occasions: {
     url: '/looks/:look_id/items/:item_id/item_occasions/:id',
     crud: true,
