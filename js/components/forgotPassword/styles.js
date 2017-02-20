@@ -84,12 +84,13 @@ module.exports = StyleSheet.create({
   },
   formInput: {
     flex: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
+    paddingLeft: 20,
     lineHeight: 20,
-    marginTop: 10,
+    marginTop: (Platform.OS === 'ios') ? 12 : 0,
+    alignItems: 'stretch',
     color: '#FFFFFF',
     marginLeft: 10,
+    top: (Platform.OS === 'ios') ? 0 : 8,
   },
   formBtn: {
     alignSelf: 'center',
