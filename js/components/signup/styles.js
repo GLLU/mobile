@@ -106,10 +106,11 @@ module.exports = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     lineHeight: 20,
-    marginTop: 17,
+    marginTop: (Platform.OS === 'ios') ? 20 : 0,
     alignItems: 'stretch',
     color: '#FFFFFF',
     marginLeft: 10,
+    top: (Platform.OS === 'ios') ? 0 : 13,
   },
   formBtn: {
     alignSelf: 'center',

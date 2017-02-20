@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image } from 'react-native';
+import { Image, TouchableWithoutFeedback } from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
@@ -68,6 +68,10 @@ class forgotPasswordPage extends BasePage {
     this.props.popRoute(this.props.navigation.key);
   }
 
+  focusOnInput(refAttr) {
+    this.refs[refAttr]._textInput.focus();
+  }
+
   render() {
       if(this.state.emailWasSent){
           return (
@@ -109,9 +113,11 @@ class forgotPasswordPage extends BasePage {
               </View>
                 <Grid>
                     <Row style={styles.formItem}>
+                      <TouchableWithoutFeedback onPress={() => this.focusOnInput('email')}>
                         <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
+                      </TouchableWithoutFeedback>
                         <InputGroup style={styles.formGroup}>
-                            <Input style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
+                            <Input ref='email'  style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
                         </InputGroup>
                     </Row>
                 </Grid>

@@ -95,13 +95,13 @@ module.exports = StyleSheet.create({
   },
   formInput: {
     flex: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
+    paddingLeft: 20,
     lineHeight: 20,
-    marginTop: 15,
+    marginTop: (Platform.OS === 'ios') ? 22 : 0,
     alignItems: 'stretch',
     color: '#FFFFFF',
     marginLeft: 10,
+    top: (Platform.OS === 'ios') ? 0 : 13,
   },
   formBtn: {
     alignSelf: 'center',
@@ -150,4 +150,9 @@ module.exports = StyleSheet.create({
       height: 200,
       resizeMode: 'contain',
   },
+  withouthF: {
+    flex: 1,
+    flexDirection: 'row',
+    width: 300
+  }
 });
