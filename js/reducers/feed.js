@@ -3,7 +3,19 @@ import { SET_FLAT_LOOKS_FEED_DATA } from '../actions/feed';
 import { SET_LOOK_LIKE_STATE } from '../actions/likes';
 
 const initialState = {
-  flatLooksData: []
+  flatLooksData: [],
+  meta: {
+    total: 0,
+  },
+  query: {
+    type: 'relevant',
+    category: '',
+    term: '',
+    page: {
+      size: 10,
+      number: 1
+    }
+  },
 };
 // Action Handlers
 const ACTION_HANDLERS = {
@@ -21,22 +33,29 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
-    const flatLooksData = action.payload.looks.map(look => {
-      const cover = _.find(look.cover, x => x.version == 'medium');
-      return Object.assign({}, {
-        liked: look.is_liked,
-        type: look.user_size.body_type,
-        id: look.id,
-        likes: look.likes,
-        user_id: look.user_id,
-        uri: cover ? cover.url : null,
-        width: cover ? cover.width : null,
-        height: cover ? cover.height : null,
-      });
-    });
+    console.log('reducers', action.payload)
+    const meta = _.merge(state.meta, action.payload.data.meta);
+    const query = action.payload.query;
+    const currentLooksData = state.flatLooksData;
+    const flatLooksData = _.union(currentLooksData, action.payload.data.looks.map(look => {
+        const cover = _.find(look.cover, x => x.version == 'medium');
+        return Object.assign({}, {
+          liked: look.is_liked,
+          type: look.user_size.body_type,
+          id: look.id,
+          likes: look.likes,
+          user_id: look.user_id,
+          uri: cover ? cover.url : null,
+          width: cover ? cover.width : null,
+          height: cover ? cover.height : null,
+        });
+      })
+    );
     return {
       ...state,
       flatLooksData,
+      meta,
+      query,
     }
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Container, Content } from 'native-base';
 import { connect } from 'react-redux';
-import { getFeed } from '../../actions/feed';
+import { getFeed } from '../../actions';
 import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import FilterBar from './filters/FilterBar';
 import RecentTab from './RecentTab';
@@ -28,7 +28,7 @@ class MainView extends Component {
   }
 
   componentWillMount() {
-    this.props.getFeed('relevant');
+    this.props.getFeed({type: 'relevant'});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,7 +58,7 @@ class MainView extends Component {
         currFeedCategorySelected: category
       })
     }
-    this.props.getFeed(type, category, term);
+    this.props.getFeed({type, category, term});
   }
 
   _renderFeed() {
@@ -92,7 +92,7 @@ class MainView extends Component {
 
 function bindActions(dispatch) {
   return {
-    getFeed: (feedType,feedCategory, feedTerm) => dispatch(getFeed(feedType, feedCategory, feedTerm))
+    getFeed: (query) => dispatch(getFeed(query))
   };
 }
 
