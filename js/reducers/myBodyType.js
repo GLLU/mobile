@@ -70,31 +70,51 @@ const bodyTypeList = {
       name: 'Trapezoid',
       body_type: 'trapezoid',
       description: 'Your chest and shoulders are relatively broad with a taper down to the waist. The legs are commonly lean or defined.',
-      imageUrl: require('../../images/neathourglass.png')
+      imageUrl: require('../../images/maleBodyTypes/bodies/trapezoid.png'),
+      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_trapezoid.png'),
+      imageEditUrl: require('../../images/maleBodyTypes/bodies/trapezoid_e.png'),
+      shapeActive: require('../../images/maleBodyTypes/shapes/trapezoid_grn.png'),
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/trapezoid_gry.png')
     },
     {
       name: 'Inverted Triangle',
       body_type: 'invertedTriangle',
       description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
-      imageUrl: require('../../images/neathourglass.png')
+      imageUrl: require('../../images/maleBodyTypes/bodies/Invert.png'),
+      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_Invert.png'),
+      imageEditUrl: require('../../images/maleBodyTypes/bodies/Invert_e.png'),
+      shapeActive: require('../../images/maleBodyTypes/shapes/rev_triangle_grn.png'),
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/rev_triangle_gry.png')
     },
     {
       name: 'Rectangle',
       body_type: 'rectangle',
       description: 'Your shoulders are roughly the same width as your waist and hips. Chances are that you’re also tall and thin.',
-      imageUrl: require('../../images/neathourglass.png')
+      imageUrl: require('../../images/maleBodyTypes/bodies/rectangle.png'),
+      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_rectangle.png'),
+      imageEditUrl: require('../../images/maleBodyTypes/bodies/rectangle_e.png'),
+      shapeActive: require('../../images/maleBodyTypes/shapes/rec_grn.png'),
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/rec_gry.png')
     },
     {
       name: 'Triangle',
       body_type: 'triangle',
       description: 'Your midsection is more pronounced with a narrower top and larger waist and hips.',
-      imageUrl: require('../../images/neathourglass.png')
+      imageUrl: require('../../images/maleBodyTypes/bodies/triangle.png'),
+      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_triangle.png'),
+      imageEditUrl: require('../../images/maleBodyTypes/bodies/triangle_e.png'),
+      shapeActive: require('../../images/maleBodyTypes/shapes/triangle_grn.png'),
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/triangle_gry.png')
     },
     {
       name: 'Oval',
       body_type: 'oval',
       description: 'Your shoulders and lower legs look slimmer compared to your more rounded center of the body.',
-      imageUrl: require('../../images/neathourglass.png')
+      imageUrl: require('../../images/maleBodyTypes/bodies/oval.png'),
+      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_oval.png'),
+      imageEditUrl: require('../../images/maleBodyTypes/bodies/oval_e.png'),
+      shapeActive: require('../../images/maleBodyTypes/shapes/oval_grn.png'),
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/oval_gry.png')
     }
   ]
 }
@@ -102,6 +122,7 @@ const bodyTypeList = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [BODY_TYPE_CHANGE_SLIDING]: (state, action) => {
+    console.log('stateee',state)
     const currentItem = Object.assign({},bodyTypeList[state.gender][action.payload.selectedIndex]);
     return { ...state
       , currentBodyType: currentItem
