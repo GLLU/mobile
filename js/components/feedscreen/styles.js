@@ -141,6 +141,7 @@ module.exports = StyleSheet.create({
   TextResults: {
     paddingTop: 12,
     textAlign: 'left',
+    marginLeft: 8,
     fontSize: 12,
     fontWeight: 'normal',
     color: '#757575'

@@ -64,7 +64,7 @@ class SignUpGenderPage extends Component {
                                 <TouchableOpacity onPress={() => this.pushRoute('signupemail','female') }>
                                     <View style={styles.genderBtnContainer}>
                                         <Image
-                                            source={require('../../../images/genderwomen.jpeg')}
+                                            source={require('../../../images/genderwomen.png')}
                                             style={styles.genderImage}
                                         />
                                         <Text style={styles.genderLabel}>Female</Text>
@@ -73,7 +73,7 @@ class SignUpGenderPage extends Component {
                                 <TouchableOpacity onPress={() => this.pushRoute('signupemail','male') }>
                                     <View style={styles.genderBtnContainer}>
                                         <Image
-                                            source={require('../../../images/gendermen.jpeg')}
+                                            source={require('../../../images/gendermen.png')}
                                             style={styles.genderImage}
                                         />
                                         <Text style={styles.genderLabel}>Male</Text>

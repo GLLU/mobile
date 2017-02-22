@@ -19,6 +19,10 @@ import InformationTextIcon from '../common/informationTextIcon';
 class MyBodyType extends BasePage {
   constructor(props) {
     super(props);
+    this.state = {
+      currBodyType: '',
+      currDescription: ''
+    }
   }
 
   static propTypes = {
@@ -34,10 +38,6 @@ class MyBodyType extends BasePage {
     gender: React.PropTypes.string
   }
 
-  static defaultProps = {
-    gender: 'female'
-  }
-
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
@@ -47,11 +47,23 @@ class MyBodyType extends BasePage {
   }
 
   _bodyTypeChange(index) {
+    const { gender } = this.props
     setTimeout(()=> {
-      this.props.changeBodyType(index);
+      let data = {
+        index,
+        gender
+      }
+      this.props.changeBodyType(data);
     }, 200);
   }
 
+  _changeTitleAndDescription(type) {
+    setTimeout(()=> {
+      if(this.state.currBodyType !== type.name){
+        this.setState({currBodyType: type.name, currDescription: type.description})
+      }
+    }, 200);
+  }
   render() {
     return (
       <Container theme={glluTheme}>
@@ -61,12 +73,13 @@ class MyBodyType extends BasePage {
         <Content>
           <Text style={styles.selectBodyTypeText}>Choose your body shape to find fashion that fits you</Text>
           <View style={styles.container}>
-            <ArrowTextBox title={this.props.currentBodyType.name} description={this.props.currentBodyType.description} />
+            <ArrowTextBox title={this.state.currBodyType} description={this.state.currDescription} />
             <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
               sneak={100} initialPage={this.props.currentIndex}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
                 {this.props.bodyTypes[this.props.gender].map((img, i) => {
                   const isActive = i === this.props.currentIndex;
+                  isActive ? this._changeTitleAndDescription(img) : null
                   return (
                     <CarouselItem key={i} item={img} itemActive={isActive}/>
                   )
@@ -96,7 +109,8 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   bodyTypes: state.myBodyType.bodyTypes,
   currentBodyType: state.myBodyType.currentBodyType,
-  currentIndex: state.myBodyType.currentIndex
+  currentIndex: state.myBodyType.currentIndex,
+  gender: state.user.gender
 });
 
 export default connect(mapStateToProps, bindAction)(MyBodyType);

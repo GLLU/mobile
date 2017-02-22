@@ -50,6 +50,7 @@ class MyBodyMeasure extends BasePage {
   }
 
   render() {
+    console.log('bodytype',this.props.currentBodyType)
     return (
       <Container theme={glluTheme}>
         <Header>
