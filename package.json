@@ -36,6 +36,7 @@
     "react-native-navigation-redux-helpers": "^0.4.1",
     "react-native-radio-buttons": "^0.13.0",
     "react-native-scrollable-tab-view": "^0.7.0",
+    "react-native-share": "^1.0.19",
     "react-native-simple-radio-button": "^2.4.0",
     "react-native-store": "^0.4.1",
     "react-native-swiper": "^1.5.4",

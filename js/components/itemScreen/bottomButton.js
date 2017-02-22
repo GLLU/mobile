@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
 import styles from './styles';
+import SocialShare from '../../lib/SocialShare';
 
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
@@ -41,7 +42,7 @@ export default class BottomButton extends Component {
   }
 
   _onShareClicked() {
-    console.log('share Button clicked');
+    SocialShare.share('facebook');
   }
 
   render() {
