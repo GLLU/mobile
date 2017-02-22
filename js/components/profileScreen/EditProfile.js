@@ -32,7 +32,7 @@ class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      about_me: this.props.user.about_me ? this.props.user.about_me : 'Please add About me',
+      about_me: this.props.user.about_me ? this.props.user.about_me : '',
     }
   }
 

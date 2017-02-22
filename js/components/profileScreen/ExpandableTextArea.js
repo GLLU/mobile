@@ -29,6 +29,8 @@ class ExpandableTextArea extends Component {
                    numberOfLines={5}
                    multiline={true}
                    value={this.props.text}
+                   placeholder={'Tell your followers a bit about yourself!'}
+                   placeholderTextColor="gray"
                    onChangeText={(text) => this.props.handleTextInput(text)}
                    onContentSizeChange={(event) => this.setState({height: event.nativeEvent.contentSize.height})}
                    editable={true} />

@@ -128,15 +128,14 @@ class ProfileScreen extends BasePage {
     if (!_.isEmpty(user)) {
       let avatarUrl = avatar ? avatar.url : null;
       return (
-        <Container theme={glluTheme}>
-          <Content>
+        <Container>
             <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
               <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
               <View style={styles.header}>
                 <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
                 { this._renderleftBtn() }
                 </TouchableOpacity>
-                { avatarUrl ? 
+                { avatarUrl ?
                 <ProfileView profilePic={avatarUrl}
                              name={userData.name}
                              username={userData.username}
@@ -152,7 +151,6 @@ class ProfileScreen extends BasePage {
               { this._renderStats() }
             </Image>
             <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} />
-          </Content>
         </Container>
       )
     }
