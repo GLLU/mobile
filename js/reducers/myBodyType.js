@@ -122,17 +122,15 @@ const bodyTypeList = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [BODY_TYPE_CHANGE_SLIDING]: (state, action) => {
-    console.log('stateee',state)
-    const currentItem = Object.assign({},bodyTypeList[state.gender][action.payload.selectedIndex]);
+    const currentItem = Object.assign({},bodyTypeList[action.payload.gender][action.payload.index]);
     return { ...state
       , currentBodyType: currentItem
-      , currentIndex: action.payload.selectedIndex
+      , currentIndex: action.payload.index
     }
   },
   [GET_CURRENT_USER_BODY_TYPE]: (state, action) => {
     const usersBodyType = _.find(bodyTypeList[action.payload.gender], {body_type: action.payload.bodyType});
     const currentItem = Object.assign({},usersBodyType);
-    console.log('curritem',currentItem);
     return { ...state
       , currentBodyType: currentItem
       , currentIndex: action.payload.selectedIndex

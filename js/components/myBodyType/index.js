@@ -47,8 +47,13 @@ class MyBodyType extends BasePage {
   }
 
   _bodyTypeChange(index) {
+    const { gender } = this.props
     setTimeout(()=> {
-      this.props.changeBodyType(index);
+      let data = {
+        index,
+        gender
+      }
+      this.props.changeBodyType(data);
     }, 200);
   }
 
