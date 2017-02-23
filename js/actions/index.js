@@ -6,7 +6,7 @@ import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
 import { getUserLooksData } from './looks';
-import { getFeed } from './feed';
+import { getFeed, resetFeed, loadMore } from './feed';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import { addNewLook,
          editTag,
@@ -103,4 +103,6 @@ export {
   likeUpdate,
   unLikeUpdate,
   getFeed,
+  resetFeed,
+  loadMore,
 };

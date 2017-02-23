@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SET_FLAT_LOOKS_FEED_DATA } from '../actions/feed';
+import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA } from '../actions/feed';
 import { SET_LOOK_LIKE_STATE } from '../actions/likes';
 
 const initialState = {
@@ -17,6 +17,21 @@ const initialState = {
     }
   },
 };
+
+const parseLook = function(look) {
+  const cover = _.find(look.cover, x => x.version == 'medium');
+  return Object.assign({}, {
+    liked: look.is_liked,
+    type: look.user_size.body_type,
+    id: look.id,
+    likes: look.likes,
+    user_id: look.user_id,
+    uri: cover ? cover.url : null,
+    width: cover ? cover.width : null,
+    height: cover ? cover.height : null,
+  });
+}
+
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_LOOK_LIKE_STATE]: (state, action) => {
@@ -37,25 +52,24 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
-    const flatLooksData = _.union(currentLooksData, action.payload.data.looks.map(look => {
-        const cover = _.find(look.cover, x => x.version == 'medium');
-        return Object.assign({}, {
-          liked: look.is_liked,
-          type: look.user_size.body_type,
-          id: look.id,
-          likes: look.likes,
-          user_id: look.user_id,
-          uri: cover ? cover.url : null,
-          width: cover ? cover.width : null,
-          height: cover ? cover.height : null,
-        });
-      })
-    );
+    const newData = action.payload.data.looks.map(look => parseLook(look));
+    const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
+    console.log('flatLooksData', flatLooksData, currentLooksData)
     return {
       ...state,
       flatLooksData,
       meta,
       query,
+    }
+  },
+  [RESET_FEED_DATA]: (state, { payload }) => {
+    console.log('reducers RESET_FEED_DATA', payload)
+    const flatLooksData = payload.data.looks.map(look => parseLook(look));
+    return {
+      ...state,
+      flatLooksData,
+      meta: payload.data.meta,
+      query: payload.query
     }
   }
 }

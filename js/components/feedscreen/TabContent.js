@@ -4,12 +4,9 @@ import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text } fro
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
-import _ from 'lodash';
-import { showBodyTypeModal } from '../../actions/myBodyType';
-import { actions } from 'react-native-navigation-redux-helpers';
-import navigateTo from '../../actions/sideBarNav';
 import Spinner from '../loaders/Spinner';
-import { likeUpdate, unLikeUpdate, getFeed } from '../../actions';
+import _ from 'lodash';
+import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -38,6 +35,7 @@ class TabContent extends Component {
       isLoading: false,
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
+    this.loadMoreAsync = _.debounce(this.loadMore, 100)
     this.showBodyModal = _.once(this._showBodyModal);
     this.layoutWidth = 0;
   }
@@ -81,26 +79,32 @@ class TabContent extends Component {
       const currentScroll = event.nativeEvent.contentOffset.y
       const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
       if (compare <= 1) {
-        console.log('Load more items');
-        const { total } = this.props.meta;
-        const pageSize = this.props.query.page.size;
-        const pageNumber = this.props.query.page.number;
-        const { flatLooks } = this.props;
-        
-        if (pageSize * pageNumber < total) {
-          const nextPageNumber = pageNumber + 1;
-          this.setState({isLoading: true}, () => {
-            this.props.getFeed({page: { number: nextPageNumber }}).then(() => {
-              this.setState({isLoading: false});
-            }).catch(err => {
-              console.log('error', err);
-              this.setState({isLoading: false});
-            });  
-          });
-        } else {
-          console.log('end of feed');
-        }
+        this.loadMoreAsync();
       }
+    }
+  }
+
+  loadMore() {
+    if (this.state.isLoading) {
+      return;
+    }
+    const { meta: { total }, query, flatLooks } = this.props;
+    const pageSize = query.page.size;
+    const pageNumber = query.page.number;
+    
+    console.log('Load more items', total, pageSize, pageNumber);
+
+    if (pageSize * pageNumber < total) {
+      this.setState({isLoading: true}, () => {
+        this.props.loadMore().then(() => {
+          this.setState({isLoading: false});
+        }).catch(err => {
+          console.log('error', err);
+          this.setState({isLoading: false});
+        });  
+      });
+    } else {
+      console.log('end of feed');
     }
   }
 
@@ -186,7 +190,8 @@ function bindActions(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
-    getFeed: (query) => dispatch(getFeed(query))
+    getFeed: (query) => dispatch(getFeed(query)),
+    loadMore: () => dispatch(loadMore()),
   };
 }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Container, Content } from 'native-base';
 import { connect } from 'react-redux';
-import { getFeed } from '../../actions';
+import { getFeed, resetFeed, loadMore } from '../../actions';
 import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import FilterBar from './filters/FilterBar';
 import RecentTab from './RecentTab';
@@ -54,6 +54,9 @@ class MainView extends Component {
 
   _filterFeed(query, reset = false) {
     console.log('_filterFeed', query);
+    if (reset) {
+      return this.props.resetFeed();
+    }
     let newState = {};
     const oldState = _.cloneDeep(this.props.query);
     if (reset) {
@@ -132,7 +135,9 @@ class MainView extends Component {
 
 function bindActions(dispatch) {
   return {
-    getFeed: (query) => dispatch(getFeed(query))
+    getFeed: (query) => dispatch(getFeed(query)),
+    resetFeed: () => dispatch(resetFeed()),
+    loadMore: () => dispatch(loadMore()),
   };
 }
 
