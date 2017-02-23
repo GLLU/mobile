@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import { View, Container, Content } from 'native-base';
 import { connect } from 'react-redux';
 import { getFeed } from '../../actions';
@@ -8,6 +9,14 @@ import RecentTab from './RecentTab';
 import BestMatchTab from './BestMatchTab';
 import tabTheme from './../../themes/tab';
 import styles from './styles';
+import _ from 'lodash';
+
+const myStyles = StyleSheet.create({
+  mainView: {
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+});
 
 class MainView extends Component {
   static propTypes = {
@@ -22,9 +31,9 @@ class MainView extends Component {
       isOpen: false,
       currFeedTypeSelected: 'relevant',
       currFeedCategorySelected: '',
-      searchTerm: this.props.searchTerm
+      searchTerm: this.props.searchTerm,
+      filterHeight: 45,
     };
-
   }
 
   componentWillMount() {
@@ -63,9 +72,9 @@ class MainView extends Component {
 
   _renderFeed() {
     if(this.state.currFeedTypeSelected === 'relevant') {
-      return <BestMatchTab handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH' looks={this.props.looks}/>
+      return <BestMatchTab filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
     } else {
-      return <RecentTab tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)} looks={this.props.looks}/>
+      return <RecentTab  filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
     }
   }
 
@@ -76,15 +85,31 @@ class MainView extends Component {
       this._renderFeed()
     }
   }
+
+  handleFilterBarHeightChanged(height) {
+    this.setState({filterHeight: height});
+  }
+
+  _handleMainviewHeight(e) {
+    const height = e.nativeEvent.layout.height;
+    this.mainViewHeight = height;
+  }
+
   render() {
+    let mainViewStyle = {flexGrow: 1};
+    if (this.mainViewHeight) {
+      mainViewStyle = _.merge(mainViewStyle, { height: this.mainViewHeight - this.state.filterHeight });
+    }
     return(
-      <View style={styles.mainView} scrollEnabled={false}>
-        <Container>
-            <Content theme={tabTheme} scrollEnabled={false}>
-              <FilterBar filterFeed={(type, category, term) => this._filterFeed(type, category, term)} clearSearchTerm={this.props.clearSearchTerm}/>
-              { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }
-            </Content>
-        </Container>
+      <View style={myStyles.mainView}>
+        <FilterBar
+            filterFeed={(type, category, term) => this._filterFeed(type, category, term)}
+            clearSearchTerm={this.props.clearSearchTerm}
+            onHeightChanged={this.handleFilterBarHeightChanged.bind(this)}
+            />
+        <View style={mainViewStyle} onLayout={e => this._handleMainviewHeight(e)}>
+          { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }
+        </View>
       </View>
     )
   }
@@ -98,7 +123,6 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   isLoading: state.api.isReading,
-  looks: state.feed.looks,
   navigation: state.cardNavigation,
 });
 

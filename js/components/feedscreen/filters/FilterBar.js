@@ -7,21 +7,24 @@ import {View, Text, Switch, TouchableWithoutFeedback, Dimensions, StyleSheet} fr
 import SearchBar from '../SearchBar'
 
 import CategoryStrip from './CategoryStrip';
+const MK = require('react-native-material-kit');
 
-import styles from '../styles';
+const {
+  MKColor,
+} = MK;
 
 const myStyles = StyleSheet.create({
+  container: {
+    backgroundColor: 'transparent',
+  },
   filter: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#F5F5F5',
-    padding: 5,
-    paddingBottom: 10,
-    height: 45,
   },
   btnFilter: {
     marginLeft: 5,
+    alignSelf: 'center',
   },
   btnCloseFilter: {
     marginLeft: 15,
@@ -39,14 +42,55 @@ const myStyles = StyleSheet.create({
   smallBtn: {
     fontSize: 15
   },
+  Textlabel: {
+    paddingTop: 0,
+    fontSize: 15,
+    fontWeight: 'normal',
+    textAlign: 'left',
+  },
+  TextResults: {
+    paddingTop: 12,
+    textAlign: 'left',
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#757575'
+  },
+  filterActions: {
+    backgroundColor: '#F5F5F5',
+    padding: 10,
+    marginBottom: 10,
+    height: 150,
+  },
+  filterActionsGrid: {
+    backgroundColor: '#FFFFFF',
+    height: 90,
+  },
+  radioView: {
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  radioOption: { // the box
+    flex: 1,
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  radioOptionSelected: {
+    borderBottomColor: MKColor.Teal,
+    borderBottomWidth: 2,
+  },
+  radioBtnText: { //the text
+    color: 'lightgrey',
+    fontSize: 17,
+    textAlign: 'center',
+    paddingBottom: 5
+  },
+  radioBtnTextSelected: { //the text
+    color: MKColor.Teal
+  },
 });
 
 import { loadCategories } from '../../../actions/filters';
-const MK = require('react-native-material-kit');
-
-const {
-  MKColor,
-} = MK;
 
 const feedTypes = [ 'Best Match', 'Recent' ];
 class FilterView extends Component {
@@ -56,7 +100,8 @@ class FilterView extends Component {
     minPrice: React.PropTypes.number,
     maxPrice: React.PropTypes.number,
     filterFeed: React.PropTypes.func,
-    clearSearchTerm: React.PropTypes.func
+    clearSearchTerm: React.PropTypes.func,
+    onHeightChanged: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -67,6 +112,8 @@ class FilterView extends Component {
       feedTypeSelectedOption: 'Best Match',
       isOpen: false
     };
+
+    this.height = 0;
   }
 
   componentWillMount() {
@@ -103,41 +150,12 @@ class FilterView extends Component {
     this.setState({ isOpen: false });
   }
 
-  _renderFilterHeader(){
-    const labelColor = this.state.selectedCategory  ? '#1DE9B6' : '#212121';
-    return (
-      <View style={myStyles.filter}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
-              <Icon name="md-options" style={[styles.normalBtn, { color: labelColor }]} />
-            </Button>
-          <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
-              <Text style={[styles.Textlabel, { color: labelColor }]}>Filter by</Text>
-            </Button>
-            {this._rederFilterText()}
-        </View>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
-          <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
-            RESET
-            </Button>
-          {this.state.isOpen ?
-            <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
-                <Icon name="ios-close-circle-outline" style={[myStyles.smallBtn]} />
-            </Button>
-            :
-            null
-          }
-        </View>
-      </View>);
-  }
-
   _renderCategories() {
     const { selectedCategory } = this.state;
     const categories = this.props.categories;
     return (
       <CategoryStrip categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
   }
-
 
   _rederFilterText() {
     const filterOnChangeCategory = this.state.selectedCategory;
@@ -147,7 +165,7 @@ class FilterView extends Component {
       }
       return (
         <View>
-          <Text style={styles.TextResults}>
+          <Text style={myStyles.TextResults}>
             {filters.join(', ')}
           </Text>
         </View>);
@@ -155,7 +173,7 @@ class FilterView extends Component {
 
   renderRadioContainer(optionNodes){
     return (
-      <View style={styles.radioView}>
+      <View style={myStyles.radioView}>
         {optionNodes}
       </View>
     )
@@ -163,10 +181,10 @@ class FilterView extends Component {
 
   renderRadioOption(option, selected, onSelect, index) {
     return (
-      <View key={index} style={[styles.radioOption, selected ? styles.radioOptionSelected : null]}>
+      <View key={index} style={[myStyles.radioOption, selected ? myStyles.radioOptionSelected : null]}>
         <TouchableWithoutFeedback onPress={onSelect} >
           <View >
-            <Text style={[ styles.radioBtnText, selected ? styles.radioBtnTextSelected : null]}>{option}</Text>
+            <Text style={[ myStyles.radioBtnText, selected ? myStyles.radioBtnTextSelected : null]}>{option}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -182,10 +200,18 @@ class FilterView extends Component {
     this.props.filterFeed(type, isCategorySelected)
   }
 
+  _handleLayoutChanged(e) {
+    const height = e.nativeEvent.layout.height;
+    if (height != this.height) {
+      this.height = height;
+      this.props.onHeightChanged(height);
+    }
+  }
+
   _renderFilters() {
     return(
-      <View style={[styles.filterActions, {height: this.props.filterHeight}]}>
-        <View style={styles.filterActionsGrid}>
+      <View style={[myStyles.filterActions]}>
+        <View style={myStyles.filterActionsGrid}>
           {this._renderCategories()}
         </View>
         <RadioButtons
@@ -200,9 +226,32 @@ class FilterView extends Component {
   }
 
   render() {
+    const labelColor = this.state.selectedCategory  ? '#1DE9B6' : '#212121';
     return(
-      <View>
-        {this._renderFilterHeader()}
+      <View style={myStyles.container} onLayout={e => this._handleLayoutChanged(e)}>
+        <View style={myStyles.filter}>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
+                <Icon name="md-options" style={[myStyles.normalBtn, { color: labelColor }]} />
+              </Button>
+            <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
+                <Text style={[myStyles.Textlabel, { color: labelColor }]}>Filter by</Text>
+              </Button>
+              {this._rederFilterText()}
+          </View>
+          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
+            <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
+              RESET
+              </Button>
+            {this.state.isOpen ?
+              <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
+                  <Icon name="ios-close-circle-outline" style={[myStyles.smallBtn]} />
+              </Button>
+              :
+              null
+            }
+          </View>
+        </View>
         {this.state.isOpen ? this._renderFilters() : null}
       </View>
     )

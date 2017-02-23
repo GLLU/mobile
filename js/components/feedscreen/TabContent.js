@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
@@ -10,6 +8,7 @@ import _ from 'lodash';
 import { showBodyTypeModal } from '../../actions/myBodyType';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
+import Spinner from '../loaders/Spinner';
 import { likeUpdate, unLikeUpdate, getFeed } from '../../actions';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -33,7 +32,6 @@ class TabContent extends Component {
     super(props);
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.flatLooks);
     this.state = {
-      filterHeight: 0,
       imagesColumn1,
       imagesColumn2,
       itemScreenLook: 0,
@@ -147,8 +145,8 @@ class TabContent extends Component {
 
   _renderLoading() {
     if (this.state.isLoading) {
-      return (<View style={{flex: 1, justifyContent: 'center', height: 30, alignItems: 'center'}}>
-        <Text>Loading more</Text>
+      return (<View style={{flex: 1, justifyContent: 'center', height: 30, alignItems: 'center', margin: 5}}>
+        <Spinner/>
       </View>);
     }
 
@@ -157,20 +155,20 @@ class TabContent extends Component {
 
   render() {
     return(
-      <View style={styles.tab} scrollEnabled={false}>
-        <View style={[styles.mainGrid]}>
-          <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
-            <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight}]}>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderImages(this.state.imagesColumn1)}
-              </View>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderImages(this.state.imagesColumn2)}
-              </View>
+      <View style={styles.tab}>
+        <ScrollView
+            scrollEventThrottle={100}
+            onScroll={this.handleScroll.bind(this)}>
+          <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5}]}>
+            <View style={{flex: 0.5, flexDirection: 'column'}}>
+              {this._renderImages(this.state.imagesColumn1)}
             </View>
-            {this._renderLoading()}
-          </ScrollView>
-        </View>
+            <View style={{flex: 0.5, flexDirection: 'column'}}>
+              {this._renderImages(this.state.imagesColumn2)}
+            </View>
+          </View>
+          {this._renderLoading()}
+        </ScrollView>
       </View>
     )
   }
@@ -179,11 +177,6 @@ class TabContent extends Component {
 const styles = StyleSheet.create({
   tab: {
     backgroundColor: '#FFFFFF'
-  },
-  mainGrid: {
-    backgroundColor: '#FFFFFF',
-    height: deviceHeight,
-    marginTop: -10
   },
 });
 

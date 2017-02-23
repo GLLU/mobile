@@ -1,8 +1,34 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native'
+import { StyleSheet, Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
 
-import styles from '../styles';
+const styles = StyleSheet.create({
+  categoryItem: {
+    width: 80,
+    marginLeft: 5,
+    marginRight: 5,
+    paddingTop: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  categoryItemTitle: {
+    color: '#757575',
+    fontSize: 13,
+    textAlign: 'center',
+    height: 32
+  },
+  categoryItemImage: {
+    height: 50,
+    width: 50,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  btnCategoryItem: {
+    height: 80,
+    width: 70,
+    alignSelf: 'center',
+  },
+});
 
 class CategoryItem extends Component {
   static propTypes = {
@@ -20,9 +46,11 @@ class CategoryItem extends Component {
     const { item, selected, onPress } = this.props;
     return (<View style={styles.categoryItem}>
               <Text style={styles.categoryItemTitle}>{item.name}</Text>
-              <Button transparent style={styles.btncategoryItem} onPress={() => this.props.onPress(item)} >
-                {this._renderIcon(item.icon, selected)}
-              </Button>
+              <View style={styles.btncategoryItem}>
+                <Button transparent onPress={() => this.props.onPress(item)} >
+                  {this._renderIcon(item.icon, selected)}
+                </Button>
+              </View>
             </View>);
     }
 }

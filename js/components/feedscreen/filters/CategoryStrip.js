@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import { View } from 'native-base';
 import CategoryItem from './CategoryItem';
 
-import styles from '../styles';
+const myStyles = StyleSheet.create({
+  filterCategories: {
+    flex: 1
+  },
+});
 
 class CategoryStrip extends Component {
   static propTypes = {
@@ -25,7 +29,7 @@ class CategoryStrip extends Component {
 
   render() {
     return (
-      <View style={styles.filterCategories}>
+      <View style={myStyles.filterCategories}>
         <ScrollView
           horizontal={true}
           decelerationRate={0}
