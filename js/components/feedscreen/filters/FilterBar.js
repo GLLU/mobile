@@ -92,13 +92,17 @@ const myStyles = StyleSheet.create({
 
 import { loadCategories } from '../../../actions/filters';
 
-const feedTypes = [ 'Best Match', 'Recent' ];
+const BEST_MATCH = 'Best Match';
+const RECENT = 'Recent';
+const feedTypes = [ BEST_MATCH,  RECENT ];
 class FilterView extends Component {
   static propTypes = {
     loadCategories: React.PropTypes.func,
     categories: React.PropTypes.array,
     minPrice: React.PropTypes.number,
     maxPrice: React.PropTypes.number,
+    type: React.PropTypes.string,
+    category: React.PropTypes.string,
     filterFeed: React.PropTypes.func,
     clearSearchTerm: React.PropTypes.func,
     onHeightChanged: React.PropTypes.func,
@@ -107,9 +111,6 @@ class FilterView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCategory: null,
-      openFilter: true,
-      feedTypeSelectedOption: 'Best Match',
       isOpen: false
     };
 
@@ -121,24 +122,12 @@ class FilterView extends Component {
   }
 
   filterByCategory(item) {
-    const selectedCategory = this.state.selectedCategory;
-    const selected = selectedCategory && selectedCategory.id === item.id ? false : item;
-    this.setState({
-      selectedCategory: selected
-    });
-    let category = selected === false ? '' : item.name;
-    let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
-    this.props.filterFeed(type, category);
-    console.log(`Filter by category Id: ${item.id}`);
+    this.props.filterFeed({category: item});
   }
 
   clearFilter() {
     console.log('Clear Filter');
-    this.setState({
-      selectedCategory: null,
-    });
-    let type = this.state.feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent';
-    this.props.filterFeed(type, '')
+    this.props.filterFeed(this.props.type, '')
     this.props.clearSearchTerm();
   }
 
@@ -151,24 +140,25 @@ class FilterView extends Component {
   }
 
   _renderCategories() {
-    const { selectedCategory } = this.state;
-    const categories = this.props.categories;
+    const { category, categories } = this.props;
     return (
-      <CategoryStrip categories={categories} selectedCategory={selectedCategory} onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
+      <CategoryStrip
+          categories={categories}
+          selectedCategory={category}
+          onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
   }
 
   _rederFilterText() {
-    const filterOnChangeCategory = this.state.selectedCategory;
-      const filters = [];
-      if (filterOnChangeCategory) {
-        filters.push(this.state.selectedCategory.name);
-      }
+    if (this.props.category) {
       return (
         <View>
           <Text style={myStyles.TextResults}>
-            {filters.join(', ')}
+            {this.props.category.name}
           </Text>
         </View>);
+    }
+
+    return null;
   }
 
   renderRadioContainer(optionNodes){
@@ -191,13 +181,10 @@ class FilterView extends Component {
     )
   }
 
-  setFeedTypeSelectedOption(feedTypeSelectedOption){
-    this.setState({
-      feedTypeSelectedOption
-    })
-    let isCategorySelected = this.state.selectedCategory ? this.state.selectedCategory.name : '';
-    let type = feedTypeSelectedOption === 'Best Match' ? 'relevant' : 'recent'
-    this.props.filterFeed(type, isCategorySelected)
+  setFeedTypeSelectedOption(selectedFeedType){
+    const type = selectedFeedType == BEST_MATCH ? 'relevant' : 'recent';
+    let isCategorySelected = this.props.category ? this.props.category.name : '';
+    this.props.filterFeed({type})
   }
 
   _handleLayoutChanged(e) {
@@ -209,6 +196,7 @@ class FilterView extends Component {
   }
 
   _renderFilters() {
+    const selectedOption = this.props.type == 'relevant' ? BEST_MATCH : RECENT;
     return(
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
@@ -217,7 +205,7 @@ class FilterView extends Component {
         <RadioButtons
           options={ feedTypes }
           onSelection={ this.setFeedTypeSelectedOption.bind(this) }
-          selectedOption={ this.state.feedTypeSelectedOption }
+          selectedOption={ selectedOption }
           renderOption={ this.renderRadioOption }
           renderContainer={ this.renderRadioContainer }
         />
@@ -226,7 +214,7 @@ class FilterView extends Component {
   }
 
   render() {
-    const labelColor = this.state.selectedCategory  ? '#1DE9B6' : '#212121';
+    const labelColor = this.props.category  ? '#1DE9B6' : '#212121';
     return(
       <View style={myStyles.container} onLayout={e => this._handleLayoutChanged(e)}>
         <View style={myStyles.filter}>

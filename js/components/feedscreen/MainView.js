@@ -7,6 +7,7 @@ import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import FilterBar from './filters/FilterBar';
 import RecentTab from './RecentTab';
 import BestMatchTab from './BestMatchTab';
+import SearchBar from './SearchBar';
 import tabTheme from './../../themes/tab';
 import styles from './styles';
 import _ from 'lodash';
@@ -20,7 +21,8 @@ const myStyles = StyleSheet.create({
 
 class MainView extends Component {
   static propTypes = {
-    searchTerm: React.PropTypes.string,
+    term: React.PropTypes.string,
+    searchStatus: React.PropTypes.bool,
     clearSearchTerm: React.PropTypes.func,
   }
 
@@ -29,9 +31,9 @@ class MainView extends Component {
     this.state = {
       locked: false,
       isOpen: false,
-      currFeedTypeSelected: 'relevant',
-      currFeedCategorySelected: '',
-      searchTerm: this.props.searchTerm,
+      type: 'relevant',
+      category: '',
+      term: this.props.term,
       filterHeight: 45,
     };
   }
@@ -41,11 +43,11 @@ class MainView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.searchTerm !== this.props.searchTerm) {
+    if(nextProps.term !== this.props.term) {
       this.setState({
-        searchTerm: nextProps.searchTerm
+        term: nextProps.term
       });
-      this._filterFeed(this.state.currFeedTypeSelected, this.state.currFeedCategorySelected, nextProps.searchTerm)
+      this._filterFeed(this.state.type, this.state.category, nextProps.term)
     }
   }
 
@@ -55,23 +57,23 @@ class MainView extends Component {
     })
   }
 
-  _filterFeed(type, category = '', term = this.state.searchTerm) {
-    if(type !== this.state.currFeedTypeSelected){
-      this.setState({
-        currFeedTypeSelected: type
-      })
-    }
 
-    if(category !== this.state.currFeedCategorySelected){
-      this.setState({
-        currFeedCategorySelected: category
-      })
-    }
-    this.props.getFeed({type, category, term});
+  _filterFeed(query) {
+    console.log('_filterFeed', query);
+    const {type, category, term } = this.state;
+    let newState = _.merge({
+      type,
+      category,
+      term,
+    }, query);
+
+    this.setState(newState, () => {
+      this.props.getFeed(newState);  
+    });
   }
 
   _renderFeed() {
-    if(this.state.currFeedTypeSelected === 'relevant') {
+    if(this.state.type === 'relevant') {
       return <BestMatchTab filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
     } else {
       return <RecentTab  filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
@@ -95,6 +97,14 @@ class MainView extends Component {
     this.mainViewHeight = height;
   }
 
+  _handleSearchInput(term) {
+    this._filterFeed({term})
+  }
+
+  _clearSearchTerm() {
+    this._filterFeed({term: ''})
+  }
+
   render() {
     let mainViewStyle = {flexGrow: 1};
     if (this.mainViewHeight) {
@@ -102,8 +112,11 @@ class MainView extends Component {
     }
     return(
       <View style={myStyles.mainView}>
+        {this.props.searchStatus ? <SearchBar handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.state.term}/> : null}
         <FilterBar
-            filterFeed={(type, category, term) => this._filterFeed(type, category, term)}
+            type={this.state.type}
+            category={this.state.category}
+            filterFeed={this._filterFeed.bind(this)}
             clearSearchTerm={this.props.clearSearchTerm}
             onHeightChanged={this.handleFilterBarHeightChanged.bind(this)}
             />

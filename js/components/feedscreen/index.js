@@ -9,7 +9,6 @@ import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
 import { addNewLook, setUser, pushRoute, navigateTo } from '../../actions';
-import SearchBar from './SearchBar';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from './SelectPhoto';
 
@@ -68,23 +67,11 @@ class FeedPage extends BasePage {
         this.props.navigateTo('tagItemScreen', 'feedscreen');
       });  
     })
-  } 
-
-  _handleSearchInput(searchTerm) {
-    this.setState({
-      searchTerm
-    })
   }
 
   _handleSearchStatus(newStatus) {
     const searchStatus = newStatus === 'close' ? false : !this.state.searchStatus;
     this.setState({searchStatus})
-  }
-
-  _clearSearchTerm() {
-    this.setState({
-      searchTerm: ''
-    })
   }
 
   _handleOpenPhotoModal() {
@@ -111,8 +98,7 @@ class FeedPage extends BasePage {
         <Content
             scrollEnabled={false}
             contentContainerStyle={contentStyle}>
-          {this.state.searchStatus ? <SearchBar handleSearchInput={(searchTerm) => this._handleSearchInput(searchTerm)} clearText={this.state.searchTerm}/> : null}
-          <MainView searchTerm={this.state.searchTerm} handleSearchStatus={(newStatus) => this._handleSearchStatus(newStatus)} clearSearchTerm={() => this._clearSearchTerm()}/>
+          <MainView searchStatus={this.state.searchStatus}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
             <MyBodyModal />
