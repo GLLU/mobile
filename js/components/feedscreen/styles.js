@@ -11,39 +11,21 @@ module.exports = StyleSheet.create({
   container: {
     flex: 1,
   },
-  searchBar: {
-    position: 'relative',
-    height: 60,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  searchInputGroup: {
-    borderBottomWidth: 0,
-    alignItems: 'center',
-    flexDirection: 'row',
-    flex: 1,
-  },
-  searchInput: {
-    borderLeftWidth: 1,
-    backgroundColor: 'white',
-    borderLeftColor: 'black',
-    fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: 18,
-    fontWeight: '800'
-  },
-  searchInputBorder: {
-    borderRightWidth: 2,
-    borderColor: '#7F7F7F',
-    height: 30,
-    marginLeft: 10
-  },
-  
   tab: {
     backgroundColor: '#FFFFFF'
+  },
+  Textlabel: {
+    paddingTop: 0,
+    fontSize: 15,
+    fontWeight: 'normal',
+    textAlign: 'left'
+  },
+  TextResults: {
+    paddingTop: 12,
+    textAlign: 'left',
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#757575'
   },
   mainGrid: {
     backgroundColor: '#FFFFFF',
