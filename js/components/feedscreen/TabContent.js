@@ -11,6 +11,8 @@ import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadM
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
+const LOADER_HEIGHT = 30;
+
 class TabContent extends Component {
 
   static propTypes = {
@@ -79,13 +81,14 @@ class TabContent extends Component {
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const currentScroll = event.nativeEvent.contentOffset.y
       const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-      if (compare <= 1) {
+      if (compare <= LOADER_HEIGHT) {
         this.loadMoreAsync();
       }
     }
   }
 
   loadMore() {
+    console.log('loadMore');
     if (this.state.isLoading) {
       return;
     }
@@ -150,7 +153,7 @@ class TabContent extends Component {
   }
 
   _renderLoading() {
-    const style = {flex: 1, justifyContent: 'center', height: 30, alignItems: 'center', margin: 5};
+    const style = {flex: 1, justifyContent: 'center', height: LOADER_HEIGHT, alignItems: 'center', margin: 5};
     
     return (<View style={style}>
       {(() => {
