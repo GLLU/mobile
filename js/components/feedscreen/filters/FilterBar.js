@@ -116,18 +116,18 @@ class FilterView extends Component {
             </Button>
             {this._rederFilterText()}
         </View>
+        {this.state.isOpen ?
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
-          <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
+         <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
             RESET
-            </Button>
-          {this.state.isOpen ?
-            <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
-                <Icon name="ios-close-circle-outline" style={[myStyles.smallBtn]} />
-            </Button>
-            :
-            null
-          }
+         </Button>
+          <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
+            <Icon name="ios-close-circle-outline" style={[myStyles.smallBtn]} />
+          </Button>
         </View>
+          :
+          null
+        }
       </View>);
   }
 
