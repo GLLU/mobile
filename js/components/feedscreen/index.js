@@ -46,6 +46,7 @@ class FeedPage extends BasePage {
   }
 
   componentWillUnmount() {
+    console.log('componentWillUnmount feedscreen');
     BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
   }
 

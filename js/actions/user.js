@@ -251,7 +251,13 @@ export function changeUserAvatar(data) {
 
 export function logout() {
   return (dispatch, getState) => {
-    dispatch(navigateTo('splashscreen'))
+    const navigation = getState().cardNavigation;
+    dispatch(reset([
+      {
+        key: 'splashscreen',
+        index: 0,
+      },
+    ], navigation.key));
     Utils.resetKeychainData().then(() => {
       dispatch({
         type: RESET_STATE

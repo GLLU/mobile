@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     flexDirection: 'row',
-    justifyContent: 'space-between'
   },
   btnProfile: {
   },
@@ -85,13 +84,13 @@ class NavigationBarView extends Component {
     const userBtnIcon = this.state.hasNotify ? userWithNotifyIcon : userIcon;
     return(
       <View style={styles.navigationBar}>
-        <View style={{flexGrow: 0, flexDirection: 'row'}}>
+        <View style={{flex: 1, flexDirection: 'row'}}>
           <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
             <Image source={userBtnIcon} style={styles.btnImage} />
           </Button>
           <Text style={styles.wallet}>₤ 256.00</Text>
         </View>
-        <View style={{flexGrow: 1, flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
           <Button transparent onPress={() => this.props.handleSearchStatus()}>
             <Image source={searchIcon} style={styles.btnImage} />
           </Button>
@@ -102,7 +101,7 @@ class NavigationBarView extends Component {
             <Image source={bagIcon} style={styles.btnImage} />
           </Button>
         </View>
-        <View style={{flexGrow: 0, flexDirection: 'row'}}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
           <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </Button>
