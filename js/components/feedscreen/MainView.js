@@ -29,11 +29,6 @@ class MainView extends Component {
     this.state = {
       locked: false,
       isOpen: false,
-      query: {
-        type: 'relevant',
-        category: {},
-        term: '',
-      },
       filterHeight: 45,
       searchHeight: 60,
     };
@@ -50,7 +45,7 @@ class MainView extends Component {
   }
 
   getFeed() {
-    this.props.getFeed(this.state.query);
+    this.props.getFeed(this.props.query);
   }
 
   _clearFilter() {
@@ -58,22 +53,23 @@ class MainView extends Component {
   }
 
   _filterFeed(query, reset = false) {
+    console.log('_filterFeed', query);
     let newState = {};
-    const oldState = _.cloneDeep(this.state.query);
+    const oldState = _.cloneDeep(this.props.query);
     if (reset) {
-      newState = {type: 'relevant', category: {}, term: ''};
+      newState = {type: 'relevant', category: null, term: ''};
     } else {
-      newState = _.merge(this.state.query, query);
+      newState = _.merge(this.props.query, query);
     }
-    this.setState({query: newState}, () => {
-      if (!_.isEqual(newState, oldState)) {
-        this.getFeed();
-      }
-    });
+    
+    console.log('newState', newState);
+    if (!_.isEqual(newState, oldState)) {
+      this.props.getFeed(newState);
+    }
   }
 
   _renderFeed() {
-    if(this.state.query.type === 'relevant') {
+    if(this.props.query.type === 'relevant') {
       return <BestMatchTab filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
     } else {
       return <RecentTab  filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
@@ -118,11 +114,11 @@ class MainView extends Component {
     }
     return(
       <View style={myStyles.mainView}>
-        {this.props.searchStatus ? <SearchBar onLayout={e => this._handleSearchLayoutChanged(e)} handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.state.query.term}/> : null}
+        {this.props.searchStatus ? <SearchBar onLayout={e => this._handleSearchLayoutChanged(e)} handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.props.query.term}/> : null}
         <FilterBar
              onLayout={e => this._handleFilterLayoutChanged(e)}
-            type={this.state.query.type}
-            category={this.state.query.category}
+            type={this.props.query.type}
+            category={this.props.query.category}
             filterFeed={this._filterFeed.bind(this)}
             clearFilter={this._clearFilter.bind(this)}
             />
@@ -143,6 +139,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => ({
   isLoading: state.api.isReading,
   navigation: state.cardNavigation,
+  query: state.feed.query,
 });
 
 export default connect(mapStateToProps, bindActions)(MainView);

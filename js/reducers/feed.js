@@ -9,7 +9,7 @@ const initialState = {
   },
   query: {
     type: 'relevant',
-    category: '',
+    category: null,
     term: '',
     page: {
       size: 10,

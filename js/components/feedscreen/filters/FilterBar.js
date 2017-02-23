@@ -178,7 +178,6 @@ class FilterView extends Component {
 
   setFeedTypeSelectedOption(selectedFeedType){
     const type = selectedFeedType == BEST_MATCH ? 'relevant' : 'recent';
-    let isCategorySelected = this.props.category ? this.props.category.name : '';
     this.props.filterFeed({type})
   }
 
