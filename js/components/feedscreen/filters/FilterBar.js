@@ -119,7 +119,6 @@ class FilterView extends Component {
             </Button>
             {this._rederFilterText()}
         </View>
-
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
           {this.state.isOpen ?
          <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
@@ -132,7 +131,6 @@ class FilterView extends Component {
             <Icon name={this.state.filterStatusIcon} style={[myStyles.smallBtn]} />
           </Button>
         </View>
-
       </View>
     </TouchableHighlight>);
   }
