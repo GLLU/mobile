@@ -21,9 +21,7 @@ const myStyles = StyleSheet.create({
 
 class MainView extends Component {
   static propTypes = {
-    term: React.PropTypes.string,
     searchStatus: React.PropTypes.bool,
-    clearSearchTerm: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -31,24 +29,18 @@ class MainView extends Component {
     this.state = {
       locked: false,
       isOpen: false,
-      type: 'relevant',
-      category: '',
-      term: this.props.term,
+      query: {
+        type: 'relevant',
+        category: {},
+        term: '',
+      },
       filterHeight: 45,
+      searchHeight: 60,
     };
   }
 
   componentWillMount() {
-    this.props.getFeed({type: 'relevant'});
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.term !== this.props.term) {
-      this.setState({
-        term: nextProps.term
-      });
-      this._filterFeed(this.state.type, this.state.category, nextProps.term)
-    }
+    this.getFeed();
   }
 
   handleSwipeTab(locked) {
@@ -57,23 +49,31 @@ class MainView extends Component {
     })
   }
 
+  getFeed() {
+    this.props.getFeed(this.state.query);
+  }
 
-  _filterFeed(query) {
-    console.log('_filterFeed', query);
-    const {type, category, term } = this.state;
-    let newState = _.merge({
-      type,
-      category,
-      term,
-    }, query);
+  _clearFilter() {
+    this._filterFeed({}, true);
+  }
 
-    this.setState(newState, () => {
-      this.props.getFeed(newState);  
+  _filterFeed(query, reset = false) {
+    let newState = {};
+    const oldState = _.cloneDeep(this.state.query);
+    if (reset) {
+      newState = {type: 'relevant', category: {}, term: ''};
+    } else {
+      newState = _.merge(this.state.query, query);
+    }
+    this.setState({query: newState}, () => {
+      if (!_.isEqual(newState, oldState)) {
+        this.getFeed();
+      }
     });
   }
 
   _renderFeed() {
-    if(this.state.type === 'relevant') {
+    if(this.state.query.type === 'relevant') {
       return <BestMatchTab filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
     } else {
       return <RecentTab  filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
@@ -88,10 +88,6 @@ class MainView extends Component {
     }
   }
 
-  handleFilterBarHeightChanged(height) {
-    this.setState({filterHeight: height});
-  }
-
   _handleMainviewHeight(e) {
     const height = e.nativeEvent.layout.height;
     this.mainViewHeight = height;
@@ -101,24 +97,34 @@ class MainView extends Component {
     this._filterFeed({term})
   }
 
-  _clearSearchTerm() {
-    this._filterFeed({term: ''})
+  _handleFilterLayoutChanged(e) {
+    const height = e.nativeEvent.layout.height;
+    if (height != this.state.filterHeight) {
+      this.setState({filterHeight: height});
+    }
+  }
+
+  _handleSearchLayoutChanged(e) {
+    const height = e.nativeEvent.layout.height;
+    if (height != this.state.searchHeight) {
+      this.setState({searchHeight: height});
+    }
   }
 
   render() {
     let mainViewStyle = {flexGrow: 1};
     if (this.mainViewHeight) {
-      mainViewStyle = _.merge(mainViewStyle, { height: this.mainViewHeight - this.state.filterHeight });
+      mainViewStyle = _.merge(mainViewStyle, { height: this.mainViewHeight - this.state.filterHeight - this.state.searchHeight });
     }
     return(
       <View style={myStyles.mainView}>
-        {this.props.searchStatus ? <SearchBar handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.state.term}/> : null}
+        {this.props.searchStatus ? <SearchBar onLayout={e => this._handleSearchLayoutChanged(e)} handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.state.query.term}/> : null}
         <FilterBar
-            type={this.state.type}
-            category={this.state.category}
+             onLayout={e => this._handleFilterLayoutChanged(e)}
+            type={this.state.query.type}
+            category={this.state.query.category}
             filterFeed={this._filterFeed.bind(this)}
-            clearSearchTerm={this.props.clearSearchTerm}
-            onHeightChanged={this.handleFilterBarHeightChanged.bind(this)}
+            clearFilter={this._clearFilter.bind(this)}
             />
         <View style={mainViewStyle} onLayout={e => this._handleMainviewHeight(e)}>
           { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }

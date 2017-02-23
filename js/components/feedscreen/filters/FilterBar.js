@@ -102,10 +102,9 @@ class FilterView extends Component {
     minPrice: React.PropTypes.number,
     maxPrice: React.PropTypes.number,
     type: React.PropTypes.string,
-    category: React.PropTypes.string,
+    category: React.PropTypes.object,
     filterFeed: React.PropTypes.func,
-    clearSearchTerm: React.PropTypes.func,
-    onHeightChanged: React.PropTypes.func,
+    clearFilter: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -113,8 +112,6 @@ class FilterView extends Component {
     this.state = {
       isOpen: false
     };
-
-    this.height = 0;
   }
 
   componentWillMount() {
@@ -126,9 +123,7 @@ class FilterView extends Component {
   }
 
   clearFilter() {
-    console.log('Clear Filter');
-    this.props.filterFeed(this.props.type, '')
-    this.props.clearSearchTerm();
+    this.props.clearFilter();
   }
 
   toggleFilter() {
@@ -187,14 +182,6 @@ class FilterView extends Component {
     this.props.filterFeed({type})
   }
 
-  _handleLayoutChanged(e) {
-    const height = e.nativeEvent.layout.height;
-    if (height != this.height) {
-      this.height = height;
-      this.props.onHeightChanged(height);
-    }
-  }
-
   _renderFilters() {
     const selectedOption = this.props.type == 'relevant' ? BEST_MATCH : RECENT;
     return(
@@ -214,9 +201,9 @@ class FilterView extends Component {
   }
 
   render() {
-    const labelColor = this.props.category  ? '#1DE9B6' : '#212121';
+    const labelColor = !_.isEmpty(this.props.category) ? '#1DE9B6' : '#212121';
     return(
-      <View style={myStyles.container} onLayout={e => this._handleLayoutChanged(e)}>
+      <View style={myStyles.container}>
         <View style={myStyles.filter}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
