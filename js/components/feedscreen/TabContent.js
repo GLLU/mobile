@@ -33,6 +33,7 @@ class TabContent extends Component {
       imagesColumn2,
       itemScreenLook: 0,
       isLoading: false,
+      noMoreData: false,
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
@@ -104,6 +105,7 @@ class TabContent extends Component {
         });  
       });
     } else {
+      this.setState({noMoreData: true})
       console.log('end of feed');
     }
   }
@@ -148,13 +150,17 @@ class TabContent extends Component {
   }
 
   _renderLoading() {
-    if (this.state.isLoading) {
-      return (<View style={{flex: 1, justifyContent: 'center', height: 30, alignItems: 'center', margin: 5}}>
-        <Spinner/>
-      </View>);
-    }
+    const style = {flex: 1, justifyContent: 'center', height: 30, alignItems: 'center', margin: 5};
+    
+    return (<View style={style}>
+      {(() => {
+        if (this.state.noMoreData) {
+          return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
+        }
 
-    return null;
+        return <Spinner color='rgb(230,230,230)'/>;
+      })()}
+      </View>);
   }
 
   render() {
