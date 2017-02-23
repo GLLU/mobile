@@ -134,7 +134,7 @@ class SplashPage extends BasePage {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
                 {this.renderMainView()}
-                <Text style={styles.bottomContainerContent}>Terms of Service and Privacy Policy</Text>
+                <Text style={styles.bottomContainerContent}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
             </Image>
           </Content>
         </View>

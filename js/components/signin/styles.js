@@ -154,5 +154,14 @@ module.exports = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     width: 300
-  }
+  },
+  bottomContainerContent: {
+    color: '#E0E0E0',
+    fontSize: 12,
+    fontWeight: 'normal',
+    textAlign: 'center',
+    opacity: 0.8,
+    backgroundColor: 'transparent',
+    marginBottom: 10
+  },
 });

@@ -142,6 +142,7 @@ class SignInPage extends BasePage {
               </View>
             </View>
           </Content>
+            <Text style={[styles.bottomContainerContent]}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
           </Image>
         </View>
       </Container>
