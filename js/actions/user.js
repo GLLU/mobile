@@ -18,7 +18,7 @@ const setRestOptions = function(rest, user) {
   rest.use("options", function() {
     return {
       headers: {
-        // "Authorization": `Token token=kfPCZlx9HeV7i3J6oloiigtt`,
+        "Authorization": `Token token=${user.api_key}`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }
