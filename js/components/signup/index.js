@@ -171,7 +171,7 @@ class SignUpPage extends BasePage {
                       <Button transparent onPress={() => this.popRoute()}>
                           <Icon style={styles.headerArrow} name="ios-arrow-back" />
                       </Button>
-                      <Title style={styles.headerTitle}>Signup for Gllu</Title>
+                      <Title style={styles.headerTitle}>Sign up</Title>
                   </Header>
                   <Content scrollEnabled={false}>
                       <View style={styles.uploadImgContainer}>
