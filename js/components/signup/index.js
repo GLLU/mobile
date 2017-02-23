@@ -226,7 +226,9 @@ class SignUpPage extends BasePage {
                             <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
                         </View>
                       </View>
+
                   </Content>
+                <Text style={[styles.bottomContainerContent]}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
               </Image>
           </View>
       </Container>

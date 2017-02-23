@@ -170,5 +170,13 @@ module.exports = StyleSheet.create({
       marginTop: 15,
       opacity: 0.8
   },
-
+  bottomContainerContent: {
+    color: '#E0E0E0',
+    fontSize: 12,
+    fontWeight: 'normal',
+    textAlign: 'center',
+    marginBottom: 15,
+    opacity: 0.8,
+    backgroundColor: 'transparent'
+  },
 });
