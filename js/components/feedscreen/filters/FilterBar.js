@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {  Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import RadioButtons from 'react-native-radio-buttons';
-import {View, Text, Switch, TouchableWithoutFeedback, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet} from 'react-native';
 import SearchBar from '../SearchBar'
 
 import CategoryStrip from './CategoryStrip';
@@ -65,7 +65,8 @@ class FilterView extends Component {
       selectedCategory: null,
       openFilter: true,
       feedTypeSelectedOption: 'Best Match',
-      isOpen: false
+      isOpen: false,
+      filterStatusIcon: 'ios-arrow-forward'
     };
   }
 
@@ -96,7 +97,8 @@ class FilterView extends Component {
   }
 
   toggleFilter() {
-    this.setState({ isOpen: !this.state.isOpen });
+    let filterStatusIcon = !this.state.isOpen ? "ios-arrow-down" : "ios-arrow-forward"
+    this.setState({ isOpen: !this.state.isOpen, filterStatusIcon });
   }
 
   _handleCloseFilter() {
@@ -106,9 +108,10 @@ class FilterView extends Component {
   _renderFilterHeader(){
     const labelColor = this.state.selectedCategory  ? '#1DE9B6' : '#212121';
     return (
+    <TouchableHighlight onPress={() => this.toggleFilter()}>
       <View style={myStyles.filter}>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
+          <Button transparent  style={myStyles.btnFilter}>
               <Icon name="md-options" style={[styles.normalBtn, { color: labelColor }]} />
             </Button>
           <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
@@ -116,19 +119,20 @@ class FilterView extends Component {
             </Button>
             {this._rederFilterText()}
         </View>
-        {this.state.isOpen ?
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
+          {this.state.isOpen ?
          <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
             RESET
          </Button>
+            :
+            null
+          }
           <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
-            <Icon name="ios-close-circle-outline" style={[myStyles.smallBtn]} />
+            <Icon name={this.state.filterStatusIcon} style={[myStyles.smallBtn]} />
           </Button>
         </View>
-          :
-          null
-        }
-      </View>);
+      </View>
+    </TouchableHighlight>);
   }
 
   _renderCategories() {

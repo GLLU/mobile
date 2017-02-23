@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Input, InputGroup } from 'native-base';
+import { View, Text, Button, Input, InputGroup, Icon } from 'native-base';
 
 import styles from './styles';
 
@@ -30,13 +30,22 @@ class SearchBar extends Component {
     this.props.handleSearchInput(text)
   }
 
+  clearSearch() {
+    this.setState({
+      text: ''
+    })
+    this.props.handleSearchInput('')
+  }
+
   render() {
     return(
       <View style={styles.searchBar}>
-        <View style={styles.searchInputBorder}></View>
         <InputGroup style={styles.searchInputGroup}>
-          <Input style={styles.searchInput} placeholder='Search' onChangeText={(text) => this.handleTextInput(text)} value={this.state.text}/>
+          <Input style={styles.searchInput} placeholder='( e.g. Yellow Shirt ZARA )' onChangeText={(text) => this.handleTextInput(text)} value={this.state.text}/>
         </InputGroup>
+        <Button transparent iconRight onPress={() => this.clearSearch()} style={[styles.btnCloseFilter]}>
+          <Icon name="ios-close-circle-outline" style={[styles.smallBtn]} />
+        </Button>
       </View>
     )
   }

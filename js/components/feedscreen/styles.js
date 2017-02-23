@@ -21,7 +21,7 @@ module.exports = StyleSheet.create({
     left: 0,
     right: 0,
     height: 60,
-    paddingTop: 20,
+    paddingTop: (Platform.OS === 'ios') ? 20 : 0,
     paddingBottom: 5,
     backgroundColor: '#f2f2f2'
   },
@@ -66,18 +66,12 @@ module.exports = StyleSheet.create({
     flex: 1,
   },
   searchInput: {
-    borderLeftWidth: 1,
+    borderLeftWidth: 0,
     backgroundColor: 'white',
     borderLeftColor: 'black',
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '800'
-  },
-  searchInputBorder: {
-    borderRightWidth: 2,
-    borderColor: '#7F7F7F',
-    height: 30,
-    marginLeft: 10
   },
   mainView: {
     flex: 1,
@@ -183,4 +177,13 @@ module.exports = StyleSheet.create({
   sliderFilters: {
     marginTop: 10
   },
+  btnCloseFilter: {
+    marginLeft: 15,
+    alignSelf: 'center',
+    marginRight: 5,
+  },
+  smallBtn: {
+    fontSize: 25,
+    color: 'grey'
+  }
 });
