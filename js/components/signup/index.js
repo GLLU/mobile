@@ -171,7 +171,7 @@ class SignUpPage extends BasePage {
                       <Button transparent onPress={() => this.popRoute()}>
                           <Icon style={styles.headerArrow} name="ios-arrow-back" />
                       </Button>
-                      <Title style={styles.headerTitle}>Signup for Gllu</Title>
+                      <Title style={styles.headerTitle}>Sign up</Title>
                   </Header>
                   <Content scrollEnabled={false}>
                       <View style={styles.uploadImgContainer}>
@@ -226,7 +226,9 @@ class SignUpPage extends BasePage {
                             <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
                         </View>
                       </View>
+
                   </Content>
+                <Text style={[styles.bottomContainerContent]}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
               </Image>
           </View>
       </Container>

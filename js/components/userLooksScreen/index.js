@@ -4,7 +4,7 @@ import { Dimensions, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content, Header, View, Icon, Title, Button, Text } from 'native-base';
 import styles from './styles';
-import { addNewLook, getUserLooksData, popRoute } from '../../actions';
+import { getUserLooksData, popRoute } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import UserLooks from './UserLooks';
 
@@ -16,7 +16,6 @@ class UserLookScreen extends BasePage {
       key: React.PropTypes.string,
     }),
     pushRoute: React.PropTypes.func,
-    addNewLook: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -49,7 +48,6 @@ class UserLookScreen extends BasePage {
 function bindActions(dispatch) {
   return {
     popRoute: key => dispatch(popRoute(key)),
-    addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserLooksData: name => dispatch(getUserLooksData(name)),
   };
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {  Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import RadioButtons from 'react-native-radio-buttons';
-import {View, Text, Switch, TouchableWithoutFeedback, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet} from 'react-native';
 import SearchBar from '../SearchBar'
 
 import CategoryStrip from './CategoryStrip';
@@ -40,7 +40,8 @@ const myStyles = StyleSheet.create({
     fontWeight: '500',
   },
   smallBtn: {
-    fontSize: 15
+    fontSize: 15,
+    color: 'grey',
   },
   Textlabel: {
     paddingTop: 0,
@@ -110,7 +111,8 @@ class FilterView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      filterStatusIcon: 'ios-arrow-forward'
     };
   }
 
@@ -127,7 +129,8 @@ class FilterView extends Component {
   }
 
   toggleFilter() {
-    this.setState({ isOpen: !this.state.isOpen });
+    let filterStatusIcon = !this.state.isOpen ? "ios-arrow-down" : "ios-arrow-forward"
+    this.setState({ isOpen: !this.state.isOpen, filterStatusIcon });
   }
 
   _handleCloseFilter() {
@@ -219,7 +222,7 @@ class FilterView extends Component {
               </Button>
             {this.state.isOpen ?
               <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
-                  <Icon name="ios-close-circle-outline" style={[myStyles.smallBtn]} />
+                  <Icon name={this.state.filterStatusIcon} style={[myStyles.smallBtn]} />
               </Button>
               :
               null

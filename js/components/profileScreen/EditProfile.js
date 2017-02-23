@@ -16,7 +16,7 @@ import InformationTextIcon from '../common/informationTextIcon';
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 
-const profileBackground = require('../../../images/backgrounds/profile-screen-background.jpeg');
+const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const { popRoute } = actions;
 
 class EditProfile extends Component {
@@ -32,7 +32,7 @@ class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      about_me: this.props.user.about_me ? this.props.user.about_me : 'Please add About me',
+      about_me: this.props.user.about_me ? this.props.user.about_me : '',
     }
   }
 

@@ -4,9 +4,12 @@ const w = Dimensions.get('window').width
 const h = Dimensions.get('window').height
 
 export default StyleSheet.create({
+  content:{
+    height: h
+  },
   bg: {
     flex: 1,
-    width: null,
+    width: w,
     height: h
   },
   linearGradient: {

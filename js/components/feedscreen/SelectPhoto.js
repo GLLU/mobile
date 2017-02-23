@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
-import { Button } from 'native-base';
+import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
 import FontSizeCalculator from './../../calculators/FontSize';
-
+const MK = require('react-native-material-kit');
+const galleryIcon = require('../../../images/icons/original-gallery.png')
+const cameraIcon = require('../../../images/icons/original-photo-camera.png')
 const deviceWidth = Dimensions.get('window').width;
 const wModal = deviceWidth / 1.5;
 const hModal = wModal / 2;
+
+const {
+  MKColor,
+} = MK;
 
 const styles = StyleSheet.create({
   photoModal: {
     width: wModal,
     height: hModal,
     backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
     borderRadius: 0,
     overflow: 'hidden',
   },
@@ -60,20 +63,27 @@ class SelectPhoto extends Component {
             backdropPressToClose ={true}
             swipeToClose={true}
             position={"center"}>
-            <Button
+            <TouchableHighlight
                 onPress={() => this._handleSelectPhoto('gallery')}
                 transparent
-                style={{alignSelf: 'center', marginBottom: 10}}
-                textStyle={{fontSize: new FontSizeCalculator(15).getSize()}}>
-              Choose from Gallery
-            </Button>
-            <Button
-                onPress={() => this._handleSelectPhoto('camera')}
-                transparent
-                style={{alignSelf: 'center', marginTop: 10}}
-                textStyle={{fontSize: new FontSizeCalculator(15).getSize()}}>
-              Take one with the Camera
-            </Button>
+                style={{flex: 0.5, flexDirection: 'row', justifyContent: 'center',alignItems: 'center'}}
+            >
+              <View style={{flexDirection: 'row'}}>
+                <Image source={galleryIcon} style={[ {width: 20, height: 20, marginRight: 10}]} />
+                <Text style={{ fontSize: 14, color: MKColor.Teal, alignSelf: 'center' }}>Choose from Gallery</Text>
+              </View>
+            </TouchableHighlight>
+            <View style={{width: wModal-20, marginLeft: 10, marginRight: 10, borderWidth: 0.7, borderColor: 'grey'}} />
+            <TouchableHighlight
+              onPress={() => this._handleSelectPhoto('camera')}
+              transparent
+              style={{flex: 0.5, flexDirection: 'row', justifyContent: 'center',alignItems: 'center'}}
+            >
+              <View style={{flexDirection: 'row'}}>
+                <Image source={cameraIcon} style={[ {width: 20, height: 20, marginRight: 10}]} />
+                <Text style={{ fontSize: 14, color: MKColor.Teal, alignSelf: 'center' }}>Take one with the Camera</Text>
+              </View>
+            </TouchableHighlight>
           </Modal>
     );
   }

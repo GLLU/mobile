@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Text, Button, Input, InputGroup } from 'native-base';
+import { View, Text, Button, Input, InputGroup, Icon } from 'native-base';
 import _ from 'lodash';
+import styles from './styles';
 
 const myStyles = StyleSheet.create({
   searchBar: {
@@ -21,18 +22,17 @@ const myStyles = StyleSheet.create({
     flex: 1,
   },
   searchInput: {
-    borderLeftWidth: 1,
+    borderLeftWidth: 0,
     backgroundColor: 'white',
     borderLeftColor: 'black',
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '800'
   },
-  searchInputBorder: {
-    borderRightWidth: 2,
-    borderColor: '#7F7F7F',
-    height: 30,
-    marginLeft: 10
+  btnCloseFilter: {
+    marginLeft: 15,
+    alignSelf: 'center',
+    marginRight: 5,
   },
 });
 
@@ -70,13 +70,22 @@ class SearchBar extends Component {
     });
   }
 
+  clearSearch() {
+    this.setState({
+      text: ''
+    })
+    this.props.handleSearchInput('')
+  }
+
   render() {
     return(
       <View style={myStyles.searchBar}>
-        <View style={myStyles.searchInputBorder}></View>
         <InputGroup style={myStyles.searchInputGroup}>
-          <Input style={myStyles.searchInput} placeholder='Search' onChangeText={(text) => this.handleTextInput(text)} value={this.state.text}/>
+          <Input style={myStyles.searchInput} placeholder='( e.g. Yellow Shirt ZARA )' onChangeText={(text) => this.handleTextInput(text)} value={this.state.text}/>
         </InputGroup>
+        <Button transparent iconRight onPress={() => this.clearSearch()} style={[myStyles.btnCloseFilter]}>
+          <Icon name="ios-close-circle-outline" style={[styles.smallBtn]} />
+        </Button>
       </View>
     )
   }

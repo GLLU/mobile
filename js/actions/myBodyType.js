@@ -4,12 +4,10 @@ export const BODY_TYPE_HIDE_MODAL = 'BODY_TYPE_HIDE_MODAL'
 export const GET_CURRENT_USER_BODY_TYPE = 'GET_CURRENT_USER_BODY_TYPE'
 
 // Actions
-export function changeBodyType(index) {
+export function changeBodyType(data) {
   return {
     type: BODY_TYPE_CHANGE_SLIDING,
-    payload: {
-      selectedIndex: index
-    }
+    payload: data
   }
 }
 
