@@ -160,8 +160,11 @@ class TabContent extends Component {
         if (this.state.noMoreData) {
           return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
         }
+        if (this.state.isLoading) {
+          return <Spinner color='rgb(230,230,230)'/>;
+        }
 
-        return <Spinner color='rgb(230,230,230)'/>;
+        return null;
       })()}
       </View>);
   }

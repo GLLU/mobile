@@ -51,6 +51,7 @@ const myStyles = StyleSheet.create({
   },
   TextResults: {
     paddingTop: 12,
+    marginLeft: 10,
     textAlign: 'left',
     fontSize: 12,
     fontWeight: 'normal',
@@ -58,7 +59,7 @@ const myStyles = StyleSheet.create({
   },
   filterActions: {
     backgroundColor: '#F5F5F5',
-    padding: 10,
+    padding: 5,
     marginBottom: 10,
     height: 150,
   },
@@ -149,11 +150,10 @@ class FilterView extends Component {
   _rederFilterText() {
     if (this.props.category) {
       return (
-        <View>
           <Text style={myStyles.TextResults}>
             {this.props.category.name}
           </Text>
-        </View>);
+        );
     }
 
     return null;
@@ -210,11 +210,9 @@ class FilterView extends Component {
           <View style={{flex: 1, flexDirection: 'row'}}>
             <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
                 <Icon name="md-options" style={[myStyles.normalBtn, { color: labelColor }]} />
-              </Button>
-            <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
                 <Text style={[myStyles.Textlabel, { color: labelColor }]}>Filter by</Text>
-              </Button>
-              {this._rederFilterText()}
+            </Button>
+            {this._rederFilterText()}
           </View>
           <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
             <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
