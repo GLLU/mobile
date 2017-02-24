@@ -1,54 +1,60 @@
-'use strict';
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
+import Spinner from '../loaders/Spinner';
 import _ from 'lodash';
-import { showBodyTypeModal } from '../../actions/myBodyType';
-import { actions } from 'react-native-navigation-redux-helpers';
-import navigateTo from '../../actions/sideBarNav';
-import { likeUpdate, unLikeUpdate } from '../../actions/likes';
+import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 
-const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
+
+const LOADER_HEIGHT = 30;
 
 class TabContent extends Component {
 
   static propTypes = {
     hasUserSize: React.PropTypes.bool,
     flatLooks: React.PropTypes.array,
+    meta: React.PropTypes.object,
+    query: React.PropTypes.object,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
-    like: React.PropTypes.func,
-    unlike: React.PropTypes.func,
+    likeUpdate: React.PropTypes.func,
+    unLikeUpdate: React.PropTypes.func,
+    getFeed: React.PropTypes.func,
+    showBodyTypeModal: React.PropTypes.func,
+    loadMore: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.flatLooks);
     this.state = {
-      filterHeight: 0,
       imagesColumn1,
       imagesColumn2,
-      itemScreenLook: 0
+      itemScreenLook: 0,
+      isLoading: false,
+      noMoreData: false,
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
+    this.loadMoreAsync = _.debounce(this.loadMore, 100)
     this.showBodyModal = _.once(this._showBodyModal);
     this.layoutWidth = 0;
   }
 
   componentWillReceiveProps(nextProps) {
-    const { imagesColumn1, imagesColumn2 } = this.distributeImages(nextProps.flatLooks);
+    const total = nextProps.meta.total;
+    const flatLooks = nextProps.flatLooks;
+    console.log('flatLooks', flatLooks);
+    const { imagesColumn1, imagesColumn2 } = this.distributeImages(flatLooks);
     this.setState({
       imagesColumn1,
       imagesColumn2,
-    })
+      total,
+    });
   }
-
-
 
   distributeImages(looks) {
     const imagesColumn1 = [];
@@ -69,16 +75,40 @@ class TabContent extends Component {
   }
 
   handleScroll(event) {
-    if (!this.props.hasUserSize) {
+    if (this.props.hasUserSize) {
       this.scrollCallAsync(event);
     } else {
       const contentSizeHeight = event.nativeEvent.contentSize.height;
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const currentScroll = event.nativeEvent.contentOffset.y
       const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-      if (compare >= 1) {
-        // console.log('Load more items');
+      if (compare <= LOADER_HEIGHT) {
+        this.loadMoreAsync();
       }
+    }
+  }
+
+  loadMore() {
+    console.log('loadMore');
+    if (this.state.isLoading) {
+      return;
+    }
+    const { meta: { total }, query } = this.props;
+    const pageSize = query.page.size;
+    const pageNumber = query.page.number;
+
+    if (pageSize * pageNumber < total) {
+      this.setState({isLoading: true}, () => {
+        this.props.loadMore().then(() => {
+          this.setState({isLoading: false});
+        }).catch(err => {
+          console.log('error', err);
+          this.setState({isLoading: false});
+        });  
+      });
+    } else {
+      this.setState({noMoreData: true})
+      console.log('end of feed');
     }
   }
 
@@ -86,7 +116,7 @@ class TabContent extends Component {
      this.props.showBodyTypeModal();
   }
 
-  scrollDebounced(event) {
+  scrollDebounced(e) {
      this.showBodyModal();
   }
 
@@ -121,22 +151,39 @@ class TabContent extends Component {
     });
   }
 
+  _renderLoading() {
+    const style = {flex: 1, justifyContent: 'center', height: LOADER_HEIGHT, alignItems: 'center', margin: 5};
+    
+    return (<View style={style}>
+      {(() => {
+        if (this.state.noMoreData) {
+          return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
+        }
+        if (this.state.isLoading) {
+          return <Spinner color='rgb(230,230,230)'/>;
+        }
+
+        return null;
+      })()}
+      </View>);
+  }
+
   render() {
-    const paddingBottom = 150;
     return(
-      <View style={styles.tab} scrollEnabled={false}>
-        <View style={[styles.mainGrid]}>
-          <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}>
-            <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5, paddingBottom: this.state.filterHeight + paddingBottom}]}>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderImages(this.state.imagesColumn1)}
-              </View>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderImages(this.state.imagesColumn2)}
-              </View>
+      <View style={styles.tab}>
+        <ScrollView
+            scrollEventThrottle={100}
+            onScroll={this.handleScroll.bind(this)}>
+          <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5}]}>
+            <View style={{flex: 0.5, flexDirection: 'column'}}>
+              {this._renderImages(this.state.imagesColumn1)}
             </View>
-          </ScrollView>
-        </View>
+            <View style={{flex: 0.5, flexDirection: 'column'}}>
+              {this._renderImages(this.state.imagesColumn2)}
+            </View>
+          </View>
+          {this._renderLoading()}
+        </ScrollView>
       </View>
     )
   }
@@ -146,28 +193,28 @@ const styles = StyleSheet.create({
   tab: {
     backgroundColor: '#FFFFFF'
   },
-  mainGrid: {
-    backgroundColor: '#FFFFFF',
-    height: deviceHeight,
-    marginTop: -10
-  },
 });
 
 function bindActions(dispatch) {
   return {
-    showBodyTypeModal: name => dispatch(showBodyTypeModal()),
+    showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    getFeed: (query) => dispatch(getFeed(query)),
+    loadMore: () => dispatch(loadMore()),
   };
 }
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
   const user_size = hasUserSize ? state.user.user_size : '';
+  console.log(state.feed.query);
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData,
+    meta: state.feed.meta,
+    query: state.feed.query,
     hasUserSize,
     user_size: user_size,
     user_gender: state.user.gender

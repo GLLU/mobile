@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Dimensions, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, View } from 'native-base';
+import { Container, Header, Content, View } from 'native-base';
 import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
 import { addNewLook, setUser, pushRoute, navigateTo } from '../../actions';
-import SearchBar from './SearchBar';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from './SelectPhoto';
 
@@ -34,9 +33,8 @@ class FeedPage extends BasePage {
       searchTerm: '',
       searchStatus: false,
       photoModal: false,
+      contentHeight: null
     };
-
-    this.notifyError(new Error("Test Error after merge"));
   }
 
   componentWillMount() {
@@ -48,6 +46,7 @@ class FeedPage extends BasePage {
   }
 
   componentWillUnmount() {
+    console.log('componentWillUnmount feedscreen');
     BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
   }
 
@@ -69,12 +68,6 @@ class FeedPage extends BasePage {
         this.props.navigateTo('tagItemScreen', 'feedscreen');
       });  
     })
-  } 
-
-  _handleSearchInput(searchTerm) {
-    this.setState({
-      searchTerm
-    })
   }
 
   _handleSearchStatus(newStatus) {
@@ -82,30 +75,37 @@ class FeedPage extends BasePage {
     this.setState({searchStatus})
   }
 
-  _clearSearchTerm() {
-    this.setState({
-      searchTerm: ''
-    })
-  }
-
   _handleOpenPhotoModal() {
     this.setState({photoModal: true});
   }
 
+  _handleLayout(e) {
+    const height = e.nativeEvent.layout.height;
+    console.log('container height', height, glluTheme.toolbarHeight);
+    this.setState({contentHeight: height - glluTheme.toolbarHeight});
+  }
+
   render() {
     const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};
+    let contentStyle = { flex: 1 };
+    if (this.state.contentHeight) {
+      _.merge(contentStyle, { height: this.state.contentHeight });
+    }
     return (
-      <Container style={styles.container} theme={glluTheme}>
-        <View>
+      <Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
+        <Header style={{backgroundColor: '#f2f2f2', paddingHorizontal: 0}}>
           <NavigationBarView handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
-          {this.state.searchStatus ? <SearchBar handleSearchInput={(searchTerm) => this._handleSearchInput(searchTerm)} clearText={this.state.searchTerm}/> : null}
-          <MainView searchTerm={this.state.searchTerm} handleSearchStatus={(newStatus) => this._handleSearchStatus(newStatus)} clearSearchTerm={() => this._clearSearchTerm()}/>
+        </Header>
+        <Content
+            scrollEnabled={false}
+            contentContainerStyle={contentStyle}>
+          <MainView searchStatus={this.state.searchStatus}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
             <MyBodyModal />
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)}/>
-        </View>
+        </Content>
       </Container>
     );
   }

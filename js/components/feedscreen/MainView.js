@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
-import { View, Container, Content } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { View } from 'native-base';
 import { connect } from 'react-redux';
-import { getFeed } from '../../actions/feed';
+import { getFeed, resetFeed, loadMore } from '../../actions';
 import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import FilterBar from './filters/FilterBar';
 import RecentTab from './RecentTab';
 import BestMatchTab from './BestMatchTab';
-import tabTheme from './../../themes/tab';
-import styles from './styles';
+import SearchBar from './SearchBar';
+import _ from 'lodash';
+
+const myStyles = StyleSheet.create({
+  mainView: {
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+});
 
 class MainView extends Component {
   static propTypes = {
-    searchTerm: React.PropTypes.string,
-    clearSearchTerm: React.PropTypes.func,
+    searchStatus: React.PropTypes.bool,
+    isLoading: React.PropTypes.bool,
+    query: React.PropTypes.object,
+    navigation: React.PropTypes.object,
+    getFeed: React.PropTypes.func,
+    resetFeed: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -20,24 +32,13 @@ class MainView extends Component {
     this.state = {
       locked: false,
       isOpen: false,
-      currFeedTypeSelected: 'relevant',
-      currFeedCategorySelected: '',
-      searchTerm: this.props.searchTerm
+      filterHeight: 45,
+      searchHeight: 60,
     };
-
   }
 
   componentWillMount() {
-    this.props.getFeed('relevant');
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.searchTerm !== this.props.searchTerm) {
-      this.setState({
-        searchTerm: nextProps.searchTerm
-      });
-      this._filterFeed(this.state.currFeedTypeSelected, this.state.currFeedCategorySelected, nextProps.searchTerm)
-    }
+    this.getFeed();
   }
 
   handleSwipeTab(locked) {
@@ -46,26 +47,38 @@ class MainView extends Component {
     })
   }
 
-  _filterFeed(type, category = '', term = this.state.searchTerm) {
-    if(type !== this.state.currFeedTypeSelected){
-      this.setState({
-        currFeedTypeSelected: type
-      })
-    }
+  getFeed() {
+    this.props.getFeed(this.props.query);
+  }
 
-    if(category !== this.state.currFeedCategorySelected){
-      this.setState({
-        currFeedCategorySelected: category
-      })
+  _clearFilter() {
+    this._filterFeed({}, true);
+  }
+
+  _filterFeed(query, reset = false) {
+    console.log('_filterFeed', query);
+    if (reset) {
+      return this.props.resetFeed();
     }
-    this.props.getFeed(type, category, term);
+    let newState = {};
+    const oldState = _.cloneDeep(this.props.query);
+    if (reset) {
+      newState = {type: 'relevant', category: null, term: ''};
+    } else {
+      newState = _.merge(this.props.query, query);
+    }
+    
+    console.log('newState', newState);
+    if (!_.isEqual(newState, oldState)) {
+      this.props.getFeed(newState);
+    }
   }
 
   _renderFeed() {
-    if(this.state.currFeedTypeSelected === 'relevant') {
-      return <BestMatchTab handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH' looks={this.props.looks}/>
+    if(this.props.query.type === 'relevant') {
+      return <BestMatchTab filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
     } else {
-      return <RecentTab tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)} looks={this.props.looks}/>
+      return <RecentTab  filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
     }
   }
 
@@ -76,15 +89,48 @@ class MainView extends Component {
       this._renderFeed()
     }
   }
+
+  _handleMainviewHeight(e) {
+    const height = e.nativeEvent.layout.height;
+    this.mainViewHeight = height;
+  }
+
+  _handleSearchInput(term) {
+    this._filterFeed({term})
+  }
+
+  _handleFilterLayoutChanged(e) {
+    const height = e.nativeEvent.layout.height;
+    if (height != this.state.filterHeight) {
+      this.setState({filterHeight: height});
+    }
+  }
+
+  _handleSearchLayoutChanged(e) {
+    const height = e.nativeEvent.layout.height;
+    if (height != this.state.searchHeight) {
+      this.setState({searchHeight: height});
+    }
+  }
+
   render() {
+    let mainViewStyle = {flexGrow: 1};
+    if (this.mainViewHeight) {
+      mainViewStyle = _.merge(mainViewStyle, { height: this.mainViewHeight - this.state.filterHeight - this.state.searchHeight });
+    }
     return(
-      <View style={styles.mainView} scrollEnabled={false}>
-        <Container>
-            <Content theme={tabTheme} scrollEnabled={false}>
-              <FilterBar filterFeed={(type, category, term) => this._filterFeed(type, category, term)} clearSearchTerm={this.props.clearSearchTerm}/>
-              { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }
-            </Content>
-        </Container>
+      <View style={myStyles.mainView}>
+        {this.props.searchStatus ? <SearchBar onLayout={e => this._handleSearchLayoutChanged(e)} handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.props.query.term}/> : null}
+        <FilterBar
+             onLayout={e => this._handleFilterLayoutChanged(e)}
+            type={this.props.query.type}
+            category={this.props.query.category}
+            filterFeed={this._filterFeed.bind(this)}
+            clearFilter={this._clearFilter.bind(this)}
+            />
+        <View style={mainViewStyle} onLayout={e => this._handleMainviewHeight(e)}>
+          { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }
+        </View>
       </View>
     )
   }
@@ -92,14 +138,16 @@ class MainView extends Component {
 
 function bindActions(dispatch) {
   return {
-    getFeed: (feedType,feedCategory, feedTerm) => dispatch(getFeed(feedType, feedCategory, feedTerm))
+    getFeed: (query) => dispatch(getFeed(query)),
+    resetFeed: () => dispatch(resetFeed()),
+    loadMore: () => dispatch(loadMore()),
   };
 }
 
 const mapStateToProps = state => ({
   isLoading: state.api.isReading,
-  looks: state.feed.looks,
   navigation: state.cardNavigation,
+  query: state.feed.query,
 });
 
 export default connect(mapStateToProps, bindActions)(MainView);

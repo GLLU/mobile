@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import { View } from 'native-base';
 import CategoryItem from './CategoryItem';
 
-import styles from '../styles';
+const myStyles = StyleSheet.create({
+  filterCategories: {
+    flex: 1
+  },
+});
 
 class CategoryStrip extends Component {
   static propTypes = {
@@ -16,16 +20,16 @@ class CategoryStrip extends Component {
   }
 
   _drawCategoryItems() {
-    const selectedCategory = this.props.selectedCategory;
-    return this.props.categories.map((item, index) => {
-      const selected = selectedCategory && selectedCategory.id === item.id;
+    const {selectedCategory, categories} = this.props;
+    return categories.map((item, index) => {
+      const selected = selectedCategory && selectedCategory.id === item.id ? true : false;
       return (<CategoryItem key={index} item={item} selected={selected} onPress={() => this.props.onCategorySelected(item)}/>);
     });
   }
 
   render() {
     return (
-      <View style={styles.filterCategories}>
+      <View style={myStyles.filterCategories}>
         <ScrollView
           horizontal={true}
           decelerationRate={0}

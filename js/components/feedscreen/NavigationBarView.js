@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native'
+import { StyleSheet, Image, Platform } from 'react-native'
 import { View, Text, Button } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
-import styles from './styles';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 
@@ -12,6 +10,34 @@ const bagIcon = require('../../../images/icons/bag.png');
 const rectangleIcon = require('../../../images/icons/rectangle.png')
 const searchIcon = require('../../../images/icons/search.png')
 const cameraIcon = require('../../../images/icons/camera.png')
+
+const styles = StyleSheet.create({
+  navigationBar: {
+    flex: 1,
+    backgroundColor: '#f2f2f2',
+    flexDirection: 'row',
+  },
+  btnProfile: {
+  },
+  btnCamera: {
+  },
+  btnImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain'
+  },
+  normalBtn: {
+    fontSize: 24
+  },
+  wallet: {
+    paddingTop: (Platform.OS === 'ios' ? 10 : 0),
+    marginTop: 5,
+    textAlign: 'left',
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#757575'
+  },
+});
 
 class NavigationBarView extends Component {
   static propTypes = {
@@ -57,44 +83,28 @@ class NavigationBarView extends Component {
     const userBtnIcon = this.state.hasNotify ? userWithNotifyIcon : userIcon;
     return(
       <View style={styles.navigationBar}>
-        <Grid>
-          <Col>
-            <Grid>
-              <Col size={30}>
-                <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
-                  <Image source={userBtnIcon} style={styles.btnImage} />
-                </Button>
-              </Col>
-              <Col size={70}>
-                <Text style={styles.wallet}>₤ 256.00</Text>
-              </Col>
-            </Grid>
-          </Col>
-          <Col>
-            <Grid>
-              <Col>
-                <Button transparent onPress={() => this.props.handleSearchStatus()}>
-                  <Image source={searchIcon} style={styles.btnImage} />
-                </Button>
-              </Col>
-              <Col>
-                <Button transparent onPress={() => this.openMenu()}>
-                  <Image source={rectangleIcon} style={styles.btnImage} />
-                </Button>
-              </Col>
-              <Col>
-                <Button transparent onPress={() => this.goToShopping()}>
-                  <Image source={bagIcon} style={styles.btnImage} />
-                </Button>
-              </Col>
-            </Grid>
-          </Col>
-          <Col>
-            <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
-              <Image source={cameraIcon} style={styles.btnImage} />
-            </Button>
-          </Col>
-        </Grid>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
+            <Image source={userBtnIcon} style={styles.btnImage} />
+          </Button>
+          <Text style={styles.wallet}>₤ 256.00</Text>
+        </View>
+        <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
+          <Button transparent onPress={() => this.props.handleSearchStatus()}>
+            <Image source={searchIcon} style={styles.btnImage} />
+          </Button>
+          <Button transparent onPress={() => this.openMenu()}>
+            <Image source={rectangleIcon} style={styles.btnImage} />
+          </Button>
+          <Button transparent onPress={() => this.goToShopping()}>
+            <Image source={bagIcon} style={styles.btnImage} />
+          </Button>
+        </View>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
+            <Image source={cameraIcon} style={styles.btnImage} />
+          </Button>
+        </View>
       </View>
     )
   }
