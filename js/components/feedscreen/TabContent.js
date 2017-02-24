@@ -8,7 +8,6 @@ import Spinner from '../loaders/Spinner';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 
-const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
 const LOADER_HEIGHT = 30;
@@ -22,9 +21,11 @@ class TabContent extends Component {
     query: React.PropTypes.object,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
-    like: React.PropTypes.func,
-    unlike: React.PropTypes.func,
+    likeUpdate: React.PropTypes.func,
+    unLikeUpdate: React.PropTypes.func,
     getFeed: React.PropTypes.func,
+    showBodyTypeModal: React.PropTypes.func,
+    loadMore: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -92,11 +93,9 @@ class TabContent extends Component {
     if (this.state.isLoading) {
       return;
     }
-    const { meta: { total }, query, flatLooks } = this.props;
+    const { meta: { total }, query } = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
-    
-    console.log('Load more items', total, pageSize, pageNumber);
 
     if (pageSize * pageNumber < total) {
       this.setState({isLoading: true}, () => {
@@ -117,7 +116,7 @@ class TabContent extends Component {
      this.props.showBodyTypeModal();
   }
 
-  scrollDebounced(event) {
+  scrollDebounced(e) {
      this.showBodyModal();
   }
 
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
 
 function bindActions(dispatch) {
   return {
-    showBodyTypeModal: name => dispatch(showBodyTypeModal()),
+    showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Container, Content } from 'native-base';
+import { View } from 'native-base';
 import { connect } from 'react-redux';
 import { getFeed, resetFeed, loadMore } from '../../actions';
 import SpinnerSwitch from '../loaders/SpinnerSwitch'
@@ -8,8 +8,6 @@ import FilterBar from './filters/FilterBar';
 import RecentTab from './RecentTab';
 import BestMatchTab from './BestMatchTab';
 import SearchBar from './SearchBar';
-import tabTheme from './../../themes/tab';
-import styles from './styles';
 import _ from 'lodash';
 
 const myStyles = StyleSheet.create({
@@ -22,6 +20,11 @@ const myStyles = StyleSheet.create({
 class MainView extends Component {
   static propTypes = {
     searchStatus: React.PropTypes.bool,
+    isLoading: React.PropTypes.bool,
+    query: React.PropTypes.object,
+    navigation: React.PropTypes.object,
+    getFeed: React.PropTypes.func,
+    resetFeed: React.PropTypes.func,
   }
 
   constructor(props) {

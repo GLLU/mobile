@@ -1,11 +1,9 @@
 import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
 import navigateTo from './sideBarNav';
-import { showLoader, hideLoader, reset, showError, showWarning, hideError, hideWarning } from './index';
+import { showLoader, hideLoader, reset, showError, hideError } from './index';
 import Utils from '../Utils';
-import { getUserBodyType } from './myBodyType';
-var FileUpload = require('NativeModules').FileUpload;
-import rest, { API_URL } from '../api/rest';
+import rest from '../api/rest';
 import _ from 'lodash';
 
 export const SET_USER = 'SET_USER';
@@ -13,7 +11,7 @@ export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 
 let api_key = ''
-const setRestOptions = function(rest, user) {
+const setRestOptions = function(dispatch, rest, user) {
   api_key = user.api_key;
   rest.use("options", function() {
     return {
@@ -45,7 +43,7 @@ const signInFromRest = function(dispatch, data) {
   console.log('api key', data.user.api_key)
   Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     console.log('saved to key chain');
-    setRestOptions(rest, data.user);
+    setRestOptions(dispatch, rest, data.user);
     dispatch(setUser(data.user));
     dispatch(resetUserNavigation());
   })
@@ -135,7 +133,7 @@ export function emailSignUp(data):Action {
         if (err.errors && err.errors.length > 0) {
           const pointers = [];
           let errorString = '';
-          err.errors.map((error, index) => {
+          err.errors.map((error) => {
             pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
           });
           if(pointers.length === 1){
@@ -205,7 +203,7 @@ export function checkLogin() {
       Utils.getKeychainData().then(credentials => {
         console.log('credentials', credentials);
         if (credentials) {
-          setRestOptions(rest, _.merge(user, {api_key: credentials.password}));
+          setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
           dispatch(resetUserNavigation());
         }
       })
@@ -237,7 +235,6 @@ export function changeUserAvatar(data) {
       const user = getState().user;
       if (user && user.id != -1) {
         Utils.postMultipartForm(api_key, `/users/${id}`, [], 'user[avatar]', image, 'PUT').then(data => {
-          const payload = _.merge(data, {image: image.path });
           resolve(dispatch(setUser(data.user)));
           dispatch(hideLoader());
         }).catch(reject);
