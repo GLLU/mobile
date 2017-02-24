@@ -20,8 +20,8 @@ class CategoryStrip extends Component {
   }
 
   _drawCategoryItems() {
-    const selectedCategory = this.props.selectedCategory;
-    return this.props.categories.map((item, index) => {
+    const {selectedCategory, categories} = this.props;
+    return categories.map((item, index) => {
       const selected = selectedCategory && selectedCategory.id === item.id ? true : false;
       return (<CategoryItem key={index} item={item} selected={selected} onPress={() => this.props.onCategorySelected(item)}/>);
     });
