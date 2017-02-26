@@ -88,7 +88,7 @@ class FeedPage extends BasePage {
     }
     return (
       <Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
-        <Header style={{backgroundColor: '#f2f2f2', paddingHorizontal: 0}}>
+        <Header style={{backgroundColor: '#f2f2f2', paddingLeft: 0, paddingRight: 0}}>
           <NavigationBarView handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
         </Header>
         <Content

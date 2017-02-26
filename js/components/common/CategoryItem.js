@@ -15,19 +15,18 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
     alignSelf: 'center',
-    height: 30,
+    height: 25,
     marginBottom: 5,
   },
   categoryItemImage: {
-    height: 50,
-    width: 50,
-    resizeMode: 'contain',
+    height: 60,
+    width: 60 * 150 / 170,
     alignSelf: 'center',
   },
   btnCategoryItem: {
     alignSelf: 'center',
     height: 60,
-    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
@@ -74,14 +73,15 @@ class CategoryItem extends Component {
     const { item, itemWidth, onPress } = this.props;
     const { selected } = this.state;
     const iconWidth = itemWidth * 5 / 8;
-    const iconHeight = iconWidth * 6 / 5;
+    const iconHeight = iconWidth * 150 / 170;
     return (<View style={[styles.categoryItem, { width: itemWidth}]}>
               <Text style={styles.categoryItemTitle}>{item.name}</Text>
-              <View style={[styles.btnCategoryItem, { width: (itemWidth * 7 / 8)}]}>
-                <Button transparent onPress={() => this.handlePressItem(item)} >
-                  {this._renderIcon(item.icon, selected, iconWidth, iconHeight)}
-                </Button>
-              </View>
+              <Button
+                transparent
+                onPress={() => this.handlePressItem(item)}
+                style={[styles.btnCategoryItem, { width: (itemWidth * 7 / 8)}]}>
+                {this._renderIcon(item.icon, selected, iconWidth, iconHeight)}
+              </Button>
             </View>);
     }
 }
