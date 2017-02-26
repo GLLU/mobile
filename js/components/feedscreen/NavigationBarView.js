@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     flexDirection: 'row',
+    paddingLeft: 0
   },
   btnProfile: {
   },

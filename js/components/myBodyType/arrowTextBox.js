@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
+import {Icon} from 'native-base';
 import styles from './styles';
 
 export default class ArrowTextBox extends Component {
@@ -10,14 +11,10 @@ export default class ArrowTextBox extends Component {
 
   render() {
     return (
-      <View>
-        <Text style={styles.bodyTypeText}>{this.props.title}</Text>
-        <View style={{position: 'relative', height: 10}}>
-          <Text style={styles.arrow}>{' '}</Text>
-          <Text style={styles.arrowBorder}>{' '}</Text>
+        <View style={styles.guideText}>
+          <Text style={[styles.bodyTypeText, {marginBottom: 10}]}>{this.props.title}</Text>
+          <Text style={{ textAlign: 'center' }}>{this.props.description}</Text>
         </View>
-        <Text style={styles.guideText}>{this.props.description}</Text>
-      </View>
-    )
+   )
   }
 }

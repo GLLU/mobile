@@ -17,6 +17,11 @@ module.exports = StyleSheet.create({
   tab: {
     backgroundColor: '#FFFFFF'
   },
+  mainNavHeader: {
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 0,
+    paddingLeft: 0
+  },
   Textlabel: {
     paddingTop: 0,
     fontSize: 15,

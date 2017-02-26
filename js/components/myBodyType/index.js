@@ -67,13 +67,14 @@ class MyBodyType extends BasePage {
   render() {
     return (
       <Container theme={glluTheme}>
-        <Header>
-          <Title style={{fontFamily: 'PlayfairDisplay-Regular'}}>My Body Type</Title>
+        <Header style={styles.header}>
+          <View style={styles.headerTitleContainer}>
+            <Title style={{fontFamily: 'PlayfairDisplay-Regular', alignSelf: 'center'}}>My Body Type</Title>
+          </View>
         </Header>
         <Content>
-          <Text style={styles.selectBodyTypeText}>Choose your body shape to find fashion that fits you</Text>
           <View style={styles.container}>
-            <ArrowTextBox title={this.state.currBodyType} description={this.state.currDescription} />
+
             <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
               sneak={100} initialPage={this.props.currentIndex}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
@@ -85,9 +86,7 @@ class MyBodyType extends BasePage {
                   )
                 })}
             </HorizontalCarousel>
-          </View>
-          <View style={{marginTop: 15}}>
-            <InformationTextIcon text={'This information is private to you only'} />
+            <ArrowTextBox title={this.state.currBodyType} description={this.state.currDescription} />
           </View>
           <Button block primary style={styles.continueButton}
             onPress={() => this.pushRoute('myBodyMeasure')}>Continue</Button>
