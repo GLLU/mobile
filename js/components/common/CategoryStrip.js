@@ -1,32 +1,30 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { View} from 'native-base';
 import CategoryItem from './CategoryItem';
 import _ from 'lodash';
 
 import {
   loadCategories,
-} from '../../../actions';
+} from '../../actions';
 
-import { ITEM_WIDTH } from './styles';
+const screen = Dimensions.get('window');
+
+const ITEM_WIDTH = 80;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-    marginTop: 10,
-    marginBottom: 10,
-    height: 120,
-  },
   categoriesContainer: {
     flex: 1,
-    padding: 10
   },
 });
 
 class CategoryStrip extends Component {
   static propTypes = {
     categories: React.PropTypes.array,
-    selectedCategoryId: React.PropTypes.number,
+    selectedCategory: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.bool,
+    ]),
     onCategorySelected: React.PropTypes.func,
     loadCategories: React.PropTypes.func,
   }
@@ -34,13 +32,13 @@ class CategoryStrip extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      positionX: this.getPositionX(props.categories, props.selectedCategoryId)
+      positionX: this.getPositionX(props.categories, props.selectedCategory)
     }
-    this.scrollViewWidth = 315;
+    this.scrollViewWidth = screen.width;
   }
 
   componentWillReceiveProps(nextProps) {
-    const positionX = this.getPositionX(nextProps.categories, nextProps.selectedCategoryId);
+    const positionX = this.getPositionX(nextProps.categories, nextProps.selectedCategory);
     // this._categoryScrollView.scrollTo({x: positionX, y: 0});
     this.setState({positionX});
   }
@@ -71,10 +69,10 @@ class CategoryStrip extends Component {
     this._categoryScrollView.scrollTo({x: x, y: 0});
   }
 
-  getPositionX(categories, selectedCategoryId) {
+  getPositionX(categories, selectedCategory) {
     let posInCategories = 0;
-    if (selectedCategoryId) {
-      posInCategories = _.findIndex(categories, { 'id': selectedCategoryId });
+    if (selectedCategory) {
+      posInCategories = _.findIndex(categories, { 'id': selectedCategory.id });
     }
     return posInCategories * ITEM_WIDTH;
   }
@@ -88,10 +86,15 @@ class CategoryStrip extends Component {
   }
 
   _drawCategoryItems() {
-    const { selectedCategoryId, categories } = this.props;
+    const { selectedCategory, categories } = this.props;
     return categories.map((item, index) => {
-      const selected = selectedCategoryId && selectedCategoryId == item.id;
-      return (<CategoryItem key={index} item={item} itemWidth={ITEM_WIDTH} selected={selected} onPress={this._handleSelectCategory.bind(this)}/>);
+      const selected = selectedCategory && selectedCategory.id === item.id ? true : false;
+      return (<CategoryItem
+                key={index}
+                item={item}
+                itemWidth={ITEM_WIDTH}
+                selected={selected}
+                onPress={this._handleSelectCategory.bind(this)}/>);
     });
   }
 
@@ -100,24 +103,23 @@ class CategoryStrip extends Component {
     // const contentOffsetX = this.normalizeContentOffsetX(this.state.positionX);
 
     return (
-      <View style={[styles.container]}>
-        <View style={[styles.categoriesContainer]}>
-          <ScrollView
-              onLayout={(e) => this.scrollViewWidth = e.nativeEvent.layout.width}
-              ref={(ref) => this._categoryScrollView = ref}
-              keyboardShouldPersistTap={true}
-              pagingEnabled={false}
-              horizontal={true}
-              decelerationRate={'fast'}
-              scrollEventThrottle={0}
-              directionalLockEnabled={true}
-              alwaysBounceHorizontal={true}
-              contentInset={{top: 0, left: 0, bottom: 0, right: 0}}
-              showsHorizontalScrollIndicator={false}>
-            {this._drawCategoryItems()}
-          </ScrollView>
-        </View>
-      </View>)
+      <View style={[styles.categoriesContainer]}>
+        <ScrollView
+            onLayout={(e) => this.scrollViewWidth = e.nativeEvent.layout.width}
+            ref={(ref) => this._categoryScrollView = ref}
+            keyboardShouldPersistTap={true}
+            pagingEnabled={false}
+            horizontal={true}
+            decelerationRate={'fast'}
+            scrollEventThrottle={0}
+            directionalLockEnabled={true}
+            alwaysBounceHorizontal={true}
+            contentInset={{top: 0, left: 0, bottom: 0, right: 0}}
+            showsHorizontalScrollIndicator={false}>
+          {this._drawCategoryItems()}
+        </ScrollView>
+      </View>
+    )
   }
 }
 

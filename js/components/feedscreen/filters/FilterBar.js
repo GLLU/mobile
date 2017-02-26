@@ -6,7 +6,7 @@ import RadioButtons from 'react-native-radio-buttons';
 import {View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet} from 'react-native';
 import SearchBar from '../SearchBar'
 
-import CategoryStrip from './CategoryStrip';
+import CategoryStrip from '../../common/CategoryStrip';
 const MK = require('react-native-material-kit');
 
 const {
@@ -65,7 +65,8 @@ const myStyles = StyleSheet.create({
   },
   filterActionsGrid: {
     backgroundColor: '#FFFFFF',
-    height: 90,
+    paddingTop: 10,
+    height: 110,
   },
   radioView: {
     backgroundColor: '#FFFFFF',

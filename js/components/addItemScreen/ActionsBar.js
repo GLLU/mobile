@@ -12,7 +12,6 @@ import ExtraDimensions from 'react-native-extra-dimensions-android';
 const styles = StyleSheet.create({
   actionsContainer: {
     width: deviceWidth,
-    height: 100,
     backgroundColor: 'transparent',
     padding: 20,
     alignItems: 'center',

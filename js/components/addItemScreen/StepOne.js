@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { View, Container, Content, Text, Picker, Item, Icon } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
+import { Col, Grid, Row } from "react-native-easy-grid";
 import {
   createLookItem,
   selectLookItem,
@@ -18,7 +18,7 @@ import {
   loadCategories,
 } from '../../actions';
 
-import Category from './forms/CategoryStrip';
+import Category from '../common/CategoryStrip';
 import BrandNameInput from './forms/BrandNameInput';
 import TagInput from './forms/TagInput';
 import CurrencyAndPrice from './forms/CurrencyAndPrice';
@@ -35,6 +35,10 @@ const checkboxChecked = require('../../../images/icons/checkbox-checked-black.pn
 
 
 const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
   itemInfoView: {
     backgroundColor: 'transparent',
     padding: 20,
@@ -113,7 +117,7 @@ class StepOne extends Component {
     }),
     newTag: React.PropTypes.bool,
     categories: React.PropTypes.array,
-    selectedCategoryId: React.PropTypes.number,
+    selectedCategory: React.PropTypes.object,
     brand: React.PropTypes.object,
     itemSizeRegion: React.PropTypes.string,
     itemSizeValue: React.PropTypes.string,
@@ -153,7 +157,7 @@ class StepOne extends Component {
   }
 
   selectCategory(item) {
-    if (item.id != this.props.selectedCategoryId) {
+    if (item.id != this.props.selectedCategory) {
       this.props.addItemType(item);
     }
   }
@@ -188,10 +192,6 @@ class StepOne extends Component {
         this.props.addSharingInfo(this.state.sharingType, value);
         break;
     }
-  }
-
-  _renderActionsContainer() {
-    return <ActionsBar continueAction={this.props.continueAction} tagAnotherAction={this.props.tagAnotherAction} />;
   }
 
   _renderSharing() {
@@ -234,49 +234,60 @@ class StepOne extends Component {
         </View>)
   }
 
-  _renderInfoView() {
-    const { categories, countries, itemSizes, selectedCategoryId, brand, itemSizeRegion, itemSizeValue, currency, price } = this.props;
-    return(<View style={[styles.itemInfoView]}>
+  render() {
+    const { items, image, createLookItem, selectLookItem, } = this.props;
+    const { categories, countries, itemSizes, selectedCategory, brand, itemSizeRegion, itemSizeValue, currency, price } = this.props;
+    return(
+      <View style={{flex: 1}}>
+        <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingHorizontal: 20}}>
+          <Grid>
+            <Row style={styles.row}>
+              <View style={{padding: 15, alignItems: 'center', alignSelf: 'center'}}>
+                <ImageWithTags
+                    items={items}
+                    image={image}
+                    createLookItem={createLookItem}
+                    selectLookItem={selectLookItem}
+                    width={IMAGE_VIEW_WIDTH}/>
+              </View>
+            </Row>
+            <Row style={styles.row}>
               <Text style={styles.titleLabelInfo}>Item Type</Text>
-              <Category
-                  selectedCategoryId={selectedCategoryId}
-                  onCategorySelected={(cat) => this.selectCategory(cat)}/>
+              <View style={{backgroundColor: '#FFFFFF'}}>
+                <Category
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onCategorySelected={(cat) => this.selectCategory(cat)}/>
+              </View>
+            </Row>
+            <Row style={styles.row}>
               <Text style={styles.titleLabelInfo}>Brand Name</Text>
               <BrandNameInput
                   brand={brand}
                   findOrCreateBrand={this.findOrCreateBrand.bind(this)}
                   clearBrandName={this.clearBrandName.bind(this)} />
+            </Row>
+            <Row style={styles.row}>
               <Text style={styles.titleLabelInfo}>Item Size</Text>
               <ItemSize
                   itemSizeRegion={itemSizeRegion}
                   itemSizeValue={itemSizeValue}
                   updateValue={this.updateValue.bind(this)} />
+            </Row>
+            <Row style={styles.row}>
               <Text style={[styles.titleLabelInfo, {marginTop: 20}]}>Add tags</Text>
               <View style={{margin: 5}}>
                 <TagInput/>
               </View>
+            </Row>
               {/*
                 <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
               */}
               {/*this._renderSharing()*/}
-        </View>);
-  }
-
-  render() {
-    const { items, image, createLookItem, selectLookItem } = this.props;
-    return(
-      <View style={{flex: 1}}>
-        <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingBottom: 100 + ExtraDimensions.get('STATUS_BAR_HEIGHT')}}>
-          <View style={{padding: 15, alignItems: 'center'}}>
-            <ImageWithTags
-                items={items}
-                image={image}
-                createLookItem={createLookItem}
-                selectLookItem={selectLookItem}
-                width={IMAGE_VIEW_WIDTH}/>
-          </View>
-          {this._renderInfoView()}
-          {this._renderActionsContainer()}
+            <Row>
+              <ActionsBar continueAction={this.props.continueAction} tagAnotherAction={this.props.tagAnotherAction} />
+            </Row>
+          </Grid>
         </ScrollView>
       </View>
     )
@@ -304,10 +315,12 @@ const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
   if (item) {
+    console.log('selectedCategory', item.selectedCategory)
     return {
       navigation: state.cardNavigation,
+      categories: state.filters.categories,
       ...state.uploadLook,
-      selectedCategoryId: item.selectedCategoryId,
+      selectedCategory: item.selectedCategory,
       brand: item.brand,
       itemSizeRegion: item.itemSizeRegion,
       itemSizeValue: item.itemSizeValue,
@@ -319,7 +332,7 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
-    selectedCategoryId: null,
+    selectedCategory: null,
     brand: null,
     itemSizeRegion: null,
     itemSizeValue: null,

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { StyleSheet, Dimensions, Platform, Alert } from 'react-native';
-import { Container, Header, Content, Button, Icon, Title, View } from 'native-base';
+import { Container, Header, Content, Button, Icon, Title, View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
-import styles from './styles';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
 import StepsBar from './StepsBar';
@@ -13,7 +12,10 @@ import Swiper from 'react-native-swiper';
 const h = Dimensions.get('window').height;
 const swiperH = h - 120;
 
-const selfStyles = StyleSheet.create({
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#F2F2F2'
+  },
   header: {
     fontFamily: 'PlayfairDisplay-Regular',
     lineHeight: glluTheme.toolbarLineHeight,
@@ -29,7 +31,11 @@ const selfStyles = StyleSheet.create({
   },
   wrapper: {
 
-  }
+  },
+  mainView: {
+    flex: 1,
+    backgroundColor: '#F2F2F2'
+  },
 });
 
 class AddItemPage extends BasePage {
@@ -137,28 +143,32 @@ class AddItemPage extends BasePage {
       <Container style={styles.container} theme={glluTheme}>
         <Header>
           <Button transparent onPress={() => this._handleBack()}>
-            <Icon style={selfStyles.backIcon} name="ios-arrow-back" />
+            <Icon style={styles.backIcon} name="ios-arrow-back" />
           </Button>
-          <Title style={selfStyles.header}>{this.getHeadingTitle()}</Title>
+          <Title style={styles.header}>{this.getHeadingTitle()}</Title>
         </Header>
         <Content
             scrollEnabled={false}
             contentContainerStyle={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
-          <View style={styles.mainView}>
-            <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
-            <Swiper style={styles.wrapper}
-                    ref={(ref) => this.swiper = ref }
-                    loop={false}
-                    scrollEnabled={false}
-                    index={this.state.currentStep}
-                    onMomentumScrollEnd={this._handleSwiperScrollEnd.bind(this)}
-                    dot={<View style={{width: 0, height: 0}} />}
-                    activeDot={<View style={{width: 0, height: 0}} />}
-                    height={swiperH}>
-              <StepOne key={1} continueAction={this.continueAction.bind(this)} tagAnotherAction={this.tagAnotherAction.bind(this)}/>
-              <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>
-            </Swiper>
-          </View>
+          <Grid>
+            <Row style={{height: 50}}>
+              <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
+            </Row>
+            <Row>
+              <Swiper style={styles.wrapper}
+                      ref={(ref) => this.swiper = ref }
+                      loop={false}
+                      scrollEnabled={false}
+                      index={this.state.currentStep}
+                      onMomentumScrollEnd={this._handleSwiperScrollEnd.bind(this)}
+                      dot={<View style={{width: 0, height: 0}} />}
+                      activeDot={<View style={{width: 0, height: 0}} />}
+                      height={swiperH}>
+                <StepOne key={1} continueAction={this.continueAction.bind(this)} tagAnotherAction={this.tagAnotherAction.bind(this)}/>
+                <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>
+              </Swiper>
+            </Row>
+          </Grid>
         </Content>
       </Container>
     );

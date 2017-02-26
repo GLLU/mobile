@@ -76,7 +76,7 @@ const ACTION_HANDLERS = {
       userId: item.user_id,
       lookId: item.look_id,
       editing: false,
-      selectedCategoryId: null,
+      selectedCategory: null,
       brand: null,
       itemSizeRegion: null,
       itemSizeValue: null,
@@ -119,10 +119,11 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {
-    const selectedCategoryId = action.payload;
+    console.log('Reducer ADD_ITEM_TYPE', action.payload);
+    const selectedCategory = action.payload;
     return {
       ...state,
-      items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
+      items: mutateItem(state, 'selectedCategory', selectedCategory)
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
@@ -212,10 +213,10 @@ const ACTION_HANDLERS = {
   },
   // [SET_CATEGORIES]: (state, action) => {
   //   const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
-  //   const selectedCategoryId = categories[parseInt(categories.length / 2)].id;
+  //   const selectedCategory = categories[parseInt(categories.length / 2)].id;
   //   return {
   //     ...state,
-  //     items: mutateItem(state, 'selectedCategoryId', selectedCategoryId)
+  //     items: mutateItem(state, 'selectedCategory', selectedCategory)
   //   }
   // },
   [SET_ITEM_SIZES]: (state, action) => {

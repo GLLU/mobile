@@ -179,10 +179,9 @@ export function publishLookItem() {
 
 export function addItemType(categoryItem) {
   return (dispatch) => {
-
     dispatch({
         type: ADD_ITEM_TYPE,
-        payload: categoryItem.id
+        payload: categoryItem
       });
     dispatch(loadItemSizes(categoryItem.id));
     dispatch(addItemTag(categoryItem.name));
