@@ -44,6 +44,7 @@ class forgotPasswordPage extends BasePage {
       let { email } = this.state;
       if(this.checkValidations()) {
           this.setState({emailWasSent: true});
+          console.log('email',email)
           this.props.forgotPassword(email);
       }
   }

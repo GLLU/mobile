@@ -19,6 +19,10 @@ export default reduxApi({
     url: "/auth",
     crud: true,
   },
+  password_recovery: {
+    url: "/password_recovery",
+    crud: true,
+  },
   users: {
     url: '/users',
     crud: true,
