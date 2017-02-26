@@ -149,28 +149,16 @@ export function publishLookItem() {
   return (dispatch, getState) => {
     const state = getState();
 
-    const { lookId, itemId, description } = state.uploadLook;
+    const { lookId, itemId } = state.uploadLook;
 
-    const body = {
-      look: {
-        description
-      }
-    }
     return new Promise((resolve, reject) => {
       dispatch(showLoader());
-      return dispatch(rest.actions.looks.put({id: lookId}, { body: JSON.stringify(body)}, (err, data) => {
+      dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
+        dispatch(hideLoader());
         if (!err) {
-          dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
-            dispatch(hideLoader());
-            if (!err) {
-              resolve();
-            } else {
-              reject();
-            }
-          }));
+          resolve();
         } else {
-          dispatch(hideLoader());
-          reject(err);
+          reject();
         }
       }));
     });
