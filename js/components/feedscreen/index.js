@@ -46,7 +46,6 @@ class FeedPage extends BasePage {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount feedscreen');
     BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
   }
 
@@ -61,10 +60,7 @@ class FeedPage extends BasePage {
 
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
-      console.log('imagePath',imagePath)
-
       this.props.addNewLook(imagePath).then(() => {
-        console.log('then')
         this.props.navigateTo('tagItemScreen', 'feedscreen');
       });  
     })
@@ -81,7 +77,6 @@ class FeedPage extends BasePage {
 
   _handleLayout(e) {
     const height = e.nativeEvent.layout.height;
-    console.log('container height', height, glluTheme.toolbarHeight);
     this.setState({contentHeight: height - glluTheme.toolbarHeight});
   }
 

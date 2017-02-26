@@ -47,7 +47,6 @@ class TabContent extends Component {
   componentWillReceiveProps(nextProps) {
     const total = nextProps.meta.total;
     const flatLooks = nextProps.flatLooks;
-    console.log('flatLooks', flatLooks);
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(flatLooks);
     this.setState({
       imagesColumn1,
@@ -75,7 +74,7 @@ class TabContent extends Component {
   }
 
   handleScroll(event) {
-    if (this.props.hasUserSize) {
+    if (!this.props.hasUserSize) {
       this.scrollCallAsync(event);
     } else {
       const contentSizeHeight = event.nativeEvent.contentSize.height;

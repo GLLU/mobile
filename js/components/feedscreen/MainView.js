@@ -20,7 +20,6 @@ const myStyles = StyleSheet.create({
 class MainView extends Component {
   static propTypes = {
     searchStatus: React.PropTypes.bool,
-    isLoading: React.PropTypes.bool,
     query: React.PropTypes.object,
     navigation: React.PropTypes.object,
     getFeed: React.PropTypes.func,
@@ -56,7 +55,6 @@ class MainView extends Component {
   }
 
   _filterFeed(query, reset = false) {
-    console.log('_filterFeed', query);
     if (reset) {
       return this.props.resetFeed();
     }
@@ -67,8 +65,6 @@ class MainView extends Component {
     } else {
       newState = _.merge(this.props.query, query);
     }
-    
-    console.log('newState', newState);
     if (!_.isEqual(newState, oldState)) {
       this.props.getFeed(newState);
     }
@@ -79,14 +75,6 @@ class MainView extends Component {
       return <BestMatchTab filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
     } else {
       return <RecentTab  filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
-    }
-  }
-
-  _renderLoading() {
-    if(this.props.navigation.index === 0){
-      return <SpinnerSwitch />
-    } else {
-      this._renderFeed()
     }
   }
 
@@ -129,7 +117,7 @@ class MainView extends Component {
             clearFilter={this._clearFilter.bind(this)}
             />
         <View style={mainViewStyle} onLayout={e => this._handleMainviewHeight(e)}>
-          { this.props.isLoading === 0 ? this._renderFeed() : this._renderLoading() }
+          { this._renderFeed() }
         </View>
       </View>
     )
@@ -145,7 +133,6 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.api.isReading,
   navigation: state.cardNavigation,
   query: state.feed.query,
 });
