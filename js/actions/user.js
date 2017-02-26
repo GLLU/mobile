@@ -168,12 +168,15 @@ export function emailSignIn(data):Action {
 }
 
 export function forgotPassword(email):Action {
+  const data = { email }
   return (dispatch) => {
-    const entity = {
-      "type": "password_recovery",
-      "attributes": { email }
-    }
-    return dispatch(createEntity(entity));
+    return dispatch(rest.actions.password_recovery.post({} ,{ body: JSON.stringify(data) } , (err, data) => {
+      if (!err && data) {
+        console.log('PASSWORD RECOVERY:', data)
+      } else {
+        console.log('password recovery Failed', err)
+      }
+    }));
   };
 }
 
