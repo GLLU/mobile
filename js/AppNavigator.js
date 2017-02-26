@@ -52,12 +52,10 @@ class AppNavigator extends Component {
 
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      const routes = this.props.navigation.routes;
-
-      if (routes[routes.length - 1].key === 'home' || routes[routes.length - 1].key === 'login') {
-        return false;
+      let routes = this.props.navigation.routes
+      if (routes[routes.length - 1].key === 'splashscreen' || routes[routes.length - 1].key === 'feedscreen' || routes[routes.length - 1].key === 'home' || routes[routes.length - 1].key === 'login') {
+        return true;
       }
-
       this.props.popRoute(this.props.navigation.key);
       return true;
     });
@@ -71,6 +69,7 @@ class AppNavigator extends Component {
     if (this.props.drawerState === 'closed') {
       this._drawer.close();
     }
+
   }
 
   popRoute() {

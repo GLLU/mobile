@@ -41,17 +41,12 @@ class FeedPage extends BasePage {
     if (!this.props.user || this.props.user.id == -1) {
       this.props.navigateTo('splashscreen');
     }
-
-    BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
-  }
-
-  componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
-  }
-
-  handleHardwareBackPress() {
-    this.setState({photoModal: false});
-    return true;
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if(this.state.photoModal) {
+        this.setState({photoModal: false})
+        return true;
+      }
+    });
   }
 
   setUser(name) {
