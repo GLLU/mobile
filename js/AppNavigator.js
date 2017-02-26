@@ -54,7 +54,7 @@ class AppNavigator extends Component {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       let routes = this.props.navigation.routes
       if (routes[routes.length - 1].key === 'splashscreen' || routes[routes.length - 1].key === 'feedscreen' || routes[routes.length - 1].key === 'home' || routes[routes.length - 1].key === 'login') {
-        return true;
+        return false;
       }
       this.props.popRoute(this.props.navigation.key);
       return true;
