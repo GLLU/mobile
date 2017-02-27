@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Linking, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
+import { StyleSheet, Alert, Linking, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title, ListItem, Text } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -37,7 +37,8 @@ const iconTerms = require('../../../images/icons/original-terms.png');
 const iconPrivacy = require('../../../images/icons/original-privacy.png');
 const iconCopyright = require('../../../images/icons/original-copyright.png');
 
-const EMAIL_URL = 'mailto://hello@gllu.com';
+const SUPPORT_EMAIL = 'hello@gllu.com';
+const EMAIL_URL = `mailto:${SUPPORT_EMAIL}`;
 const TERMS_URL = 'https://www.gllu.com/terms';
 const PRIVACY_URL = 'https://www.gllu.com/privacy';
 const COPYRIGHT_URL = 'https://www.gllu.com/copyrights';
@@ -64,6 +65,18 @@ class SettingsScreen extends BasePage {
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
+        Alert.alert(
+          '',
+          `Sorry, but it seems you don't have an email client enabled in this device. You can email us to ${SUPPORT_EMAIL}`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('Alert OK pressed');
+              }
+            }
+          ]
+        );
       } else {
         return Linking.openURL(url);
       }
