@@ -47,6 +47,10 @@ export default reduxApi({
       method: 'get',
     }
   },
+  report_abuse: {
+    url: "/abuse",
+    crud: true,
+  },
   look: {
     url: '/looks/:id',
     crud: true
