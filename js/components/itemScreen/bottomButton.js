@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
+import Icon from 'react-native-vector-icons/Entypo';
 import styles from './styles';
 import SocialShare from '../../lib/SocialShare';
-
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
 const shareImage = require('../../../images/share.png');
@@ -17,7 +17,6 @@ export default class BottomButton extends Component {
       isLiked: this.props.isLiked
     }
   }
-
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.likes !== this.props.likes || nextProps.isLiked !== this.props.isLiked) {
@@ -73,10 +72,14 @@ export default class BottomButton extends Component {
           </TouchableHighlight>
           </View>
         </View>
-        <View style={styles.bottomRight}>
-          <TouchableOpacity style={[styles.footerButton, {backgroundColor: 'rgba(0,0,0,.3)'}]}>
-            <Text style={[styles.footerButtonText]}>Hide</Text>
-          </TouchableOpacity>
+        <View style={[styles.bottomRight]}>
+          <TouchableHighlight style={{marginRight: 10}} onPress={() => this.props.toggleMenu()}>
+            <View>
+              <View style={[styles.footerButton]}>
+                <Icon active name='dots-three-horizontal'  style={styles.menuIcon}/>
+              </View>
+            </View>
+          </TouchableHighlight>
         </View>
       </View>
     )

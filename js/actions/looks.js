@@ -29,6 +29,19 @@ export function getUserLooksData(data):Action {
   };
 }
 
+export function reportAbuse(look_id):Action {
+  const data = { look_id }
+  return (dispatch) => {
+    return dispatch(rest.actions.report_abuse.post({} ,{ body: JSON.stringify(data) } , (err, data) => {
+      if (!err && data) {
+        console.log('abuse Reported:', data)
+      } else {
+        console.log('abuse Reported Failed', err)
+      }
+    }));
+  };
+}
+
 
 export function setLookData(data):Action {
   return {

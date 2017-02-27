@@ -5,10 +5,11 @@ import { Icon } from 'native-base';
 import styles from './styles';
 import BottomButton from './bottomButton';
 import TopButton from './topButton';
+import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
 import VideoPlayer from './videoPlayer/videoPlayer';
 import { likeUpdate, unLikeUpdate } from '../../actions/likes';
-import { getLook } from '../../actions/looks';
+import { getLook, reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
@@ -26,6 +27,7 @@ class ItemScreen extends BasePage {
       fadeAnimContent: new Animated.Value(0),
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
+      isMenuOpen: false
     }
 
   }
@@ -46,6 +48,9 @@ class ItemScreen extends BasePage {
       this.props.unLikeUpdate(data);
     }
   }
+  _toggleMenu(){
+    this.setState({isMenuOpen: !this.state.isMenuOpen})
+  }
 
   _tempPopRoute() {
     this.props.popRoute(this.props.navigation.key);
@@ -54,6 +59,10 @@ class ItemScreen extends BasePage {
   _goToProfile() {
     console.log('goToProfile', this.props.look.user);
     this.props.navigateTo('profileScreen', 'itemScreen', this.props.look.user);
+  }
+
+  _reportAbuse() {
+    this.props.reportAbuse(this.props.look.id)
   }
 
   onLoad() {
@@ -106,9 +115,10 @@ class ItemScreen extends BasePage {
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this._goToProfile()}/>
-          <BottomButton isLiked={this.state.liked} toggleLike={(isLiked) => this._toggleLike(isLiked)} likes={this.state.likes}/>
+          <BottomButton isLiked={this.state.liked} likes={this.state.likes} toggleLike={(isLiked) => this._toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons()}
+        <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this._reportAbuse(lookId)} closeModal={() => this._toggleMenu()}/>
       </Animated.View>
     )
   }
@@ -131,7 +141,9 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
-    getLook: (lookId) => dispatch(getLook(lookId))
+    getLook: (lookId) => dispatch(getLook(lookId)),
+    reportAbuse: (lookId) => dispatch(reportAbuse(lookId)),
+
   };
 }
 

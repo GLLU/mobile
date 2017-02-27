@@ -34,7 +34,6 @@ export default StyleSheet.create({
     left: 10
   },
   bottomRight: {
-    flexWrap: 'wrap',
     flexDirection:'row',
     position: 'absolute',
     right: 10
@@ -108,5 +107,9 @@ export default StyleSheet.create({
     position: 'absolute',
     height: h,
     top: 0
-  }
+  },
+  menuIcon: {
+    color: 'white',
+    fontSize: 22
+  },
 });
