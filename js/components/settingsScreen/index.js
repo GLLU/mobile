@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { navigateTo } from '../../actions';
 import _ from 'lodash';
+import SocialShare from '../../lib/SocialShare';
 
 import glluTheme from '../../themes/gllu-theme';
 
@@ -46,6 +47,12 @@ class SettingsScreen extends BasePage {
     super(props);
     this.state = {
     }
+
+    this.handleShare = this.handleShare.bind(this);
+  }
+
+  handleShare() {
+    SocialShare.share('facebook');
   }
 
   render() {
@@ -59,7 +66,7 @@ class SettingsScreen extends BasePage {
         </Header>
         <Content style={{backgroundColor: '#FFFFFF'}}>
           <List>
-            <ListItem style={styles.listItem}>
+            <ListItem style={styles.listItem} onPress={this.handleShare}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconShare} />
                 <Text style={styles.listItemText}>Invite your Friends</Text>
             </ListItem>
