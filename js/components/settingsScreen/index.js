@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Alert, Linking, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
+import { StyleSheet, Alert, Linking} from 'react-native';
 import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title, ListItem, Text } from 'native-base';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { navigateTo } from '../../actions';
-import _ from 'lodash';
+import { back } from '../../actions';
 import SocialShare from '../../lib/SocialShare';
 
 import glluTheme from '../../themes/gllu-theme';
@@ -46,15 +44,16 @@ const COPYRIGHT_URL = 'https://www.gllu.com/copyrights';
 class SettingsScreen extends BasePage {
   static propTypes = {
     navigation: React.PropTypes.object,
-    navigateTo: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
+    back: React.PropTypes.func,
   };
   constructor(props) {
     super(props);
     this.state = {
     }
+  }
 
-    this.handleShare = this.handleShare.bind(this);
+  handleBack() {
+    this.props.back(this.props.navigation.key);
   }
 
   handleShare() {
@@ -87,14 +86,14 @@ class SettingsScreen extends BasePage {
     return (
       <Container theme={glluTheme}>
         <Header>
-          <Button transparent onPress={() => this._handleBack()}>
+          <Button transparent onPress={this.handleBack.bind(this)}>
             <Icon style={styles.backIcon} name="ios-arrow-back" />
           </Button>
           <Title style={glluTheme.headerTitleStyle}>Settings</Title>
         </Header>
         <Content style={{backgroundColor: '#FFFFFF'}}>
           <List>
-            <ListItem style={styles.listItem} onPress={this.handleShare}>
+            <ListItem style={styles.listItem} onPress={this.handleShare.bind(this)}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconShare} />
                 <Text style={styles.listItemText}>Invite your Friends</Text>
             </ListItem>
@@ -123,13 +122,13 @@ class SettingsScreen extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    popRoute: key => dispatch(popRoute(key)),
+    back: key => dispatch(back(key)),
   };
 }
 
 const mapStateToProps = state => {
   return {
+    navigation: state.cardNavigation
   };
 };
 
