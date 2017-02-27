@@ -1,7 +1,7 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 
 const w = Dimensions.get('window').width
-// const h = Dimensions.get('window').height
+ const h = Dimensions.get('window').height
 
 let fontSizeDefault = 14;
 let fontColor = '#000';
@@ -17,13 +17,15 @@ export default StyleSheet.create({
     color: fontColor
   },
   container: {
-    height: 350,
+    height: h - h/2.5  ,
     paddingTop: 5,
     paddingHorizontal: 10,
     backgroundColor: '#ffffff'
   },
   bodyTypeText: {
     textAlign: 'center',
+    width: w * 0.6,
+    alignSelf: 'center',
     fontSize: fontSizeDefault * 1.25,
     color: fontColor,
     fontFamily: 'PlayfairDisplay-Bold',
@@ -35,12 +37,22 @@ export default StyleSheet.create({
     padding: 15,
     marginHorizontal: 20,
     marginVertical: 10,
-    textAlign: 'center',
-    height: 101
+    height: 120,
+  },
+  header: {
+    justifyContent: 'center',
+    paddingLeft: (Platform.OS === 'ios' ? 30 : 0)
+  },
+  headerTitleContainer: {
+    borderBottomWidth: 1.5,
+    borderColor: 'lightgrey',
+    paddingBottom: 10,
+    width: 200,
+    paddingLeft: 0
   },
   continueButton: {
-    marginTop: 15,
-    marginHorizontal: 50
+    marginTop: 30,
+    marginHorizontal: 50,
   },
   imagePlaceHolder: {
     flex: 1,

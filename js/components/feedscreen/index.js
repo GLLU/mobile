@@ -41,17 +41,12 @@ class FeedPage extends BasePage {
     if (!this.props.user || this.props.user.id == -1) {
       this.props.navigateTo('splashscreen');
     }
-
-    BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
-  }
-
-  componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackPress.bind(this));
-  }
-
-  handleHardwareBackPress() {
-    this.setState({photoModal: false});
-    return true;
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if(this.state.photoModal) {
+        this.setState({photoModal: false})
+        return true;
+      }
+    });
   }
 
   setUser(name) {
@@ -88,9 +83,13 @@ class FeedPage extends BasePage {
     }
     return (
       <Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
-        <Header style={{backgroundColor: '#f2f2f2', paddingLeft: 0, paddingRight: 0}}>
-          <NavigationBarView handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
-        </Header>
+        {!this.props.modalShowing ?
+          <Header style={styles.mainNavHeader}>
+            <NavigationBarView handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+          </Header>
+        :
+          null
+        }
         <Content
             scrollEnabled={false}
             contentContainerStyle={contentStyle}>
