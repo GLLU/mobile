@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet } from 'react-native';
 import { View, Button, Text } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
+import { Col, Grid, Row } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import AddMore from './forms/AddMore';
@@ -30,9 +30,14 @@ const BTN_RADIO_MARGIN_TOP = w < 375 ? 0 : 10;
 import { IMAGE_VIEW_WIDTH } from './styles';
 
 const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
   itemInfoView: {
     backgroundColor: 'transparent',
-    padding: 20
+    padding: 20,
+    paddingBottom: 60,
   },
   titleLabelInfo: {
     fontFamily: 'Montserrat',
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
   btnGoToStep3: {
     flex: 1,
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 40,
     backgroundColor: '#05d7b2',
     height: 45,
     width: (w / 8) * 6,
@@ -173,18 +178,6 @@ class StepTwo extends Component {
     this.props.publishItem();
   }
 
-  _renderDescribeAndTags() {
-    return (
-        <View style={{margin: 5}}>
-        {/*
-          <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
-          <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
-        */}
-          <OccasionTags selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
-        </View>
-    )
-  }
-
   _renderSelections(){
     const checkBoxIcon = this.state.confirm ? checkboxCheckedIcon : checkboxUncheckIcon;
     return (
@@ -214,22 +207,29 @@ class StepTwo extends Component {
     const { items, createLookItem, image} = this.props;
     const bgColorBtn = this.state.confirm ? '#05d7b2' : '#ADADAD';
     return(
-      <ScrollView scrollEnabled={true}>
-        <View style={{padding: 15, alignItems: 'center'}}>
-          <ImageWithTags
-              items={items}
-              image={image}
-              createLookItem={createLookItem}
-              width={IMAGE_VIEW_WIDTH}/>
-        </View>
-        <View style={styles.itemInfoView}>
-            {/*<AddMore video={this.state.video} photos={this.props.photos} addVideo={this.addVideo.bind(this)} addPhoto={this.addPhoto.bind(this)} />*/}
-            {this._renderDescribeAndTags()}
+      <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingHorizontal: 20}}>
+        <Grid>
+          <Row style={styles.row}>
+            <View style={{padding: 15, alignItems: 'center'}}>
+              <ImageWithTags
+                  items={items}
+                  image={image}
+                  createLookItem={createLookItem}
+                  width={IMAGE_VIEW_WIDTH}/>
+            </View>
+          </Row>
+          <Row style={styles.row}>
+            <OccasionTags selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
+          </Row>
+          <Row style={styles.row}>
             {this._renderSelections()}
+          </Row>
+          <Row style={[styles.row, {paddingBottom: 60}]}>
             <Button disabled={!this.state.confirm} transparent onPress={() => this._handlePublishItem()} style={[styles.btnGoToStep3, {backgroundColor: bgColorBtn}]}>
                 <Text style={styles.btnGoToStep3Text}>PUBLISH</Text>
             </Button>
-        </View>
+          </Row>
+        </Grid>
       </ScrollView>
     )
   }

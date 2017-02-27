@@ -28,6 +28,7 @@ import ActionsBar from './ActionsBar';
 import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import { IMAGE_VIEW_WIDTH } from './styles';
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
@@ -37,12 +38,8 @@ const checkboxChecked = require('../../../images/icons/checkbox-checked-black.pn
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'column',
-    marginBottom: 10,
-  },
-  itemInfoView: {
     backgroundColor: 'transparent',
-    padding: 20,
-    paddingBottom: ExtraDimensions.get('STATUS_BAR_HEIGHT')
+    marginBottom: 10,
   },
   titleLabelInfo: {
     fontFamily: 'Montserrat',
@@ -290,6 +287,7 @@ class StepOne extends Component {
             </Row>
           </Grid>
         </ScrollView>
+        <KeyboardSpacer onToggle={(state, space) => console.log('keyboard', state, space)}/>
       </View>
     )
   }
