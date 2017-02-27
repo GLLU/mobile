@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
+import { StyleSheet, Linking, Image, Animated, InteractionManager, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title, ListItem, Text } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -35,7 +35,12 @@ const iconShare = require('../../../images/icons/original-share.png');
 const iconContact = require('../../../images/icons/original-contact.png');
 const iconTerms = require('../../../images/icons/original-terms.png');
 const iconPrivacy = require('../../../images/icons/original-privacy.png');
-const iconLogout = require('../../../images/icons/original-logout.png');
+const iconCopyright = require('../../../images/icons/original-copyright.png');
+
+const EMAIL_URL = 'mailto://hello@gllu.com';
+const TERMS_URL = 'https://www.gllu.com/terms';
+const PRIVACY_URL = 'https://www.gllu.com/privacy';
+const COPYRIGHT_URL = 'https://www.gllu.com/copyrights';
 
 class SettingsScreen extends BasePage {
   static propTypes = {
@@ -55,6 +60,16 @@ class SettingsScreen extends BasePage {
     SocialShare.share('facebook');
   }
 
+  handleOpenLink(url) {
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + url);
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -70,17 +85,21 @@ class SettingsScreen extends BasePage {
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconShare} />
                 <Text style={styles.listItemText}>Invite your Friends</Text>
             </ListItem>
-            <ListItem style={styles.listItem}>
+            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, EMAIL_URL)}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconContact} />
                 <Text style={styles.listItemText}>Contact Us</Text>
             </ListItem>
-            <ListItem style={styles.listItem}>
+            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, TERMS_URL)}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconTerms} />
                 <Text style={styles.listItemText}>Terms of Service</Text>
             </ListItem>
-            <ListItem style={styles.listItem}>
+            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, PRIVACY_URL)}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconPrivacy} />
                 <Text style={styles.listItemText}>Privacy Policy</Text>
+            </ListItem>
+            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, COPYRIGHT_URL)}>
+                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconCopyright} />
+                <Text style={styles.listItemText}>Copyrights</Text>
             </ListItem>
         </List>
         </Content>
