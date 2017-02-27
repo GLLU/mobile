@@ -110,13 +110,11 @@ class ItemScreen extends BasePage {
     avatar.bodyType = this.props.flatLook.type;
     return (
       <Animated.View style={{opacity: this.state.fadeAnimContent, justifyContent: 'space-between'}}>
-
         <TouchableOpacity transparent onPress={() => this._tempPopRoute()}>
           <Icon style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute'}} name="ios-arrow-back" />
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this._goToProfile()}/>
-
           <BottomButton isLiked={this.state.liked} likes={this.state.likes} toggleLike={(isLiked) => this._toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons()}

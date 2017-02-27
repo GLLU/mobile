@@ -72,15 +72,12 @@ export default class BottomButton extends Component {
           </TouchableHighlight>
           </View>
         </View>
-
         <View style={[styles.bottomRight]}>
-
           <TouchableHighlight style={{marginRight: 10}} onPress={() => this.props.toggleMenu()}>
             <View>
               <View style={[styles.footerButton]}>
                 <Icon active name='dots-three-horizontal'  style={styles.menuIcon}/>
               </View>
-
             </View>
           </TouchableHighlight>
         </View>
