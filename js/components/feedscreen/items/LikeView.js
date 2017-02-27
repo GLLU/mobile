@@ -1,16 +1,45 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import { StyleSheet, Image, Platform } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 
-import styles from './styles';
 import { connect } from 'react-redux';
 
 const likeIcon = require('../../../../images/icons/like.png');
 const likedIcon = require('../../../../images/icons/liked.png');
 const bgShadow = require('../../../../images/background-shadow.png');
+
+const styles = StyleSheet.create({
+  likeContainer: {
+    height: 30,
+    width: 60,
+    paddingRight: 5,
+    paddingBottom: 6,
+    backgroundColor: 'transparent',
+  },
+  bgShadow: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    width: 60,
+    height: 30
+  },
+  iconWithImage: {
+    height: 25,
+    width: 25,
+    resizeMode: 'contain',
+    alignSelf: 'center'
+  },
+  countLikeLabel: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '500',
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: (Platform.OS == 'ios' ? 10 : 0)
+  },
+});
 
 class LikeView extends Component {
 
@@ -34,12 +63,12 @@ class LikeView extends Component {
       <View style={[styles.likeContainer, { marginTop: img.height - 35 }]}>
         <Image source={bgShadow} style={styles.bgShadow} />
         <Grid>
-            <Col>
+            <Col style={{flexDirection: 'column', alignItems: 'center'}}>
               <Button transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
                 <Image source={likeIconView} style={styles.iconWithImage} />
               </Button>
             </Col>
-            <Col>
+            <Col style={{flexDirection: 'column', justifyContent: 'center'}}>
               <Text style={styles.countLikeLabel}>{this.props.item.likes}</Text>
             </Col>
         </Grid>

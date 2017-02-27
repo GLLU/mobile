@@ -54,7 +54,6 @@ class OccasionTags extends Component {
   }
 
   _renderOccasionTags() {
-    console.log('_renderOccasionTags', this.props.occasionTags);
     const { occasionTags, selectedTags } = this.props;
     return occasionTags.map((tag, index) => {
       const selected = _.find(selectedTags, x => x.id == tag.id);

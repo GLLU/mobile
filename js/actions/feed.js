@@ -21,12 +21,10 @@ export function getFeed(query):Action {
         number: 1
       }
     });
-    console.log('newState', newState);
     const params = parseQueryFromState(newState);
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.feeds(params, (err, data) => {
         if (!err && data) {
-          console.log('feed data', data, newState)
           dispatch(setFeedData({data, query: newState}));
           dispatch(hideLoader());
           resolve();
@@ -81,7 +79,6 @@ export function loadMore():Action {
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.feeds(params, (err, data) => {
         if (!err && data) {
-          console.log('feed data', data, newState)
           dispatch(setFeedData({data, query: newState, loadMore: true}));
           resolve();
         } else {

@@ -2,33 +2,6 @@ const React = require('react-native');
 const { StyleSheet } = React;
 
 module.exports = StyleSheet.create({
-  likeContainer: {
-    height: 30,
-    width: 60,
-    paddingRight: 5,
-    paddingBottom: 6,
-    backgroundColor: 'transparent',
-  },
-  bgShadow: {
-    position: 'absolute',
-    backgroundColor: 'transparent',
-    width: 60,
-    height: 30
-  },
-  iconWithImage: {
-    height: 25,
-    width: 25,
-    resizeMode: 'contain',
-    alignSelf: 'center'
-  },
-  countLikeLabel: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '500',
-    textAlign: 'center',
-    alignSelf: 'center',
-    marginTop: 10
-  },
   typeContainer: {
     position: 'absolute',
     height: 40,

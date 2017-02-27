@@ -57,7 +57,6 @@ class ItemScreen extends BasePage {
   }
 
   _goToProfile() {
-    console.log('goToProfile', this.props.look.user);
     this.props.navigateTo('profileScreen', 'itemScreen', this.props.look.user);
   }
 
