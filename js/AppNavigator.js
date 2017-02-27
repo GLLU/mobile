@@ -22,6 +22,7 @@ import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import ItemScreen from './components/itemScreen';
 import ProfileScreen from './components/profileScreen';
+import SettingsScreen from './components/settingsScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import UserLookScreen from './components/userLooksScreen/index.js';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
@@ -119,6 +120,8 @@ class AppNavigator extends Component {
         return <UserLookScreen userData={props.scene.route.optional}/>;
       case 'profileScreen':
         return <ProfileScreen userData={props.scene.route.optional}/>;
+      case 'settingsScreen':
+        return <SettingsScreen/>;
       case 'editProfileScreen':
         return <EditProfile userData={props.scene.route.optional}/>;
       default :
