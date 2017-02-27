@@ -123,7 +123,12 @@ class FilterView extends Component {
   }
 
   filterByCategory(item) {
-    this.props.filterFeed({category: item});
+    const { category } = this.props;
+    if (!category || item.id != category.id) {
+      this.props.filterFeed({category: item});
+    } else {
+      this.props.filterFeed({category: null});
+    }
   }
 
   clearFilter() {
