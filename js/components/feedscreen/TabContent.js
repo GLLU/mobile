@@ -74,7 +74,7 @@ class TabContent extends Component {
   }
 
   handleScroll(event) {
-    if (this.props.hasUserSize) {
+    if (!this.props.hasUserSize) {
       this.scrollCallAsync(event);
     } else {
       const contentSizeHeight = event.nativeEvent.contentSize.height;
@@ -120,7 +120,7 @@ class TabContent extends Component {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'feedscreen', item);
+    this.props.navigateTo('itemScreen', 'feedscreen', item.originalIndex);
     this.setState({
       itemScreenLook: item.id,
     })

@@ -6,6 +6,7 @@ export const SET_LOOK_DATA = 'SET_LOOK_DATA';
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 
 export function getLook(lookId):Action {
+  console.log('lookId',lookId)
   return (dispatch) => {
     return dispatch(rest.actions.look({id: lookId},{}, (err, screenLookData) => {
       if (!err && screenLookData) {
