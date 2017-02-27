@@ -54,7 +54,6 @@ export default class Utils {
         Authorization : `Token token=${api_key}`,
         'Content-Type' : 'multipart/form-data',
       }, formData).then((resp) => {
-        console.log('resp', resp);
         const json = JSON.parse(resp.data);
         const status = resp.respInfo.status;
         if (status === 200 || status === 201) {

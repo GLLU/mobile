@@ -48,13 +48,11 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
-    console.log('reducers', action.payload)
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
     const newData = action.payload.data.looks.map(look => parseLook(look));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
-    console.log('flatLooksData', flatLooksData, currentLooksData)
     return {
       ...state,
       flatLooksData,
@@ -63,7 +61,6 @@ const ACTION_HANDLERS = {
     }
   },
   [RESET_FEED_DATA]: (state, { payload }) => {
-    console.log('reducers RESET_FEED_DATA', payload)
     const flatLooksData = payload.data.looks.map(look => parseLook(look));
     return {
       ...state,

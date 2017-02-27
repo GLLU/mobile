@@ -58,7 +58,7 @@ class BrandNameInput extends Component {
   }
 
   onEndEditing(e) {
-    console.log('onEndEditing', e);
+    // console.log('onEndEditing', e);
   }
 
   doFilter(text) {

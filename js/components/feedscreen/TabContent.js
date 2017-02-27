@@ -88,7 +88,6 @@ class TabContent extends Component {
   }
 
   loadMore() {
-    console.log('loadMore');
     if (this.state.isLoading) {
       return;
     }
@@ -208,7 +207,6 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
   const user_size = hasUserSize ? state.user.user_size : '';
-  console.log(state.feed.query);
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: state.feed.flatLooksData,

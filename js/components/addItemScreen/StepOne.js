@@ -200,7 +200,8 @@ class StepOne extends Component {
     const labelColorWP = this.state.sharingType ? '#000000' : '#7f7f7f';
     const labelColorFB = !this.state.sharingType ? '#000000' : '#7f7f7f';
     const checkBoxSize = new FontSizeCalculator(30).getSize();
-    return (<View style={{marginBottom: 60}}>
+    return (
+          <View style={{}}>
             <Text style={styles.headinSharing}>BENEFIT FROM SHARING</Text>
             <Grid>
               <Col size={15}>
@@ -284,7 +285,7 @@ class StepOne extends Component {
                 <CurrencyAndPrice currency={currency} price={price} updateValue={this.updateValue.bind(this)} />
               */}
               {/*this._renderSharing()*/}
-            <Row>
+            <Row style={[styles.row, {paddingBottom: 60}]}>
               <ActionsBar continueAction={this.props.continueAction} tagAnotherAction={this.props.tagAnotherAction} />
             </Row>
           </Grid>
@@ -315,7 +316,6 @@ const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
   if (item) {
-    console.log('selectedCategory', item.selectedCategory)
     return {
       navigation: state.cardNavigation,
       categories: state.filters.categories,

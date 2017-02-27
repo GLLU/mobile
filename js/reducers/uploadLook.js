@@ -119,7 +119,6 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {
-    console.log('Reducer ADD_ITEM_TYPE', action.payload);
     const selectedCategory = action.payload;
     return {
       ...state,

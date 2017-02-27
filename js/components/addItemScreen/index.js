@@ -147,9 +147,10 @@ class AddItemPage extends BasePage {
           </Button>
           <Title style={styles.header}>{this.getHeadingTitle()}</Title>
         </Header>
-        <Content
+        <View
             scrollEnabled={false}
-            contentContainerStyle={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
+            disableKBDismissScroll
+            style={{flex: 1, backgroundColor: '#F2F2F2', justifyContent: 'space-between', paddingVertical: 10}}>
           <Grid>
             <Row style={{height: 50}}>
               <StepsBar selectTab={this.selectTab.bind(this)} currentStep={this.state.currentStep} />
@@ -169,7 +170,7 @@ class AddItemPage extends BasePage {
               </Swiper>
             </Row>
           </Grid>
-        </Content>
+        </View>
       </Container>
     );
   }

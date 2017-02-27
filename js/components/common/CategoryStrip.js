@@ -77,10 +77,6 @@ class CategoryStrip extends Component {
     return posInCategories * ITEM_WIDTH;
   }
 
-  _handleCategoryScrollViewLayout(contentWidth, contentHeight) {
-    console.log('contentWidth contentHeight', contentWidth, contentHeight);
-  }
-
   _handleSelectCategory(item) {
     this.props.onCategorySelected(item);
   }

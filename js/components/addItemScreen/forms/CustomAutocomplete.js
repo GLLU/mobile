@@ -129,7 +129,11 @@ class CustomAutocomplete extends Autocomplete {
 
   _renderItems() {
     return (<View style={styles.autocompleteResults}>
-              <ScrollView style={styles.listStyle} keyboardShouldPersistTaps={true}>
+              <ScrollView
+                  style={styles.listStyle}
+                  keyboardShouldPersistTaps={true}
+                  keyboardDismissMode='on-drag'
+              >
                 {this._drawResultItems()}
               </ScrollView>
               <View style={styles.btnContainer} >
