@@ -3,7 +3,7 @@ import BasePage from '../common/BasePage';
 import { StyleSheet, Alert, Linking} from 'react-native';
 import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title, ListItem, Text } from 'native-base';
 import { connect } from 'react-redux';
-import { back } from '../../actions';
+import { back, logout } from '../../actions';
 import SocialShare from '../../lib/SocialShare';
 
 import glluTheme from '../../themes/gllu-theme';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   listItemText: {
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: 'Montserrat-Regular',
     fontWeight: '400',
   }
@@ -34,6 +34,7 @@ const iconContact = require('../../../images/icons/original-contact.png');
 const iconTerms = require('../../../images/icons/original-terms.png');
 const iconPrivacy = require('../../../images/icons/original-privacy.png');
 const iconCopyright = require('../../../images/icons/original-copyright.png');
+const iconLogout = require('../../../images/icons/original-logout.png');
 
 const SUPPORT_EMAIL = 'hello@gllu.com';
 const EMAIL_URL = `mailto:${SUPPORT_EMAIL}`;
@@ -82,6 +83,10 @@ class SettingsScreen extends BasePage {
     }).catch(err => console.error('An error occurred', err));
   }
 
+  handleLogout() {
+    this.props.logout();
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -113,6 +118,10 @@ class SettingsScreen extends BasePage {
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconCopyright} />
                 <Text style={styles.listItemText}>Copyrights</Text>
             </ListItem>
+            <ListItem style={styles.listItem} onPress={this.handleLogout.bind(this)}>
+                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconLogout} />
+                <Text style={styles.listItemText}>Log Out</Text>
+            </ListItem>
         </List>
         </Content>
       </Container>
@@ -123,6 +132,7 @@ class SettingsScreen extends BasePage {
 function bindAction(dispatch) {
   return {
     back: key => dispatch(back(key)),
+    logout: () => dispatch(logout()),
   };
 }
 
