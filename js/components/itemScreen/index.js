@@ -2,15 +2,11 @@ import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
 import {View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-import { Icon } from 'native-base';
 import styles from './styles';
-
-import BuyItButton from './buyItButton';
 import BottomLookContainer from './BottomLookContainer';
-import VideoPlayer from './videoPlayer/videoPlayer';
 import { likeUpdate, unLikeUpdate } from '../../actions/likes';
-import { loadMore } from '../../actions';
-import { getLook, reportAbuse } from '../../actions/looks';
+import { loadMore, replaceAt } from '../../actions';
+import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
@@ -21,7 +17,18 @@ const LOADER_HEIGHT = 30;
 
 class ItemScreen extends BasePage {
   static propTypes = {
-    flatLook: React.PropTypes.number,
+    flatLook: React.PropTypes.object,
+    flatLooksData: React.PropTypes.array,
+    navigation: React.PropTypes.object,
+    meta: React.PropTypes.object,
+    query: React.PropTypes.object,
+    navigateTo: React.PropTypes.func,
+    popRoute: React.PropTypes.func,
+    pushRoute: React.PropTypes.func,
+    likeUpdate: React.PropTypes.func,
+    unLikeUpdate: React.PropTypes.func,
+    reportAbuse: React.PropTypes.func,
+    loadMore: React.PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -30,18 +37,13 @@ class ItemScreen extends BasePage {
       fadeAnimContent: new Animated.Value(0),
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
-      isMenuOpen: false,
       flatArr: this.props.flatLooksData,
     }
-
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
-
   }
 
   componentDidMount() {
-    let that = this
-    console.log('that.props.flatLook',that.props.flatLook)
-    this._scrollView.scrollTo({ x: 0, y: h*that.props.flatLook, animated: true });
+    this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true });
   }
 
   componentWillMount() {
@@ -57,21 +59,15 @@ class ItemScreen extends BasePage {
       this.props.unLikeUpdate(data);
     }
   }
-  _toggleMenu(){
-    this.setState({isMenuOpen: !this.state.isMenuOpen})
-  }
+
 
   _tempPopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
 
   _goToProfile(look) {
-    console.log('goToProfile', this.props.look.user);
-    this.props.navigateTo('profileScreen', 'itemScreen', look);
-  }
-
-  _reportAbuse() {
-    this.props.reportAbuse(this.flat.look.id)
+    //this.props.navigateTo('profileScreen', 'itemScreen', look);
+    this.props.replaceAt('itemScreen', { key: 'profileScreen', optional: look}, this.props.navigation.key);
   }
 
   onLoad() {
@@ -105,6 +101,10 @@ class ItemScreen extends BasePage {
     }
   }
 
+  componentWillUnmount() {
+    console.log('profile screen will unmount')
+  }
+
   handleScroll(event) {
     if (this.props.hasUserSize) {
       this.scrollCallAsync(event);
@@ -120,7 +120,6 @@ class ItemScreen extends BasePage {
   }
 
   _renderItems() {
-    let count = 0
     return (
       <View>
         <ScrollView pagingEnabled={true}
@@ -139,7 +138,11 @@ class ItemScreen extends BasePage {
                     look={look}
                     tempPopRoute={(e) => this._tempPopRoute()}
                     goToProfile={(look) => this._goToProfile(look)}
-                    toggleLike={(isLiked) => this._toggleLike(isLiked)}/>
+                    toggleLike={(isLiked) => this._toggleLike(isLiked)}
+                    toggleMenu={() => this._toggleMenu()}
+                    isMenuOpen={this.state.isMenuOpen}
+                    reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+                  />
                 </Animated.Image>
               </View>
             )
@@ -149,13 +152,6 @@ class ItemScreen extends BasePage {
       </View>
     )
   }
-
-  // _renderItemContent(look) {
-  //   console.log('lol')
-  //   return (
-  //
-  //   )
-  // }
 
   render() {
     return  this._renderItems();
@@ -171,16 +167,14 @@ function bindAction(dispatch) {
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     reportAbuse: (lookId) => dispatch(reportAbuse(lookId)),
     loadMore: () => dispatch(loadMore()),
+    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
 
 const mapStateToProps = state => {
-  const lookData = state.look.screenLookData.look ? state.look.screenLookData.look : [];
-  console.log('flatlooooks',state.feed.flatLooksData)
   return {
     isLoading: state.loader.loading,
     navigation: state.cardNavigation,
-    look: lookData,
     flatLooksData: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,

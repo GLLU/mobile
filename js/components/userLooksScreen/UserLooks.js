@@ -24,6 +24,7 @@ class UserLooks extends Component {
   constructor(props) {
     super(props);
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.userLooks);
+    const isMyProfile = this.props.userId === this.props.myUserId
     this.state = {
       filterHeight: 0,
       imagesColumn1,
@@ -31,8 +32,10 @@ class UserLooks extends Component {
       itemScreenLook: 0,
       photoModal: false,
       refreshing: false,
-      pagination: 1
+      pagination: 1,
+      isMyProfile
     };
+    console.log('props')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,6 +73,7 @@ class UserLooks extends Component {
         this.setState({
           pagination: this.state.pagination+=1,
         })
+        console.log('ptops5',this.props)
         let data = {
           id: this.props.userId,
           page: this.state.pagination
@@ -86,6 +90,7 @@ class UserLooks extends Component {
   }
 
   _renderImages(images) {
+    console.log('images',images)
     return images.map((img, index) => {
       return  (
         <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
@@ -150,7 +155,7 @@ class UserLooks extends Component {
           >
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderAddItemButton()}
+                { this.state.isMyProfile ? this._renderAddItemButton() : null}
                 {this._renderImages(this.state.imagesColumn1)}
               </View>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
@@ -187,6 +192,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     userLooks: state.userLooks.userLooksData,
+    myUserId: state.user.id
   }
 };
 

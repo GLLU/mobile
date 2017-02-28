@@ -10,6 +10,13 @@ const bubbleImage = require('../../../images/bubble.png');
 const infoImage = require('../../../images/infoIcon.png');
 
 export default class BottomButton extends Component {
+  static propTypes = {
+    likes: React.PropTypes.number,
+    isLiked: React.PropTypes.bool,
+    toggleLike: React.PropTypes.func,
+    toggleMenu: React.PropTypes.func,
+  }
+
   constructor(props) {
     super(props);
     this.state = {

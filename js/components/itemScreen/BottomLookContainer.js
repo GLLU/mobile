@@ -8,12 +8,23 @@ import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
 
 export default class BottomLookContainer extends Component {
+  static propTypes = {
+    look: React.PropTypes.object,
+    tempPopRoute: React.PropTypes.func,
+    goToProfile: React.PropTypes.func,
+    toggleLike: React.PropTypes.func,
+    toggleMenu: React.PropTypes.func,
+    reportAbuse: React.PropTypes.func,
+    isMenuOpen: React.PropTypes.bool,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       likes: this.props.look.likes,
       isLiked: this.props.look.isLiked,
       fadeAnimContent: new Animated.Value(0),
+      isMenuOpen: false,
     }
   }
 
@@ -25,6 +36,10 @@ export default class BottomLookContainer extends Component {
     });
   }
 
+  _toggleMenu(){
+    this.setState({isMenuOpen: !this.state.isMenuOpen})
+  }
+
   render() {
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
@@ -33,7 +48,7 @@ export default class BottomLookContainer extends Component {
         delay: 250      }            // Configuration
     ).start();
     const avatar = {};
-    avatar.imageUri = this.props.look.userAvatar;
+    avatar.imageUri = this.props.look.avatar.url;
     avatar.bodyType = this.props.look.type;
     return (
       <Animated.View style={{opacity: this.state.fadeAnimContent, justifyContent: 'space-between'}}>
@@ -42,10 +57,10 @@ export default class BottomLookContainer extends Component {
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
-          <BottomButton isLiked={this.state.liked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this.props._toggleMenu()}/>
+          <BottomButton isLiked={this.state.liked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons(this.props.look)}
-        <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this._reportAbuse(lookId)} closeModal={() => this._toggleMenu()}/>
+        <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)} closeModal={() => this._toggleMenu()}/>
       </Animated.View>
     )
   }

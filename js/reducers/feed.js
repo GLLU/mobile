@@ -18,10 +18,8 @@ const initialState = {
   },
 };
 
-const parseLook = function(look, index) {
-  console.log('index',index)
+const parseLook = function(look, index, flatLooksDataLength) {
   const cover = _.find(look.cover, x => x.version == 'medium');
-  console.log('reducer look',look)
   return Object.assign({}, {
     liked: look.is_liked,
     type: look.user_size.body_type,
@@ -31,9 +29,12 @@ const parseLook = function(look, index) {
     uri: cover ? cover.url : null,
     width: cover ? cover.width : null,
     height: cover ? cover.height : null,
-    userAvatar: look.user.avatar.url,
+    avatar: look.user.avatar,
+    name: look.user.name,
+    username: look.user.username,
+    about_me: look.user.about_me,
     items: look.items,
-    originalIndex: index
+    originalIndex: flatLooksDataLength+index
   });
 }
 
@@ -53,13 +54,11 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
-    console.log('reducers', action.payload)
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
-    const newData = action.payload.data.looks.map((look,index) => parseLook(look, index));
+    const newData = action.payload.data.looks.map((look, index ,flatLooksDataLength) => parseLook(look, index, state.flatLooksData.length));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
-    console.log('flatLooksData', flatLooksData, currentLooksData)
     return {
       ...state,
       flatLooksData,

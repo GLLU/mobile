@@ -86,6 +86,8 @@ class AppNavigator extends Component {
     }
   }
   _renderScene(props) { // eslint-disable-line class-methods-use-this
+    console.log('blab',props.scene.route.key)
+    console.log('blab',props.scene.route.optional)
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
