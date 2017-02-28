@@ -62,6 +62,10 @@ class ProfileScreen extends BasePage {
     this.props.getStats(this.props.userData.id);
   }
 
+  handleSettingsPress() {
+    this.props.navigateTo('settingsScreen', 'feedscreen');
+  }
+
   _PopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
@@ -72,9 +76,12 @@ class ProfileScreen extends BasePage {
      :
      <Icon style={styles.backBtn} name="ios-arrow-back" />
   }
+
   _renderRightBtn() {
    return this.state.isMyProfile ?
-     <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn} />
+    <TouchableOpacity onPress={this.handleSettingsPress.bind(this)}>
+      <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn} />
+    </TouchableOpacity>
      :
      <Text style={styles.reportBtn}>REPORT</Text>
   }

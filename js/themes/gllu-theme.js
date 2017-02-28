@@ -115,12 +115,12 @@ export default {
 
   // Header
   iosToolbarBtnColor: '#007aff',
-  toolbarDefaultBg: (Platform.OS === 'ios') ? 'transparent' : 'transparent',
+  toolbarDefaultBg: (Platform.OS === 'ios') ? '#F2F2F2' : '#F2F2F2',
   toolbarHeight: (Platform.OS === 'ios') ? 64 : 56,
   toolbarLineHeight: (Platform.OS === 'ios') ? 64 : 30,
   toolbarIconSize: (Platform.OS === 'ios') ? 20 : 22,
   toolbarInputColor: '#CECDD2',
-  toolbarInverseBg: '#222',
+  toolbarInverseBg: '#F2F2F2',
   toolbarTextColor: (Platform.OS === 'ios') ? '#000' : '#000',
   tooolbarTextMarginLeft: (Platform.OS === 'ios') ? 0 : -43,
   get statusBarColor() {
@@ -206,7 +206,7 @@ export default {
 
 
   // Title
-  titleFontSize: (Platform.OS === 'ios') ? 17 : 19,
+  titleFontSize: (Platform.OS === 'ios') ? 24 : 19,
   subTitleFontSize: (Platform.OS === 'ios') ? 12 : 14,
   subtitleColor: '#8e8e93',
 
@@ -225,4 +225,20 @@ export default {
   inputLineHeight: 24,
   jumbotronBg: '#C9C9CE',
   jumbotronPadding: 30,
+
+  // Customize
+
+  // Header Title
+  get headerTitleStyle() {
+    return {
+      fontFamily: 'PlayfairDisplay-Regular',
+      lineHeight: this.toolbarLineHeight,
+      fontSize: this.titleFontSize,
+      fontWeight: '400',
+      color: '#000000',
+      marginLeft: this.tooolbarTextMarginLeft,
+      textAlign: 'center',
+      alignSelf: 'center'
+    };
+  }
 };
