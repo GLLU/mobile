@@ -18,7 +18,7 @@ const initialState = {
   },
 };
 
-const parseLook = function(look) {
+const parseLook = function(look, index, flatLooksDataLength) {
   const cover = _.find(look.cover, x => x.version == 'medium');
   return Object.assign({}, {
     liked: look.is_liked,
@@ -29,6 +29,12 @@ const parseLook = function(look) {
     uri: cover ? cover.url : null,
     width: cover ? cover.width : null,
     height: cover ? cover.height : null,
+    avatar: look.user.avatar,
+    name: look.user.name,
+    username: look.user.username,
+    about_me: look.user.about_me,
+    items: look.items,
+    originalIndex: flatLooksDataLength+index
   });
 }
 
@@ -51,7 +57,7 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
-    const newData = action.payload.data.looks.map(look => parseLook(look));
+    const newData = action.payload.data.looks.map((look, index ,flatLooksDataLength) => parseLook(look, index, state.flatLooksData.length));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
       ...state,

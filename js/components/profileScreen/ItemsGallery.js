@@ -40,17 +40,23 @@ class ItemsGallery extends Component {
       this.props.latest_looks.map((look, index) => {
         if(index < limiter){
           let thumbImage = _.find(look.cover, image => image.version == 'thumb');
-          let coverImg = _.find(look.cover, image => image.version == 'medium')
-          let coverImgUrl = coverImg.url ? coverImg.url : 'http://blog.adsy.me/wp-content/uploads/2015/06/how-to-fix-error-404.jpg';
+          let cover = _.find(look.cover, image => image.version == 'medium')
           flatLooksArr.push(  {
             liked: look.is_liked,
             type: look.user_size.body_type,
             id: look.id,
             likes: look.likes,
             user_id: look.user_id,
-            uri: coverImgUrl,
-            width: coverImg.width,
-            height: coverImg.height,
+            uri: cover ? cover.url : null,
+            width: cover ? cover.width : null,
+            height: cover ? cover.height : null,
+            avatar: look.user.avatar,
+            name: look.user.name,
+            username: look.user.username,
+            about_me: look.user.about_me,
+            items: look.items,
+            originalIndex: index
+
           });
           return (
             <TouchableOpacity onPress={(e) => this.props.itemPress(flatLooksArr[index])} key={index}>

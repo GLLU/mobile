@@ -18,8 +18,6 @@ const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const { popRoute } = actions;
 
-import glluTheme from '../../themes/gllu-theme';
-
 class ProfileScreen extends BasePage {
   static propTypes = {
     userData: React.PropTypes.object,
@@ -35,8 +33,11 @@ class ProfileScreen extends BasePage {
   };
   constructor(props) {
     super(props);
+    const isMyProfile = this.props.userData.id === this.props.myUser.id
     this.state = {
-      isMyProfile: this.props.userData.id === this.props.myUser.id,
+      isMyProfile,
+      userId: isMyProfile ? this.props.userData.id : this.props.userData.user_id,
+
       photoModal: false
     }
   }
@@ -49,9 +50,9 @@ class ProfileScreen extends BasePage {
       }
       this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
     }
-    if(this.props.userData.id !== this.props.currLookScreenId){ //here for performance - relate to user looks screen
+    if(this.state.userId !== this.props.currLookScreenId){ //here for performance - relate to user looks screen
       const looksDataCall = {
-        id: this.props.userData.id,
+        id: this.state.userId,
         page: 1
       }
       this.props.getUserLooksData(looksDataCall);
@@ -59,7 +60,7 @@ class ProfileScreen extends BasePage {
   }
 
   componentWillMount() {
-    this.props.getStats(this.props.userData.id);
+    this.props.getStats(this.state.userId);
   }
 
   handleSettingsPress() {
@@ -86,15 +87,19 @@ class ProfileScreen extends BasePage {
      <Text style={styles.reportBtn}>REPORT</Text>
   }
 
+  componentWillUnmount() {
+    console.log('profile unmounted')
+  }
+
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'profileScreen', item);
+    this.props.navigateTo('looksScreen', 'feedscreen', item);
   }
   _handleItemsPress() {
     const userData = {
-      id: this.props.userData.id,
+      id: this.state.userId,
       looksCount: this.props.stats.looks_count
     }
-    this.props.navigateTo('userLookScreen', 'profileScreen', userData);
+    this.props.navigateTo('userLookScreen', 'feedscreen', userData);
   }
 
   goToAddNewItem(imagePath) {
@@ -110,7 +115,8 @@ class ProfileScreen extends BasePage {
   }
 
   _renderStats() {
-    if(this.props.stats.latest_looks && this.props.stats.user_id === this.props.userData.id) {
+
+    if(this.props.stats.latest_looks && this.props.stats.user_id === this.state.userId) {
       return (
         <View>
           <ItemsGallery isMyProfile={this.state.isMyProfile}
@@ -144,8 +150,8 @@ class ProfileScreen extends BasePage {
                 </TouchableOpacity>
                 { avatarUrl ?
                 <ProfileView profilePic={avatarUrl}
-                             name={userData.name}
-                             username={userData.username}
+                             name={user.name}
+                             username={user.username}
                              isMyProfile={this.state.isMyProfile}
                 /> : null }
                 <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>

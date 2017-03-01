@@ -6,11 +6,11 @@ import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, RefreshCon
 import { View, Text } from 'native-base';
 import _ from 'lodash';
 import { actions } from 'react-native-navigation-redux-helpers';
+import SelectPhoto from '../feedscreen/SelectPhoto';
+import { addNewLook, navigateTo, getUserLooksData, replaceAt } from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
-import SelectPhoto from '../feedscreen/SelectPhoto';
-import { addNewLook, navigateTo, getUserLooksData } from '../../actions';
 
 class UserLooks extends Component {
 
@@ -24,6 +24,7 @@ class UserLooks extends Component {
   constructor(props) {
     super(props);
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.userLooks);
+    const isMyProfile = this.props.userId === this.props.myUserId
     this.state = {
       filterHeight: 0,
       imagesColumn1,
@@ -31,7 +32,8 @@ class UserLooks extends Component {
       itemScreenLook: 0,
       photoModal: false,
       refreshing: false,
-      pagination: 1
+      pagination: 1,
+      isMyProfile
     };
   }
 
@@ -79,10 +81,7 @@ class UserLooks extends Component {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'userLookScreen', item);
-    this.setState({
-      itemScreenLook: item.id,
-    })
+    this.props.replaceAt('userLookScreen', { key: 'looksScreen', optional: item}, this.props.navigation.key);
   }
 
   _renderImages(images) {
@@ -150,7 +149,7 @@ class UserLooks extends Component {
           >
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderAddItemButton()}
+                { this.state.isMyProfile ? this._renderAddItemButton() : null}
                 {this._renderImages(this.state.imagesColumn1)}
               </View>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
@@ -181,12 +180,15 @@ function bindActions(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
+    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
 
 const mapStateToProps = state => {
   return {
+    navigation: state.cardNavigation,
     userLooks: state.userLooks.userLooksData,
+    myUserId: state.user.id
   }
 };
 
