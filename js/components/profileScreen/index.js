@@ -85,14 +85,14 @@ class ProfileScreen extends BasePage {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('looksScreen', 'profileScreen', item);
+    this.props.navigateTo('looksScreen', 'feedscreen', item);
   }
   _handleItemsPress() {
     const userData = {
       id: this.state.userId,
       looksCount: this.props.stats.looks_count
     }
-    this.props.navigateTo('userLookScreen', 'profileScreen', userData);
+    this.props.navigateTo('userLookScreen', 'feedscreen', userData);
   }
 
   goToAddNewItem(imagePath) {
