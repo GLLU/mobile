@@ -87,7 +87,6 @@ class TabContent extends Component {
   }
 
   loadMore() {
-    console.log('loadMore');
     if (this.state.isLoading) {
       return;
     }
@@ -146,10 +145,8 @@ class TabContent extends Component {
     });
   }
 
-  _renderLoading() {
-    const style = {flex: 1, justifyContent: 'center', height: LOADER_HEIGHT, alignItems: 'center', margin: 5};
-    
-    return (<View style={style}>
+  _renderLoadMore() {
+    return (<View style={styles.loader}>
       {(() => {
         if (this.state.noMoreData) {
           return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
@@ -163,10 +160,22 @@ class TabContent extends Component {
       </View>);
   }
 
+  _renderLoading() {
+    if (this.props.reload) {
+      return (
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
+          <Spinner color='#666666'/>
+        </View>
+      );  
+    }
+    
+  }
+
   render() {
     return(
       <View style={styles.tab}>
         <ScrollView
+            style={{flex: 1}}
             scrollEventThrottle={100}
             onScroll={this.handleScroll.bind(this)}>
           <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5}]}>
@@ -177,8 +186,9 @@ class TabContent extends Component {
               {this._renderImages(this.state.imagesColumn2)}
             </View>
           </View>
-          {this._renderLoading()}
+          {this._renderLoadMore()}
         </ScrollView>
+        {this._renderLoading()}
       </View>
     )
   }
@@ -186,7 +196,16 @@ class TabContent extends Component {
 
 const styles = StyleSheet.create({
   tab: {
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    height: LOADER_HEIGHT,
+    alignItems: 'center',
+    margin: 5,
+    padding: 5,
   },
 });
 

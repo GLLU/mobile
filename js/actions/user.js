@@ -40,9 +40,7 @@ const signInFromRest = function(dispatch, data) {
   if (!data || _.isEmpty(data)) {
     return;
   }
-  console.log('api key', data.user.api_key)
   Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
-    console.log('saved to key chain');
     setRestOptions(dispatch, rest, data.user);
     dispatch(setUser(data.user));
     dispatch(resetUserNavigation());
@@ -50,7 +48,6 @@ const signInFromRest = function(dispatch, data) {
 };
 
 export function resetUserNavigation() {
-  console.log('resetUserNavigation');
   return (dispatch, getState) => {
     const navigation = getState().cardNavigation;
     dispatch(reset([
@@ -82,7 +79,6 @@ export function loginViaFacebook(data):Action {
     };
 
     return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
-      console.log('data after facebook', data)
       if (!err && data) {
         signInFromRest(dispatch, data);
       } else {
@@ -123,13 +119,10 @@ const signUp = function(dispatch, data) {
 export function emailSignUp(data):Action {
   return (dispatch) => {
     dispatch(hideError());
-    console.log('data2',data)
     if(data) {
       signUp(dispatch, data).then(data => {
-        console.log('sign up successful', data);
         signInFromRest(dispatch, data);
       }).catch(err => {
-        console.log('errr', err);
         if (err.errors && err.errors.length > 0) {
           const pointers = [];
           let errorString = '';
@@ -204,7 +197,6 @@ export function checkLogin() {
     const user = getState().user;
     if (user && user.id != -1) {
       Utils.getKeychainData().then(credentials => {
-        console.log('credentials', credentials);
         if (credentials) {
           setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
           dispatch(resetUserNavigation());
@@ -219,7 +211,6 @@ export function checkLogin() {
 export function changeUserAboutMe(data) {
   return (dispatch) => {
     dispatch(showLoader());
-    console.log('datassss',data)
     dispatch(rest.actions.changeUserAboutMe.put({ id: data.id }, { body: JSON.stringify(data) }, (err, data) => {
       if (!err) {
         dispatch(setUser(data.user));

@@ -7,7 +7,7 @@ const WIZARD_PADDING = 80;
 
 const styles = StyleSheet.create({
   stepsContainer: {
-    height: 50,
+    flex: 1,
     paddingHorizontal: WIZARD_PADDING,
     justifyContent: 'center'
   },

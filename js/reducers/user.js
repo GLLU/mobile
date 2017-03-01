@@ -36,14 +36,12 @@ const ACTION_HANDLERS = {
     };
   },
   [REHYDRATE]: (state, action) => {
-    console.log('REHYDRATE', action.payload.user);
     return {
       ...state,
       ...action.payload.user
     }
   },
   [RESET_STATE]: (state, action) => {
-    console.log('reset user state');
     return initialState;
   }
 }

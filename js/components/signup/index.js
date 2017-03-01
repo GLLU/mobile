@@ -66,7 +66,6 @@ class SignUpPage extends BasePage {
           name,
           avatar,
           gender } = this.state;
-        console.log('state',this.state)
         if(this.checkValidations()) {
           let data = {
               email,
@@ -152,7 +151,6 @@ class SignUpPage extends BasePage {
 
       image.type = 'multipart/form-data'
       image.uri = image.path;
-      console.log('image',image)
       this.setState({avatar: image, avatarIcon: 'check'})
     });
   }

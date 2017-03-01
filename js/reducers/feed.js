@@ -67,7 +67,6 @@ const ACTION_HANDLERS = {
     }
   },
   [RESET_FEED_DATA]: (state, { payload }) => {
-    console.log('reducers RESET_FEED_DATA', payload)
     const flatLooksData = payload.data.looks.map(look => parseLook(look));
     return {
       ...state,

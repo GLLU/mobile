@@ -93,7 +93,7 @@ class ProfileView extends Component {
         <Image source={{uri: this.props.profilePic}} style={styles.avatarImg} />
         <Text style={styles.name}>{this.props.name}</Text>
         <Text style={styles.username}>@{this.props.username}</Text>
-        <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+        <View style={{justifyContent: 'center', flexDirection: 'row'}}>
           {this.props.isMyProfile ?
             <TouchableOpacity style={styles.editBtn} onPress={this.handleEditPress.bind(this)}>
               <Text style={styles.editText}>Edit</Text>
@@ -103,9 +103,6 @@ class ProfileView extends Component {
               <Text style={styles.followText}>Follow</Text>
             </TouchableOpacity>
           }
-          <TouchableOpacity style={styles.logoutBtn} onPress={this.handleLogoutPress.bind(this)}>
-            <Text style={styles.logoutText}>Log Out</Text>
-          </TouchableOpacity>
         </View>
       </View>
     )

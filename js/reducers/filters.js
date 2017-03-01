@@ -59,7 +59,6 @@ const ACTION_HANDLERS = {
   },
   [SET_OCCASION_TAGS]: (state, action) => {
     const occasion_tags = _.filter(action.payload.tags, (item) => item.parent_id == null);
-    console.log('reducer SET_OCCASION_TAGS', action.payload.tags);
     return {
       ...state,
       occasion_tags,

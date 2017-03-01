@@ -39,6 +39,7 @@ const {
   replaceAt,
   popRoute,
   pushRoute,
+  back,
 } = actions;
 
 export {
@@ -76,6 +77,7 @@ export {
   replaceAt,
   pushRoute,
   popRoute,
+  back,
   addItemType,
   createBrandName,
   addBrandName,

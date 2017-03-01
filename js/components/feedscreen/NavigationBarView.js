@@ -84,7 +84,7 @@ class NavigationBarView extends Component {
     const userBtnIcon = this.state.hasNotify ? userWithNotifyIcon : userIcon;
     return(
       <View style={styles.navigationBar}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
           <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
             <Image source={userBtnIcon} style={styles.btnImage} />
           </Button>
