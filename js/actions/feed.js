@@ -13,7 +13,7 @@ const parseQueryFromState = function(state) {
 
 export function getFeed(query):Action {
   return (dispatch, getState) => {
-    dispatch(showLoader());
+    // dispatch(showLoader());
     const state = getState().feed;
     const newState = Object.assign({}, state.query, query, {
       page: {
@@ -26,10 +26,10 @@ export function getFeed(query):Action {
       return dispatch(rest.actions.feeds(params, (err, data) => {
         if (!err && data) {
           dispatch(setFeedData({data, query: newState}));
-          dispatch(hideLoader());
+          // dispatch(hideLoader());
           resolve();
         } else {
-          dispatch(hideLoader());
+          // dispatch(hideLoader());
           reject();
         }
       }));
@@ -39,7 +39,7 @@ export function getFeed(query):Action {
 
 export function resetFeed():Action {
   return (dispatch, getState) => {
-    dispatch(showLoader());
+    // dispatch(showLoader());
     const params = {
       type: 'relevant',
       category: null,
@@ -59,10 +59,10 @@ export function resetFeed():Action {
               query: params
             }
           });
-          dispatch(hideLoader());
+          // dispatch(hideLoader());
           resolve();
         } else {
-          dispatch(hideLoader());
+          // dispatch(hideLoader());
           reject();
         }
       }));

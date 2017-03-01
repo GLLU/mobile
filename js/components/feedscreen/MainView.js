@@ -33,11 +33,12 @@ class MainView extends Component {
       isOpen: false,
       filterHeight: 45,
       searchHeight: 60,
+      reload: false,
     };
   }
 
   componentWillMount() {
-    this.getFeed();
+    this.getFeed(this.props.query);
   }
 
   handleSwipeTab(locked) {
@@ -46,8 +47,20 @@ class MainView extends Component {
     })
   }
 
-  getFeed() {
-    this.props.getFeed(this.props.query);
+  getFeed(query) {
+    this.setState({reload: true}, () => {
+      this.props.getFeed(query).then(() => {
+        this.setState({reload: false});
+      });  
+    });
+  }
+
+  resetFeed() {
+    this.setState({reload: true}, () => {
+      this.props.resetFeed().then(() => {
+        this.setState({reload: false});
+      });  
+    });
   }
 
   _clearFilter() {
@@ -56,7 +69,7 @@ class MainView extends Component {
 
   _filterFeed(query, reset = false) {
     if (reset) {
-      return this.props.resetFeed();
+      return this.resetFeed();
     }
     let newState = {};
     const oldState = _.cloneDeep(this.props.query);
@@ -66,15 +79,16 @@ class MainView extends Component {
       newState = _.merge(this.props.query, query);
     }
     if (!_.isEqual(newState, oldState)) {
-      this.props.getFeed(newState);
+      this.getFeed(newState);
     }
   }
 
   _renderFeed() {
+    const { reload } = this.state;
     if(this.props.query.type === 'relevant') {
-      return <BestMatchTab filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
+      return <BestMatchTab reload={reload} filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
     } else {
-      return <RecentTab  filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
+      return <RecentTab reload={reload} filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
     }
   }
 
