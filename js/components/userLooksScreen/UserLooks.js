@@ -6,11 +6,11 @@ import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, RefreshCon
 import { View, Text } from 'native-base';
 import _ from 'lodash';
 import { actions } from 'react-native-navigation-redux-helpers';
+import SelectPhoto from '../feedscreen/SelectPhoto';
+import { addNewLook, navigateTo, getUserLooksData, replaceAt } from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
-import SelectPhoto from '../feedscreen/SelectPhoto';
-import { addNewLook, navigateTo, getUserLooksData } from '../../actions';
 
 class UserLooks extends Component {
 
@@ -35,7 +35,6 @@ class UserLooks extends Component {
       pagination: 1,
       isMyProfile
     };
-    console.log('props')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,7 +72,6 @@ class UserLooks extends Component {
         this.setState({
           pagination: this.state.pagination+=1,
         })
-        console.log('ptops5',this.props)
         let data = {
           id: this.props.userId,
           page: this.state.pagination
@@ -83,14 +81,10 @@ class UserLooks extends Component {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'userLookScreen', item);
-    this.setState({
-      itemScreenLook: item.id,
-    })
+    this.props.replaceAt('userLookScreen', { key: 'looksScreen', optional: item}, this.props.navigation.key);
   }
 
   _renderImages(images) {
-    console.log('images',images)
     return images.map((img, index) => {
       return  (
         <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
@@ -186,11 +180,13 @@ function bindActions(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
+    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
 
 const mapStateToProps = state => {
   return {
+    navigation: state.cardNavigation,
     userLooks: state.userLooks.userLooksData,
     myUserId: state.user.id
   }

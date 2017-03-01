@@ -22,7 +22,7 @@ export default class BottomLookContainer extends Component {
     super(props);
     this.state = {
       likes: this.props.look.likes,
-      isLiked: this.props.look.isLiked,
+      isLiked: this.props.look.liked,
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
     }
@@ -57,7 +57,7 @@ export default class BottomLookContainer extends Component {
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
-          <BottomButton isLiked={this.state.liked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
+          <BottomButton isLiked={this.state.isLiked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)} closeModal={() => this._toggleMenu()}/>

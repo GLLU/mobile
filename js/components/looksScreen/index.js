@@ -15,9 +15,12 @@ const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.g
 const { popRoute, pushRoute } = actions
 const LOADER_HEIGHT = 30;
 
-class ItemScreen extends BasePage {
+class LooksScreen extends BasePage {
   static propTypes = {
-    flatLook: React.PropTypes.object,
+    flatLook: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.number
+    ]),
     flatLooksData: React.PropTypes.array,
     navigation: React.PropTypes.object,
     meta: React.PropTypes.object,
@@ -37,17 +40,15 @@ class ItemScreen extends BasePage {
       fadeAnimContent: new Animated.Value(0),
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
-      flatArr: this.props.flatLooksData,
+      showAsFeed: typeof this.props.flatLook === 'number' // Will check if recieved one object or an index of flatLooksData
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
 
   componentDidMount() {
-    this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true });
-  }
-
-  componentWillMount() {
-    console.log('will mount')
+    if(this.state.showAsFeed){
+      this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true });
+    }
   }
 
   _toggleLike(isLiked){
@@ -60,14 +61,12 @@ class ItemScreen extends BasePage {
     }
   }
 
-
   _tempPopRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
 
   _goToProfile(look) {
-    //this.props.navigateTo('profileScreen', 'itemScreen', look);
-    this.props.replaceAt('itemScreen', { key: 'profileScreen', optional: look}, this.props.navigation.key);
+      this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: look}, this.props.navigation.key);
   }
 
   onLoad() {
@@ -102,31 +101,28 @@ class ItemScreen extends BasePage {
   }
 
   componentWillUnmount() {
-    console.log('profile screen will unmount')
+    console.log('lookscreen screen will unmount')
   }
 
   handleScroll(event) {
-    if (this.props.hasUserSize) {
-      this.scrollCallAsync(event);
-    } else {
-      const contentSizeHeight = event.nativeEvent.contentSize.height;
-      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-      const currentScroll = event.nativeEvent.contentOffset.y
-      const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-      if (compare <= LOADER_HEIGHT) {
-        this.loadMoreAsync();
-      }
+    const contentSizeHeight = event.nativeEvent.contentSize.height;
+    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+    const currentScroll = event.nativeEvent.contentOffset.y
+    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
+    if (compare <= LOADER_HEIGHT) {
+      this.loadMoreAsync();
     }
   }
 
-  _renderItems() {
+  render() {
+    let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
     return (
       <View>
         <ScrollView pagingEnabled={true}
                     ref={(c) => { this._scrollView = c; }}
                     scrollEventThrottle={100}
                     onScroll={this.handleScroll.bind(this)}>
-          {this.props.flatLooksData.map((look, index) => {
+          {looksArr.map((look, index) => {
             return (
               <View key={index}>
                 <Animated.Image
@@ -147,14 +143,9 @@ class ItemScreen extends BasePage {
               </View>
             )
           })}
-
         </ScrollView>
       </View>
     )
-  }
-
-  render() {
-    return  this._renderItems();
   }
 }
 
@@ -181,4 +172,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindAction)(ItemScreen);
+export default connect(mapStateToProps, bindAction)(LooksScreen);

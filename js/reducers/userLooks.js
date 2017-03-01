@@ -19,6 +19,11 @@ export default function (state:State = initialState, action): State {
             uri: cover ? cover.url : null,
             width: cover ? cover.width : null,
             height: cover ? cover.height : null,
+            avatar: look.user.avatar,
+            name: look.user.name,
+            username: look.user.username,
+            about_me: look.user.about_me,
+            items: look.items,
           });
         });
         if(action.payload.currId === state.currId){

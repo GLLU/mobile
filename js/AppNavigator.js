@@ -20,7 +20,7 @@ import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
-import ItemScreen from './components/itemScreen';
+import LooksScreen from './components/looksScreen';
 import ProfileScreen from './components/profileScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import UserLookScreen from './components/userLooksScreen/index.js';
@@ -86,8 +86,6 @@ class AppNavigator extends Component {
     }
   }
   _renderScene(props) { // eslint-disable-line class-methods-use-this
-    console.log('blab',props.scene.route.key)
-    console.log('blab',props.scene.route.optional)
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
@@ -115,8 +113,8 @@ class AppNavigator extends Component {
         return <MyBodyType />;
       case 'myBodyMeasure':
         return <MyBodyMeasure />;
-      case 'itemScreen':
-        return <ItemScreen flatLook={props.scene.route.optional}/>;
+      case 'looksScreen':
+        return <LooksScreen flatLook={props.scene.route.optional}/>;
       case 'userLookScreen':
         return <UserLookScreen userData={props.scene.route.optional}/>;
       case 'profileScreen':

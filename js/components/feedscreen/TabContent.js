@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, InteractionManager } from 'react-native';
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
@@ -34,7 +34,6 @@ class TabContent extends Component {
     this.state = {
       imagesColumn1,
       imagesColumn2,
-      itemScreenLook: 0,
       isLoading: false,
       noMoreData: false,
     };
@@ -120,10 +119,7 @@ class TabContent extends Component {
   }
 
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'feedscreen', item.originalIndex);
-    this.setState({
-      itemScreenLook: item.id,
-    })
+    this.props.navigateTo('looksScreen', 'feedscreen', item.originalIndex);
   }
 
   toggleLikeAction(item, isLiked) {

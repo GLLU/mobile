@@ -80,8 +80,12 @@ class ProfileScreen extends BasePage {
      <Text style={styles.reportBtn}>REPORT</Text>
   }
 
+  componentWillUnmount() {
+    console.log('profile unmounted')
+  }
+
   _handleItemPress(item) {
-    this.props.navigateTo('itemScreen', 'profileScreen', item);
+    this.props.navigateTo('looksScreen', 'profileScreen', item);
   }
   _handleItemsPress() {
     const userData = {
