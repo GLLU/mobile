@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
-import {View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
+import {StyleSheet, View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
 import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 import { loadMore, replaceAt } from '../../actions';
@@ -10,7 +9,7 @@ import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
-
+const w = Dimensions.get('window').width
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const { popRoute, pushRoute } = actions
 const LOADER_HEIGHT = 30;
@@ -173,3 +172,10 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, bindAction)(LooksScreen);
+
+const styles = StyleSheet.create({
+  itemImage: {
+    width: w,
+    height: h,
+  },
+});

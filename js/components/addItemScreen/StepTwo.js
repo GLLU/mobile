@@ -21,13 +21,12 @@ import {
 import _ from 'lodash';
 
 import FontSizeCalculator from './../../calculators/FontSize';
-
+const IMAGE_VIEW_WIDTH = parseInt(w - w * 0.5);
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 
 const w = Dimensions.get('window').width;
 const BTN_RADIO_MARGIN_TOP = w < 375 ? 0 : 10;
-import { IMAGE_VIEW_WIDTH } from './styles';
 
 const styles = StyleSheet.create({
   row: {

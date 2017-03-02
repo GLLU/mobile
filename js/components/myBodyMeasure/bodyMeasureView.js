@@ -1,14 +1,22 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Image, Platform, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';
-import myStyles from './styles';
 import Utils from '../../Utils';
 import convert from 'convert-units';
 import { completeEdit } from '../../actions/myBodyMeasure';
 import _ from 'lodash';
+
+const MK = require('react-native-material-kit');
+const {
+  MKColor,
+} = MK;
+const deviceWidth = Dimensions.get('window').width;
+const w = deviceWidth / 2 - 50;
+let fontSizeDefault = 14;
+let fontColor = '#000';
 
 class BodyMeasureView extends Component {
   constructor(props) {
@@ -90,23 +98,23 @@ class BodyMeasureView extends Component {
     let {sizeTypes} = this.props;
     return (
       <View>
-        <View style={myStyles.scaleRadioContainer}>
+        <View style={styles.scaleRadioContainer}>
           <CMInchRangeView toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
         </View>
         {sizeTypes.map((item, i) => {
-          return (<View key={i} style={myStyles.infoContainer}>
-            <Text style={myStyles.infoText}>{item}</Text>
-            <View style={myStyles.infoDetailTouch}>
+          return (<View key={i} style={styles.infoContainer}>
+            <Text style={styles.infoText}>{item}</Text>
+            <View style={styles.infoDetailTouch}>
 
-              <View style={myStyles.sizeLineContainer}>
-                <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.decreasSize(item) }>
-                  <Icon name='minus' style={myStyles.sizeLineIcons}/>
+              <View style={styles.sizeLineContainer}>
+                <TouchableOpacity style={styles.sizeLineBtns} onPress={() => this.decreasSize(item) }>
+                  <Icon name='minus' style={styles.sizeLineIcons}/>
                 </TouchableOpacity>
-                <Text style={[myStyles.infoDetailText, this.state.updateTextColorFor === item ? myStyles.infoDetailTextColorChange : null]}>{this.state.currentSize
+                <Text style={[styles.infoDetailText, this.state.updateTextColorFor === item ? styles.infoDetailTextColorChange : null]}>{this.state.currentSize
                     ? Utils.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
                     : null}</Text>
-                <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.increasSize(item) }>
-                  <Icon name='plus' style={myStyles.sizeLineIcons}/>
+                <TouchableOpacity style={styles.sizeLineBtns} onPress={() => this.increasSize(item) }>
+                  <Icon name='plus' style={styles.sizeLineIcons}/>
                 </TouchableOpacity>
               </View>
             </View>
@@ -120,17 +128,17 @@ class BodyMeasureView extends Component {
     return (
       <Grid>
         <Col style={{flex: 0.8}}>
-          <View style={myStyles.bodyType}>
-            <Image source={this.props.bodyType.shapeActive} style={myStyles.bodyTypeShapeImage}/>
-            <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
+          <View style={styles.bodyType}>
+            <Image source={this.props.bodyType.shapeActive} style={styles.bodyTypeShapeImage}/>
+            <Text style={styles.bodyTypeText}>{this.props.bodyType.name}</Text>
           </View>
-          <View style={myStyles.bodyTypeImageContainer}>
-            <Image style={myStyles.bodyTypeImage}
+          <View style={styles.bodyTypeImageContainer}>
+            <Image style={styles.bodyTypeImage}
                source={this.state.isEdit ? this.props.bodyType.imageEditUrl
                                          : this.props.bodyType.imageOriUrl} resizeMode={'contain'}/>
           </View>
         </Col>
-        <Col style={myStyles.sizeListContainer}>
+        <Col style={styles.sizeListContainer}>
             {this.state.isEdit ?  this._renderEditView() : this._renderMainView() }
         </Col>
       </Grid>
@@ -152,3 +160,92 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindAction)(BodyMeasureView);
+
+const styles = StyleSheet.create({
+  bodyType: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  bodyTypeShapeImage: {
+    height: 30,
+    width: 30,
+    resizeMode: 'contain'
+  },
+  bodyTypeText: {
+    fontSize: fontSizeDefault * 1.35,
+    color: fontColor,
+    marginBottom: 15,
+    fontFamily: 'PlayfairDisplay-Bold',
+  },
+  bodyTypeImageContainer: {
+    width: w,
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 15
+  },
+  bodyTypeImage: {
+    width: w,
+    height: 240
+  },
+  sizeListContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 25
+  },
+  infoContainer: {
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection:'row',
+    marginBottom: 15
+  },
+  infoText: {
+    flexDirection: 'column',
+    width: 50,
+    fontSize: fontSizeDefault * 1.2,
+    color: '#ccc',
+    alignSelf: 'flex-end',
+    marginBottom: (Platform.OS === 'ios') ? 16 : 5,
+  },
+  infoDetailTouch: {
+    flexDirection: 'column',
+    borderBottomWidth: 0,
+    borderColor: '#ddd',
+    flex: 1
+  },
+  sizeLineContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center'
+  },
+  sizeLine: {
+    flexDirection: 'row',
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgrey',
+  },
+  sizeLineBtns: {
+    flexDirection: 'row',
+  },
+  sizeLineIcons: {
+    color: '#00c497',
+    fontSize: (Platform.OS === 'ios') ? 35 : 28,
+  },
+  infoDetailText: {
+    fontSize: fontSizeDefault,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignItems: 'flex-end',
+    color: '#000000',
+    width: 53,
+    marginLeft: 8,
+    marginRight: 4,
+  },
+  infoDetailTextColorChange: {
+    color: MKColor.Teal
+  },
+  scaleRadioContainer: {
+    alignItems: 'center',
+    marginLeft: 50,
+    flex:1
+  },
+});

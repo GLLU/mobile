@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
-import FontSizeCalculator from './../../calculators/FontSize';
 const MK = require('react-native-material-kit');
 const galleryIcon = require('../../../images/icons/original-gallery.png')
 const cameraIcon = require('../../../images/icons/original-photo-camera.png')
@@ -13,16 +12,6 @@ const hModal = wModal / 2;
 const {
   MKColor,
 } = MK;
-
-const styles = StyleSheet.create({
-  photoModal: {
-    width: wModal,
-    height: hModal,
-    backgroundColor: '#fff',
-    borderRadius: 0,
-    overflow: 'hidden',
-  },
-});
 
 class SelectPhoto extends Component {
 
@@ -90,3 +79,14 @@ class SelectPhoto extends Component {
 }
 
 export default SelectPhoto;
+
+
+const styles = StyleSheet.create({
+  photoModal: {
+    width: wModal,
+    height: hModal,
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    overflow: 'hidden',
+  },
+});

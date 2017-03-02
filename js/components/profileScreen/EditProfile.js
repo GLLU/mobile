@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import { Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput, ScrollView, FormData} from 'react-native';
-import styles from './styles';
+import {StyleSheet, Dimensions, Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput, ScrollView, FormData} from 'react-native';
 import { View } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -15,7 +14,8 @@ import InformationTextIcon from '../common/informationTextIcon';
 
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
-
+const w = Dimensions.get('window').width
+const h = Dimensions.get('window').height
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const { popRoute } = actions;
 
@@ -29,6 +29,7 @@ class EditProfile extends Component {
     changeUserAvatar: React.PropTypes.func,
     changeUserAboutMe: React.PropTypes.func,
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -120,3 +121,40 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, bindAction)(EditProfile);
+
+const styles = StyleSheet.create({
+  editProfileBg: {
+    width: null,
+    height: 150
+  },
+  linearGradient: {
+    width: w,
+    height: h,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  scrollView: {
+    marginTop: 60
+  },
+  editBodyTypeTitleContainer: {
+    marginBottom: 20
+  },
+  editBodyTypeTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'grey'
+  },
+  privateInfoContainer: {
+    marginTop: 15,
+    marginBottom: 15,
+    justifyContent: 'center'
+  },
+  bodyMeasureContainer: {
+    flexBasis: 1,
+    backgroundColor: '#ffffff',
+    paddingTop: 25,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+  },
+});

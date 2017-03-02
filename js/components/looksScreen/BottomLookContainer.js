@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, Animated, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
+import {StyleSheet, View, Text, Animated, TouchableOpacity, Image, TouchableHighlight, Platform, Dimensions} from 'react-native';
 import { Icon } from 'native-base';
-import styles from './styles';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 import BottomButton from './bottomButton';
 import TopButton from './topButton';
 import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
 export default class BottomLookContainer extends Component {
   static propTypes = {
@@ -65,3 +66,10 @@ export default class BottomLookContainer extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  lookInfo: {
+    height: h-35,
+    justifyContent: 'space-between'
+  },
+});

@@ -2,10 +2,8 @@
 
 import React, { Component } from 'react';
 import { View } from 'native-base';
-
 import Tag from './Tag';
-
-import styles from './styles';
+import { StyleSheet } from 'react-native';
 
 class TagsView extends Component {
 
@@ -26,7 +24,15 @@ class TagsView extends Component {
   render() {
     return(<View style={styles.tagsContainer} >{this._renderTags()}</View>)
   }
-
 }
 
 export default TagsView;
+
+const styles = StyleSheet.create({
+  tagsContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: 'transparent'
+  },
+});

@@ -1,24 +1,24 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, TouchableWithoutFeedback } from 'react-native';
+import { Image, TouchableWithoutFeedback, StyleSheet, Dimensions, Platform} from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
-
 import glluTheme from '../../themes/gllu-theme';
 import { emailRule } from '../../validators';
-import styles from './styles';
-
 import { forgotPassword } from '../../actions/user';
 
 const { popRoute } = actions;
-
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow.png');
 
-
+const deviceHeight = Dimensions.get('window').height;
+const MK = require('react-native-material-kit');
+const {
+  MKColor,
+} = MK;
 class forgotPasswordPage extends BasePage {
 
   static propTypes = {
@@ -148,3 +148,118 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindAction)(forgotPasswordPage);
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: 'transparent',
+    shadowOpacity: 0,
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#FFFFFF',
+    textAlign: 'center'
+  },
+  headerArrow: {
+    color: '#FFFFFF'
+  },
+  container: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: deviceHeight
+  },
+  shadow: {
+    flex: 1,
+    width: null,
+    height: null
+  },
+  bg: {
+    flex: 1,
+    marginTop: deviceHeight / 1.75,
+    paddingTop: 0,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 30,
+    bottom: 0,
+  },
+  bgShadow: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  icons: {
+    backgroundColor: 'transparent',
+    marginBottom: 5
+  },
+  formItem: {
+    flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
+    borderBottomWidth: 2,
+    borderColor: 'rgba(192,192,192, .3)',
+    height: 50,
+    paddingLeft: 0,
+    alignItems: 'flex-end',
+    marginTop: 20
+  },
+  formGroup: {
+    flex: 1,
+    borderColor: 'transparent',
+    paddingLeft: 0
+  },
+  label: {
+    color: 'lightgrey',
+    fontSize: 16,
+    alignSelf: 'center',
+    marginTop: 10,
+    width: 100
+  },
+  addOpacity: {
+    opacity: 0.8
+  },
+  formInput: {
+    flex: 1,
+    paddingLeft: 20,
+    lineHeight: 20,
+    marginTop: (Platform.OS === 'ios') ? 12 : 0,
+    alignItems: 'stretch',
+    color: '#FFFFFF',
+    marginLeft: 10,
+    top: (Platform.OS === 'ios') ? 0 : 8,
+  },
+  formBtn: {
+    alignSelf: 'center',
+    marginTop: 50,
+    marginBottom: (Platform.OS === 'ios') ? 20 : 0,
+    width: 280,
+    height: 40,
+    backgroundColor: '#ADADAD',
+    borderRadius: 0,
+    opacity: 0.8
+  },
+  validationPassed: {
+    backgroundColor: MKColor.Teal,
+    opacity: 1
+  },
+  instuctionsContainer: {
+    flex: 1,
+    marginTop: 20,
+    paddingTop: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    bottom: 0,
+    alignSelf: 'center'
+  },
+  instuctions: {
+    width: 300,
+    height: (Platform.OS === 'ios') ? 40 : 50,
+    color: '#FFFFFF',
+    opacity: 0.8,
+    textAlign: 'center'
+  },
+});

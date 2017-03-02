@@ -87,6 +87,10 @@ const CustomTabBar = React.createClass({
   },
 });
 
+
+
+module.exports = CustomTabBar;
+
 const styles = StyleSheet.create({
   tab: {
     flex: 1,
@@ -105,5 +109,3 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
 });
-
-module.exports = CustomTabBar;

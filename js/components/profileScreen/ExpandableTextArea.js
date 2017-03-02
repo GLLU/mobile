@@ -1,10 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, TextInput } from 'react-native';
+import {StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native';
 import { View } from 'native-base';
-
-import styles from './styles';
 
 class ExpandableTextArea extends Component {
 
@@ -41,3 +39,17 @@ class ExpandableTextArea extends Component {
 
 export default ExpandableTextArea
 
+const styles = StyleSheet.create({
+  editAboutMeContainer: {
+    marginHorizontal: 10,
+    marginBottom: 30,
+    padding: 10,
+    borderWidth: 1,
+    borderColor : '#D9D9D9',
+    backgroundColor: 'white',
+  },
+  editAboutMeInput: {
+    fontSize: 14,
+    lineHeight: 20
+  },
+});

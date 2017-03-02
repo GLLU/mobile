@@ -1,10 +1,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text } from 'react-native';
+import {StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base';
 
-import styles from './styles';
 import ImagePicker from 'react-native-image-crop-picker';
 
 class ItemsGallery extends Component {
@@ -88,3 +87,51 @@ class ItemsGallery extends Component {
 
 export default ItemsGallery
 
+const styles = StyleSheet.create({
+  addItemContainer: {
+    backgroundColor: '#00D7B2',
+    width: 55,
+    justifyContent: 'center'
+  },
+  addItem: {
+    width: 15,
+    height: 15,
+    alignSelf: 'center'
+  },
+  itemPic: {
+    width: 55,
+    height: 55,
+  },
+  itemsContainer: {
+    flexDirection: 'row',
+    marginLeft: 15,
+    marginRight: 15,
+    backgroundColor: 'transparent',
+  },
+  itemsSeparator:{
+    flexDirection: 'row',
+    flexGrow: 1,
+    height: 75
+  },
+  itemsTotal: {
+    backgroundColor: '#00D7B2',
+    justifyContent: 'center',
+    opacity: 0.8
+  },
+  text: {
+    color: 'white',
+    fontWeight: '500',
+    textAlign: 'center',
+    width: 75,
+  },
+  number: {
+    fontSize: 30
+  },
+  itemsRow: {
+    backgroundColor: 'white',
+    flexGrow: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10
+  },
+});

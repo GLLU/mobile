@@ -2,12 +2,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Content, Text, List, ListItem } from 'native-base';
-
+import { StyleSheet } from 'react-native';
 import { setIndex } from '../../actions/list';
 import navigateTo from '../../actions/sideBarNav';
 import myTheme from '../../themes/base-theme';
 
-import styles from './style';
 
 class SideBar extends Component {
 
@@ -48,3 +47,13 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindAction)(SideBar);
+
+const styles = StyleSheet.create({
+  sidebar: {
+    flex: 1,
+    padding: 10,
+    paddingRight: 0,
+    paddingTop: 30,
+    backgroundColor: '#fff',
+  },
+});

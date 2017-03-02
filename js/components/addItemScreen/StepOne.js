@@ -29,8 +29,8 @@ import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-
-import { IMAGE_VIEW_WIDTH } from './styles';
+const w = Dimensions.get('window').width;
+const IMAGE_VIEW_WIDTH = parseInt(w - w * 0.5);
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxChecked = require('../../../images/icons/checkbox-checked-black.png');
 

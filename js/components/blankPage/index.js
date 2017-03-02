@@ -1,11 +1,10 @@
-
+import { StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Text, Button, Icon } from 'native-base';
 
 import { openDrawer } from '../../actions/drawer';
-import styles from './styles';
 
 const {
   popRoute,
@@ -69,5 +68,10 @@ const mapStateToProps = state => ({
   list: state.list.list,
 });
 
-
 export default connect(mapStateToProps, bindAction)(BlankPage);
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#FBFAFA',
+  },
+});

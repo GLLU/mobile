@@ -1,14 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, Dimensions } from 'react-native';
-import { View, Text } from 'native-base';
+import { Image, Dimensions, StyleSheet } from 'react-native';
 
+import { View, Text } from 'native-base';
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
-
-import styles from './styles';
-
 const tagBackground = require('../../../../images/tag-background.png');
 
 class Tag extends Component {
@@ -39,3 +36,25 @@ class Tag extends Component {
 }
 
 export default Tag;
+
+const styles = StyleSheet.create({
+  tagContainer: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    height: 50
+  },
+  tagBgImage: {
+    height: 40,
+    width: 70,
+    resizeMode: 'contain',
+    backgroundColor: 'transparent',
+  },
+  priceTagLabel: {
+    color: '#FFFFFF',
+    backgroundColor: 'transparent',
+    fontSize: 12,
+    fontWeight: '500',
+    alignSelf: 'center',
+    paddingTop: 10
+  }
+});

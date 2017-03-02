@@ -1,11 +1,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { View, Text } from 'native-base';
+import { Image, StyleSheet } from 'react-native';
+import { View } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-
-import styles from './styles';
 
 const RECTANGLE_SHAPE = require('../../../../images/types/RECTANGLE_SHAPE_WHITE.png');
 const APPLE_SHAPE = require('../../../../images/types/APPLE_SHAPE_WHITE.png');
@@ -58,3 +56,24 @@ class TypeView extends Component {
 }
 
 export default TypeView;
+
+const styles = StyleSheet.create({
+  typeContainer: {
+    position: 'absolute',
+    height: 40,
+    width: 40,
+    top: 4,
+    left: 0,
+    padding: 4,
+    justifyContent: 'center',
+    backgroundColor: '#05d7b2'
+  },
+  typeImage: {
+    top: 8,
+    width: 16,
+    height: 16,
+    resizeMode: 'contain',
+    backgroundColor: 'transparent',
+    alignSelf: 'center'
+  },
+});

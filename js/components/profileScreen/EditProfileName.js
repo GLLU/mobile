@@ -1,10 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text } from 'react-native';
+import {StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base';
-
-import styles from './styles';
 
 class ExpandableTextArea extends Component {
 
@@ -35,3 +33,22 @@ class ExpandableTextArea extends Component {
 
 export default ExpandableTextArea
 
+const styles = StyleSheet.create({
+  editNameContainer: {
+    borderBottomWidth: 2,
+    borderColor : '#D9D9D9',
+    paddingBottom: 5,
+    marginHorizontal: 10,
+  },
+  editName: {
+    textAlign: 'center',
+    fontSize: 25,
+    fontFamily: 'Times New Roman',
+  },
+  editUsername: {
+    textAlign: 'center',
+    color: '#00ABED',
+    padding: 20,
+    fontSize: 18
+  },
+});

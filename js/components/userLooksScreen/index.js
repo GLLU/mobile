@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Dimensions, BackAndroid } from 'react-native';
+import { StyleSheet, Dimensions, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content, Header, View, Icon, Title, Button, Text } from 'native-base';
-import styles from './styles';
 import { getUserLooksData, popRoute } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import UserLooks from './UserLooks';
@@ -57,3 +56,26 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindActions)(UserLookScreen);
+
+const styles = StyleSheet.create({
+  headerTitle: {
+    fontFamily: 'Times New Roman',
+    fontSize: 21,
+    fontWeight: '300'
+  },
+  headerTitleNumber: {
+    color: '#00D7B2',
+    fontSize: 21
+  },
+  header: {
+    backgroundColor: 'transparent',
+    shadowOpacity: 0,
+  },
+  headerArrow: {
+    color: 'black'
+  },
+  mainGrid: {
+    backgroundColor: '#FFFFFF',
+    marginTop: -10
+  },
+});

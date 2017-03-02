@@ -1,11 +1,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, TextInput, Platform } from 'react-native';
+import {StyleSheet, Dimensions, Image, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { View } from 'native-base';
-
-import styles from './styles';
-import Icon from 'react-native-vector-icons/FontAwesome';
+const w = Dimensions.get('window').width
 
 const cameraWhite = require('../../../images/icons/cameraWhite.png');
 
@@ -15,11 +13,10 @@ class CircleProfileImage extends Component {
     avatarUrl: React.PropTypes.string,
     editable: React.PropTypes.bool,
     changeUserAvatar: React.PropTypes.func,
-  }
+  };
 
   constructor(props) {
     super(props);
-
     this.state = {
       height: 0
     }
@@ -43,3 +40,30 @@ class CircleProfileImage extends Component {
 
 export default CircleProfileImage
 
+const styles = StyleSheet.create({
+  avatarImg: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+  },
+  editProfileAvatarImg: {
+    position: 'absolute',
+    top: 100,
+    left: w / 2 - 50,
+  },
+  changeImageIconContainer: {
+    width: 100,
+    height: 100,
+    opacity: 0.8,
+    backgroundColor: '#00D7B2',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 20,
+  },
+  editAvatarImage: {
+    borderWidth: 2,
+    borderColor: 'white'
+  },
+});
