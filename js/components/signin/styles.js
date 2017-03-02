@@ -162,6 +162,6 @@ module.exports = StyleSheet.create({
     textAlign: 'center',
     opacity: 0.8,
     backgroundColor: 'transparent',
-    marginBottom: 10
+    marginBottom: (Platform.OS === 'ios') ? 10 : 35,
   },
 });

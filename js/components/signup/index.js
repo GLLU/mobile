@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, TouchableWithoutFeedback } from 'react-native';
+import { Image, TouchableWithoutFeedback, Linking } from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
@@ -159,6 +159,14 @@ class SignUpPage extends BasePage {
     this.refs[refAttr]._textInput.focus();
   }
 
+  handleTermsBtn() {
+    Linking.openURL('https://www.gllu.com/Terms').catch(err => console.error('An error occurred', err));
+  }
+
+  handlePrivacyPolicyBtn() {
+    Linking.openURL('https://www.gllu.com/Privacy').catch(err => console.error('An error occurred', err));
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -226,7 +234,7 @@ class SignUpPage extends BasePage {
                       </View>
 
                   </Content>
-                <Text style={[styles.bottomContainerContent]}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
+                <Text style={[styles.bottomContainerContent]} >By signing-up I agree to gllu's <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handleTermsBtn() }>Terms</Text> and <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handlePrivacyPolicyBtn() }>Privacy Policy</Text></Text>
               </Image>
           </View>
       </Container>

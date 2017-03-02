@@ -64,7 +64,7 @@ module.exports = StyleSheet.create({
   signupContainer: {
     flex: 1,
     marginTop: 0,
-    paddingTop: (Platform.OS === 'ios') ? 120 : 120,
+    paddingTop: (Platform.OS === 'ios') ? 60 : 70,
     paddingLeft: 10,
     paddingRight: 10,
     bottom: 0,
@@ -87,7 +87,6 @@ module.exports = StyleSheet.create({
     paddingBottom: 2,
     alignSelf: 'center',
     borderRadius: 0,
-
   },
   fbIcon: {
     justifyContent: 'center'
@@ -108,25 +107,30 @@ module.exports = StyleSheet.create({
     marginBottom: 15,
     opacity: 0.8
   },
-    alreadyBox: {
-        alignSelf: 'center',
-        flexDirection:'row',
-        height: 25,
-        marginTop: 5
-    },
-    alreadyTxt: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        opacity: 0.8,
-    },
-    alreadyBtn: {
-        backgroundColor: 'transparent',
-        paddingVertical: 0,
-        paddingHorizontal: 5,
-        alignItems: 'flex-start',
-        shadowOpacity: 0,
-        shadowRadius: 0,
-        elevation: 0,
-        paddingTop: (Platform.OS === 'ios') ? 2 : 7,
-    },
+  alreadyBox: {
+    alignSelf: 'center',
+    flexDirection:'row',
+    height: 25,
+    marginTop: 10
+  },
+  alreadyTxt: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    opacity: 0.8,
+  },
+  alreadyBtn: {
+    backgroundColor: 'transparent',
+    paddingVertical: 0,
+    paddingHorizontal: 5,
+    alignItems: 'flex-start',
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+  },
+  loginHereText: {
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+    fontSize: 13
+  },
 });

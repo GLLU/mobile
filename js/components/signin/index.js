@@ -150,7 +150,7 @@ class SignInPage extends BasePage {
               </View>
             </View>
           </Content>
-            <Text style={[styles.bottomContainerContent]} >By signing-up I agree to gllu's <Text style={[styles.bottomContainerContent, {color: MKColor.Teal}]} onPress={() => this.handleTermsBtn() }>Terms</Text> and <Text style={[styles.bottomContainerContent, {color: MKColor.Teal}]} onPress={() => this.handlePrivacyPolicyBtn() }>Privacy Policy</Text></Text>
+            <Text style={[styles.bottomContainerContent]} >By signing-up I agree to gllu's <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handleTermsBtn() }>Terms</Text> and <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handlePrivacyPolicyBtn() }>Privacy Policy</Text></Text>
           </Image>
         </View>
       </Container>

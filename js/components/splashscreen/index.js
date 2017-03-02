@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image } from 'react-native';
+import { Image, Linking } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -63,6 +63,13 @@ class SplashPage extends BasePage {
     };
   }
 
+  handleTermsBtn() {
+    Linking.openURL('https://www.gllu.com/Terms').catch(err => console.error('An error occurred', err));
+  }
+
+  handlePrivacyPolicyBtn() {
+    Linking.openURL('https://www.gllu.com/Privacy').catch(err => console.error('An error occurred', err));
+  }
 
   pushRoute(route) {
       this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
@@ -104,8 +111,7 @@ class SplashPage extends BasePage {
   renderMainView() {
     return (
         <View style={styles.signupContainer}>
-          <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
-          <Text style={styles.label}>Or</Text>
+
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}
                        borderRadius={0}
@@ -114,9 +120,11 @@ class SplashPage extends BasePage {
                        onPress={this.connectWithFB.bind(this)}>
             Connect with facebook
           </Icon.Button>
+          <Text style={styles.label}>Or</Text>
+          <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }><Text style={[styles.loginHereText, {color: MKColor.Teal}]}>Login Here</Text></Button>
           </View>
         </View>
     )
@@ -134,7 +142,7 @@ class SplashPage extends BasePage {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
                 {this.renderMainView()}
-                <Text style={styles.bottomContainerContent}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
+              <Text style={[styles.bottomContainerContent]} >By signing-up I agree to gllu's <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handleTermsBtn() }>Terms</Text> and <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handlePrivacyPolicyBtn() }>Privacy Policy</Text></Text>
             </Image>
           </Content>
         </View>

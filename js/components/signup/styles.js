@@ -175,8 +175,7 @@ module.exports = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'normal',
     textAlign: 'center',
-    marginBottom: 15,
-    opacity: 0.8,
+    marginBottom: (Platform.OS === 'ios') ? 10 : 35,    opacity: 0.8,
     backgroundColor: 'transparent'
   },
 });
