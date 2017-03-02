@@ -3,19 +3,11 @@ import { StyleSheet } from 'react-native';
 import { View } from 'native-base';
 import { connect } from 'react-redux';
 import { getFeed, resetFeed, loadMore } from '../../actions';
-import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import FilterBar from './filters/FilterBar';
 import RecentTab from './RecentTab';
 import BestMatchTab from './BestMatchTab';
 import SearchBar from './SearchBar';
 import _ from 'lodash';
-
-const myStyles = StyleSheet.create({
-  mainView: {
-    backgroundColor: '#FFFFFF',
-    flex: 1,
-  },
-});
 
 class MainView extends Component {
   static propTypes = {
@@ -121,7 +113,7 @@ class MainView extends Component {
       mainViewStyle = _.merge(mainViewStyle, { height: this.mainViewHeight - this.state.filterHeight - this.state.searchHeight });
     }
     return(
-      <View style={myStyles.mainView}>
+      <View style={styles.mainView}>
         {this.props.searchStatus ? <SearchBar onLayout={e => this._handleSearchLayoutChanged(e)} handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.props.query.term}/> : null}
         <FilterBar
              onLayout={e => this._handleFilterLayoutChanged(e)}
@@ -135,7 +127,7 @@ class MainView extends Component {
         </View>
       </View>
     )
-  }
+  }g
 }
 
 function bindActions(dispatch) {
@@ -153,3 +145,9 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, bindActions)(MainView);
 
+const styles = StyleSheet.create({
+  mainView: {
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+});

@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
-import {Button, Icon} from 'native-base';
-import styles from './styles';
-
+import { StyleSheet,View, Text, TouchableOpacity, Image } from 'react-native';
 const bagItImage = require('../../../images/bagItImage.png');
 const RECTANGLE_SHAPE = require('../../../images/types/RECTANGLE_SHAPE_WHITE.png');
 const APPLE_SHAPE = require('../../../images/types/APPLE_SHAPE_WHITE.png');
@@ -62,3 +59,47 @@ export default class TopButton extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  topContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  topLeft: {
+    left: 10
+  },
+  topRight: {
+    right: 10
+  },
+  topButton: {
+    width: 84,
+    height: 84,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bagItButton: {
+    backgroundColor: 'rgba(0, 0, 0, 0.75)'
+  },
+  bagItButtonIcon: {
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
+    marginBottom: 5
+  },
+  bagItButtonText: {
+    fontWeight: 'bold',
+    color: '#fff',
+    backgroundColor: 'transparent'
+  },
+  avatarButton: {
+    backgroundColor: 'rgba(255,255,255,.5)'
+  },
+  bodyTypeButton: {
+    backgroundColor: 'rgba(5, 215, 178,.5)'
+  },
+  bodyTypeButtonIcon: {
+    width: 50,
+    height: 50,
+    opacity: 0.8
+  },
+});

@@ -12,48 +12,6 @@ const {
   MKColor,
 } = MK;
 
-const styles = StyleSheet.create({
-  menuModal: {
-    width: wModal,
-    height: hModal,
-    backgroundColor: '#fff',
-    borderRadius: 0,
-    overflow: 'hidden',
-  },
-  optionBtn: {
-    flex: 0.5,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
-  },
-  optionInnerContainer: {
-    flexDirection: 'row',
-    marginLeft: 40
-  },
-  optionIcon: {
-    fontSize: 23,
-    marginRight: 10
-  },
-  optionText: {
-    fontSize: 14,
-    color: MKColor.Teal,
-    alignSelf: 'center'
-  },
-  optionSeparetor: {
-    width: wModal-20, marginLeft: 10, marginRight: 10, borderWidth: 0.7, borderColor: 'grey'
-  },
-  thankYouContainer: {
-    flex: 1,
-    padding: 20
-  },
-  thankYouText: {
-    textAlign: 'center',
-    alignSelf: 'center',
-    fontSize: 14,
-    fontWeight: '500'
-  },
-});
-
 class menuModal extends Component {
 
   static propTypes = {
@@ -134,3 +92,45 @@ class menuModal extends Component {
 }
 
 export default menuModal;
+
+const styles = StyleSheet.create({
+  menuModal: {
+    width: wModal,
+    height: hModal,
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    overflow: 'hidden',
+  },
+  optionBtn: {
+    flex: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  optionInnerContainer: {
+    flexDirection: 'row',
+    marginLeft: 40
+  },
+  optionIcon: {
+    fontSize: 23,
+    marginRight: 10
+  },
+  optionText: {
+    fontSize: 14,
+    color: MKColor.Teal,
+    alignSelf: 'center'
+  },
+  optionSeparetor: {
+    width: wModal-20, marginLeft: 10, marginRight: 10, borderWidth: 0.7, borderColor: 'grey'
+  },
+  thankYouContainer: {
+    flex: 1,
+    padding: 20
+  },
+  thankYouText: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 14,
+    fontWeight: '500'
+  },
+});

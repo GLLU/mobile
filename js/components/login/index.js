@@ -1,19 +1,17 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image } from 'react-native';
+import { Image, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Content, InputGroup, Input, Button, Icon, View } from 'native-base';
-
 import { setUser } from '../../actions/user';
-import styles from './styles';
 import LoginView from './LoginView';
 
+const deviceHeight = Dimensions.get('window').height;
 const {
   replaceAt,
 } = actions;
-
 const background = require('../../../images/shadow.png');
 
 class Login extends BasePage {
@@ -85,3 +83,35 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindActions)(Login);
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#FBFAFA',
+  },
+  shadow: {
+    flex: 1,
+    width: null,
+    height: null,
+  },
+  bg: {
+    flex: 1,
+    marginTop: deviceHeight / 1.75,
+    paddingTop: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 30,
+    bottom: 0,
+  },
+  input: {
+    marginBottom: 20,
+  },
+  btn: {
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+});

@@ -1,20 +1,16 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
 import {Container, Header, Content, Button, Icon, Title } from 'native-base';
-import {Text, View} from 'react-native';
-import styles from './styles';
+import {StyleSheet, Dimensions, Platform, Text, View} from 'react-native';
 import glluTheme from '../../themes/gllu-theme';
-
+import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
+import CarouselItem from './horizontalCarousel/carouselItem';
+import ArrowTextBox from './arrowTextBox';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { changeBodyType } from '../../actions/myBodyType';
 const { popRoute, pushRoute } = actions;
-
-import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
-import CarouselItem from './horizontalCarousel/carouselItem';
-import ArrowTextBox from './arrowTextBox';
-import InformationTextIcon from '../common/informationTextIcon';
-
+const h = Dimensions.get('window').height
 
 class MyBodyType extends BasePage {
   constructor(props) {
@@ -113,3 +109,27 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindAction)(MyBodyType);
+
+const styles = StyleSheet.create({
+  header: {
+    justifyContent: 'center',
+    paddingLeft: (Platform.OS === 'ios' ? 30 : 0)
+  },
+  headerTitleContainer: {
+    borderBottomWidth: 1.5,
+    borderColor: 'lightgrey',
+    paddingBottom: 10,
+    width: 200,
+    paddingLeft: 0
+  },
+  container: {
+    height: h - h/2.5  ,
+    paddingTop: 5,
+    paddingHorizontal: 10,
+    backgroundColor: '#ffffff'
+  },
+  continueButton: {
+    marginTop: 30,
+    marginHorizontal: 50,
+  },
+});

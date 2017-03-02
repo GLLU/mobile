@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Dimensions, BackAndroid } from 'react-native';
+import { Dimensions, BackAndroid, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Content, View } from 'native-base';
-import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
@@ -104,7 +103,6 @@ class FeedPage extends BasePage {
     );
   }
 }
-
 function bindActions(dispatch) {
   return {
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
@@ -121,3 +119,14 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindActions)(FeedPage);
+
+const styles = StyleSheet.create({
+  mainNavHeader: {
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 0,
+    paddingLeft: 0
+  },
+  container: {
+    flex: 1,
+  },
+});

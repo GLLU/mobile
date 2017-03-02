@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
-import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
-import styles from './styles';
+import {StyleSheet, Dimensions, Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
 import { Container, Content, View, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -17,6 +16,9 @@ const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const { popRoute } = actions;
+
+const w = Dimensions.get('window').width
+const h = Dimensions.get('window').height
 
 class ProfileScreen extends BasePage {
   static propTypes = {
@@ -197,3 +199,58 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, bindAction)(ProfileScreen);
+
+const styles = StyleSheet.create({
+  toFeedScreenBtn: {
+    marginLeft: 20,
+    width: 25,
+    height: 25,
+  },
+  settingsBtn: {
+    marginRight: 20,
+    width: 25,
+    height: 25,
+  },
+  reportBtn: {
+    marginRight: 20,
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  backBtn: {
+    marginLeft: 20,
+    color: 'white',
+    backgroundColor: 'transparent'
+  },
+  bg: {
+    flex: 1,
+    width: w,
+    height: h
+  },
+  linearGradient: {
+    width: w,
+    height: h,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  header: {
+    marginTop: 40,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    justifyContent: 'space-between',
+  },
+  headerBtn: {
+    backgroundColor: 'transparent',
+  },
+  description: {
+    backgroundColor: 'transparent',
+    margin: 15,
+    height: 80,
+  },
+  descriptionText: {
+    color: 'white',
+    textAlign: 'center',
+    lineHeight: 20
+  },
+});

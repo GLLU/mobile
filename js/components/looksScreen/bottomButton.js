@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import styles from './styles';
 import SocialShare from '../../lib/SocialShare';
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
@@ -92,3 +91,45 @@ export default class BottomButton extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  bottomContainer: {
+    flexDirection: 'row',
+    bottom: 20
+  },
+  bottomLeft: {
+    left: 10
+  },
+  horizontalContainer: {
+    flexWrap: 'wrap',
+    flexDirection:'row',
+  },
+  footerButton: {
+    flexWrap: 'wrap',
+    flexDirection:'row',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    height: 40,
+  },
+  footerButtonIcon: {
+    alignSelf: 'center',
+    fontSize: 25,
+    marginRight: 5
+  },
+  footerButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    backgroundColor: 'transparent'
+  },
+  bottomRight: {
+    flexDirection:'row',
+    position: 'absolute',
+    right: 10
+  },
+  menuIcon: {
+    color: 'white',
+    fontSize: 22
+  },
+});

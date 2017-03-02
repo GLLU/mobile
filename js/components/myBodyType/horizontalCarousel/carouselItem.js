@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image, Dimensions} from 'react-native';
-import styles from '../styles';
+import {StyleSheet, View, Image, Dimensions} from 'react-native';
 
 const w = Dimensions.get('window').width
 const h = Dimensions.get('window').height
@@ -23,3 +22,10 @@ export default class CarouselItem extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  imagePlaceHolder: {
+    flex: 1,
+    alignItems: 'center'
+  },
+});

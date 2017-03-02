@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import {Icon} from 'native-base';
-import styles from './styles';
+import {StyleSheet, Dimensions, View, Text} from 'react-native';
+const w = Dimensions.get('window').width
+let fontSizeDefault = 14;
+let fontColor = '#000';
 
 export default class ArrowTextBox extends Component {
   static propTypes = {
@@ -18,3 +19,23 @@ export default class ArrowTextBox extends Component {
    )
   }
 }
+
+const styles = StyleSheet.create({
+  guideText: {
+    borderWidth: 2,
+    borderColor: '#EBEBEB',
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    height: 120,
+  },
+  bodyTypeText: {
+    textAlign: 'center',
+    width: w * 0.6,
+    alignSelf: 'center',
+    fontSize: fontSizeDefault * 1.25,
+    color: fontColor,
+    fontFamily: 'PlayfairDisplay-Bold',
+  },
+});

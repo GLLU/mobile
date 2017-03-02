@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Dimensions, Platform, Image, TouchableWithoutFeedback, Linking } from 'react-native';
 import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
@@ -9,10 +9,10 @@ import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
 import { emailSignUp } from '../../actions/user';
 import glluTheme from '../../themes/gllu-theme';
-import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
 import ImagePicker from 'react-native-image-crop-picker';
+const deviceHeight = Dimensions.get('window').height;
 
 const { popRoute, pushRoute } = actions;
 
@@ -159,6 +159,14 @@ class SignUpPage extends BasePage {
     this.refs[refAttr]._textInput.focus();
   }
 
+  handleTermsBtn() {
+    Linking.openURL('https://www.gllu.com/Terms').catch(err => console.error('An error occurred', err));
+  }
+
+  handlePrivacyPolicyBtn() {
+    Linking.openURL('https://www.gllu.com/Privacy').catch(err => console.error('An error occurred', err));
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -226,7 +234,7 @@ class SignUpPage extends BasePage {
                       </View>
 
                   </Content>
-                <Text style={[styles.bottomContainerContent]}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
+                <Text style={[styles.bottomContainerContent]} >By signing-up I agree to gllu's <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handleTermsBtn() }>Terms</Text> and <Text style={[styles.bottomContainerContent, {textDecorationLine: 'underline'}]} onPress={() => this.handlePrivacyPolicyBtn() }>Privacy Policy</Text></Text>
               </Image>
           </View>
       </Container>
@@ -248,3 +256,174 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindAction)(SignUpPage);
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: 'transparent',
+    shadowOpacity: 0,
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#FFFFFF',
+    textAlign: 'center'
+  },
+  headerArrow: {
+    color: '#FFFFFF'
+  },
+  container: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: deviceHeight
+  },
+  shadow: {
+    flex: 1,
+    width: null,
+    height: null
+  },
+  bg: {
+    flex: 1,
+    marginTop: deviceHeight / 1.75,
+    paddingTop: 0,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 30,
+    bottom: 0,
+  },
+  bgShadow: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  uploadImgContainer: {
+    marginTop: 15,
+    alignSelf: 'center',
+    marginBottom: 10
+  },
+  uploadImgBtn: {
+    borderRadius: 50,
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100
+  },
+  uploadImgIcon: {
+    backgroundColor: 'transparent',
+    marginBottom: 5
+  },
+  formItem: {
+    flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
+    borderBottomWidth: 2,
+    borderColor: 'rgba(192,192,192, .3)',
+    height: 55,
+    paddingLeft: 0,
+    alignItems: 'flex-end'
+  },
+  formGroup: {
+    flex: 1,
+    borderColor: 'transparent',
+    alignItems: 'flex-end',
+    paddingLeft: 0
+  },
+  label: {
+    color: 'lightgrey',
+    fontSize: 16,
+    alignSelf: 'center',
+    marginTop: 20,
+    width: 100,
+  },
+  addOpacity: {
+    opacity: 0.8
+  },
+  confirmPass: {
+    paddingBottom: 10
+  },
+  genderSelectContainer:{
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  formInput: {
+    flex: 1,
+    paddingLeft: 20,
+    lineHeight: 20,
+    marginTop: (Platform.OS === 'ios') ? 20 : 0,
+    alignItems: 'stretch',
+    color: '#FFFFFF',
+    marginLeft: 10,
+    top: (Platform.OS === 'ios') ? 0 : 13,
+  },
+  formBtn: {
+    alignSelf: 'center',
+    marginTop: 70,
+    marginBottom: (Platform.OS === 'ios') ? 20 : 10,
+    width: 280,
+    height: 40,
+    backgroundColor: '#ADADAD',
+    borderRadius: 0,
+    opacity: 0.8
+  },
+  validationPassed: {
+    backgroundColor: MKColor.Teal
+  },
+  countrySelectView: {
+    flex:1,
+  },
+  countrySelectInput: {
+    padding:10,
+    height:40,
+    color: '#FFFFFF',
+    paddingLeft: 20,
+    marginLeft: 10
+  },
+  alreadyBox: {
+    alignSelf: 'center',
+    flexDirection:'row',
+  },
+  alreadyTxt: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    opacity: 0.8
+  },
+  alreadyBtn: {
+    backgroundColor: 'transparent',
+    paddingVertical: 0,
+    paddingHorizontal: 5,
+    alignItems: 'flex-start',
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+    paddingTop: (Platform.OS === 'ios') ? 0 : 5,
+  },
+  genderBtnContainer:{
+    flex: 1,
+    alignItems: 'center',
+    marginTop: deviceHeight/4
+  },
+  genderImage:{
+    width: 130,
+    height: 130,
+    borderRadius: 65
+  },
+  genderLabel:{
+    color: '#FFFFFF',
+    alignSelf: 'center',
+    marginTop: 15,
+    opacity: 0.8
+  },
+  bottomContainerContent: {
+    color: '#E0E0E0',
+    fontSize: 12,
+    fontWeight: 'normal',
+    textAlign: 'center',
+    marginBottom: (Platform.OS === 'ios') ? 10 : 35,    opacity: 0.8,
+    backgroundColor: 'transparent'
+  },
+});

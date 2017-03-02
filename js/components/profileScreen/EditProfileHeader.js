@@ -1,10 +1,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native';
 import { View } from 'native-base';
 
-import styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const cancelEdit = require('../../../images/icons/cancelEdit.png');
@@ -42,3 +41,28 @@ class ProfileHeader extends Component {
 
 export default ProfileHeader
 
+const styles = StyleSheet.create({
+  header: {
+    marginTop: 40,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    justifyContent: 'space-between',
+  },
+  headerBtn: {
+    backgroundColor: 'transparent',
+  },
+  cancelEdit: {
+    marginLeft: 20,
+    width: 40,
+    height: 40,
+  },
+  saveChangesContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#00D7B2',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 20
+  },
+});

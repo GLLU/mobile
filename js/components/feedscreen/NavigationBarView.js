@@ -11,35 +11,6 @@ const rectangleIcon = require('../../../images/icons/rectangle.png')
 const searchIcon = require('../../../images/icons/search.png')
 const cameraIcon = require('../../../images/icons/camera.png')
 
-const styles = StyleSheet.create({
-  navigationBar: {
-    flex: 1,
-    backgroundColor: '#f2f2f2',
-    flexDirection: 'row',
-    paddingLeft: 0
-  },
-  btnProfile: {
-  },
-  btnCamera: {
-  },
-  btnImage: {
-    height: 20,
-    width: 20,
-    resizeMode: 'contain'
-  },
-  normalBtn: {
-    fontSize: 24
-  },
-  wallet: {
-    paddingTop: (Platform.OS === 'ios' ? 10 : 0),
-    marginTop: 5,
-    textAlign: 'left',
-    fontSize: 12,
-    fontWeight: 'normal',
-    color: '#757575'
-  },
-});
-
 class NavigationBarView extends Component {
   static propTypes = {
     user: React.PropTypes.object,
@@ -124,3 +95,29 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, bindActions)(NavigationBarView);
+
+const styles = StyleSheet.create({
+  navigationBar: {
+    flex: 1,
+    backgroundColor: '#f2f2f2',
+    flexDirection: 'row',
+    paddingLeft: 0
+  },
+  btnImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain'
+  },
+  normalBtn: {
+    fontSize: 24
+  },
+  wallet: {
+    paddingTop: (Platform.OS === 'ios' ? 10 : 0),
+    marginTop: 5,
+    textAlign: 'left',
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#757575'
+  },
+
+});

@@ -1,9 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { View, Content } from 'native-base';
-
 import LikeView from './LikeView';
 import TypeView from './TypeView';
 
