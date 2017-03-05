@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { View, Button } from 'native-base';
 import { connect } from 'react-redux';
-import { logout, navigateTo } from '../../actions';
+import { logout, navigateTo, followUpdate, unFollowUpdate } from '../../actions';
+import FollowView from './FollowView.js'
 
 const styles = StyleSheet.create({
   avatar: {
@@ -38,6 +39,19 @@ const styles = StyleSheet.create({
   followText: {
     textAlign: 'center',
     color: 'white'
+  },
+  unfollowBtn: {
+      backgroundColor: 'transparent',
+      width: 75,
+      height: 25,
+      justifyContent: 'center',
+      margin: 5,
+      borderWidth: 2,
+      borderColor: '#00D7B2',
+  },
+  unfollowText: {
+      textAlign: 'center',
+      color: '#00D7B2'
   },
   editBtn: {
     backgroundColor: 'transparent',
@@ -87,6 +101,21 @@ class ProfileView extends Component {
     this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 
+  handleEditPress(e) {
+      this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
+  }
+
+  //TODO: logic is bugged until udi will deploy "isFollowed" feature
+  toggleFollowAction(user,isFollowed) {
+      if (isFollowed) {
+          let data = {id: user.user_id, followers: user.followers+1, followed: true}
+          this.props.followUpdate(data);
+      } else {
+          let data = {id: user.user_id, followers: user.followers-1, followed: false}
+          this.props.unFollowUpdate(data);
+      }
+  }
+
   render() {
     return (
       <View style={[styles.avatar, this.props.isMyProfile ? null : {left: 20}]}>
@@ -99,9 +128,7 @@ class ProfileView extends Component {
               <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
             :
-            <TouchableOpacity style={styles.followBtn} onPress={this.handleEditPress.bind(this)}>
-              <Text style={styles.followText}>Follow</Text>
-            </TouchableOpacity>
+            <FollowView user={this.props.user} onPress={this.toggleFollowAction.bind(this)}/>
           }
         </View>
       </View>
@@ -113,12 +140,16 @@ class ProfileView extends Component {
 function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
+    followUpdate: (id) => dispatch(followUpdate(id)),
+    unFollowUpdate: (id) => dispatch(unFollowUpdate(id)),
     logout: () => dispatch(logout()),
   };
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    user: state.stats
+  };
 };
 
 export default connect(mapStateToProps, bindAction)(ProfileView);
