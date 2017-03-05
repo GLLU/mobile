@@ -11,12 +11,13 @@ const initialState = {
 };
 
 export default function (state:State = initialState, action:Action): State {
-  if (action.type === UPDATE_STATS) {
-    return {
-      ...state,
-      ...action.payload
-    };
+  switch(action.type){
+      case UPDATE_STATS:
+          return {
+              ...state,
+              ...action.payload
+          };
+      default:
+        return state;
   }
-
-  return state;
 }
