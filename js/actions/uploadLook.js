@@ -120,7 +120,7 @@ export function updateLookItem() {
   return (dispatch, getState) => {
     const state = getState();
 
-    const { lookId, itemId, brand, currency, price } = state.uploadLook;
+    const { lookId, itemId, brand, currency, price, locationX, locationY } = state.uploadLook;
 
     const brand_id = brand ? brand.id : null;
 
@@ -129,6 +129,8 @@ export function updateLookItem() {
         currency: currency,
         price: price,
         brand_id: brand_id,
+        cover_x_pos: locationX,
+        cover_y_pos: locationY,
       }
     }
     return new Promise((resolve, reject) => {

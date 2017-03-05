@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import {Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { createLookItem, setTagPosition, navigateTo, popRoute } from '../../actions';
+import {Container, Header, Content, Button, Icon, Title, View, Grid, Row } from 'native-base';
+import { createLookItem, setTagPosition, navigateTo, popRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
 import glluTheme from '../../themes/gllu-theme';
+import Gllu from '../common';
 
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
+const IMAGE_VIEW_PADDING = 50;
 
 const styles = StyleSheet.create({
   container: {
@@ -47,11 +49,13 @@ class TagItemPage extends BasePage {
     lookId: React.PropTypes.number,
     image: React.PropTypes.string,
     items: React.PropTypes.array,
+    items: React.PropTypes.array,
     mode: React.PropTypes.string,
     navigateTo: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
     setTagPosition: React.PropTypes.func,
+    updateLookItem: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -59,6 +63,8 @@ class TagItemPage extends BasePage {
     this.state = {
       locationX: 0,
       locationY: 0,
+      imageWidth: 90,
+      mode: props.mode,
     };
   }
 
@@ -73,20 +79,35 @@ class TagItemPage extends BasePage {
   }
 
   _handleAddTag(position) {
-    const { items } = this.props;
-    if (this.props.items.length > 1) {
-      const item = _.last(items);
-      this.props.setTagPosition(position);
-      this.props.popRoute(this.props.navigation.key);
-    } else {
-      this.props.createLookItem(position).then(() => {
-        this.props.navigateTo('addItemScreen', 'feedscreen');
-      });  
-    }
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'edit'})
+    });
+  }
+
+  _handleOnDragEnd(position) {
+    this.props.setTagPosition(position);
+  }
+
+  _handleContinue() {
+    this.props.updateLookItem().then(response => {
+      this.props.navigateTo('addItemScreen', 'feedscreen');
+    });
+  }
+
+  _handleLayoutImage(e) {
+    const { width, height } = e.nativeEvent.layout;
+    console.log('_handleLayoutImage', width, height);
+    const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
+    this.setState({
+      imageWidth: w
+    })
   }
 
   render() {
-    const { items, itemId, image, mode, createLookItem} = this.props;
+    const { items, itemId, image, createLookItem} = this.props;
+    const { imageWidth, mode } = this.state;
+
+    const disabledContinue = items.length == 0;
     return (
       <Container style={styles.container} theme={glluTheme}>
         <Header style={{backgroundColor: '#000000'}}>
@@ -95,14 +116,22 @@ class TagItemPage extends BasePage {
           </Button>
           <Title style={{fontFamily: 'PlayfairDisplay-Regular', color: '#ffffff'}}>Tap item to add</Title>
         </Header>
-        <Content scrollEnabled={false} contentContainerStyle={{backgroundColor: '#000000', alignItems: 'center'}}>
-          <ImageWithTags
-              ref={(ref) => this.imageEditor = ref}
-              mode={mode}
-              itemId={itemId}
-              items={items}
-              image={image}
-              setTagPosition={this._handleAddTag.bind(this)}/>
+        <Content scrollEnabled={false} contentContainerStyle={{backgroundColor: '#000000', flexDirection: 'column', flexGrow: 1}}>
+          <Grid style={{flex: 1}}>
+            <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
+              <ImageWithTags
+                  ref={(ref) => this.imageEditor = ref}
+                  width={imageWidth}
+                  mode={mode}
+                  items={items}
+                  image={image}
+                  onMarkerCreate={this._handleAddTag.bind(this)}
+                  onDragEnd={this._handleOnDragEnd.bind(this)}/>
+            </Row>
+            <Row size={30} style={{flexDirection: 'column', alignItems: 'center'}}>
+              <Gllu.Button disabled={disabledContinue} onPress={this._handleContinue.bind(this)} text='CONTINUE'/>
+            </Row>
+          </Grid>
         </Content>
       </Container>
     );
@@ -110,6 +139,7 @@ class TagItemPage extends BasePage {
 }
 
 TagItemPage.defaultProps = {
+  items: [],
   mode: 'view',
 }
 
@@ -119,16 +149,18 @@ function bindActions(dispatch) {
     popRoute: (key) => dispatch(popRoute(key)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     setTagPosition: (position) => dispatch(setTagPosition(position)),
+    updateLookItem: () => dispatch(updateLookItem()),
   };
 }
 
 const mapStateToProps = state => {
+  const { itemId, lookId, image, items } = state.uploadLook;
   return {
     navigation: state.cardNavigation,
-    itemId: state.uploadLook.itemId,
-    lookId: state.uploadLook.lookId,
-    image: state.uploadLook.image,
-    items: state.uploadLook.items
+    itemId,
+    lookId,
+    image,
+    items,
   };
 };
 

@@ -75,7 +75,7 @@ const ACTION_HANDLERS = {
       price: item.price,
       userId: item.user_id,
       lookId: item.look_id,
-      editing: false,
+      editing: true,
       selectedCategory: null,
       brand: null,
       itemSizeRegion: null,
@@ -103,19 +103,12 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_TAG_POSITION]: (state, action) => {
-    const tags = state.tags;
-    let tag = _.find(tags, (tag) => tag.editing);
-    if (!tag) {
-      tag = {};
-      tags.push(tag);
-    }
-    tag.editing = false;
-    tag.locationX = action.payload.locationX;
-    tag.locationY = action.payload.locationY;
-
+    console.log('SET_TAG_POSITION', action.payload);
+    state.items = mutateItem(state, 'locationX', action.payload.locationX);
+    state.items = mutateItem(state, 'locationY', action.payload.locationY);
     return {
       ...state,
-      tags,
+      items: state.items,
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {

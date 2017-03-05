@@ -29,6 +29,7 @@ import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+import Gllu from '../common';
 
 import { IMAGE_VIEW_WIDTH } from './styles';
 const checkboxUncheck = require('../../../images/icons/checkbox-uncheck.png');
@@ -283,7 +284,9 @@ class StepOne extends Component {
               */}
               {/*this._renderSharing()*/}
             <Row style={[styles.row, {paddingBottom: 60}]}>
-              <ActionsBar continueAction={this.props.continueAction} tagAnotherAction={this.props.tagAnotherAction} />
+              <View style={{flex: 1, backgroundColor: 'transparent', padding: 20, alignItems: 'center'}}>
+                <Gllu.Button onPress={this.props.continueAction} text='CONTINUE'/>
+              </View>
             </Row>
           </Grid>
         </ScrollView>

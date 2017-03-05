@@ -14,6 +14,9 @@ const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  base: {
+    flex: 1,
+  },
   draggableContainer: {
     flex: 1,
     backgroundColor: 'transparent',
@@ -44,7 +47,8 @@ class ImageWithTags extends Component {
     items: React.PropTypes.array.isRequired,
     width: React.PropTypes.number,
     mode: React.PropTypes.string,
-    setTagPosition: React.PropTypes.func,
+    onMarkerCreate: React.PropTypes.func,
+    onDragEnd: React.PropTypes.func,
     selectLookItem: React.PropTypes.func,
   }
 
@@ -55,7 +59,6 @@ class ImageWithTags extends Component {
 
     console.log('state', this.state);
 
-    this.updatePosition = _.debounce(this._updatePosition, 1500);
     this._setupPanResponder(this.state.locationX, this.state.locationY)
   }
 
@@ -97,7 +100,13 @@ class ImageWithTags extends Component {
         onPanResponderRelease        : (e, gesture) => {
           this._pan.setOffset(this._value);
           this._setupPanResponder(this._value.x, this._value.y);
-          this.setState({locationX: this._value.x, locationY: this._value.y})
+          const { width, height } = this.getRenderingDimensions();
+          const left = this._value.x / width;
+          const top = this._value.y / height;
+          const nextPosition = {locationX: left, locationY: top};
+          this.setState(nextPosition, () => {
+            this.props.onDragEnd(nextPosition);
+          })
         }
     });
   }
@@ -115,76 +124,40 @@ class ImageWithTags extends Component {
     const left = locationX / width;
     const top = locationY / height;
     this.setState({locationX: left, locationY: top}, () => {
-      this.updatePosition(top, left);
+      this.props.onMarkerCreate({locationX: left, locationY: top});
     });
   }
 
-  _updatePosition(top, left) {
-    console.log('debounce')
-    this.props.setTagPosition({locationX: left, locationY: top});
-  }
-
-  _handleMarkerPress(item) {
-    console.log('_handleMarkerPress', item);
-    if (!this.props.mode && this.props.selectLookItem) {
-      this.props.selectLookItem(item.id);
-    }
-  }
-
   renderTags() {
-    const { items, itemId } = this.props;
+    const { items, itemId, mode } = this.props;
 
     const { width, height } = this.getRenderingDimensions();
 
     return items.map((item, i) => {
-      const selected = itemId != null && item.id == itemId;
+      console.log('marker item', item);
       const left = parseInt(item.locationX * width);
       const top = parseInt(item.locationY * height);
 
-      console.log('selected', selected);
-      const renderContent = (selected) => {
-        if (selected) {
-          console.log('render panResponder');
-          const layout = this._pan.getLayout();
-          return (<Animated.View
-                    {...this.panResponder.panHandlers}
-                    style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                  <Image source={itemBackground} style={styles.itemBgImage} />
-                </Animated.View>);
-        }
-
-        return (<View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-            <Image source={itemBackground} style={styles.itemBgImage} />
-          </View>);
-      };
-
-      if (Platform.OS === 'ios') {
-        return (
-          <TouchableWithoutFeedback key={i} onPress={(e) => this._handleMarkerPress(item)}>
-            {renderContent()}
-          </TouchableWithoutFeedback>
-        );
-      } else {
-        return (
-          <TouchableNativeFeedback key={i} onPress={(e) => this._handleMarkerPress(item)}>
-            {renderContent()}
-          </TouchableNativeFeedback>
-        );
+      if (mode != VIEW_MODE && item.editing) {
+        console.log('render panResponder');
+        const layout = this._pan.getLayout();
+        return (<Animated.View
+                  key={i}
+                  {...this.panResponder.panHandlers}
+                  style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+                <Image source={itemBackground} style={styles.itemBgImage} />
+              </Animated.View>);
       }
+
+      return (<View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+          <Image source={itemBackground} style={styles.itemBgImage} />
+        </View>);
     });
   }
 
-  _hasTagEditing() {
-    // if (!this.props.mode) {
-    //   return false;
-    // }
-    const {locationX, locationY} = this.state;
-    return locationX > 0 || locationY > 0;
-  }
-
   getRenderingDimensions() {
-    let width = 300;
-    let height = 400;
+    let width = 30;
+    let height = 40;
     if (this.props.width) {
       width = parseInt(this.props.width);
       height = parseInt(width * 16 / 9);
@@ -212,14 +185,15 @@ class ImageWithTags extends Component {
 
   _render() {
     const { width, height } = this.getRenderingDimensions();
-    return (<Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
+    return (
+    <Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
       <View style={[styles.draggableContainer, {width, height}]}>
         {this.renderTags()}
       </View>
     </Image>);
   }
 
-  render() {
+  _renderContent() {
     console.log('render', this.props.mode);
     if (this.props.mode == CREATE_MODE) {
       return(<TouchableWithoutFeedback onPress={(e) => this._handlePress(e)}>
@@ -228,6 +202,15 @@ class ImageWithTags extends Component {
     }
 
     return this._render();
+  }
+
+  render() {
+    const style = [styles.base, this.props.style];
+    return (
+      <View style={style}>
+        {this._renderContent()}
+      </View>
+    );
   }
 }
 

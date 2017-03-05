@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { View, Button, Text } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
+import { View, Text, Col, Grid } from "react-native-easy-grid";
+import Button from '../common/Button';
 
 const Window = Dimensions.get('window');
 const deviceWidth = Window.width;
@@ -54,9 +54,7 @@ class ActionsBar extends Component {
 
   render () {
     return (<View style={styles.actionsContainer}>
-              <Button transparent onPress={() => this.props.continueAction()} style={styles.btnContinue}>
-                <Text style={styles.textBtn}>CONTINUE</Text>
-              </Button>
+              <Button onPress={() => this.props.continueAction()} text='CONTINUE'/>
           </View>)
   }
 
