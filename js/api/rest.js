@@ -96,6 +96,10 @@ export default reduxApi({
   item_occasions: {
     url: '/looks/:look_id/items/:item_id/item_occasions/:id',
     crud: true,
+  },
+  follows: {
+    url: '/users/:user_id/follows',
+    crud: true,
   }
 }).use("fetch", (url, options) => {
   console.log('making request', url, options);
