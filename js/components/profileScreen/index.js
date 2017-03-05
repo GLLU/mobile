@@ -33,9 +33,10 @@ class ProfileScreen extends BasePage {
   };
   constructor(props) {
     super(props);
-    const isMyProfile = this.props.userData.id === this.props.myUser.id
+    const isMyProfile = this.props.userData.id === this.props.myUser.id;
     this.state = {
       isMyProfile,
+      isFollowing: this.props.userData.is_following,
       userId: isMyProfile ? this.props.userData.id : this.props.userData.user_id,
 
       photoModal: false
@@ -114,6 +115,11 @@ class ProfileScreen extends BasePage {
     this.setState({photoModal: true});
   }
 
+  toggleFollow(isFollowing){
+    this.setState({isFollowing: isFollowing});
+    this.props.getStats(this.state.userId);
+  }
+
   _renderStats() {
 
     if(this.props.stats.latest_looks && this.props.stats.user_id === this.state.userId) {
@@ -133,7 +139,7 @@ class ProfileScreen extends BasePage {
   }
 
   render() {
-    const { isMyProfile } = this.state
+    const { isMyProfile } = this.state;
     const { myUser, userData } = this.props;
     const user = isMyProfile ? myUser : userData;
     let about_me = user.about_me;
@@ -150,9 +156,12 @@ class ProfileScreen extends BasePage {
                 </TouchableOpacity>
                 { avatarUrl ?
                 <ProfileView profilePic={avatarUrl}
+                             userid={this.state.userId}
                              name={user.name}
                              username={user.username}
                              isMyProfile={this.state.isMyProfile}
+                             isFollowing={this.state.isFollowing}
+                             onFollowPress={this.toggleFollow.bind(this)}
                 /> : null }
                 <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
                   { this._renderRightBtn() }

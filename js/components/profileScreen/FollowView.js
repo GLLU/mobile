@@ -36,9 +36,7 @@ class FollowView extends Component
     };
 
     handleFollowPress() {
-        console.log(this.props.user);
-        //TODO: logic is bugged until udi will deploy "isFollowed" feature
-        this.props.onPress(this.props.user , !this.props.user.followed)
+        this.props.onPress(this.props.user , !this.props.user.isFollowing)
     }
 
     renderUnfollowButton(){
@@ -57,9 +55,8 @@ class FollowView extends Component
         )
     }
 
-    //TODO: logic is bugged until udi will deploy "isFollowed" feature
     render() {
-        return this.props.user.followed ? this.renderUnfollowButton() : this.renderFollowButton();
+        return this.props.user.isFollowing ? this.renderUnfollowButton() : this.renderFollowButton();
     }
 }
 

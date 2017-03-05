@@ -36,23 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 5,
   },
-  followText: {
-    textAlign: 'center',
-    color: 'white'
-  },
-  unfollowBtn: {
-      backgroundColor: 'transparent',
-      width: 75,
-      height: 25,
-      justifyContent: 'center',
-      margin: 5,
-      borderWidth: 2,
-      borderColor: '#00D7B2',
-  },
-  unfollowText: {
-      textAlign: 'center',
-      color: '#00D7B2'
-  },
   editBtn: {
     backgroundColor: 'transparent',
     width: 75,
@@ -84,6 +67,8 @@ class ProfileView extends Component {
 
   static propTypes = {
     isMyProfile: React.PropTypes.bool,
+    isFollowing: React.PropTypes.bool,
+    userid: React.PropTypes.number,
     profilePic: React.PropTypes.string,
     name: React.PropTypes.string,
     username: React.PropTypes.string,
@@ -105,18 +90,19 @@ class ProfileView extends Component {
       this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 
-  //TODO: logic is bugged until udi will deploy "isFollowed" feature
-  toggleFollowAction(user,isFollowed) {
-      if (isFollowed) {
-          let data = {id: user.user_id, followers: user.followers+1, followed: true}
+  toggleFollowAction(user,isFollowing) {
+      let data = {id: user.id};
+      if (isFollowing) {
           this.props.followUpdate(data);
-      } else {
-          let data = {id: user.user_id, followers: user.followers-1, followed: false}
+      }
+      else {
           this.props.unFollowUpdate(data);
       }
+      this.props.onFollowPress(isFollowing);
   }
 
   render() {
+
     return (
       <View style={[styles.avatar, this.props.isMyProfile ? null : {left: 20}]}>
         <Image source={{uri: this.props.profilePic}} style={styles.avatarImg} />
@@ -128,7 +114,7 @@ class ProfileView extends Component {
               <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
             :
-            <FollowView user={this.props.user} onPress={this.toggleFollowAction.bind(this)}/>
+            <FollowView user={{id:this.props.userid, isFollowing:this.props.isFollowing}} onPress={this.toggleFollowAction.bind(this)}/>
           }
         </View>
       </View>
@@ -146,11 +132,7 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.stats
-  };
-};
+const mapStateToProps = state => { return {} };
 
 export default connect(mapStateToProps, bindAction)(ProfileView);
 
