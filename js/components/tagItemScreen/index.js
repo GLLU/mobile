@@ -3,7 +3,7 @@ import BasePage from '../common/BasePage';
 import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import {Container, Header, Content, Button, Icon, Title, View, Grid, Row } from 'native-base';
-import { createLookItem, setTagPosition, navigateTo, popRoute, updateLookItem } from '../../actions';
+import { createLookItem, setTagPosition, pushRoute, popRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
 import glluTheme from '../../themes/gllu-theme';
 import Gllu from '../common';
@@ -51,7 +51,7 @@ class TagItemPage extends BasePage {
     items: React.PropTypes.array,
     items: React.PropTypes.array,
     mode: React.PropTypes.string,
-    navigateTo: React.PropTypes.func,
+    pushRoute: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
     setTagPosition: React.PropTypes.func,
@@ -69,13 +69,7 @@ class TagItemPage extends BasePage {
   }
 
   handleBackButton() {
-    const item = this.imageEditor.getTag();
-    if (item.locationX && item.locationY) {
-      this.props.setTagPosition(item);
-      this.props.navigateTo('addItemScreen', 'feedscreen');
-    } else {
-      this.props.popRoute(this.props.navigation.key);
-    }
+    this.goBack(true);
   }
 
   _handleAddTag(position) {
@@ -90,7 +84,7 @@ class TagItemPage extends BasePage {
 
   _handleContinue() {
     this.props.updateLookItem().then(response => {
-      this.props.navigateTo('addItemScreen', 'feedscreen');
+      this.props.pushRoute({key: 'addItemScreen'}, this.props.navigation.key);
     });
   }
 
@@ -147,6 +141,7 @@ function bindActions(dispatch) {
   return {
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     popRoute: (key) => dispatch(popRoute(key)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     setTagPosition: (position) => dispatch(setTagPosition(position)),
     updateLookItem: () => dispatch(updateLookItem()),

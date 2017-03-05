@@ -61,19 +61,6 @@ class AddItemPage extends BasePage {
     };
   }
 
-  componentWillMount() {
-    BackAndroid.addEventListener('hardwareBackPress', () => {
-      console.log('hardwareBackPress')
-      this.props.navigateTo('tagItemScreen', 'feedscreen');
-
-      return true;
-    });
-  }
-
-  componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress');
-  }
-
   setUser(name) {
     this.props.setUser(name);
   }
@@ -130,25 +117,7 @@ class AddItemPage extends BasePage {
   }
 
   _handleBack() {
-    Alert.alert(
-      '',
-      'Are you sure you want to go back?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {
-            console.log('Cancel Pressed');
-          },
-          style: 'cancel'
-        },
-        {
-          text: 'OK',
-          onPress: () => {
-            this.props.popRoute(this.props.navigation.key);
-          }
-        }
-      ]
-    );
+    this.goBack();
   }
 
   render() {
@@ -195,7 +164,7 @@ function bindActions(dispatch) {
   return {
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
     popRoute: (key) => dispatch(popRoute(key)),
-    pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     setUser: name => dispatch(setUser(name)),
     updateLookItem: (look) => dispatch(updateLookItem(look)),
