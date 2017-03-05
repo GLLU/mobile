@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Dimensions, Platform, Alert } from 'react-native';
+import { StyleSheet, Dimensions, Platform, Alert, BackAndroid } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -59,6 +59,19 @@ class AddItemPage extends BasePage {
     this.state = {
       currentStep: 0
     };
+  }
+
+  componentWillMount() {
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      console.log('hardwareBackPress')
+      this.props.navigateTo('tagItemScreen', 'feedscreen');
+
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress');
   }
 
   setUser(name) {

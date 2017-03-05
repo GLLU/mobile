@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import { View } from 'native-base';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
+
+export const EDIT_MODE = 'edit';
+export const CREATE_MODE = 'create';
+export const VIEW_MODE = 'view';
 
 const itemBackground = require('../../../images/tag-background.png');
 const TAG_WIDTH = 100;
@@ -35,25 +39,44 @@ const styles = StyleSheet.create({
 class ImageWithTags extends Component {
 
   static propTypes = {
-    image: React.PropTypes.string,
-    items: React.PropTypes.array,
-    editingTag: React.PropTypes.object,
+    itemId: React.PropTypes.number,
+    image: React.PropTypes.string.isRequired,
+    items: React.PropTypes.array.isRequired,
     width: React.PropTypes.number,
-    editMode: React.PropTypes.bool,
-    createLookItem: React.PropTypes.func,
+    mode: React.PropTypes.string,
+    setTagPosition: React.PropTypes.func,
     selectLookItem: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
+    console.log('ImageWithTags props', props);
+    this.state = this.parseState(props);
+
+    console.log('state', this.state);
+
+    this.updatePosition = _.debounce(this._updatePosition, 1500);
+    this._setupPanResponder(this.state.locationX, this.state.locationY)
+  }
+
+  parseState(props) {
+    const { items, itemId, mode } = this.props;
+    if (itemId && mode !== VIEW_MODE) {
+      const item = _.find(items, x => x.id == itemId);
+      return {
+        locationX: item.cover_x_pos,
+        locationY: item.cover_y_pos,
+      };
+    }
+
+    return {
       locationX: 0,
       locationY: 0,
-    }
+    };
   }
 
   componentWillMount() {
-    if (this.props.editMode) {
+    if (this.props.mode) {
       const {locationX, locationY} = this.state;
       this._setupPanResponder(locationX, locationY);
     }
@@ -91,27 +114,45 @@ class ImageWithTags extends Component {
     // convert location into relative positions
     const left = locationX / width;
     const top = locationY / height;
-
     this.setState({locationX: left, locationY: top}, () => {
-      this.props.createLookItem({locationX: left, locationY: top});
+      this.updatePosition(top, left);
     });
   }
 
+  _updatePosition(top, left) {
+    console.log('debounce')
+    this.props.setTagPosition({locationX: left, locationY: top});
+  }
+
   _handleMarkerPress(item) {
-    if (!this.props.editMode && this.props.selectLookItem) {
+    console.log('_handleMarkerPress', item);
+    if (!this.props.mode && this.props.selectLookItem) {
       this.props.selectLookItem(item.id);
     }
   }
 
   renderTags() {
-    const items = _.filter(this.props.items, (x) => !x.editing);
+    const { items, itemId } = this.props;
 
     const { width, height } = this.getRenderingDimensions();
 
     return items.map((item, i) => {
+      const selected = itemId != null && item.id == itemId;
       const left = parseInt(item.locationX * width);
       const top = parseInt(item.locationY * height);
-      const renderContent = function() {
+
+      console.log('selected', selected);
+      const renderContent = (selected) => {
+        if (selected) {
+          console.log('render panResponder');
+          const layout = this._pan.getLayout();
+          return (<Animated.View
+                    {...this.panResponder.panHandlers}
+                    style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+                  <Image source={itemBackground} style={styles.itemBgImage} />
+                </Animated.View>);
+        }
+
         return (<View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
             <Image source={itemBackground} style={styles.itemBgImage} />
           </View>);
@@ -119,9 +160,9 @@ class ImageWithTags extends Component {
 
       if (Platform.OS === 'ios') {
         return (
-          <TouchableOpacity key={i} onPress={(e) => this._handleMarkerPress(item)}>
+          <TouchableWithoutFeedback key={i} onPress={(e) => this._handleMarkerPress(item)}>
             {renderContent()}
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         );
       } else {
         return (
@@ -134,9 +175,9 @@ class ImageWithTags extends Component {
   }
 
   _hasTagEditing() {
-    if (!this.props.editMode) {
-      return false;
-    }
+    // if (!this.props.mode) {
+    //   return false;
+    // }
     const {locationX, locationY} = this.state;
     return locationX > 0 || locationY > 0;
   }
@@ -156,7 +197,7 @@ class ImageWithTags extends Component {
   }
 
   renderEditingTag() {
-    if (this._hasTagEditing()) {
+    if (this.props.mode == EDIT_MODE) {
       const layout = this._pan.getLayout();
       return (<Animated.View
                     {...this.panResponder.panHandlers}
@@ -165,6 +206,7 @@ class ImageWithTags extends Component {
                 </Animated.View>);
     }
 
+    console.log('renderEditingTag')
     return null;
   }
 
@@ -173,20 +215,24 @@ class ImageWithTags extends Component {
     return (<Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
       <View style={[styles.draggableContainer, {width, height}]}>
         {this.renderTags()}
-        {this.renderEditingTag()}
       </View>
     </Image>);
   }
 
   render() {
-    if (!this._hasTagEditing() && this.props.editMode) {
-      return(<TouchableOpacity onPress={(e) => this._handlePress(e)}>
+    console.log('render', this.props.mode);
+    if (this.props.mode == CREATE_MODE) {
+      return(<TouchableWithoutFeedback onPress={(e) => this._handlePress(e)}>
             {this._render()}
-          </TouchableOpacity>);
+          </TouchableWithoutFeedback>);
     }
 
     return this._render();
   }
 }
+
+ImageWithTags.defaultProps = {
+  mode: VIEW_MODE,
+};
 
 export default ImageWithTags;

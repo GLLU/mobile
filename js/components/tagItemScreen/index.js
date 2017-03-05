@@ -47,6 +47,7 @@ class TagItemPage extends BasePage {
     lookId: React.PropTypes.number,
     image: React.PropTypes.string,
     items: React.PropTypes.array,
+    mode: React.PropTypes.string,
     navigateTo: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
@@ -72,17 +73,20 @@ class TagItemPage extends BasePage {
   }
 
   _handleAddTag(position) {
-    this.props.createLookItem(position).then(() => {
-      if (this.props.items.length > 1) {
-        this.props.popRoute(this.props.navigation.key);
-      } else {
+    const { items } = this.props;
+    if (this.props.items.length > 1) {
+      const item = _.last(items);
+      this.props.setTagPosition(position);
+      this.props.popRoute(this.props.navigation.key);
+    } else {
+      this.props.createLookItem(position).then(() => {
         this.props.navigateTo('addItemScreen', 'feedscreen');
-      }
-    });
+      });  
+    }
   }
 
   render() {
-    const { items, image, createLookItem, setTagPosition } = this.props;
+    const { items, itemId, image, mode, createLookItem} = this.props;
     return (
       <Container style={styles.container} theme={glluTheme}>
         <Header style={{backgroundColor: '#000000'}}>
@@ -94,15 +98,19 @@ class TagItemPage extends BasePage {
         <Content scrollEnabled={false} contentContainerStyle={{backgroundColor: '#000000', alignItems: 'center'}}>
           <ImageWithTags
               ref={(ref) => this.imageEditor = ref}
-              editMode={true}
+              mode={mode}
+              itemId={itemId}
               items={items}
               image={image}
-              createLookItem={this._handleAddTag.bind(this)}
-              setTagPosition={setTagPosition}/>
+              setTagPosition={this._handleAddTag.bind(this)}/>
         </Content>
       </Container>
     );
   }
+}
+
+TagItemPage.defaultProps = {
+  mode: 'view',
 }
 
 function bindActions(dispatch) {
@@ -117,6 +125,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
+    itemId: state.uploadLook.itemId,
     lookId: state.uploadLook.lookId,
     image: state.uploadLook.image,
     items: state.uploadLook.items
