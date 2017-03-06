@@ -22,6 +22,7 @@ import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import LooksScreen from './components/looksScreen';
 import ProfileScreen from './components/profileScreen';
+import FollowScreen from './components/profileScreen/followscreen';
 import SettingsScreen from './components/settingsScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import UserLookScreen from './components/userLooksScreen/index.js';
@@ -120,6 +121,8 @@ class AppNavigator extends Component {
         return <UserLookScreen userData={props.scene.route.optional}/>;
       case 'profileScreen':
         return <ProfileScreen userData={props.scene.route.optional}/>;
+      case 'followScreen':
+        return <FollowScreen userData={props.scene.route.optional}/>;
       case 'settingsScreen':
         return <SettingsScreen/>;
       case 'editProfileScreen':

@@ -83,10 +83,6 @@ class ProfileView extends Component {
   }
 
   handleEditPress(e) {
-    this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
-  }
-
-  handleEditPress(e) {
       this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 
