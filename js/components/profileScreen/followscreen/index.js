@@ -17,7 +17,7 @@ class FollowScreen extends Component {
 
     render() {
         return (
-            <FollowListView/>
+            <FollowListView mode="followers"/>
         );
     }
 }

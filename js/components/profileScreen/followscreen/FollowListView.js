@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base';
 
-import FollowRow from './FollowRow'
+import ListViewHeader from './ListViewHeader';
+import FollowRow from './FollowRow';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
+        backgroundColor:'white'
     },
     separator: {
         flex: 1,
@@ -35,14 +36,14 @@ class FollowListView extends Component {
                         name:"Alex Alexey",
                         username:"alexAlex",
                         aboutMe:"I'm so awesome omg",
-                        avatar:"https://marketplace.canva.com/MACIsTc3Y5M/1/thumbnail_large/canva-woman-avatar-icon-MACIsTc3Y5M.png",
+                        avatar:{url:"https://marketplace.canva.com/MACIsTc3Y5M/1/thumbnail_large/canva-woman-avatar-icon-MACIsTc3Y5M.png"},
                         isFollowing:false
                     },
                     {
                         name:"Israel Israeli",
                         username:"israelisreal",
                         aboutMe:"I'm with alex",
-                        avatar:"http://www.designshock.com/wp-content/uploads/2016/04/man-17-200.jpg",
+                        avatar:{url:"http://www.designshock.com/wp-content/uploads/2016/04/man-17-200.jpg"},
                         isFollowing:true
                     },]),
         };
@@ -54,6 +55,7 @@ class FollowListView extends Component {
                 style={styles.container}
                 dataSource={this.state.dataSource}
                 renderRow={(data) => <FollowRow {...data}/>}
+                renderHeader = {() => <ListViewHeader count={6987} title={`My ${this.props.mode}`}/>}
                 renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
             />
         );

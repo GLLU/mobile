@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 12,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     textContainer: {
         flex:7,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     },
     photo: {
         flex:1,
-        // //wierd responsive bug :D
+        // //weird responsive bug :D
         // width:null,
         // height:null,
         width:50,
