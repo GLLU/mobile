@@ -4,12 +4,17 @@ import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base';
 
-import FollowView from '../FollowView'
+import FollowRow from './FollowRow'
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 20,
+    },
+    separator: {
+        flex: 1,
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: '#e6e6e6',
     },
 });
 
@@ -24,7 +29,22 @@ class FollowListView extends Component {
 
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+            dataSource: ds.cloneWithRows(
+                [
+                    {
+                        name:"Alex Alexey",
+                        username:"alexAlex",
+                        aboutMe:"I'm so awesome omg",
+                        avatar:"https://marketplace.canva.com/MACIsTc3Y5M/1/thumbnail_large/canva-woman-avatar-icon-MACIsTc3Y5M.png",
+                        isFollowing:false
+                    },
+                    {
+                        name:"Israel Israeli",
+                        username:"israelisreal",
+                        aboutMe:"I'm with alex",
+                        avatar:"http://www.designshock.com/wp-content/uploads/2016/04/man-17-200.jpg",
+                        isFollowing:true
+                    },]),
         };
     }
 
@@ -33,7 +53,8 @@ class FollowListView extends Component {
             <ListView
                 style={styles.container}
                 dataSource={this.state.dataSource}
-                renderRow={(data) => <View><Text>{data}</Text></View>}
+                renderRow={(data) => <FollowRow {...data}/>}
+                renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
             />
         );
     }
