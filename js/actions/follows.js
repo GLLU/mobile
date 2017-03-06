@@ -3,6 +3,7 @@ import rest from '../api/rest';
 // Actions
 export const SET_USER_FOLLOW_STATE = 'SET_USER_FOLLOW_STATE';
 export const GET_USER_FOLLOWS = 'GET_USER_FOLLOWS';
+export const SET_USER_FOLLOWS_DATA= 'SET_USER_FOLLOWS_DATA';
 
 export function followUpdate(data) {
     return (dispatch) => {
@@ -37,6 +38,27 @@ export function unfollow(id) {
     return (dispatch) => {
         dispatch(rest.actions.follows.delete({user_id: id}, (err, data) => {
             if (!err) {
+            }
+        }));
+    };
+}
+
+export function setUserFollowsData(data):Action {
+    return {
+        type: SET_USER_FOLLOWS_DATA,
+        payload: data
+    };
+}
+
+export function getUserFollowsData(id,pageNumber=1,pageSize=25):Action {
+    return (dispatch) => {
+        return dispatch(rest.actions.looks({id: id, "page[size]" : pageSize, "page[number]" : pageNumber}, {}, (err, userFollowsData) => {
+            if (!err && userFollowsData) {
+                let followsData = {
+                    currId: id,
+                    follows: userFollowsData.follows
+                };
+                dispatch(setUserFollowsData(followsData));
             }
         }));
     };
