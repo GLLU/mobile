@@ -6,7 +6,7 @@ import FontSizeCalculator from './../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
   tagTextContainer: {
-    margin: 5,
+    margin: 3,
     backgroundColor: 'black',
     borderRadius: 5,
     flexDirection: 'row'
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   tagRemoveText: {
     textAlign: 'center',
     color: '#FFFFFF',
-    fontSize: new FontSizeCalculator(15).getSize(),
+    fontSize: new FontSizeCalculator(13).getSize(),
   }
 });
 
@@ -40,7 +40,7 @@ class Tags extends Component {
     return this.props.itemTags.map((tag, index) => {
       return (
         <View key={index} style={[styles.tagTextContainer]}>
-          <Button iconRight style={{backgroundColor: '#000'}}>
+          <Button iconRight style={{backgroundColor: '#000'}} textStyle={{fontSize: 13}}>
             {tag.name}
             <Icon name='ios-close' style={{justifyContent: 'flex-end'}} onPress={() => this.props.removeTag(tag)}/>
           </Button>

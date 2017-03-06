@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     flex: 1,
+    backgroundColor: '#F2F2F2',
   },
   mainView: {
     flex: 1,
@@ -63,7 +64,7 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 0,
+      currentStep: 2,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -91,10 +92,11 @@ class AddItemPage extends BasePage {
     this.props.setTagPosition(position);
   }
 
-  _handleContinue() {
-    this.props.updateLookItem().then(response => {
-      this.props.pushRoute({key: 'addItemScreen'}, this.props.navigation.key);
-    });
+  handleContinue() {
+    const { currentStep } = this.state;
+    if (currentStep < 2) {
+      this.setState({currentStep: this.state.currentStep + 1});  
+    }
   }
 
   _handleLayoutImage(e) {
@@ -154,15 +156,12 @@ class AddItemPage extends BasePage {
     return title;
   }
 
-  _handleSwiperScrollEnd(e, state, context) {
-    const currentStep = this.state.currentStep;
-    const nextStep = currentStep == 0 ? 1 : 0;
-    this.setState({currentStep: nextStep});
-    return true;
-  }
-
   handleBackButton() {
-    this.goBack();
+    if (this.state.currentStep > 0) {
+      this.setState({currentStep: this.state.currentStep - 1});
+    } else {
+      this.goBack();
+    }
   }
 
   getCurrentMode() {
@@ -198,50 +197,60 @@ class AddItemPage extends BasePage {
   }
 
   renderActions() {
-    return (
-      <Swiper style={styles.wrapper}
-          ref={(ref) => this.swiper = ref }
-          loop={false}
-          scrollEnabled={false}
-          index={this.state.currentStep}
-          onMomentumScrollEnd={this._handleSwiperScrollEnd.bind(this)}
-          dot={<View style={{width: 0, height: 0}} />}
-          activeDot={<View style={{width: 0, height: 0}} />}
-          height={swiperH}
-      >
-        <StepZero key={0} onValid={this.handleStepZeroValid.bind(this)}/>
-        <StepOne key={1} continueAction={this.continueAction.bind(this)} tagAnotherAction={this.tagAnotherAction.bind(this)}/>
-        <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>
-      </Swiper>
-    );
+    switch(this.state.currentStep) {
+      case 0:
+        return <StepZero key={0} onValid={this.handleStepZeroValid.bind(this)}/>;
+      case 1:
+        return <StepOne key={1} onValid={this.continueAction.bind(this)}/>;
+    }
+    return null;
   }
 
   getAllowContinue() {
+    const { item } = this.props;
     switch(this.state.currentStep) {
       case 0:
-        return this.props.item.brand != null;
+        return item && item.brand != null;
+      case 1:
+        return item && item.selectedCategory != null;
       default:
         return true;
     }
   }
 
+  renderContent() {
+    if (this.state.currentStep != 2) {
+      return (
+        <Grid style={{flex: 1}}>
+          <Row size={75} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
+            {this.renderImageView()}
+          </Row>
+          <Row size={25} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>
+            <View style={styles.wrapper}>
+              {this.renderActions()}
+            </View>
+          </Row>
+        </Grid>
+      );
+    } else {
+      return <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>;
+    }
+  }
+
   render() {
     const allowContinue = this.getAllowContinue();
+    const bgColor = (this.state.currentStep != 2 ? '#000000' : '#F2F2F2');
+    const fgColor = (this.state.currentStep != 2 ? '#F2F2F2' : '#000000');
     return (
       <Gllu.Screen
+        backgroundColor={bgColor}
+        foregroundColor={fgColor}
         onBackPress={() => this.handleBackButton()}
         onNextPress={() => this.handleContinue()}
         title={this.getHeadingTitle()}
         showNext={allowContinue}
       >
-        <Grid style={{flex: 1}}>
-          <Row size={75} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
-            {this.renderImageView()}
-          </Row>
-          <Row size={25} style={{flexDirection: 'column', alignItems: 'center', backgroundColor: '#F2F2F2'}}>
-            {this.renderActions()}
-          </Row>
-        </Grid>
+        {this.renderContent()}
       </Gllu.Screen>
     );
   }

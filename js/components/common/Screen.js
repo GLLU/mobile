@@ -7,9 +7,12 @@ import glluTheme from '../../themes/gllu-theme';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F2F2F2'
+    backgroundColor: '#000000'
   },
   header: {
+    backgroundColor: '#000000'
+  },
+  title: {
     fontFamily: 'PlayfairDisplay-Regular',
     lineHeight: glluTheme.toolbarLineHeight,
     fontSize: 24,
@@ -18,6 +21,10 @@ const styles = StyleSheet.create({
     marginLeft: glluTheme.tooolbarTextMarginLeft,
     textAlign: 'center',
     alignSelf: 'center'
+  },
+  content: {
+    flexDirection: 'column',
+    flexGrow: 1,
   },
   backIcon: {
     color: '#FFFFFF'
@@ -30,7 +37,10 @@ const styles = StyleSheet.create({
 class GlluScreen extends Component {
   static propTypes = {
     style: React.PropTypes.object,
+    headerStyle: React.PropTypes.object,
     titleStyle: React.PropTypes.object,
+    backgroundColor: React.PropTypes.string,
+    foregroundColor: React.PropTypes.string,
     title: React.PropTypes.string,
     showNext: React.PropTypes.bool,
     onBackPress: React.PropTypes.func,
@@ -45,7 +55,7 @@ class GlluScreen extends Component {
     if (this.props.showNext) {
       return (
         <Button transparent onPress={this.props.onNextPress}>
-            <Text style={styles.nextStyle}>Next</Text>
+            <Text style={[styles.nextStyle, { color: this.props.foregroundColor }]}>Next</Text>
           </Button>
         );
     }
@@ -54,22 +64,24 @@ class GlluScreen extends Component {
   }
 
   render() {
-    const style = [styles.container, this.props.style];
-    const titleStyle = [styles.header, this.props.titleStyle];
-    
+    const { style, headerStyle, titleStyle, contentStyle, backgroundColor, foregroundColor } = this.props;
+    const _containerStyle = [styles.container, style];
+    const _headerStyle = [styles.header, headerStyle];
+    const _titleStyle = [styles.title, titleStyle, { color: foregroundColor }];
+    const _contentStyle = [styles.content, contentStyle, { backgroundColor: backgroundColor }];
     return (
-      <Container style={style} theme={glluTheme}>
-        <Header style={{backgroundColor: '#000000'}}>
+      <Container style={_containerStyle} theme={glluTheme} backgroundColor={backgroundColor}>
+        <Header style={_headerStyle} backgroundColor={backgroundColor}>
           <Button transparent onPress={this.props.onBackPress}>
-            <Icon style={styles.backIcon} name="ios-arrow-back" />
+            <Icon style={[styles.backIcon, { color: foregroundColor }]} name="ios-arrow-back" />
           </Button>
-          <Title style={titleStyle}>{this.props.title}</Title>
+          <Title style={_titleStyle}>{this.props.title}</Title>
           {this.renderNext()}
         </Header>
         <View
             scrollEnabled={false}
             disableKBDismissScroll
-            style={{backgroundColor: '#000000', flexDirection: 'column', flexGrow: 1}}>
+            style={_contentStyle}>
           {this.renderChildren()}
         </View>
       </Container>
@@ -81,6 +93,8 @@ GlluScreen.defaultProps = {
   style: {},
   titleStyle: {},
   title: '',
+  backgroundColor: '#000000',
+  foregroundColor: '#F2F2F2',
   showNext: false,
 };
 

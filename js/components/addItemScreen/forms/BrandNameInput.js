@@ -40,7 +40,9 @@ class BrandNameInput extends Component {
   }
 
   componentWillMount() {
-    this.props.loadBrands();
+    this.props.loadBrands().catch(err => {
+      console.log('load brands err', err);
+    });
   }
 
   handleFindOrCreateBrand(value, createNew) {
@@ -67,8 +69,9 @@ class BrandNameInput extends Component {
       this.setState({
         data: response,
       });  
-    });
-    
+    }).catch(err => {
+      console.log('filter brands error:', err);
+    }); 
   }
 
   render() {

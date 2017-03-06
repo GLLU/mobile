@@ -6,10 +6,12 @@ import { View, Button, Text } from 'native-base';
 import { Col, Grid, Row } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
+import TagInput from './forms/TagInput';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
-import OccasionTags from './forms/OccasionTags';
+import OccasionsDropdown from './forms/OccasionsDropdown';
+import Gllu from '../common';
 import {
     createLookItem,
     addDescription,
@@ -209,25 +211,39 @@ class StepTwo extends Component {
     return(
       <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingHorizontal: 20}}>
         <Grid>
-          <Row style={styles.row}>
-            <View style={{padding: 15, alignItems: 'center'}}>
+          <Row style={styles.row, { flexDirection: 'row' }}>
+            <View style={{paddingVertical: 5, alignItems: 'center', width: 80, marginRight: 20}}>
               <ImageWithTags
                   items={items}
                   image={image}
-                  createLookItem={createLookItem}
-                  width={IMAGE_VIEW_WIDTH}/>
+                  width={80}
+                  createLookItem={createLookItem}/>
+            </View>
+            <View style={{flexGrow:1, flexDirection: 'column'}}>
+                <View style={{flex: 1}}>
+                  <Text style={styles.titleLabelInfo}>Occassions</Text>
+                  <OccasionsDropdown selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
+                </View>
+                <View style={{flex: 1}}>
+                  <Text style={styles.titleLabelInfo}>Add tags</Text>
+                  <View style={{}}>
+                    <TagInput/>
+                  </View>
+                </View>
             </View>
           </Row>
           <Row style={styles.row}>
-            <OccasionTags selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
+            <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
+            <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
           </Row>
           <Row style={styles.row}>
-            {this._renderSelections()}
           </Row>
           <Row style={[styles.row, {paddingBottom: 60}]}>
-            <Button disabled={!this.state.confirm} transparent onPress={() => this._handlePublishItem()} style={[styles.btnGoToStep3, {backgroundColor: bgColorBtn}]}>
-                <Text style={styles.btnGoToStep3Text}>PUBLISH</Text>
-            </Button>
+            <Gllu.Button
+              disabled={!this.state.confirm}
+              onPress={() => this._handlePublishItem()}
+              text='PUBLISH'
+            />
           </Row>
         </Grid>
       </ScrollView>
@@ -253,7 +269,8 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
-    occasionTags: item ? item.occasionTags : [],
+    occasionTags: [{ id: 103,
+       name: 'Date'}],
     photos: item ? item.photos : [],
   }
 };

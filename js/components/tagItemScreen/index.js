@@ -66,8 +66,12 @@ class TagItemPage extends BasePage {
     const { mode } = this.state;
 
     const allowContinue = items.length > 0;
+    const bgColor = '#000000';
+    const fgColor = '#F2F2F2';
     return (
       <Gllu.Screen
+        backgroundColor={bgColor}
+        foregroundColor={fgColor}
         onBackPress={() => this.handleBackButton()}
         onNextPress={() => this.handleContinue()}
         title='Tap item to add'

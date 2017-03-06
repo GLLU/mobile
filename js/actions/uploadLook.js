@@ -221,8 +221,8 @@ export function createBrandName(name) {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
-          dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name })).then(resolve, resolve);
+          dispatch(loadBrands().catch(reject));
+          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name })).then(resolve, reject);
         } else {
           reject(err);
         }
