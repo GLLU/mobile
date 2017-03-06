@@ -1,9 +1,9 @@
 import reduxApi from "redux-api";
 import _ from 'lodash';
-const adapterFetch = require("redux-api/lib/adapters/fetch");
 import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
+const adapterFetch = require("redux-api/lib/adapters/fetch");
 
 import Utils from '../Utils';
 import Config from 'react-native-config';
@@ -98,8 +98,14 @@ export default reduxApi({
     crud: true,
   },
   follows: {
-    url: '/users/:user_id/follows',
+    url: '/users/:user_id/follows/:page[number]:page[size]',
     crud: true,
+  },
+  followers: {
+    url: '/users/:user_id/followers/:page[number]:page[size]',
+    options: {
+      method: 'get'
+    }
   }
 }).use("fetch", (url, options) => {
   console.log('making request', url, options);
