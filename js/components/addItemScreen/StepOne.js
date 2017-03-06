@@ -24,7 +24,6 @@ import TagInput from './forms/TagInput';
 import CurrencyAndPrice from './forms/CurrencyAndPrice';
 import ItemSize from './forms/ItemSize';
 import ImageWithTags from '../common/ImageWithTags';
-import ActionsBar from './ActionsBar';
 import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';

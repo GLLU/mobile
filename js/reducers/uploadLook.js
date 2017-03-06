@@ -20,6 +20,7 @@ import { ADD_NEW_LOOK,
         ADD_PHOTOS_VIDEO,
         ADD_ITEM_OCCASION_TAG,
         REMOVE_ITEM_OCCASION_TAG,
+        REMOVE_BRAND_NAME,
       } from '../actions/uploadLook';
 import { SET_ITEM_SIZES, SET_CATEGORIES } from '../actions/filters';
 
@@ -122,6 +123,12 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       items: mutateItem(state, 'brand', action.payload)
+    }
+  },
+  [REMOVE_BRAND_NAME]: (state, action) => {
+    return {
+      ...state,
+      items: mutateItem(state, 'brand', null)
     }
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {

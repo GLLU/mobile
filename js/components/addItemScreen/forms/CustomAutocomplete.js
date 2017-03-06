@@ -61,12 +61,21 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    borderTopWidth: 0
+    borderTopWidth: 0,
+    alignItems: 'stretch',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   input: {
     backgroundColor: 'white',
     height: 40,
-    paddingLeft: 3
+    paddingLeft: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
   },
   inputSelected: {
     backgroundColor: 'white',
@@ -76,14 +85,17 @@ const styles = StyleSheet.create({
   },
   iconCheckCompleteContainer: {
     position: 'absolute',
-    right: -10,
-    top: 10,
+    right: -5,
+    top: 5,
     width: 50,
     backgroundColor: 'transparent'
   },
   iconCheckComplete: {
     color: '#1DE9B6'
   },
+  cancelButton: {
+    alignSelf: 'flex-end',
+  }
 });
 
 class CustomAutocomplete extends Autocomplete {
@@ -97,9 +109,14 @@ class CustomAutocomplete extends Autocomplete {
     onShowResults: PropTypes.func,
     renderTextInput: PropTypes.func,
     findOrCreateBrand: PropTypes.func,
+    onCancel: PropTypes.func,
     selected: PropTypes.bool,
     query: PropTypes.string
   };
+
+  componentDidMount() {
+    this.textInput.focus();
+  }
 
   _renderTextInput() {
     const { onEndEditing, renderTextInput, style } = this.props;
@@ -160,6 +177,20 @@ class CustomAutocomplete extends Autocomplete {
             </View>)
   }
 
+  handleCancel() {
+    this.props.onCancel();
+  }
+
+  _renderCancelButton() {
+    return (
+      <TouchableOpacity
+        onPress={this.handleCancel.bind(this)}
+        style={styles.cancelButton}>
+        <Text>Cancel</Text>
+      </TouchableOpacity>
+    );
+  }
+
   render() {
     const { containerStyle, inputContainerStyle, query, selected } = this.props;
     const { dataSource } = this.state;
@@ -170,8 +201,13 @@ class CustomAutocomplete extends Autocomplete {
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.inputContainer, inputContainerStyle]}>
-          {this._renderTextInput()}
-          {this.props.selected && this._renderCompleteTyping()}
+          <View style={{flexGrow: 1}}>
+            {this._renderTextInput()}
+            {this.props.selected && this._renderCompleteTyping()}
+          </View>
+          <View style={{width: 50, justifyContent: 'flex-end'}}>
+            {this._renderCancelButton()}
+          </View>
         </View>
         {show && this._renderItems()}
         {showCreate && this._renderButtonCreateNewItem()}

@@ -6,6 +6,7 @@ export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
+export const REMOVE_BRAND_NAME = 'REMOVE_BRAND_NAME';
 export const ADD_ITEM_SIZE_COUNTRY = 'ADD_ITEM_SIZE_COUNTRY';
 export const ADD_ITEM_SIZE = 'ADD_ITEM_SIZE';
 export const ADD_ITEM_TAG = 'ADD_ITEM_TAG';
@@ -27,7 +28,7 @@ import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hide
 import Utils from '../Utils';
 
 
-var FileUpload = require('NativeModules').FileUpload;
+let api_key = null;
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
@@ -174,17 +175,39 @@ export function addItemType(categoryItem) {
         payload: categoryItem
       });
     dispatch(loadItemSizes(categoryItem.id));
-    dispatch(addItemTag(categoryItem.name));
+    dispatch(addItemTag(categoryItem.name)).catch(err => {
+      console.log('do nothing');
+    });
   };
 }
 
 export function addBrandName(payload) {
   return (dispatch, getState) => {
-    dispatch({
-      type: ADD_BRAND_NAME,
-      payload: payload
+    const state = getState();
+
+    const { lookId, itemId } = state.uploadLook;
+
+    const body = {
+      item: {
+        brand_id: payload.id,
+      }
+    }
+    return new Promise((resolve, reject) => {
+      dispatch(showLoader());
+      return dispatch(rest.actions.items.put({look_id: lookId, id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+        dispatch(hideLoader());
+        if (!err) {
+          dispatch({
+            type: ADD_BRAND_NAME,
+            payload: payload
+          });
+          dispatch(addItemTag(payload.name)).catch(reject);
+          resolve();
+        } else {
+          reject(err);
+        }
+      }));
     });
-    dispatch(addItemTag(payload.name));
   };
 }
 
@@ -199,12 +222,18 @@ export function createBrandName(name) {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
           dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name }));
+          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name })).then(resolve, resolve);
         } else {
           reject(err);
         }
       }));
     });
+  };
+}
+
+export function removeBrandName() {
+  return {
+    type: REMOVE_BRAND_NAME,
   };
 }
 
