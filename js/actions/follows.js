@@ -2,8 +2,8 @@ import rest from '../api/rest';
 
 // Actions
 export const SET_USER_FOLLOW_STATE = 'SET_USER_FOLLOW_STATE';
-export const GET_USER_FOLLOWS = 'GET_USER_FOLLOWS';
 export const SET_USER_FOLLOWS_DATA= 'SET_USER_FOLLOWS_DATA';
+export const INIT_USER_FOLLOWS='INIT_USER_FOLLOWS';
 
 export function followUpdate(data) {
     return (dispatch) => {
@@ -40,6 +40,13 @@ export function unfollow(id) {
             if (!err) {
             }
         }));
+    };
+}
+
+export function initUserFollows(data):Action {
+    return {
+        type: INIT_USER_FOLLOWS,
+        payload: data
     };
 }
 

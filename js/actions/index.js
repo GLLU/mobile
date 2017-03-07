@@ -6,7 +6,7 @@ import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
 import { followUpdate, unFollowUpdate, getUserFollowsData }  from './follows';
-import { getUserFollowersData }  from './followers';
+import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getUserLooksData } from './looks';
 import { getFeed, resetFeed, loadMore } from './feed';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
@@ -110,6 +110,7 @@ export {
   unFollowUpdate,
   getUserFollowsData,
   getUserFollowersData,
+  initUserFollowers,
   getFeed,
   resetFeed,
   loadMore,

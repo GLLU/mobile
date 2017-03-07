@@ -1,4 +1,4 @@
-import { SET_USER_FOLLOWERS_DATA } from '../actions/followers';
+import * as actions from '../actions/followers';
 
 const initialState = {
     userFollowersData: [],
@@ -7,7 +7,7 @@ const initialState = {
 
 export default function (state:State = initialState, action): State {
     switch(action.type){
-        case SET_USER_FOLLOWERS_DATA:
+        case actions.SET_USER_FOLLOWERS_DATA:
             let userFollowersData = action.payload.followers.map(flattenFollowData);
             if(action.payload.currId === state.currId){
                 userFollowersData.push(...state.userFollowersData)
@@ -16,6 +16,11 @@ export default function (state:State = initialState, action): State {
                 ...state,
                 userFollowersData,
                 currId: action.payload.currId
+            };
+        case actions.INIT_USER_FOLLOWERS:
+            return {
+                ...state,
+                ...initialState
             };
         default:
             return state

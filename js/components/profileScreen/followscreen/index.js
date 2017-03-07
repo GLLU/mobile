@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { navigateTo, popRoute, getStats, getUserFollowersData, getUserFollowsData } from '../../../actions';
+import { navigateTo, popRoute, getStats, getUserFollowersData, getUserFollowsData, initUserFollowers } from '../../../actions';
 
 import FollowListView from './FollowListView'
 
@@ -19,8 +19,12 @@ class FollowScreen extends Component {
         this.currentPageIndex=1;
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getFollowersData();
+    }
+
+    componentWillUnmount() {
+        this.props.initUserFollowers();
     }
 
     getFollowersData(){
@@ -39,9 +43,9 @@ function bindAction(dispatch) {
     return {
         navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
         popRoute: key => dispatch(popRoute(key)),
-        getStats: (id) => dispatch(getStats(id)),
         getUserFollowersData: (id,pageNumber,pageSize) => dispatch(getUserFollowersData(id,pageNumber,pageSize)),
         getUserFollowsData: (id,pageNumber,pageSize) => dispatch(getUserFollowsData(id,pageNumber,pageSize)),
+        initUserFollowers: () => dispatch(initUserFollowers()),
     };
 }
 
