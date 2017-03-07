@@ -12,11 +12,12 @@ import _ from 'lodash';
 import { InputGroup, Input, Icon} from 'native-base';
 import IconMd from 'react-native-vector-icons/MaterialIcons';
 import ModalDropdown from './ModalDropdown';
+import FontSizeCalculator from './../../calculators/FontSize';
 
 const colorPack = {
-  primary: '#00A5FF',
+  primary: '#1DE9B6',
   primaryDark: '#215191',
-  light: '#FFF',
+  light: '#FFFFFF',
   textPrimary: '#525966',
   placeholderTextColor: '#A9A9A9',
   danger: '#C62828'
@@ -223,61 +224,61 @@ export default class MultiSelect extends Component {
     return (
       <View
         ref={ref => this.button = ref}
-        style={{flex: 1, flexDirection: 'column', marginBottom: 10}}>
+        style={{flex: 1, flexDirection: 'column'}}>
         
           <View>
-            <ModalDropdown style={{flex: 1}}
-                            ref={ref => this.modal = ref}
-                           renderContent={() => {
-                            return (
-                              <View style={{flex: 1}}>
-                                <InputGroup style={{paddingLeft: 16, backgroundColor: colorPack.light}}>
-                                  <Icon name='ios-search' style={{fontSize: 20, color: colorPack.placeholderTextColor}}/>
-                                  <Input
-                                    onChangeText={searchTerm => this.setState({searchTerm})}
-                                    placeholder={this.props.searchInputPlaceholderText || 'Search'}
-                                    placeholderTextColor={colorPack.placeholderTextColor}
-                                    style={this.props.searchInputStyle ? this.props.searchInputStyle : {color: colorPack.textPrimary}} />
-                                </InputGroup>
-                                <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#fafafa'}}>
-                                  {this._renderItems()}
-                                </View>
-                                <TouchableOpacity
-                                  onPress={() => this._submitSelection()}
-                                  style={styles.button}>
-                                  <Text style={[styles.buttonText, {fontFamily: this.props.fontFamily ? this.props.fontFamily : ''}]}>
-                                    {this.props.submitButtonText ? this.props.submitButtonText : 'Submit'}
-                                  </Text>
-                                </TouchableOpacity>
-                              </View>
-                            )
-                           }}
-                           onDropdownWillShow={() => this._toggleSelector()}
-                           onDropdownWillHide={() => this._toggleSelector()}
-                           onSelect={(idx, value) => console.log(idx, value)}
-                >
+            <ModalDropdown
+              style={{flex: 1}}
+              ref={ref => this.modal = ref}
+              renderContent={() => {
+                return (
+                  <View style={{flex: 1}}>
+                    <InputGroup style={{paddingLeft: 16, backgroundColor: colorPack.light}}>
+                      <Icon name='ios-search' style={{fontSize: 20, color: colorPack.placeholderTextColor}}/>
+                      <Input
+                        onChangeText={searchTerm => this.setState({searchTerm})}
+                        placeholder={this.props.searchInputPlaceholderText || 'Search'}
+                        placeholderTextColor={colorPack.placeholderTextColor}
+                        style={this.props.searchInputStyle ? this.props.searchInputStyle : {color: colorPack.textPrimary}} />
+                    </InputGroup>
+                    <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#fafafa'}}>
+                      {this._renderItems()}
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => this._submitSelection()}
+                      style={styles.button}>
+                      <Text style={[styles.buttonText, {fontFamily: this.props.fontFamily ? this.props.fontFamily : ''}]}>
+                        {this.props.submitButtonText ? this.props.submitButtonText : 'Pick'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )
+              }}
+              onDropdownWillShow={() => this._toggleSelector()}
+              onDropdownWillHide={() => this._toggleSelector()}
+              onSelect={(idx, value) => console.log(idx, value)}
+            >
               {
-          this.state.selector
-          ?
-          <View style={{flexDirection: 'column', borderRadius: 5, borderWidth: 1, borderColor: '#e9e9e9', marginBottom: 10, elevation: 2, height: 40}}>
-          </View>
-          :
-              <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
-                <View style={[styles.subSection, {paddingTop: 5, paddingBottom: 5}]}>
-                  <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={{
-                      flex: 1,
-                      fontFamily: this.props.altFontFamily ? this.props.altFontFamily : this.props.fontFamily ? this.props.fontFamily : '',
-                      fontSize: 16, color: colorPack.placeholderTextColor}}>
-                      {this.props.selectText || 'Select'}
-                    </Text>
-                    <IconMd name='arrow-drop-down' style={styles.indicator}/>
+                this.state.selector
+                ?
+                <View style={{flexDirection: 'column', borderRadius: 5, borderWidth: 1, borderColor: '#e9e9e9', marginBottom: 10, elevation: 2, height: 40}}>
+                </View>
+                :
+                <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+                  <View style={[styles.subSection, {paddingTop: 5, paddingBottom: 5}]}>
+                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={{
+                        flex: 1,
+                        fontFamily: this.props.altFontFamily ? this.props.altFontFamily : this.props.fontFamily ? this.props.fontFamily : '',
+                        fontSize: 16, color: colorPack.placeholderTextColor}}>
+                        {this.props.selectText || 'Select'}
+                      </Text>
+                      <IconMd name='arrow-drop-down' style={styles.indicator}/>
+                    </View>
                   </View>
                 </View>
-              </View>
-            }
+              }
             </ModalDropdown>
-
             {this.renderSelectedItems()}
           </View>
       </View>
@@ -335,8 +336,9 @@ var styles = StyleSheet.create({
     backgroundColor: colorPack.primary,
   },
   buttonText: {
+    fontWeight: '500',
+    fontSize: new FontSizeCalculator(18).getSize(),
     color: colorPack.light,
-    fontSize: 14
   }
 });
 

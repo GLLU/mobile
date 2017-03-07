@@ -11,7 +11,7 @@ import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
 import _ from 'lodash';
 
-const IMAGE_VIEW_PADDING = 70;
+const IMAGE_VIEW_PADDING = 80;
 
 const styles = StyleSheet.create({
   container: {
@@ -61,7 +61,7 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 0,
+      currentStep: 2,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -133,13 +133,16 @@ class AddItemPage extends BasePage {
     let title = '';
     switch (this.state.currentStep) {
       case 0:
-        title = 'Add New Item';
+        title = 'Choose a Brand';
         break;
       case 1:
-        title = 'Additional Info';
+        title = 'Choose a Category';
+        break;
+      case 2:
+        title = 'Addional Info';
         break;
       default:
-        title = '';
+        title = 'Add New Item';
     }
     return title;
   }
@@ -202,6 +205,8 @@ class AddItemPage extends BasePage {
         return item && item.brand != null;
       case 1:
         return item && item.selectedCategory != null;
+      case 2:
+        return false;
       default:
         return true;
     }

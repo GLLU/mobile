@@ -233,7 +233,7 @@ class StepTwo extends Component {
   render() {
     const { items, createLookItem, image} = this.props;
     return(
-      <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingHorizontal: 20}}>
+      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
         <Grid>
           <Row style={styles.row, { flexDirection: 'row' }}>
             <Col size={25} style={{paddingRight: 20}}>
@@ -248,6 +248,7 @@ class StepTwo extends Component {
             </Col>
             <Col size={75} style={{flexDirection: 'column'}}>
               <TextInput
+                textAlignVertical='top'
                 multiline={true}
                 style={styles.describe}
                 value={this.props.description}
@@ -266,6 +267,7 @@ class StepTwo extends Component {
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Url</Text>
             <TextInput
+              underlineColorAndroid='transparent'
               style={styles.textInput}
               placeholder='http://www.gllu.com'
               value={this.props.url}/>

@@ -118,6 +118,7 @@ class StepZero extends Component {
           <TextInput
             value={brandName}
             style={styles.input}
+            underlineColorAndroid='transparent'
             onFocus={this.handleTextFocus.bind(this)}
           />
           {this.renderClearIcon()}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
+import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import { View } from 'native-base';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
@@ -16,6 +16,8 @@ const h = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   base: {
     flex: 1,
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
   },
   draggableContainer: {
     flex: 1,
@@ -116,6 +118,7 @@ class ImageWithTags extends Component {
   }
 
   _handlePress(e) {
+    console.log('_handlePress');
     const {locationX, locationY} = e.nativeEvent;
     const { width, height } = this.getRenderingDimensions();
     this._setupPanResponder(locationX, locationY);
@@ -189,11 +192,12 @@ class ImageWithTags extends Component {
   _renderContent() {
     console.log('render', this.props.mode);
     if (this.props.mode == CREATE_MODE) {
-      return(<TouchableWithoutFeedback onPress={(e) => this._handlePress(e)}>
+      const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
+      console.log('tag', Tag)
+      return(<Tag onPress={this._handlePress.bind(this)}>
             {this._render()}
-          </TouchableWithoutFeedback>);
+          </Tag>);
     }
-
     return this._render();
   }
 
