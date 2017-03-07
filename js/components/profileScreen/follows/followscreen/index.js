@@ -19,7 +19,7 @@ class FollowScreen extends Component {
         this.currentPageIndex=1;
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getFollowsData();
     }
 
