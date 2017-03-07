@@ -3,6 +3,9 @@
 import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { View, Icon } from 'native-base';
+import { connect } from 'react-redux';
+import { actions } from 'react-native-navigation-redux-helpers';
+const { popRoute } = actions;
 
 const styles = StyleSheet.create({
     container: {
@@ -32,11 +35,20 @@ class ListViewHeader extends Component {
         count: React.PropTypes.number,
     };
 
+    constructor(props){
+        super(props);
+        this.popRoute=this.popRoute.bind(this);
+    }
+
+    popRoute(){
+        this.props.popRoute(this.props.navigation.key);
+    }
+
     render() {
         return (
             <View style={[styles.container,styles.column]}>
                 <View style={[styles.header,styles.row]}>
-                    <TouchableOpacity style={{flex:1}}>
+                    <TouchableOpacity onPress={() => this.popRoute()} style={{flex:1}}>
                         <Icon style={styles.backBtn} name="ios-arrow-back" />
                     </TouchableOpacity>
                     <View style={[styles.row,{flex:1}]}>
@@ -52,5 +64,18 @@ class ListViewHeader extends Component {
     }
 }
 
-export default ListViewHeader
+function bindAction(dispatch) {
+    return {
+        popRoute: key => dispatch(popRoute(key))
+    };
+}
+
+const mapStateToProps = state => {
+    return {
+        navigation: state.cardNavigation
+    };
+};
+
+
+export default connect(mapStateToProps, bindAction)(ListViewHeader);
 
