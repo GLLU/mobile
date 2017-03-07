@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 
 import FollowView from '../FollowView'
@@ -46,14 +46,29 @@ const styles = StyleSheet.create({
 
 class FollowRow extends Component {
 
+    static propTypes = {
+        name:React.PropTypes.string,
+        username:React.PropTypes.string,
+        aboutMe:React.PropTypes.string,
+        avatar:React.PropTypes.object,
+        onFollowPress:React.PropTypes.func,
+        onUserPress:React.PropTypes.func,
+        userid:React.PropTypes.number,
+        isFollowing:React.PropTypes.bool
+    };
+
     constructor(props){
         super(props);
         this.renderFollowText=this.renderFollowText.bind(this);
     }
 
+    onUserPress(){
+        this.props.onUserPress(this.props);
+    }
+
     renderFollowText(){
         return(
-            <View style={styles.textContainer}>
+            <View onPress={this.onUserPress.bind(this)} style={styles.textContainer}>
                 <View style={styles.followTitle}>
                     <Text >{this.props.name}</Text>
                     <Text style={styles.followUsername}>@{this.props.username}</Text>
@@ -64,13 +79,13 @@ class FollowRow extends Component {
 
     render(){
         return(
-            <View style={[styles.container,this.props.style]}>
+            <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
                 <View style={styles.photoContainer}>
                     <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo} />
                 </View>
                 {this.renderFollowText()}
-                <FollowView style={styles.followView} user={{id:this.props.userid, isFollowing:this.props.isFollowing}}/>
-            </View>
+                <FollowView onPress={this.props.onFollowPress} style={styles.followView} user={{id:this.props.userid, isFollowing:this.props.isFollowing}}/>
+            </TouchableOpacity>
         )};
 }
 
