@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textInput: {
-    height: 50,
+    height: 40,
     backgroundColor: '#FFFFFF',
     padding: 10,
     marginTop: 10,

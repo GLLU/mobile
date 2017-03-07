@@ -50,7 +50,7 @@ class Tags extends Component {
   }
 
   render () {
-    return (<Container style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center'}}>
+    return (<Container style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
               {this._renderTags()}
             </Container>)
   }

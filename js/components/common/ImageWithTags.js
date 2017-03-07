@@ -47,9 +47,9 @@ class ImageWithTags extends Component {
     items: React.PropTypes.array.isRequired,
     width: React.PropTypes.number,
     mode: React.PropTypes.string,
+    showMarker: React.PropTypes.bool,
     onMarkerCreate: React.PropTypes.func,
     onDragEnd: React.PropTypes.func,
-    selectLookItem: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -134,7 +134,7 @@ class ImageWithTags extends Component {
     const { width, height } = this.getRenderingDimensions();
 
     return items.map((item, i) => {
-      console.log('marker item', item);
+      console.log('marker item', item, mode);
       const left = parseInt(item.locationX * width);
       const top = parseInt(item.locationY * height);
 
@@ -169,27 +169,20 @@ class ImageWithTags extends Component {
     return { width, height };
   }
 
-  renderEditingTag() {
-    if (this.props.mode == EDIT_MODE) {
-      const layout = this._pan.getLayout();
-      return (<Animated.View
-                    {...this.panResponder.panHandlers}
-                    style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                  <Image source={itemBackground} style={styles.itemBgImage} />
-                </Animated.View>);
-    }
-
-    console.log('renderEditingTag')
-    return null;
-  }
-
   _render() {
     const { width, height } = this.getRenderingDimensions();
+    console.log('render showMarker', this.props.showMarker)
     return (
     <Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
-      <View style={[styles.draggableContainer, {width, height}]}>
-        {this.renderTags()}
-      </View>
+      {
+        this.props.showMarker
+        ?
+        <View style={[styles.draggableContainer, {width, height}]}>
+          {this.renderTags()}
+        </View>
+        :
+        null
+      }
     </Image>);
   }
 
@@ -216,6 +209,7 @@ class ImageWithTags extends Component {
 
 ImageWithTags.defaultProps = {
   mode: VIEW_MODE,
+  showMarker: true,
 };
 
 export default ImageWithTags;

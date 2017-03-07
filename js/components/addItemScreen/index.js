@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -138,6 +138,7 @@ class AddItemPage extends BasePage {
   publishAction() {
     this.props.publishLookItem().then(response => {
       this.props.popRoute(this.props.navigation.key);
+      this.props.popRoute(this.props.navigation.key);
     });
   }
 
@@ -166,21 +167,22 @@ class AddItemPage extends BasePage {
 
   getCurrentMode() {
     switch(this.state.currentStep) {
-      case 0:
-        return 'create';
-      case 1:
-        return 'edit';
+      // case 0:
+      //   return 'create';
+      // case 1:
+      //   return 'edit';
       default:
         return 'view';
     }
   }
 
   renderImageView() {
-    const { items, image } = this.props;
+    const { items, image, itemId } = this.props;
     const { imageWidth, currentStep } = this.state;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags
+        itemId={itemId}
         width={imageWidth}
         mode={mode}
         items={items}

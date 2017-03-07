@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, Image, TextInput, Dimensions, StyleSheet } from 'react-native';
+import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import { Col, Grid, Row } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   describe: {
     flex: 1,
-    height: 60,
+    height: 120,
     fontFamily: 'PlayfairDisplay-Regular',
     fontSize: new FontSizeCalculator(18).getSize(),
     color: '#9E9E9E',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   textInput: {
-    width: w - 40,
+    flex: 1,
     height: 50,
     backgroundColor: '#FFFFFF',
     padding: 10,
@@ -205,6 +205,31 @@ class StepTwo extends Component {
     )
   }
 
+  handleImagePress() {
+    this.setState({imageOverlayVisible: true});
+  }
+
+  renderImageOverlay() {
+    if (this.state.imageOverlayVisible) {
+      return (
+          <Modal animationType='fade'
+             transparent={true}
+             visible={this.state.imageOverlayVisible}
+             onRequestClose={() => this.setState({imageOverlayVisible: false})}>
+              <Image source={{uri: this.props.image}} style={{flex: 1}} resizeMode='cover'>
+                <TouchableOpacity
+                  style={{position: 'absolute', top: 0, right: 0, left: 0, bottom: 0}}
+                  onPress={() => this.setState({imageOverlayVisible: false})}>
+                </TouchableOpacity>
+              </Image>
+          </Modal>
+
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { items, createLookItem, image} = this.props;
     const bgColorBtn = this.state.confirm ? '#05d7b2' : '#ADADAD';
@@ -212,14 +237,17 @@ class StepTwo extends Component {
       <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingHorizontal: 20}}>
         <Grid>
           <Row style={styles.row, { flexDirection: 'row' }}>
-            <View style={{paddingVertical: 5, alignItems: 'center', width: 80, marginRight: 20}}>
-              <ImageWithTags
-                  items={items}
-                  image={image}
-                  width={80}
-                  createLookItem={createLookItem}/>
-            </View>
-            <View style={{flexGrow:1, flexDirection: 'column'}}>
+            <Col size={25} style={{paddingVertical: 5, alignItems: 'center', paddingRight: 20}}>
+              <TouchableOpacity onPress={this.handleImagePress.bind(this)}>
+                <ImageWithTags
+                    items={items}
+                    image={image}
+                    width={80}
+                    showMarker={false}
+                    createLookItem={createLookItem}/>
+              </TouchableOpacity>
+            </Col>
+            <Col size={75} style={{flexDirection: 'column'}}>
                 <View style={{flex: 1}}>
                   <Text style={styles.titleLabelInfo}>Occassions</Text>
                   <OccasionsDropdown selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
@@ -230,22 +258,27 @@ class StepTwo extends Component {
                     <TagInput/>
                   </View>
                 </View>
-            </View>
+            </Col>
           </Row>
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
             <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
           </Row>
           <Row style={styles.row}>
+            <Text style={styles.titleLabelInfo}>Url</Text>
+            <TextInput style={styles.textInput} value={this.props.url}/>
+          </Row>
+          <Row style={styles.row}>
           </Row>
           <Row style={[styles.row, {paddingBottom: 60}]}>
             <Gllu.Button
-              disabled={!this.state.confirm}
+              disabled={false}
               onPress={() => this._handlePublishItem()}
               text='PUBLISH'
             />
           </Row>
         </Grid>
+        {this.renderImageOverlay()}
       </ScrollView>
     )
   }

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
-    height: 40,
+    height: 50,
     paddingLeft: 3
   },
   iconCheckCompleteContainer: {
