@@ -7,34 +7,6 @@ import { navigateTo, popRoute, getStats, getUserFollowersData, getUserFollowsDat
 
 import FollowListView from './FollowListView'
 
-function generateRows(n){
-    var arr=[];
-    for(var i=0;i<n;i++)
-    {
-        if(i%2==0)
-        {
-            arr.push({
-                name:"Alex Alexey",
-                username:"alexAlex",
-                aboutMe:"I'm so awesome omg",
-                avatar:{url:"https://marketplace.canva.com/MACIsTc3Y5M/1/thumbnail_large/canva-woman-avatar-icon-MACIsTc3Y5M.png"},
-                isFollowing:false
-            })
-        }
-        else{
-            arr.push({
-                name:"Israel Israeli",
-                username:"alexAlex",
-                aboutMe:"I'm so awesome omg",
-                avatar:{url:"https://marketplace.canva.com/MACIsTc3Y5M/1/thumbnail_large/canva-woman-avatar-icon-MACIsTc3Y5M.png"},
-                isFollowing:false
-            })
-        }
-
-    }
-    return arr;
-}
-
 class FollowScreen extends Component {
 
     static propTypes = {
@@ -43,34 +15,22 @@ class FollowScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state={
-            currentPageIndex:0,
-            follows:generateRows(20)
-        }
+        this.getFollowersData=this.getFollowersData.bind(this);
+        this.currentPageIndex=1;
+    }
+
+    componentWillMount() {
+        this.getFollowersData();
     }
 
     getFollowersData(){
-        var currentIndex=this.state.currentPageIndex;
-        this.props.getUserFollowersData(this.props.user_id,currentIndex);
-        this.setState({currentPageIndex:currentIndex});
-    }
-
-    pushRows(){
-        var currentIndex=this.state.currentPageIndex;
-        var follows=[];
-        if(currentIndex<10){
-            follows=generateRows(20);
-            if(currentIndex%2==0)
-            {
-                follows=follows.reverse();
-            }
-        }
-        this.setState({follows:follows, currentPageIndex:currentIndex+1})
+        this.props.getUserFollowersData(this.props.userData.user.id,this.currentPageIndex);
+        this.currentPageIndex++;
     }
 
     render() {
         return (
-            <FollowListView follows={this.state.follows} onEndReached={this.pushRows.bind(this)} mode="followers"/>
+            <FollowListView headerData={this.props.userData} follows={this.props.followers} onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
         );
     }
 }
@@ -85,7 +45,9 @@ function bindAction(dispatch) {
     };
 }
 
-const mapStateToProps = state => { return {} };
+const mapStateToProps = state => { return {
+    followers: state.userFollowers.userFollowersData,
+} };
 
 export default connect(mapStateToProps, bindAction)(FollowScreen);
 

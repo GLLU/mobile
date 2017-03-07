@@ -132,10 +132,24 @@ class ProfileScreen extends BasePage {
                         itemsPress={(item) => this._handleItemsPress(item) }
                         addNewItem={() => this._handleOpenPhotoModal() }
           />
-          <StatsView following={this.props.stats.following} followers={this.props.stats.followers} likes={this.props.stats.likes_count} />
+          <StatsView
+              following={this.props.stats.following}
+              followers={this.props.stats.followers}
+              likes={this.props.stats.likes_count}
+              onFollowersPress={this.handleFollowersPress.bind(this)}
+              onFollowingPress={this.handleFollowingPress.bind(this)}
+          />
         </View>
       )
     }
+  }
+
+  handleFollowingPress(stat) {
+    this.props.navigateTo('followScreen', 'profileScreen', {user: {id:this.state.userId}, mode:stat.type, count:stat.count});
+  }
+
+  handleFollowersPress(stat) {
+    this.props.navigateTo('followScreen', 'profileScreen', {user: {id:this.state.userId}, mode:stat.type, count: stat.count});
   }
 
   render() {

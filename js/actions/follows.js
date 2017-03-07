@@ -52,7 +52,7 @@ export function setUserFollowsData(data):Action {
 
 export function getUserFollowsData(id,pageNumber=1,pageSize=25):Action {
     return (dispatch) => {
-        return dispatch(rest.actions.looks({id: id, "page[size]" : pageSize, "page[number]" : pageNumber}, {}, (err, userFollowsData) => {
+        return dispatch(rest.actions.follows({user_id: id, "page[size]" : pageSize, "page[number]" : pageNumber}, {}, (err, userFollowsData) => {
             if (!err && userFollowsData) {
                 let followsData = {
                     currId: id,

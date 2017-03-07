@@ -12,7 +12,7 @@ export function setUserFollowersData(data):Action {
 
 export function getUserFollowersData(id,pageNumber=1,pageSize=25):Action {
     return (dispatch) => {
-        return dispatch(rest.actions.followers({id: id, "page[size]" : pageSize, "page[number]" : pageNumber}, {}, (err, userFollowersData) => {
+        return dispatch(rest.actions.followers({user_id: id, "page[size]" : pageSize, "page[number]" : pageNumber}, {}, (err, userFollowersData) => {
             if (!err && userFollowersData) {
                 let followersData = {
                     currId: id,

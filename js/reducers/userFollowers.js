@@ -1,7 +1,7 @@
 import { SET_USER_FOLLOWERS_DATA } from '../actions/followers';
 
 const initialState = {
-    userFollowsData: [],
+    userFollowersData: [],
     currId: -1
 };
 
@@ -10,7 +10,7 @@ export default function (state:State = initialState, action): State {
         case SET_USER_FOLLOWERS_DATA:
             let userFollowersData = action.payload.followers.map(flattenFollowData);
             if(action.payload.currId === state.currId){
-                userFollowersData.unshift(...state.userFollowersData)
+                userFollowersData.push(...state.userFollowersData)
             }
             return {
                 ...state,
@@ -29,6 +29,8 @@ function flattenFollowData(follow){
         avatar: follow.user.avatar,
         name: follow.user.name,
         username: follow.user.username,
-        about_me: follow.user.about_me
+        about_me: follow.user.about_me,
+        is_following: follow.user.is_following,
+        is_follower: follow.user.is_follower
     };
 }

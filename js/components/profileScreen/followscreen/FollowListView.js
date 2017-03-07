@@ -26,7 +26,8 @@ class FollowListView extends Component {
 
     static propTypes = {
         follows: React.PropTypes.array,
-        onEndReached: React.PropTypes.func
+        onEndReached: React.PropTypes.func,
+        headerData:React.PropTypes.object
     };
 
     constructor(props) {
@@ -45,10 +46,8 @@ class FollowListView extends Component {
             this.setState({isTrueEndReached:true});
         }
         if (nextProps.follows !== this.props.follows) {
-            var follows=_.concat(this.state.follows,nextProps.follows);
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(follows),
-                follows:follows
+                dataSource: this.state.dataSource.cloneWithRows(nextProps.follows)
             })
         }
     }
@@ -73,14 +72,12 @@ class FollowListView extends Component {
     }
 
     render() {
-        console.log(`current follows state ${this.state.follows.length}`);
-        console.log(`current follows props ${this.props.follows.length}`);
         return (
             <ListView
                 style={styles.container}
                 dataSource={this.state.dataSource}
                 renderRow={(data) => <FollowRow onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
-                renderHeader = {() => <ListViewHeader count={6987} title={`My ${this.props.mode}`}/>}
+                renderHeader = {() => <ListViewHeader count={this.props.headerData.count} title={`My ${this.props.headerData.mode}`}/>}
                 renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
                 onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
                 onEndReachedThreshold={100}

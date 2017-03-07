@@ -67,13 +67,16 @@ class FollowRow extends Component {
     }
 
     renderFollowText(){
+        console.log('debug start');
+        console.log(this.props);
+        console.log('debug end');
         return(
             <View onPress={this.onUserPress.bind(this)} style={styles.textContainer}>
                 <View style={styles.followTitle}>
                     <Text >{this.props.name}</Text>
                     <Text style={styles.followUsername}>@{this.props.username}</Text>
                 </View>
-                <Text style={styles.followAboutMe}>{this.props.aboutMe}</Text>
+                <Text style={styles.followAboutMe}>{this.props.about_me}</Text>
             </View>
         )};
 
@@ -84,7 +87,7 @@ class FollowRow extends Component {
                     <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo} />
                 </View>
                 {this.renderFollowText()}
-                <FollowView onPress={this.props.onFollowPress} style={styles.followView} user={{id:this.props.userid, isFollowing:this.props.isFollowing}}/>
+                <FollowView onPress={this.props.onFollowPress} style={styles.followView} user={{id:this.props.user_id, isFollowing:this.props.is_following}}/>
             </TouchableOpacity>
         )};
 }
