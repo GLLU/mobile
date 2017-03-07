@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Dimensions, TouchableOpacity, Image, Text } from 'react-native';
 import { View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import StepZero from './StepZero';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
-import Swiper from 'react-native-swiper';
 import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
 import _ from 'lodash';
 
-const h = Dimensions.get('window').height;
-const swiperH = h - 120;
 const IMAGE_VIEW_PADDING = 70;
 
 const styles = StyleSheet.create({
@@ -75,7 +72,6 @@ class AddItemPage extends BasePage {
 
   _handleLayoutImage(e) {
     const { width, height } = e.nativeEvent.layout;
-    console.log('_handleLayoutImage', width, height);
     const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
     this.setState({
       imageWidth: w
@@ -97,15 +93,6 @@ class AddItemPage extends BasePage {
     if (currentStep < 2) {
       this.setState({currentStep: this.state.currentStep + 1});  
     }
-  }
-
-  _handleLayoutImage(e) {
-    const { width, height } = e.nativeEvent.layout;
-    console.log('_handleLayoutImage', width, height);
-    const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
-    this.setState({
-      imageWidth: w
-    })
   }
 
   setUser(name) {
@@ -178,7 +165,7 @@ class AddItemPage extends BasePage {
 
   renderImageView() {
     const { items, image, itemId } = this.props;
-    const { imageWidth, currentStep } = this.state;
+    const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags

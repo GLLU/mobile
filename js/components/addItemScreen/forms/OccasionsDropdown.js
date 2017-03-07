@@ -91,29 +91,27 @@ class OccasionsDropdown extends Component {
     const { selectedItems } = this.state;
     console.log('render OccasionsDropdown ', occasionTags)
     return (<View style={{flex: 1, flexDirection: 'column'}}>
-              <View style={{flex: 1, flexWrap: 'wrap', flexDirection: 'row'}}>
-                <MultiSelect
-                  style={{flex: 1}}
-                  items={occasionTags}
-                  uniqueKey="id"
-                  selectedItemsChange={(selectedItems) => this.setState({selectedItems})}
-                  selectedItems={selectedItems}
-                  selectText="Pick Items"
-                  searchInputPlaceholderText="Search Items..."
-                  fontFamily="PlayfairDisplay-Regular"
-                  altFontFamily="PlayfairDisplay-Regular"
-                  tagRemoveIconColor="#000FFF"
-                  tagBorderColor="#CCC"
-                  tagTextColor="#CCC"
-                  selectedItemFontFamily="PlayfairDisplay-Bold"
-                  selectedItemTextColor="#CCC"
-                  selectedItemIconColor="#CCC"
-                  itemFontFamily="PlayfairDisplay-Regular"
-                  itemTextColor="#000"
-                  searchInputStyle={{fontFamily: 'PlayfairDisplay-Regular', color: '#CCC'}}
-                  renderSelectedItems={this.renderSelectedItems.bind(this)}
-                />
-              </View>
+              <MultiSelect
+                style={{flex: 1}}
+                items={occasionTags}
+                uniqueKey="id"
+                selectedItemsChange={(selectedItems) => this.setState({selectedItems})}
+                selectedItems={selectedItems}
+                selectText="Pick Events"
+                searchInputPlaceholderText="Search Events..."
+                fontFamily="PlayfairDisplay-Regular"
+                altFontFamily="PlayfairDisplay-Regular"
+                tagRemoveIconColor="#000FFF"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemFontFamily="PlayfairDisplay-Bold"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemFontFamily="PlayfairDisplay-Regular"
+                itemTextColor="#000"
+                searchInputStyle={{fontFamily: 'PlayfairDisplay-Regular', color: '#CCC'}}
+                renderSelectedItems={this.renderSelectedItems.bind(this)}
+              />
             </View>)
   }
 

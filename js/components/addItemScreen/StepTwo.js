@@ -34,6 +34,7 @@ import { IMAGE_VIEW_WIDTH } from './styles';
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'column',
+    marginTop: 5,
     marginBottom: 10,
   },
   itemInfoView: {
@@ -46,15 +47,13 @@ const styles = StyleSheet.create({
     fontSize: new FontSizeCalculator(15).getSize(),
     color: '#7f7f7f',
     fontWeight: '300',
-    marginBottom: 8
   },
   describe: {
     flex: 1,
-    height: 120,
+    flexGrow: 1,
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: new FontSizeCalculator(18).getSize(),
+    fontSize: new FontSizeCalculator(15).getSize(),
     color: '#9E9E9E',
-    marginVertical:6,
     backgroundColor: '#FFFFFF',
     padding: 10
   },
@@ -116,6 +115,7 @@ class StepTwo extends Component {
     description: React.PropTypes.string,
     photos: React.PropTypes.array,
     items: React.PropTypes.array,
+    occasionTags: React.PropTypes.array,
     addDescription: React.PropTypes.func,
     addLocation: React.PropTypes.func,
     addTrustLevel: React.PropTypes.func,
@@ -232,12 +232,11 @@ class StepTwo extends Component {
 
   render() {
     const { items, createLookItem, image} = this.props;
-    const bgColorBtn = this.state.confirm ? '#05d7b2' : '#ADADAD';
     return(
       <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingHorizontal: 20}}>
         <Grid>
           <Row style={styles.row, { flexDirection: 'row' }}>
-            <Col size={25} style={{paddingVertical: 5, alignItems: 'center', paddingRight: 20}}>
+            <Col size={25} style={{paddingRight: 20}}>
               <TouchableOpacity onPress={this.handleImagePress.bind(this)}>
                 <ImageWithTags
                     items={items}
@@ -248,27 +247,28 @@ class StepTwo extends Component {
               </TouchableOpacity>
             </Col>
             <Col size={75} style={{flexDirection: 'column'}}>
-                <View style={{flex: 1}}>
-                  <Text style={styles.titleLabelInfo}>Occassions</Text>
-                  <OccasionsDropdown selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
-                </View>
-                <View style={{flex: 1}}>
-                  <Text style={styles.titleLabelInfo}>Add tags</Text>
-                  <View style={{}}>
-                    <TagInput/>
-                  </View>
-                </View>
+              <TextInput
+                multiline={true}
+                style={styles.describe}
+                value={this.props.description}
+                placeholder="Describe what you're wearing..."
+                onChangeText={(text) => this.updateSelectValue('description', text)}/>
             </Col>
           </Row>
           <Row style={styles.row}>
-            <Text style={styles.titleLabelInfo}>Describe what you're wearing</Text>
-            <TextInput multiline={true} style={styles.describe} value={this.props.description} onChangeText={(text) => this.updateSelectValue('description', text)}/>
+            <Text style={styles.titleLabelInfo}>Occassions</Text>
+            <OccasionsDropdown selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
+          </Row>
+          <Row style={styles.row}>
+            <Text style={styles.titleLabelInfo}>Add tags</Text>
+            <TagInput/>
           </Row>
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Url</Text>
-            <TextInput style={styles.textInput} value={this.props.url}/>
-          </Row>
-          <Row style={styles.row}>
+            <TextInput
+              style={styles.textInput}
+              placeholder='http://www.gllu.com'
+              value={this.props.url}/>
           </Row>
           <Row style={[styles.row, {paddingBottom: 60}]}>
             <Gllu.Button

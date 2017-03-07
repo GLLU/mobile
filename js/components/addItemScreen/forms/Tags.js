@@ -40,9 +40,9 @@ class Tags extends Component {
     return this.props.itemTags.map((tag, index) => {
       return (
         <View key={index} style={[styles.tagTextContainer]}>
-          <Button iconRight style={{backgroundColor: '#000'}} textStyle={{fontSize: 13}}>
+          <Button iconRight style={{backgroundColor: '#000', height: 20, borderRadius: 5, alignItems: 'center', justifyContent: 'center'}} textStyle={{fontSize: 13}}>
             {tag.name}
-            <Icon name='ios-close' style={{justifyContent: 'flex-end'}} onPress={() => this.props.removeTag(tag)}/>
+            <Icon name='ios-close' style={{justifyContent: 'flex-end', backgroundColor: 'transparent', marginTop: 3}} onPress={() => this.props.removeTag(tag)}/>
           </Button>
         </View>
       )

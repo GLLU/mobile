@@ -55,7 +55,7 @@ class TagInput extends Component {
         <TextInput
           ref={ref => this.textInput = ref}
           returnKeyType="done"
-          placeholder=""
+          placeholder="(i.e Yellow, hipster, pants)"
           keyboardType="default"
           placeholderTextColor="#BDBDBD"
           style={styles.textInput}
