@@ -61,7 +61,7 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 2,
+      currentStep: 0,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
