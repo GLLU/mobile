@@ -10,16 +10,27 @@ const { popRoute } = actions;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop:12,
+        paddingBottom:12,
         backgroundColor:'#f2f2f2'
     },
     row:{
         flexDirection:'row'
     },
     header:{
-        justifyContent: 'space-between',
+        flex:0.5
     },
     column:{
         flexDirection:'column'
+    },
+    followsTitle:{
+        fontSize:26
+    },
+    followsCount:{
+        fontSize:26,
+        fontWeight:'bold',
+        color: '#00D7B2',
+        marginLeft:12
     },
     backBtn: {
         marginLeft: 20,
@@ -48,12 +59,13 @@ class ListViewHeader extends Component {
         return (
             <View style={[styles.container,styles.column]}>
                 <View style={[styles.header,styles.row]}>
-                    <TouchableOpacity onPress={() => this.popRoute()} style={{flex:1}}>
+                    <TouchableOpacity style={{flex:1}} onPress={() => this.popRoute()}>
                         <Icon style={styles.backBtn} name="ios-arrow-back" />
                     </TouchableOpacity>
-                    <View style={[styles.row,{flex:1}]}>
-                        <Text>{this.props.title}</Text>
-                        <Text style={{marginLeft:12}}>{this.props.count}</Text>
+                    <View style={{flex:3}}/>
+                    <View style={[styles.row,{flex:8}]}>
+                        <Text style={styles.followsTitle}>{this.props.title}</Text>
+                        <Text style={styles.followsCount}>{this.props.count}</Text>
                     </View>
                     <View style={{flex:1}} name="spacer"/>
 
