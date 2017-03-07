@@ -67,9 +67,6 @@ class FollowRow extends Component {
     }
 
     renderFollowText(){
-        console.log('debug start');
-        console.log(this.props);
-        console.log('debug end');
         return(
             <View onPress={this.onUserPress.bind(this)} style={styles.textContainer}>
                 <View style={styles.followTitle}>

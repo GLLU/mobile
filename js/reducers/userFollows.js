@@ -1,5 +1,5 @@
 import * as actions from '../actions/follows';
-import followMapper from '../mappers/followMapper'
+import * as followMapper from '../mappers/followMapper'
 
 const initialState = {
     userFollowsData: [],
@@ -9,7 +9,7 @@ const initialState = {
 export default function (state:State = initialState, action): State {
     switch(action.type){
         case actions.SET_USER_FOLLOWS_DATA:
-            let userFollowsData = action.payload.follows.map(followMapper.map);
+            let userFollowsData = action.payload.follows.map(followMapper.mapFollow);
             if(action.payload.currId === state.currId){
                 userFollowsData.unshift(...state.userFollowsData)
             }
