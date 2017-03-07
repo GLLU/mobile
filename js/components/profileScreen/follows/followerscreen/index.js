@@ -3,11 +3,11 @@
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { navigateTo, popRoute, getStats, getUserFollowersData, getUserFollowsData, initUserFollowers } from '../../../actions';
+import { navigateTo, popRoute, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
-import FollowListView from './FollowListView'
+import FollowListView from '../shared/FollowListView'
 
-class FollowScreen extends Component {
+class FollowerScreen extends Component {
 
     static propTypes = {
         mode: React.PropTypes.string,
@@ -44,7 +44,6 @@ function bindAction(dispatch) {
         navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
         popRoute: key => dispatch(popRoute(key)),
         getUserFollowersData: (id,pageNumber,pageSize) => dispatch(getUserFollowersData(id,pageNumber,pageSize)),
-        getUserFollowsData: (id,pageNumber,pageSize) => dispatch(getUserFollowsData(id,pageNumber,pageSize)),
         initUserFollowers: () => dispatch(initUserFollowers()),
     };
 }
@@ -53,5 +52,4 @@ const mapStateToProps = state => { return {
     followers: state.userFollowers.userFollowersData,
 } };
 
-export default connect(mapStateToProps, bindAction)(FollowScreen);
-
+export default connect(mapStateToProps, bindAction)(FollowerScreen);

@@ -5,7 +5,7 @@ import { loadCategories, loadBrands, loadItemSizes, loadOccasionTags } from './f
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
-import { followUpdate, unFollowUpdate, getUserFollowsData }  from './follows';
+import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getUserLooksData } from './looks';
 import { getFeed, resetFeed, loadMore } from './feed';
@@ -109,6 +109,7 @@ export {
   followUpdate,
   unFollowUpdate,
   getUserFollowsData,
+  initUserFollows,
   getUserFollowersData,
   initUserFollowers,
   getFeed,

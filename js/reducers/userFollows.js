@@ -1,4 +1,5 @@
 import * as actions from '../actions/follows';
+import followMapper from '../mappers/followMapper'
 
 const initialState = {
     userFollowsData: [],
@@ -8,7 +9,7 @@ const initialState = {
 export default function (state:State = initialState, action): State {
     switch(action.type){
         case actions.SET_USER_FOLLOWS_DATA:
-            let userFollowsData = action.payload.follows.map(flattenFollowData);
+            let userFollowsData = action.payload.follows.map(followMapper.map);
             if(action.payload.currId === state.currId){
                 userFollowsData.unshift(...state.userFollowsData)
             }
@@ -25,15 +26,4 @@ export default function (state:State = initialState, action): State {
         default:
             return state
     }
-}
-
-function flattenFollowData(follow){
-    return {
-        id: follow.id,
-        user_id: follow.user_id,
-        avatar: follow.user.avatar,
-        name: follow.user.name,
-        username: follow.user.username,
-        about_me: follow.user.about_me
-    };
 }

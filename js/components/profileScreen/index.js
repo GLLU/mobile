@@ -149,7 +149,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowersPress(stat) {
-    this.props.navigateTo('followScreen', 'profileScreen', {user: {id:this.state.userId}, mode:stat.type, count: stat.count});
+    this.props.navigateTo('followerScreen', 'profileScreen', {user: {id:this.state.userId}, mode:stat.type, count: stat.count});
   }
 
   render() {

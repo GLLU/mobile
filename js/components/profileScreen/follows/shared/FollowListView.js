@@ -5,7 +5,7 @@ import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-nativ
 import { View } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { navigateTo, followUpdate, unFollowUpdate } from '../../../actions';
+import { navigateTo, followUpdate, unFollowUpdate } from '../../../../actions';
 
 import ListViewHeader from './ListViewHeader';
 import FollowRow from './FollowRow';
