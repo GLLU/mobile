@@ -2,15 +2,15 @@ import {Share} from 'react-native';
 
 function _shareTextNative(shareData) {
     Share.share({
-        message: `${shareData.text} ${shareData.url}`,
+        message: `${ shareData.text } ${ shareData.url }`,
         url: shareData.url,
         title: 'GLLU'
     }, {
         dialogTitle: 'Share GLLU',
-        excludedActivityTypes: [/*here we can exclude sharing options on ios*/]
+        excludedActivityTypes: [ /*here we can exclude sharing options on ios*/ ]
     })
         .then(this._logResult)
-        .catch((error) => console.log(`error: ${error.message}`));
+        .catch((error) => console.log(`error: ${ error.message }`));
 }
 
 function _logResult(result) {

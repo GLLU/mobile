@@ -1,7 +1,7 @@
 import { ShareDialog } from 'react-native-fbsdk';
 
 function _shareFacebook(shareData) {
-    const options=mapShareDataToOptions(shareData);
+    const options = mapShareDataToOptions(shareData);
     const shareLinkContent = {
         contentType: 'link',
         contentUrl: options.url,
@@ -13,7 +13,7 @@ function _shareFacebook(shareData) {
             return ShareDialog.show(shareLinkContent);
         }
     }).then((result) => {
-        var logText= result.isCancelled ? 'Share cancelled' : `Share success with postId: ${result.postId}`;
+        var logText = result.isCancelled ? 'Share cancelled' : `Share success with postId: ${result.postId}`;
         console.log(logText);
     }).catch(error => {
         console.log(`Share fail with error: ${error}`);
@@ -23,7 +23,7 @@ function _shareFacebook(shareData) {
 function mapShareDataToOptions(shareData){
     return {
         url: shareData.url,
-        message: `${shareData.text} ${shareData.url}`,
+        message: `${ shareData.text } ${ shareData.url }`,
         social: 'facebook',
     };
 }
