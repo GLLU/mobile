@@ -5,7 +5,7 @@ import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-nativ
 import { View } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { navigateTo, followUpdate, unFollowUpdate } from '../../../../actions';
+import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate } from '../../../../actions';
 
 import ListViewHeader from './ListViewHeader';
 import FollowRow from './FollowRow';
@@ -56,7 +56,9 @@ class FollowListView extends Component {
     }
 
     onUserNavigate(user){
-        this.props.navigateTo('profileScreen', `${this.props.headerData.mode}Screen`, user);
+      this.props.popRoute(this.props.navigation.key);
+      this.props.popRoute(this.props.navigation.key);
+      this.props.navigateTo('profileScreen', `feedscreen`, user);
     }
 
     toggleFollowAction(user,shouldFollow) {
@@ -87,13 +89,17 @@ class FollowListView extends Component {
 
 function bindAction(dispatch) {
     return {
+        popRoute: key => dispatch(popRoute(key)),
+        replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
         navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
         followUpdate: (id) => dispatch(followUpdate(id)),
         unFollowUpdate: (id) => dispatch(unFollowUpdate(id))
     };
 }
 
-const mapStateToProps = state => { return {} };
+const mapStateToProps = state => { return {
+    navigation: state.cardNavigation,
+} };
 
 export default connect(mapStateToProps, bindAction)(FollowListView);
 
