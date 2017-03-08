@@ -25,13 +25,14 @@ class BrandNameInput extends Component {
     brands: React.PropTypes.array,
     loadBrands: React.PropTypes.func,
     findOrCreateBrand: React.PropTypes.func,
-    clearBrandName: React.PropTypes.func
+    onCancel: React.PropTypes.func
   }
 
   constructor(props) {
     super(props);
+    console.log('BrandNameInput constructor', props);
     this.state = {
-      query: '',
+      query: props.brand ? props.brand.name : '',
       data: props.brands
     };
 
@@ -39,7 +40,9 @@ class BrandNameInput extends Component {
   }
 
   componentWillMount() {
-    this.props.loadBrands();
+    this.props.loadBrands().catch(err => {
+      console.log('load brands err', err);
+    });
   }
 
   handleFindOrCreateBrand(value, createNew) {
@@ -66,8 +69,9 @@ class BrandNameInput extends Component {
       this.setState({
         data: response,
       });  
-    });
-    
+    }).catch(err => {
+      console.log('filter brands error:', err);
+    }); 
   }
 
   render() {
@@ -75,7 +79,7 @@ class BrandNameInput extends Component {
     const { brand } = this.props;
     const selected = brand && query.toLowerCase() === brand.name.toLowerCase();
     return (
-      <View style={{marginBottom: 20}}>
+      <View style={{paddingBottom: 20, paddingTop: 20, flex: 1}}>
         <Autocomplete
             query={query}
             autoCapitalize="none"
@@ -91,7 +95,8 @@ class BrandNameInput extends Component {
             onChangeText={text => this.onChangeText(text)}
             onEndEditing={e => this.onEndEditing(e)}
             placeholder="Type a brand name"
-            findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}/>
+            findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}
+            onCancel={this.props.onCancel}/>
       </View>);
   }
 }
@@ -103,11 +108,8 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const look = state.uploadLook;
-  const item = _.find(look.items, item => item.id == look.itemId);
   return ({
     brands: state.filters.brands,
-    brand: item ? item.brand : null
   });
 };
 

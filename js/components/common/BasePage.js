@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Alert } from 'react-native';
 import Config from 'react-native-config'
 import BaseComponent from './BaseComponent';
 
@@ -13,6 +14,32 @@ class BasePage extends BaseComponent {
       component: this.constructor.name,
       props: props,
     });
+  }
+
+  goBack(withConfirmation = false) {
+    if (withConfirmation) {
+      Alert.alert(
+        '',
+        'Are you sure you want to go back?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {
+              console.log('Cancel Pressed');
+            },
+            style: 'cancel'
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              this.props.popRoute(this.props.navigation.key);
+            }
+          }
+        ]
+      );
+    } else {
+      this.props.popRoute(this.props.navigation.key);
+    }
   }
 }
 

@@ -103,7 +103,7 @@ class AppNavigator extends Component {
       case 'addItemScreen':
         return <AddItemPage />;
       case 'tagItemScreen':
-        return <TagItemPage />;
+        return <TagItemPage mode={props.scene.route.optional.mode} />;
       case 'login':
         return <Login />;
       case 'home':

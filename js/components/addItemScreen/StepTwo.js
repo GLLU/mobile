@@ -1,15 +1,17 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, Image, TextInput, Dimensions, StyleSheet } from 'react-native';
+import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import { Col, Grid, Row } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
+import TagInput from './forms/TagInput';
 import AddMore from './forms/AddMore';
 import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
-import OccasionTags from './forms/OccasionTags';
+import OccasionsDropdown from './forms/OccasionsDropdown';
+import Gllu from '../common';
 import {
     createLookItem,
     addDescription,
@@ -32,6 +34,7 @@ import { IMAGE_VIEW_WIDTH } from './styles';
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'column',
+    marginTop: 5,
     marginBottom: 10,
   },
   itemInfoView: {
@@ -44,20 +47,18 @@ const styles = StyleSheet.create({
     fontSize: new FontSizeCalculator(15).getSize(),
     color: '#7f7f7f',
     fontWeight: '300',
-    marginBottom: 8
   },
   describe: {
     flex: 1,
-    height: 60,
+    flexGrow: 1,
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: new FontSizeCalculator(18).getSize(),
+    fontSize: new FontSizeCalculator(15).getSize(),
     color: '#9E9E9E',
-    marginVertical:6,
     backgroundColor: '#FFFFFF',
     padding: 10
   },
   textInput: {
-    width: w - 40,
+    flex: 1,
     height: 50,
     backgroundColor: '#FFFFFF',
     padding: 10,
@@ -114,6 +115,7 @@ class StepTwo extends Component {
     description: React.PropTypes.string,
     photos: React.PropTypes.array,
     items: React.PropTypes.array,
+    occasionTags: React.PropTypes.array,
     addDescription: React.PropTypes.func,
     addLocation: React.PropTypes.func,
     addTrustLevel: React.PropTypes.func,
@@ -203,33 +205,82 @@ class StepTwo extends Component {
     )
   }
 
+  handleImagePress() {
+    this.setState({imageOverlayVisible: true});
+  }
+
+  renderImageOverlay() {
+    if (this.state.imageOverlayVisible) {
+      return (
+          <Modal animationType='fade'
+             transparent={true}
+             visible={this.state.imageOverlayVisible}
+             onRequestClose={() => this.setState({imageOverlayVisible: false})}>
+              <Image source={{uri: this.props.image}} style={{flex: 1}} resizeMode='cover'>
+                <TouchableOpacity
+                  style={{position: 'absolute', top: 0, right: 0, left: 0, bottom: 0}}
+                  onPress={() => this.setState({imageOverlayVisible: false})}>
+                </TouchableOpacity>
+              </Image>
+          </Modal>
+
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { items, createLookItem, image} = this.props;
-    const bgColorBtn = this.state.confirm ? '#05d7b2' : '#ADADAD';
     return(
-      <ScrollView scrollEnabled={true} style={{marginTop: 0, paddingHorizontal: 20}}>
+      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
         <Grid>
-          <Row style={styles.row}>
-            <View style={{padding: 15, alignItems: 'center'}}>
-              <ImageWithTags
-                  items={items}
-                  image={image}
-                  createLookItem={createLookItem}
-                  width={IMAGE_VIEW_WIDTH}/>
-            </View>
+          <Row style={styles.row, { flexDirection: 'row' }}>
+            <Col size={25} style={{paddingRight: 20}}>
+              <TouchableOpacity onPress={this.handleImagePress.bind(this)}>
+                <ImageWithTags
+                    items={items}
+                    image={image}
+                    width={80}
+                    showMarker={false}
+                    createLookItem={createLookItem}/>
+              </TouchableOpacity>
+            </Col>
+            <Col size={75} style={{flexDirection: 'column'}}>
+              <TextInput
+                textAlignVertical='top'
+                multiline={true}
+                style={styles.describe}
+                value={this.props.description}
+                placeholder="Describe what you're wearing..."
+                onChangeText={(text) => this.updateSelectValue('description', text)}/>
+            </Col>
           </Row>
           <Row style={styles.row}>
-            <OccasionTags selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
+            <Text style={styles.titleLabelInfo}>Occassions</Text>
+            <OccasionsDropdown selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
           </Row>
           <Row style={styles.row}>
-            {this._renderSelections()}
+            <Text style={styles.titleLabelInfo}>Add tags</Text>
+            <TagInput/>
+          </Row>
+          <Row style={styles.row}>
+            <Text style={styles.titleLabelInfo}>Url</Text>
+            <TextInput
+              underlineColorAndroid='transparent'
+              style={styles.textInput}
+              placeholder='http://www.gllu.com'
+              value={this.props.url}/>
           </Row>
           <Row style={[styles.row, {paddingBottom: 60}]}>
-            <Button disabled={!this.state.confirm} transparent onPress={() => this._handlePublishItem()} style={[styles.btnGoToStep3, {backgroundColor: bgColorBtn}]}>
-                <Text style={styles.btnGoToStep3Text}>PUBLISH</Text>
-            </Button>
+            <Gllu.Button
+              disabled={false}
+              onPress={() => this._handlePublishItem()}
+              text='PUBLISH'
+            />
           </Row>
         </Grid>
+        {this.renderImageOverlay()}
       </ScrollView>
     )
   }
@@ -253,7 +304,8 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
-    occasionTags: item ? item.occasionTags : [],
+    occasionTags: [{ id: 103,
+       name: 'Date'}],
     photos: item ? item.photos : [],
   }
 };

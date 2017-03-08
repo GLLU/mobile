@@ -56,7 +56,7 @@ class FeedPage extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('tagItemScreen', 'feedscreen');
+        this.props.navigateTo('tagItemScreen', 'feedscreen', { mode: 'create' });
       });  
     })
   }
@@ -107,7 +107,7 @@ class FeedPage extends BasePage {
 
 function bindActions(dispatch) {
   return {
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),

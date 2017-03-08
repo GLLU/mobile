@@ -1,42 +1,12 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import {Container, Header, Content, Button, Icon, Title, View } from 'native-base';
-import { createLookItem, setTagPosition, navigateTo, popRoute } from '../../actions';
+import { createLookItem, setTagPosition, pushRoute, popRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
-import glluTheme from '../../themes/gllu-theme';
+import Gllu from '../common';
 
-const TAG_WIDTH = 100;
-const BORDER_WIDTH = 5;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#000000'
-  },
-  mainView: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  draggableContainer: {
-    flex: 1,
-    backgroundColor: 'transparent'
-  },
-  itemBgImage: {
-    height: 48,
-    width: TAG_WIDTH,
-  },
-  itemsContainer: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: BORDER_WIDTH,
-    borderColor: '#FFFFFF'
-  },
-  itemItem: {
-    position: 'absolute',
-    height: 48,
-    width: TAG_WIDTH,
-  },
-});
+const IMAGE_VIEW_PADDING = 15;
 
 class TagItemPage extends BasePage {
 
@@ -47,79 +17,105 @@ class TagItemPage extends BasePage {
     lookId: React.PropTypes.number,
     image: React.PropTypes.string,
     items: React.PropTypes.array,
-    navigateTo: React.PropTypes.func,
+    mode: React.PropTypes.string,
+    pushRoute: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
     setTagPosition: React.PropTypes.func,
+    updateLookItem: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      locationX: 0,
-      locationY: 0,
+      mode: props.mode,
     };
   }
 
   handleBackButton() {
-    const item = this.imageEditor.getTag();
-    if (item.locationX && item.locationY) {
-      this.props.setTagPosition(item);
-      this.props.navigateTo('addItemScreen', 'feedscreen');
-    } else {
-      this.props.popRoute(this.props.navigation.key);
-    }
+    this.goBack(true);
   }
 
-  _handleAddTag(position) {
+  handleAddTag(position) {
     this.props.createLookItem(position).then(() => {
-      if (this.props.items.length > 1) {
-        this.props.popRoute(this.props.navigation.key);
-      } else {
-        this.props.navigateTo('addItemScreen', 'feedscreen');
-      }
+      this.setState({mode: 'edit'})
     });
   }
 
+  handleOnDragEnd(position) {
+    this.props.setTagPosition(position);
+  }
+
+  handleContinue() {
+    this.props.updateLookItem().then(response => {
+      this.props.pushRoute({key: 'addItemScreen'}, this.props.navigation.key);
+    });
+  }
+
+  handleLayoutImage(e) {
+    const { width, height } = e.nativeEvent.layout;
+    console.log('handleLayoutImage', width, height);
+    const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
+    this.setState({
+      imageWidth: w
+    })
+  }
+
   render() {
-    const { items, image, createLookItem, setTagPosition } = this.props;
+    const { items, image } = this.props;
+    const { mode } = this.state;
+
+    const allowContinue = items.length > 0;
+    const bgColor = '#000000';
+    const fgColor = '#F2F2F2';
     return (
-      <Container style={styles.container} theme={glluTheme}>
-        <Header style={{backgroundColor: '#000000'}}>
-          <Button transparent onPress={() => this.handleBackButton()}>
-            <Icon name="ios-arrow-back" />
-          </Button>
-          <Title style={{fontFamily: 'PlayfairDisplay-Regular', color: '#ffffff'}}>Tap item to add</Title>
-        </Header>
-        <Content scrollEnabled={false} contentContainerStyle={{backgroundColor: '#000000', alignItems: 'center'}}>
-          <ImageWithTags
-              ref={(ref) => this.imageEditor = ref}
-              editMode={true}
-              items={items}
-              image={image}
-              createLookItem={this._handleAddTag.bind(this)}
-              setTagPosition={setTagPosition}/>
-        </Content>
-      </Container>
+      <Gllu.Screen
+        backgroundColor={bgColor}
+        foregroundColor={fgColor}
+        onBackPress={() => this.handleBackButton()}
+        onNextPress={() => this.handleContinue()}
+        title='Tap item to add'
+        showNext={allowContinue}
+      >
+        <View 
+          onLayout={this.handleLayoutImage.bind(this)}
+          style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+            <ImageWithTags
+                ref={(ref) => this.imageEditor = ref}
+                mode={mode}
+                items={items}
+                image={image}
+                onMarkerCreate={this.handleAddTag.bind(this)}
+                onDragEnd={this.handleOnDragEnd.bind(this)}/>
+          </View>
+      </Gllu.Screen>
     );
   }
 }
 
+TagItemPage.defaultProps = {
+  items: [],
+  mode: 'view',
+}
+
 function bindActions(dispatch) {
   return {
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     popRoute: (key) => dispatch(popRoute(key)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     setTagPosition: (position) => dispatch(setTagPosition(position)),
+    updateLookItem: () => dispatch(updateLookItem()),
   };
 }
 
 const mapStateToProps = state => {
+  const { itemId, lookId, image, items } = state.uploadLook;
   return {
     navigation: state.cardNavigation,
-    lookId: state.uploadLook.lookId,
-    image: state.uploadLook.image,
-    items: state.uploadLook.items
+    itemId,
+    lookId,
+    image,
+    items,
   };
 };
 
