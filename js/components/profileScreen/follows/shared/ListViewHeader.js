@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
         flexDirection:'column'
     },
     followsTitle:{
-        fontSize:26
+        fontSize:26,
+        color:'black',
+        fontFamily: 'Times New Roman',
     },
     followsCount:{
         fontSize:26,
@@ -55,6 +57,11 @@ class ListViewHeader extends Component {
         this.props.popRoute(this.props.navigation.key);
     }
 
+    toTitleCasing(text){
+            return text.replace(/\w\S*/g, txt=> txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    }
+
+
     render() {
         return (
             <View style={[styles.container,styles.column]}>
@@ -64,7 +71,7 @@ class ListViewHeader extends Component {
                     </TouchableOpacity>
                     <View style={{flex:3}}/>
                     <View style={[styles.row,{flex:8}]}>
-                        <Text style={styles.followsTitle}>{this.props.title}</Text>
+                        <Text style={styles.followsTitle}>{this.toTitleCasing(this.props.title)}</Text>
                         <Text style={styles.followsCount}>{this.props.count}</Text>
                     </View>
                     <View style={{flex:1}} name="spacer"/>
