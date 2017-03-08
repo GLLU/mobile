@@ -61,10 +61,19 @@ class FollowRow extends Component {
     constructor(props){
         super(props);
         this.renderFollowText=this.renderFollowText.bind(this);
+        this.onFollowsPress=this.onFollowsPress.bind(this);
+        this.state= {
+            isFollowing:this.props.is_following
+        }
     }
 
     onUserPress(){
         this.props.onUserPress(this.props);
+    }
+
+    onFollowsPress(){
+        this.props.onFollowPress(args);
+        this.setState({isFollowing:!this.state.isFollowing})
     }
 
     renderFollowText(){
@@ -85,7 +94,7 @@ class FollowRow extends Component {
                     <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo} />
                 </View>
                 {this.renderFollowText()}
-                <FollowView onPress={this.props.onFollowPress} style={styles.followView} user={{id:this.props.user_id, isFollowing:this.props.is_following}}/>
+                <FollowView onPress={this.onFollowPress} style={styles.followView} user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>
             </TouchableOpacity>
         )};
 }

@@ -67,7 +67,6 @@ class FollowListView extends Component {
         else {
             this.props.unFollowUpdate(data);
         }
-        this.props.onFollowPress(isFollowing);
     }
 
     render() {
