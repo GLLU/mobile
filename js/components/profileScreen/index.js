@@ -33,11 +33,11 @@ class ProfileScreen extends BasePage {
   };
   constructor(props) {
     super(props);
-    const isMyProfile = this.props.userData.id === this.props.myUser.id;
+    const isMyProfile = this.props.userData.id === this.props.myUser.id || this.props.userData.user_id === this.props.myUser.id;;
     this.state = {
       isMyProfile,
       isFollowing: this.props.userData.is_following,
-      userId: isMyProfile ? this.props.userData.id : this.props.userData.user_id,
+      userId: isMyProfile ? this.props.myUser.id : this.props.userData.user_id,
 
       photoModal: false
     }
