@@ -97,10 +97,6 @@ class FollowRow extends Component {
     }
 
     render(){
-
-        console.log('start');
-        console.log(this.props)
-        console.log('end');
         return(
             <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
                 <View style={styles.photoContainer}>
