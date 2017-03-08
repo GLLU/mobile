@@ -4,7 +4,7 @@ import { StyleSheet, Alert, Linking} from 'react-native';
 import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title, ListItem, Text } from 'native-base';
 import { connect } from 'react-redux';
 import { back, logout } from '../../actions';
-import SocialShare from '../../lib/SocialShare';
+import SocialShare from '../../lib/social';
 
 import glluTheme from '../../themes/gllu-theme';
 
@@ -58,7 +58,7 @@ class SettingsScreen extends BasePage {
   }
 
   handleShare() {
-    SocialShare.share('facebook');
+    SocialShare.nativeShare();
   }
 
   handleOpenLink(url) {

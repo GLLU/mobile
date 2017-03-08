@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, View, BackAndroid } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { reset, addNewLook, navigateTo, replaceAtIndex } from '../../actions';
-import SocialShare from '../../lib/SocialShare';
+import SocialShare from '../../lib/social';
 import Gllu from '../common';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
@@ -58,11 +58,11 @@ class FinishLookPage extends BasePage {
   }
 
   handleFacebookPress() {
-    SocialShare.share('facebook');
+    SocialShare.facebookShare();
   }
 
   handleOthersPress() {
-    SocialShare.share('others'); 
+    SocialShare.nativeShare(); 
   }
 
   handleGlluAgainPress() {
@@ -73,7 +73,7 @@ class FinishLookPage extends BasePage {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
         this.resetToFeedscreen();
-        this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
+        this.props.navigateTo('tagItemScreen', 'feedscreen');
       }).catch(err => {
         console.log('addNewLook err', err);
       });  

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions, TouchableOpacity, Image, Text } from 'react-native';
 import { View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
