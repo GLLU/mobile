@@ -3,15 +3,38 @@ import { ShareDialog } from 'react-native-fbsdk';
 import Config from 'react-native-config';
 
 class SocialShare {
-  share(type) {
+  share(type = 'others', options = {}) {
     switch(type) {
       case 'facebook':
           this._shareFacebook();
         break;
       default:
-        console.log('invalid type');
+        this._shareOthers(options);
         break;
     }
+  }
+
+  _handleShareSuccessful(result) {
+    if (result.isCancelled) {
+      console.log('Share cancelled');
+    } else {
+      console.log('Share success with postId: ' + result.postId);
+    }
+  }
+
+  _shareOthers() {
+    Share.open({
+      message: 'Check out GLLU - Fashion that fits',
+      url: Config.HOME_PAGE,
+      title: 'Share your GLLU item',
+      excludedActivityTypes: [
+        'com.apple.UIKit.activity.PostToTwitter'
+      ],
+    })
+    .then(this._handleShareSuccessful)
+    .catch((error) => {
+      console.log('Share fail with error: ', error);
+    });
   }
 
   _shareFacebook() {
@@ -39,13 +62,9 @@ class SocialShare {
       if (canShow) {
         return ShareDialog.show(shareLinkContent);
       }
-    }).then((result) => {
-      if (result.isCancelled) {
-        console.log('Share cancelled');
-      } else {
-        console.log('Share success with postId: ' + result.postId);
-      }
-    }).catch(error => {
+    })
+    .then(this._handleShareSuccessful)
+    .catch(error => {
       alert('Share fail with error: ' + error);
     });
   }

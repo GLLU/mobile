@@ -10,7 +10,7 @@ import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
 import { addNewLook, setUser, pushRoute, navigateTo } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
-import SelectPhoto from './SelectPhoto';
+import SelectPhoto from '../common/SelectPhoto';
 
 class FeedPage extends BasePage {
 
@@ -47,6 +47,10 @@ class FeedPage extends BasePage {
         return true;
       }
     });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress');
   }
 
   setUser(name) {

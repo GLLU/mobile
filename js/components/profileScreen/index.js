@@ -11,7 +11,7 @@ import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
 import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData } from '../../actions';
 import _ from 'lodash';
-import SelectPhoto from '../feedscreen/SelectPhoto';
+import SelectPhoto from '../common/SelectPhoto';
 const userBackground = require('../../../images/epsbg.png');
 const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');

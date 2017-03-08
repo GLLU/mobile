@@ -6,7 +6,7 @@ import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, RefreshCon
 import { View, Text } from 'native-base';
 import _ from 'lodash';
 import { actions } from 'react-native-navigation-redux-helpers';
-import SelectPhoto from '../feedscreen/SelectPhoto';
+import SelectPhoto from '../common/SelectPhoto';
 import { addNewLook, navigateTo, getUserLooksData, replaceAt } from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceHeight = Dimensions.get('window').height;
