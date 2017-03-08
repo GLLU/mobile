@@ -56,11 +56,7 @@ class ImageWithTags extends Component {
 
   constructor(props) {
     super(props);
-    console.log('ImageWithTags props', props);
     this.state = this.parseState(props);
-
-    console.log('state', this.state);
-
     this._setupPanResponder(this.state.locationX, this.state.locationY)
   }
 
@@ -118,7 +114,6 @@ class ImageWithTags extends Component {
   }
 
   _handlePress(e) {
-    console.log('_handlePress');
     const {locationX, locationY} = e.nativeEvent;
     const { width, height } = this.getRenderingDimensions();
     this._setupPanResponder(locationX, locationY);
@@ -137,12 +132,10 @@ class ImageWithTags extends Component {
     const { width, height } = this.getRenderingDimensions();
 
     return items.map((item, i) => {
-      console.log('marker item', item, mode);
       const left = parseInt(item.locationX * width);
       const top = parseInt(item.locationY * height);
 
       if (mode != VIEW_MODE && item.editing) {
-        console.log('render panResponder');
         const layout = this._pan.getLayout();
         return (<Animated.View
                   key={i}
@@ -174,7 +167,6 @@ class ImageWithTags extends Component {
 
   _render() {
     const { width, height } = this.getRenderingDimensions();
-    console.log('render showMarker', this.props.showMarker)
     return (
     <Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
       {
@@ -190,10 +182,8 @@ class ImageWithTags extends Component {
   }
 
   _renderContent() {
-    console.log('render', this.props.mode);
     if (this.props.mode == CREATE_MODE) {
       const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
-      console.log('tag', Tag)
       return(<Tag onPress={this._handlePress.bind(this)}>
             {this._render()}
           </Tag>);
