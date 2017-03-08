@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Dimensions, TouchableOpacity, Image, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -61,7 +61,7 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 2,
+      currentStep: 0,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -124,8 +124,7 @@ class AddItemPage extends BasePage {
 
   publishAction() {
     this.props.publishLookItem().then(response => {
-      this.props.popRoute(this.props.navigation.key);
-      this.props.popRoute(this.props.navigation.key);
+      this.props.pushRoute({key: 'finishLookScreen'}, this.props.navigation.key);
     });
   }
 

@@ -16,6 +16,19 @@ class BasePage extends BaseComponent {
     });
   }
 
+  resetToFeedscreen() {
+    this.resetToHome('feedscreen');
+  }
+
+  resetToHome(homeroute) {
+    this.props.reset([
+      {
+        key: homeroute,
+        index: 0,
+      },
+    ], this.props.navigation.key);
+  }
+
   goBack(withConfirmation = false) {
     if (withConfirmation) {
       Alert.alert(

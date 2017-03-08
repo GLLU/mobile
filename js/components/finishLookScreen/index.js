@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { StyleSheet, TouchableOpacity, View, BackAndroid } from 'react-native';
-import { Container, Content, Thumbnail, H3, H2, Grid, Col, Row, Button, Icon } from 'native-base';
+import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { reset, addNewLook, navigateTo } from '../../actions';
-import ImageWithTags from '../common/ImageWithTags';
+import { reset, addNewLook, navigateTo, replaceAtIndex } from '../../actions';
 import SocialShare from '../../lib/SocialShare';
 import Gllu from '../common';
 import glluTheme from '../../themes/gllu-theme';
@@ -55,12 +54,7 @@ class FinishLookPage extends BasePage {
   }
 
   handleClose() {
-    this.props.reset([
-      {
-        key: 'feedscreen',
-        index: 0,
-      },
-    ], this.props.navigation.key);
+    this.resetToFeedscreen();
   }
 
   handleFacebookPress() {
@@ -76,12 +70,10 @@ class FinishLookPage extends BasePage {
   }
 
   goToAddNewItem(imagePath) {
-    console.log('goToAddNewItem');
     this.setState({photoModal: false}, () => {
-      console.log('setState photoModal')
       this.props.addNewLook(imagePath).then(() => {
-        console.log('image path', imagePath)
-        this.props.navigateTo('tagItemScreen', 'feedscreen');
+        this.resetToFeedscreen();
+        this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
       }).catch(err => {
         console.log('addNewLook err', err);
       });  
@@ -170,6 +162,7 @@ function bindActions(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     reset: (route, key) => dispatch(reset(route, key)),
+    replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
   };
 }
 

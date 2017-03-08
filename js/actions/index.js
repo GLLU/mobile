@@ -38,6 +38,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 const {
   reset,
   replaceAt,
+  replaceAtIndex,
   popRoute,
   pushRoute,
   back,
@@ -76,6 +77,7 @@ export {
   navigateTo,
   reset,
   replaceAt,
+  replaceAtIndex,
   pushRoute,
   popRoute,
   back,
