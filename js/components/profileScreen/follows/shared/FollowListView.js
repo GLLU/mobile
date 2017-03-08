@@ -78,6 +78,7 @@ class FollowListView extends Component {
                 renderRow={(data) => <FollowRow onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
                 renderHeader = {() => <ListViewHeader count={this.props.headerData.count} title={`My ${this.props.headerData.mode}`}/>}
                 renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
+                enableEmptySections={true}
                 onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
                 onEndReachedThreshold={100}
             />
