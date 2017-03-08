@@ -58,7 +58,7 @@ class SettingsScreen extends BasePage {
   }
 
   handleShare() {
-    SocialShare.share('facebook');
+    SocialShare.share();
   }
 
   handleOpenLink(url) {

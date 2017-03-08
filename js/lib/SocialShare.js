@@ -1,9 +1,14 @@
-import Share from 'react-native-share';
+import {Share} from 'react-native';
 import { ShareDialog } from 'react-native-fbsdk';
 import Config from 'react-native-config';
 
 class SocialShare {
-  share(type) {
+
+    share() {
+        this._shareText();
+    }
+
+  shareSpecific(type) {
     switch(type) {
       case 'facebook':
           this._shareFacebook();
@@ -22,7 +27,7 @@ class SocialShare {
     };
     Share.shareSingle(options).catch((err) => {
       if (err) {
-        console.log('facbeook share err', err, options);
+        console.log('facbeook shareSpecific err', err, options);
         this._shareFacebookWeb(options);
       }
     });
@@ -40,15 +45,42 @@ class SocialShare {
         return ShareDialog.show(shareLinkContent);
       }
     }).then((result) => {
-      if (result.isCancelled) {
-        console.log('Share cancelled');
-      } else {
-        console.log('Share success with postId: ' + result.postId);
-      }
+      var logText= result.isCanceled ? 'Share cancelled' : `Share success with postId: ${result.postId}`;
+      console.log(logText);
     }).catch(error => {
-      alert('Share fail with error: ' + error);
+      console.log(`Share fail with error: ${error}`);
     });
   }
+
+    _shareText() {
+      var post={
+        text: 'Check out GLLU - Fashion that fits',
+        url: Config.HOME_PAGE
+      };
+        Share.share({
+            message: `${post.text} ${post.url}`,
+            url: post.url,
+            title: 'GLLU'
+        }, {
+            dialogTitle: 'Share GLLU',
+            excludedActivityTypes: [/*here we can exclude sharing options on ios*/],
+            tintColor: 'green'
+        })
+            .then(this._logResult)
+            .catch((error) => console.log(`error: ${error.message}`));
+    }
+
+    _logResult(result) {
+      if (result.action === Share.sharedAction) {
+          console.log(`shared with an activityType: ${result.activityType}`)
+      }
+      else {
+        if (result.action === Share.dismissedAction) {
+              console.log('dismissed');
+          }
+      }
+    }
+
 }
 
 export default new SocialShare();

@@ -48,7 +48,7 @@ export default class BottomButton extends Component {
   }
 
   _onShareClicked() {
-    SocialShare.share('facebook');
+    SocialShare.shareSpecific('facebook');
   }
 
   render() {

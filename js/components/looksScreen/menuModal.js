@@ -70,7 +70,7 @@ class menuModal extends Component {
   }
 
   _onShareClicked() {
-    SocialShare.share('facebook');
+    SocialShare.shareSpecific('facebook');
   }
 
   _reportAbuse() {
