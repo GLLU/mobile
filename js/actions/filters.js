@@ -1,6 +1,6 @@
 import type { Action } from '../actions/types';
 import rest from '../api/rest';
-
+import Utils from '../Utils';
 import { readEndpoint, setHeaders } from 'redux-json-api';
 
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
@@ -15,6 +15,12 @@ export function loadCategories(data):Action {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.category_tags({}, (err, data) => {
         if (!err && data) {
+          // load in another thread
+          setTimeout(() => {
+            Utils.preloadImages(data.tags.map(x => x.icon.url)).catch()
+            Utils.preloadImages(data.tags.map(x => x.icon.url_hover)).catch();
+          }, 1);
+
           resolve(dispatch({
             type: SET_CATEGORIES,
             payload: data

@@ -3,11 +3,10 @@ import { StyleSheet } from 'react-native';
 import { View } from 'native-base';
 import { connect } from 'react-redux';
 import { getFeed, resetFeed, loadMore } from '../../actions';
-import SpinnerSwitch from '../loaders/SpinnerSwitch'
 import FilterBar from './filters/FilterBar';
-import RecentTab from './RecentTab';
-import BestMatchTab from './BestMatchTab';
+import TabContent from './TabContent';
 import SearchBar from './SearchBar';
+import Utils from '../../Utils';
 import _ from 'lodash';
 
 const myStyles = StyleSheet.create({
@@ -33,7 +32,7 @@ class MainView extends Component {
       isOpen: false,
       filterHeight: 45,
       searchHeight: 60,
-      reload: false,
+      reloading: false,
     };
   }
 
@@ -47,18 +46,27 @@ class MainView extends Component {
     })
   }
 
+  preloadLookImages(looks) {
+    Utils.preloadLookImages(looks).then(() => {
+      this.setState({reloading: false});  
+    }).catch(err => {
+      console.log('something wrong with preload image', err);
+      this.setState({reloading: false});
+    });
+  }
+
   getFeed(query) {
-    this.setState({reload: true}, () => {
-      this.props.getFeed(query).then(() => {
-        this.setState({reload: false});
+    this.setState({reloading: true}, () => {
+      this.props.getFeed(query).then((looks) => {
+        this.preloadLookImages(looks);
       });  
     });
   }
 
   resetFeed() {
-    this.setState({reload: true}, () => {
-      this.props.resetFeed().then(() => {
-        this.setState({reload: false});
+    this.setState({reloading: true}, () => {
+      this.props.resetFeed().then((looks) => {
+        this.preloadLookImages(looks);
       });  
     });
   }
@@ -84,12 +92,15 @@ class MainView extends Component {
   }
 
   _renderFeed() {
-    const { reload } = this.state;
-    if(this.props.query.type === 'relevant') {
-      return <BestMatchTab reload={reload} filterHeight={this.state.filterHeight} handleSwipeTab={this.handleSwipeTab.bind(this)} tabLabel='BEST MATCH'/>
-    } else {
-      return <RecentTab reload={reload} filterHeight={this.state.filterHeight} tabLabel='RECENT' handleSwipeTab={this.handleSwipeTab.bind(this)}/>
-    }
+    const { reloading } = this.state;
+    const tabLabel = this.props.query.type === 'relevant' ? 'BEST MATCH' : 'RECENT';
+    return (
+      <TabContent
+        reloading={reloading}
+        filterHeight={this.state.filterHeight}
+        handleSwipeTab={this.handleSwipeTab.bind(this)}
+        tabLabel={tabLabel}/>
+    );
   }
 
   _handleMainviewHeight(e) {

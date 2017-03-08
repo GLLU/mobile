@@ -27,7 +27,7 @@ export function getFeed(query):Action {
         if (!err && data) {
           dispatch(setFeedData({data, query: newState}));
           // dispatch(hideLoader());
-          resolve();
+          resolve(data.looks);
         } else {
           // dispatch(hideLoader());
           reject();
@@ -60,7 +60,7 @@ export function resetFeed():Action {
             }
           });
           // dispatch(hideLoader());
-          resolve();
+          resolve(data.looks);
         } else {
           // dispatch(hideLoader());
           reject();
@@ -80,7 +80,7 @@ export function loadMore():Action {
       return dispatch(rest.actions.feeds(params, (err, data) => {
         if (!err && data) {
           dispatch(setFeedData({data, query: newState, loadMore: true}));
-          resolve();
+          resolve(data.looks);
         } else {
           reject();
         }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, InteractionManager } from 'react-native';
+import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
 import Spinner from '../loaders/Spinner';
+import Utils from '../../Utils';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 
@@ -19,6 +20,7 @@ class TabContent extends Component {
     flatLooks: React.PropTypes.array,
     meta: React.PropTypes.object,
     query: React.PropTypes.object,
+    reloading: React.PropTypes.bool,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
@@ -96,8 +98,10 @@ class TabContent extends Component {
 
     if (pageSize * pageNumber < total) {
       this.setState({isLoading: true}, () => {
-        this.props.loadMore().then(() => {
-          this.setState({isLoading: false});
+        this.props.loadMore().then((looks) => {
+          return Utils.preloadLookImages(looks).then(() => {
+            this.setState({isLoading: false});
+          });
         }).catch(err => {
           console.log('error', err);
           this.setState({isLoading: false});
@@ -161,7 +165,7 @@ class TabContent extends Component {
   }
 
   _renderLoading() {
-    if (this.props.reload) {
+    if (this.props.reloading) {
       return (
         <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
           <Spinner color='#666666'/>
