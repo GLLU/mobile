@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, TouchableOpacity, View, BackAndroid } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { reset, addNewLook, navigateTo, replaceAtIndex } from '../../actions';
@@ -83,15 +83,15 @@ class FinishLookPage extends BasePage {
   render() {
     return (
       <Container theme={glluTheme}>
-        <Content scrollEnabled={false} style={{backgroundColor: '#F2F2F2'}} contentContainerStyle={{justifyContent: 'space-between', alignItems: 'center', flexGrow: 1, paddingVertical: 20}}>
-          <View style={{flex: 6, justifyContent: 'space-between', alignItems: 'center', padding: 40}}>
+        <Content scrollEnabled={false} style={{backgroundColor: '#F2F2F2'}} contentContainerStyle={{justifyContent: 'space-between', alignItems: 'center', flex: 1, paddingVertical: 20}}>
+          <View style={{flex: 6, justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
             <H2
-              style={[styles.text, {fontSize: 24}]}
+              style={[styles.text, {fontSize: 22}]}
             >
               YEAHHH!
             </H2>
             <H2
-              style={[styles.text, {fontSize: 24}]}
+              style={[styles.text, {fontSize: 22}]}
             >
               YOUR POST IS LIVE
             </H2>
@@ -99,24 +99,20 @@ class FinishLookPage extends BasePage {
               size={150}
               source={require('../../../images/badge.png')} />
             <H2
-              style={[styles.text, {fontSize: 24}]}
+              style={[styles.text, {fontSize: 22}]}
             >
               HELP PEOPLE TO KNOW HOW FASHION YOU ARE
             </H2>
           </View>
-          <View style={{flex: 3, paddingTop: 10, paddingBottom: 30}}>
-            <Grid>
-              <Row style={{flexDirection: 'column', justifyContent: 'space-around'}}>
-                <Button transparent iconLeft onPress={this.handleFacebookPress.bind(this)}>
-                  <Icon size={30} name='logo-facebook'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
-                  Share on Facebook
-                </Button>
-                <Button transparent iconLeft onPress={this.handleOthersPress.bind(this)}>
-                  <Icon size={30} name='md-share'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
-                  Share on others...
-                </Button>
-              </Row>
-            </Grid>
+          <View style={{flex: 2, flexDirection: 'column', justifyContent: 'space-around', paddingTop: 20}}>
+              <Button transparent iconLeft onPress={this.handleFacebookPress.bind(this)}>
+                <Icon size={30} name='logo-facebook'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
+                Share on Facebook
+              </Button>
+              <Button transparent iconLeft onPress={this.handleOthersPress.bind(this)}>
+                <Icon size={30} name='md-share'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
+                Share on others...
+              </Button>
           </View>
           <View style={{flex: 2}}>
             <Gllu.Button
