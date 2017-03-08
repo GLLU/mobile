@@ -33,6 +33,8 @@ const parseLook = function(look, index, flatLooksDataLength) {
     name: look.user.name,
     username: look.user.username,
     about_me: look.user.about_me,
+    is_following: look.user.is_following,
+    is_follower: look.user.is_follower,
     items: look.items,
     originalIndex: flatLooksDataLength+index
   });
