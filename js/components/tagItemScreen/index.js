@@ -95,7 +95,7 @@ class TagItemPage extends BasePage {
 
 TagItemPage.defaultProps = {
   items: [],
-  mode: 'view',
+  mode: 'create',
 }
 
 function bindActions(dispatch) {

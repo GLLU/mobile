@@ -61,7 +61,7 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 2,
+      currentStep: 0,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -124,8 +124,7 @@ class AddItemPage extends BasePage {
 
   publishAction() {
     this.props.publishLookItem().then(response => {
-      this.props.popRoute(this.props.navigation.key);
-      this.props.popRoute(this.props.navigation.key);
+      this.props.pushRoute({key: 'finishLookScreen'}, this.props.navigation.key);
     });
   }
 

@@ -16,8 +16,6 @@ const h = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   base: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: '#FFFFFF',
   },
   draggableContainer: {
     flex: 1,
