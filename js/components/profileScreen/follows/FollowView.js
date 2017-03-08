@@ -35,13 +35,18 @@ class FollowView extends Component
         onPress: React.PropTypes.func
     };
 
+    constructor(props){
+        super(props);
+        this.handleFollowPress=this.handleFollowPress.bind(this);
+    }
+
     handleFollowPress() {
         this.props.onPress(this.props.user , !this.props.user.isFollowing)
     }
 
     renderUnfollowButton(){
         return (
-            <TouchableOpacity style={styles.unfollowBtn} onPress={this.handleFollowPress.bind(this)}>
+            <TouchableOpacity style={styles.unfollowBtn} onPress={this.handleFollowPress}>
                 <Text style={styles.unfollowText}>Unfollow</Text>
             </TouchableOpacity>
         )
@@ -49,7 +54,7 @@ class FollowView extends Component
 
     renderFollowButton(){
         return (
-            <TouchableOpacity style={styles.followBtn} onPress={this.handleFollowPress.bind(this)}>
+            <TouchableOpacity style={styles.followBtn} onPress={this.handleFollowPress}>
                 <Text style={styles.followText}>Follow</Text>
             </TouchableOpacity>
         )

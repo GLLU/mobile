@@ -61,7 +61,8 @@ class FollowRow extends Component {
     constructor(props){
         super(props);
         this.renderFollowText=this.renderFollowText.bind(this);
-        this.onFollowsPress=this.onFollowsPress.bind(this);
+        this.renderFollowView=this.renderFollowView.bind(this);
+        this.onFollowPress=this.onFollowPress.bind(this);
         this.state= {
             isFollowing:this.props.is_following
         }
@@ -71,9 +72,9 @@ class FollowRow extends Component {
         this.props.onUserPress(this.props);
     }
 
-    onFollowsPress(){
-        this.props.onFollowPress(args);
-        this.setState({isFollowing:!this.state.isFollowing})
+    onFollowPress(user,shouldFollow) {
+        this.props.onFollowPress(...arguments);
+        this.setState({isFollowing: shouldFollow})
     }
 
     renderFollowText(){
@@ -87,14 +88,26 @@ class FollowRow extends Component {
             </View>
         )};
 
+    renderFollowView(){
+        if(this.props.is_me)
+        {
+            return <View name="can't follow me" style={styles.followView}></View>;
+        }
+        return <FollowView onPress={this.onFollowPress} style={styles.followView} user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>
+    }
+
     render(){
+
+        console.log('start');
+        console.log(this.props)
+        console.log('end');
         return(
             <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
                 <View style={styles.photoContainer}>
                     <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo} />
                 </View>
                 {this.renderFollowText()}
-                <FollowView onPress={this.onFollowPress} style={styles.followView} user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>
+                {this.renderFollowView()}
             </TouchableOpacity>
         )};
 }

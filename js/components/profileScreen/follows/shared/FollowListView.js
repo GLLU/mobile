@@ -59,9 +59,9 @@ class FollowListView extends Component {
         this.props.navigateTo('profileScreen', `${this.props.headerData.mode}Screen`, user);
     }
 
-    toggleFollowAction(user,isFollowing) {
+    toggleFollowAction(user,shouldFollow) {
         let data = {id: user.id};
-        if (isFollowing) {
+        if (shouldFollow) {
             this.props.followUpdate(data);
         }
         else {
