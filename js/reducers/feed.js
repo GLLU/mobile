@@ -19,7 +19,7 @@ const initialState = {
 };
 
 const parseLook = function(look, index, flatLooksDataLength) {
-  const cover = _.find(look.cover, x => x.version == 'medium');
+  const cover = _.find(look.cover, x => x.version == 'thumb');
   return Object.assign({}, {
     liked: look.is_liked,
     type: look.user_size.body_type,
