@@ -42,7 +42,7 @@ export default class TopButton extends Component {
       }
     });
     return (
-        <View style={styles.topContainer}>
+        <View style={styles.descriptionStyle}>
 
           <View style={styles.topLeft}>
             <TouchableOpacity style={[styles.topButton,styles.avatarButton]} onPress={() => this.props.onPress()}>

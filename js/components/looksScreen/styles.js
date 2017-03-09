@@ -15,7 +15,7 @@ export default StyleSheet.create({
     width: w,
     height: h,
   },
-  topContainer: {
+  descriptionStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -27,7 +27,8 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     flexDirection: 'row',
-    bottom: 20
+    bottom: 20,
+    zIndex:1
   },
 
   bottomLeft: {
@@ -122,4 +123,10 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 22
   },
+  descriptionView: {
+    position:'absolute',
+    bottom:0,
+    left:0,
+    right:0
+  }
 });

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
+import * as _ from 'lodash'
 import Icon from 'react-native-vector-icons/Entypo';
 import styles from './styles';
 import SocialShare from '../../lib/social';
@@ -15,8 +16,13 @@ export default class BottomButton extends Component {
     isLiked: React.PropTypes.bool,
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
-    hasDescription:React.PropTypes.bool
-  }
+    hasDescription:React.PropTypes.bool,
+    toggleDescription:React.PropTypes.func
+  };
+
+  static defaultProps = {
+    toggleDescription:_.noop
+  };
 
   constructor(props) {
     super(props);
@@ -41,10 +47,6 @@ export default class BottomButton extends Component {
     this.props.toggleLike(!this.state.isLiked)
   }
 
-  _onInformationClicked() {
-    console.log('Information Button clicked');
-  }
-
   _onBubbleClicked() {
     console.log('comments Button clicked');
   }
@@ -55,7 +57,7 @@ export default class BottomButton extends Component {
 
   _renderInformationButton(hasDescription){
     return hasDescription ?
-      <InformationButton onPress={this._onInformationClicked}/> :
+      <InformationButton onPress={this.props.toggleDescription}/> :
       <View name="information button placeholder"></View>;
   }
 
