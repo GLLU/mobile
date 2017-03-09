@@ -4,7 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { createLookItem, setTagPosition, pushRoute, popRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Gllu from '../common';
+import Container from '../common/Container';
 
 const IMAGE_VIEW_PADDING = 15;
 
@@ -52,15 +54,6 @@ class TagItemPage extends BasePage {
     });
   }
 
-  handleLayoutImage(e) {
-    const { width, height } = e.nativeEvent.layout;
-    console.log('handleLayoutImage', width, height);
-    const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
-    this.setState({
-      imageWidth: w
-    })
-  }
-
   render() {
     const { items, image } = this.props;
     const { mode } = this.state;
@@ -78,7 +71,6 @@ class TagItemPage extends BasePage {
         showNext={allowContinue}
       >
         <View 
-          onLayout={this.handleLayoutImage.bind(this)}
           style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
             <ImageWithTags
                 ref={(ref) => this.imageEditor = ref}

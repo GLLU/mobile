@@ -101,9 +101,9 @@ class StepOne extends Component {
   render() {
     const { categories, selectedCategory } = this.props;
     return(
-      <View style={{flex: 1, justifyContent: 'center', padding: 10}}>
+      <View style={{flex: 1, justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 25}}>
         <Text style={styles.titleLabelInfo}>Item Type</Text>
-        <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+        <View style={{flex: 1, backgroundColor: '#FFFFFF', height: 100}}>
           <Category
             categories={categories}
             selectedCategory={selectedCategory}
