@@ -33,6 +33,7 @@ import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
 
 import { statusBarColor } from './themes/base-theme';
+import Analytics, { APP_LOADED_EVENT } from './lib/analytics/Analytics';
 
 const {
   popRoute,
@@ -63,6 +64,13 @@ class AppNavigator extends Component {
       this.props.popRoute(this.props.navigation.key);
       return true;
     });
+
+    Analytics.setUser(this.props.user);
+    Analytics.logEvent(APP_LOADED_EVENT, {}, true);
+  }
+
+  componentWillUnmount() {
+    Analytics.endTimedEvent(APP_LOADED_EVENT);
   }
 
   componentDidUpdate() {
@@ -205,6 +213,7 @@ const mapStateToProps = state => {
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,
+    user: state.user,
     isLoading: isLoading,
     isProcessing: isProcessing,
     error: isError,

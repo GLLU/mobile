@@ -2,10 +2,26 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import Config from 'react-native-config'
 import BaseComponent from './BaseComponent';
+import Analytics, {
+  APP_LOADED_EVENT,
+  PAGE_LOADED_EVENT
+} from '../../lib/analytics/Analytics';
 
 class BasePage extends BaseComponent {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    Analytics.logEvent(PAGE_LOADED_EVENT, {
+      page: this.constructor.name,
+    }, true);
+  }
+
+  componentWillUnmount() {
+    Analytics.endTimedEvent(PAGE_LOADED_EVENT, {
+      page: this.constructor.name,
+    });
   }
 
   setLeaveBreadcrumb(props) {
