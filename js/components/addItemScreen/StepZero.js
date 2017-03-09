@@ -9,6 +9,7 @@ import {
 
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
+import glluTheme from '../../themes/gllu-theme';
 import _ from 'lodash';
 import Gllu from '../common';
 
@@ -23,15 +24,24 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
-    height: 50,
+    flex: 1,
+    lineHeight: glluTheme.lineHeight,
+    paddingVertical: 5,
+    textAlignVertical: 'center',
     paddingLeft: 3
   },
   iconCheckCompleteContainer: {
     position: 'absolute',
-    right: -10,
-    top: 5,
+    top: 0,
+    right: 0,
+    bottom: 0,
     width: 50,
-    backgroundColor: 'transparent'
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  iconCheckComplete: {
+    alignSelf: 'center',
   }
 });
 
@@ -114,19 +124,20 @@ class StepZero extends Component {
     return (
       <View style={{flex: 1, padding: 25}}>
         <Text style={styles.titleLabelInfo}>Brand Name</Text>
-        <View style={{flex: 1}}>
-          <TextInput
-            value={brandName}
+        <View style={{height: 50}}>
+          <Text
             style={styles.input}
-            underlineColorAndroid='transparent'
-            onFocus={this.handleTextFocus.bind(this)}
-          />
+            onPress={this.handleTextFocus.bind(this)}
+          >
+            {brandName}
+          </Text>
           {this.renderClearIcon()}
         </View>
         <Modal
           animationType={"slide"}
           transparent={false}
           visible={modalVisible}
+          onRequestClose={() => this.setState({modalVisible: false})}
         >
           <BrandNameInput
             style={{marginTop: 10}}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import { View } from 'native-base';
+import FitImage from 'react-native-fit-image';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
 
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   },
   itemsContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: BORDER_WIDTH,
+    borderWidth: 0,
     borderColor: '#FFFFFF'
   },
   itemMarker: {
@@ -166,7 +167,7 @@ class ImageWithTags extends Component {
   _render() {
     const { width, height } = this.getRenderingDimensions();
     return (
-    <Image source={{uri: this.props.image}} style={[styles.itemsContainer, {width, height}]}>
+    <FitImage source={{uri: this.props.image}} style={[styles.itemsContainer]}>
       {
         this.props.showMarker
         ?
@@ -176,7 +177,7 @@ class ImageWithTags extends Component {
         :
         null
       }
-    </Image>);
+    </FitImage>);
   }
 
   _renderContent() {
