@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, Animated, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
 import { Icon } from 'native-base';
+import _ from 'lodash'
 import styles from './styles';
 import BottomButton from './bottomButton';
 import TopButton from './topButton';
@@ -57,7 +58,7 @@ export default class BottomLookContainer extends Component {
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
-          <BottomButton isLiked={this.state.isLiked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
+          <BottomButton hasDescription={!_.isEmpty(this.props.look.description)} isLiked={this.state.isLiked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)} closeModal={() => this._toggleMenu()}/>

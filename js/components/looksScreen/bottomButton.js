@@ -15,10 +15,12 @@ export default class BottomButton extends Component {
     isLiked: React.PropTypes.bool,
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
+    hasDescription:React.PropTypes.bool
   }
 
   constructor(props) {
     super(props);
+    this._renderInformationButton=this._renderInformationButton.bind(this);
     this.state = {
       likes: this.props.likes,
       isLiked: this.props.isLiked
@@ -51,6 +53,18 @@ export default class BottomButton extends Component {
     SocialShare.nativeShare();
   }
 
+  _renderInformationButton(hasDescription){
+    if(hasDescription) {
+        return (
+            <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onInformationClicked()}>
+              <View style={[styles.footerButton, {width: 40}]}>
+                <Image source={infoImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}/>
+              </View>
+            </TouchableHighlight>);
+    }
+    return <View></View>;
+  }
+
   render() {
     return (
       <View style={styles.bottomContainer}>
@@ -62,11 +76,7 @@ export default class BottomButton extends Component {
                 <Text style={styles.footerButtonText}>{this.state.likes}</Text>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onInformationClicked()}>
-            <View style={[styles.footerButton, {width: 40}]}>
-              <Image source={infoImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}} />
-            </View>
-          </TouchableHighlight>
+            { this._renderInformationButton(this.props.hasDescription) }
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onBubbleClicked()}>
             <View style={[styles.footerButton, {width: 40}]}>
               <Image source={bubbleImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}} />
