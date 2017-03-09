@@ -1,7 +1,8 @@
-import FlurryAnalytic from './FlurryAnalytic';
-
+import FlurryAnalytics from './FlurryAnalytics';
+import GoogleAnalytics from './GoogleAnalytics';
 export const APP_LOADED_EVENT = 'AppLoaded';
 export const PAGE_LOADED_EVENT = 'PageLoaded';
+export const GENERAL_EVENT = 'GeneralEvent';
 
 class Analytics {
   constructor(user) {
@@ -11,13 +12,30 @@ class Analytics {
 
   setupAnalytics() {
     return [
-      new FlurryAnalytic(),
+      new FlurryAnalytics(),
+      new GoogleAnalytics(),
     ]
   }
 
   setUser(user) {
     this._loop(x => {
       x.setUser(user);
+    })
+  }
+
+  trackScreen(...args) {
+    this._loop(x => {
+      if (typeof x.trackScreen === 'function') {
+        x.trackScreen(...args);
+      }
+    })
+  }
+
+  endTrackScreen(...args) {
+    this._loop(x => {
+      if (typeof x.trackScreen === 'function') {
+        x.endTrackScreen(...args);
+      }
     })
   }
 

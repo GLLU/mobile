@@ -13,13 +13,15 @@ class BasePage extends BaseComponent {
   }
 
   componentDidMount() {
-    Analytics.logEvent(PAGE_LOADED_EVENT, {
+    console.log('BasePage componentDidMount');
+    Analytics.trackScreen(PAGE_LOADED_EVENT, {
       page: this.constructor.name,
     }, true);
   }
 
   componentWillUnmount() {
-    Analytics.endTimedEvent(PAGE_LOADED_EVENT, {
+    console.log('BasePage componentWillUnmount');
+    Analytics.endTrackScreen(PAGE_LOADED_EVENT, {
       page: this.constructor.name,
     });
   }

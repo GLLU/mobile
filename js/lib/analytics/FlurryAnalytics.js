@@ -4,9 +4,8 @@ import FlurryAnalytics from 'react-native-flurry-analytics';
 import Config from 'react-native-config';
 import BaseAnalytic from './BaseAnalytic';
 import _ from 'lodash';
-import md5 from 'md5';
 
-class FlurrAnalytic extends BaseAnalytic {
+class FlurrAnalytics extends BaseAnalytic {
   constructor() {
     super();
     FlurryAnalytics.setAppVersion(Config.APP_VERSION);
@@ -28,10 +27,18 @@ class FlurrAnalytic extends BaseAnalytic {
   setUser(user) {
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
-        FlurryAnalytics.setUserId(md5(`${user.id}`));
+        FlurryAnalytics.setUserId(this.encryptUserId(user.id));
         FlurryAnalytics.setUserGender(user.gender == 'male' ? 'm' : 'f');
       }
     }
+  }
+
+  trackScreen(name, params = {}) {
+    this.logEvent(name, params, true);
+  }
+
+  endTrackScreen(name, params = {}) {
+    this.endTimedEvent(name, params);
   }
 
   logEvent(name, params = {}, timed = false) {
@@ -43,4 +50,4 @@ class FlurrAnalytic extends BaseAnalytic {
   }
 }
 
-export default FlurrAnalytic;
+export default FlurrAnalytics;
