@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image, UIManager, LayoutAnimation } from 'react-native'
-import { View, Text, Button, Container, Header, Title, Icon } from 'native-base';
-import BaseComponent from './BaseComponent';
-import FontSizeCalculator from './../../calculators/FontSize';
+import { View, Text, Button, Header, Title, Icon } from 'native-base';
 import glluTheme from '../../themes/gllu-theme';
+import Container from './Container';
 
 const styles = StyleSheet.create({
   container: {

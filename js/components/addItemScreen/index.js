@@ -215,10 +215,10 @@ class AddItemPage extends BasePage {
     if (this.state.currentStep != 2) {
       return (
         <Grid style={{flex: 1}}>
-          <Row size={75} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
+          <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
             {this.renderImageView()}
           </Row>
-          <Row size={25} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>
+          <Row size={30} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>
             <View style={styles.wrapper}>
               {this.renderActions()}
             </View>

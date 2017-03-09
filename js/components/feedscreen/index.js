@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Dimensions, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Header, Content, View } from 'native-base';
+import { Header, Content, View } from 'native-base';
 import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import MainView from './MainView';
@@ -11,6 +11,7 @@ import MyBodyModal from '../common/myBodyModal';
 import { addNewLook, setUser, pushRoute, navigateTo } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
+import Gllu from '../common';
 
 class FeedPage extends BasePage {
 
@@ -49,10 +50,6 @@ class FeedPage extends BasePage {
     });
   }
 
-  componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress');
-  }
-
   setUser(name) {
     this.props.setUser(name);
   }
@@ -86,7 +83,7 @@ class FeedPage extends BasePage {
       _.merge(contentStyle, { height: this.state.contentHeight });
     }
     return (
-      <Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
+      <Gllu.Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
         {!this.props.modalShowing ?
           <Header style={styles.mainNavHeader}>
             <NavigationBarView handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
@@ -104,7 +101,7 @@ class FeedPage extends BasePage {
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)}/>
         </Content>
-      </Container>
+      </Gllu.Container>
     );
   }
 }
