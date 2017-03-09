@@ -55,8 +55,12 @@ export default class BottomLookContainer extends Component {
         <TouchableOpacity transparent onPress={() => this.props.tempPopRoute()}>
           <Icon style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute'}} name="ios-arrow-back" />
         </TouchableOpacity>
-        <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 100}]}>
+        <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
+          <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
+          <BottomButton isLiked={this.state.isLiked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
         </View>
+        {this._renderBuyItButtons(this.props.look)}
+        <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)} closeModal={() => this._toggleMenu()}/>
       </Animated.View>
     )
   }
