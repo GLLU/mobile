@@ -23,6 +23,7 @@ const parseLook = function(look, index, flatLooksDataLength) {
   return Object.assign({}, {
     liked: look.is_liked,
     type: look.user_size.body_type,
+    description: look.description,
     id: look.id,
     likes: look.likes,
     user_id: look.user_id,
