@@ -48,6 +48,16 @@ export default StyleSheet.create({
 
     height: 40,
   },
+  footerButtonActive: {
+    flexWrap: 'wrap',
+    flexDirection:'row',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,215,178, 0.75)',
+
+    height: 40,
+  },
   footerButtonIcon: {
     alignSelf: 'center',
     fontSize: 25,

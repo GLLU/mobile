@@ -3,11 +3,11 @@ import {View, Text, TouchableOpacity, Image, TouchableHighlight} from 'react-nat
 import Icon from 'react-native-vector-icons/Entypo';
 import styles from './styles';
 import SocialShare from '../../lib/social';
+import InformationButton from './buttons/InformationButton'
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
 const shareImage = require('../../../images/share.png');
 const bubbleImage = require('../../../images/bubble.png');
-const infoImage = require('../../../images/infoIcon.png');
 
 export default class BottomButton extends Component {
   static propTypes = {
@@ -54,15 +54,9 @@ export default class BottomButton extends Component {
   }
 
   _renderInformationButton(hasDescription){
-    if(hasDescription) {
-        return (
-            <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onInformationClicked()}>
-              <View style={[styles.footerButton, {width: 40}]}>
-                <Image source={infoImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}/>
-              </View>
-            </TouchableHighlight>);
-    }
-    return <View></View>;
+    return hasDescription ?
+      <InformationButton onPress={this._onInformationClicked}/> :
+      <View name="information button placeholder"></View>;
   }
 
   render() {
