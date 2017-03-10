@@ -32,9 +32,9 @@ class FollowListView extends Component {
 
     constructor(props) {
         super(props);
-        var ds=new ListView.DataSource({rowHasChanged:this.rowHasChanged})
+        const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
         this.state = {
-            dataSource: ds.cloneWithRows(this.props.follows),
+            dataSource: ds.cloneWithRows(props.follows),
             isTrueEndReached:false
         };
     }

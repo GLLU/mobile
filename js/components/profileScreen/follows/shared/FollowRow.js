@@ -64,7 +64,7 @@ class FollowRow extends Component {
         this.renderFollowView=this.renderFollowView.bind(this);
         this.onFollowPress=this.onFollowPress.bind(this);
         this.state= {
-            isFollowing:this.props.is_following
+            isFollowing:props.is_following
         }
     }
 
