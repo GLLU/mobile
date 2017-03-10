@@ -111,18 +111,19 @@ export default reduxApi({
   console.log('making request', url, options);
   return adapterFetch(fetch)(url, options);
 })
-    .use('rootUrl', Config.API_URL)
-    .use("options", function() {
-      return { headers: {
+  .use('rootUrl', Config.API_URL)
+  .use("options", function () {
+    return {
+      headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
-      }};
-    }).
-    use("responseHandler", (err, data) => {
-      if (err) {
-        console.log("ERROR", err);
-        Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
-      } else {
-        console.log("SUCCESS", data)
       }
-    });
+    };
+  }).use("responseHandler", (err, data) => {
+    if (err) {
+      console.log("ERROR", err);
+      Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
+    } else {
+      console.log("SUCCESS", data)
+    }
+  });

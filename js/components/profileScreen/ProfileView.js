@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
   },
-  name:{
+  name: {
     color: 'white',
     fontSize: 35,
     fontFamily: 'Times New Roman',
     marginTop: 5,
   },
-  username:{
+  username: {
     color: '#00ABED',
     fontSize: 20,
     fontFamily: 'Times New Roman',
@@ -83,25 +83,25 @@ class ProfileView extends Component {
   }
 
   handleEditPress(e) {
-      this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
+    this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 
-  toggleFollowAction(user,isFollowing) {
-      let data = {id: user.id};
-      if (isFollowing) {
-          this.props.followUpdate(data);
-      }
-      else {
-          this.props.unFollowUpdate(data);
-      }
-      this.props.onFollowPress(isFollowing);
+  toggleFollowAction(user, isFollowing) {
+    let data = {id: user.id};
+    if (isFollowing) {
+      this.props.followUpdate(data);
+    }
+    else {
+      this.props.unFollowUpdate(data);
+    }
+    this.props.onFollowPress(isFollowing);
   }
 
   render() {
 
     return (
       <View style={[styles.avatar, this.props.isMyProfile ? null : {left: 20}]}>
-        <Image source={{uri: this.props.profilePic}} style={styles.avatarImg} />
+        <Image source={{uri: this.props.profilePic}} style={styles.avatarImg}/>
         <Text style={styles.name}>{this.props.name}</Text>
         <Text style={styles.username}>@{this.props.username}</Text>
         <View style={{justifyContent: 'center', flexDirection: 'row'}}>
@@ -110,7 +110,8 @@ class ProfileView extends Component {
               <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
             :
-            <FollowView user={{id:this.props.userid, isFollowing:this.props.isFollowing}} onPress={this.toggleFollowAction.bind(this)}/>
+            <FollowView user={{id:this.props.userid, isFollowing:this.props.isFollowing}}
+                        onPress={this.toggleFollowAction.bind(this)}/>
           }
         </View>
       </View>
@@ -128,7 +129,9 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => { return {} };
+const mapStateToProps = state => {
+  return {}
+};
 
 export default connect(mapStateToProps, bindAction)(ProfileView);
 

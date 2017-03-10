@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base';
-import {noop} from  'lodash';
+import { noop } from  'lodash';
 
 import styles from './styles';
 
@@ -13,28 +13,28 @@ class StatsView extends Component {
     following: React.PropTypes.number,
     followers: React.PropTypes.number,
     likes: React.PropTypes.number,
-    onFollowingPress:React.PropTypes.func,
-    onFollowersPress:React.PropTypes.func,
-    onLikesPress:React.PropTypes.func,
+    onFollowingPress: React.PropTypes.func,
+    onFollowersPress: React.PropTypes.func,
+    onLikesPress: React.PropTypes.func,
   };
 
   static defaultProps = {
-      onFollowingPress:noop,
-      onFollowersPress:noop,
-      onLikesPress:noop
+    onFollowingPress: noop,
+    onFollowersPress: noop,
+    onLikesPress: noop
   };
 
   constructor(props) {
     super(props);
   }
 
-  onFollowingPress(){
-      this.props.onFollowingPress({type:'following',count:this.props.following});
+  onFollowingPress() {
+    this.props.onFollowingPress({type: 'following', count: this.props.following});
   }
 
-    onFollowersPress(){
-        this.props.onFollowersPress({type:'followers',count:this.props.followers});
-    }
+  onFollowersPress() {
+    this.props.onFollowersPress({type: 'followers', count: this.props.followers});
+  }
 
   render() {
     return (

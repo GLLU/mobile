@@ -88,12 +88,13 @@ class AppNavigator extends Component {
       this.props.closeDrawer();
     }
   }
+
   _renderScene(props) { // eslint-disable-line class-methods-use-this
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
       case 'signupemail':
-        return <SignUpPage gender={props.scene.route.gender} />;
+        return <SignUpPage gender={props.scene.route.gender}/>;
       case 'genderselect':
         return <SignUpGenderPage />;
       case 'signinemail':
