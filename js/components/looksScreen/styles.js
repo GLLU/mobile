@@ -121,7 +121,7 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 22
   },
-  descriptionView: {
+  bottomDrawerView: {
     position: 'absolute',
     left: 0,
     right: 0

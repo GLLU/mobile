@@ -8,6 +8,7 @@ import TopButton from './topButton';
 import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
 import DescriptionView from './DescriptionView'
+import CommentsView from './comments/CommentsView'
 
 export default class BottomLookContainer extends Component {
   static propTypes = {
@@ -76,8 +77,10 @@ export default class BottomLookContainer extends Component {
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
 
-          <DescriptionView isHidden={!this.state.isDescriptionActive} style={styles.descriptionView}
+          <DescriptionView isHidden={!this.state.isDescriptionActive} style={styles.bottomDrawerView}
                            description={this.props.look.description}/>
+
+          <CommentsView isHidden={!this.state.isCommentsActive} style={styles.bottomDrawerView}/>
 
           <BottomButton
             isCommentsActive={this.state.isCommentsActive}
