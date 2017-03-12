@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import styles from './styles';
 import SocialShare from '../../lib/social';
 import InformationButton from './buttons/InformationButton'
+import CommentsButton from './buttons/CommentsButton'
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
 const shareImage = require('../../../images/share.png');
@@ -17,11 +18,15 @@ export default class BottomButton extends Component {
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
     hasDescription: React.PropTypes.bool,
-    toggleDescription: React.PropTypes.func
+    isDescriptionActive:React.PropTypes.bool,
+    toggleDescription: React.PropTypes.func,
+    isCommentsActive: React.PropTypes.bool,
+    toggleComments: React.PropTypes.func
   };
 
   static defaultProps = {
-    toggleDescription: _.noop
+    toggleDescription: _.noop,
+    toggleComments: _.noop
   };
 
   constructor(props) {
@@ -48,17 +53,13 @@ export default class BottomButton extends Component {
     this.props.toggleLike(!this.state.isLiked)
   }
 
-  _onBubbleClicked() {
-    console.log('comments Button clicked');
-  }
-
   _onShareClicked() {
     SocialShare.nativeShare();
   }
 
-  _renderInformationButton(hasDescription) {
-    return hasDescription ?
-      <InformationButton onPress={this.props.toggleDescription}/> :
+  _renderInformationButton() {
+    return this.props.hasDescription ?
+      <InformationButton isActive={this.props.isDescriptionActive} onPress={this.props.toggleDescription}/> :
       <View name="information button placeholder"></View>;
   }
 
@@ -74,12 +75,8 @@ export default class BottomButton extends Component {
                 <Text style={styles.footerButtonText}>{this.state.likes}</Text>
               </View>
             </TouchableHighlight>
-            { this._renderInformationButton(this.props.hasDescription) }
-            <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onBubbleClicked()}>
-              <View style={[styles.footerButton, {width: 40}]}>
-                <Image source={bubbleImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}/>
-              </View>
-            </TouchableHighlight>
+            { this._renderInformationButton() }
+            <CommentsButton isActive={this.props.isCommentsActive} onPress={this.props.toggleComments}/>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onShareClicked()}>
               <View style={[styles.footerButton, {width: 40}]}>
                 <Image source={shareImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}/>
