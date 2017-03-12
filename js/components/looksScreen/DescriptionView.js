@@ -26,19 +26,21 @@ export default class DescriptionView extends Component {
 
   static propTypes = {
     description: React.PropTypes.string.isRequired,
-    style:React.PropTypes.oneOfType([React.PropTypes.style,React.PropTypes.object])
+    style:React.PropTypes.oneOfType([React.PropTypes.style,React.PropTypes.object]),
+    isHidden:React.PropTypes.bool
   };
 
   static defaultProps = {
-    style:{}
+    style:{},
+    isHidden:true
   };
 
   componentDidMount(){
-    this._animateShow()
+    //this._animateShow()
   }
 
   componentWillUnmount(){
-    this._animateHide()
+    //this._animateHide()
   }
 
   _animateShow(){
@@ -62,6 +64,12 @@ export default class DescriptionView extends Component {
   }
 
   render() {
+    if(this.props.isHidden){
+      this._animateHide()
+    }
+    else{
+      this._animateShow()
+    }
     return(
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <View>

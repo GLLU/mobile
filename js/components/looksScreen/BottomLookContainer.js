@@ -41,9 +41,7 @@ export default class BottomLookContainer extends Component {
   }
 
   _renderDescriptionView(isActive) {
-    return isActive ?
-      <DescriptionView style={styles.descriptionView} description={this.props.look.description}/> :
-      <View style={[styles.descriptionView,{height:0}]} name="information button placeholder"/>;
+      return <DescriptionView isHidden={!isActive} style={styles.descriptionView} description={this.props.look.description}/>;
   }
 
   _toggleDescription(shouldActive){
