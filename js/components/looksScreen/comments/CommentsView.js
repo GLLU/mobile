@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Animated, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { Animated, ListView,  View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
+import CommentRow from './CommentRow'
 
 const styles = StyleSheet.create({
   container: {
@@ -36,15 +37,24 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     textAlign: 'left'
 
-  }
+  },
+  separator: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#e6e6e6',
+  },
 });
 
 export default class CommentsView extends Component {
 
   constructor(props) {
     super(props);
+    const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
+    this._renderFooter=this._renderFooter.bind(this);
     this.state = {
-      fadeAnimContent: new Animated.Value(-300)
+      fadeAnimContent: new Animated.Value(-300),
+      dataSource: ds.cloneWithRows(props.comments),
+      isTrueEndReached: false
     };
   }
 
@@ -58,6 +68,10 @@ export default class CommentsView extends Component {
     isHidden: true,
     count:48
   };
+
+  rowHasChanged(r1, r2) {
+    return r1 !== r2;
+  }
 
   _animateShow() {
     Animated.spring(          // Uses easing functions
@@ -79,6 +93,16 @@ export default class CommentsView extends Component {
     ).start();
   }
 
+  _renderFooter(){
+    return (
+      <View style={{flexDirection:'column', backgroundColor:'#ADADAD'}}>
+        <View style={{flex:1}} name="spacer"/>
+        <CommentInput style={{flex:2}}/>
+        <View style={{flex:1}} name="spacer"/>
+      </View>
+    );
+  }
+
   render() {
     if (this.props.isHidden) {
       this._animateHide()
@@ -88,17 +112,15 @@ export default class CommentsView extends Component {
     }
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
-        <CommentsViewHeader count={this.props.count}/>
-        <View>
-          <Text>
-            Hello World I'm Comments
-          </Text>
-        </View>
-        <View style={{flexDirection:'column', backgroundColor:'#ADADAD'}}>
-          <View style={{flex:1}} name="spacer"/>
-          <CommentInput style={{flex:2}}/>
-          <View style={{flex:1}} name="spacer"/>
-        </View>
+        <ListView
+          style={{flex:1}}
+          dataSource={this.state.dataSource}
+          renderRow={(data) => <CommentRow {...data}/>}
+          renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
+          enableEmptySections={true}
+          renderHeader={()=><CommentsViewHeader count={this.props.count}/>}
+          renderFooter={()=>this._renderFooter()}
+        />
         <View style={{height:70}}/>
       </Animated.View>
     );
