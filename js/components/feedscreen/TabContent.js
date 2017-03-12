@@ -6,6 +6,7 @@ import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
 import Spinner from '../loaders/Spinner';
 import Utils from '../../Utils';
+import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 
@@ -13,7 +14,7 @@ const deviceWidth = Dimensions.get('window').width;
 
 const LOADER_HEIGHT = 30;
 
-class TabContent extends Component {
+class TabContent extends BaseComponent {
 
   static propTypes = {
     hasUserSize: React.PropTypes.bool,
@@ -122,10 +123,12 @@ class TabContent extends Component {
   }
 
   _handleItemPress(item) {
+    this.logEvent('Feedscreen', { name: 'Image click' });
     this.props.navigateTo('looksScreen', 'feedscreen', item);
   }
 
   toggleLikeAction(item, isLiked) {
+    this.logEvent('Feedscreen', { name: 'Like Image click' });
     if (isLiked) {
       let data = {id: item.id, likes: item.likes+1, liked: true}
       this.props.likeUpdate(data);

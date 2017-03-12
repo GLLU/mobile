@@ -3,6 +3,7 @@ import { StyleSheet, Image, Platform } from 'react-native'
 import { View, Text, Button } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
+import BaseComponent from '../common/BaseComponent';
 
 const userIcon = require('../../../images/icons/user.png');
 const userWithNotifyIcon = require('../../../images/icons/user-with-notify.png');
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class NavigationBarView extends Component {
+class NavigationBarView extends BaseComponent {
   static propTypes = {
     user: React.PropTypes.object,
     handleSearchStatus: React.PropTypes.func,
@@ -61,10 +62,12 @@ class NavigationBarView extends Component {
 
   goToProfile() {
     console.log('Go To Profile');
+    this.logEvent('Feedscreen', { name: 'Profile click' });
     this.props.navigateTo('profileScreen', 'feedscreen', this.props.user);
   }
 
   openCamera() {
+    this.logEvent('Feedscreen', { name: 'Open Camera click' });
     this.props.handleOpenPhotoModal();
   }
 

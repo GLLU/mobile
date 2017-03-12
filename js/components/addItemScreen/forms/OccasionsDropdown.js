@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { View, Container, Button, Icon} from 'native-base';
 import MultiSelect from '../../common/MultiSelect';
 import Tags from './Tags';
+import BaseComponent from '../../common/BaseComponent';
 import _ from 'lodash';
 
 import {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class OccasionsDropdown extends Component {
+class OccasionsDropdown extends BaseComponent {
 
   static propTypes = {
     itemOccasionsDropdown: React.PropTypes.array,

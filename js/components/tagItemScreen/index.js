@@ -35,10 +35,12 @@ class TagItemPage extends BasePage {
   }
 
   handleBackButton() {
+    this.logEvent('TagItemScreen', { name: 'Back click' });
     this.goBack(true);
   }
 
   handleAddTag(position) {
+    this.logEvent('TagItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then(() => {
       this.setState({mode: 'edit'})
     });
@@ -49,6 +51,7 @@ class TagItemPage extends BasePage {
   }
 
   handleContinue() {
+    this.logEvent('TagItemScreen', { name: 'Continue click' });
     this.props.updateLookItem().then(response => {
       this.props.pushRoute({key: 'addItemScreen'}, this.props.navigation.key);
     });

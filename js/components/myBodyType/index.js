@@ -47,7 +47,9 @@ class MyBodyType extends BasePage {
   }
 
   _bodyTypeChange(index) {
-    const { gender } = this.props
+    const { gender, bodyTypes } = this.props
+    const bodyType = bodyTypes[gender][index];
+    this.logEvent('ChooseBodyTypeScreen', { name: 'Select bodyType', bodyType: bodyType.name });
     setTimeout(()=> {
       let data = {
         index,
@@ -64,6 +66,12 @@ class MyBodyType extends BasePage {
       }
     }, 200);
   }
+
+  handleContinuePress() {
+    this.logEvent('ChooseBodyTypeScreen', { name: 'Continue click' });
+    this.pushRoute('myBodyMeasure');
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -89,7 +97,7 @@ class MyBodyType extends BasePage {
             <ArrowTextBox title={this.state.currBodyType} description={this.state.currDescription} />
           </View>
           <Button block primary style={styles.continueButton}
-            onPress={() => this.pushRoute('myBodyMeasure')}>Continue</Button>
+            onPress={this.handleContinuePress.bind(this)}>Continue</Button>
         </Content>
       </Container>
     )

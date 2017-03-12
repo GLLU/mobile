@@ -70,24 +70,6 @@ class AddItemPage extends BasePage {
     };
   }
 
-  _handleLayoutImage(e) {
-    const { width, height } = e.nativeEvent.layout;
-    const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
-    this.setState({
-      imageWidth: w
-    })
-  }
-
-  _handleAddTag(position) {
-    this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'edit'})
-    });
-  }
-
-  _handleOnDragEnd(position) {
-    this.props.setTagPosition(position);
-  }
-
   handleContinue() {
     const { currentStep } = this.state;
     if (currentStep < 2) {
@@ -123,6 +105,7 @@ class AddItemPage extends BasePage {
   }
 
   publishAction() {
+    this.logEvent('UploadLookScreen', { name: 'Publish click' });
     this.props.publishLookItem().then(response => {
       this.props.pushRoute({key: 'finishLookScreen'}, this.props.navigation.key);
     });
@@ -175,9 +158,7 @@ class AddItemPage extends BasePage {
         width={imageWidth}
         mode={mode}
         items={items}
-        image={image}
-        onMarkerCreate={this._handleAddTag.bind(this)}
-        onDragEnd={this._handleOnDragEnd.bind(this)}/>
+        image={image}/>
     );
   }
 
@@ -215,7 +196,7 @@ class AddItemPage extends BasePage {
     if (this.state.currentStep != 2) {
       return (
         <Grid style={{flex: 1}}>
-          <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
+          <Row size={70} style={{flexDirection: 'column', alignItems: 'center'}}>
             {this.renderImageView()}
           </Row>
           <Row size={30} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>

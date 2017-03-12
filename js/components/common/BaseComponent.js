@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Utils from '../../Utils';
 import Config from 'react-native-config';
 import _ from 'lodash';
+import Analytics from '../../lib/analytics/Analytics';
 
 class BaseComponent extends Component {
   constructor(props) {
@@ -44,6 +45,14 @@ class BaseComponent extends Component {
 
   getBugsnagClient() {
     return this.bugsnag;
+  }
+
+  logEvent(name, params = {}) {
+    // set it async to not affect main thread
+    setTimeout(() => {
+      console.log('BaseComponent logEvent', name);
+      Analytics.logEvent(name, params);  
+    }, 10);
   }
 }
 

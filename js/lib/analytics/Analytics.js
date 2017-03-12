@@ -11,8 +11,8 @@ class Analytics {
 
   setupAnalytics() {
     return [
-      new FlurryAnalytics(),
       new GoogleAnalytics(),
+      new FlurryAnalytics(),
       new FacebookAnalytics(),
     ]
   }
@@ -31,34 +31,34 @@ class Analytics {
     this.endTimedEvent(APP_LOADED_EVENT, params);
   }
 
-  trackScreen(...args) {
+  trackScreen(params = {}) {
     this._loop(x => {
       if (typeof x.trackScreen === 'function') {
-        x.trackScreen(PAGE_LOADED_EVENT, ...args);
+        x.trackScreen(PAGE_LOADED_EVENT, Object.assign({}, params));
       }
     })
   }
 
-  endTrackScreen(...args) {
+  endTrackScreen(params = {}) {
     this._loop(x => {
       if (typeof x.trackScreen === 'function') {
-        x.endTrackScreen(PAGE_LOADED_EVENT, ...args);
+        x.endTrackScreen(PAGE_LOADED_EVENT, Object.assign({}, params));
       }
     })
   }
 
-  logEvent(...args) {
+  logEvent(name, params = {}) {
     this._loop(x => {
       if (typeof x.logEvent === 'function') {
-        x.logEvent(...args);
+        x.logEvent(name, Object.assign({}, params));
       }
     });
   }
 
-  endTimedEvent(...args) {
+  endTimedEvent(name, params = {}) {
     this._loop(x => {
       if (typeof x.logEvent === 'function') {
-        x.endTimedEvent(...args);
+        x.endTimedEvent(name, Object.assign({}, params));
       }
     });
   }

@@ -69,6 +69,7 @@ class SplashPage extends BasePage {
   }
 
   connectWithFB() {
+    this.logEvent('Splashscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
     LoginManager.logInWithReadPermissions(PERMISSIONS).then(
       (result) => {
@@ -101,10 +102,15 @@ class SplashPage extends BasePage {
     );
   }
 
+  handleEmailSignupPress() {
+    this.logEvent('Splashscreen', {name: 'Email signup click'});
+    this.pushRoute('genderselect');
+  }
+
   renderMainView() {
     return (
         <View style={styles.signupContainer}>
-          <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
+          <SignUpEmailButton onPress={this.handleEmailSignupPress.bind(this)} />
           <Text style={styles.label}>Or</Text>
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}

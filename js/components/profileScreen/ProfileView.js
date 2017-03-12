@@ -6,6 +6,7 @@ import { View, Button } from 'native-base';
 import { connect } from 'react-redux';
 import { logout, navigateTo, followUpdate, unFollowUpdate } from '../../actions';
 import FollowView from './follows/FollowView.js'
+import BaseComponent from '../common/BaseComponent';
 
 const styles = StyleSheet.create({
   avatar: {
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class ProfileView extends Component {
+class ProfileView extends BaseComponent {
 
   static propTypes = {
     isMyProfile: React.PropTypes.bool,
@@ -83,6 +84,7 @@ class ProfileView extends Component {
   }
 
   handleEditPress(e) {
+    this.logEvent('ProfileScreen', { name: 'Edit click' });
     this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 

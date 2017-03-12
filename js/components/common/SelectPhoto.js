@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'r
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
 import FontSizeCalculator from './../../calculators/FontSize';
+import BaseComponent from './BaseComponent';
 const MK = require('react-native-material-kit');
 const galleryIcon = require('../../../images/icons/original-gallery.png')
 const cameraIcon = require('../../../images/icons/original-photo-camera.png')
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class SelectPhoto extends Component {
+class SelectPhoto extends BaseComponent {
 
   static propTypes = {
     photoModal: React.PropTypes.bool,
@@ -32,6 +33,7 @@ class SelectPhoto extends Component {
   }
 
   _handleSelectPhoto(type) {
+    this.logEvent('Feedscreen', { name: 'Select photo from', type: type });
     this._triggerPhotoPicker(type).then(image => {
       this.props.addNewItem(image);
     }).catch(err => {

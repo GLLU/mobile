@@ -6,8 +6,9 @@ import BottomButton from './bottomButton';
 import TopButton from './topButton';
 import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
+import BaseComponent from '../common/BaseComponent';
 
-export default class BottomLookContainer extends Component {
+export default class BottomLookContainer extends BaseComponent {
   static propTypes = {
     look: React.PropTypes.object,
     tempPopRoute: React.PropTypes.func,
@@ -36,6 +37,11 @@ export default class BottomLookContainer extends Component {
     });
   }
 
+  handleLikePress(isLiked) {
+    this.logEvent('LookScreen', { name: 'Like click', liked: isLiked });
+    this.props.toggleLike(isLiked)
+  }
+
   _toggleMenu(){
     this.setState({isMenuOpen: !this.state.isMenuOpen})
   }
@@ -57,7 +63,7 @@ export default class BottomLookContainer extends Component {
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
-          <BottomButton isLiked={this.state.isLiked} likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)} toggleMenu={() => this._toggleMenu()}/>
+          <BottomButton isLiked={this.state.isLiked} likes={this.state.likes} toggleLike={this.handleLikePress.bind(this)} toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)} closeModal={() => this._toggleMenu()}/>

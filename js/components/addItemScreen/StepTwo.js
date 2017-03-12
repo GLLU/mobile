@@ -12,6 +12,7 @@ import Location from './forms/Location';
 import TrustLevel from './forms/TrustLevel';
 import OccasionsDropdown from './forms/OccasionsDropdown';
 import Gllu from '../common';
+import BaseComponent from '../common/BaseComponent';
 import {
     createLookItem,
     addDescription,
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class StepTwo extends Component {
+class StepTwo extends BaseComponent {
   static propTypes = {
     image: React.PropTypes.string,
     publishItem: React.PropTypes.func,

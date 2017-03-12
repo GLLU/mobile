@@ -141,6 +141,21 @@ class SignUpPage extends BasePage {
       this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
   }
 
+  handleCameraPress() {
+    this.logEvent('SignUpEmailScreen', { name: 'Camera click' });
+    this.addUserAvatar();
+  }
+
+  handleSignupPress() {
+    this.logEvent('SignUpEmailScreen', { name: 'Lets GLLU click' });
+    this.singupWithEmail();
+  }
+
+  handleLoginPress() {
+    this.logEvent('SignUpEmailScreen', { name: 'Already user click' });
+    this.pushRoute('signinemail');
+  }
+
   addUserAvatar() {
     ImagePicker.openPicker({
       cropping: false,
@@ -173,7 +188,7 @@ class SignUpPage extends BasePage {
                   </Header>
                   <Content scrollEnabled={false}>
                       <View style={styles.uploadImgContainer}>
-                          <Button large style={styles.uploadImgBtn} warning onPress={() => this.addUserAvatar()}>
+                          <Button large style={styles.uploadImgBtn} warning onPress={this.handleCameraPress.bind(this)}>
                               <IconB size={30} color={MKColor.Teal} name={this.state.avatarIcon} style={styles.uploadImgIcon}/>
                           </Button>
                       </View>
@@ -216,12 +231,12 @@ class SignUpPage extends BasePage {
                                 {this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                             </Row>
                         </Grid>
-                        <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.singupWithEmail()}>
+                        <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}>
                             Let's GLLU
                         </Button>
                         <View style={styles.alreadyBox}>
                             <Text style={styles.alreadyTxt}>Already a user?</Text>
-                            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+                            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={this.handleLoginPress.bind(this)}>Login Here</Button>
                         </View>
                       </View>
 

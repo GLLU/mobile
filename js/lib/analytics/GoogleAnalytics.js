@@ -39,8 +39,8 @@ class GoogleAnalytics extends BaseAnalytic {
 
   logEvent(name, params = {}, timed = false) {
     console.log('GoogleAnalytics.logEvent', name, params, timed);
-    const action = params.action || name;
-    this.tracker.trackEvent(name, action, params);
+    const label = params.name || name;
+    this.tracker.trackEvent(name, label, params);
   }
 }
 

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import BasePage from '../common/BasePage';
 import { Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput, ScrollView, FormData} from 'react-native';
 import styles from './styles';
 import { View } from 'native-base';
@@ -19,7 +20,7 @@ import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const { popRoute } = actions;
 
-class EditProfile extends Component {
+class EditProfile extends BasePage {
   static propTypes = {
     user: React.PropTypes.object,
     navigation: React.PropTypes.object,
@@ -55,6 +56,7 @@ class EditProfile extends Component {
   }
 
   _changeUserAvatar() {
+    this.logEvent('EditProfileScreen', { name: 'Change avatar click' });
     ImagePicker.openPicker({
       includeBase64: true,
       cropping: false,

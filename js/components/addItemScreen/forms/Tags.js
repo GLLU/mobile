@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Container, Button, Icon} from 'native-base';
-
+import BaseComponent from '../../common/BaseComponent';
 import FontSizeCalculator from './../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class Tags extends Component {
+class Tags extends BaseComponent {
 
   static propTypes = {
     itemTags: React.PropTypes.array,

@@ -54,14 +54,17 @@ class SettingsScreen extends BasePage {
   }
 
   handleBack() {
+    this.logEvent('SettingsScreen', { name: 'Back click' });
     this.props.back(this.props.navigation.key);
   }
 
   handleShare() {
+    this.logEvent('SettingsScreen', { name: 'Share click' });
     SocialShare.nativeShare();
   }
 
   handleOpenLink(url) {
+    this.logEvent('SettingsScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -84,6 +87,7 @@ class SettingsScreen extends BasePage {
   }
 
   handleLogout() {
+    this.logEvent('SettingsScreen', { name: 'Logout click' });
     this.props.logout();
   }
 
