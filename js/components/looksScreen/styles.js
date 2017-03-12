@@ -1,21 +1,19 @@
-import {StyleSheet, Dimensions, Platform} from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const w = Dimensions.get('window').width
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
 export default StyleSheet.create({
-  container: {
-
-  },
+  container: {},
   tempBtn: {
-    position: 'absolute',width: 50, height: 50, backgroundColor :'green'
+    position: 'absolute', width: 50, height: 50, backgroundColor: 'green'
   },
   itemImage: {
     width: w,
     height: h,
   },
-  topContainer: {
+  descriptionStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -27,24 +25,35 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     flexDirection: 'row',
-    bottom: 20
+    bottom: 20,
+    zIndex: 1
   },
 
   bottomLeft: {
     left: 10
   },
   bottomRight: {
-    flexDirection:'row',
+    flexDirection: 'row',
     position: 'absolute',
     right: 10
   },
   footerButton: {
     flexWrap: 'wrap',
-    flexDirection:'row',
+    flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 5,
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
+
+    height: 40,
+  },
+  footerButtonActive: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,215,178, 0.75)',
 
     height: 40,
   },
@@ -60,7 +69,7 @@ export default StyleSheet.create({
   },
   horizontalContainer: {
     flexWrap: 'wrap',
-    flexDirection:'row',
+    flexDirection: 'row',
   },
   topButton: {
     width: 84,
@@ -100,7 +109,7 @@ export default StyleSheet.create({
     backgroundColor: 'transparent'
   },
   lookInfo: {
-    height: h-35,
+    height: h - 35,
     justifyContent: 'space-between'
   },
   buyItContainer: {
@@ -112,4 +121,9 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 22
   },
+  descriptionView: {
+    position: 'absolute',
+    left: 0,
+    right: 0
+  }
 });
