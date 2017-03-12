@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import { View, Image, TouchableHighlight, StyleSheet  } from 'react-native';
+import React, { Component } from 'react';
+import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import * as _ from 'lodash'
 
-const infoIcon =require('../../../../images/infoIcon.png');
+const infoIcon = require('../../../../images/infoIcon.png');
 import styles from '../styles'
 
 export default class InformationButton extends Component {
   constructor(props) {
     super(props);
-    this._onPress=this._onPress.bind(this)
-    this.state={
-      isActive:this.props.isActive
+    this._onPress = this._onPress.bind(this)
+    this.state = {
+      isActive: this.props.isActive
     }
   }
 
@@ -24,20 +24,20 @@ export default class InformationButton extends Component {
     isActive: false
   };
 
-  _getStyle(isActive){
+  _getStyle(isActive) {
     return isActive ? styles.footerButtonActive : styles.footerButton;
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.isActive){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isActive) {
       this.setState({isActive: nextProps.isActive})
     }
   }
 
-  _onPress(){
+  _onPress() {
     const shouldActive = !this.state.isActive;
     this.props.onPress(shouldActive);
-    this.setState({isActive:shouldActive})
+    this.setState({isActive: shouldActive})
   }
 
   render() {

@@ -18,7 +18,7 @@ const initialState = {
   },
 };
 
-const parseLook = function(look, index, flatLooksDataLength) {
+const parseLook = function (look, index, flatLooksDataLength) {
   const cover = _.find(look.cover, x => x.version == 'thumb');
   return Object.assign({}, {
     liked: look.is_liked,
@@ -35,14 +35,14 @@ const parseLook = function(look, index, flatLooksDataLength) {
     username: look.user.username,
     about_me: look.user.about_me,
     items: look.items,
-    originalIndex: flatLooksDataLength+index
+    originalIndex: flatLooksDataLength + index
   });
 }
 
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_LOOK_LIKE_STATE]: (state, action) => {
-    const { id, likes, liked } = action.payload;
+    const {id, likes, liked} = action.payload;
     return {
       ...state,
       flatLooksData: state.flatLooksData.map((look, index) => {
@@ -58,7 +58,7 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
-    const newData = action.payload.data.looks.map((look, index ,flatLooksDataLength) => parseLook(look, index, state.flatLooksData.length));
+    const newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, state.flatLooksData.length));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
       ...state,
@@ -67,7 +67,7 @@ const ACTION_HANDLERS = {
       query,
     }
   },
-  [RESET_FEED_DATA]: (state, { payload }) => {
+  [RESET_FEED_DATA]: (state, {payload}) => {
     const flatLooksData = payload.data.looks.map(look => parseLook(look));
     return {
       ...state,
@@ -78,7 +78,7 @@ const ACTION_HANDLERS = {
   }
 }
 
-export default function reducers (state = initialState, action) {
+export default function reducers(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
 }
