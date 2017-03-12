@@ -22,6 +22,8 @@ import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import LooksScreen from './components/looksScreen';
 import ProfileScreen from './components/profileScreen';
+import FollowScreen from './components/profileScreen/follows/followscreen';
+import FollowerScreen from './components/profileScreen/follows/followerscreen';
 import SettingsScreen from './components/settingsScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import UserLookScreen from './components/userLooksScreen/index.js';
@@ -87,13 +89,14 @@ class AppNavigator extends Component {
       this.props.closeDrawer();
     }
   }
+
   _renderScene(props) { // eslint-disable-line class-methods-use-this
     const optional = props.scene.route.optional;
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
       case 'signupemail':
-        return <SignUpPage gender={props.scene.route.gender} />;
+        return <SignUpPage gender={props.scene.route.gender}/>;
       case 'genderselect':
         return <SignUpGenderPage />;
       case 'signinemail':
@@ -124,7 +127,11 @@ class AppNavigator extends Component {
       case 'userLookScreen':
         return <UserLookScreen userData={props.scene.route.optional}/>;
       case 'profileScreen':
-        return <ProfileScreen userData={props.scene.route.optional}/>;
+        return <ProfileScreen key={props.scene.route.optional.user_id} userData={props.scene.route.optional}/>;
+      case 'followScreen':
+        return <FollowScreen userData={props.scene.route.optional}/>;
+      case 'followerScreen':
+        return <FollowerScreen userData={props.scene.route.optional}/>;
       case 'settingsScreen':
         return <SettingsScreen/>;
       case 'editProfileScreen':

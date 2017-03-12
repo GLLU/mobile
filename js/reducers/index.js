@@ -1,4 +1,3 @@
-
 import { combineReducers } from 'redux';
 
 import drawer from './drawer';
@@ -14,6 +13,8 @@ import uploadLook from './uploadLook';
 import feed from './feed';
 import look from './look';
 import userLooks from './userLooks';
+import userFollows from './userFollows';
+import userFollowers from './userFollowers';
 import stats from './stats';
 
 import { reducer as api } from 'redux-json-api';
@@ -34,4 +35,6 @@ export default combineReducers({
   userLooks,
   stats,
   api,
+  userFollows,
+  userFollowers
 });

@@ -1,9 +1,9 @@
 import reduxApi from "redux-api";
 import _ from 'lodash';
-const adapterFetch = require("redux-api/lib/adapters/fetch");
 import navigateTo from '../actions/sideBarNav';
 import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
+const adapterFetch = require("redux-api/lib/adapters/fetch");
 
 import Utils from '../Utils';
 import Config from 'react-native-config';
@@ -96,23 +96,36 @@ export default reduxApi({
   item_occasions: {
     url: '/looks/:look_id/items/:item_id/item_occasions/:id',
     crud: true,
+  },
+  follows: {
+    //query parameters: :page[number], page[size]
+    url: '/users/:user_id/follows/',
+    crud: true,
+  },
+  followers: {
+    //query parameters: :page[number], page[size]
+    url: '/users/:user_id/followers/',
+    options: {
+      method: 'get'
+    }
   }
 }).use("fetch", (url, options) => {
   console.log('making request', url, options);
   return adapterFetch(fetch)(url, options);
 })
-    .use('rootUrl', Config.API_URL)
-    .use("options", function() {
-      return { headers: {
+  .use('rootUrl', Config.API_URL)
+  .use("options", function () {
+    return {
+      headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
-      }};
-    }).
-    use("responseHandler", (err, data) => {
-      if (err) {
-        console.log("ERROR", err);
-        Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
-      } else {
-        console.log("SUCCESS", data)
       }
-    });
+    };
+  }).use("responseHandler", (err, data) => {
+    if (err) {
+      console.log("ERROR", err);
+      Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
+    } else {
+      console.log("SUCCESS", data)
+    }
+  });

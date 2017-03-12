@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { View, Button } from 'native-base';
 import { connect } from 'react-redux';
-import { logout, navigateTo } from '../../actions';
+import { logout, navigateTo, followUpdate, unFollowUpdate } from '../../actions';
+import FollowView from './follows/FollowView.js'
 
 const styles = StyleSheet.create({
   avatar: {
@@ -17,13 +18,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
   },
-  name:{
+  name: {
     color: 'white',
     fontSize: 35,
     fontFamily: 'Times New Roman',
     marginTop: 5,
   },
-  username:{
+  username: {
     color: '#00ABED',
     fontSize: 20,
     fontFamily: 'Times New Roman',
@@ -34,10 +35,6 @@ const styles = StyleSheet.create({
     height: 25,
     justifyContent: 'center',
     margin: 5,
-  },
-  followText: {
-    textAlign: 'center',
-    color: 'white'
   },
   editBtn: {
     backgroundColor: 'transparent',
@@ -70,6 +67,8 @@ class ProfileView extends Component {
 
   static propTypes = {
     isMyProfile: React.PropTypes.bool,
+    isFollowing: React.PropTypes.bool,
+    userid: React.PropTypes.number,
     profilePic: React.PropTypes.string,
     name: React.PropTypes.string,
     username: React.PropTypes.string,
@@ -87,10 +86,22 @@ class ProfileView extends Component {
     this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
   }
 
+  toggleFollowAction(user, isFollowing) {
+    let data = {id: user.id};
+    if (isFollowing) {
+      this.props.followUpdate(data);
+    }
+    else {
+      this.props.unFollowUpdate(data);
+    }
+    this.props.onFollowPress(isFollowing);
+  }
+
   render() {
+
     return (
       <View style={[styles.avatar, this.props.isMyProfile ? null : {left: 20}]}>
-        <Image source={{uri: this.props.profilePic}} style={styles.avatarImg} />
+        <Image source={{uri: this.props.profilePic}} style={styles.avatarImg}/>
         <Text style={styles.name}>{this.props.name}</Text>
         <Text style={styles.username}>@{this.props.username}</Text>
         <View style={{justifyContent: 'center', flexDirection: 'row'}}>
@@ -99,9 +110,8 @@ class ProfileView extends Component {
               <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
             :
-            <TouchableOpacity style={styles.followBtn} onPress={this.handleEditPress.bind(this)}>
-              <Text style={styles.followText}>Follow</Text>
-            </TouchableOpacity>
+            <FollowView user={{id:this.props.userid, isFollowing:this.props.isFollowing}}
+                        onPress={this.toggleFollowAction.bind(this)}/>
           }
         </View>
       </View>
@@ -113,12 +123,14 @@ class ProfileView extends Component {
 function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
+    followUpdate: (id) => dispatch(followUpdate(id)),
+    unFollowUpdate: (id) => dispatch(unFollowUpdate(id)),
     logout: () => dispatch(logout()),
   };
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {}
 };
 
 export default connect(mapStateToProps, bindAction)(ProfileView);

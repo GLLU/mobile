@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 'react-native';
 import styles from './styles';
@@ -16,7 +16,7 @@ const userBackground = require('../../../images/epsbg.png');
 const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
-const { popRoute } = actions;
+const {popRoute} = actions;
 
 class ProfileScreen extends BasePage {
   static propTypes = {
@@ -31,26 +31,29 @@ class ProfileScreen extends BasePage {
     getUserBodyType: React.PropTypes.func,
     getStats: React.PropTypes.func,
   };
+
   constructor(props) {
     super(props);
-    const isMyProfile = this.props.userData.id === this.props.myUser.id
+    const isMyProfile = this.props.userData.id === this.props.myUser.id || this.props.userData.user_id === this.props.myUser.id;
+    ;
     this.state = {
       isMyProfile,
-      userId: isMyProfile ? this.props.userData.id : this.props.userData.user_id,
+      isFollowing: this.props.userData.is_following,
+      userId: isMyProfile ? this.props.myUser.id : this.props.userData.user_id,
 
       photoModal: false
     }
   }
 
   componentDidMount() {
-    if(this.props.hasUserSize) {
+    if (this.props.hasUserSize) {
       const data = {
         gender: this.props.myUser.gender,
         bodyType: this.props.myUser.user_size.body_type
       }
       this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
     }
-    if(this.state.userId !== this.props.currLookScreenId){ //here for performance - relate to user looks screen
+    if (this.state.userId !== this.props.currLookScreenId) { //here for performance - relate to user looks screen
       const looksDataCall = {
         id: this.state.userId,
         page: 1
@@ -72,19 +75,19 @@ class ProfileScreen extends BasePage {
   }
 
   _renderleftBtn() {
-   return this.state.isMyProfile ?
-     <Image source={toFeedScreen} style={styles.toFeedScreenBtn} />
-     :
-     <Icon style={styles.backBtn} name="ios-arrow-back" />
+    return this.state.isMyProfile ?
+      <Image source={toFeedScreen} style={styles.toFeedScreenBtn}/>
+      :
+      <Icon style={styles.backBtn} name="ios-arrow-back"/>
   }
 
   _renderRightBtn() {
-   return this.state.isMyProfile ?
-    <TouchableOpacity onPress={this.handleSettingsPress.bind(this)}>
-      <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn} />
-    </TouchableOpacity>
-     :
-     <Text style={styles.reportBtn}>REPORT</Text>
+    return this.state.isMyProfile ?
+      <TouchableOpacity onPress={this.handleSettingsPress.bind(this)}>
+        <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn}/>
+      </TouchableOpacity>
+      :
+      <Text style={styles.reportBtn}>REPORT</Text>
   }
 
   componentWillUnmount() {
@@ -94,6 +97,7 @@ class ProfileScreen extends BasePage {
   _handleItemPress(item) {
     this.props.navigateTo('looksScreen', 'feedscreen', item);
   }
+
   _handleItemsPress() {
     const userData = {
       id: this.state.userId,
@@ -114,9 +118,14 @@ class ProfileScreen extends BasePage {
     this.setState({photoModal: true});
   }
 
+  toggleFollow(isFollowing) {
+    this.setState({isFollowing: isFollowing});
+    this.props.getStats(this.state.userId);
+  }
+
   _renderStats() {
 
-    if(this.props.stats.latest_looks && this.props.stats.user_id === this.state.userId) {
+    if (this.props.stats.latest_looks && this.props.stats.user_id === this.state.userId) {
       return (
         <View>
           <ItemsGallery isMyProfile={this.state.isMyProfile}
@@ -126,15 +135,37 @@ class ProfileScreen extends BasePage {
                         itemsPress={(item) => this._handleItemsPress(item) }
                         addNewItem={() => this._handleOpenPhotoModal() }
           />
-          <StatsView following={this.props.stats.following} followers={this.props.stats.followers} likes={this.props.stats.likes_count} />
+          <StatsView
+            following={this.props.stats.following}
+            followers={this.props.stats.followers}
+            likes={this.props.stats.likes_count}
+            onFollowersPress={this.handleFollowersPress.bind(this)}
+            onFollowingPress={this.handleFollowingPress.bind(this)}
+          />
         </View>
       )
     }
   }
 
+  handleFollowingPress(stat) {
+    this.props.navigateTo('followScreen', 'profileScreen', {
+      user: {id: this.state.userId},
+      mode: stat.type,
+      count: stat.count
+    });
+  }
+
+  handleFollowersPress(stat) {
+    this.props.navigateTo('followerScreen', 'profileScreen', {
+      user: {id: this.state.userId},
+      mode: stat.type,
+      count: stat.count
+    });
+  }
+
   render() {
-    const { isMyProfile } = this.state
-    const { myUser, userData } = this.props;
+    const {isMyProfile} = this.state;
+    const {myUser, userData} = this.props;
     const user = isMyProfile ? myUser : userData;
     let about_me = user.about_me;
     let avatar = user.avatar;
@@ -142,28 +173,32 @@ class ProfileScreen extends BasePage {
       let avatarUrl = avatar ? avatar.url : null;
       return (
         <Container>
-            <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
-              <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]} />
-              <View style={styles.header}>
-                <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
+          <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
+            <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
+                            style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]}/>
+            <View style={styles.header}>
+              <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
                 { this._renderleftBtn() }
-                </TouchableOpacity>
-                { avatarUrl ?
+              </TouchableOpacity>
+              { avatarUrl ?
                 <ProfileView profilePic={avatarUrl}
+                             userid={this.state.userId}
                              name={user.name}
                              username={user.username}
                              isMyProfile={this.state.isMyProfile}
+                             isFollowing={this.state.isFollowing}
+                             onFollowPress={this.toggleFollow.bind(this)}
                 /> : null }
-                <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
-                  { this._renderRightBtn() }
-                </TouchableOpacity>
-              </View>
-              <View style={styles.description}>
-                <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
-              </View>
-              { this._renderStats() }
-            </Image>
-            <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} />
+              <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
+                { this._renderRightBtn() }
+              </TouchableOpacity>
+            </View>
+            <View style={styles.description}>
+              <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
+            </View>
+            { this._renderStats() }
+          </Image>
+          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)}/>
         </Container>
       )
     }
