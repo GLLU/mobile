@@ -35,14 +35,6 @@ export default class DescriptionView extends Component {
     isHidden: true
   };
 
-  componentDidMount() {
-    //this._animateShow()
-  }
-
-  componentWillUnmount() {
-    //this._animateHide()
-  }
-
   _animateShow() {
     Animated.spring(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
