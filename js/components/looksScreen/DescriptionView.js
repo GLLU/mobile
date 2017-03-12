@@ -74,7 +74,7 @@ export default class DescriptionView extends Component {
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <View>
           <Text style={styles.descriptionStyle}>
-            {this.props.description + 'sdfjklf kjhafj sadhfjk hfjk hasjk hajksdh jkasdhf jkdshfjk hdsjkfh ajksdfhjk asf'}
+            {this.props.description}
           </Text>
         </View>
         <View style={{height:70}}/>
