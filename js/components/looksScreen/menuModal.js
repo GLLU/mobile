@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'react-native';
 import Modal from 'react-native-modalbox';
-import SocialShare from '../../lib/SocialShare';
+import SocialShare from '../../lib/social';
 import Icon from 'react-native-vector-icons/Entypo';
 const MK = require('react-native-material-kit');
 const deviceWidth = Dimensions.get('window').width;
@@ -70,7 +70,7 @@ class menuModal extends Component {
   }
 
   _onShareClicked() {
-    SocialShare.share('facebook');
+    SocialShare.facebookShare();
   }
 
   _reportAbuse() {

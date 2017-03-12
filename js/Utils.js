@@ -1,3 +1,4 @@
+import { Image } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import { Client } from 'bugsnag-react-native';
 import Config from 'react-native-config';
@@ -68,5 +69,22 @@ export default class Utils {
         reject(err);
       });
     });
+  }
+
+  static preloadLookImages(looks) {
+    const coverUrls = looks.map(look => _.find(look.cover, x => x.version == 'thumb').url);
+    return this.preloadImages(coverUrls);
+  }
+
+  static preloadImages(urls) {
+    return Promise.all(
+      urls.map(url => {
+        return new Promise((resolve, reject) => {
+          Image.getSize(url, (width, height) => {
+            resolve({width, height});
+          }, reject);  
+        });
+      })
+    );
   }
 }

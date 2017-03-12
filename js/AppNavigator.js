@@ -29,6 +29,7 @@ import EditProfile from './components/profileScreen/EditProfile.js';
 import UserLookScreen from './components/userLooksScreen/index.js';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
+import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
 
 import { statusBarColor } from './themes/base-theme';
@@ -90,6 +91,7 @@ class AppNavigator extends Component {
   }
 
   _renderScene(props) { // eslint-disable-line class-methods-use-this
+    const optional = props.scene.route.optional;
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
@@ -106,7 +108,10 @@ class AppNavigator extends Component {
       case 'addItemScreen':
         return <AddItemPage />;
       case 'tagItemScreen':
-        return <TagItemPage />;
+        const mode = optional ? optional.mode : 'create';
+        return <TagItemPage mode={mode} />;
+      case 'finishLookScreen':
+        return <FinishLookScreen />;
       case 'login':
         return <Login />;
       case 'home':

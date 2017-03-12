@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textInput: {
-    height: 50,
+    height: 40,
     backgroundColor: '#FFFFFF',
     padding: 10,
     marginTop: 10,
@@ -55,7 +55,7 @@ class TagInput extends Component {
         <TextInput
           ref={ref => this.textInput = ref}
           returnKeyType="done"
-          placeholder=""
+          placeholder="(i.e Yellow, hipster, pants)"
           keyboardType="default"
           placeholderTextColor="#BDBDBD"
           style={styles.textInput}

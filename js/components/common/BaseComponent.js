@@ -31,13 +31,15 @@ class BaseComponent extends Component {
   }
 
   notifyError(error) {
-    this.bugsnag.notify(error, (report) => {
-      report.metadata = { "account": {
-        "company": "GLLU Ltd.",
-        "machine_name": Config.MACHINE_NAME
+    if (!__DEV__) {
+      this.bugsnag.notify(error, (report) => {
+        report.metadata = { "account": {
+          "company": "GLLU Ltd.",
+          "machine_name": Config.MACHINE_NAME
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   getBugsnagClient() {
