@@ -136,8 +136,8 @@ class FilterView extends Component {
   }
 
   toggleFilter() {
-    let filterStatusIcon = !this.state.isActive ? "ios-arrow-down" : "ios-arrow-forward"
-    this.setState({ isOpen: !this.state.isActive, filterStatusIcon });
+    let filterStatusIcon = !this.state.isOpen ? "ios-arrow-down" : "ios-arrow-forward"
+    this.setState({ isOpen: !this.state.isOpen, filterStatusIcon });
   }
 
   _handleCloseFilter() {
@@ -224,7 +224,7 @@ class FilterView extends Component {
             <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
               RESET
               </Button>
-            {this.state.isActive ?
+            {this.state.isOpen ?
               <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
                   <Icon name={this.state.filterStatusIcon} style={[myStyles.smallBtn]} />
               </Button>
@@ -233,7 +233,7 @@ class FilterView extends Component {
             }
           </View>
         </View>
-        {this.state.isActive ? this._renderFilters() : null}
+        {this.state.isOpen ? this._renderFilters() : null}
       </View>
     )
   }
