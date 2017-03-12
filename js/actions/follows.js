@@ -61,8 +61,10 @@ export function getUserFollowsData(id, pageNumber = 1, pageSize = 25): Action {
   return (dispatch) => {
     return dispatch(rest.actions.follows({
       user_id: id,
-      "page[size]": pageSize,
-      "page[number]": pageNumber
+      page:{
+        size:pageSize,
+        number:pageNumber
+      }
     }, {}, (err, userFollowsData) => {
       if (!err && userFollowsData) {
         let followsData = {

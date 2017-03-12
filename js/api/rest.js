@@ -98,11 +98,13 @@ export default reduxApi({
     crud: true,
   },
   follows: {
-    url: '/users/:user_id/follows/:page[number]:page[size]',
+    //query parameters: :page[number], page[size]
+    url: '/users/:user_id/follows/',
     crud: true,
   },
   followers: {
-    url: '/users/:user_id/followers/:page[number]:page[size]',
+    //query parameters: :page[number], page[size]
+    url: '/users/:user_id/followers/',
     options: {
       method: 'get'
     }
