@@ -25,6 +25,7 @@ class FlurrAnalytics extends BaseAnalytic {
   }
 
   setUser(user) {
+    console.log('FlurryAnalytics.setUser', user);
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
         FlurryAnalytics.setUserId(this.encryptUserId(user.id));
@@ -34,18 +35,22 @@ class FlurrAnalytics extends BaseAnalytic {
   }
 
   trackScreen(name, params = {}) {
+    console.log('FlurryAnalytics.trackScreen', name, params);
     this.logEvent(name, params, true);
   }
 
   endTrackScreen(name, params = {}) {
+    console.log('FlurryAnalytics.endTrackScreen', name, params);
     this.endTimedEvent(name, params);
   }
 
   logEvent(name, params = {}, timed = false) {
+    console.log('FlurryAnalytics.logEvent', name, params, timed);
     FlurryAnalytics.logEvent(name, params, timed);
   }
 
   endTimedEvent(name, params = {}) {
+    console.log('FlurryAnalytics.endTimedEvent', name, params);
     FlurryAnalytics.endTimedEvent(name, params);
   }
 }

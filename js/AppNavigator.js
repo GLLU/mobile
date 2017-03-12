@@ -33,7 +33,7 @@ import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
 
 import { statusBarColor } from './themes/base-theme';
-import Analytics, { APP_LOADED_EVENT } from './lib/analytics/Analytics';
+import Analytics from './lib/analytics/Analytics';
 
 const {
   popRoute,
@@ -55,6 +55,14 @@ class AppNavigator extends Component {
     })
   }
 
+  componentWillMount() {
+    console.log('AppNavigator componentWillMount', this.props.navigation);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
+  }
+
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       let routes = this.props.navigation.routes
@@ -66,11 +74,11 @@ class AppNavigator extends Component {
     });
 
     Analytics.setUser(this.props.user);
-    Analytics.logEvent(APP_LOADED_EVENT, {}, true);
+    Analytics.trackAppLoaded();
   }
 
   componentWillUnmount() {
-    Analytics.endTimedEvent(APP_LOADED_EVENT);
+    Analytics.endTrackAppLoaded();
   }
 
   componentDidUpdate() {

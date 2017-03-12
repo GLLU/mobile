@@ -7,15 +7,15 @@ class BaseAnalytic {
   }
 
   trackScreen(name, params = {}) {
-    throw new Error("Unhandled method");
+    throw new Error("Unhandled method", name, params);
   }
 
   endTrackScreen(name, params = {}) {
-    throw new Error("Unhandled method");
+    throw new Error("Unhandled method", name, params);
   }
 
-  logEvent() {
-    throw new Error("Unhandled method");
+  logEvent(name, params = {}) {
+    throw new Error("Unhandled method", name, params);
   }
 
   encryptUserId(id) {

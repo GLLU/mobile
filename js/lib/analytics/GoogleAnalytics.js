@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import React from 'react';
 import Config from 'react-native-config';
 import BaseAnalytic from './BaseAnalytic';
 import _ from 'lodash';
@@ -21,6 +20,7 @@ class GoogleAnalytics extends BaseAnalytic {
   }
 
   setUser(user) {
+    console.log('GoogleAnalytics.setUser', user);
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
         this.tracker.setUser(this.encryptUserId(user.id));
@@ -29,15 +29,16 @@ class GoogleAnalytics extends BaseAnalytic {
   }
 
   trackScreen(name, params = {}) {
-    console.log('GoogleAnalytics trackScreen', name, params, params.page);
+    console.log('GoogleAnalytics.trackScreen', name, params, params.page);
     this.tracker.trackScreenView(params.page);
   }
 
   endTrackScreen(name, params = {}) {
-    console.log("GoogleAnalytics no tracking for this method");
+    console.log("GoogleAnalytics no tracking for this method", name, params);
   }
 
   logEvent(name, params = {}, timed = false) {
+    console.log('GoogleAnalytics.logEvent', name, params, timed);
     const action = params.action || name;
     this.tracker.trackEvent(name, action, params);
   }

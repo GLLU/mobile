@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import Config from 'react-native-config'
 import BaseComponent from './BaseComponent';
-import Analytics, {
-  APP_LOADED_EVENT,
-  PAGE_LOADED_EVENT
-} from '../../lib/analytics/Analytics';
+import Analytics from '../../lib/analytics/Analytics';
 
 class BasePage extends BaseComponent {
   constructor(props) {
@@ -14,14 +11,14 @@ class BasePage extends BaseComponent {
 
   componentDidMount() {
     console.log('BasePage componentDidMount');
-    Analytics.trackScreen(PAGE_LOADED_EVENT, {
+    Analytics.trackScreen({
       page: this.constructor.name,
     }, true);
   }
 
   componentWillUnmount() {
     console.log('BasePage componentWillUnmount');
-    Analytics.endTrackScreen(PAGE_LOADED_EVENT, {
+    Analytics.endTrackScreen({
       page: this.constructor.name,
     });
   }

@@ -1,11 +1,10 @@
 import FlurryAnalytics from './FlurryAnalytics';
 import GoogleAnalytics from './GoogleAnalytics';
-export const APP_LOADED_EVENT = 'AppLoaded';
-export const PAGE_LOADED_EVENT = 'PageLoaded';
-export const GENERAL_EVENT = 'GeneralEvent';
+import FacebookAnalytics from './FacebookAnalytics';
+import { APP_LOADED_EVENT, PAGE_LOADED_EVENT } from './constants';
 
 class Analytics {
-  constructor(user) {
+  constructor() {
     console.log("Init Analytics");
     this.tools = this.setupAnalytics();
   }
@@ -14,6 +13,7 @@ class Analytics {
     return [
       new FlurryAnalytics(),
       new GoogleAnalytics(),
+      new FacebookAnalytics(),
     ]
   }
 
@@ -23,10 +23,18 @@ class Analytics {
     })
   }
 
+  trackAppLoaded(params = {}) {
+    this.logEvent(APP_LOADED_EVENT, params, true);
+  }
+
+  endTrackAppLoaded(params = {}) {
+    this.endTimedEvent(APP_LOADED_EVENT, params);
+  }
+
   trackScreen(...args) {
     this._loop(x => {
       if (typeof x.trackScreen === 'function') {
-        x.trackScreen(...args);
+        x.trackScreen(PAGE_LOADED_EVENT, ...args);
       }
     })
   }
@@ -34,7 +42,7 @@ class Analytics {
   endTrackScreen(...args) {
     this._loop(x => {
       if (typeof x.trackScreen === 'function') {
-        x.endTrackScreen(...args);
+        x.endTrackScreen(PAGE_LOADED_EVENT, ...args);
       }
     })
   }
