@@ -41,14 +41,11 @@ const findItem = function(state) {
 // Action Handlers
 const ACTION_HANDLERS = {
   [EDIT_NEW_LOOK]: (state, action) => {
-    const lookId = action.payload.look.id;
-    const image = action.payload.image;
+    const lookId = action.payload.id;
     return {
       ...state,
-      image,
+      ...action.payload,
       lookId,
-      items: [],
-      itemId: null,
     }
   },
   [SELECT_LOOK_ITEM] :(state, action) => {
@@ -59,6 +56,7 @@ const ACTION_HANDLERS = {
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
     const item = action.payload.item;
+    console.log('CREATE_LOOK_ITEM_BY_POSITION', item);
     const itemId = item.id
     const items = state.items;
     items.push(itemMapper(item));

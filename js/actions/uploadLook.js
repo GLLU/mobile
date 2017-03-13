@@ -25,6 +25,7 @@ import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
+import itemMapper from '../mappers/itemMapper';
 import Utils from '../Utils';
 
 
@@ -41,8 +42,23 @@ export function addNewLook(image) {
           if (api_key) {
             Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
               dispatch(hideProcessing());
-              const payload = _.merge(data, {image: image.path });
-              resolve(dispatch(editNewLook(payload)));
+              if (data) {
+                const url = _.find(data.look.cover, x => x.version == 'small').url;
+                Utils.preloadImages([url]).then(() => {
+                  const payload = _.merge(data.look, {
+                    image: url,
+                    items: [],
+                    itemId: null,
+                  });
+                  dispatch({
+                    type: EDIT_NEW_LOOK,
+                    payload,
+                  });
+                  resolve(payload);
+                }).catch(reject);
+              } else {
+                reject('Uplaod error');
+              }
             }).catch(reject); 
           } else {
             dispatch(hideProcessing());
@@ -57,11 +73,34 @@ export function addNewLook(image) {
   }
 }
 
-export function editNewLook(payload) {
-  return (dispatch) => {
-    return dispatch({
-      type: EDIT_NEW_LOOK,
-      payload: payload
+export function editNewLook(lookId) {
+  return (dispatch, getState) => {
+    dispatch(showProcessing());
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.look.get({ id: lookId}, (err, data) => {
+        console.log('editNewLook', err, data);
+        dispatch(hideProcessing());
+        if (!err) {
+          const look = data.look;
+          const url = _.find(look.cover, x => x.version == 'small').url;
+          Utils.preloadImages([url]).then(() => {
+            const item = itemMapper(_.first(look.items));
+            const itemId = item.id;
+            const payload = _.merge(look, {
+              image: url,
+              items: [item],
+              itemId,
+            });
+            dispatch({
+              type: EDIT_NEW_LOOK,
+              payload,
+            });
+            resolve(payload);
+          }).catch(reject);
+        } else {
+          throw err;  
+        }
+      }));
     });
   }
 }
