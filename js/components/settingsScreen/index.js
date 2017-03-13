@@ -5,8 +5,14 @@ import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title,
 import { connect } from 'react-redux';
 import { back, logout } from '../../actions';
 import SocialShare from '../../lib/social';
-
 import glluTheme from '../../themes/gllu-theme';
+import {
+  SUPPORT_EMAIL,
+  EMAIL_URL,
+  TERMS_URL,
+  PRIVACY_URL,
+  COPYRIGHT_URL
+} from '../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,12 +42,6 @@ const iconPrivacy = require('../../../images/icons/original-privacy.png');
 const iconCopyright = require('../../../images/icons/original-copyright.png');
 const iconLogout = require('../../../images/icons/original-logout.png');
 
-const SUPPORT_EMAIL = 'hello@gllu.com';
-const EMAIL_URL = `mailto:${SUPPORT_EMAIL}`;
-const TERMS_URL = 'https://www.gllu.com/terms';
-const PRIVACY_URL = 'https://www.gllu.com/privacy';
-const COPYRIGHT_URL = 'https://www.gllu.com/copyrights';
-
 class SettingsScreen extends BasePage {
   static propTypes = {
     navigation: React.PropTypes.object,
@@ -63,23 +63,25 @@ class SettingsScreen extends BasePage {
     SocialShare.nativeShare();
   }
 
-  handleOpenLink(url) {
+  handleOpenLink(url, type = 'link') {
     this.logEvent('SettingsScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
-        Alert.alert(
-          '',
-          `Sorry, but it seems you don't have an email client enabled in this device. You can email us to ${SUPPORT_EMAIL}`,
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                console.log('Alert OK pressed');
+        if (type == 'email') {
+          Alert.alert(
+            '',
+            `Sorry, but it seems you don't have an email client enabled in this device. You can email us to ${SUPPORT_EMAIL}`,
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('Alert OK pressed');
+                }
               }
-            }
-          ]
-        );
+            ]
+          );
+        }
       } else {
         return Linking.openURL(url);
       }
@@ -106,7 +108,7 @@ class SettingsScreen extends BasePage {
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconShare} />
                 <Text style={styles.listItemText}>Invite your Friends</Text>
             </ListItem>
-            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, EMAIL_URL)}>
+            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, EMAIL_URL, 'email')}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconContact} />
                 <Text style={styles.listItemText}>Contact Us</Text>
             </ListItem>

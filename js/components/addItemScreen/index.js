@@ -70,6 +70,14 @@ class AddItemPage extends BasePage {
     };
   }
 
+  _handleLayoutImage(e) {
+    const { width, height } = e.nativeEvent.layout;
+    const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
+    this.setState({
+      imageWidth: w
+    })
+  }
+
   handleContinue() {
     const { currentStep } = this.state;
     if (currentStep < 2) {
@@ -196,7 +204,7 @@ class AddItemPage extends BasePage {
     if (this.state.currentStep != 2) {
       return (
         <Grid style={{flex: 1}}>
-          <Row size={70} style={{flexDirection: 'column', alignItems: 'center'}}>
+          <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
             {this.renderImageView()}
           </Row>
           <Row size={30} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>

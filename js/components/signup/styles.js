@@ -171,12 +171,20 @@ module.exports = StyleSheet.create({
       opacity: 0.8
   },
   bottomContainerContent: {
+    justifyContent: 'center',
+    marginBottom: 15,
+    opacity: 0.8,
+    flexDirection: 'row',
+    backgroundColor: 'transparent'
+  },
+  text: {
     color: '#E0E0E0',
     fontSize: 12,
     fontWeight: 'normal',
-    textAlign: 'center',
-    marginBottom: 15,
-    opacity: 0.8,
-    backgroundColor: 'transparent'
+  },
+  link: {
+    color: '#00ABED',
+    fontSize: 12,
+    fontWeight: 'normal',
   },
 });

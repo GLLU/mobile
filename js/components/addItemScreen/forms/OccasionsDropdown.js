@@ -55,23 +55,18 @@ class OccasionsDropdown extends BaseComponent {
   }
 
   _toggleOccasionTag(tag, selected) {
+    this.logEvent('UploadLookScreen', { name: 'Occasion tag', tag: tag.name });
     this.props.toggleOccasionTag(tag, selected);
   }
 
-  _renderOccasionsDropdown() {
-    const { occasionTags, selectedTags } = this.props;
-    return occasionTags.map((tag, index) => {
-      const selected = _.find(selectedTags, x => x.id == tag.id);
-      const btnStyle = selected ? styles.tagButtonActive : styles.tagButton;
-      const btnTextStyle = selected ? styles.tagButtonTextActive : styles.tagButtonText;
-      return (
-        <View key={index} style={[styles.tagTextContainer]}>
-          <Button style={btnStyle} textStyle={btnTextStyle} onPress={(e) => this._toggleOccasionTag(tag, selected)}>
-            {tag.name}
-          </Button>
-        </View>
-      )
-    })
+  handleItemsSelected(selectedItems) {
+    this.setState({selectedItems}, () => {
+      console.log('handleItemsSelected', selectedItems);
+      selectedItems.map(tag => {
+        this.logEvent('UploadLookScreen', { name: 'Occasion tag', tag: tag.name });
+        this.props.toggleOccasionTag(tag, false);
+      });
+    });
   }
 
   removeTag(tag) {
@@ -96,7 +91,7 @@ class OccasionsDropdown extends BaseComponent {
                 style={{flex: 1}}
                 items={occasionTags}
                 uniqueKey="id"
-                selectedItemsChange={(selectedItems) => this.setState({selectedItems})}
+                selectedItemsChange={this.handleItemsSelected.bind(this)}
                 selectedItems={selectedItems}
                 selectText="Pick Events"
                 searchInputPlaceholderText="Search Events..."

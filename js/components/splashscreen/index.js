@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image } from 'react-native';
+import { Image, Linking } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -20,6 +20,11 @@ const MK = require('react-native-material-kit');
 
 import glluTheme from '../../themes/gllu-theme';
 import { emailSignIn } from '../../actions/user';
+
+import {
+  TERMS_URL,
+  PRIVACY_URL,
+} from '../../constants';
 
 const {
   MKButton,
@@ -107,6 +112,25 @@ class SplashPage extends BasePage {
     this.pushRoute('genderselect');
   }
 
+  handleTermPress() {
+    this.handleOpenLink(TERMS_URL);
+  }
+
+  handlePrivacyPolicyPress() {
+    this.handleOpenLink(PRIVACY_URL);
+  }
+
+  handleOpenLink(url) {
+    this.logEvent('Splashscreen', { name: 'Link click', url });
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + url);
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
+  }
+
   renderMainView() {
     return (
         <View style={styles.signupContainer}>
@@ -140,7 +164,12 @@ class SplashPage extends BasePage {
                 <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
                 {this.renderMainView()}
-                <Text style={styles.bottomContainerContent}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
+                <View style={styles.bottomContainerContent}>
+                  <Text style={styles.text}>By signing-up I agree to gllu's </Text>
+                  <Text style={styles.link} onPress={this.handleTermPress.bind(this)}>Terms</Text>
+                  <Text style={styles.text}> and </Text>
+                  <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
+                </View>
             </Image>
           </Content>
         </View>

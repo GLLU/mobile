@@ -73,6 +73,10 @@ class EditProfile extends BasePage {
     this.setState({about_me: text})
   }
 
+  _handleAboutMeEndEding() {
+    this.logEvent('EditProfileScreen', { name: 'Tell us about you' });
+  }
+
   render() {
     return (
       <View style={{backgroundColor: '#E9E9EF'}}>
@@ -85,7 +89,11 @@ class EditProfile extends BasePage {
           style={[styles.scrollView]}
         >
           <EditProfileName name={this.props.user.name} username={this.props.user.username} />
-          <ExpandableTextArea text={this.state.about_me} handleTextInput={(text) => this._handleAboutMeTextInput(text)}/>
+          <ExpandableTextArea
+            text={this.state.about_me}
+            onEndEditing={this._handleAboutMeEndEding.bind(this)}
+            handleTextInput={(text) => this._handleAboutMeTextInput(text)}
+          />
           <View style={styles.editBodyTypeTitleContainer}>
             <Text style={styles.editBodyTypeTitle}>EDIT BODY TYPE</Text>
           </View>

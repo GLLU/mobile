@@ -210,6 +210,14 @@ class StepTwo extends BaseComponent {
     this.setState({imageOverlayVisible: true});
   }
 
+  handleDescriptionEndEditing() {
+    this.logEvent('UploadLookScreen', { name: 'Additional Info Description', description: this.props.description });
+  }
+
+  handleUrlEndEditing() {
+   this.logEvent('UploadLookScreen', { name: 'Url' }); 
+  }
+
   renderImageOverlay() {
     if (this.state.imageOverlayVisible) {
       return (
@@ -254,6 +262,7 @@ class StepTwo extends BaseComponent {
                 style={styles.describe}
                 value={this.props.description}
                 placeholder="Describe what you're wearing..."
+                onEndEditing={this.handleDescriptionEndEditing.bind(this)}
                 onChangeText={(text) => this.updateSelectValue('description', text)}/>
             </Col>
           </Row>
@@ -271,6 +280,7 @@ class StepTwo extends BaseComponent {
               underlineColorAndroid='transparent'
               style={styles.textInput}
               placeholder='http://www.gllu.com'
+              onEndEditing={this.handleUrlEndEditing.bind(this)}
               value={this.props.url}/>
           </Row>
           <Row style={[styles.row, {paddingBottom: 60}]}>

@@ -82,7 +82,6 @@ class MyBodyType extends BasePage {
         </Header>
         <Content>
           <View style={styles.container}>
-
             <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
               sneak={100} initialPage={this.props.currentIndex}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
