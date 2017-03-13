@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { View, Button, Text } from 'native-base';
-import { Col, Grid, Row } from "react-native-easy-grid";
+import { View, Button, Text, Thumbnail, H2, Grid, Row, Col, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import TagInput from './forms/TagInput';
@@ -28,9 +27,10 @@ import FontSizeCalculator from './../../calculators/FontSize';
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 
-const w = Dimensions.get('window').width;
-const BTN_RADIO_MARGIN_TOP = w < 375 ? 0 : 10;
-import { IMAGE_VIEW_WIDTH } from './styles';
+const deviceWidth = Dimensions.get('window').width;
+const wModal = deviceWidth / 1.5;
+const hModal = wModal / 2;
+const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
 
 const styles = StyleSheet.create({
   row: {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     backgroundColor: '#05d7b2',
     height: 45,
-    width: (w / 8) * 6,
+    width: (deviceWidth / 8) * 6,
     borderRadius: 0,
     alignSelf: 'center'
   },
@@ -105,6 +105,11 @@ const styles = StyleSheet.create({
   },
   fakeCheckbox: {
     marginTop: BTN_RADIO_MARGIN_TOP,
+  },
+  text: {
+    textAlign: 'center',
+    color: '#000000',
+    fontFamily: 'Montserrat-Regular',
   },
 });
 
@@ -126,12 +131,14 @@ class StepTwo extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-        images:['', '', ''],
-        video: '',
-        videoUrl: '',
-        location: 'us',
-        trustLevel: '0',
-        confirm: false,
+      images:['', '', ''],
+      video: '',
+      videoUrl: '',
+      location: 'us',
+      trustLevel: '0',
+      confirm: false,
+      imageOverlayVisible: false,
+      urlOverlayVisible: false,
     }
   }
 
@@ -178,6 +185,15 @@ class StepTwo extends BaseComponent {
   }
 
   _handlePublishItem() {
+    console.log('_handlePublishItem', this.props.url)
+    if (!this.props.url) {
+      this.setState({urlOverlayVisible: true})
+    } else {
+      this.props.publishItem();
+    }
+  }
+
+  handleNoThanksPress() {
     this.props.publishItem();
   }
 
@@ -239,6 +255,52 @@ class StepTwo extends BaseComponent {
     return null;
   }
 
+  renderConfirmUrlOverlay() {
+    if (this.state.urlOverlayVisible) {
+      return (
+          <Modal
+            animationType='fade'
+            transparent={true}
+            visible={this.state.urlOverlayVisible}
+            onRequestClose={() => this.setState({urlOverlayVisible: false})}>
+            <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', opacity: 0.2, position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
+            </View>
+            <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
+              <View style={{backgroundColor: '#FFFFFF', height: 300, width: 280}}>
+                <View style={{flex: 1, justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
+                  <H2
+                    style={[styles.text, {fontSize: 14}]}
+                  >
+                    You want to make 5x more $$$?
+                  </H2>
+                  <H2
+                    style={[styles.text, {fontSize: 14}]}
+                  >
+                    Just list the specific URL of the purchased item
+                  </H2>
+                  <View style={{marginTop: 10, flexDirection: 'row'}}>
+                    <TextInput
+                      underlineColorAndroid='transparent'
+                      style={[styles.textInput, {backgroundColor: '#F2F2F2'}]}
+                      placeholder='http://www.gllu.com'
+                      onEndEditing={this.handleUrlEndEditing.bind(this)}
+                      value={this.props.url}/>
+                  </View>
+                  <Gllu.Button
+                    onPress={this.handleNoThanksPress.bind(this)}
+                    style={{alignSelf: 'center', width: 200}}
+                    text="No Thanks"
+                  />
+                </View>
+              </View>
+            </View>
+          </Modal>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { items, createLookItem, image} = this.props;
     return(
@@ -292,6 +354,7 @@ class StepTwo extends BaseComponent {
           </Row>
         </Grid>
         {this.renderImageOverlay()}
+        {this.renderConfirmUrlOverlay()}
       </ScrollView>
     )
   }
