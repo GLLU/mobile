@@ -54,7 +54,7 @@ export default class CommentsView extends Component {
     this._renderFooter=this._renderFooter.bind(this);
     this._pushComment=this._pushComment.bind(this);
     this.state = {
-      fadeAnimContent: new Animated.Value(-300),
+      fadeAnimContent: new Animated.Value(-500),
       dataSource: ds.cloneWithRows(props.comments),
       comments:props.comments,
       isTrueEndReached: false
@@ -91,7 +91,7 @@ export default class CommentsView extends Component {
     Animated.spring(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
-        toValue: -300,
+        toValue: -500,
         friction: 9
       }            // Configuration
     ).start();
@@ -138,15 +138,15 @@ export default class CommentsView extends Component {
     }
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
+        <CommentsViewHeader count={this.state.comments.length}/>
         <ListView
-          style={{flex:1}}
+          style={{flex:1, maxHeight:300}}
           dataSource={this.state.dataSource}
           renderRow={(data) => <CommentRow {...data}/>}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
           enableEmptySections={true}
-          renderHeader={()=><CommentsViewHeader count={this.state.comments.length}/>}
-          renderFooter={()=>this._renderFooter()}
         />
+        {this._renderFooter()}
         <View style={{height:70}}/>
       </Animated.View>
     );

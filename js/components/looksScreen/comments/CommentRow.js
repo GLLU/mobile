@@ -63,7 +63,7 @@ export default class CommentRow extends Component {
             <Text style={{flex:8}} name="name">
               {this.props.user.name}
             </Text>
-            <Text style={{flex:4}} name="created_at">
+            <Text style={{flex:4, textAlign:'right'}} name="created_at">
               {readableDate}
             </Text>
           </View>
