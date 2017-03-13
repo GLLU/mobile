@@ -81,7 +81,7 @@ export default class BottomLookContainer extends Component {
           <DescriptionView isHidden={!this.state.isDescriptionActive} style={styles.bottomDrawerView}
                            description={this.props.look.description}/>
 
-          <CommentsView comments={comments} count={comments.length} isHidden={!this.state.isCommentsActive} style={styles.bottomDrawerView}/>
+          <CommentsView look_id={this.props.look.id} comments={comments} count={comments.length} isHidden={!this.state.isCommentsActive} style={styles.bottomDrawerView}/>
 
           <BottomButton
             isCommentsActive={this.state.isCommentsActive}

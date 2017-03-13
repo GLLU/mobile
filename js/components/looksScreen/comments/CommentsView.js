@@ -101,7 +101,7 @@ class CommentsView extends Component {
       created_at: new Date().toUTCString(),
       user_id: this.props.myUser.id,
       user: this.props.myUser,
-      look_id: this.props.look_id||1,
+      look_id: this.props.look_id,
       //parent_id is used for hierarchical comments and therefore currently not relevant
       parent_id: null,
       body: value,
