@@ -70,7 +70,6 @@ export default class CommentsView extends Component {
   static defaultProps = {
     style: {},
     isHidden: true,
-    count:48,
     comments:[]
   };
 
@@ -145,7 +144,7 @@ export default class CommentsView extends Component {
           renderRow={(data) => <CommentRow {...data}/>}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
           enableEmptySections={true}
-          renderHeader={()=><CommentsViewHeader count={this.props.count}/>}
+          renderHeader={()=><CommentsViewHeader count={this.state.comments.length}/>}
           renderFooter={()=>this._renderFooter()}
         />
         <View style={{height:70}}/>
