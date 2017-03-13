@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, ListView,  View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import * as _ from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentRow from './CommentRow'
@@ -51,22 +52,26 @@ export default class CommentsView extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this._renderFooter=this._renderFooter.bind(this);
+    this._pushComment=this._pushComment.bind(this);
     this.state = {
       fadeAnimContent: new Animated.Value(-300),
       dataSource: ds.cloneWithRows(props.comments),
+      comments:props.comments,
       isTrueEndReached: false
     };
   }
 
   static propTypes = {
     style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
-    isHidden: React.PropTypes.bool
+    isHidden: React.PropTypes.bool,
+    comments: React.PropTypes.array
   };
 
   static defaultProps = {
     style: {},
     isHidden: true,
-    count:48
+    count:48,
+    comments:[]
   };
 
   rowHasChanged(r1, r2) {
@@ -93,14 +98,36 @@ export default class CommentsView extends Component {
     ).start();
   }
 
+  _pushComment(value){
+    const comment={
+      "id": -1,
+      "created_at": new Date().toUTCString(),
+      "user_id": this.props.user_id||1,
+      "look_id": this.props.look_id||1,
+      //parent_id is used for hierarchical comments and therefore currently not relevant
+      "parent_id": null,
+      "body": value,
+      "children": []
+    };
+    const comments = _.union(this.state.comments,[comment]);
+    const ds = this.state.dataSource;
+    this.setState({comments:comments,dataSource:ds.cloneWithRows(comments)})
+  }
+
   _renderFooter(){
     return (
       <View style={{flexDirection:'column', backgroundColor:'#ADADAD'}}>
         <View style={{flex:1}} name="spacer"/>
-        <CommentInput style={{flex:2}}/>
+        <CommentInput onSendPress={this._pushComment} style={{flex:2}}/>
         <View style={{flex:1}} name="spacer"/>
       </View>
     );
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(!_.isEmpty(nextProps.comments)){
+      this.setState({comments:nextProps.comments});
+    }
   }
 
   render() {

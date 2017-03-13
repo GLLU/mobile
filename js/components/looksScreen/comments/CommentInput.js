@@ -80,7 +80,9 @@ export default class CommentInput extends Component {
   }
 
   onSendPress() {
-    this.props.onChange(this.state.value);
+    if(this.state.value){
+      this.props.onSendPress(this.state.value);
+    }
   }
 
   render() {
