@@ -12,6 +12,7 @@ import filters from './filters';
 import uploadLook from './uploadLook';
 import feed from './feed';
 import look from './look';
+import lookComments from './lookComments';
 import userLooks from './userLooks';
 import userFollows from './userFollows';
 import userFollowers from './userFollowers';
@@ -24,6 +25,7 @@ export default combineReducers({
   loader,
   errorHandler,
   user,
+  lookComments,
   list,
   cardNavigation,
   myBodyType,
