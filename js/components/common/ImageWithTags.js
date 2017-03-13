@@ -29,9 +29,7 @@ const styles = StyleSheet.create({
     width: TAG_WIDTH,
   },
   itemsContainer: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 0,
-    borderColor: '#FFFFFF'
+    backgroundColor: 'transparent',
   },
   itemMarker: {
     position: 'absolute',
@@ -55,30 +53,22 @@ class ImageWithTags extends Component {
 
   constructor(props) {
     super(props);
-    this.state = this.parseState(props);
-    this._setupPanResponder(this.state.locationX, this.state.locationY)
-  }
-
-  parseState(props) {
-    const { items, itemId, mode } = this.props;
-    if (itemId && mode !== VIEW_MODE) {
-      const item = _.find(items, x => x.id == itemId);
-      return {
-        locationX: item.cover_x_pos,
-        locationY: item.cover_y_pos,
-      };
-    }
-
-    return {
+    this.state = {
       locationX: 0,
       locationY: 0,
-    };
+    }
   }
 
   componentWillMount() {
-    if (this.props.mode) {
-      const {locationX, locationY} = this.state;
-      this._setupPanResponder(locationX, locationY);
+    if (this.props.mode == EDIT_MODE) {
+      const { itemId, items } = this.props;
+      console.log('componentWillMount', items, itemId);
+      const item = _.find(items, x => x.id === itemId);
+      const { locationX, locationY } = item;
+      const { width, height } = this.getRenderingDimensions();
+      const absX = locationX * width;
+      const absY = locationY * height;
+      this._setupPanResponder(absX, absY);
     }
   }
 

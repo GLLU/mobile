@@ -3,11 +3,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { View, Text } from 'native-base';
+import { View, Text, Button, Icon } from 'native-base';
 import _ from 'lodash';
-import { actions } from 'react-native-navigation-redux-helpers';
 import SelectPhoto from '../common/SelectPhoto';
-import { addNewLook, navigateTo, getUserLooksData, replaceAt } from '../../actions';
+import {
+  addNewLook,
+  editNewLook,
+  navigateTo,
+  pushRoute,
+  getUserLooksData,
+  replaceAt
+} from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -64,34 +70,48 @@ class UserLooks extends Component {
   }
 
   handleScroll(event) {
-      const contentSizeHeight = event.nativeEvent.contentSize.height;
-      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-      const currentScroll = event.nativeEvent.contentOffset.y
-      const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-      if (compare == 1) {
-        this.setState({
-          pagination: this.state.pagination+=1,
-        })
-        let data = {
-          id: this.props.userId,
-          page: this.state.pagination
-        }
-        this.props.getUserLooksData(data);
+    const contentSizeHeight = event.nativeEvent.contentSize.height;
+    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+    const currentScroll = event.nativeEvent.contentOffset.y
+    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
+    if (compare == 1) {
+      this.setState({
+        pagination: this.state.pagination+=1,
+      })
+      let data = {
+        id: this.props.userId,
+        page: this.state.pagination
       }
+      this.props.getUserLooksData(data);
+    }
   }
 
   _handleItemPress(item) {
     this.props.replaceAt('userLookScreen', { key: 'looksScreen', optional: item}, this.props.navigation.key);
   }
 
-  _renderImages(images) {
-    return images.map((img, index) => {
+  _handleEditPress(look) {
+    console.log('_handleEditPress', look);
+    this.props.editNewLook(look.id).then(() => {
+      this.props.pushRoute({key: 'tagItemScreen', optional: { mode: 'edit' } }, this.props.navigation.key);
+    });
+  }
+
+  _renderImages(looks) {
+    return looks.map((look, index) => {
       return  (
-        <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
-          <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
-            <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
-          </View>
-        </TouchableOpacity>);
+        <View key={index} style={{width: look.width, height: look.height, paddingLeft: 0 }}>
+          <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
+            <Image source={{uri: look.uri.replace('-staging', '')}} style={{width: look.width - 5, height: look.height, resizeMode: 'contain' }} />
+          </TouchableOpacity>
+          <Button
+            onPress={this._handleEditPress.bind(this, look)}
+            style={{backgroundColor: 'transparent', position: 'absolute', top: 5, right: 5, height: 30}}
+          >
+            <Icon name='ios-create-outline' style={{color: '#FFFFFF'}} size={30}/>
+          </Button>
+        </View>
+      );
     });
   }
 
@@ -178,7 +198,9 @@ const styles = StyleSheet.create({
 function bindActions(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
+    editNewLook: (id) => dispatch(editNewLook(id)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };

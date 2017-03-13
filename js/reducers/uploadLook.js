@@ -41,6 +41,7 @@ const findItem = function(state) {
 // Action Handlers
 const ACTION_HANDLERS = {
   [EDIT_NEW_LOOK]: (state, action) => {
+    console.log("Reducer EDIT_NEW_LOOK", action.payload)
     const lookId = action.payload.id;
     return {
       ...state,
