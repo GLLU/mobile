@@ -41,7 +41,7 @@ class Analytics {
 
   endTrackScreen(params = {}) {
     this._loop(x => {
-      if (typeof x.trackScreen === 'function') {
+      if (typeof x.endTrackScreen === 'function') {
         x.endTrackScreen(PAGE_LOADED_EVENT, Object.assign({}, params));
       }
     })
@@ -57,7 +57,7 @@ class Analytics {
 
   endTimedEvent(name, params = {}) {
     this._loop(x => {
-      if (typeof x.logEvent === 'function') {
+      if (typeof x.endTimedEvent === 'function') {
         x.endTimedEvent(name, Object.assign({}, params));
       }
     });
