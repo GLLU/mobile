@@ -1,28 +1,29 @@
 import _ from 'lodash';
-import { ADD_NEW_LOOK,
-        EDIT_NEW_LOOK,
-        EDIT_TAG,
-        CREATE_LOOK_ITEM_BY_POSITION,
-        SELECT_LOOK_ITEM,
-        SET_TAG_POSITION,
-        ADD_ITEM_TYPE,
-        ADD_BRAND_NAME,
-        ADD_ITEM_SIZE_COUNTRY,
-        ADD_ITEM_SIZE,
-        ADD_ITEM_TAG,
-        REMOVE_ITEM_TAG,
-        ADD_ITEM_CURRENCY,
-        ADD_ITEM_PRICE,
-        ADD_SHARING_INFO,
-        ADD_DESCRIPTION,
-        ADD_LOCATION,
-        ADD_TRUST_LEVEL,
-        ADD_PHOTOS_VIDEO,
-        ADD_ITEM_OCCASION_TAG,
-        REMOVE_ITEM_OCCASION_TAG,
-        REMOVE_BRAND_NAME,
-      } from '../actions/uploadLook';
+import { 
+  EDIT_NEW_LOOK,
+  EDIT_TAG,
+  CREATE_LOOK_ITEM_BY_POSITION,
+  SELECT_LOOK_ITEM,
+  SET_TAG_POSITION,
+  ADD_ITEM_TYPE,
+  ADD_BRAND_NAME,
+  ADD_ITEM_SIZE_COUNTRY,
+  ADD_ITEM_SIZE,
+  ADD_ITEM_TAG,
+  REMOVE_ITEM_TAG,
+  ADD_ITEM_CURRENCY,
+  ADD_ITEM_PRICE,
+  ADD_SHARING_INFO,
+  ADD_DESCRIPTION,
+  ADD_LOCATION,
+  ADD_TRUST_LEVEL,
+  ADD_PHOTOS_VIDEO,
+  ADD_ITEM_OCCASION_TAG,
+  REMOVE_ITEM_OCCASION_TAG,
+  REMOVE_BRAND_NAME,
+} from '../actions/uploadLook';
 import { SET_ITEM_SIZES, SET_CATEGORIES } from '../actions/filters';
+import itemMapper from '../mappers/itemMapper';
 
 const mutateItem = function(state, key, value) {
   return state.items.map(item => {
@@ -39,14 +40,6 @@ const findItem = function(state) {
 
 // Action Handlers
 const ACTION_HANDLERS = {
-  [ADD_NEW_LOOK]: (state, action) => {
-    return {
-      ...state,
-      image: action.payload.image,
-      items: [],
-      itemId: null,
-    }
-  },
   [EDIT_NEW_LOOK]: (state, action) => {
     const lookId = action.payload.look.id;
     const image = action.payload.image;
@@ -68,29 +61,7 @@ const ACTION_HANDLERS = {
     const item = action.payload.item;
     const itemId = item.id
     const items = state.items;
-    items.push({
-      id: item.id,
-      locationX: item.cover_x_pos,
-      locationY: item.cover_y_pos,
-      currency: item.currency,
-      price: item.price,
-      userId: item.user_id,
-      lookId: item.look_id,
-      editing: true,
-      selectedCategory: null,
-      brand: null,
-      itemSizeRegion: null,
-      itemSizeValue: null,
-      description: '',
-      sharingType: true,
-      sharingUrl: '',
-      location: 'us',
-      trustLevel: 0,
-      photos: [],
-      video: '',
-      occasionTags: [],
-      itemTags: [],
-    });
+    items.push(itemMapper(item));
     return {
       ...state,
       itemId,
