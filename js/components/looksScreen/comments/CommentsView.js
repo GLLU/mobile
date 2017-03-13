@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Animated, ListView,  View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import * as _ from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentRow from './CommentRow'
+import CommentsListView from './CommentsListView'
 
 const styles = StyleSheet.create({
   container: {
@@ -46,16 +48,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class CommentsView extends Component {
+class CommentsView extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this._renderFooter=this._renderFooter.bind(this);
     this._pushComment=this._pushComment.bind(this);
     this.state = {
       fadeAnimContent: new Animated.Value(-500),
-      dataSource: ds.cloneWithRows(props.comments),
       comments:props.comments,
       isTrueEndReached: false
     };
@@ -64,18 +64,16 @@ export default class CommentsView extends Component {
   static propTypes = {
     style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
     isHidden: React.PropTypes.bool,
-    comments: React.PropTypes.array
+    comments: React.PropTypes.array,
+    count: React.PropTypes.number,
+    look_id:React.PropTypes.number
   };
 
   static defaultProps = {
     style: {},
     isHidden: true,
-    comments:[]
+    comments:[],
   };
-
-  rowHasChanged(r1, r2) {
-    return r1 !== r2;
-  }
 
   _animateShow() {
     Animated.spring(          // Uses easing functions
@@ -99,18 +97,18 @@ export default class CommentsView extends Component {
 
   _pushComment(value){
     const comment={
-      "id": -1,
-      "created_at": new Date().toUTCString(),
-      "user_id": this.props.user_id||1,
-      "look_id": this.props.look_id||1,
+      id: -1,
+      created_at: new Date().toUTCString(),
+      user_id: this.props.myUser.id,
+      user: this.props.myUser,
+      look_id: this.props.look_id||1,
       //parent_id is used for hierarchical comments and therefore currently not relevant
-      "parent_id": null,
-      "body": value,
-      "children": []
+      parent_id: null,
+      body: value,
+      children: []
     };
     const comments = _.union(this.state.comments,[comment]);
-    const ds = this.state.dataSource;
-    this.setState({comments:comments,dataSource:ds.cloneWithRows(comments)})
+    this.setState({comments:comments});
   }
 
   _renderFooter(){
@@ -138,17 +136,24 @@ export default class CommentsView extends Component {
     }
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
-        <CommentsViewHeader count={this.state.comments.length}/>
-        <ListView
-          style={{flex:1, maxHeight:300}}
-          dataSource={this.state.dataSource}
-          renderRow={(data) => <CommentRow {...data}/>}
-          renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
-          enableEmptySections={true}
-        />
+        <CommentsViewHeader count={this.props.count}/>
+        <CommentsListView count={this.props.count} comments={this.state.comments} />
         {this._renderFooter()}
         <View style={{height:70}}/>
       </Animated.View>
     );
   }
 }
+
+function bindAction(dispatch) {
+  return {
+  };
+}
+
+const mapStateToProps = state => {
+  return ({
+    myUser: state.user
+  });
+};
+
+export default connect(mapStateToProps, bindAction)(CommentsView);
