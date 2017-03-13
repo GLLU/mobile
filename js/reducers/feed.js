@@ -26,6 +26,7 @@ const parseLook = function (look, index, flatLooksDataLength) {
     description: look.description,
     id: look.id,
     likes: look.likes,
+    comments: look.comments,
     user_id: look.user_id,
     uri: cover ? cover.url : null,
     width: cover ? cover.width : null,

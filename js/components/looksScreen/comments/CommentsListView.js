@@ -4,7 +4,6 @@ import CommentRow from './CommentRow'
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     maxHeight: 300
   },
   separator: {
@@ -28,13 +27,13 @@ export default class CommentsListView extends Component {
   static propTypes = {
     style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
     comments: React.PropTypes.array,
-    count: React.PropTypes.number
+    isEmpty: React.PropTypes.bool
   };
 
   static defaultProps = {
     style: {},
     comments: [],
-    count: 0
+    isEmpty: true
   };
 
   rowHasChanged(r1, r2) {
@@ -42,8 +41,13 @@ export default class CommentsListView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEmpty(nextProps.comments)) {
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.comments)});
+    if (_.isEmpty(nextProps.comments)) {
+      this.setState({isTrueEndReached: true});
+    }
+    if (nextProps.comments !== this.props.comments) {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.comments)
+      })
     }
   }
 
@@ -55,6 +59,8 @@ export default class CommentsListView extends Component {
         renderRow={(data) => <CommentRow {...data}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
         enableEmptySections={true}
+        onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
+        onEndReachedThreshold={100}
       />
     );
   }
@@ -68,6 +74,6 @@ export default class CommentsListView extends Component {
   }
 
   render() {
-    return this.props.count > 0 ? this._renderListView() : this._renderEmptyView()
+    return !this.props.isEmpty ? this._renderListView() : this._renderEmptyView()
   }
 }

@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import * as _ from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
-import CommentRow from './CommentRow'
 import CommentsListView from './CommentsListView'
+
+import { navigateTo, popRoute, getLookCommentsData, initLookComments } from '../../../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,17 +51,6 @@ const styles = StyleSheet.create({
 
 class CommentsView extends Component {
 
-  constructor(props) {
-    super(props);
-    this._renderFooter=this._renderFooter.bind(this);
-    this._pushComment=this._pushComment.bind(this);
-    this.state = {
-      fadeAnimContent: new Animated.Value(-500),
-      comments:props.comments,
-      isTrueEndReached: false
-    };
-  }
-
   static propTypes = {
     style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
     isHidden: React.PropTypes.bool,
@@ -74,6 +64,41 @@ class CommentsView extends Component {
     isHidden: true,
     comments:[],
   };
+
+  constructor(props) {
+    super(props);
+    this._renderFooter=this._renderFooter.bind(this);
+    this._pushComment=this._pushComment.bind(this);
+    this.getCommentsData = this.getCommentsData.bind(this);
+    this.currentPageIndex = 1;
+    this.state = {
+      fadeAnimContent: new Animated.Value(-500),
+      comments: props.comments,
+      isTrueEndReached: false
+    };
+  }
+
+  componentWillMount() {
+    this.getCommentsData();
+  }
+
+  componentWillUnmount() {
+    this.props.initLookComments();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (_.isEmpty(nextProps.comments)) {
+      this.setState({isTrueEndReached: true});
+    }
+    if (nextProps.comments !== this.props.comments) {
+      this.setState({comments:nextProps.comments })
+    }
+  }
+
+  getCommentsData() {
+    this.props.getLookCommentsData(this.props.look_id, this.currentPageIndex);
+    this.currentPageIndex++;
+  }
 
   _animateShow() {
     Animated.spring(          // Uses easing functions
@@ -113,18 +138,10 @@ class CommentsView extends Component {
 
   _renderFooter(){
     return (
-      <View style={{flexDirection:'column', backgroundColor:'#ADADAD'}}>
-        <View style={{flex:1}} name="spacer"/>
-        <CommentInput onSendPress={this._pushComment} style={{flex:2}}/>
-        <View style={{flex:1}} name="spacer"/>
+      <View style={{paddingBottom: 5,paddingTop: 5,flex: 2,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
+        <CommentInput onSendPress={this._pushComment}/>
       </View>
     );
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(!_.isEmpty(nextProps.comments)){
-      this.setState({comments:nextProps.comments});
-    }
   }
 
   render() {
@@ -134,10 +151,11 @@ class CommentsView extends Component {
     else {
       this._animateShow()
     }
+    console.log(this.props.count);
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <CommentsViewHeader count={this.props.count}/>
-        <CommentsListView count={this.props.count} comments={this.state.comments} />
+        <CommentsListView isEmpty={this.props.count==0} comments={this.state.comments} onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
         <View style={{height:70}}/>
       </Animated.View>
@@ -147,12 +165,17 @@ class CommentsView extends Component {
 
 function bindAction(dispatch) {
   return {
+    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
+    popRoute: key => dispatch(popRoute(key)),
+    getLookCommentsData: (id, pageNumber, pageSize) => dispatch(getLookCommentsData(id, pageNumber, pageSize)),
+    initLookComments: () => dispatch(initLookComments()),
   };
 }
 
 const mapStateToProps = state => {
   return ({
-    myUser: state.user
+    myUser: state.user,
+    comments: state.lookComments.lookCommentsData
   });
 };
 

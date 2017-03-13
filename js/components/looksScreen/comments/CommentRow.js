@@ -7,8 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'white',
-    paddingBottom:10,
-    paddingTop:10,
+    padding:10,
   },
   photo: {
     flex: 1,

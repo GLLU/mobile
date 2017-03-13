@@ -43,8 +43,7 @@ export default class CommentsViewHeader extends Component {
   };
 
   static defaultProps = {
-    style: {},
-    count:0
+    style: {}
   };
 
   render() {

@@ -97,7 +97,6 @@ export default class CommentInput extends Component {
             onChangeText={this.onChange}
             value={this.state.value}
             underlineColorAndroid='transparent'/>
-
         </View>
         <View style={{flex:1}} name="spacer"/>
         <TouchableOpacity style={styles.sendButton} onPress={this.onSendPress}>
