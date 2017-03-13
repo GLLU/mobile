@@ -4,13 +4,15 @@ import * as _ from 'lodash'
 import Icon from 'react-native-vector-icons/Entypo';
 import styles from './styles';
 import SocialShare from '../../lib/social';
-import InformationButton from './buttons/InformationButton'
+import InformationButton from './buttons/InformationButton';
+import BaseComponent from '../common/BaseComponent';
+
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
 const shareImage = require('../../../images/share.png');
 const bubbleImage = require('../../../images/bubble.png');
 
-export default class BottomButton extends Component {
+export default class BottomButton extends BaseComponent {
   static propTypes = {
     likes: React.PropTypes.number,
     isLiked: React.PropTypes.bool,
@@ -48,12 +50,24 @@ export default class BottomButton extends Component {
     this.props.toggleLike(!this.state.isLiked)
   }
 
+  _onInformationClicked() {
+    this.logEvent('LookScreen', { name: 'Information click'});
+    console.log('Information Button clicked');
+  }
+
   _onBubbleClicked() {
+    this.logEvent('LookScreen', { name: 'Comment click'});
     console.log('comments Button clicked');
   }
 
   _onShareClicked() {
+    this.logEvent('LookScreen', { name: 'Share click'});
     SocialShare.nativeShare();
+  }
+
+  _onMenuClicked() {
+    this.logEvent('LookScreen', { name: 'Menu click'});
+    this.props.toggleMenu();
   }
 
   _renderInformationButton(hasDescription) {
@@ -88,7 +102,7 @@ export default class BottomButton extends Component {
           </View>
         </View>
         <View style={[styles.bottomRight]}>
-          <TouchableHighlight style={{marginRight: 10}} onPress={() => this.props.toggleMenu()}>
+          <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onMenuClicked()}>
             <View>
               <View style={[styles.footerButton]}>
                 <Icon active name='dots-three-horizontal' style={styles.menuIcon}/>

@@ -104,6 +104,16 @@ class SignInPage extends BasePage {
     Linking.openURL('https://www.gllu.com/Privacy').catch(err => console.error('An error occurred', err));
   }
 
+  handleSigninPress() {
+    this.logEvent('SignInEmailScreen', { name: 'Lets GLLU click' });
+    this.singinWithEmail();
+  }
+
+  handleForgotPasswordPress() {
+    this.logEvent('SignInEmailScreen', { name: 'Forgot password click' });
+    this.pushRoute('forgotpassword');
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -141,12 +151,12 @@ class SignInPage extends BasePage {
                     { this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
             </Grid>
-            <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.singinWithEmail()}>
+            <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}>
               Let's GLLU
             </Button>
               <View style={styles.alreadyBox}>
-                  <Text style={styles.alreadyTxt}>Forgot your password?</Text>
-                  <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('forgotpassword') }>Click Here</Button>
+                <Text style={styles.alreadyTxt}>Forgot your password?</Text>
+                <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={this.handleForgotPasswordPress.bind(this)}>Click Here</Button>
               </View>
             </View>
           </Content>

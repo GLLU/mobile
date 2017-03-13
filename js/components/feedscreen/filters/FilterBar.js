@@ -4,7 +4,8 @@ import {  Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import RadioButtons from 'react-native-radio-buttons';
 import {View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet} from 'react-native';
-import SearchBar from '../SearchBar'
+import SearchBar from '../SearchBar';
+import BaseComponent from '../../common/BaseComponent';
 
 import CategoryStrip from '../../common/CategoryStrip';
 const MK = require('react-native-material-kit');
@@ -98,7 +99,7 @@ import { loadCategories } from '../../../actions/filters';
 const BEST_MATCH = 'Best Match';
 const RECENT = 'Recent';
 const feedTypes = [ BEST_MATCH,  RECENT ];
-class FilterView extends Component {
+class FilterView extends BaseComponent {
   static propTypes = {
     loadCategories: React.PropTypes.func,
     categories: React.PropTypes.array,
@@ -125,6 +126,7 @@ class FilterView extends Component {
   filterByCategory(item) {
     const { category } = this.props;
     if (!category || item.id != category.id) {
+      this.logEvent('Feedscreen', { name: 'Category select', category: item.name });
       this.props.filterFeed({category: item});
     } else {
       this.props.filterFeed({category: null});
@@ -142,6 +144,11 @@ class FilterView extends Component {
 
   _handleCloseFilter() {
     this.setState({ isOpen: false });
+  }
+
+  handleToggleFilterPress() {
+    this.logEvent('Feedscreen', { name: 'FilterBy click' });
+    this.toggleFilter();
   }
 
   _renderCategories() {
@@ -214,7 +221,7 @@ class FilterView extends Component {
       <View style={myStyles.container}>
         <View style={myStyles.filter}>
           <View style={{flex: 1, flexDirection: 'row'}}>
-            <Button transparent onPress={() => this.toggleFilter()} style={myStyles.btnFilter}>
+            <Button transparent onPress={this.handleToggleFilterPress.bind(this)} style={myStyles.btnFilter}>
                 <Icon name="md-options" style={[myStyles.normalBtn, { color: labelColor }]} />
                 <Text style={[myStyles.Textlabel, { color: labelColor }]}>Filter by</Text>
             </Button>

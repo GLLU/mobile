@@ -7,9 +7,10 @@ import BottomButton from './bottomButton';
 import TopButton from './topButton';
 import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
-import DescriptionView from './DescriptionView'
+import DescriptionView from './DescriptionView';
+import BaseComponent from '../common/BaseComponent';
 
-export default class BottomLookContainer extends Component {
+export default class BottomLookContainer extends BaseComponent {
   static propTypes = {
     look: React.PropTypes.object,
     tempPopRoute: React.PropTypes.func,
@@ -41,6 +42,15 @@ export default class BottomLookContainer extends Component {
     });
   }
 
+  handleLikePress(isLiked) {
+    this.logEvent('LookScreen', { name: 'Like click', liked: isLiked });
+    this.props.toggleLike(isLiked)
+  }
+
+  _toggleMenu(){
+    this.setState({isMenuOpen: !this.state.isMenuOpen})
+  }
+
   _renderDescriptionView(isActive) {
     return <DescriptionView isHidden={!isActive} style={styles.descriptionView}
                             description={this.props.look.description}/>;
@@ -48,10 +58,6 @@ export default class BottomLookContainer extends Component {
 
   _toggleDescription(shouldActive) {
     this.setState({isDescriptionActive: shouldActive})
-  }
-
-  _toggleMenu() {
-    this.setState({isMenuOpen: !this.state.isMenuOpen})
   }
 
   render() {
@@ -75,10 +81,13 @@ export default class BottomLookContainer extends Component {
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
           {this._renderDescriptionView(this.state.isDescriptionActive)}
-          <BottomButton hasDescription={!_.isEmpty(this.props.look.description)}
-                        toggleDescription={this._toggleDescription} isLiked={this.state.isLiked}
-                        likes={this.state.likes} toggleLike={(isLiked) => this.props.toggleLike(isLiked)}
-                        toggleMenu={() => this._toggleMenu()}/>
+          <BottomButton
+            hasDescription={!_.isEmpty(this.props.look.description)}
+            toggleDescription={this._toggleDescription}
+            isLiked={this.state.isLiked}
+            likes={this.state.likes}
+            toggleLike={this.handleLikePress.bind(this)}
+            toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}

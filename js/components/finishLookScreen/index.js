@@ -54,18 +54,22 @@ class FinishLookPage extends BasePage {
   }
 
   handleClose() {
+    this.logEvent('CongratsScreen', { name: 'Close click' });
     this.resetToFeedscreen();
   }
 
   handleFacebookPress() {
+    this.logEvent('CongratsScreen', { name: 'Facebook Share click' });
     SocialShare.facebookShare();
   }
 
   handleOthersPress() {
+    this.logEvent('CongratsScreen', { name: 'Other Share click' });
     SocialShare.nativeShare(); 
   }
 
   handleGlluAgainPress() {
+    this.logEvent('CongratsScreen', { name: 'Lets GLLU Again click' });
     this.setState({photoModal: true});
   }
 

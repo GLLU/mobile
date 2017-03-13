@@ -33,6 +33,7 @@ import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
 
 import { statusBarColor } from './themes/base-theme';
+import Analytics from './lib/analytics/Analytics';
 
 const {
   popRoute,
@@ -54,8 +55,17 @@ class AppNavigator extends Component {
     })
   }
 
+  componentWillMount() {
+    console.log('AppNavigator componentWillMount', this.props.navigation);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
+  }
+
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
+      Analytics.logEvent('Android back button click');
       let routes = this.props.navigation.routes
       if (routes[routes.length - 1].key === 'splashscreen' || routes[routes.length - 1].key === 'feedscreen' || routes[routes.length - 1].key === 'home' || routes[routes.length - 1].key === 'login') {
         return false;
@@ -63,6 +73,13 @@ class AppNavigator extends Component {
       this.props.popRoute(this.props.navigation.key);
       return true;
     });
+
+    Analytics.setUser(this.props.user);
+    Analytics.trackAppLoaded();
+  }
+
+  componentWillUnmount() {
+    Analytics.endTrackAppLoaded();
   }
 
   componentDidUpdate() {
@@ -205,6 +222,7 @@ const mapStateToProps = state => {
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,
+    user: state.user,
     isLoading: isLoading,
     isProcessing: isProcessing,
     error: isError,

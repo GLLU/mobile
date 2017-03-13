@@ -12,7 +12,7 @@ import FontSizeCalculator from './../../calculators/FontSize';
 import glluTheme from '../../themes/gllu-theme';
 import _ from 'lodash';
 import Gllu from '../common';
-
+import BaseComponent from '../common/BaseComponent';
 
 const styles = StyleSheet.create({
   titleLabelInfo: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 });
 
 
-class StepZero extends Component {
+class StepZero extends BaseComponent {
   static propTypes = {
     selectedCategory: React.PropTypes.object,
     brand: React.PropTypes.object,
@@ -81,21 +81,30 @@ class StepZero extends Component {
     }).catch(err => {
       console.log('error', err);
     })
+
+    if (createNew) {
+      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: value });
+    } else {
+      this.logEvent('UploadLookScreen', { name: 'Brand pick', brand: value });
+    }
   }
 
   handleClearBrandName() {
+    this.logEvent('UploadLookScreen', { name: 'Brand cleared' });
     this.setState({brandName: null}, () => {
       this.props.removeBrandName();
     });
   }
 
   handleTextFocus() {
+    this.logEvent('UploadLookScreen', { name: 'Choose brand click' });
     this.setState({
       modalVisible: true
     });
   }
 
   handleBrandCancel() {
+    this.logEvent('UploadLookScreen', { name: 'Choose brand cancel' });
     this.setState({
       modalVisible: false
     }); 

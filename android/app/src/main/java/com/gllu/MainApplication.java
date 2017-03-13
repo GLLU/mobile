@@ -10,6 +10,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
+import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
 import cl.json.RNSharePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.bugsnag.BugsnagReactNative;
@@ -58,6 +60,8 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new GoogleAnalyticsBridgePackage(),
+            new FlurryAnalyticsPackage(),
             new RNSharePackage(),
             new RNFetchBlobPackage(),
             BugsnagReactNative.getPackage(),

@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import { Image, TouchableOpacity, TextInput } from 'react-native';
 import { View } from 'native-base';
 
+import BaseComponent from '../common/BaseComponent';
+
 import styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const cancelEdit = require('../../../images/icons/cancelEdit.png');
 
-class ProfileHeader extends Component {
+class ProfileHeader extends BaseComponent {
 
   static propTypes = {
     popRoute: React.PropTypes.func,
@@ -24,13 +26,23 @@ class ProfileHeader extends Component {
     }
   }
 
+  handleCancelPress() {
+    this.logEvent('EditProfileScreen', { name: 'Cancel click' });
+    this.props.popRoute();
+  }
+
+  handleSavePress() {
+    this.logEvent('EditProfileScreen', { name: 'Save click' });
+    this.props.save();
+  }
+
   render() {
     return (
       <View style={styles.header}>
-        <TouchableOpacity transparent onPress={() => this.props.popRoute()} style={styles.headerBtn}>
+        <TouchableOpacity transparent onPress={this.handleCancelPress.bind(this)} style={styles.headerBtn}>
           <Image source={cancelEdit} style={styles.cancelEdit} />
         </TouchableOpacity>
-        <TouchableOpacity transparent onPress={() => this.props.save()} style={styles.headerBtn}>
+        <TouchableOpacity transparent onPress={this.handleSavePress.bind(this)} style={styles.headerBtn}>
           <View style={styles.saveChangesContainer}>
             <Icon size={20} color={'white'} name={'check'}/>
           </View>
