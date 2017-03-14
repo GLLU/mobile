@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA } from '../actions/feed';
 import { SET_LOOK_LIKE_STATE } from '../actions/likes';
+import { ADD_LOOK_COMMENT } from '../actions/comments';
 
 const initialState = {
   flatLooksData: [],
@@ -52,6 +53,18 @@ const ACTION_HANDLERS = {
         if (look.id == id) {
           look.liked = liked;
           look.likes = likes;
+        }
+        return look;
+      })
+    }
+  },
+  [ADD_LOOK_COMMENT]: (state, action) => {
+    const {look_id} = action.payload;
+    return {
+      ...state,
+      flatLooksData: state.flatLooksData.map((look, index) => {
+        if (look.id == look_id) {
+          look.comments+=1;
         }
         return look;
       })
