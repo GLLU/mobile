@@ -11,7 +11,8 @@ import {
   EMAIL_URL,
   TERMS_URL,
   PRIVACY_URL,
-  COPYRIGHT_URL
+  COPYRIGHT_URL,
+  RATE_US_URL
 } from '../../constants';
 
 const styles = StyleSheet.create({
@@ -35,12 +36,13 @@ const styles = StyleSheet.create({
   }
 });
 
-const iconShare = require('../../../images/icons/original-share.png');
-const iconContact = require('../../../images/icons/original-contact.png');
-const iconTerms = require('../../../images/icons/original-terms.png');
-const iconPrivacy = require('../../../images/icons/original-privacy.png');
-const iconCopyright = require('../../../images/icons/original-copyright.png');
-const iconLogout = require('../../../images/icons/original-logout.png');
+const iconShare = require('../../../images/icons/share.png');
+const iconContact = require('../../../images/icons/contact.png');
+const iconTerms = require('../../../images/icons/terms.png');
+const iconPrivacy = require('../../../images/icons/privacy.png');
+const iconCopyright = require('../../../images/icons/copyright.png');
+const iconLogout = require('../../../images/icons/logout.png');
+const iconRateUs = require('../../../images/icons/rate_us.png');
 
 class SettingsScreen extends BasePage {
   static propTypes = {
@@ -123,6 +125,10 @@ class SettingsScreen extends BasePage {
             <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, COPYRIGHT_URL)}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconCopyright} />
                 <Text style={styles.listItemText}>Copyrights</Text>
+            </ListItem>
+            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, RATE_US_URL)}>
+                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconRateUs} />
+                <Text style={styles.listItemText}>Rate Us</Text>
             </ListItem>
             <ListItem style={styles.listItem} onPress={this.handleLogout.bind(this)}>
                 <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconLogout} />
