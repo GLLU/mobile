@@ -24,6 +24,7 @@ import {
     removeItemTag,
 } from '../../actions';
 import _ from 'lodash';
+import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
 class StepTwo extends BaseComponent {
   static propTypes = {
     image: React.PropTypes.string,
+    state: React.PropTypes.string,
     publishItem: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
     description: React.PropTypes.string,
@@ -302,7 +304,7 @@ class StepTwo extends BaseComponent {
             <Gllu.Button
               disabled={false}
               onPress={() => this._handlePublishItem()}
-              text='PUBLISH'
+              text={ this.props.state == LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
           </Row>
         </Grid>
