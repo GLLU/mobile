@@ -67,12 +67,12 @@ export default class CommentRow extends Component {
         </TouchableOpacity>
         <View style={{flex:12, flexDirection:'column'}}>
           <View style={{flex:1, flexDirection:'row'}}>
-            <TouchableOpacity style={{flex:8}} onPress={this._onUserPress}>
+            <TouchableOpacity style={{flex:3}} onPress={this._onUserPress}>
               <Text name="name">
                 {this.props.user.name}
               </Text>
             </TouchableOpacity>
-            <Text style={{flex:4, textAlign:'right'}} name="created_at">
+            <Text style={{flex:2, textAlign:'right'}} name="created_at">
               {moment(this.props.created_at).calendar()}
             </Text>
           </View>
