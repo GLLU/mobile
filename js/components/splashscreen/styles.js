@@ -49,19 +49,18 @@ module.exports = StyleSheet.create({
     alignSelf: 'center',
   },
   logoContainer: {
-    flex: 1,
+    flex: 0.3,
     marginTop: 0,
     paddingTop: 80,
     paddingLeft: 10,
     paddingRight: 10,
-    bottom: 0,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    justifyContent: 'flex-end'
   },
   logo: {
-    flex: 1,
-    width: 100,
-    height: 100,
-    resizeMode: 'contain'
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
   },
   titleHeading: {
     fontSize: 32,
@@ -73,13 +72,14 @@ module.exports = StyleSheet.create({
     textAlign: 'center'
   },
   signupContainer: {
-    flex: 1,
+    flex: 0.1,
     marginTop: 0,
     paddingTop: (Platform.OS === 'ios') ? 20 : 20,
     paddingLeft: 10,
     paddingRight: 10,
     bottom: 0,
     alignSelf: 'center',
+    justifyContent: 'flex-end'
   },
   label: {
     textAlign: 'center',

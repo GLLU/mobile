@@ -12,11 +12,10 @@ import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
 import Video from 'react-native-video';
 
-
 const { navigateTo } = actions;
 const background = require('../../../images/background.png');
 const splashVideo = require('../../../images/backgrounds/original-splashvid_1.mp4');
-const backgroundShadow = require('../../../images/background-shadow.png');
+const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
 
@@ -35,14 +34,17 @@ const {
 const PERMISSIONS = ["email", "public_profile"];
 
 const SignUpEmailButton = MKButton.coloredFlatButton()
-  .withBackgroundColor(MKColor.Teal)
+  .withBackgroundColor('transparent')
   .withTextStyle({
     color: 'white',
     fontWeight: '600',
   })
   .withStyle({
     height: 40,
-    borderRadius: 0
+    borderRadius: 4,
+    borderColor: MKColor.Teal,
+    borderWidth: 2,
+    marginBottom: 10
   })
   .withText('Signup with Email')
   .build();
@@ -109,7 +111,7 @@ class SplashPage extends BasePage {
           <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}
-                       borderRadius={0}
+                       borderRadius={4}
                        name="facebook"
                        backgroundColor="#3b5998"
                        onPress={this.connectWithFB.bind(this)}>
@@ -130,18 +132,17 @@ class SplashPage extends BasePage {
           <Content scrollEnabled={false}>
             <View style={styles.allView}>
               <Video source={splashVideo}
-                     resizeMode="cover"
+                     resizeMode="stretch"
                      muted={false}
                      style={styles.videoBackground}
                      repeat={false}
               />
-              {/*<Image source={backgroundShadow} style={styles.bgShadow} />*/}
+              <Image source={backgroundShadow} style={styles.bgShadow} />
                 <View style={styles.logoContainer}>
                   <Image source={logo} style={styles.logo} />
                 </View>
-              <View style={{flex: 1}}>
+
                   {this.renderMainView()}
-              </View>
               <Text style={styles.bottomContainerContent}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
             </View>
           </Content>
