@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 12,
     textAlign: 'left',
+    paddingLeft:5,
     height: 40
   },
   sendButton: {
