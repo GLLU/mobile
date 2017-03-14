@@ -163,10 +163,9 @@ class SplashPage extends BasePage {
             <View style={styles.allView}>
               <Video source={splashVideo}
                      resizeMode="stretch"
-                     muted={false}
+                     muted={true}
                      style={styles.videoBackground}
-                     repeat={true}
-              />
+                     repeat={true} />
               <Image source={backgroundShadow} style={styles.bgShadow} />
               <View style={styles.logoContainer}>
                 <Image source={logo} style={styles.logo} />
