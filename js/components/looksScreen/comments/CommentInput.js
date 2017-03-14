@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     flex: 25,
-    flexDirection:'column'
+    flexDirection: 'column'
   },
   textInput: {
     flex: 2,
@@ -80,7 +80,7 @@ export default class CommentInput extends Component {
   }
 
   onSendPress() {
-    if(this.state.value){
+    if (this.state.value) {
       this.props.onSendPress(this.state.value);
     }
   }

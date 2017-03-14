@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import moment from 'moment'
-import {noop} from 'lodash'
+import { noop } from 'lodash'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'white',
-    padding:10,
+    padding: 10,
   },
   photo: {
     flex: 1,
@@ -22,7 +22,7 @@ export default class CommentRow extends Component {
 
   constructor(props) {
     super(props);
-    this._onUserPress=this._onUserPress.bind(this);
+    this._onUserPress = this._onUserPress.bind(this);
   }
 
   static propTypes = {
@@ -41,11 +41,11 @@ export default class CommentRow extends Component {
   static defaultProps = {
     style: {},
     id: -1,
-    created_at: new Date(1970,1,1).toUTCString(),
+    created_at: new Date(1970, 1, 1).toUTCString(),
     body: '',
     user: {
-      id:681,
-      avatar:{url:"https://cdn1.gllu.com/uploads/user/user-681/avatar/IMG-20170224-WA0020.jpeg"},
+      id: 681,
+      avatar: {url: "https://cdn1.gllu.com/uploads/user/user-681/avatar/IMG-20170224-WA0020.jpeg"},
       name: 'itzik kala'
     },
     //parent_id & children are used for hierarchical comments and therefore currently not relevant
@@ -54,8 +54,7 @@ export default class CommentRow extends Component {
     onUserPress: noop
   };
 
-  _onUserPress()
-  {
+  _onUserPress() {
     console.log('omg I should navigate!!!');
     this.props.onUserPress(this.props.user);
   }

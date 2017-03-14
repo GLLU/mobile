@@ -28,7 +28,7 @@ export default class BottomLookContainer extends Component {
     this.state = {
       likes: this.props.look.likes,
       isLiked: this.props.look.liked,
-      comments: this.props.look.comments ||0,
+      comments: this.props.look.comments || 0,
       isDescriptionActive: false,
       isCommentsActive: false,
       fadeAnimContent: new Animated.Value(0),
@@ -58,7 +58,7 @@ export default class BottomLookContainer extends Component {
   }
 
   render() {
-    var comments=[{body:'omg'},{body:'wow'},{body:'hayush'}];
+    var comments = [{body: 'omg'}, {body: 'wow'}, {body: 'hayush'}];
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -82,7 +82,8 @@ export default class BottomLookContainer extends Component {
           <DescriptionView isHidden={!this.state.isDescriptionActive} style={styles.bottomDrawerView}
                            description={this.props.look.description}/>
 
-          <CommentsView look_id={this.props.look.id} count={this.state.comments} isHidden={!this.state.isCommentsActive} style={styles.bottomDrawerView}/>
+          <CommentsView look_id={this.props.look.id} count={this.state.comments} isHidden={!this.state.isCommentsActive}
+                        style={styles.bottomDrawerView}/>
 
           <BottomButton
             isCommentsActive={this.state.isCommentsActive}

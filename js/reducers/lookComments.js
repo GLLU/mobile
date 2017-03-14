@@ -27,7 +27,7 @@ function initLookComments(state: State): State {
 
 function addLookComment(state: State, action): State {
   let comment = action.payload;
-  let lookCommentsData = _.union(state.lookCommentsData,[comment]);
+  let lookCommentsData = _.union(state.lookCommentsData, [comment]);
   return {
     ...state,
     lookCommentsData

@@ -18,7 +18,7 @@ export default class BottomButton extends Component {
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
     hasDescription: React.PropTypes.bool,
-    isDescriptionActive:React.PropTypes.bool,
+    isDescriptionActive: React.PropTypes.bool,
     toggleDescription: React.PropTypes.func,
     isCommentsActive: React.PropTypes.bool,
     toggleComments: React.PropTypes.func

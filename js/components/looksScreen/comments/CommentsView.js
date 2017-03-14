@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, ListView,  View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import * as _ from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
@@ -15,30 +15,30 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-    flexDirection:'row',
+    flexDirection: 'row',
     backgroundColor: '#f2f2f2'
   },
-  commentsCountContainer:{
-    justifyContent:'center',
-    flex:1,
+  commentsCountContainer: {
+    justifyContent: 'center',
+    flex: 1,
     backgroundColor: '#00D7B2',
     paddingTop: 10,
     paddingBottom: 10,
   },
-  commentsCountText:{
-    color:'white',
+  commentsCountText: {
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign:'center'
+    textAlign: 'center'
   },
-  showAllContainer:{
+  showAllContainer: {
     paddingLeft: 12,
-    flex:3,
+    flex: 3,
   },
-  viewTitle:{
+  viewTitle: {
     paddingLeft: 12,
-    flex:12,
-    fontWeight:'bold',
+    flex: 12,
+    fontWeight: 'bold',
     textAlign: 'left'
 
   },
@@ -56,19 +56,19 @@ class CommentsView extends Component {
     isHidden: React.PropTypes.bool,
     comments: React.PropTypes.array,
     count: React.PropTypes.number,
-    look_id:React.PropTypes.number
+    look_id: React.PropTypes.number
   };
 
   static defaultProps = {
     style: {},
     isHidden: true,
-    comments:[],
+    comments: [],
   };
 
   constructor(props) {
     super(props);
-    this._renderFooter=this._renderFooter.bind(this);
-    this._pushComment=this._pushComment.bind(this);
+    this._renderFooter = this._renderFooter.bind(this);
+    this._pushComment = this._pushComment.bind(this);
     this.getCommentsData = this.getCommentsData.bind(this);
     this.onUserNavigate = this.onUserNavigate.bind(this);
     this.currentPageIndex = 1;
@@ -111,8 +111,8 @@ class CommentsView extends Component {
     ).start();
   }
 
-  _pushComment(value){
-    const comment={
+  _pushComment(value) {
+    const comment = {
       id: -1,
       created_at: new Date().toUTCString(),
       user_id: this.props.myUser.id,
@@ -127,10 +127,10 @@ class CommentsView extends Component {
   }
 
   onUserNavigate(user) {
-    this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: user}, this.props.navigation.key);
+    this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: user}, this.props.navigation.key);
   }
 
-  _renderFooter(){
+  _renderFooter() {
     return (
       <View style={{paddingBottom: 5,paddingTop: 5,flex: 2,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
         <CommentInput onSendPress={this._pushComment}/>
@@ -148,7 +148,8 @@ class CommentsView extends Component {
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <CommentsViewHeader count={this.props.count}/>
-        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.props.count==0} comments={this.props.comments} onEndReached={this.getCommentsData}/>
+        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.props.count==0} comments={this.props.comments}
+                          onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
         <View style={{height:70}}/>
       </Animated.View>

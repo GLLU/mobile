@@ -7,33 +7,34 @@ import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType }
 import { likeUpdate, unLikeUpdate } from './likes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
 import { getUserFollowersData, initUserFollowers }  from './followers';
-import { getLookCommentsData, initLookComments, addLookComment} from './comments';
+import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData } from './looks';
 import { getFeed, resetFeed, loadMore } from './feed';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
-import { addNewLook,
-         editTag,
-         createLookItem,
-         selectLookItem,
-         updateLookItem,
-         publishLookItem,
-         setTagPosition,
-         addItemType,
-         createBrandName,
-         addBrandName,
-         removeBrandName,
-         addItemSizeCountry,
-         addItemSize,
-         addItemTag,
-         removeItemTag,
-         addItemCurrency,
-         addItemPrice,
-         addSharingInfo,
-         addDescription,
-         addLocation,
-         addTrustLevel,
-         addPhotosVideo,
-         toggleOccasionTag
+import {
+  addNewLook,
+  editTag,
+  createLookItem,
+  selectLookItem,
+  updateLookItem,
+  publishLookItem,
+  setTagPosition,
+  addItemType,
+  createBrandName,
+  addBrandName,
+  removeBrandName,
+  addItemSizeCountry,
+  addItemSize,
+  addItemTag,
+  removeItemTag,
+  addItemCurrency,
+  addItemPrice,
+  addSharingInfo,
+  addDescription,
+  addLocation,
+  addTrustLevel,
+  addPhotosVideo,
+  toggleOccasionTag
 } from './uploadLook';
 import { setUser, loginViaFacebook, checkLogin, getStats, logout } from './user';
 import navigateTo from './sideBarNav';

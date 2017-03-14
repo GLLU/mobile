@@ -4,29 +4,29 @@ import { Animated, View, Text, TouchableHighlight, StyleSheet } from 'react-nati
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection:'row',
+    flexDirection: 'row',
     backgroundColor: '#f2f2f2'
   },
-  commentsCountContainer:{
-    justifyContent:'center',
-    flex:1,
+  commentsCountContainer: {
+    justifyContent: 'center',
+    flex: 1,
     backgroundColor: '#00D7B2',
     paddingTop: 6,
     paddingBottom: 6,
   },
-  commentsCountText:{
-    color:'white',
+  commentsCountText: {
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign:'center'
+    textAlign: 'center'
   },
-  viewTitle:{
+  viewTitle: {
     paddingLeft: 12,
-    flex:9,
+    flex: 9,
     paddingTop: 6,
     paddingBottom: 6,
-    fontWeight:'bold',
-    fontSize:16,
+    fontWeight: 'bold',
+    fontSize: 16,
     textAlign: 'left'
   }
 });
