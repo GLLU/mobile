@@ -10,10 +10,12 @@ import { connect } from 'react-redux';
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
+import Video from 'react-native-video';
+
 
 const { navigateTo } = actions;
-
 const background = require('../../../images/background.png');
+const splashVideo = require('../../../images/backgrounds/original-splashvid_1.mp4');
 const backgroundShadow = require('../../../images/background-shadow.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
@@ -105,7 +107,6 @@ class SplashPage extends BasePage {
     return (
         <View style={styles.signupContainer}>
           <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
-          <Text style={styles.label}>Or</Text>
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}
                        borderRadius={0}
@@ -127,15 +128,22 @@ class SplashPage extends BasePage {
       <Container theme={glluTheme}>
         <View style={styles.container}>
           <Content scrollEnabled={false}>
-            <Image source={background} style={styles.shadow}>
-              <Image source={backgroundShadow} style={styles.bgShadow} />
-              <View style={styles.logoContainer}>
-                <Image source={logo} style={styles.logo} />
-                <Text style={styles.titleHeading}>Fashion that Fits</Text>
+            <View style={styles.allView}>
+              <Video source={splashVideo}
+                     resizeMode="cover"
+                     muted={false}
+                     style={styles.videoBackground}
+                     repeat={false}
+              />
+              {/*<Image source={backgroundShadow} style={styles.bgShadow} />*/}
+                <View style={styles.logoContainer}>
+                  <Image source={logo} style={styles.logo} />
+                </View>
+              <View style={{flex: 1}}>
+                  {this.renderMainView()}
               </View>
-                {this.renderMainView()}
-                <Text style={styles.bottomContainerContent}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
-            </Image>
+              <Text style={styles.bottomContainerContent}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
+            </View>
           </Content>
         </View>
       </Container>

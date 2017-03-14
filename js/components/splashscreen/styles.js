@@ -2,6 +2,7 @@
 import React , { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 module.exports = StyleSheet.create({
@@ -12,6 +13,16 @@ module.exports = StyleSheet.create({
     left: 0,
     right: 0,
     height: deviceHeight
+  },
+  videoBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flex: 1,
+    width: null,
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
   },
   shadow: {
     flex: 1,
@@ -48,8 +59,8 @@ module.exports = StyleSheet.create({
   },
   logo: {
     flex: 1,
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     resizeMode: 'contain'
   },
   titleHeading: {
@@ -64,7 +75,7 @@ module.exports = StyleSheet.create({
   signupContainer: {
     flex: 1,
     marginTop: 0,
-    paddingTop: (Platform.OS === 'ios') ? 120 : 120,
+    paddingTop: (Platform.OS === 'ios') ? 20 : 20,
     paddingLeft: 10,
     paddingRight: 10,
     bottom: 0,
@@ -100,13 +111,18 @@ module.exports = StyleSheet.create({
     marginBottom: 30,
     alignSelf: 'center'
   },
+  allView: {
+    flex: 1,
+    height: deviceHeight,
+    width: deviceWidth
+  },
   bottomContainerContent: {
     color: '#E0E0E0',
     fontSize: 12,
     fontWeight: 'normal',
     textAlign: 'center',
     marginBottom: 15,
-    opacity: 0.8
+    opacity: 0.8,
   },
     alreadyBox: {
         alignSelf: 'center',
