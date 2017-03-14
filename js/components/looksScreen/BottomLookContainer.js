@@ -73,9 +73,9 @@ export default class BottomLookContainer extends BaseComponent {
     avatar.bodyType = this.props.look.type;
     return (
       <Animated.View style={{opacity: this.state.fadeAnimContent, justifyContent: 'space-between'}}>
-        <TouchableOpacity transparent onPress={() => this.props.tempPopRoute()}>
+        <TouchableOpacity transparent onPress={() => this.props.tempPopRoute()} style={{zIndex: 99999}}>
           <Icon
-            style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute'}}
+            style={{color: 'black', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute', zIndex: 9999}}
             name="ios-arrow-back"/>
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
