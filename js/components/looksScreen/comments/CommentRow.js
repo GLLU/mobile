@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   photo: {
-    width: 50,
-    height: 50,
-    borderRadius: 25
+    width: 40,
+    height: 40,
+    borderRadius: 20
   },
 });
 
@@ -64,7 +64,7 @@ export default class CommentRow extends Component {
         <TouchableOpacity onPress={this._onUserPress} style={{flex:2}} name="avatar">
           <Image resizeMode='cover' source={{ uri: this.props.user.avatar.url}} style={styles.photo}/>
         </TouchableOpacity>
-        <View style={{flex:12, flexDirection:'column'}}>
+        <View style={{flex:13, flexDirection:'column'}}>
           <View style={{flex:1, flexDirection:'row'}}>
             <TouchableOpacity style={{flex:3}} onPress={this._onUserPress}>
               <Text name="name">
