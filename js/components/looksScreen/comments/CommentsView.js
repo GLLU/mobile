@@ -74,6 +74,7 @@ class CommentsView extends Component {
     this.currentPageIndex = 1;
     this.state = {
       fadeAnimContent: new Animated.Value(-500),
+      count:this.props.count,
       isTrueEndReached: false
     };
   }
@@ -124,6 +125,7 @@ class CommentsView extends Component {
       children: []
     };
     this.props.addLookComment(comment);
+    this.setState({count:this.state.count+1})
   }
 
   onUserNavigate(user) {
@@ -148,8 +150,8 @@ class CommentsView extends Component {
 
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
-        <CommentsViewHeader count={this.props.count}/>
-        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.props.count==0&&_.isEmpty(this.props.comments)} comments={this.props.comments}
+        <CommentsViewHeader count={this.state.count}/>
+        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count==0} comments={this.props.comments}
                           onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
         <View style={{height:70}}/>
