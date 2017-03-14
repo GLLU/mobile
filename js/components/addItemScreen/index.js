@@ -192,7 +192,7 @@ class AddItemPage extends BasePage {
       case 0:
         return item && item.brand != null;
       case 1:
-        return item && item.selectedCategory != null;
+        return item && item.category != null;
       case 2:
         return false;
       default:

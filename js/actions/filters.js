@@ -10,7 +10,7 @@ export const SET_BRANDS = 'SET_BRANDS';
 export const SET_ITEM_SIZES = 'SET_ITEM_SIZES';
 export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
 
-export function loadCategories(data):Action {
+export function loadCategories():Action {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.category_tags({}, (err, data) => {

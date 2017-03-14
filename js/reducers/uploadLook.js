@@ -23,7 +23,7 @@ import {
   REMOVE_BRAND_NAME,
 } from '../actions/uploadLook';
 import { SET_ITEM_SIZES, SET_CATEGORIES } from '../actions/filters';
-import itemMapper from '../mappers/itemMapper';
+import { lookMapper, itemMapper } from '../mappers/';
 
 const mutateItem = function(state, key, value) {
   return state.items.map(item => {
@@ -42,11 +42,10 @@ const findItem = function(state) {
 const ACTION_HANDLERS = {
   [EDIT_NEW_LOOK]: (state, action) => {
     console.log("Reducer EDIT_NEW_LOOK", action.payload)
-    const lookId = action.payload.id;
     return {
       ...state,
       ...action.payload,
-      lookId,
+      ...lookMapper(action.payload),
     }
   },
   [SELECT_LOOK_ITEM] :(state, action) => {
@@ -83,10 +82,12 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {
-    const selectedCategory = action.payload;
+    const category = action.payload;
+    let items = mutateItem(state, 'category', category);
+    items = mutateItem(state, 'category_id', category.id);
     return {
       ...state,
-      items: mutateItem(state, 'selectedCategory', selectedCategory)
+      items: items,
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
@@ -118,20 +119,20 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_TAG]: (state, action) => {
     const item = findItem(state);
-    let itemTags = item.itemTags;
-    itemTags.push(action.payload);
-    itemTags = _.uniqBy(itemTags, 'id');
+    let tags = item.tags;
+    tags.push(action.payload);
+    tags = _.uniqBy(tags, 'id');
     return {
       ...state,
-      items: mutateItem(state, 'itemTags', itemTags)
+      items: mutateItem(state, 'tags', tags)
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
     const item = findItem(state);
-    let itemTags = _.filter(item.itemTags, t => t.name.toLowerCase() != action.payload.toLowerCase());
+    let tags = _.filter(item.tags, t => t.name.toLowerCase() != action.payload.toLowerCase());
     return {
       ...state,
-      items: mutateItem(state, 'itemTags', itemTags)
+      items: mutateItem(state, 'tags', tags)
     }
   },
   [ADD_ITEM_CURRENCY]: (state, action) => {
@@ -182,10 +183,10 @@ const ACTION_HANDLERS = {
   },
   // [SET_CATEGORIES]: (state, action) => {
   //   const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
-  //   const selectedCategory = categories[parseInt(categories.length / 2)].id;
+  //   const category = categories[parseInt(categories.length / 2)].id;
   //   return {
   //     ...state,
-  //     items: mutateItem(state, 'selectedCategory', selectedCategory)
+  //     items: mutateItem(state, 'category', category)
   //   }
   // },
   [SET_ITEM_SIZES]: (state, action) => {
@@ -207,27 +208,27 @@ const ACTION_HANDLERS = {
   },
   [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {
     const item = findItem(state);
-    let occasionTags = _.filter(item.occasionTags, t => t.id !== action.payload.id);
+    let occasions = _.filter(item.occasions, t => t.id !== action.payload.id);
     return {
       ...state,
-      items: mutateItem(state, 'occasionTags', occasionTags)
+      items: mutateItem(state, 'occasions', occasions)
     }
   },
   [ADD_ITEM_OCCASION_TAG]: (state, action) => {
     const item = findItem(state);
-    let occasionTags = item.occasionTags;
-    occasionTags.push(action.payload);
-    occasionTags = _.uniqBy(occasionTags, 'id');
+    let occasions = item.occasions;
+    occasions.push(action.payload);
+    occasions = _.uniqBy(occasions, 'id');
     return {
       ...state,
-      items: mutateItem(state, 'occasionTags', occasionTags)
+      items: mutateItem(state, 'occasions', occasions)
     }
   },
 }
 
 // Reducer
 const initialState = {
-  editingLookId: null,
+  lookId: null,
   itemId: null,
   image: null,
   description: '',

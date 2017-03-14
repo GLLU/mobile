@@ -19,7 +19,9 @@ import {
     addLocation,
     addTrustLevel,
     addPhotosVideo,
-    toggleOccasionTag
+    toggleOccasionTag,
+    addItemTag,
+    removeItemTag,
 } from '../../actions';
 import _ from 'lodash';
 
@@ -116,22 +118,26 @@ class StepTwo extends BaseComponent {
     description: React.PropTypes.string,
     photos: React.PropTypes.array,
     items: React.PropTypes.array,
-    occasionTags: React.PropTypes.array,
+    occasions: React.PropTypes.array,
     addDescription: React.PropTypes.func,
     addLocation: React.PropTypes.func,
     addTrustLevel: React.PropTypes.func,
-    addPhotosVideo: React.PropTypes.func
+    addPhotosVideo: React.PropTypes.func,
+    addItemTag: React.PropTypes.func,
+    removeItemTag: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-        images:['', '', ''],
-        video: '',
-        videoUrl: '',
-        location: 'us',
-        trustLevel: '0',
-        confirm: false,
+      images:['', '', ''],
+      video: '',
+      videoUrl: '',
+      location: 'us',
+      trustLevel: '0',
+      confirm: false,
+      description: props.description,
+      url: props.url,
     }
   }
 
@@ -172,7 +178,9 @@ class StepTwo extends BaseComponent {
         this.props.addTrustLevel(value);
         break;
       case 'description':
-        this.props.addDescription(value);
+        this.setState({
+          description: value
+        });
         break;
     }
   }
@@ -212,10 +220,11 @@ class StepTwo extends BaseComponent {
 
   handleDescriptionEndEditing() {
     this.logEvent('UploadLookScreen', { name: 'Additional Info Description', description: this.props.description });
+    this.props.addDescription(this.state.description);
   }
 
   handleUrlEndEditing() {
-   this.logEvent('UploadLookScreen', { name: 'Url' }); 
+   this.logEvent('UploadLookScreen', { name: 'Url' });
   }
 
   renderImageOverlay() {
@@ -240,7 +249,7 @@ class StepTwo extends BaseComponent {
   }
 
   render() {
-    const { items, createLookItem, image} = this.props;
+    const { items, createLookItem, image, tags} = this.props;
     return(
       <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
         <Grid>
@@ -260,7 +269,7 @@ class StepTwo extends BaseComponent {
                 textAlignVertical='top'
                 multiline={true}
                 style={styles.describe}
-                value={this.props.description}
+                value={this.state.description}
                 placeholder="Describe what you're wearing..."
                 onEndEditing={this.handleDescriptionEndEditing.bind(this)}
                 onChangeText={(text) => this.updateSelectValue('description', text)}/>
@@ -268,11 +277,17 @@ class StepTwo extends BaseComponent {
           </Row>
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Occassions</Text>
-            <OccasionsDropdown selectedTags={this.props.occasionTags} toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
+            <OccasionsDropdown
+              selectedTags={this.props.occasions}
+              toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
           </Row>
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Add tags</Text>
-            <TagInput/>
+            <TagInput
+              tags={tags}
+              addItemTag={this.props.addItemTag}
+              removeItemTag={this.props.removeItemTag}
+            />
           </Row>
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Url</Text>
@@ -306,6 +321,8 @@ function bindActions(dispatch) {
     addTrustLevel: (number) => dispatch(addTrustLevel(number)),
     addPhotosVideo: (photos, video) => dispatch(addPhotosVideo(photos, video)),
     toggleOccasionTag: (tag, selected) => dispatch(toggleOccasionTag(tag, selected)),
+    addItemTag: (name) => dispatch(addItemTag(name)),
+    removeItemTag: (name) => dispatch(removeItemTag(name)),
   };
 }
 
@@ -315,8 +332,8 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
-    occasionTags: [{ id: 103,
-       name: 'Date'}],
+    occasions: item ? item.occasions : [],
+    tags: item ? item.tags : [],
     photos: item ? item.photos : [],
   }
 };

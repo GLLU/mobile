@@ -17,7 +17,7 @@ export function getLook(lookId):Action {
 
 export function getUserLooksData(data):Action {
   return (dispatch) => {
-    return dispatch(rest.actions.looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
+    return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
       if (!err && userLooksData) {
         let looksData = {
           currId: data.id,

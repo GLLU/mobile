@@ -8,7 +8,7 @@ export default function map(item) {
     userId: item.user_id,
     lookId: item.look_id,
     editing: true,
-    selectedCategory: null,
+    category: null,
     brand: null,
     itemSizeRegion: null,
     itemSizeValue: null,
@@ -19,8 +19,8 @@ export default function map(item) {
     trustLevel: 0,
     photos: [],
     video: '',
-    occasionTags: [],
-    itemTags: [],
+    occasions: [],
+    tags: [],
     ...item,
   }
 }
