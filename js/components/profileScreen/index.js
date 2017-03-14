@@ -182,9 +182,9 @@ class ProfileScreen extends BasePage {
       let avatarUrl = avatar ? avatar.url : null;
       return (
         <Container>
-          <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
+          <Image source={profileBackground} style={styles.bg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
-                            style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]}/>
+                            style={[styles.linearGradient, {opacity: 0.7}]}/>
             <View style={styles.header}>
               <TouchableOpacity transparent onPress={this.handleBackToFeedPress.bind(this)} style={styles.headerBtn}>
                 { this._renderleftBtn() }
