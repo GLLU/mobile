@@ -6,7 +6,7 @@ import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentsListView from './CommentsListView'
 
-import { navigateTo, popRoute, getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
+import { replaceAt, getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -70,6 +70,7 @@ class CommentsView extends Component {
     this._renderFooter=this._renderFooter.bind(this);
     this._pushComment=this._pushComment.bind(this);
     this.getCommentsData = this.getCommentsData.bind(this);
+    this.onUserNavigate = this.onUserNavigate.bind(this);
     this.currentPageIndex = 1;
     this.state = {
       fadeAnimContent: new Animated.Value(-500),
@@ -125,6 +126,10 @@ class CommentsView extends Component {
     this.props.addLookComment(comment);
   }
 
+  onUserNavigate(user) {
+    this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: user}, this.props.navigation.key);
+  }
+
   _renderFooter(){
     return (
       <View style={{paddingBottom: 5,paddingTop: 5,flex: 2,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
@@ -143,7 +148,7 @@ class CommentsView extends Component {
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <CommentsViewHeader count={this.props.count}/>
-        <CommentsListView isEmpty={this.props.count==0} comments={this.props.comments} onEndReached={this.getCommentsData}/>
+        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.props.count==0} comments={this.props.comments} onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
         <View style={{height:70}}/>
       </Animated.View>
@@ -153,8 +158,7 @@ class CommentsView extends Component {
 
 function bindAction(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    popRoute: key => dispatch(popRoute(key)),
+    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
     getLookCommentsData: (id, pageNumber, pageSize) => dispatch(getLookCommentsData(id, pageNumber, pageSize)),
     initLookComments: () => dispatch(initLookComments()),
     addLookComment: (data) => dispatch(addLookComment(data)),
@@ -164,7 +168,8 @@ function bindAction(dispatch) {
 const mapStateToProps = state => {
   return ({
     myUser: state.user,
-    comments: state.lookComments.lookCommentsData
+    comments: state.lookComments.lookCommentsData,
+    navigation: state.cardNavigation
   });
 };
 

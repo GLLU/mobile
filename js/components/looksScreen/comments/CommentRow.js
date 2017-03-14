@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import moment from 'moment'
+import {noop} from 'lodash'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +22,7 @@ export default class CommentRow extends Component {
 
   constructor(props) {
     super(props);
+    this._onUserPress=this._onUserPress.bind(this);
   }
 
   static propTypes = {
@@ -32,7 +34,8 @@ export default class CommentRow extends Component {
     body: React.PropTypes.string,
     //parent_id & children are used for hierarchical comments and therefore currently not relevant
     parent_id: React.PropTypes.number,
-    children: React.PropTypes.array
+    children: React.PropTypes.array,
+    onUserPress: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -47,23 +50,31 @@ export default class CommentRow extends Component {
     },
     //parent_id & children are used for hierarchical comments and therefore currently not relevant
     parent_id: null,
-    children: []
+    children: [],
+    onUserPress: noop
   };
 
+  _onUserPress()
+  {
+    console.log('omg I should navigate!!!');
+    this.props.onUserPress(this.props.user);
+  }
+
   render() {
-    var readableDate=moment(this.props.created_at).calendar();
     return (
       <View style={styles.container}>
-        <View style={{flex:2}} name="avatar">
+        <TouchableOpacity onPress={this._onUserPress} style={{flex:2}} name="avatar">
           <Image resizeMode='cover' source={{ uri: this.props.user.avatar.url}} style={styles.photo}/>
-        </View>
+        </TouchableOpacity>
         <View style={{flex:12, flexDirection:'column'}}>
           <View style={{flex:1, flexDirection:'row'}}>
-            <Text style={{flex:8}} name="name">
-              {this.props.user.name}
-            </Text>
+            <TouchableOpacity style={{flex:8}} onPress={this._onUserPress}>
+              <Text name="name">
+                {this.props.user.name}
+              </Text>
+            </TouchableOpacity>
             <Text style={{flex:4, textAlign:'right'}} name="created_at">
-              {readableDate}
+              {moment(this.props.created_at).calendar()}
             </Text>
           </View>
           <Text style={{flex:1}} name="body">

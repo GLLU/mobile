@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {noop} from 'lodash'
 import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import CommentRow from './CommentRow'
 
@@ -27,13 +28,16 @@ export default class CommentsListView extends Component {
   static propTypes = {
     style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
     comments: React.PropTypes.array,
-    isEmpty: React.PropTypes.bool
+    isEmpty: React.PropTypes.bool,
+    onUserPress: React.PropTypes.func
   };
 
   static defaultProps = {
     style: {},
     comments: [],
-    isEmpty: true
+    isEmpty: true,
+    onUserPress: noop
+
   };
 
   rowHasChanged(r1, r2) {
@@ -56,7 +60,7 @@ export default class CommentsListView extends Component {
       <ListView
         style={styles.container}
         dataSource={this.state.dataSource}
-        renderRow={(data) => <CommentRow {...data}/>}
+        renderRow={(data) => <CommentRow onUserPress={this.props.onUserPress} {...data}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
         enableEmptySections={true}
         onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
