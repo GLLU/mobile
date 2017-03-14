@@ -12,7 +12,6 @@ import StatsView  from './StatsView';
 import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData } from '../../actions';
 import _ from 'lodash';
 import SelectPhoto from '../common/SelectPhoto';
-const userBackground = require('../../../images/psbg.png');
 const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
