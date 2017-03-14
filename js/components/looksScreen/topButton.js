@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Button, Icon } from 'native-base';
+import BaseComponent from '../common/BaseComponent';
 import styles from './styles';
 
 const bagItImage = require('../../../images/bagItImage.png');
@@ -12,8 +13,8 @@ const LEAN_COLUMN_SHAPE = require('../../../images/types/LEAN_COLUMN_SHAPE_WHITE
 const NEAT_HOURGLASS_SHAPE = require('../../../images/types/NEAT_HOURGLASS_SHAPE_WHITE.png');
 const PEAR_SHAPE = require('../../../images/types/PEAR_SHAPE_WHITE.png');
 
-export default class TopButton extends Component {
-  static propTypes = {
+export default class TopButton extends BaseComponent {
+  static propTypes ={
     avatar: React.PropTypes.object
   }
 
@@ -32,6 +33,11 @@ export default class TopButton extends Component {
     }
   }
 
+  handleProfilePress() {
+    this.logEvent('LookScreen', { name: 'Profile click'});
+    this.props.onPress();
+  }
+
   render() {
     let bgContainer = null;
     let typeLabel = null;
@@ -44,9 +50,8 @@ export default class TopButton extends Component {
     });
     return (
       <View style={styles.descriptionStyle}>
-
         <View style={styles.topLeft}>
-          <TouchableOpacity style={[styles.topButton,styles.avatarButton]} onPress={() => this.props.onPress()}>
+          <TouchableOpacity style={[styles.topButton,styles.avatarButton]} onPress={this.handleProfilePress.bind(this)}>
             <Image source={{uri: this.props.avatar.imageUri}} style={{height:64, width: 64, borderRadius: 32}}/>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.topButton,styles.bodyTypeButton]}>

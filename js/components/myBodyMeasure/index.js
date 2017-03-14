@@ -49,6 +49,11 @@ class MyBodyMeasure extends BasePage {
     this.props.saveUserSize(data);
   }
 
+  handleSaveUserSizePress() {
+    this.logEvent('MyBodyMeasureScreen', { name: 'Lets GLLU clicks' });
+    this._saveUserSize();
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
@@ -66,7 +71,7 @@ class MyBodyMeasure extends BasePage {
           <View style={{marginTop: 15}}>
             <InformationTextIcon text={'This information is private to you only'} />
           </View>
-          <Button block primary style={myStyles.continueButton} onPress={() => this._saveUserSize()}>All Set. Let's GLLU!</Button>
+          <Button block primary style={myStyles.continueButton} onPress={this.handleSaveUserSizePress.bind(this)}>All Set. Let's GLLU!</Button>
         </Content>
       </Container>
     )

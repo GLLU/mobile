@@ -101,32 +101,40 @@ module.exports = StyleSheet.create({
     alignSelf: 'center'
   },
   bottomContainerContent: {
+    justifyContent: 'center',
+    marginBottom: 15,
+    opacity: 0.8,
+    flexDirection: 'row',
+  },
+  text: {
     color: '#E0E0E0',
     fontSize: 12,
     fontWeight: 'normal',
-    textAlign: 'center',
-    marginBottom: 15,
-    opacity: 0.8
   },
-    alreadyBox: {
-        alignSelf: 'center',
-        flexDirection:'row',
-        height: 25,
-        marginTop: 5
-    },
-    alreadyTxt: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        opacity: 0.8,
-    },
-    alreadyBtn: {
-        backgroundColor: 'transparent',
-        paddingVertical: 0,
-        paddingHorizontal: 5,
-        alignItems: 'flex-start',
-        shadowOpacity: 0,
-        shadowRadius: 0,
-        elevation: 0,
-        paddingTop: (Platform.OS === 'ios') ? 2 : 7,
-    },
+  link: {
+    color: '#00ABED',
+    fontSize: 12,
+    fontWeight: 'normal',
+  },
+  alreadyBox: {
+      alignSelf: 'center',
+      flexDirection:'row',
+      height: 25,
+      marginTop: 5
+  },
+  alreadyTxt: {
+      color: '#FFFFFF',
+      fontSize: 16,
+      opacity: 0.8,
+  },
+  alreadyBtn: {
+      backgroundColor: 'transparent',
+      paddingVertical: 0,
+      paddingHorizontal: 5,
+      alignItems: 'flex-start',
+      shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 0,
+      paddingTop: (Platform.OS === 'ios') ? 2 : 7,
+  },
 });

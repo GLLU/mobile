@@ -162,7 +162,8 @@ export default {
   lineHeightH2: 27,
   lineHeightH3: 22,
   iconLineHeight: (Platform.OS === 'ios') ? 37 : 30,
-  lineHeight: (Platform.OS === 'ios') ? 40 : 20,
+  lineHeight: (Platform.OS === 'ios') ? 20 : 26,
+
 
   // List
   listBorderColor: '#ACAAAB',
@@ -205,7 +206,7 @@ export default {
 
 
   // Title
-  titleFontSize: (Platform.OS === 'ios') ? 24 : 19,
+  titleFontSize: (Platform.OS === 'ios') ? 17 : 19,
   subTitleFontSize: (Platform.OS === 'ios') ? 12 : 14,
   subtitleColor: '#8e8e93',
 

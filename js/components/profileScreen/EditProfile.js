@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import BasePage from '../common/BasePage';
 import { Image, Animated, InteractionManager, TouchableOpacity, Text, TextInput, ScrollView, FormData} from 'react-native';
 import styles from './styles';
 import { View } from 'native-base';
@@ -19,7 +20,7 @@ import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const { popRoute } = actions;
 
-class EditProfile extends Component {
+class EditProfile extends BasePage {
   static propTypes = {
     user: React.PropTypes.object,
     navigation: React.PropTypes.object,
@@ -55,6 +56,7 @@ class EditProfile extends Component {
   }
 
   _changeUserAvatar() {
+    this.logEvent('EditProfileScreen', { name: 'Change avatar click' });
     ImagePicker.openPicker({
       includeBase64: true,
       cropping: false,
@@ -71,6 +73,10 @@ class EditProfile extends Component {
     this.setState({about_me: text})
   }
 
+  _handleAboutMeEndEding() {
+    this.logEvent('EditProfileScreen', { name: 'Tell us about you' });
+  }
+
   render() {
     return (
       <View style={{backgroundColor: '#E9E9EF'}}>
@@ -83,7 +89,11 @@ class EditProfile extends Component {
           style={[styles.scrollView]}
         >
           <EditProfileName name={this.props.user.name} username={this.props.user.username} />
-          <ExpandableTextArea text={this.state.about_me} handleTextInput={(text) => this._handleAboutMeTextInput(text)}/>
+          <ExpandableTextArea
+            text={this.state.about_me}
+            onEndEditing={this._handleAboutMeEndEding.bind(this)}
+            handleTextInput={(text) => this._handleAboutMeTextInput(text)}
+          />
           <View style={styles.editBodyTypeTitleContainer}>
             <Text style={styles.editBodyTypeTitle}>EDIT BODY TYPE</Text>
           </View>

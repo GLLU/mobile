@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Text, Button, Input, InputGroup, Icon } from 'native-base';
+import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import styles from './styles';
 
@@ -36,7 +37,7 @@ const myStyles = StyleSheet.create({
   },
 });
 
-class SearchBar extends Component {
+class SearchBar extends BaseComponent {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
     clearText: React.PropTypes.string
@@ -59,6 +60,7 @@ class SearchBar extends Component {
   }
 
   _doSearch(text) {
+    this.logEvent('Feedscreen', { name: 'Search' });
     this.props.handleSearchInput(text)
   }
 
@@ -71,6 +73,7 @@ class SearchBar extends Component {
   }
 
   clearSearch() {
+    this.logEvent('Feedscreen', { name: 'Clear search' });
     this.setState({
       text: ''
     })

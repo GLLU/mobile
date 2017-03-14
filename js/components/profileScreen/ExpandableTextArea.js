@@ -3,14 +3,15 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, TextInput } from 'react-native';
 import { View } from 'native-base';
-
+import BaseComponent from '../common/BaseComponent';
 import styles from './styles';
 
-class ExpandableTextArea extends Component {
+class ExpandableTextArea extends BaseComponent {
 
   static propTypes = {
     text: React.PropTypes.string,
-    handleTextInput: React.PropTypes.func
+    handleTextInput: React.PropTypes.func,
+    onEndEditing: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -31,6 +32,7 @@ class ExpandableTextArea extends Component {
                    value={this.props.text}
                    placeholder={'Tell your followers a bit about yourself!'}
                    placeholderTextColor="gray"
+                   onEndEditing={this.props.onEndEditing}
                    onChangeText={(text) => this.props.handleTextInput(text)}
                    onContentSizeChange={(event) => this.setState({height: event.nativeEvent.contentSize.height})}
                    editable={true} />

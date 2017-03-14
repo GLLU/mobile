@@ -67,6 +67,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleSettingsPress() {
+    this.logEvent('ProfileScreen', { name: 'Settings click' });
     this.props.navigateTo('settingsScreen', 'feedscreen');
   }
 
@@ -119,6 +120,7 @@ class ProfileScreen extends BasePage {
   }
 
   toggleFollow(isFollowing) {
+    this.logEvent('ProfileScreen', { name: 'Follow click', isFollowing });
     this.setState({isFollowing: isFollowing});
     this.props.getStats(this.state.userId);
   }
@@ -148,6 +150,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowingPress(stat) {
+    this.logEvent('ProfileScreen', { name: 'Following click' });
     this.props.navigateTo('followScreen', 'profileScreen', {
       user: {id: this.state.userId},
       mode: stat.type,
@@ -156,11 +159,17 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowersPress(stat) {
+    this.logEvent('ProfileScreen', { name: 'Followers click' });
     this.props.navigateTo('followerScreen', 'profileScreen', {
       user: {id: this.state.userId},
       mode: stat.type,
       count: stat.count
     });
+  }
+
+  handleBackToFeedPress() {
+    this.logEvent('ProfileScreen', { name: 'Back to Feed click' });
+    this._PopRoute();
   }
 
   render() {
@@ -177,7 +186,7 @@ class ProfileScreen extends BasePage {
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                             style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]}/>
             <View style={styles.header}>
-              <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
+              <TouchableOpacity transparent onPress={this.handleBackToFeedPress.bind(this)} style={styles.headerBtn}>
                 { this._renderleftBtn() }
               </TouchableOpacity>
               { avatarUrl ?

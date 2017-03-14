@@ -6,12 +6,13 @@ import styles from './styles';
 import SocialShare from '../../lib/social';
 import InformationButton from './buttons/InformationButton'
 import CommentsButton from './buttons/CommentsButton'
+import BaseComponent from '../common/BaseComponent';
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
 const shareImage = require('../../../images/share.png');
 const bubbleImage = require('../../../images/bubble.png');
 
-export default class BottomButton extends Component {
+export default class BottomButton extends BaseComponent {
   static propTypes = {
     likes: React.PropTypes.number,
     isLiked: React.PropTypes.bool,
@@ -32,6 +33,8 @@ export default class BottomButton extends Component {
   constructor(props) {
     super(props);
     this._renderInformationButton = this._renderInformationButton.bind(this);
+    this._onInformationClicked = this._onInformationClicked.bind(this);
+    this._onBubbleClicked = this._onBubbleClicked.bind(this);
     this.state = {
       likes: this.props.likes,
       isLiked: this.props.isLiked
@@ -53,13 +56,29 @@ export default class BottomButton extends Component {
     this.props.toggleLike(!this.state.isLiked)
   }
 
+  _onInformationClicked() {
+    this.logEvent('LookScreen', { name: 'Information click'});
+    this.props.toggleDescription(...arguments)
+  }
+
+  _onBubbleClicked() {
+    this.logEvent('LookScreen', { name: 'Comment click'});
+    this.props.toggleComments(...arguments);
+  }
+
   _onShareClicked() {
+    this.logEvent('LookScreen', { name: 'Share click'});
     SocialShare.nativeShare();
   }
 
-  _renderInformationButton() {
-    return this.props.hasDescription ?
-      <InformationButton isActive={this.props.isDescriptionActive} onPress={this.props.toggleDescription}/> :
+  _onMenuClicked() {
+    this.logEvent('LookScreen', { name: 'Menu click'});
+    this.props.toggleMenu();
+  }
+
+  _renderInformationButton(hasDescription) {
+    return hasDescription ?
+      <InformationButton onPress={this._onInformationClicked}/> :
       <View name="information button placeholder"></View>;
   }
 
@@ -75,8 +94,8 @@ export default class BottomButton extends Component {
                 <Text style={styles.footerButtonText}>{this.state.likes}</Text>
               </View>
             </TouchableHighlight>
-            { this._renderInformationButton() }
-            <CommentsButton isActive={this.props.isCommentsActive} onPress={this.props.toggleComments}/>
+            { this._renderInformationButton(this.props.hasDescription) }
+            <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onShareClicked()}>
               <View style={[styles.footerButton, {width: 40}]}>
                 <Image source={shareImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}/>
@@ -85,7 +104,7 @@ export default class BottomButton extends Component {
           </View>
         </View>
         <View style={[styles.bottomRight]}>
-          <TouchableHighlight style={{marginRight: 10}} onPress={() => this.props.toggleMenu()}>
+          <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onMenuClicked()}>
             <View>
               <View style={[styles.footerButton]}>
                 <Icon active name='dots-three-horizontal' style={styles.menuIcon}/>

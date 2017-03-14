@@ -9,8 +9,9 @@ import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
+import BaseComponent from '../common/BaseComponent';
 
-export default class BottomLookContainer extends Component {
+export default class BottomLookContainer extends BaseComponent {
   static propTypes = {
     look: React.PropTypes.object,
     tempPopRoute: React.PropTypes.func,
@@ -19,7 +20,7 @@ export default class BottomLookContainer extends Component {
     toggleMenu: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
     isMenuOpen: React.PropTypes.bool,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -49,16 +50,25 @@ export default class BottomLookContainer extends Component {
     this.setState({isDescriptionActive: shouldActive, isCommentsActive: false})
   }
 
-  _toggleComments(shouldActive) {
-    this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
+  handleLikePress(isLiked) {
+    this.logEvent('LookScreen', { name: 'Like click', liked: isLiked });
+    this.props.toggleLike(isLiked)
   }
 
   _toggleMenu() {
     this.setState({isMenuOpen: !this.state.isMenuOpen})
   }
 
+  _renderDescriptionView(isActive) {
+    return <DescriptionView isHidden={!isActive} style={styles.bottomDrawerView}
+                            description={this.props.look.description}/>;
+  }
+
+  _toggleComments(shouldActive) {
+    this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
+  }
+
   render() {
-    var comments = [{body: 'omg'}, {body: 'wow'}, {body: 'hayush'}];
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -78,13 +88,13 @@ export default class BottomLookContainer extends Component {
         </TouchableOpacity>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
-
           <DescriptionView isHidden={!this.state.isDescriptionActive} style={styles.bottomDrawerView}
                            description={this.props.look.description}/>
 
           <CommentsView look_id={this.props.look.id} count={this.state.comments} isHidden={!this.state.isCommentsActive}
                         style={styles.bottomDrawerView}/>
 
+          {this._renderDescriptionView(this.state.isDescriptionActive)}
           <BottomButton
             isCommentsActive={this.state.isCommentsActive}
             toggleComments={this._toggleComments}
@@ -93,7 +103,7 @@ export default class BottomLookContainer extends Component {
             toggleDescription={this._toggleDescription}
             isLiked={this.state.isLiked}
             likes={this.state.likes}
-            toggleLike={(isLiked) => this.props.toggleLike(isLiked)}
+            toggleLike={this.handleLikePress.bind(this)}
             toggleMenu={() => this._toggleMenu()}/>
         </View>
         {this._renderBuyItButtons(this.props.look)}
