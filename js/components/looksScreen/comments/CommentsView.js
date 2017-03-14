@@ -145,10 +145,11 @@ class CommentsView extends Component {
     else {
       this._animateShow()
     }
+
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <CommentsViewHeader count={this.props.count}/>
-        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.props.count==0} comments={this.props.comments}
+        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.props.count==0&&_.isEmpty(this.props.comments)} comments={this.props.comments}
                           onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
         <View style={{height:70}}/>
