@@ -185,7 +185,6 @@ class SplashPage extends BasePage {
   }
 }
 
-
 function bindAction(dispatch) {
   return {
     emailSignIn: (data) => dispatch(emailSignIn(data)),

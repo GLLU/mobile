@@ -35,7 +35,6 @@ class ProfileScreen extends BasePage {
   constructor(props) {
     super(props);
     const isMyProfile = this.props.userData.id === this.props.myUser.id || this.props.userData.user_id === this.props.myUser.id;
-    ;
     this.state = {
       isMyProfile,
       isFollowing: this.props.userData.is_following,
@@ -100,11 +99,15 @@ class ProfileScreen extends BasePage {
   }
 
   _handleItemsPress() {
-    const userData = {
+    const {myUser, userData} = this.props;
+    const user = this.state.isMyProfile ? myUser : userData;
+    const userDatax = {
       id: this.state.userId,
-      looksCount: this.props.stats.looks_count
+      name: user.name,
+      looksCount: this.props.stats.looks_count,
+      isMyProfile: this.state.isMyProfile
     }
-    this.props.navigateTo('userLookScreen', 'feedscreen', userData);
+    this.props.navigateTo('userLookScreen', 'feedscreen', userDatax);
   }
 
   goToAddNewItem(imagePath) {
