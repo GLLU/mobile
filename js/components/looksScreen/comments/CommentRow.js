@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   photo: {
-    flex: 1,
     width: 50,
     height: 50,
     borderRadius: 25

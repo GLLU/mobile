@@ -7,38 +7,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#f2f2f2'
   },
-  commentsCountContainer: {
-    justifyContent: 'center',
-    flex: 1,
-    backgroundColor: '#00D7B2',
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  textInputContainer: {
-    flex: 25,
-    flexDirection: 'column'
-  },
   textInput: {
-    flex: 2,
+    flex: 25,
     backgroundColor: 'white',
     color: 'black',
     fontSize: 12,
     textAlign: 'left',
-    padding: 2
+    height: 40
   },
   sendButton: {
     backgroundColor: '#00D7B2',
-    paddingLeft: 12,
-    flex: 5,
-    paddingRight: 12,
-    paddingTop: 10,
-    paddingBottom: 10,
+    flex: 6,
+    justifyContent:'center',
+    flexDirection:'column'
   },
   sendButtonText: {
     color: 'white',
-    flex: 1,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
     textAlign: 'center',
   }
 });
@@ -89,15 +74,12 @@ export default class CommentInput extends Component {
     return (
       <View style={[styles.container,this.props.style]}>
         <View style={{flex:1}} name="spacer"/>
-        <View style={styles.textInputContainer}>
-          <View style={{flex:1}} name="spacer"/>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Add Comment"
-            onChangeText={this.onChange}
-            value={this.state.value}
-            underlineColorAndroid='transparent'/>
-        </View>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Add Comment"
+          onChangeText={this.onChange}
+          value={this.state.value}
+          underlineColorAndroid='transparent'/>
         <View style={{flex:1}} name="spacer"/>
         <TouchableOpacity style={styles.sendButton} onPress={this.onSendPress}>
           <Text style={styles.sendButtonText}>SEND</Text>

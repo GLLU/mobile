@@ -134,7 +134,7 @@ class CommentsView extends Component {
 
   _renderFooter() {
     return (
-      <View style={{paddingBottom: 5,paddingTop: 5,flex: 2,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
+      <View style={{paddingBottom: 10,paddingTop: 10,flex: 2,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
         <CommentInput onSendPress={this._pushComment}/>
       </View>
     );
