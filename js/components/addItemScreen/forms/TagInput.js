@@ -47,7 +47,6 @@ class TagInput extends Component {
 
   render() {
     const { tags } = this.props;
-    console.log('TagInput render', tags);
     return (
       <View style={{flex: 1}}>
         <TextInput

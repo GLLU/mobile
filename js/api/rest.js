@@ -80,7 +80,7 @@ export default reduxApi({
     crud: true,
   },
   item_tags: {
-    url: '/looks/:look_id/items/:id/item_tags/:id',
+    url: '/looks/:look_id/items/:item_id/item_tags/:id',
     crud: true,
   },
   changeUserAboutMe: {

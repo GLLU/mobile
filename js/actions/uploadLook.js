@@ -343,7 +343,7 @@ export function addItemTag(tag) {
 
     return new Promise((resolve, reject) => {
       return makeRequest(dispatch, rest.actions.item_tags.post, [
-        { look_id: lookId, id: itemId },
+        { look_id: lookId, item_id: itemId },
         { body: JSON.stringify(body) }
       ], { showLoader: false }).then(data => {
         dispatch({
@@ -365,7 +365,7 @@ export function removeItemTag(tag) {
     }
     return new Promise((resolve, reject) => {
       return makeRequest(dispatch, rest.actions.item_tags.delete, [
-        { look_id: lookId, id: itemId },
+        { look_id: lookId, item_id: itemId },
         { body: JSON.stringify(body) }
       ]).then(data => {
         dispatch({
