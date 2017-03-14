@@ -58,12 +58,6 @@ export default class TopButton extends BaseComponent {
             <Image style={styles.bodyTypeButtonIcon} source={bgContainer} resizeMode={'contain'}/>
           </TouchableOpacity>
         </View>
-        <View style={styles.topRight}>
-          <TouchableOpacity style={[styles.topButton,styles.bagItButton]}>
-            <Image source={bagItImage} style={styles.bagItButtonIcon}/>
-            <Text style={styles.bagItButtonText}>Bag It</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     )
   }

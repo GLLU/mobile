@@ -52,7 +52,7 @@ class NavigationBarView extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      hasNotify: true
+      hasNotify: false
     };
   }
 
@@ -91,22 +91,15 @@ class NavigationBarView extends BaseComponent {
           <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
             <Image source={userBtnIcon} style={styles.btnImage} />
           </Button>
-          <Text style={styles.wallet}>₤ 256.00</Text>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.props.handleSearchStatus()}>
-            <Image source={searchIcon} style={styles.btnImage} />
-          </Button>
-          <Button transparent onPress={() => this.openMenu()}>
-            <Image source={rectangleIcon} style={styles.btnImage} />
-          </Button>
-          <Button transparent onPress={() => this.goToShopping()}>
-            <Image source={bagIcon} style={styles.btnImage} />
+          <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
+            <Image source={cameraIcon} style={styles.btnImage} />
           </Button>
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
-            <Image source={cameraIcon} style={styles.btnImage} />
+          <Button transparent onPress={() => this.props.handleSearchStatus()}>
+            <Image source={searchIcon} style={styles.btnImage} />
           </Button>
         </View>
       </View>
