@@ -248,7 +248,7 @@ export function addItemType(categoryItem) {
       category_id: categoryItem.id,
     }
 
-    _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+    return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
       dispatch({
         type: ADD_ITEM_TYPE,
         payload: categoryItem

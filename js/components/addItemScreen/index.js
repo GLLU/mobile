@@ -4,9 +4,11 @@ import { StyleSheet, Dimensions, TouchableOpacity, Image, Text } from 'react-nat
 import { View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
+import StepMarker from './StepMarker';
 import StepZero from './StepZero';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
+import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
 import _ from 'lodash';
@@ -45,7 +47,7 @@ class AddItemPage extends BasePage {
   static propTypes = {
     publishLookItem: React.PropTypes.func,
     updateLookItem: React.PropTypes.func,
-    mode: React.PropTypes.func,
+    mode: React.PropTypes.string,
     setUser: React.PropTypes.func,
     replaceAt: React.PropTypes.func,
     popRoute: React.PropTypes.func,
@@ -55,13 +57,14 @@ class AddItemPage extends BasePage {
       key: React.PropTypes.string,
     }),
     look: React.PropTypes.object,
-    item: React.PropTypes.object
+    item: React.PropTypes.object,
+    state: React.PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 0,
+      currentStep: -1,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -109,13 +112,17 @@ class AddItemPage extends BasePage {
   }
 
   tagAnotherAction() {
-    this.props.pushRoute({ key: 'tagItemScreen' }, this.props.navigation.key);
+    this.props.pushRoute({ key: 'addItemScreen' }, this.props.navigation.key);
   }
 
   publishAction() {
     this.logEvent('UploadLookScreen', { name: 'Publish click' });
     this.props.publishLookItem().then(response => {
-      this.props.pushRoute({key: 'finishLookScreen'}, this.props.navigation.key);
+      if (this.props.state === LOOK_STATES.PUBLISHED) {
+        this.props.popRoute(this.props.navigation.key);  
+      } else {
+        this.props.pushRoute({key: 'finishLookScreen'}, this.props.navigation.key);  
+      }
     });
   }
 
@@ -189,6 +196,8 @@ class AddItemPage extends BasePage {
   getAllowContinue() {
     const { item } = this.props;
     switch(this.state.currentStep) {
+      case -1:
+        return item != null;
       case 0:
         return item && item.brand != null;
       case 1:
@@ -201,6 +210,16 @@ class AddItemPage extends BasePage {
   }
 
   renderContent() {
+    if (this.state.currentStep == -1) {
+      const { mode } = this.state;
+      return (
+        <StepMarker
+          mode={mode}
+          />
+      );
+    }
+
+
     if (this.state.currentStep != 2) {
       return (
         <Grid style={{flex: 1}}>
@@ -214,9 +233,9 @@ class AddItemPage extends BasePage {
           </Row>
         </Grid>
       );
-    } else {
-      return <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>;
     }
+
+    return <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>;
   }
 
   render() {
@@ -255,7 +274,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, lookId, image, items } = state.uploadLook;
+  const { itemId, lookId, image, items} = state.uploadLook;
   const item = itemId != null ? _.find(items, x => x.id == itemId) : null;
   return {
     navigation: state.cardNavigation,
@@ -264,6 +283,7 @@ const mapStateToProps = state => {
     lookId,
     image,
     items,
+    state: state.uploadLook.state,
   };
 }
 

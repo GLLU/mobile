@@ -93,7 +93,7 @@ class UserLooks extends Component {
   _handleEditPress(look) {
     console.log('_handleEditPress', look);
     this.props.editNewLook(look.id).then(() => {
-      this.props.pushRoute({key: 'tagItemScreen', optional: { mode: 'edit' } }, this.props.navigation.key);
+      this.props.pushRoute({key: 'addItemScreen', optional: { mode: 'edit' } }, this.props.navigation.key);
     });
   }
 
@@ -104,12 +104,16 @@ class UserLooks extends Component {
           <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
             <Image source={{uri: look.uri.replace('-staging', '')}} style={{width: look.width - 5, height: look.height, resizeMode: 'contain' }} />
           </TouchableOpacity>
-          <Button
-            onPress={this._handleEditPress.bind(this, look)}
-            style={{backgroundColor: 'transparent', position: 'absolute', top: 5, right: 5, height: 30}}
-          >
-            <Icon name='ios-create-outline' style={{color: '#FFFFFF'}} size={30}/>
-          </Button>
+          { this.state.isMyProfile && (
+              <Button
+                onPress={this._handleEditPress.bind(this, look)}
+                style={{position: 'absolute', top: 5, right: 5, height: 30, width: 30}}
+              >
+                <View style={{position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, backgroundColor: '#000'}}/>
+                <Icon name='ios-create-outline' style={{color: '#000'}} size={28}/>
+              </Button>
+            )
+          }
         </View>
       );
     });
@@ -142,7 +146,7 @@ class UserLooks extends Component {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('tagItemScreen', 'userLookScreen');
+        this.props.navigateTo('addItemScreen', 'userLookScreen');
       });
     })
   }
