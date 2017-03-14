@@ -46,11 +46,13 @@ class FlurrAnalytics extends BaseAnalytic {
 
   logEvent(name, params = {}, timed = false) {
     console.log('FlurryAnalytics.logEvent', name, params, timed);
+    delete params['name']
     FlurryAnalytics.logEvent(name, params, timed);
   }
 
   endTimedEvent(name, params = {}) {
     console.log('FlurryAnalytics.endTimedEvent', name, params);
+    delete params['name']
     FlurryAnalytics.endTimedEvent(name, params);
   }
 }
