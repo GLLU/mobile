@@ -83,9 +83,9 @@ class StepZero extends BaseComponent {
     })
 
     if (createNew) {
-      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: value });
+      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
     } else {
-      this.logEvent('UploadLookScreen', { name: 'Brand pick', brand: value });
+      this.logEvent('UploadLookScreen', { name: 'Brand pick', brand: brandName });
     }
   }
 

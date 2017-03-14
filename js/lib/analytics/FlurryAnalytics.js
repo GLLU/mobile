@@ -14,7 +14,6 @@ class FlurrAnalytics extends BaseAnalytic {
     if (__DEV__) {
       FlurryAnalytics.setCrashReportingEnabled(false);
       FlurryAnalytics.setDebugLogEnabled(true);
-      FlurryAnalytics.setEventLoggingEnabled(true);
     } else {
       FlurryAnalytics.setCrashReportingEnabled(true);
       FlurryAnalytics.setDebugLogEnabled(false);      
