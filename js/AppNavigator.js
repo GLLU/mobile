@@ -56,11 +56,11 @@ class AppNavigator extends Component {
   }
 
   componentWillMount() {
-    console.log('AppNavigator componentWillMount', this.props.navigation);
+    // console.log('AppNavigator componentWillMount', this.props.navigation);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
+    // console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
   }
 
   componentDidMount() {
