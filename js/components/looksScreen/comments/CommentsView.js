@@ -6,7 +6,7 @@ import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentsListView from './CommentsListView'
 
-import { navigateTo, popRoute, getLookCommentsData, initLookComments } from '../../../actions';
+import { navigateTo, popRoute, getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +73,6 @@ class CommentsView extends Component {
     this.currentPageIndex = 1;
     this.state = {
       fadeAnimContent: new Animated.Value(-500),
-      comments: props.comments,
       isTrueEndReached: false
     };
   }
@@ -84,15 +83,6 @@ class CommentsView extends Component {
 
   componentWillUnmount() {
     this.props.initLookComments();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (_.isEmpty(nextProps.comments)) {
-      this.setState({isTrueEndReached: true});
-    }
-    if (nextProps.comments !== this.props.comments) {
-      this.setState({comments:nextProps.comments })
-    }
   }
 
   getCommentsData() {
@@ -132,8 +122,7 @@ class CommentsView extends Component {
       body: value,
       children: []
     };
-    const comments = _.union(this.state.comments,[comment]);
-    this.setState({comments:comments});
+    this.props.addLookComment(comment);
   }
 
   _renderFooter(){
@@ -151,11 +140,10 @@ class CommentsView extends Component {
     else {
       this._animateShow()
     }
-    console.log(this.props.count);
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <CommentsViewHeader count={this.props.count}/>
-        <CommentsListView isEmpty={this.props.count==0} comments={this.state.comments} onEndReached={this.getCommentsData}/>
+        <CommentsListView isEmpty={this.props.count==0} comments={this.props.comments} onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
         <View style={{height:70}}/>
       </Animated.View>
@@ -169,6 +157,7 @@ function bindAction(dispatch) {
     popRoute: key => dispatch(popRoute(key)),
     getLookCommentsData: (id, pageNumber, pageSize) => dispatch(getLookCommentsData(id, pageNumber, pageSize)),
     initLookComments: () => dispatch(initLookComments()),
+    addLookComment: (data) => dispatch(addLookComment(data)),
   };
 }
 
