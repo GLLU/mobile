@@ -4,6 +4,7 @@ const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import FontSizeCalculator from './../../calculators/FontSize';
 
 module.exports = StyleSheet.create({
   container: {
@@ -55,12 +56,13 @@ module.exports = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     alignSelf: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-start'
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
   titleHeading: {
     fontSize: 32,
@@ -77,7 +79,7 @@ module.exports = StyleSheet.create({
     paddingTop: (Platform.OS === 'ios') ? 20 : 20,
     paddingLeft: 10,
     paddingRight: 10,
-    bottom: 0,
+    bottom: 10,
     alignSelf: 'center',
     justifyContent: 'flex-end'
   },
@@ -117,32 +119,41 @@ module.exports = StyleSheet.create({
     width: deviceWidth
   },
   bottomContainerContent: {
-    color: '#E0E0E0',
-    fontSize: 12,
-    fontWeight: 'normal',
-    textAlign: 'center',
+    justifyContent: 'center',
     marginBottom: 15,
     opacity: 0.8,
+    flexDirection: 'row',
   },
-    alreadyBox: {
-        alignSelf: 'center',
-        flexDirection:'row',
-        height: 25,
-        marginTop: 5
-    },
-    alreadyTxt: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        opacity: 0.8,
-    },
-    alreadyBtn: {
-        backgroundColor: 'transparent',
-        paddingVertical: 0,
-        paddingHorizontal: 5,
-        alignItems: 'flex-start',
-        shadowOpacity: 0,
-        shadowRadius: 0,
-        elevation: 0,
-        paddingTop: (Platform.OS === 'ios') ? 2 : 7,
-    },
+  text: {
+    color: '#E0E0E0',
+    fontSize: new FontSizeCalculator(12).getSize(),
+    fontWeight: 'normal',
+  },
+  link: {
+    color: 'white',
+    fontSize: new FontSizeCalculator(12).getSize(),
+    fontWeight: 'normal',
+
+  },
+  alreadyBox: {
+      alignSelf: 'center',
+      flexDirection:'row',
+      height: 25,
+      marginTop: 5
+  },
+  alreadyTxt: {
+      color: '#FFFFFF',
+      fontSize: 13,
+      opacity: 1,
+  },
+  alreadyBtn: {
+      backgroundColor: 'transparent',
+      paddingVertical: 5,
+      paddingHorizontal: 5,
+      alignItems: 'flex-start',
+      shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 0,
+      paddingTop: (Platform.OS === 'ios') ? 1 : 7,
+  },
 });

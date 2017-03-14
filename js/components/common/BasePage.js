@@ -2,10 +2,25 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import Config from 'react-native-config'
 import BaseComponent from './BaseComponent';
+import Analytics from '../../lib/analytics/Analytics';
 
 class BasePage extends BaseComponent {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    console.log('BasePage componentDidMount');
+    Analytics.trackScreen({
+      page: this.constructor.name,
+    }, true);
+  }
+
+  componentWillUnmount() {
+    console.log('BasePage componentWillUnmount');
+    Analytics.endTrackScreen({
+      page: this.constructor.name,
+    });
   }
 
   setLeaveBreadcrumb(props) {

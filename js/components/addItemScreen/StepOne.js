@@ -8,6 +8,7 @@ import Category from '../common/CategoryStrip';
 import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import Gllu from '../common';
+import BaseComponent from '../common/BaseComponent';
 
 const styles = StyleSheet.create({
   row: {
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
 });
 
 
-class StepOne extends Component {
+class StepOne extends BaseComponent {
   static propTypes = {
     categories: React.PropTypes.array,
     selectedCategory: React.PropTypes.object,
@@ -94,6 +95,7 @@ class StepOne extends Component {
 
   selectCategory(item) {
     if (item.id != this.props.selectedCategory) {
+      this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
       this.props.addItemType(item);
     }
   }

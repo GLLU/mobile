@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image } from 'react-native';
+import { Image, Linking } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -14,13 +14,18 @@ import Video from 'react-native-video';
 
 const { navigateTo } = actions;
 const background = require('../../../images/background.png');
-const splashVideo = require('../../../images/backgrounds/original-splashvid_1.mp4');
+const splashVideo = require('../../../images/backgrounds/splash-screen-video-zoomed.mp4');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
 
 import glluTheme from '../../themes/gllu-theme';
 import { emailSignIn } from '../../actions/user';
+
+import {
+  TERMS_URL,
+  PRIVACY_URL,
+} from '../../constants';
 
 const {
   MKButton,
@@ -73,6 +78,7 @@ class SplashPage extends BasePage {
   }
 
   connectWithFB() {
+    this.logEvent('Splashscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
     LoginManager.logInWithReadPermissions(PERMISSIONS).then(
       (result) => {
@@ -105,10 +111,34 @@ class SplashPage extends BasePage {
     );
   }
 
+  handleEmailSignupPress() {
+    this.logEvent('Splashscreen', {name: 'Email signup click'});
+    this.pushRoute('genderselect');
+  }
+
+  handleTermPress() {
+    this.handleOpenLink(TERMS_URL);
+  }
+
+  handlePrivacyPolicyPress() {
+    this.handleOpenLink(PRIVACY_URL);
+  }
+
+  handleOpenLink(url) {
+    this.logEvent('Splashscreen', { name: 'Link click', url });
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + url);
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
+  }
+
   renderMainView() {
     return (
         <View style={styles.signupContainer}>
-          <SignUpEmailButton onPress={() => this.pushRoute('genderselect') } />
+          <SignUpEmailButton onPress={this.handleEmailSignupPress.bind(this)} />
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}
                        borderRadius={4}
@@ -119,7 +149,7 @@ class SplashPage extends BasePage {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+            <Button color={MKColor.Teal} style={styles.alreadyBtn} textStyle={{fontSize: 13}} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
           </View>
         </View>
     )
@@ -135,15 +165,19 @@ class SplashPage extends BasePage {
                      resizeMode="stretch"
                      muted={false}
                      style={styles.videoBackground}
-                     repeat={false}
+                     repeat={true}
               />
               <Image source={backgroundShadow} style={styles.bgShadow} />
-                <View style={styles.logoContainer}>
-                  <Image source={logo} style={styles.logo} />
+              <View style={styles.logoContainer}>
+                <Image source={logo} style={styles.logo} />
+              </View>
+                {this.renderMainView()}
+                <View style={styles.bottomContainerContent}>
+                  <Text style={styles.text}>By signing-up I agree to gllu's </Text>
+                  <Text style={styles.link} onPress={this.handleTermPress.bind(this)}>Terms</Text>
+                  <Text style={styles.text}> and </Text>
+                  <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
                 </View>
-
-                  {this.renderMainView()}
-              <Text style={styles.bottomContainerContent}>By signing-up I agree to gllu's Terms and Privacy Policy</Text>
             </View>
           </Content>
         </View>

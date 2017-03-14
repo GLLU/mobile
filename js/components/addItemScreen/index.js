@@ -78,16 +78,6 @@ class AddItemPage extends BasePage {
     })
   }
 
-  _handleAddTag(position) {
-    this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'edit'})
-    });
-  }
-
-  _handleOnDragEnd(position) {
-    this.props.setTagPosition(position);
-  }
-
   handleContinue() {
     const { currentStep } = this.state;
     if (currentStep < 2) {
@@ -123,6 +113,7 @@ class AddItemPage extends BasePage {
   }
 
   publishAction() {
+    this.logEvent('UploadLookScreen', { name: 'Publish click' });
     this.props.publishLookItem().then(response => {
       this.props.pushRoute({key: 'finishLookScreen'}, this.props.navigation.key);
     });
@@ -175,9 +166,7 @@ class AddItemPage extends BasePage {
         width={imageWidth}
         mode={mode}
         items={items}
-        image={image}
-        onMarkerCreate={this._handleAddTag.bind(this)}
-        onDragEnd={this._handleOnDragEnd.bind(this)}/>
+        image={image}/>
     );
   }
 

@@ -9,8 +9,9 @@ import Utils from '../../Utils';
 import convert from 'convert-units';
 import { completeEdit } from '../../actions/myBodyMeasure';
 import _ from 'lodash';
+import BaseComponent from '../common/BaseComponent';
 
-class BodyMeasureView extends Component {
+class BodyMeasureView extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,8 +41,8 @@ class BodyMeasureView extends Component {
   }
 
   componentDidMount() {
-    let { currentSize } = this.state
-      this.props.completeEdit(currentSize);
+    let { currentSize } = this.state;
+    this.props.completeEdit(currentSize);
   }
 
   __convertCmAndInc(obj, fromScale, toScale) {
@@ -55,6 +56,7 @@ class BodyMeasureView extends Component {
   }
 
   _toggleCMInch(inchSelected) {
+    this.logEvent('BodyMeasureScreen', { name: 'CM/IN toggle' });
     let fromScale = inchSelected ? 'in' :'cm';
     let toScale = inchSelected ? 'cm' :'in';
     let currentSizeConverted = this.state.currentSize;
@@ -67,22 +69,29 @@ class BodyMeasureView extends Component {
   }
 
   increasSize(item) {
+    this.logEvent('BodyMeasureScreen', { name: `Increase Size click - ${item}` });
     let currentSizeItem = this.state.currentSize[item];
     if(this.state.currentSize[item] < 300) {
-        this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++), updateTextColor: 'green', updateTextColorFor: item});
+      this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++), updateTextColor: 'green', updateTextColorFor: item});
     }
   }
 
   decreasSize(item) {
+    this.logEvent('BodyMeasureScreen', { name: `Decrease Size click - ${item}` });
     let currentSizeItem = this.state.currentSize[item];
     if(this.state.currentSize[item] > 0){
-          this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--), updateTextColor: 'green', updateTextColorFor: item});
+      this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--), updateTextColor: 'green', updateTextColorFor: item});
     }
   }
 
   componentDidUpdate() {
     if(this.state.updateTextColor === 'green'){
-        setTimeout(function() { this.setState({updateTextColor: 'black', updateTextColorFor: ''}); }.bind(this), 200);
+      setTimeout(function() {
+        this.setState({
+          updateTextColor: 'black',
+          updateTextColorFor: ''
+        });
+      }.bind(this), 200);
     }
   }
 
