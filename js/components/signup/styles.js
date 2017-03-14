@@ -35,7 +35,8 @@ module.exports = StyleSheet.create({
   shadow: {
     flex: 1,
     width: null,
-    height: null
+    height: null,
+    resizeMode: 'stretch',
   },
   bg: {
     flex: 1,
@@ -101,6 +102,7 @@ module.exports = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    bottom: 20,
   },
   formInput: {
     flex: 1,
