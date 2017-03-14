@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { View, Button, Text, Thumbnail, H2, Grid, Row, Col, Icon } from 'native-base';
+import { View, Button, Text, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import TagInput from './forms/TagInput';
@@ -111,6 +111,11 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontFamily: 'Montserrat-Regular',
   },
+  link: {
+    color: '#00ABED',
+    fontSize: 12,
+    fontWeight: 'normal',
+  },
 });
 
 class StepTwo extends BaseComponent {
@@ -193,8 +198,17 @@ class StepTwo extends BaseComponent {
     }
   }
 
-  handleNoThanksPress() {
-    this.props.publishItem();
+  handleOkPress() {
+    this.setState({urlOverlayVisible: false}, () => {
+      this.urlText.focus();
+    });
+  }
+
+  handleContinuePress() {
+    console.log('handleContinuePress')
+    this.setState({urlOverlayVisible: false}, () => {
+      this.props.publishItem();
+    });
   }
 
   _renderSelections(){
@@ -259,38 +273,38 @@ class StepTwo extends BaseComponent {
     if (this.state.urlOverlayVisible) {
       return (
           <Modal
-            animationType='fade'
+            animationType='none'
             transparent={true}
             visible={this.state.urlOverlayVisible}
             onRequestClose={() => this.setState({urlOverlayVisible: false})}>
             <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', opacity: 0.2, position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
             </View>
             <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
-              <View style={{backgroundColor: '#FFFFFF', height: 300, width: 280}}>
+              <View style={{backgroundColor: '#FFFFFF', height: 300, width: 300}}>
                 <View style={{flex: 1, justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
-                  <H2
-                    style={[styles.text, {fontSize: 14}]}
-                  >
-                    You want to make 5x more $$$?
-                  </H2>
-                  <H2
-                    style={[styles.text, {fontSize: 14}]}
-                  >
-                    Just list the specific URL of the purchased item
-                  </H2>
-                  <View style={{marginTop: 10, flexDirection: 'row'}}>
-                    <TextInput
-                      underlineColorAndroid='transparent'
-                      style={[styles.textInput, {backgroundColor: '#F2F2F2'}]}
-                      placeholder='http://www.gllu.com'
-                      onEndEditing={this.handleUrlEndEditing.bind(this)}
-                      value={this.props.url}/>
+                  <View style={{flex: 6, justifyContent: 'space-around', alignItems: 'center', paddingBottom: 10}}>
+                    <H3
+                      style={[styles.text, {fontSize: 14}]}
+                    >
+                      You want to make 5x more $$$?
+                    </H3>
+                    <H3
+                      style={[styles.text, {fontSize: 14}]}
+                    >
+                      Just list the specific URL of the purchased item
+                    </H3>
+                    <Text style={{fontSize: 8}}>(i.e. name of the exact page of the item in the online store)</Text>
                   </View>
-                  <Gllu.Button
-                    onPress={this.handleNoThanksPress.bind(this)}
-                    style={{alignSelf: 'center', width: 200}}
-                    text="No Thanks"
-                  />
+                  <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
+                    <Gllu.Button
+                      onPress={this.handleOkPress.bind(this)}
+                      style={{alignSelf: 'center', width: 200}}
+                      text="OK. Let's do it"
+                    />
+                    <Text style={styles.link} onPress={this.handleContinuePress.bind(this)}>
+                      Continue Anayway
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -324,6 +338,7 @@ class StepTwo extends BaseComponent {
                 style={styles.describe}
                 value={this.props.description}
                 placeholder="Describe what you're wearing..."
+                underlineColorAndroid='transparent'
                 onEndEditing={this.handleDescriptionEndEditing.bind(this)}
                 onChangeText={(text) => this.updateSelectValue('description', text)}/>
             </Col>
@@ -339,6 +354,7 @@ class StepTwo extends BaseComponent {
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Url</Text>
             <TextInput
+              ref={ref => this.urlText = ref}
               underlineColorAndroid='transparent'
               style={styles.textInput}
               placeholder='http://www.gllu.com'
