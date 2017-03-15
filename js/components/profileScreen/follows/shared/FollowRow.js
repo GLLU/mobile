@@ -16,29 +16,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 12
   },
-  followTitle: {
-    flex: 0.5,
-    flexDirection: 'row',
-  },
   followName: {
+    flex: 0.5,
     color: 'black',
   },
   followUsername: {
-    color: '#00a9ff',
-    marginLeft: 12
-  },
-  followAboutMe: {
     flex: 0.5,
-    fontFamily: 'Times New Roman',
+    color: '#00a9ff'
   },
   photoContainer: {
     flex: 2,
   },
   photo: {
     flex: 1,
-    width: 50,
-    height: 50,
-    borderRadius: 25
+    width: 40,
+    height: 40,
+    borderRadius: 20
   },
   followView: {
     flex: 3
@@ -80,11 +73,8 @@ class FollowRow extends Component {
   renderFollowText() {
     return (
       <View onPress={this.onUserPress.bind(this)} style={styles.textContainer}>
-        <View style={styles.followTitle}>
-          <Text style={styles.followName}>{this.props.name}</Text>
-          <Text style={styles.followUsername}>@{this.props.username}</Text>
-        </View>
-        <Text style={styles.followAboutMe}>{this.props.about_me}</Text>
+        <Text style={styles.followName}>{this.props.name}</Text>
+        <Text style={styles.followUsername}>@{this.props.username}</Text>
       </View>
     )
   };
