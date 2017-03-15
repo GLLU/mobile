@@ -226,7 +226,7 @@ class StepTwo extends BaseComponent {
   }
 
   handleUrlEndEditing() {
-   this.logEvent('UploadLookScreen', { name: 'Url' });
+   this.logEvent('UploadLookScreen', { name: 'Url', url: this.props.url });
   }
 
   renderImageOverlay() {
