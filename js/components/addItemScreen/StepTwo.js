@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { View, Button, Text } from 'native-base';
-import { Col, Grid, Row } from "react-native-easy-grid";
+import { View, Button, Text, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import TagInput from './forms/TagInput';
@@ -16,6 +15,7 @@ import BaseComponent from '../common/BaseComponent';
 import {
     createLookItem,
     addDescription,
+    addUrl,
     addLocation,
     addTrustLevel,
     addPhotosVideo,
@@ -31,9 +31,10 @@ import FontSizeCalculator from './../../calculators/FontSize';
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 
-const w = Dimensions.get('window').width;
-const BTN_RADIO_MARGIN_TOP = w < 375 ? 0 : 10;
-import { IMAGE_VIEW_WIDTH } from './styles';
+const deviceWidth = Dimensions.get('window').width;
+const wModal = deviceWidth / 1.5;
+const hModal = wModal / 2;
+const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
 
 const styles = StyleSheet.create({
   row: {
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     backgroundColor: '#05d7b2',
     height: 45,
-    width: (w / 8) * 6,
+    width: (deviceWidth / 8) * 6,
     borderRadius: 0,
     alignSelf: 'center'
   },
@@ -109,12 +110,23 @@ const styles = StyleSheet.create({
   fakeCheckbox: {
     marginTop: BTN_RADIO_MARGIN_TOP,
   },
+  text: {
+    textAlign: 'center',
+    color: '#000000',
+    fontFamily: 'Montserrat-Regular',
+  },
+  link: {
+    color: '#00ABED',
+    fontSize: 12,
+    fontWeight: 'normal',
+  },
 });
 
 class StepTwo extends BaseComponent {
   static propTypes = {
     image: React.PropTypes.string,
     state: React.PropTypes.string,
+    brandUrl: React.PropTypes.string,
     publishItem: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
     description: React.PropTypes.string,
@@ -138,9 +150,13 @@ class StepTwo extends BaseComponent {
       location: 'us',
       trustLevel: '0',
       confirm: false,
+      imageOverlayVisible: false,
+      urlOverlayVisible: false,
       description: props.description,
       url: props.url,
     }
+
+    this.urlDialogShown = false;
   }
 
   addPhoto(number) {
@@ -171,7 +187,6 @@ class StepTwo extends BaseComponent {
   }
 
   updateSelectValue(key, value) {
-    this.setState({[key]: value});
     switch (key) {
       case 'location':
         this.props.addLocation(value);
@@ -179,6 +194,10 @@ class StepTwo extends BaseComponent {
       case 'trustLevel':
         this.props.addTrustLevel(value);
         break;
+      case 'url':
+        this.setState({
+          url: value
+        });
       case 'description':
         this.setState({
           description: value
@@ -187,8 +206,45 @@ class StepTwo extends BaseComponent {
     }
   }
 
-  _handlePublishItem() {
-    this.props.publishItem();
+  checkUrlOk() {
+    const { brandUrl } = this.props;
+    // it is ok if it is not empty and not the same as item brand url (means no change made)
+    if (!this.state.url) {
+      return false;
+    }
+    if (!brandUrl) {
+      return true;
+    }
+
+    if (this.state.url.toLowerCase() == brandUrl.toLowerCase()) {
+      return false;
+    }
+
+    return true;
+  }
+
+  handlePublishPress() {
+    // we don't show the dialog during editing look
+    // we only show it one time
+    if (!this.urlDialogShown && !this.checkUrlOk() && this.props.state == LOOK_STATES.DRAFT) {
+      this.setState({urlOverlayVisible: true}, () => {
+        this.urlDialogShown = true;
+      });
+    } else {
+      this.props.publishItem();
+    }
+  }
+
+  handleOkPress() {
+    this.setState({urlOverlayVisible: false}, () => {
+      this.urlText.focus();
+    });
+  }
+
+  handleContinuePress() {
+    this.setState({urlOverlayVisible: false}, () => {
+      this.props.publishItem();
+    });
   }
 
   _renderSelections(){
@@ -226,7 +282,8 @@ class StepTwo extends BaseComponent {
   }
 
   handleUrlEndEditing() {
-   this.logEvent('UploadLookScreen', { name: 'Url', url: this.props.url });
+    this.logEvent('UploadLookScreen', { name: 'Url', url: this.state.url });
+    this.props.addUrl(this.state.url);
   }
 
   renderImageOverlay() {
@@ -244,6 +301,52 @@ class StepTwo extends BaseComponent {
               </Image>
           </Modal>
 
+      );
+    }
+
+    return null;
+  }
+
+  renderConfirmUrlOverlay() {
+    if (this.state.urlOverlayVisible) {
+      return (
+          <Modal
+            animationType='none'
+            transparent={true}
+            visible={this.state.urlOverlayVisible}
+            onRequestClose={() => this.setState({urlOverlayVisible: false})}>
+            <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', opacity: 0.2, position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
+            </View>
+            <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
+              <View style={{backgroundColor: '#FFFFFF', height: 300, width: 300}}>
+                <View style={{flex: 1, justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
+                  <View style={{flex: 6, justifyContent: 'space-around', alignItems: 'center', paddingBottom: 10}}>
+                    <H3
+                      style={[styles.text, {fontSize: 14}]}
+                    >
+                      You want to make 5x more $$$?
+                    </H3>
+                    <H3
+                      style={[styles.text, {fontSize: 14}]}
+                    >
+                      Just list the specific URL of the purchased item
+                    </H3>
+                    <Text style={{fontSize: 8}}>(i.e. name of the exact page of the item in the online store)</Text>
+                  </View>
+                  <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
+                    <Gllu.Button
+                      onPress={this.handleOkPress.bind(this)}
+                      style={{alignSelf: 'center', width: 200}}
+                      text="OK. Let's do it"
+                    />
+                    <Text style={styles.link} onPress={this.handleContinuePress.bind(this)}>
+                      Continue Anayway
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </Modal>
       );
     }
 
@@ -273,6 +376,7 @@ class StepTwo extends BaseComponent {
                 style={styles.describe}
                 value={this.state.description}
                 placeholder="Describe what you're wearing..."
+                underlineColorAndroid='transparent'
                 onEndEditing={this.handleDescriptionEndEditing.bind(this)}
                 onChangeText={(text) => this.updateSelectValue('description', text)}/>
             </Col>
@@ -294,21 +398,24 @@ class StepTwo extends BaseComponent {
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Url</Text>
             <TextInput
+              ref={ref => this.urlText = ref}
               underlineColorAndroid='transparent'
               style={styles.textInput}
               placeholder='http://www.gllu.com'
+              onChangeText={text => this.updateSelectValue('url', text)}
               onEndEditing={this.handleUrlEndEditing.bind(this)}
-              value={this.props.url}/>
+              value={this.state.url}/>
           </Row>
           <Row style={[styles.row, {paddingBottom: 60}]}>
             <Gllu.Button
               disabled={false}
-              onPress={() => this._handlePublishItem()}
+              onPress={() => this.handlePublishPress()}
               text={ this.props.state == LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
           </Row>
         </Grid>
         {this.renderImageOverlay()}
+        {this.renderConfirmUrlOverlay()}
       </ScrollView>
     )
   }
@@ -319,6 +426,7 @@ function bindActions(dispatch) {
   return {
     createLookItem: (tag) => dispatch(createLookItem(tag)),
     addDescription: (description) => dispatch(addDescription(description)),
+    addUrl: (url) => dispatch(addUrl(url)),
     addLocation: (location) => dispatch(addLocation(location)),
     addTrustLevel: (number) => dispatch(addTrustLevel(number)),
     addPhotosVideo: (photos, video) => dispatch(addPhotosVideo(photos, video)),
@@ -331,12 +439,22 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
+  let url = null;
+  if (item) {
+    if (item.url) {
+      url = item.url;
+    } else {
+      url = item.brand ? item.brand.url : null;
+    }
+  }
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
     occasions: item ? item.occasions : [],
     tags: item ? item.tags : [],
     photos: item ? item.photos : [],
+    brandUrl: item && item.brand ? item.brand.url : null,
+    url,
   }
 };
 

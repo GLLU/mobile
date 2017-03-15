@@ -49,10 +49,12 @@ class GoogleAnalytics extends BaseAnalytic {
         value = v;
         break;
       }
-      if (!_.isNumber(value)) {
-        this.tracker.trackEvent(name, action, { label: value });
-      } else {
-        this.tracker.trackEvent(name, action, { label, value });
+      if (value != null && value != undefined) {
+        if (!_.isNumber(value)) {
+          this.tracker.trackEvent(name, action, { label: value });
+        } else {
+          this.tracker.trackEvent(name, action, { label, value });
+        }
       }
       
     } else {
