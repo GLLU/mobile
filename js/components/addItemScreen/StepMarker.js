@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BasePage from '../common/BasePage';
+import BaseComponent from '../common/BaseComponent';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { createLookItem, setTagPosition, pushRoute, popRoute, updateLookItem } from '../../actions';
@@ -10,7 +10,7 @@ import Container from '../common/Container';
 
 const IMAGE_VIEW_PADDING = 15;
 
-class TagItemPage extends BasePage {
+class TagItemPage extends BaseComponent {
 
   static propTypes = {
     navigation: React.PropTypes.shape({
@@ -20,8 +20,7 @@ class TagItemPage extends BasePage {
     image: React.PropTypes.string,
     items: React.PropTypes.array,
     mode: React.PropTypes.string,
-    pushRoute: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
+    onEndEditing: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
     setTagPosition: React.PropTypes.func,
     updateLookItem: React.PropTypes.func,
@@ -34,11 +33,6 @@ class TagItemPage extends BasePage {
     };
   }
 
-  handleBackButton() {
-    this.logEvent('TagItemScreen', { name: 'Back click' });
-    this.goBack(true);
-  }
-
   handleAddTag(position) {
     this.logEvent('TagItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then(() => {
@@ -48,43 +42,25 @@ class TagItemPage extends BasePage {
 
   handleOnDragEnd(position) {
     this.props.setTagPosition(position);
-  }
-
-  handleContinue() {
-    this.logEvent('TagItemScreen', { name: 'Continue click' });
-    this.props.updateLookItem().then(response => {
-      this.props.pushRoute({key: 'addItemScreen'}, this.props.navigation.key);
-    });
+    this.props.updateLookItem();
   }
 
   render() {
     const { items, image, itemId } = this.props;
     const { mode } = this.state;
 
-    const allowContinue = items.length > 0;
-    const bgColor = '#000000';
-    const fgColor = '#F2F2F2';
     return (
-      <Gllu.Screen
-        backgroundColor={bgColor}
-        foregroundColor={fgColor}
-        onBackPress={() => this.handleBackButton()}
-        onNextPress={() => this.handleContinue()}
-        title='Tap item to add'
-        showNext={allowContinue}
-      >
-        <View 
-          style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
-            <ImageWithTags
-                ref={(ref) => this.imageEditor = ref}
-                mode={mode}
-                itemId={itemId}
-                items={items}
-                image={image}
-                onMarkerCreate={this.handleAddTag.bind(this)}
-                onDragEnd={this.handleOnDragEnd.bind(this)}/>
-          </View>
-      </Gllu.Screen>
+      <View
+        style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+          <ImageWithTags
+              ref={(ref) => this.imageEditor = ref}
+              mode={mode}
+              itemId={itemId}
+              items={items}
+              image={image}
+              onMarkerCreate={this.handleAddTag.bind(this)}
+              onDragEnd={this.handleOnDragEnd.bind(this)}/>
+        </View>
     );
   }
 }
@@ -96,7 +72,6 @@ TagItemPage.defaultProps = {
 
 function bindActions(dispatch) {
   return {
-    popRoute: (key) => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     setTagPosition: (position) => dispatch(setTagPosition(position)),

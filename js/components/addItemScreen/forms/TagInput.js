@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, TextInput } from 'react-native'
-import { connect } from 'react-redux';
 import { View } from 'native-base';
 import Tags from './Tags';
-import { loadTags, addItemTag, removeItemTag } from '../../../actions';
 import _ from 'lodash';
 
 const styles = StyleSheet.create({
@@ -28,15 +26,14 @@ const styles = StyleSheet.create({
 
 class TagInput extends Component {
   static propTypes = {
+    tags: React.PropTypes.array,
     addItemTag: React.PropTypes.func,
     removeItemTag: React.PropTypes.func,
-    loadTags: React.PropTypes.func,
-    itemTags: React.PropTypes.array,
   }
 
   addTag(name) {
-    const itemTags = this.props.itemTags;
-    const existing = _.find(itemTags, t => t.name.toLowerCase() == name.toLowerCase());
+    const tags = this.props.tags;
+    const existing = _.find(tags, t => t.name.toLowerCase() == name.toLowerCase());
     if (!existing) {
       this.props.addItemTag(name).then(() => {
         this.textInput.clear();
@@ -49,7 +46,7 @@ class TagInput extends Component {
   }
 
   render() {
-    const { itemTags } = this.props;
+    const { tags } = this.props;
     return (
       <View style={{flex: 1}}>
         <TextInput
@@ -62,26 +59,9 @@ class TagInput extends Component {
           autoCorrect={false}
           underlineColorAndroid='transparent'
           onSubmitEditing={(event) => this.addTag(event.nativeEvent.text)}/>
-        <Tags itemTags={itemTags} removeTag={this.removeTag.bind(this)} />
+        <Tags tags={tags} removeTag={this.removeTag.bind(this)} />
       </View>);
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    loadTags: (term) => dispatch(loadTags(term)),
-    addItemTag: (name) => dispatch(addItemTag(name)),
-    removeItemTag: (name) => dispatch(removeItemTag(name)),
-  }
-}
-
-const mapStateToProps = state => {
-  const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id == itemId);
-  const itemTags = item ? item.itemTags : [];
-  return ({
-    itemTags,
-  });
-};
-
-export default connect(mapStateToProps, bindActions)(TagInput);
+export default TagInput;

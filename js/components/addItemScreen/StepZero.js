@@ -22,13 +22,17 @@ const styles = StyleSheet.create({
     fontSize: new FontSizeCalculator(15).getSize(),
     marginBottom: 8
   },
-  input: {
+  inputContainer: {
+    height: 50,
     backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row'
+  },
+  input: {
     flex: 1,
-    lineHeight: glluTheme.lineHeight,
-    paddingVertical: 5,
     textAlignVertical: 'center',
-    paddingLeft: 3
+    paddingLeft: 3,
   },
   iconCheckCompleteContainer: {
     position: 'absolute',
@@ -48,7 +52,6 @@ const styles = StyleSheet.create({
 
 class StepZero extends BaseComponent {
   static propTypes = {
-    selectedCategory: React.PropTypes.object,
     brand: React.PropTypes.object,
     brands: React.PropTypes.array,
     createBrandName: React.PropTypes.func,
@@ -133,7 +136,7 @@ class StepZero extends BaseComponent {
     return (
       <View style={{flex: 1, padding: 25}}>
         <Text style={styles.titleLabelInfo}>Brand Name</Text>
-        <View style={{height: 50}}>
+        <View style={styles.inputContainer}>
           <Text
             style={styles.input}
             onPress={this.handleTextFocus.bind(this)}
