@@ -126,6 +126,7 @@ class StepTwo extends BaseComponent {
   static propTypes = {
     image: React.PropTypes.string,
     state: React.PropTypes.string,
+    brandUrl: React.PropTypes.string,
     publishItem: React.PropTypes.func,
     createLookItem: React.PropTypes.func,
     description: React.PropTypes.string,
@@ -154,6 +155,8 @@ class StepTwo extends BaseComponent {
       description: props.description,
       url: props.url,
     }
+
+    this.urlDialogShown = false;
   }
 
   addPhoto(number) {
@@ -203,10 +206,30 @@ class StepTwo extends BaseComponent {
     }
   }
 
-  _handlePublishItem() {
-    console.log('_handlePublishItem', this.state.url)
+  checkUrlOk() {
+    const { brandUrl } = this.props;
+    // it is ok if it is not empty and not the same as item brand url (means no change made)
     if (!this.state.url) {
-      this.setState({urlOverlayVisible: true})
+      return false;
+    }
+    if (!brandUrl) {
+      return true;
+    }
+
+    if (this.state.url.toLowerCase() == brandUrl.toLowerCase()) {
+      return false;
+    }
+
+    return true;
+  }
+
+  handlePublishPress() {
+    // we don't show the dialog during editing look
+    // we only show it one time
+    if (!this.urlDialogShown && !this.checkUrlOk() && this.props.state == LOOK_STATES.DRAFT) {
+      this.setState({urlOverlayVisible: true}, () => {
+        this.urlDialogShown = true;
+      });
     } else {
       this.props.publishItem();
     }
@@ -219,7 +242,6 @@ class StepTwo extends BaseComponent {
   }
 
   handleContinuePress() {
-    console.log('handleContinuePress')
     this.setState({urlOverlayVisible: false}, () => {
       this.props.publishItem();
     });
@@ -387,7 +409,7 @@ class StepTwo extends BaseComponent {
           <Row style={[styles.row, {paddingBottom: 60}]}>
             <Gllu.Button
               disabled={false}
-              onPress={() => this._handlePublishItem()}
+              onPress={() => this.handlePublishPress()}
               text={ this.props.state == LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
           </Row>
@@ -431,6 +453,7 @@ const mapStateToProps = state => {
     occasions: item ? item.occasions : [],
     tags: item ? item.tags : [],
     photos: item ? item.photos : [],
+    brandUrl: item && item.brand ? item.brand.url : null,
     url,
   }
 };
