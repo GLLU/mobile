@@ -36,7 +36,7 @@ const {
     pushRoute
 } = actions;
 
-const PERMISSIONS = ["email", "public_profile"];
+let PERMISSIONS = ["email", "public_profile"];
 
 const SignUpEmailButton = MKButton.coloredFlatButton()
   .withBackgroundColor('transparent')
@@ -85,7 +85,7 @@ class SplashPage extends BasePage {
         if (result.isCancelled) {
           alert('Login cancelled');
         } else {
-          const diffPermissions = _.difference(result.grantedPermissions, PERMISSIONS);
+          const diffPermissions = _.difference(PERMISSIONS, result.grantedPermissions);
           if (diffPermissions.length == 0) {
             AccessToken.getCurrentAccessToken().then(
               (data) => {
