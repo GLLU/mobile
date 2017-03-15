@@ -23,7 +23,8 @@ class LoginView extends Component {
     var jsonData = {access_token: data["accessToken"], expirationTime: data["expirationTime"]}
     this.setState(jsonData)
 
-    fetch("https://sam.gllu.com/v1/login/facebook_sign_in.json",
+    // why is this hardcoded? :(
+    fetch("https://api.gllu.com/v1/login/facebook_sign_in.json",
       {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
