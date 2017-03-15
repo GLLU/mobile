@@ -58,7 +58,7 @@ class TagItemPage extends BasePage {
   }
 
   render() {
-    const { items, image } = this.props;
+    const { items, image, itemId } = this.props;
     const { mode } = this.state;
 
     const allowContinue = items.length > 0;
@@ -78,6 +78,7 @@ class TagItemPage extends BasePage {
             <ImageWithTags
                 ref={(ref) => this.imageEditor = ref}
                 mode={mode}
+                itemId={itemId}
                 items={items}
                 image={image}
                 onMarkerCreate={this.handleAddTag.bind(this)}

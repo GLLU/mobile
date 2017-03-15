@@ -51,11 +51,11 @@ export default reduxApi({
     url: "/abuse",
     crud: true,
   },
-  look: {
+  looks: {
     url: '/looks/:id',
     crud: true
   },
-  looks: {
+  user_looks: {
     url: '/users/:id/looks/:page[number]:page[size]',
     crud: true
   },
@@ -80,14 +80,8 @@ export default reduxApi({
     crud: true,
   },
   item_tags: {
-    url: '/looks/:look_id/items/:id/item_tags',
+    url: '/looks/:look_id/items/:item_id/item_tags/:id',
     crud: true,
-  },
-  remove_item_tags: {
-    url: '/looks/:look_id/items/:id/item_tags',
-    options: {
-      method: 'post'
-    }
   },
   changeUserAboutMe: {
     url: '/users/:id',

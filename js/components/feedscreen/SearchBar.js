@@ -4,6 +4,7 @@ import { View, Text, Button, Input, InputGroup, Icon } from 'native-base';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import styles from './styles';
+import FontSizeCalculator from './../../calculators/FontSize';
 
 const myStyles = StyleSheet.create({
   searchBar: {
@@ -27,8 +28,8 @@ const myStyles = StyleSheet.create({
     backgroundColor: 'white',
     borderLeftColor: 'black',
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: 15,
-    fontWeight: '800'
+    fontSize: new FontSizeCalculator(14).getSize(),
+    fontWeight: '200'
   },
   btnCloseFilter: {
     marginLeft: 15,

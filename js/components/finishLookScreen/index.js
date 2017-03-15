@@ -77,7 +77,7 @@ class FinishLookPage extends BasePage {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
         this.resetToFeedscreen();
-        this.props.navigateTo('tagItemScreen', 'feedscreen');
+        this.props.navigateTo('addItemScreen', 'feedscreen');
       }).catch(err => {
         console.log('addNewLook err', err);
       });  

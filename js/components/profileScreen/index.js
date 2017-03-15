@@ -12,7 +12,6 @@ import StatsView  from './StatsView';
 import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData } from '../../actions';
 import _ from 'lodash';
 import SelectPhoto from '../common/SelectPhoto';
-const userBackground = require('../../../images/epsbg.png');
 const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
@@ -35,7 +34,6 @@ class ProfileScreen extends BasePage {
   constructor(props) {
     super(props);
     const isMyProfile = this.props.userData.id === this.props.myUser.id || this.props.userData.user_id === this.props.myUser.id;
-    ;
     this.state = {
       isMyProfile,
       isFollowing: this.props.userData.is_following,
@@ -100,11 +98,15 @@ class ProfileScreen extends BasePage {
   }
 
   _handleItemsPress() {
-    const userData = {
+    const {myUser, userData} = this.props;
+    const user = this.state.isMyProfile ? myUser : userData;
+    const userDatax = {
       id: this.state.userId,
-      looksCount: this.props.stats.looks_count
+      name: user.name,
+      looksCount: this.props.stats.looks_count,
+      isMyProfile: this.state.isMyProfile
     }
-    this.props.navigateTo('userLookScreen', 'feedscreen', userData);
+    this.props.navigateTo('userLookScreen', 'feedscreen', userDatax);
   }
 
   goToAddNewItem(imagePath) {
@@ -182,9 +184,9 @@ class ProfileScreen extends BasePage {
       let avatarUrl = avatar ? avatar.url : null;
       return (
         <Container>
-          <Image source={this.state.isMyProfile ? profileBackground : userBackground} style={styles.bg}>
+          <Image source={profileBackground} style={styles.bg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
-                            style={[styles.linearGradient, this.state.isMyProfile ? {opacity: 0.7} : {opacity: 0}]}/>
+                            style={[styles.linearGradient, {opacity: 0.7}]}/>
             <View style={styles.header}>
               <TouchableOpacity transparent onPress={this.handleBackToFeedPress.bind(this)} style={styles.headerBtn}>
                 { this._renderleftBtn() }

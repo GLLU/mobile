@@ -13,6 +13,7 @@ import { getFeed, resetFeed, loadMore } from './feed';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import {
   addNewLook,
+  editNewLook,
   editTag,
   createLookItem,
   selectLookItem,
@@ -67,6 +68,7 @@ export {
   showBodyTypeModal,
   hideBodyTypeModal,
   addNewLook,
+  editNewLook,
   createLookItem,
   selectLookItem,
   updateLookItem,

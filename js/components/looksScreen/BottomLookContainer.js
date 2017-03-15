@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Animated, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
+import { View, Text, Animated, TouchableOpacity, Image, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from 'native-base';
 import _ from 'lodash'
 import styles from './styles';
@@ -34,6 +34,7 @@ export default class BottomLookContainer extends BaseComponent {
       isCommentsActive: false,
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
+      fadeAnimContentOnPress: new Animated.Value(1)
     }
   }
 
@@ -60,12 +61,42 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _renderDescriptionView(isActive) {
-    return <DescriptionView isHidden={!isActive} style={styles.bottomDrawerView}
-                            description={this.props.look.description}/>;
+    return <DescriptionView
+      isHidden={!isActive}
+      style={styles.bottomDrawerView}
+      description={this.props.look.description}/>;
+  }
+
+  _renderCommentsView(isActive) {
+    return <CommentsView
+      look_id={this.props.look.id}
+      count={this.state.comments}
+      isHidden={!isActive}
+      style={styles.bottomDrawerView}/>
   }
 
   _toggleComments(shouldActive) {
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
+  }
+
+  toggleBottomContainer() {
+    if(this.state.fadeAnimContentOnPress._value === 1) {
+      Animated.timing(          // Uses easing functions
+        this.state.fadeAnimContentOnPress,    // The value to drive
+        {
+          toValue: 0,
+          delay: 250
+        }            // Configuration
+      ).start();
+    } else {
+      Animated.timing(          // Uses easing functions
+        this.state.fadeAnimContentOnPress,    // The value to drive
+        {
+          toValue: 1,
+          delay: 250
+        }            // Configuration
+      ).start();
+    }
   }
 
   render() {
@@ -80,20 +111,17 @@ export default class BottomLookContainer extends BaseComponent {
     avatar.imageUri = this.props.look.avatar.url;
     avatar.bodyType = this.props.look.type;
     return (
-      <Animated.View style={{opacity: this.state.fadeAnimContent, justifyContent: 'space-between'}}>
-        <TouchableOpacity transparent onPress={() => this.props.tempPopRoute()}>
+      <Animated.View style={{opacity: this.state.fadeAnimContent}} >
+        <TouchableOpacity transparent onPress={() => this.props.tempPopRoute()} style={{zIndex: 99999, marginTop: 10}}>
           <Icon
-            style={{color: 'green', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute'}}
+            style={{color: 'black', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute', zIndex: 9999}}
             name="ios-arrow-back"/>
         </TouchableOpacity>
+        <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
+        <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
         <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
           <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
-          <DescriptionView isHidden={!this.state.isDescriptionActive} style={styles.bottomDrawerView}
-                           description={this.props.look.description}/>
-
-          <CommentsView look_id={this.props.look.id} count={this.state.comments} isHidden={!this.state.isCommentsActive}
-                        style={styles.bottomDrawerView}/>
-
+          {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderDescriptionView(this.state.isDescriptionActive)}
           <BottomButton
             isCommentsActive={this.state.isCommentsActive}
@@ -106,9 +134,11 @@ export default class BottomLookContainer extends BaseComponent {
             toggleLike={this.handleLikePress.bind(this)}
             toggleMenu={() => this._toggleMenu()}/>
         </View>
+        </TouchableWithoutFeedback>
         {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                    closeModal={() => this._toggleMenu()}/>
+        </Animated.View>
       </Animated.View>
     )
   }

@@ -44,7 +44,7 @@ class OccasionsDropdown extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItems: []
+      selectedItems: props.selectedTags
     }
   }
 
@@ -63,8 +63,7 @@ class OccasionsDropdown extends BaseComponent {
     this.setState({selectedItems}, () => {
       console.log('handleItemsSelected', selectedItems);
       selectedItems.map(tag => {
-        this.logEvent('UploadLookScreen', { name: 'Occasion tag', tag: tag.name });
-        this.props.toggleOccasionTag(tag, false);
+        this._toggleOccasionTag(tag, false);
       });
     });
   }
@@ -72,20 +71,21 @@ class OccasionsDropdown extends BaseComponent {
   removeTag(tag) {
     const { selectedItems } = this.state;
     const remaining = _.filter(selectedItems, x => x.id !== tag.id);
-    this.setState({selectedItems: remaining});
+    this.setState({selectedItems: remaining}, () => {
+      this._toggleOccasionTag(tag, true);
+    });
   }
 
   renderSelectedItems() {
     const { selectedItems } = this.state;
     return (
-      <Tags style={{flex: 1}} itemTags={selectedItems} removeTag={this.removeTag.bind(this)}/>
+      <Tags style={{flex: 1}} tags={selectedItems} removeTag={this.removeTag.bind(this)}/>
     );
   }
 
   render () {
     const { occasionTags, selectedTags } = this.props;
     const { selectedItems } = this.state;
-    console.log('render OccasionsDropdown ', occasionTags)
     return (<View style={{flex: 1, flexDirection: 'column'}}>
               <MultiSelect
                 style={{flex: 1}}

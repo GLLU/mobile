@@ -2,6 +2,7 @@ const React = require('react-native');
 const { StyleSheet, Dimensions, Platform } = React;
 const deviceHeight = Dimensions.get('window').height;
 const MK = require('react-native-material-kit');
+import FontSizeCalculator from './../../calculators/FontSize';
 
 const {
   MKColor,
@@ -48,7 +49,7 @@ module.exports = StyleSheet.create({
     marginTop: 10
   },
   smallBtn: {
-    fontSize: 25,
+    fontSize: new FontSizeCalculator(24).getSize(),
     color: 'grey'
   }
 });

@@ -10,11 +10,12 @@ import { connect } from 'react-redux';
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
+import Video from 'react-native-video';
 
 const { navigateTo } = actions;
-
 const background = require('../../../images/background.png');
-const backgroundShadow = require('../../../images/background-shadow.png');
+const splashVideo = require('../../../images/backgrounds/splash-screen-video-zoomed.mp4');
+const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
 
@@ -38,14 +39,17 @@ const {
 const PERMISSIONS = ["email", "public_profile"];
 
 const SignUpEmailButton = MKButton.coloredFlatButton()
-  .withBackgroundColor(MKColor.Teal)
+  .withBackgroundColor('transparent')
   .withTextStyle({
     color: 'white',
     fontWeight: '600',
   })
   .withStyle({
     height: 40,
-    borderRadius: 0
+    borderRadius: 4,
+    borderColor: MKColor.Teal,
+    borderWidth: 2,
+    marginBottom: 10
   })
   .withText('Signup with Email')
   .build();
@@ -135,10 +139,9 @@ class SplashPage extends BasePage {
     return (
         <View style={styles.signupContainer}>
           <SignUpEmailButton onPress={this.handleEmailSignupPress.bind(this)} />
-          <Text style={styles.label}>Or</Text>
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}
-                       borderRadius={0}
+                       borderRadius={4}
                        name="facebook"
                        backgroundColor="#3b5998"
                        onPress={this.connectWithFB.bind(this)}>
@@ -146,7 +149,7 @@ class SplashPage extends BasePage {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+            <Button color={MKColor.Teal} style={styles.alreadyBtn} textStyle={{fontSize: 13}} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
           </View>
         </View>
     )
@@ -157,11 +160,15 @@ class SplashPage extends BasePage {
       <Container theme={glluTheme}>
         <View style={styles.container}>
           <Content scrollEnabled={false}>
-            <Image source={background} style={styles.shadow}>
+            <View style={styles.allView}>
+              <Video source={splashVideo}
+                     resizeMode="stretch"
+                     muted={true}
+                     style={styles.videoBackground}
+                     repeat={true} />
               <Image source={backgroundShadow} style={styles.bgShadow} />
               <View style={styles.logoContainer}>
                 <Image source={logo} style={styles.logo} />
-                <Text style={styles.titleHeading}>Fashion that Fits</Text>
               </View>
                 {this.renderMainView()}
                 <View style={styles.bottomContainerContent}>
@@ -170,14 +177,13 @@ class SplashPage extends BasePage {
                   <Text style={styles.text}> and </Text>
                   <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
                 </View>
-            </Image>
+            </View>
           </Content>
         </View>
       </Container>
     );
   }
 }
-
 
 function bindAction(dispatch) {
   return {

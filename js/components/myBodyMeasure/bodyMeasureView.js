@@ -69,7 +69,7 @@ class BodyMeasureView extends BaseComponent {
   }
 
   increasSize(item) {
-    this.logEvent('BodyMeasureScreen', { name: `Increase Size click - ${item}` });
+    this.logEvent('BodyMeasureScreen', { name: `Increase Size click`, measurement: item  });
     let currentSizeItem = this.state.currentSize[item];
     if(this.state.currentSize[item] < 300) {
       this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++), updateTextColor: 'green', updateTextColorFor: item});
@@ -77,7 +77,7 @@ class BodyMeasureView extends BaseComponent {
   }
 
   decreasSize(item) {
-    this.logEvent('BodyMeasureScreen', { name: `Decrease Size click - ${item}` });
+    this.logEvent('BodyMeasureScreen', { name: `Decrease Size click`, measurement: item  });
     let currentSizeItem = this.state.currentSize[item];
     if(this.state.currentSize[item] > 0){
       this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--), updateTextColor: 'green', updateTextColorFor: item});
