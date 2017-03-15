@@ -15,6 +15,7 @@ import BaseComponent from '../common/BaseComponent';
 import {
     createLookItem,
     addDescription,
+    addUrl,
     addLocation,
     addTrustLevel,
     addPhotosVideo,
@@ -183,7 +184,6 @@ class StepTwo extends BaseComponent {
   }
 
   updateSelectValue(key, value) {
-    this.setState({[key]: value});
     switch (key) {
       case 'location':
         this.props.addLocation(value);
@@ -191,6 +191,10 @@ class StepTwo extends BaseComponent {
       case 'trustLevel':
         this.props.addTrustLevel(value);
         break;
+      case 'url':
+        this.setState({
+          url: value
+        });
       case 'description':
         this.setState({
           description: value
@@ -200,8 +204,8 @@ class StepTwo extends BaseComponent {
   }
 
   _handlePublishItem() {
-    console.log('_handlePublishItem', this.props.url)
-    if (!this.props.url) {
+    console.log('_handlePublishItem', this.state.url)
+    if (!this.state.url) {
       this.setState({urlOverlayVisible: true})
     } else {
       this.props.publishItem();
@@ -256,7 +260,8 @@ class StepTwo extends BaseComponent {
   }
 
   handleUrlEndEditing() {
-   this.logEvent('UploadLookScreen', { name: 'Url', url: this.props.url });
+    this.logEvent('UploadLookScreen', { name: 'Url', url: this.state.url });
+    this.props.addUrl(this.state.url);
   }
 
   renderImageOverlay() {
@@ -375,8 +380,9 @@ class StepTwo extends BaseComponent {
               underlineColorAndroid='transparent'
               style={styles.textInput}
               placeholder='http://www.gllu.com'
+              onChangeText={text => this.updateSelectValue('url', text)}
               onEndEditing={this.handleUrlEndEditing.bind(this)}
-              value={this.props.url}/>
+              value={this.state.url}/>
           </Row>
           <Row style={[styles.row, {paddingBottom: 60}]}>
             <Gllu.Button
@@ -398,6 +404,7 @@ function bindActions(dispatch) {
   return {
     createLookItem: (tag) => dispatch(createLookItem(tag)),
     addDescription: (description) => dispatch(addDescription(description)),
+    addUrl: (url) => dispatch(addUrl(url)),
     addLocation: (location) => dispatch(addLocation(location)),
     addTrustLevel: (number) => dispatch(addTrustLevel(number)),
     addPhotosVideo: (photos, video) => dispatch(addPhotosVideo(photos, video)),
@@ -410,12 +417,21 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
   const item = _.find(items, item => item.id == itemId);
+  let url = null;
+  if (item) {
+    if (item.url) {
+      url = item.url;
+    } else {
+      url = item.brand ? item.brand.url : null;
+    }
+  }
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
     occasions: item ? item.occasions : [],
     tags: item ? item.tags : [],
     photos: item ? item.photos : [],
+    url,
   }
 };
 

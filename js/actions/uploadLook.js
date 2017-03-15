@@ -17,6 +17,7 @@ export const ADD_ITEM_CURRENCY = 'ADD_ITEM_CURRENCY';
 export const ADD_ITEM_PRICE = 'ADD_ITEM_PRICE';
 export const ADD_SHARING_INFO = 'ADD_SHARING_INFO';
 export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
+export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
@@ -414,6 +415,25 @@ export function addDescription(description) {
       dispatch({
         type: ADD_DESCRIPTION,
         payload: description
+      })
+    }).catch(err => {
+      console.log('error', err);
+    });
+  };
+}
+
+export function addUrl(url) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { lookId, itemId } = state.uploadLook;
+    const params = {
+      url,
+    }
+
+    return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+      dispatch({
+        type: ADD_ITEM_URL,
+        payload: url
       })
     }).catch(err => {
       console.log('error', err);

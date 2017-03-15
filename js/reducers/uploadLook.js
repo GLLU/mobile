@@ -15,6 +15,7 @@ import {
   ADD_ITEM_PRICE,
   ADD_SHARING_INFO,
   ADD_DESCRIPTION,
+  ADD_ITEM_URL,
   ADD_LOCATION,
   ADD_TRUST_LEVEL,
   ADD_PHOTOS_VIDEO,
@@ -145,6 +146,12 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       items: mutateItem(state, 'price', action.payload)
+    }
+  },
+  [ADD_ITEM_URL]: (state, action) => {
+    return {
+      ...state,
+      items: mutateItem(state, 'url', action.payload)
     }
   },
   [ADD_SHARING_INFO]: (state, action) => {
