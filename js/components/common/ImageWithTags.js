@@ -71,8 +71,8 @@ class ImageWithTags extends Component {
       const item = _.find(items, x => x.id === itemId);
       const { locationX, locationY } = item;
       const { width, height } = this.getRenderingDimensions();
-      const absX = locationX * width;
-      const absY = locationY * height;
+      const absX = this.normalizePosition(locationX) * width;
+      const absY = this.normalizePosition(locationY) * height;
       this._setupPanResponder(absX, absY);
     } else {
       this._setupPanResponder(0, 0);
@@ -122,14 +122,20 @@ class ImageWithTags extends Component {
     });
   }
 
+  normalizePosition(value) {
+    return Math.min(Math.max(value, 0.1), 0.9);
+  }
+
   renderTags() {
     const { items, itemId, mode } = this.props;
 
     const { width, height } = this.getRenderingDimensions();
 
     return items.map((item, i) => {
-      const left = parseInt(item.locationX * width);
-      const top = parseInt(item.locationY * height);
+      const x = this.normalizePosition(item.locationX);
+      const y = this.normalizePosition(item.locationY);
+      const left = parseInt(x * width);
+      const top = parseInt(y * height);
 
       if (mode != VIEW_MODE) {
         const layout = this._pan.getLayout();
@@ -181,7 +187,7 @@ class ImageWithTags extends Component {
   }
 
   _renderContent() {
-    if (this.props.mode == CREATE_MODE) {
+    if (this.props.items.length == 0) {
       const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
       return(<Tag onPress={this._handlePress.bind(this)}>
             {this._render()}
