@@ -6,6 +6,8 @@ import {
   View
 } from 'react-native';
 
+import Config from 'react-native-config';
+
 const FBSDK = require('react-native-fbsdk');
 const {
   LoginButton,
