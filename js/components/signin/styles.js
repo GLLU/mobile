@@ -159,8 +159,8 @@ module.exports = StyleSheet.create({
   },
   logo: {
       flex: 1,
-      width: 200,
-      height: 200,
+      width: 175,
+      height: 175,
       resizeMode: 'contain',
   },
   withouthF: {
