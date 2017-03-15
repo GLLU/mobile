@@ -40,9 +40,10 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderBuyItButtons(look) {
     return look.items.map((item, index) => {
+      const title = item.brand ? item.brand.name : 'N/A';
       return (
-        <BuyItButton key={index} title={'zara'} price={item.price} positionTop={item["cover_y_pos"]}
-                     positionLeft={item["cover_x_pos"]}/>
+        <BuyItButton key={index} title={title} price={item.price} positionTop={item["cover_y_pos"]}
+                     positionLeft={item["cover_x_pos"]} url={item.url}/>
       )
     });
   }
