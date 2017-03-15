@@ -29,15 +29,17 @@ const styles = StyleSheet.create({
     fontSize: new FontSizeCalculator(26).getSize(),
     color: 'black',
     fontFamily: 'Times New Roman',
+    flex: 10,
+    textAlign: 'center'
   },
   followsCount: {
     fontSize: new FontSizeCalculator(26).getSize(),
     fontWeight: 'bold',
     color: '#00D7B2',
-    marginLeft: 12
+    textAlign: 'right',
+    flex:1,
   },
   backBtn: {
-    marginLeft: 20,
     color: 'black',
     backgroundColor: 'transparent'
   },
@@ -63,16 +65,13 @@ class ListViewHeader extends Component {
     return (
       <View style={[styles.container,styles.column]}>
         <View style={[styles.header,styles.row]}>
-          <TouchableOpacity style={{flex:1}} onPress={() => this.popRoute()}>
+          <View style={{flex:0.5}} name="spacer"/>
+          <TouchableOpacity style={{flex:1, justifyContent: 'center'}} onPress={() => this.popRoute()}>
             <Icon style={styles.backBtn} name="ios-arrow-back"/>
           </TouchableOpacity>
-          <View style={{flex:3}}/>
-          <View style={[styles.row,{flex:8}]}>
-            <Text style={styles.followsTitle}>{_.startCase(this.props.title)}</Text>
-            <Text style={styles.followsCount}>{this.props.count}</Text>
-          </View>
-          <View style={{flex:1}} name="spacer"/>
-
+          <Text style={styles.followsTitle}>{_.startCase(this.props.title)}</Text>
+          <Text style={styles.followsCount}>{this.props.count}</Text>
+          <View style={{flex:0.5}} name="spacer"/>
         </View>
         {/*{search will come here}*/}
       </View>
