@@ -59,8 +59,8 @@ module.exports = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: 175,
+    height: 175,
     resizeMode: 'contain',
     alignSelf: 'center',
   },

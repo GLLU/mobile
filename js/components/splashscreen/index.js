@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, Linking } from 'react-native';
+import { Image, Linking, Platform } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -14,7 +14,6 @@ import Video from 'react-native-video';
 
 const { navigateTo } = actions;
 const background = require('../../../images/background.png');
-const splashVideo = require('../../../images/backgrounds/splash-screen-video-zoomed.mp4');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const logo = require('../../../images/logo.png');
 const MK = require('react-native-material-kit');
@@ -161,7 +160,7 @@ class SplashPage extends BasePage {
         <View style={styles.container}>
           <Content scrollEnabled={false}>
             <View style={styles.allView}>
-              <Video source={splashVideo}
+              <Video source={Platform.OS === 'ios' ? require('../../../android/app/src/main/res/raw/splashvid.mp4') : { uri: 'splashvid', mainVer: 1, patchVer: 0}}
                      resizeMode="stretch"
                      muted={true}
                      style={styles.videoBackground}
