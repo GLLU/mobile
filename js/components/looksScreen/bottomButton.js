@@ -4,9 +4,9 @@ import * as _ from 'lodash'
 import Icon from 'react-native-vector-icons/Entypo';
 import styles from './styles';
 import SocialShare from '../../lib/social';
-import InformationButton from './buttons/InformationButton';
+import InformationButton from './buttons/InformationButton'
+import CommentsButton from './buttons/CommentsButton'
 import BaseComponent from '../common/BaseComponent';
-
 const likeImage = require('../../../images/like.png');
 const likeClickedImage = require('../../../images/likeClicked.png');
 const shareImage = require('../../../images/share.png');
@@ -19,16 +19,22 @@ export default class BottomButton extends BaseComponent {
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
     hasDescription: React.PropTypes.bool,
-    toggleDescription: React.PropTypes.func
+    isDescriptionActive: React.PropTypes.bool,
+    toggleDescription: React.PropTypes.func,
+    isCommentsActive: React.PropTypes.bool,
+    toggleComments: React.PropTypes.func
   };
 
   static defaultProps = {
-    toggleDescription: _.noop
+    toggleDescription: _.noop,
+    toggleComments: _.noop
   };
 
   constructor(props) {
     super(props);
     this._renderInformationButton = this._renderInformationButton.bind(this);
+    this._onInformationClicked = this._onInformationClicked.bind(this);
+    this._onBubbleClicked = this._onBubbleClicked.bind(this);
     this.state = {
       likes: this.props.likes,
       isLiked: this.props.isLiked
@@ -52,12 +58,12 @@ export default class BottomButton extends BaseComponent {
 
   _onInformationClicked() {
     this.logEvent('LookScreen', { name: 'Information click'});
-    console.log('Information Button clicked');
+    this.props.toggleDescription(...arguments)
   }
 
   _onBubbleClicked() {
     this.logEvent('LookScreen', { name: 'Comment click'});
-    console.log('comments Button clicked');
+    this.props.toggleComments(...arguments);
   }
 
   _onShareClicked() {
@@ -72,7 +78,7 @@ export default class BottomButton extends BaseComponent {
 
   _renderInformationButton(hasDescription) {
     return hasDescription ?
-      <InformationButton onPress={this.props.toggleDescription}/> :
+      <InformationButton onPress={this._onInformationClicked}/> :
       <View name="information button placeholder"></View>;
   }
 
@@ -89,11 +95,7 @@ export default class BottomButton extends BaseComponent {
               </View>
             </TouchableHighlight>
             { this._renderInformationButton(this.props.hasDescription) }
-            <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onBubbleClicked()}>
-              <View style={[styles.footerButton, {width: 40}]}>
-                <Image source={bubbleImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}/>
-              </View>
-            </TouchableHighlight>
+            <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onShareClicked()}>
               <View style={[styles.footerButton, {width: 40}]}>
                 <Image source={shareImage} style={{height: 25, width: 25, resizeMode: 'contain', right: 2}}/>

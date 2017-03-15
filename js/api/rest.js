@@ -102,6 +102,11 @@ export default reduxApi({
     options: {
       method: 'get'
     }
+  },
+  comments: {
+    //query parameters: :page[number], page[size]
+    url: '/looks/:look_id/comments/',
+    crud: true,
   }
 }).use("fetch", (url, options) => {
   console.log('making request', url, options);

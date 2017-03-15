@@ -3,9 +3,9 @@ import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import * as _ from 'lodash'
 import FooterButton from './FooterButton'
 
-const infoIcon = require('../../../../images/infoIcon.png');
+const bubbleIcon = require('../../../../images/bubble.png');
 
-export default class InformationButton extends Component {
+export default class CommentsButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +25,7 @@ export default class InformationButton extends Component {
 
   render() {
     return (
-      <FooterButton {...this.props} icon={infoIcon}/>
+      <FooterButton {...this.props} icon={bubbleIcon}/>
     );
   }
 }

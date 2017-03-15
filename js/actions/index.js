@@ -7,6 +7,7 @@ import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType }
 import { likeUpdate, unLikeUpdate } from './likes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
 import { getUserFollowersData, initUserFollowers }  from './followers';
+import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData } from './looks';
 import { getFeed, resetFeed, loadMore } from './feed';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
@@ -121,6 +122,9 @@ export {
   initUserFollows,
   getUserFollowersData,
   initUserFollowers,
+  getLookCommentsData,
+  initLookComments,
+  addLookComment,
   getFeed,
   resetFeed,
   loadMore,
