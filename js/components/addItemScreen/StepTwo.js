@@ -400,13 +400,15 @@ class StepTwo extends BaseComponent {
             <TextInput
               ref={ref => this.urlText = ref}
               underlineColorAndroid='transparent'
+              autoCapitalize='none'
+              keyboardType='url'
               style={styles.textInput}
               placeholder='http://www.gllu.com'
               onChangeText={text => this.updateSelectValue('url', text)}
               onEndEditing={this.handleUrlEndEditing.bind(this)}
               value={this.state.url}/>
           </Row>
-          <Row style={[styles.row, {paddingBottom: 60}]}>
+          <Row style={[styles.row, {height: 100}]}>
             <Gllu.Button
               disabled={false}
               onPress={() => this.handlePublishPress()}
@@ -416,6 +418,7 @@ class StepTwo extends BaseComponent {
         </Grid>
         {this.renderImageOverlay()}
         {this.renderConfirmUrlOverlay()}
+        <View style={{height: 180}}/>
       </ScrollView>
     )
   }
