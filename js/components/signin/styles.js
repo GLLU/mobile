@@ -3,6 +3,7 @@ const React = require('react-native');
 import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 const MK = require('react-native-material-kit');
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -31,7 +32,7 @@ module.exports = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: deviceHeight
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
   },
   shadow: {
     flex: 1,

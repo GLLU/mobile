@@ -115,7 +115,7 @@ module.exports = StyleSheet.create({
   },
   allView: {
     flex: 1,
-    height: deviceHeight,
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT'),
     width: deviceWidth
   },
   bottomContainerContent: {
