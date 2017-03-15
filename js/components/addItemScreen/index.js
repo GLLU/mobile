@@ -139,13 +139,13 @@ class AddItemPage extends BasePage {
         title = 'Addional Info';
         break;
       default:
-        title = 'Add New Item';
+        title = 'Choose Marker';
     }
     return title;
   }
 
   handleBackButton() {
-    if (this.state.currentStep > 0) {
+    if (this.state.currentStep > -1) {
       this.setState({currentStep: this.state.currentStep - 1});
     } else {
       this.goBack();

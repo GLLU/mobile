@@ -57,18 +57,25 @@ class ImageWithTags extends Component {
       locationX: 0,
       locationY: 0,
     }
+
+    // this._setupPanResponder(this.state.locationX, this.state.locationY);
   }
 
   componentWillMount() {
-    if (this.props.mode == EDIT_MODE) {
-      const { itemId, items } = this.props;
-      console.log('componentWillMount', items, itemId);
+    this.loadMarkerFromProps(this.props);
+  }
+
+  loadMarkerFromProps(props) {
+    const { mode, itemId, items } = props;
+    if (mode != VIEW_MODE && itemId) {
       const item = _.find(items, x => x.id === itemId);
       const { locationX, locationY } = item;
       const { width, height } = this.getRenderingDimensions();
       const absX = locationX * width;
       const absY = locationY * height;
       this._setupPanResponder(absX, absY);
+    } else {
+      this._setupPanResponder(0, 0);
     }
   }
 
@@ -124,7 +131,7 @@ class ImageWithTags extends Component {
       const left = parseInt(item.locationX * width);
       const top = parseInt(item.locationY * height);
 
-      if (mode != VIEW_MODE && item.editing) {
+      if (mode != VIEW_MODE) {
         const layout = this._pan.getLayout();
         return (<Animated.View
                   key={i}
@@ -156,18 +163,21 @@ class ImageWithTags extends Component {
 
   _render() {
     const { width, height } = this.getRenderingDimensions();
+    if (this.props.showMarker) {
+      return (
+        <FitImage source={{uri: this.props.image}} style={[styles.itemsContainer]}>
+          <View style={[styles.draggableContainer, {width, height}]}>
+            {this.renderTags()}
+          </View>
+        </FitImage>
+      );
+    }
+
     return (
-    <FitImage source={{uri: this.props.image}} style={[styles.itemsContainer]}>
-      {
-        this.props.showMarker
-        ?
-        <View style={[styles.draggableContainer, {width, height}]}>
-          {this.renderTags()}
-        </View>
-        :
-        null
-      }
-    </FitImage>);
+      <Image
+        source={{ uri: this.props.image }}
+        style={[styles.itemsContainer, {width, height}]}/>
+    );
   }
 
   _renderContent() {
