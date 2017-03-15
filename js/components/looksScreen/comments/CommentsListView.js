@@ -71,8 +71,8 @@ export default class CommentsListView extends Component {
 
   _renderEmptyView() {
     return (
-      <Text>
-        Be the first to comment on this look :D
+      <Text style={{textAlign:'center', padding:10}}>
+        Be the first to comment on this look
       </Text>
     );
   }
