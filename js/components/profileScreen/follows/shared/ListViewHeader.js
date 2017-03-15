@@ -7,6 +7,7 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {popRoute} = actions;
+import FontSizeCalculator from './../../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,12 +26,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   followsTitle: {
-    fontSize: 26,
+    fontSize: new FontSizeCalculator(26).getSize(),
     color: 'black',
     fontFamily: 'Times New Roman',
   },
   followsCount: {
-    fontSize: 26,
+    fontSize: new FontSizeCalculator(26).getSize(),
     fontWeight: 'bold',
     color: '#00D7B2',
     marginLeft: 12
