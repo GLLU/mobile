@@ -127,7 +127,7 @@ const mapStateToProps = state => {
   const item = _.find(items, item => item.id == itemId);
   return {
     categories: state.filters.categories,
-    selectedCategory: item ? item.selectedCategory : null,
+    selectedCategory: item ? item.category : null,
   };
 };
 

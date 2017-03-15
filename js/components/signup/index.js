@@ -29,7 +29,6 @@ import {
   PRIVACY_URL,
 } from '../../constants';
 
-
 class SignUpPage extends BasePage {
 
   static propTypes = {

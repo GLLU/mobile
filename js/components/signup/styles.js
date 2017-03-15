@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 const MK = require('react-native-material-kit');
+import FontSizeCalculator from './../../calculators/FontSize';
 
 const {
     MKColor,
@@ -35,7 +36,8 @@ module.exports = StyleSheet.create({
   shadow: {
     flex: 1,
     width: null,
-    height: null
+    height: null,
+    resizeMode: 'stretch',
   },
   bg: {
     flex: 1,
@@ -101,6 +103,7 @@ module.exports = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    bottom: 20,
   },
   formInput: {
     flex: 1,
@@ -179,12 +182,13 @@ module.exports = StyleSheet.create({
   },
   text: {
     color: '#E0E0E0',
-    fontSize: 12,
+    fontSize: new FontSizeCalculator(12).getSize(),
     fontWeight: 'normal',
   },
   link: {
-    color: '#00ABED',
-    fontSize: 12,
+    color: 'white',
+    fontSize: new FontSizeCalculator(12).getSize(),
     fontWeight: 'normal',
+
   },
 });

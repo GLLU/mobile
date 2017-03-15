@@ -12,7 +12,7 @@ import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
 import AddItemPage from './components/addItemScreen';
-import TagItemPage from './components/tagItemScreen';
+import TagItemPage from './components/addItemScreen';
 import SideBar from './components/sideBar';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
@@ -56,11 +56,11 @@ class AppNavigator extends Component {
   }
 
   componentWillMount() {
-    console.log('AppNavigator componentWillMount', this.props.navigation);
+    // console.log('AppNavigator componentWillMount', this.props.navigation);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
+    // console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
   }
 
   componentDidMount() {
@@ -123,10 +123,8 @@ class AppNavigator extends Component {
       case 'feedscreen':
         return <FeedPage />;
       case 'addItemScreen':
-        return <AddItemPage />;
-      case 'tagItemScreen':
         const mode = optional ? optional.mode : 'create';
-        return <TagItemPage mode={mode} />;
+        return <AddItemPage mode={mode} />;
       case 'finishLookScreen':
         return <FinishLookScreen />;
       case 'login':

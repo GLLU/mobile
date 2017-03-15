@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 class Tags extends BaseComponent {
 
   static propTypes = {
-    itemTags: React.PropTypes.array,
+    tags: React.PropTypes.array,
     removeTag: React.PropTypes.func
   }
 
@@ -37,7 +37,7 @@ class Tags extends BaseComponent {
   }
 
   _renderTags() {
-    return this.props.itemTags.map((tag, index) => {
+    return this.props.tags.map((tag, index) => {
       return (
         <View key={index} style={[styles.tagTextContainer]}>
           <Button iconRight style={{backgroundColor: '#000', height: 20, borderRadius: 5, alignItems: 'center', justifyContent: 'center'}} textStyle={{fontSize: 13}}>
@@ -54,7 +54,6 @@ class Tags extends BaseComponent {
               {this._renderTags()}
             </Container>)
   }
-
 }
 
 export default Tags;

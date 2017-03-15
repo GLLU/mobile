@@ -12,7 +12,10 @@ const logo = require('../../../images/logo.png');
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 import { emailSignIn } from '../../actions/user';
-
+import {
+  TERMS_URL,
+  PRIVACY_URL,
+} from '../../constants';
 const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/background.png');
@@ -96,12 +99,23 @@ class SignInPage extends BasePage {
     this.refs[refAttr]._textInput.focus();
   }
 
-  handleTermsBtn() {
-    Linking.openURL('https://www.gllu.com/Terms').catch(err => console.error('An error occurred', err));
+  handleTermPress() {
+    this.handleOpenLink(TERMS_URL);
   }
 
-  handlePrivacyPolicyBtn() {
-    Linking.openURL('https://www.gllu.com/Privacy').catch(err => console.error('An error occurred', err));
+  handlePrivacyPolicyPress() {
+    this.handleOpenLink(PRIVACY_URL);
+  }
+
+  handleOpenLink(url) {
+    this.logEvent('SignIn', { name: 'Link click', url });
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + url);
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
   }
 
   handleSigninPress() {
@@ -160,7 +174,12 @@ class SignInPage extends BasePage {
               </View>
             </View>
           </Content>
-            <Text style={[styles.bottomContainerContent]} >By signing-up I agree to gllu's <Text style={[styles.bottomContainerContent, {color: MKColor.Teal}]} onPress={() => this.handleTermsBtn() }>Terms</Text> and <Text style={[styles.bottomContainerContent, {color: MKColor.Teal}]} onPress={() => this.handlePrivacyPolicyBtn() }>Privacy Policy</Text></Text>
+            <View style={styles.bottomContainerContent}>
+              <Text style={styles.text}>By signing-up I agree to gllu's </Text>
+              <Text style={styles.link} onPress={this.handleTermPress.bind(this)}>Terms</Text>
+              <Text style={styles.text}> and </Text>
+              <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
+            </View>
           </Image>
         </View>
       </Container>

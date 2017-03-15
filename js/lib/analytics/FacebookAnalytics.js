@@ -23,7 +23,8 @@ class FacebookAnalytics extends BaseAnalytic {
 
   logEvent(name, params = {}, timed = false) {
     console.log('FacebookAnalytics.logEvent', name, params, timed);
-    const action = params.action || name;
+    const action = params.name || name;
+    delete params['name']
     AppEventsLogger.logEvent(action, params);
   }
 }

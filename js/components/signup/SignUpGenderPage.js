@@ -16,8 +16,8 @@ import styles from './styles';
 
 const { popRoute, pushRoute } = actions;
 
-const background = require('../../../images/background.png');
-const backgroundShadow = require('../../../images/background-shadow.png');
+const background = require('../../../images/backgrounds/man-female_screen2.png');
+const backgroundShadow = require('../../../images/background-shadow-70p.png');
 
 class SignUpGenderPage extends BasePage {
 
@@ -62,8 +62,8 @@ class SignUpGenderPage extends BasePage {
     return (
       <Container>
         <View style={styles.container}>
-          <Image source={background} style={styles.shadow} blurRadius={5}>
-            <Image source={backgroundShadow} style={styles.bgShadow} />
+          <Image source={background} style={styles.shadow} blurRadius={0}>
+            {/*<Image source={backgroundShadow} style={styles.bgShadow} />*/}
             <Header style={styles.header} >
               <Button transparent onPress={this.handleBackPress.bind(this)}>
                 <Icon style={styles.headerArrow} name="ios-arrow-back" />
@@ -75,7 +75,7 @@ class SignUpGenderPage extends BasePage {
                 <TouchableOpacity onPress={this.handleGenderPress.bind(this, 'female')}>
                   <View style={styles.genderBtnContainer}>
                     <Image
-                      source={require('../../../images/genderwomen.png')}
+                      source={require('../../../images/female1.png')}
                       style={styles.genderImage}
                     />
                     <Text style={styles.genderLabel}>Female</Text>
@@ -84,7 +84,7 @@ class SignUpGenderPage extends BasePage {
                 <TouchableOpacity onPress={this.handleGenderPress.bind(this, 'male')}>
                   <View style={styles.genderBtnContainer}>
                     <Image
-                      source={require('../../../images/gendermen.png')}
+                      source={require('../../../images/male1.png')}
                       style={styles.genderImage}
                     />
                     <Text style={styles.genderLabel}>Male</Text>

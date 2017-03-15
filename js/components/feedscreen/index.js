@@ -57,7 +57,7 @@ class FeedPage extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('tagItemScreen', 'feedscreen', { mode: 'create' });
+        this.props.navigateTo('addItemScreen', 'feedscreen', { mode: 'create' });
       });  
     })
   }
