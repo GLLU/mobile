@@ -85,8 +85,7 @@ class SplashPage extends BasePage {
         if (result.isCancelled) {
           alert('Login cancelled');
         } else {
-          PERMISSIONS.push("contact_email") // temp fix
-          const diffPermissions = _.difference(result.grantedPermissions, PERMISSIONS);
+          const diffPermissions = _.difference(PERMISSIONS, result.grantedPermissions);
           if (diffPermissions.length == 0) {
             AccessToken.getCurrentAccessToken().then(
               (data) => {
