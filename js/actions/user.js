@@ -200,7 +200,6 @@ export function checkLogin() {
         if (credentials) {
           setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
           dispatch(rest.actions.auth.get({}, (err, data) => {
-            console.log('checkLogin', err, data);
             if (!err) {
               dispatch(setUser(data.user));
             } else {
