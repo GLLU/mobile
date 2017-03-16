@@ -16,8 +16,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 const { popRoute, pushRoute } = actions;
 
-const background = require('../../../images/background.png');
-const backgroundShadow = require('../../../images/background-shadow.png');
+const background = require('../../../images/backgrounds/hands.png');
+const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const MK = require('react-native-material-kit');
 
 const {
