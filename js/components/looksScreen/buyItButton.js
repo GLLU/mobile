@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Linking, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-const buyItImage = require('../../../images/buyItButton.png');
+const buyItImage = require('../../../images/buyItButton-noprice.png');
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
@@ -51,11 +51,14 @@ export default class BuyItButton extends Component {
       <View
         style={{ flex: 1 , top: (this.props.positionTop / 100 * h), left: (this.props.positionLeft / 100 * w), position: 'absolute'}}>
         <Image source={buyItImage}
-               style={{width: 120, height: 140, resizeMode: 'contain', paddingRight: 20, alignItems: 'center'}}>
+               style={{width: 120, height: 110, resizeMode: 'contain', paddingRight: 20, alignItems: 'center'}}>
           <Text
-            style={{fontFamily: 'Montserrat-Bold', color: '#000', marginTop: 34, backgroundColor: 'transparent'}}>{title}</Text>
-          <Text
-            style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10, backgroundColor: 'transparent'}}>{this.props.currency} {this.props.price}</Text>
+            style={{fontFamily: 'Montserrat-Bold', color: '#000', marginTop: 34, backgroundColor: 'transparent'}}>{title}
+          </Text>
+          {/*/!*Price is currently not relevant*!/*/}
+          {/*<Text*/}
+            {/*style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10, backgroundColor: 'transparent'}}>{this.props.currency} {this.props.price}*/}
+          {/*</Text>*/}
           <TouchableOpacity onPress={this.handleOpenLink}>
             <Text
               style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a',marginTop: 8, backgroundColor: 'transparent'}}>{this.props.btnText}</Text>
