@@ -85,9 +85,9 @@ class BuyItButton extends Component {
         ]}>
         <Image
           source={buyItImage}
-          style={{width: 90, height: 70, resizeMode: 'contain', paddingRight: 20, alignItems: 'flex-start'}}
+          style={{width: 120, height: 70, resizeMode: 'contain', paddingRight: 20, alignItems: 'flex-start'}}
         >
-          <View style={styles.row}>
+          <View style={[styles.row,{paddingLeft:25,paddingTop:10}]}>
             <Text
               style={{fontFamily: 'Montserrat-Bold', color: '#000', backgroundColor: 'transparent'}}
             >
@@ -102,7 +102,7 @@ class BuyItButton extends Component {
               {/*{currency} {price}*/}
             {/*</Text>*/}
           {/*</View>*/}
-          <View style={styles.row}>
+          <View style={[styles.row,{paddingLeft:25,paddingTop:10}]}>
             <Text
               style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a', backgroundColor: 'transparent'}}
             >
