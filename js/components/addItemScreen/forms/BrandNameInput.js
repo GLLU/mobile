@@ -77,7 +77,7 @@ class BrandNameInput extends Component {
   render() {
     const { query, data } = this.state;
     const { brand } = this.props;
-    const selected = brand && query.toLowerCase() === brand.name.toLowerCase();
+    const selected = !!(brand && query && query.toLowerCase() === brand.name.toLowerCase());
     return (
       <View style={{paddingBottom: 20, paddingTop: 20, flex: 1}}>
         <Autocomplete

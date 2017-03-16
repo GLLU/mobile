@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     margin: 2
   },
   listStyle: {
-    height: 160,
+    height: 240,
     borderWidth: 1,
     borderColor: '#E0E0E0',
     borderTopWidth: 0,
@@ -48,21 +48,21 @@ const styles = StyleSheet.create({
   autocompleteResults: {
   },
   btnCreateNew: {
+    flex: 1,
     backgroundColor: '#FFFFFF'
   },
   btnCreateNewText: {
+    flex: 1,
     color: '#1DE9B6',
     fontSize: new FontSizeCalculator(15).getSize(),
     fontWeight: '500',
   },
   btnContainer: {
-    flex: 1,
     backgroundColor: '#FFFFFF',
     height: 40,
     borderWidth: 1,
     borderColor: '#E0E0E0',
     borderTopWidth: 0,
-    alignItems: 'stretch',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -154,7 +154,7 @@ class CustomAutocomplete extends Autocomplete {
                 {this._drawResultItems()}
               </ScrollView>
               <View style={styles.btnContainer} >
-                <Button transparent onPress={() => this.props.findOrCreateBrand(this.query, true)} style={styles.btnCreateNew} >
+                <Button transparent onPress={() => this.props.findOrCreateBrand(this.props.query, true)} style={styles.btnCreateNew} >
                   <Text style={styles.btnCreateNewText}>Create new...</Text>
                 </Button>
               </View>
