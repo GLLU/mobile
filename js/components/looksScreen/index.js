@@ -126,7 +126,7 @@ class LooksScreen extends BasePage {
     let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
     const { width, height } = this.state;
     return (
-      <View>
+      <View onLayout={this.handleImageLayout.bind(this)}>
         <ScrollView pagingEnabled={true}
                     ref={(c) => { this._scrollView = c; }}
                     scrollEventThrottle={100}
@@ -138,7 +138,6 @@ class LooksScreen extends BasePage {
                   resizeMode={'cover'}
                   style={[{opacity: this.state.fadeAnim},styles.itemImage]}
                   source={{uri: look.uri}}
-                  onLayout={this.handleImageLayout.bind(this)}
                   onLoad={this.onLoad()}>
                   <BottomLookContainer
                     width={width}

@@ -125,7 +125,7 @@ export default class BottomLookContainer extends BaseComponent {
       <Animated.View style={{opacity: this.state.fadeAnimContent}} >
         <TouchableOpacity
           transparent
-          style={{zIndex: 99999, top: 10, left: 10, padding: 5 }}
+          style={{zIndex: 99999, top: 10, left: 10, padding: 5, width: 30, backgroundColor: 'transparent' }}
           onPress={() => this.props.tempPopRoute()}
         >
           <Icon

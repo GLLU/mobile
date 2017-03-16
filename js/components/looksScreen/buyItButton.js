@@ -75,7 +75,7 @@ export default class BuyItButton extends Component {
       <View
         style={[
           styles.container,
-          { top: (positionTop * height), left: (positionLeft * width), transform: [{ translateX: -120 }, {translateY: -20}] }
+          { top: parseInt(positionTop * height), left: parseInt(positionLeft * width), transform: [{ translateX: -120 }, {translateY: -20}] }
         ]}>
         <Image
           source={buyItImage}

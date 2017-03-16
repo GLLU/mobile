@@ -24,9 +24,12 @@ export default StyleSheet.create({
     right: 10
   },
   bottomContainer: {
+    position: 'absolute',
     flexDirection: 'row',
-    marginBottom: 20 + ExtraDimensions.get('STATUS_BAR_HEIGHT'),
-    zIndex: 1
+    bottom: 60,
+    left: 0,
+    zIndex: 1,
+    width: w,
   },
 
   bottomLeft: {
