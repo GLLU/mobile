@@ -18,8 +18,8 @@ import {
 } from '../../constants';
 const { popRoute, pushRoute } = actions;
 
-const background = require('../../../images/background.png');
-const backgroundShadow = require('../../../images/background-shadow.png');
+const background = require('../../../images/backgrounds/bags.png');
+const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const MK = require('react-native-material-kit');
 
 const {
