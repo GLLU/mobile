@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Linking, TouchableOpacity, Image, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Linking,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Image,
+  Dimensions
+} from 'react-native';
+import { connect } from 'react-redux'
+import { showInfo } from '../../actions'
 
-const buyItImage = require('../../../images/buyItButton.png');
+const buyItImage = require('../../../images/buyItButton-noprice.png');
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
@@ -20,7 +31,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class BuyItButton extends Component {
+class BuyItButton extends Component {
   constructor(props) {
     super(props);
     this.handleOpenLink = this.handleOpenLink.bind(this);
@@ -59,6 +70,9 @@ export default class BuyItButton extends Component {
         }
       }).catch(err => console.error('An error occurred', err));
     }
+    else {
+      this.props.showInfo("Sorry, we're still working on finding this item online for you. ")
+    }
   }
 
   getTitle() {
@@ -69,41 +83,54 @@ export default class BuyItButton extends Component {
 
   render() {
     const title = this.getTitle();
-    const { positionTop, positionLeft, currency, price, btnText, width, height } = this.props;
-    console.log('buyItButton render', positionTop * height, positionLeft * width,  positionTop, positionLeft, currency, price, width, height);
+    const {positionTop, positionLeft, currency, price, btnText, width, height} = this.props;
+    console.log('buyItButton render', positionTop * height, positionLeft * width, positionTop, positionLeft, currency, price, width, height);
     return (
-      <View
-        style={[
+      <TouchableWithoutFeedback onPress={this.handleOpenLink}>
+        <View
+          style={[
           styles.container,
           { top: parseInt(positionTop * height), left: parseInt(positionLeft * width), transform: [{ translateX: -120 }, {translateY: -20}] }
         ]}>
-        <Image
-          source={buyItImage}
-          style={{width: 120, height: 90, resizeMode: 'contain', paddingRight: 20, alignItems: 'flex-start'}}
-        >
-          <View style={styles.row}>
-            <Text
-              style={{fontFamily: 'Montserrat-Bold', color: '#000', backgroundColor: 'transparent'}}
-            >
-              {title}
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Text
-              style={{fontFamily: 'Montserrat-Regular', color: '#fff', backgroundColor: 'transparent'}}
-            >
-              {currency} {price}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={this.handleOpenLink} style={styles.row}>
-            <Text
-              style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a', backgroundColor: 'transparent'}}
-            >
-              {btnText}
-            </Text>
-          </TouchableOpacity>
-        </Image>
-      </View>
+          <Image
+            source={buyItImage}
+            style={{width: 120, height: 70, resizeMode: 'contain', paddingRight: 20, alignItems: 'flex-start'}}
+          >
+            <View style={[styles.row,{paddingLeft:25,paddingTop:10}]}>
+              <Text
+                style={{fontFamily: 'Montserrat-Bold', color: '#000', backgroundColor: 'transparent'}}
+              >
+                {title}
+              </Text>
+            </View>
+            {/*/!*Price is currently not relevant*!/*/}
+            {/*<View style={styles.row}>*/}
+            {/*<Text*/}
+            {/*style={{fontFamily: 'Montserrat-Regular', color: '#fff', backgroundColor: 'transparent'}}*/}
+            {/*>*/}
+            {/*{currency} {price}*/}
+            {/*</Text>*/}
+            {/*</View>*/}
+            <View style={[styles.row,{paddingLeft:25,paddingTop:10}]}>
+              <Text
+                style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a', backgroundColor: 'transparent'}}
+              >
+                {btnText}
+              </Text>
+            </View>
+          </Image>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
+
+function bindActions(dispatch) {
+  return {
+    showInfo: text => dispatch(showInfo(text)),
+  };
+}
+
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, bindActions)(BuyItButton);
