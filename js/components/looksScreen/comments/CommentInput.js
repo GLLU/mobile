@@ -41,7 +41,7 @@ export default class CommentInput extends Component {
   }
 
   static propTypes = {
-    style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
+    style: React.PropTypes.any,
     value: React.PropTypes.string,
     onChange: React.PropTypes.func,
     onSendPress: React.PropTypes.func

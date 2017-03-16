@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 class CommentsView extends Component {
 
   static propTypes = {
-    style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
+    style: React.PropTypes.any,
     isHidden: React.PropTypes.bool,
     comments: React.PropTypes.array,
     count: React.PropTypes.number,
@@ -80,6 +80,13 @@ class CommentsView extends Component {
   }
 
   componentWillMount() {
+    if (this.props.isHidden) {
+      this._animateHide()
+    }
+    else {
+      this._animateShow()
+    }
+    
     this.getCommentsData();
   }
 
@@ -141,13 +148,6 @@ class CommentsView extends Component {
   }
 
   render() {
-    if (this.props.isHidden) {
-      this._animateHide()
-    }
-    else {
-      this._animateShow()
-    }
-
     return (
       <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
         <CommentsViewHeader count={this.state.count}/>
