@@ -17,7 +17,6 @@ export function getLook(lookId):Action {
 }
 
 export function getUserLooks(data):Action {
-  console.log('data',data)
   return (dispatch) => {
     if(data.page === 1) {
       dispatch(showLoader());
