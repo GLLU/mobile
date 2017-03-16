@@ -58,9 +58,11 @@ class TabContent extends BaseComponent {
 
     // show modal after done loading for 3 seconds
     if (this.props.reloading && this.props.reloading != nextProps.reloading) {
-      setTimeout(() => {
-        this.showBodyModal();
-      }, 3000) 
+      if (!this.props.hasUserSize) {
+        setTimeout(() => {
+          this.showBodyModal();
+        }, 3000);  
+      }
     }
   }
 
