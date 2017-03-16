@@ -44,7 +44,7 @@ export function addNewLook(image) {
             Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
               dispatch(hideProcessing());
               if (data) {
-                const url = _.find(data.look.cover, x => x.version == 'small').url;
+                const url = _.find(data.look.cover.list, x => x.version == 'small').url;
                 Utils.preloadImages([url]).then(() => {
                   const payload = _.merge(data.look, {
                     image: url,
@@ -83,7 +83,7 @@ export function editNewLook(lookId) {
         dispatch(hideProcessing());
         if (!err) {
           const look = data.look;
-          const url = _.find(look.cover, x => x.version == 'small').url;
+          const url = _.find(look.cover.list, x => x.version == 'small').url;
           Utils.preloadImages([url]).then(() => {
             const item = itemMapper(_.first(look.items));
             const itemId = item.id;
