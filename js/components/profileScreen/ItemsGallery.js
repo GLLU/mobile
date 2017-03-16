@@ -51,8 +51,8 @@ class ItemsGallery extends Component {
     return (
       this.props.latest_looks.map((look, index) => {
         if (index < limiter) {
-          let thumbImage = _.find(look.cover, image => image.version == 'thumb');
-          let cover = _.find(look.cover, image => image.version == 'medium')
+          let thumbImage = _.find(look.cover.list, image => image.version == 'thumb');
+          let cover = _.find(look.cover.list, image => image.version == 'medium')
           flatLooksArr.push({
             liked: look.is_liked,
             type: look.user_size.body_type,

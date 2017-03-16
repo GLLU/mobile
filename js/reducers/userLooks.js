@@ -12,7 +12,13 @@ export default function (state:State = initialState, action): State {
   switch(action.type){
     case SET_USER_LOOKS:
         let userLooksData = action.payload.looks.map(look => {
-          const cover = _.find(look.cover, x => x.version == 'medium');
+          let cover;
+          if(look.cover.type === 'video') {
+            cover = _.find(look.cover.list, x => x.version == 'large_720');
+            console.log('coverr',cover)
+          } else {
+            cover = _.find(look.cover.list, x => x.version == 'medium');
+          }
           return Object.assign({}, {
             liked: look.is_liked,
             type: look.user_size.body_type,

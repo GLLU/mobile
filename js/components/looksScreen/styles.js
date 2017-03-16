@@ -28,7 +28,16 @@ export default StyleSheet.create({
     bottom: 20,
     zIndex: 1
   },
-
+  videoBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flex: 1,
+    width: null,
+    height: h - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+  },
   bottomLeft: {
     left: 10
   },

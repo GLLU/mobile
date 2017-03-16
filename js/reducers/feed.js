@@ -21,16 +21,13 @@ const initialState = {
 
 const parseLook = function (look, index, flatLooksDataLength) {
   let cover;
-  console.log('look',look);
   if(look.cover.type === 'video') {
-
       cover = _.find(look.cover.list, x => x.version == 'large_720');
-    console.log('video',cover)
+    console.log('coverr',cover)
   } else {
       cover = _.find(look.cover.list, x => x.version == 'medium');
-    console.log('cover',cover);
   }
-  console.log('flatLooksDataLength',flatLooksDataLength)
+
   return Object.assign({}, {
     liked: look.is_liked,
     type: look.user_size.body_type,
@@ -40,8 +37,8 @@ const parseLook = function (look, index, flatLooksDataLength) {
     comments: look.comments,
     user_id: look.user_id,
     uri: cover.url ? cover.url : null,
-    width: cover.width ? cover.width : 400,
-    height: cover.height ? cover.height : 800,
+    width: cover.width ? cover.width : 405,
+    height: cover.height ? cover.height : 720,
     coverType: look.cover.type,
     avatar: look.user.avatar,
     name: look.user.name,

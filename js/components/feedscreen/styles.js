@@ -3,6 +3,7 @@ const { StyleSheet, Dimensions, Platform } = React;
 const deviceHeight = Dimensions.get('window').height;
 const MK = require('react-native-material-kit');
 import FontSizeCalculator from './../../calculators/FontSize';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const {
   MKColor,
@@ -41,6 +42,16 @@ module.exports = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     height: deviceHeight,
     marginTop: -10
+  },
+  videoBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flex: 1,
+    width: null,
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
   },
   customTabBar: {
     backgroundColor: '#1DE9B6'
