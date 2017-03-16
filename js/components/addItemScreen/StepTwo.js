@@ -331,7 +331,7 @@ class StepTwo extends BaseComponent {
                     >
                       Just list the specific URL of the purchased item
                     </H3>
-                    <Text style={{fontSize: 8}}>(i.e. name of the exact page of the item in the online store)</Text>
+                    <Text style={{fontSize: 12, textAlign: 'center'}}>(i.e. name of the exact page of the item in the online store)</Text>
                   </View>
                   <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
                     <Gllu.Button
