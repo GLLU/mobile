@@ -160,7 +160,7 @@ class SplashPage extends BasePage {
         <View style={styles.container}>
           <Content scrollEnabled={false}>
             <View style={styles.allView}>
-              <Video source={Platform.OS === 'ios' ? require('../../../android/app/src/main/res/raw/newSplashVideo.mp4') : { uri: 'splashvid', mainVer: 1, patchVer: 0}}
+              <Video source={Platform.OS === 'ios' ? require('../../../android/app/src/main/res/raw/newsplashvideo.mp4') : { uri: 'splashvid', mainVer: 1, patchVer: 0}}
                      resizeMode="stretch"
                      muted={true}
                      style={styles.videoBackground}
