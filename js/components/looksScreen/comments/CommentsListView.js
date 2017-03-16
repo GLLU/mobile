@@ -26,7 +26,7 @@ export default class CommentsListView extends Component {
   }
 
   static propTypes = {
-    style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
+    style: React.PropTypes.any,
     comments: React.PropTypes.array,
     isEmpty: React.PropTypes.bool,
     onUserPress: React.PropTypes.func

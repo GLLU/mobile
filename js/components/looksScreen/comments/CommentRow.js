@@ -25,7 +25,7 @@ export default class CommentRow extends Component {
   }
 
   static propTypes = {
-    style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
+    style: React.PropTypes.any,
     id: React.PropTypes.number,
     created_at: React.PropTypes.string,
     user: React.PropTypes.object,

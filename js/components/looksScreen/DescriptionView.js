@@ -25,8 +25,8 @@ export default class DescriptionView extends Component {
   }
 
   static propTypes = {
-    description: React.PropTypes.string.isRequired,
-    style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
+    description: React.PropTypes.string,
+    style: React.PropTypes.any,
     isHidden: React.PropTypes.bool
   };
 
@@ -55,15 +55,18 @@ export default class DescriptionView extends Component {
     ).start();
   }
 
-  render() {
+  componentWillMount() {
     if (this.props.isHidden) {
       this._animateHide()
     }
     else {
       this._animateShow()
     }
+  }
+
+  render() {
     return (
-      <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
+      <Animated.View style={[{bottom: this.state.fadeAnimContent}, this.props.style, styles.container]}>
         <View>
           <Text style={styles.descriptionStyle}>
             {this.props.description}

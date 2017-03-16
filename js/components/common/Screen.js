@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'PlayfairDisplay-Regular',
     lineHeight: glluTheme.toolbarLineHeight,
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '400',
     color: '#FFFFFF',
     marginLeft: glluTheme.tooolbarTextMarginLeft,
@@ -35,9 +35,9 @@ const styles = StyleSheet.create({
 
 class GlluScreen extends Component {
   static propTypes = {
-    style: React.PropTypes.object,
-    headerStyle: React.PropTypes.object,
-    titleStyle: React.PropTypes.object,
+    style: React.PropTypes.any,
+    headerStyle: React.PropTypes.any,
+    titleStyle: React.PropTypes.any,
     backgroundColor: React.PropTypes.string,
     foregroundColor: React.PropTypes.string,
     title: React.PropTypes.string,
@@ -53,13 +53,13 @@ class GlluScreen extends Component {
   renderNext() {
     if (this.props.showNext) {
       return (
-        <Button transparent onPress={this.props.onNextPress}>
+        <Button transparent onPress={this.props.onNextPress} style={{width: 40}}>
             <Text style={[styles.nextStyle, { color: this.props.foregroundColor }]}>Next</Text>
           </Button>
         );
     }
 
-    return null;
+    return <View style={{width: 40}}/>;
   }
 
   render() {
@@ -74,7 +74,8 @@ class GlluScreen extends Component {
           <Button transparent onPress={this.props.onBackPress}>
             <Icon style={[styles.backIcon, { color: foregroundColor }]} name="ios-arrow-back" />
           </Button>
-          <Title style={_titleStyle}>{this.props.title}</Title>
+          <Title
+            style={_titleStyle}>{this.props.title}</Title>
           {this.renderNext()}
         </Header>
         <View
