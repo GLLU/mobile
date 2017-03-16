@@ -33,6 +33,7 @@ export default function (state:State = initialState, action): State {
             username: look.user.username,
             about_me: look.user.about_me,
             items: look.items,
+            state: look.state,
           });
         });
         if(action.payload.currId === state.currId){

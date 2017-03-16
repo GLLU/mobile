@@ -56,7 +56,7 @@ export default reduxApi({
     crud: true
   },
   user_looks: {
-    url: '/users/:id/looks/:page[number]:page[size]',
+    url: '/users/:id/looks/?all=true',
     crud: true
   },
   stats: {

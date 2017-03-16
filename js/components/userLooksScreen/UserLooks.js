@@ -97,6 +97,15 @@ class UserLooks extends Component {
     });
   }
 
+  renderLookStatus(look) {
+    return (<View
+      style={{position: 'absolute', top: 5, left: 0, padding: 3}}
+    >
+      <View style={{position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, backgroundColor: '#00D7B2'}}/>
+      <Text style={{color: '#fff', fontSize: 10, flex: 1, backgroundColor: 'transparent'}}>{look.state}</Text>
+    </View>)
+  }
+
   _renderImages(looks) {
     return looks.map((look, index) => {
       return  (
@@ -114,6 +123,7 @@ class UserLooks extends Component {
               </Button>
             )
           }
+          {this.renderLookStatus(look)}
         </View>
       );
     });
