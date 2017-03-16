@@ -54,9 +54,9 @@ export default class TopButton extends BaseComponent {
           <TouchableOpacity style={[styles.topButton,styles.avatarButton]} onPress={this.handleProfilePress.bind(this)}>
             <Image source={{uri: this.props.avatar.imageUri}} style={{height:64, width: 64, borderRadius: 32}}/>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.topButton,styles.bodyTypeButton]}>
-            <Image style={styles.bodyTypeButtonIcon} source={bgContainer} resizeMode={'contain'}/>
-          </TouchableOpacity>
+          {/*<TouchableOpacity style={[styles.topButton,styles.bodyTypeButton]}>*/}
+            {/*<Image style={styles.bodyTypeButtonIcon} source={bgContainer} resizeMode={'contain'}/>*/}
+          {/*</TouchableOpacity>*/}
         </View>
       </View>
     )

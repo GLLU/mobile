@@ -10,6 +10,7 @@ import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
+import Video from 'react-native-video';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
@@ -117,6 +118,57 @@ class LooksScreen extends BasePage {
     }
   }
 
+  renderVideo(look, index) {
+    const { width, height } = this.state;
+    return (
+      <View key={index}>
+        <Video
+          source={{uri: look.uri,mainVer: 1, patchVer: 0}}
+          resizeMode={'stretch'}
+          muted={true}
+          style={styles.videoBackground}
+          repeat={true}
+        />
+        <BottomLookContainer
+          width={width}
+          height={height}
+          look={look}
+          tempPopRoute={(e) => this._tempPopRoute()}
+          goToProfile={(look) => this._goToProfile(look)}
+          toggleLike={(isLiked) => this._toggleLike(isLiked)}
+          toggleMenu={() => this._toggleMenu()}
+          isMenuOpen={this.state.isMenuOpen}
+          reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+        />
+
+      </View>
+    )
+  }
+
+  renderImage(look, index) {
+    const { width, height } = this.state;
+    return (
+      <View key={index}>
+        <Animated.Image
+          resizeMode={'cover'}
+          style={[{opacity: this.state.fadeAnim},styles.itemImage]}
+          source={{uri: look.uri}}
+          onLoad={this.onLoad()}>
+          <BottomLookContainer
+            width={width}
+            height={height}
+            look={look}
+            tempPopRoute={(e) => this._tempPopRoute()}
+            goToProfile={(look) => this._goToProfile(look)}
+            toggleLike={(isLiked) => this._toggleLike(isLiked)}
+            toggleMenu={() => this._toggleMenu()}
+            isMenuOpen={this.state.isMenuOpen}
+            reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+          />
+        </Animated.Image>
+      </View>
+    )
+  }
   handleImageLayout(e) {
     const { width, height } = e.nativeEvent.layout;
     this.setState({width, height});
@@ -132,27 +184,7 @@ class LooksScreen extends BasePage {
                     scrollEventThrottle={100}
                     onScroll={this.handleScroll.bind(this)}>
           {looksArr.map((look, index) => {
-            return (
-              <View key={index}>
-                <Animated.Image
-                  resizeMode={'cover'}
-                  style={[{opacity: this.state.fadeAnim},styles.itemImage]}
-                  source={{uri: look.uri}}
-                  onLoad={this.onLoad()}>
-                  <BottomLookContainer
-                    width={width}
-                    height={height}
-                    look={look}
-                    tempPopRoute={(e) => this._tempPopRoute()}
-                    goToProfile={(look) => this._goToProfile(look)}
-                    toggleLike={(isLiked) => this._toggleLike(isLiked)}
-                    toggleMenu={() => this._toggleMenu()}
-                    isMenuOpen={this.state.isMenuOpen}
-                    reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-                  />
-                </Animated.Image>
-              </View>
-            )
+            return look.coverType === "video" ? this.renderVideo(look, index) : this.renderImage(look, index)
           })}
         </ScrollView>
       </View>

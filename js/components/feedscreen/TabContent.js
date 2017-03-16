@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
@@ -9,6 +9,7 @@ import Utils from '../../Utils';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
+import Video from 'react-native-video';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -148,23 +149,35 @@ class TabContent extends BaseComponent {
     }
   }
 
+  renderVideo(img, index) {
+    return (
+      <View style={{flex: 1}}>
+        <Video source={{uri: img.uri,mainVer: 1, patchVer: 0}}
+               resizeMode={'contain'}
+               muted={true}
+               style={{width: img.width - 5, height: img.height}}
+               repeat={true} />
+        <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
+      </View>
+    )
+  }
+
+  renderImage(img, index) {
+    return (
+      <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
+        <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
+      </Image>
+    )
+  }
+
   _renderImages(images) {
     return images.map((img, index) => {
-      console.log('img',img)
-      if(img.coverType === 'video') {
-        return;
-      } else {
         return  (
           <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
             <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
-              <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
-              <TypeView type={img.type} />
-              <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
-              </Image>
+              {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
             </View>
           </TouchableOpacity>);
-      }
-
     });
   }
 
