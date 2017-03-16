@@ -15,7 +15,6 @@ export default function (state:State = initialState, action): State {
           let cover;
           if(look.cover.type === 'video') {
             cover = _.find(look.cover.list, x => x.version == 'large_720');
-            console.log('coverr',cover)
           } else {
             cover = _.find(look.cover.list, x => x.version == 'medium');
           }
@@ -25,7 +24,7 @@ export default function (state:State = initialState, action): State {
             id: look.id,
             likes: look.likes,
             user_id: look.user_id,
-            uri: cover ? null : null,
+            uri: cover.url ? cover.url : null,
             width: cover ? cover.width : null,
             height: cover ? cover.height : null,
             avatar: look.user.avatar,

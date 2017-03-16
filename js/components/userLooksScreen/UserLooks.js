@@ -99,6 +99,7 @@ class UserLooks extends Component {
 
   _renderImages(looks) {
     return looks.map((look, index) => {
+      console.log('looks',look)
       return  (
         <View key={index} style={{width: look.width, height: look.height, paddingLeft: 0 }}>
           <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
