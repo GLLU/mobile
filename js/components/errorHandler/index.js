@@ -1,11 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image} from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 import { View, Text } from 'native-base';
 import styles from './styles';
 import { connect } from 'react-redux';
-import { hideError, hideWarning } from '../../actions/errorHandler';
+import { hideError, hideWarning, hideInfo } from '../../actions/errorHandler';
 
 const cancelEdit = require('../../../images/icons/cancelEdit.png');
 
@@ -16,21 +16,27 @@ class ErrorHandler extends Component {
   }
 
   hide() {
-    if(this.props.error) {
+    if (this.props.error) {
       this.props.hideError();
-    } else {
-      this.props.hideWarning();
+    }
+    else {
+      if (this.props.warning) {
+        this.props.hideWarning();
+      }
+      else {
+        this.props.hideInfo();
+      }
     }
   }
 
   render() {
-    let error = this.props.error.length > 0  ? this.props.error : this.props.warning;
-    let color = this.props.error.length > 0  ? '#993333' : '#cc9900';
+    let text = this.props.error.length > 0 ? `Watch out: ${this.props.error}` : this.props.warning.length > 0 ? `Watch out: ${this.props.warning}` : this.props.info;
+    let color = this.props.error.length > 0 ? '#993333' : this.props.warning.length > 0 ? '#cc9900' : '#316C55';
     return (
       <View style={[styles.container, {backgroundColor: color}]}>
-        <Text style={styles.textColor}>Watch out: {error}</Text>
+        <Text style={styles.textColor}>{text}</Text>
         <TouchableOpacity transparent onPress={() => this.hide()} style={styles.headerBtn}>
-          <Image source={cancelEdit} style={styles.cancelEdit} />
+          <Image source={cancelEdit} style={styles.cancelEdit}/>
         </TouchableOpacity>
       </View>
     )
@@ -42,15 +48,15 @@ function bindActions(dispatch) {
   return {
     hideError: name => dispatch(hideError()),
     hideWarning: name => dispatch(hideWarning()),
+    hideInfo: name => dispatch(hideInfo()),
   };
 }
 
 const mapStateToProps = state => {
-  const error = state.errorHandler.error ? state.errorHandler.error : '';
-  const warning = state.errorHandler.warning ? state.errorHandler.warning : '';
   return {
-    error: error,
-    warning: warning,
+    error: state.errorHandler.error || '',
+    warning: state.errorHandler.warning || '',
+    info: state.errorHandler.info || ''
   }
 };
 
