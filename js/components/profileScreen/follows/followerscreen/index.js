@@ -38,17 +38,25 @@ class FollowerScreen extends Component {
   _renderOnEmpty() {
     return (
       <View>
-        <Text>
-          Empty Followers
-        </Text>
+        <View style={{flex:1}} name="spacer"/>
+        <View style={{flex:1}} >
+          <Text style={{textAlign:'center'}}>
+            You have no followers yet
+          </Text>
+          <Text style={{textAlign:'center'}}>
+            Upload a look and get some followers
+          </Text>
+
+        </View>
+        <View style={{flex:1}} name="spacer"/>
       </View>
     );
   }
 
   render() {
     return (
-      <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData} follows={this.props.followers}
-                      onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
+        <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData} follows={this.props.followers}
+                        onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
     );
   }
 }
