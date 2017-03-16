@@ -58,6 +58,7 @@ class TabContent extends BaseComponent {
   }
 
   distributeImages(looks) {
+    console.log('flatlooks',looks)
     const imagesColumn1 = [];
     const imagesColumn2 = [];
     const colW = (deviceWidth - 10) / 2;
@@ -140,15 +141,21 @@ class TabContent extends BaseComponent {
 
   _renderImages(images) {
     return images.map((img, index) => {
-      return  (
-        <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
-          <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
-            <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
+      console.log('img',img)
+      if(img.coverType === 'video') {
+        return;
+      } else {
+        return  (
+          <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
+            <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
+              <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
               <TypeView type={img.type} />
               <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
-            </Image>
-          </View>
-        </TouchableOpacity>);
+              </Image>
+            </View>
+          </TouchableOpacity>);
+      }
+
     });
   }
 
