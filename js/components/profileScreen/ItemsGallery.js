@@ -33,13 +33,10 @@ class ItemsGallery extends Component {
     }
   }
 
-  getGalleryItemsCount(screenWidth,isMyProfile){
-    let count;
-    if(screenWidth<= 640){
-      count=3
-    }
-    else{
-      count=4
+  getGalleryItemsCount(screenWidthInPoints,isMyProfile){
+    let count = 4;
+    if(screenWidthInPoints <= 320) {
+      count -= 1
     }
     if(isMyProfile){
       count-=1;
