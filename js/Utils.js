@@ -72,7 +72,7 @@ export default class Utils {
   }
 
   static preloadLookImages(looks) {
-    const coverUrls = looks.map(look => _.find(look.cover, x => x.version == 'thumb').url);
+    const coverUrls = looks.map(look => _.find(look.cover.list, x => x.version == 'medium').url);
     return this.preloadImages(coverUrls);
   }
 

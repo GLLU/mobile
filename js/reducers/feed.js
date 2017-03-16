@@ -20,7 +20,17 @@ const initialState = {
 };
 
 const parseLook = function (look, index, flatLooksDataLength) {
-  const cover = _.find(look.cover, x => x.version == 'thumb');
+  let cover;
+  console.log('look',look);
+  if(look.cover.type === 'video') {
+
+      cover = _.find(look.cover.list, x => x.version == 'large_720');
+    console.log('video',cover)
+  } else {
+      cover = _.find(look.cover.list, x => x.version == 'medium');
+    console.log('cover',cover);
+  }
+  console.log('flatLooksDataLength',flatLooksDataLength)
   return Object.assign({}, {
     liked: look.is_liked,
     type: look.user_size.body_type,
@@ -29,9 +39,10 @@ const parseLook = function (look, index, flatLooksDataLength) {
     likes: look.likes,
     comments: look.comments,
     user_id: look.user_id,
-    uri: cover ? cover.url : null,
-    width: cover ? cover.width : null,
-    height: cover ? cover.height : null,
+    uri: cover.url ? cover.url : null,
+    width: cover.width ? cover.width : 400,
+    height: cover.height ? cover.height : 800,
+    coverType: look.cover.type,
     avatar: look.user.avatar,
     name: look.user.name,
     username: look.user.username,
@@ -74,6 +85,7 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
+    console.log('currentLooksData',action.payload.data.looks)
     const newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, state.flatLooksData.length));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
