@@ -6,6 +6,7 @@ import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, RefreshCon
 import { View, Text, Button, Icon } from 'native-base';
 import _ from 'lodash';
 import SelectPhoto from '../common/SelectPhoto';
+import Video from 'react-native-video';
 import {
   addNewLook,
   editNewLook,
