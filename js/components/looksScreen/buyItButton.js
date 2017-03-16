@@ -5,7 +5,7 @@ const buyItImage = require('../../../images/buyItButton-noprice.png');
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
 
-export default class BuyItButton extends Component {
+class BuyItButton extends Component {
   constructor(props) {
     super(props);
     this.handleOpenLink = this.handleOpenLink.bind(this);
@@ -42,6 +42,9 @@ export default class BuyItButton extends Component {
         }
       }).catch(err => console.error('An error occurred', err));
     }
+    else{
+      alert("Sorry, we're still working on finding this item online for you. ")
+    }
   }
 
   render() {
@@ -70,3 +73,5 @@ export default class BuyItButton extends Component {
     );
   }
 }
+
+export default BuyItButton;
