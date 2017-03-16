@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { View } from 'native-base';
+import { Container, Header, Content, View } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate } from '../../../../actions';
@@ -27,11 +27,17 @@ class FollowListView extends Component {
   static propTypes = {
     follows: React.PropTypes.array,
     onEndReached: React.PropTypes.func,
-    headerData: React.PropTypes.object
+    headerData: React.PropTypes.object,
+    renderEmpty: React.PropTypes.func
+  };
+
+  static defaultProps = {
+    renderEmpty: _.noop
   };
 
   constructor(props) {
     super(props);
+    this.renderListView = this.renderListView.bind(this);
     const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this.state = {
       dataSource: ds.cloneWithRows(props.follows),
@@ -70,18 +76,26 @@ class FollowListView extends Component {
     }
   }
 
-  render() {
+  renderListView() {
     return (
       <ListView
         style={styles.container}
         dataSource={this.state.dataSource}
         renderRow={(data) => <FollowRow onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
-        renderHeader={() => <ListViewHeader count={this.props.headerData.count} title={`My ${this.props.headerData.mode}`}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
         enableEmptySections={true}
         onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
         onEndReachedThreshold={100}
       />
+    );
+  }
+
+  render() {
+    return (
+      <View>
+        <ListViewHeader count={this.props.headerData.count} title={`My ${this.props.headerData.mode}`}/>
+        {this.props.headerData.count > 0 ? this.renderListView() : this.props.renderEmpty()}
+      </View>
     );
   }
 }

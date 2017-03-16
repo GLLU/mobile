@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
+import { View } from 'native-base'
 import { connect } from 'react-redux';
 import { navigateTo, popRoute, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
@@ -20,7 +21,9 @@ class FollowerScreen extends Component {
   }
 
   componentWillMount() {
-    this.getFollowersData();
+    if(this.props.userData.count){
+      this.getFollowersData();
+    }
   }
 
   componentWillUnmount() {
@@ -32,9 +35,19 @@ class FollowerScreen extends Component {
     this.currentPageIndex++;
   }
 
+  _renderOnEmpty() {
+    return (
+      <View>
+        <Text>
+          Empty Followers
+        </Text>
+      </View>
+    );
+  }
+
   render() {
     return (
-      <FollowListView headerData={this.props.userData} follows={this.props.followers}
+      <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData} follows={this.props.followers}
                       onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
     );
   }
