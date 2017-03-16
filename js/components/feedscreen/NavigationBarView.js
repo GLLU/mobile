@@ -61,7 +61,6 @@ class NavigationBarView extends BaseComponent {
   }
 
   goToProfile() {
-    console.log('Go To Profile');
     this.logEvent('Feedscreen', { name: 'Profile click' });
     this.props.navigateTo('profileScreen', 'feedscreen', this.props.user);
   }
@@ -72,7 +71,8 @@ class NavigationBarView extends BaseComponent {
   }
 
   openSearch() {
-    console.log('Open Search');
+    this.logEvent('Feedscreen', { name: 'Search click' });
+    this.props.handleSearchStatus();
   }
 
   openMenu() {
@@ -98,7 +98,7 @@ class NavigationBarView extends BaseComponent {
           </Button>
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Button transparent onPress={() => this.props.handleSearchStatus()}>
+          <Button transparent onPress={() => this.openSearch()}>
             <Image source={searchIcon} style={styles.btnImage} />
           </Button>
         </View>
@@ -115,7 +115,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
   }
 };
 

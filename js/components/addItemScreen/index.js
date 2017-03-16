@@ -139,7 +139,7 @@ class AddItemPage extends BasePage {
         title = 'Addional Info';
         break;
       default:
-        title = 'Choose Marker';
+        title = this.props.item == null ? 'Tap the screen to tag an item' : 'Drag & Drop to change location';
     }
     return title;
   }

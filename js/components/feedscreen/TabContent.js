@@ -56,9 +56,19 @@ class TabContent extends BaseComponent {
       imagesColumn2,
       total,
     });
+
+    // show modal after done loading for 3 seconds
+    if (this.props.reloading && this.props.reloading != nextProps.reloading) {
+      if (!this.props.hasUserSize) {
+        setTimeout(() => {
+          this.showBodyModal();
+        }, 3000);  
+      }
+    }
   }
 
   distributeImages(looks) {
+    console.log('flatlooks',looks)
     const imagesColumn1 = [];
     const imagesColumn2 = [];
     const colW = (deviceWidth - 10) / 2;
@@ -120,7 +130,7 @@ class TabContent extends BaseComponent {
   }
 
   scrollDebounced(e) {
-     this.showBodyModal();
+    this.showBodyModal();
   }
 
   _handleItemPress(item) {
@@ -168,7 +178,6 @@ class TabContent extends BaseComponent {
               {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
             </View>
           </TouchableOpacity>);
-
     });
   }
 

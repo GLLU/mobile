@@ -13,6 +13,7 @@ import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const w = Dimensions.get('window').width;
 const { popRoute, pushRoute } = actions
 const LOADER_HEIGHT = 30;
 
@@ -41,7 +42,9 @@ class LooksScreen extends BasePage {
       fadeAnimContent: new Animated.Value(0),
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
-      showAsFeed: typeof this.props.flatLook === 'number' // Will check if recieved one object or an index of flatLooksData
+      showAsFeed: typeof this.props.flatLook === 'number', // Will check if recieved one object or an index of flatLooksData
+      width: w,
+      height: h,
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
@@ -116,6 +119,7 @@ class LooksScreen extends BasePage {
   }
 
   renderVideo(look, index) {
+    const { width, height } = this.state;
     return (
       <View key={index}>
         <Video
@@ -126,6 +130,8 @@ class LooksScreen extends BasePage {
           repeat={true}
         />
         <BottomLookContainer
+          width={width}
+          height={height}
           look={look}
           tempPopRoute={(e) => this._tempPopRoute()}
           goToProfile={(look) => this._goToProfile(look)}
@@ -140,6 +146,7 @@ class LooksScreen extends BasePage {
   }
 
   renderImage(look, index) {
+    const { width, height } = this.state;
     return (
       <View key={index}>
         <Animated.Image
@@ -148,6 +155,8 @@ class LooksScreen extends BasePage {
           source={{uri: look.uri}}
           onLoad={this.onLoad()}>
           <BottomLookContainer
+            width={width}
+            height={height}
             look={look}
             tempPopRoute={(e) => this._tempPopRoute()}
             goToProfile={(look) => this._goToProfile(look)}
@@ -160,11 +169,16 @@ class LooksScreen extends BasePage {
       </View>
     )
   }
+  handleImageLayout(e) {
+    const { width, height } = e.nativeEvent.layout;
+    this.setState({width, height});
+  }
 
   render() {
     let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
+    const { width, height } = this.state;
     return (
-      <View>
+      <View onLayout={this.handleImageLayout.bind(this)}>
         <ScrollView pagingEnabled={true}
                     ref={(c) => { this._scrollView = c; }}
                     scrollEventThrottle={100}

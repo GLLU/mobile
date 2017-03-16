@@ -200,6 +200,7 @@ class AppNavigator extends Component {
         {this.props.isProcessing ? <ProcessCropping /> : null}
         {this.props.error ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
+        {this.props.info ? <ErrorHandler /> : null}
       </View>
     );
   }
@@ -217,6 +218,7 @@ const mapStateToProps = state => {
   const isProcessing = state.loader.processing || false;
   const isError = state.errorHandler.error || false;
   const isWarning = state.errorHandler.warning || false;
+  const isInfo = state.errorHandler.info || false;
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,
@@ -225,6 +227,7 @@ const mapStateToProps = state => {
     isProcessing: isProcessing,
     error: isError,
     warning: isWarning,
+    info: isInfo,
   });
 };
 

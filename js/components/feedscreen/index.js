@@ -29,6 +29,8 @@ class FeedPage extends BasePage {
 
   constructor(props) {
     super(props);
+    this._handleClosePhotoModal=this._handleClosePhotoModal.bind(this);
+    this._handleOpenPhotoModal=this._handleOpenPhotoModal.bind(this);
     this.state = {
       name: '',
       searchTerm: '',
@@ -71,6 +73,10 @@ class FeedPage extends BasePage {
     this.setState({photoModal: true});
   }
 
+  _handleClosePhotoModal() {
+    this.setState({photoModal: false});
+  }
+
   _handleLayout(e) {
     const height = e.nativeEvent.layout.height;
     this.setState({contentHeight: height - glluTheme.toolbarHeight});
@@ -99,7 +105,7 @@ class FeedPage extends BasePage {
             position={"top"}>
             <MyBodyModal />
           </Modal>
-          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)}/>
+          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
         </Content>
       </Gllu.Container>
     );

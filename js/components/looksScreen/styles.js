@@ -24,9 +24,12 @@ export default StyleSheet.create({
     right: 10
   },
   bottomContainer: {
+    position: 'absolute',
     flexDirection: 'row',
-    bottom: 20,
-    zIndex: 1
+    bottom: 60,
+    left: 0,
+    zIndex: 1,
+    width: w,
   },
   videoBackground: {
     position: 'absolute',
