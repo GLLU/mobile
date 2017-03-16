@@ -249,7 +249,7 @@ const mapStateToProps = state => {
     flatLooks: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
-    hasUserSize: false,
+    hasUserSize,
     user_size: user_size,
     user_gender: state.user.gender
   }
