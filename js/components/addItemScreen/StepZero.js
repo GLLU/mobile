@@ -136,15 +136,14 @@ class StepZero extends BaseComponent {
     return (
       <View style={{flex: 1, padding: 25}}>
         <Text style={styles.titleLabelInfo}>Brand Name</Text>
-        <View style={styles.inputContainer}>
+        <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
           <Text
             style={styles.input}
-            onPress={this.handleTextFocus.bind(this)}
           >
             {brandName}
           </Text>
           {this.renderClearIcon()}
-        </View>
+        </TouchableOpacity>
         <Modal
           animationType={"slide"}
           transparent={false}

@@ -1,11 +1,26 @@
 import React, { Component } from 'react';
-import { View, Text, Linking, TouchableWithoutFeedback, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Linking, TouchableWithoutFeedback, TouchableOpacity,Image, Dimensions } from 'react-native';
 import {connect} from 'react-redux'
 import {showInfo} from '../../actions'
 
 const buyItImage = require('../../../images/buyItButton-noprice.png');
 const w = Dimensions.get('window').width;
 const h = Dimensions.get('window').height;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'absolute',
+    alignItems: 'flex-start',
+  },
+  row: {
+    height: 30,
+    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+});
 
 class BuyItButton extends Component {
   constructor(props) {
@@ -21,6 +36,8 @@ class BuyItButton extends Component {
     positionTop: React.PropTypes.number,
     positionLeft: React.PropTypes.number,
     url: React.PropTypes.string,
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
   }
 
   static defaultProps = {
@@ -49,25 +66,48 @@ class BuyItButton extends Component {
     }
   }
 
-  render() {
+  getTitle() {
     let title = this.props.title;
     title = title.length > 9 ? title.slice(0, 6) + '...' : title;
+    return title;
+  }
+
+  render() {
+    const title = this.getTitle();
+    const { positionTop, positionLeft, currency, price, btnText, width, height } = this.props;
+    console.log('buyItButton render', positionTop * height, positionLeft * width,  positionTop, positionLeft, currency, price, width, height);
     return (
       <TouchableWithoutFeedback onPress={this.handleOpenLink}>
       <View
-        style={{ flex: 1 , top: (this.props.positionTop / 100 * h), left: (this.props.positionLeft / 100 * w), position: 'absolute'}}>
-        <Image source={buyItImage}
-               style={{width: 120, height: 110, resizeMode: 'contain', paddingRight: 20, alignItems: 'center'}}>
-          <Text
-            style={{fontFamily: 'Montserrat-Bold', color: '#000', marginTop: 34, backgroundColor: 'transparent'}}>{title}
-          </Text>
-          {/*/!*Price is currently not relevant*!/*/}
-          {/*<Text*/}
-            {/*style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10, backgroundColor: 'transparent'}}>{this.props.currency} {this.props.price}*/}
-          {/*</Text>*/}
-          <View>
+        style={[
+          styles.container,
+          { top: parseInt(positionTop * height), left: parseInt(positionLeft * width), transform: [{ translateX: -120 }, {translateY: -20}] }
+        ]}>
+        <Image
+          source={buyItImage}
+          style={{width: 90, height: 70, resizeMode: 'contain', paddingRight: 20, alignItems: 'flex-start'}}
+        >
+          <View style={styles.row}>
             <Text
-              style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a',marginTop: 8, backgroundColor: 'transparent'}}>{this.props.btnText}</Text>
+              style={{fontFamily: 'Montserrat-Bold', color: '#000', backgroundColor: 'transparent'}}
+            >
+              {title}
+            </Text>
+          </View>
+          {/*/!*Price is currently not relevant*!/*/}
+          {/*<View style={styles.row}>*/}
+            {/*<Text*/}
+              {/*style={{fontFamily: 'Montserrat-Regular', color: '#fff', backgroundColor: 'transparent'}}*/}
+            {/*>*/}
+              {/*{currency} {price}*/}
+            {/*</Text>*/}
+          {/*</View>*/}
+          <View style={styles.row}>
+            <Text
+              style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a', backgroundColor: 'transparent'}}
+            >
+              {btnText}
+            </Text>
           </View>
         </Image>
       </View>

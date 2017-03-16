@@ -38,7 +38,7 @@ export default class CommentsViewHeader extends Component {
   }
 
   static propTypes = {
-    style: React.PropTypes.oneOfType([React.PropTypes.style, React.PropTypes.object]),
+    style: React.PropTypes.any,
     count: React.PropTypes.number
   };
 

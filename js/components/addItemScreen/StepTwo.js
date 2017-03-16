@@ -315,7 +315,7 @@ class StepTwo extends BaseComponent {
             transparent={true}
             visible={this.state.urlOverlayVisible}
             onRequestClose={() => this.setState({urlOverlayVisible: false})}>
-            <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', opacity: 0.2, position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
+            <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', opacity: 0.8, position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
             </View>
             <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
               <View style={{backgroundColor: '#FFFFFF', height: 300, width: 300}}>
