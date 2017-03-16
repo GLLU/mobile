@@ -3,7 +3,13 @@ import BasePage from '../common/BasePage';
 import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { reset, addNewLook, navigateTo, replaceAtIndex } from '../../actions';
+import {
+  reset,
+  addNewLook,
+  navigateTo,
+  popRoute,
+  replaceAtIndex
+} from '../../actions';
 import SocialShare from '../../lib/social';
 import Gllu from '../common';
 import glluTheme from '../../themes/gllu-theme';
@@ -53,9 +59,14 @@ class FinishLookPage extends BasePage {
     BackAndroid.removeEventListener('hardwareBackPress');
   }
 
+  resetToOriginalPlace() {
+    this.props.popRoute(this.props.navigation.key);
+    this.props.popRoute(this.props.navigation.key);
+  }
+
   handleClose() {
     this.logEvent('CongratsScreen', { name: 'Close click' });
-    this.resetToFeedscreen();
+    this.resetToOriginalPlace();
   }
 
   handleFacebookPress() {
@@ -76,7 +87,7 @@ class FinishLookPage extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.resetToFeedscreen();
+        this.resetToOriginalPlace();
         this.props.navigateTo('addItemScreen', 'feedscreen');
       }).catch(err => {
         console.log('addNewLook err', err);
@@ -160,6 +171,7 @@ FinishLookPage.defaultProps = {
 function bindActions(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
+    popRoute: key => dispatch(popRoute(key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     reset: (route, key) => dispatch(reset(route, key)),
     replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
