@@ -4,6 +4,7 @@ import { showLoader, hideLoader } from './index';
 
 export const SET_LOOK_DATA = 'SET_LOOK_DATA';
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
+export const SET_USER_LOOKS = 'SET_USER_LOOKS';
 
 export function getLook(lookId):Action {
   return (dispatch) => {
@@ -15,17 +16,34 @@ export function getLook(lookId):Action {
   };
 }
 
-export function getUserLooksData(data):Action {
+export function getUserLooks(data):Action {
+  console.log('data',data)
   return (dispatch) => {
+    if(data.page === 1) {
+      dispatch(showLoader());
+    }
     return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
       if (!err && userLooksData) {
         let looksData = {
+          looks: userLooksData.looks,
           currId: data.id,
-          looks: userLooksData.looks
         }
-        dispatch(setUserLooksData(looksData));
+        dispatch(setUserLooks(looksData));
+        dispatch(hideLoader());
       }
     }));
+  };
+}
+
+export function getUserLooksData(data):Action {
+  return (dispatch) => {
+    let looksData = {
+      currId: data.id,
+      name: data.name,
+      looksCount: data.looksCount,
+      isMyProfile: data.isMyProfile
+    }
+    dispatch(setUserLooksData(looksData));
   };
 }
 
@@ -49,9 +67,17 @@ export function setLookData(data):Action {
     payload: data
   };
 }
+
 export function setUserLooksData(data):Action {
   return {
     type: SET_USER_LOOKS_DATA,
+    payload: data
+  };
+}
+
+export function setUserLooks(data):Action {
+  return {
+    type: SET_USER_LOOKS,
     payload: data
   };
 }

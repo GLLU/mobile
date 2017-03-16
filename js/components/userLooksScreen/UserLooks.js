@@ -11,7 +11,7 @@ import {
   editNewLook,
   navigateTo,
   pushRoute,
-  getUserLooksData,
+  getUserLooks,
   replaceAt
 } from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
@@ -82,7 +82,7 @@ class UserLooks extends Component {
         id: this.props.userId,
         page: this.state.pagination
       }
-      this.props.getUserLooksData(data);
+      this.props.getUserLooks(data);
     }
   }
 
@@ -157,10 +157,11 @@ class UserLooks extends Component {
     setTimeout(function(){ that.setState({refreshing: false}); }, 2000);
   }
 
-  render() {
+  renderUserLooks() {
     const paddingBottom = 150;
-    return(
+    return (
       <View style={styles.tab}>
+
         <View style={[styles.mainGrid]}>
           <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}
                       pagingEnabled={false}
@@ -186,6 +187,12 @@ class UserLooks extends Component {
       </View>
     )
   }
+
+  render() {
+    return(
+      this.props.isLoading ? <View></View> : this.renderUserLooks()
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -205,7 +212,7 @@ function bindActions(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     editNewLook: (id) => dispatch(editNewLook(id)),
-    getUserLooksData: data => dispatch(getUserLooksData(data)),
+    getUserLooks: data => dispatch(getUserLooks(data)),
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
@@ -214,7 +221,8 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     userLooks: state.userLooks.userLooksData,
-    myUserId: state.user.id
+    myUserId: state.user.id,
+    isLoading: state.loader.loading
   }
 };
 
