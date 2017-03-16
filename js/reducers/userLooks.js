@@ -19,7 +19,7 @@ export default function (state:State = initialState, action): State {
             id: look.id,
             likes: look.likes,
             user_id: look.user_id,
-            uri: cover ? cover.url : null,
+            uri: cover ? null : null,
             width: cover ? cover.width : null,
             height: cover ? cover.height : null,
             avatar: look.user.avatar,
