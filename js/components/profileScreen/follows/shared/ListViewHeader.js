@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     fontSize: new FontSizeCalculator(26).getSize(),
     color: 'black',
     fontFamily: 'Times New Roman',
-    flex: 10,
+    flex: 9,
     textAlign: 'center'
   },
   followsCount: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#00D7B2',
     textAlign: 'right',
-    flex: 1,
+    flex: 2,
   },
   backBtn: {
     color: 'black',
