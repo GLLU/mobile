@@ -106,13 +106,32 @@ class UserLooks extends Component {
     </View>)
   }
 
+  renderVideo(img, index) {
+    return (
+      <View style={{flex: 1}}>
+        <Video source={{uri: img.uri,mainVer: 1, patchVer: 0}}
+               resizeMode={'contain'}
+               muted={true}
+               style={{width: img.width - 5, height: img.height}}
+               repeat={true} />
+      </View>
+    )
+  }
+
+  renderImage(img, index) {
+    return (
+      <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
+    )
+  }
+
   _renderImages(looks) {
     return looks.map((look, index) => {
-      console.log('looks',look)
       return  (
         <View key={index} style={{width: look.width, height: look.height, paddingLeft: 0 }}>
           <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
-            <Image source={{uri: look.uri.replace('-staging', '')}} style={{width: look.width - 5, height: look.height, resizeMode: 'contain' }} />
+            <View style={{width: look.width, height: look.height, paddingLeft: 0 }}>
+             {look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index)}
+            </View>
           </TouchableOpacity>
           { this.state.isMyProfile && (
               <Button
