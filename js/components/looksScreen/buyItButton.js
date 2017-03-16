@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Linking, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, Text, Linking, TouchableWithoutFeedback, Image, Dimensions } from 'react-native';
 
 const buyItImage = require('../../../images/buyItButton-noprice.png');
 const w = Dimensions.get('window').width;
@@ -48,6 +48,7 @@ export default class BuyItButton extends Component {
     let title = this.props.title;
     title = title.length > 9 ? title.slice(0, 6) + '...' : title;
     return (
+      <TouchableWithoutFeedback onPress={this.handleOpenLink}>
       <View
         style={{ flex: 1 , top: (this.props.positionTop / 100 * h), left: (this.props.positionLeft / 100 * w), position: 'absolute'}}>
         <Image source={buyItImage}
@@ -59,12 +60,13 @@ export default class BuyItButton extends Component {
           {/*<Text*/}
             {/*style={{fontFamily: 'Montserrat-Regular', color: '#fff',marginTop: 10, backgroundColor: 'transparent'}}>{this.props.currency} {this.props.price}*/}
           {/*</Text>*/}
-          <TouchableOpacity onPress={this.handleOpenLink}>
+          <View>
             <Text
               style={{fontFamily: 'Montserrat-Bold', color: '#f4b85a',marginTop: 8, backgroundColor: 'transparent'}}>{this.props.btnText}</Text>
-          </TouchableOpacity>
+          </View>
         </Image>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
