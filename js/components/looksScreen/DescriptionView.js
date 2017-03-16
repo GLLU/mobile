@@ -72,7 +72,7 @@ export default class DescriptionView extends Component {
             {this.props.description}
           </Text>
         </View>
-        <View style={{height:70}}/>
+        <View style={{height:110}}/>
       </Animated.View>
     );
   }
