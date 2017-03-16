@@ -38,9 +38,11 @@ class FollowScreen extends Component {
   _renderOnEmpty() {
     return (
       <View>
-        <Text>
-          Empty Follows
+        <View style={{flex:1}} name="spacer"/>
+        <Text style={{flex:1, textAlign:'center'}}>
+          You are not following anyone
         </Text>
+        <View style={{flex:1}} name="spacer"/>
       </View>
     );
   }
