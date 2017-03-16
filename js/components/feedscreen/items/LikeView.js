@@ -14,8 +14,7 @@ const bgShadow = require('../../../../images/background-shadow.png');
 const styles = StyleSheet.create({
   likeContainer: {
     height: 30,
-    width: 60,
-    paddingRight: 5,
+    width: 70,
     paddingBottom: 6,
     backgroundColor: 'transparent',
   },
@@ -53,7 +52,7 @@ class LikeView extends Component {
   }
 
   handleLikePress() {
-    this.props.onPress(this.props.item , !this.props.item.liked)
+    this.props.onPress(this.props.item, !this.props.item.liked)
   }
 
   render() {
@@ -61,16 +60,17 @@ class LikeView extends Component {
     const likeIconView = this.props.item.liked ? likedIcon : likeIcon;
     return (
       <View style={[styles.likeContainer, { marginTop: img.height - 35 }]}>
-        <Image source={bgShadow} style={styles.bgShadow} />
+        <Image source={bgShadow} style={styles.bgShadow}/>
         <Grid>
-            <Col style={{flexDirection: 'column', alignItems: 'center'}}>
-              <Button transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
-                <Image source={likeIconView} style={styles.iconWithImage} />
-              </Button>
-            </Col>
-            <Col style={{flexDirection: 'column', justifyContent: 'center'}}>
-              <Text style={styles.countLikeLabel}>{this.props.item.likes}</Text>
-            </Col>
+          <Col style={{flexDirection: 'column', alignItems: 'center'}}>
+            <Button transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
+              <Image source={likeIconView} style={styles.iconWithImage}/>
+            </Button>
+          </Col>
+          <Col style={{flexDirection: 'column', justifyContent: 'center'}}>
+            <Text style={styles.countLikeLabel}>{this.props.item.likes}</Text>
+          </Col>
+          <Col style={{width:10}}/>
         </Grid>
       </View>
     )
