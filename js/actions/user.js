@@ -199,6 +199,13 @@ export function checkLogin() {
       Utils.getKeychainData().then(credentials => {
         if (credentials) {
           setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
+          dispatch(rest.actions.auth.get({}, (err, data) => {
+            if (!err) {
+              dispatch(setUser(data.user));
+            } else {
+              console.log('unable to invalidate user data', err);
+            }
+          }));
           dispatch(resetUserNavigation());
         }
       })
