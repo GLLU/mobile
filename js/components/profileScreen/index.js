@@ -34,6 +34,7 @@ class ProfileScreen extends BasePage {
   constructor(props) {
     super(props);
     const isMyProfile = this.props.userData.id === this.props.myUser.id || this.props.userData.user_id === this.props.myUser.id;
+    this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this.state = {
       isMyProfile,
       isFollowing: this.props.userData.is_following,
@@ -58,7 +59,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleSettingsPress() {
-    this.logEvent('ProfileScreen', { name: 'Settings click' });
+    this.logEvent('ProfileScreen', {name: 'Settings click'});
     this.props.navigateTo('settingsScreen', 'feedscreen');
   }
 
@@ -122,8 +123,12 @@ class ProfileScreen extends BasePage {
     this.setState({photoModal: true});
   }
 
+  _handleClosePhotoModal() {
+    this.setState({photoModal: false});
+  }
+
   toggleFollow(isFollowing) {
-    this.logEvent('ProfileScreen', { name: 'Follow click', isFollowing });
+    this.logEvent('ProfileScreen', {name: 'Follow click', isFollowing});
     this.setState({isFollowing: isFollowing});
     this.props.getStats(this.state.userId);
   }
@@ -138,7 +143,7 @@ class ProfileScreen extends BasePage {
                         looksCount={this.props.stats.looks_count}
                         itemPress={(item) => this._handleItemPress(item) }
                         itemsPress={(item) => this._handleItemsPress(item) }
-                        addNewItem={() => this._handleOpenPhotoModal() }
+                        addNewItem={this._handleOpenPhotoModal}
           />
           <StatsView
             following={this.props.stats.following}
@@ -153,7 +158,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowingPress(stat) {
-    this.logEvent('ProfileScreen', { name: 'Following click' });
+    this.logEvent('ProfileScreen', {name: 'Following click'});
     this.props.navigateTo('followScreen', 'profileScreen', {
       user: {id: this.state.userId},
       mode: stat.type,
@@ -162,7 +167,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowersPress(stat) {
-    this.logEvent('ProfileScreen', { name: 'Followers click' });
+    this.logEvent('ProfileScreen', {name: 'Followers click'});
     this.props.navigateTo('followerScreen', 'profileScreen', {
       user: {id: this.state.userId},
       mode: stat.type,
@@ -171,7 +176,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleBackToFeedPress() {
-    this.logEvent('ProfileScreen', { name: 'Back to Feed click' });
+    this.logEvent('ProfileScreen', {name: 'Back to Feed click'});
     this._PopRoute();
   }
 
@@ -210,7 +215,7 @@ class ProfileScreen extends BasePage {
             </View>
             { this._renderStats() }
           </Image>
-          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)}/>
+          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
       )
     }
