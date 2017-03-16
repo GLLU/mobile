@@ -46,7 +46,7 @@ class GoogleAnalytics extends BaseAnalytic {
       let value = null;
       for (let [k, v] of Object.entries(params)) {
         label = k;
-        value = v;
+        value = `${v}`;
         break;
       }
       if (value != null && value != undefined) {
