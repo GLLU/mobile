@@ -79,14 +79,16 @@ class CommentsView extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidUpdate() {
     if (this.props.isHidden) {
       this._animateHide()
     }
     else {
       this._animateShow()
     }
-    
+  }
+
+  componentWillMount(){
     this.getCommentsData();
   }
 
@@ -154,7 +156,7 @@ class CommentsView extends Component {
         <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count==0} comments={this.props.comments}
                           onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
-        <View style={{height:70}}/>
+        <View style={{height:110}}/>
       </Animated.View>
     );
   }
