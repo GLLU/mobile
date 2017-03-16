@@ -29,6 +29,10 @@ class ErrorHandler extends Component {
     }
   }
 
+  componentDidMount(){
+    setTimeout(()=>this.hide(),3000);
+  }
+
   render() {
     let text = this.props.error.length > 0 ? `Watch out: ${this.props.error}` : this.props.warning.length > 0 ? `Watch out: ${this.props.warning}` : this.props.info;
     let color = this.props.error.length > 0 ? '#993333' : this.props.warning.length > 0 ? '#cc9900' : '#3C997E';
