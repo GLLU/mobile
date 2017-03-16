@@ -9,7 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData, getUserLooks } from '../../actions';
 import _ from 'lodash';
 import SelectPhoto from '../common/SelectPhoto';
 const profileBackground = require('../../../images/psbg.png');
@@ -50,13 +50,6 @@ class ProfileScreen extends BasePage {
         bodyType: this.props.myUser.user_size.body_type
       }
       this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
-    }
-    if (this.state.userId !== this.props.currLookScreenId) { //here for performance - relate to user looks screen
-      const looksDataCall = {
-        id: this.state.userId,
-        page: 1
-      }
-      this.props.getUserLooksData(looksDataCall);
     }
   }
 
@@ -100,13 +93,21 @@ class ProfileScreen extends BasePage {
   _handleItemsPress() {
     const {myUser, userData} = this.props;
     const user = this.state.isMyProfile ? myUser : userData;
-    const userDatax = {
-      id: this.state.userId,
-      name: user.name,
-      looksCount: this.props.stats.looks_count,
-      isMyProfile: this.state.isMyProfile
+    if (this.state.userId !== this.props.currLookScreenId) { //here for performance - relate to user looks screen
+      const looksCall = {
+        id: this.state.userId,
+        page: 1,
+      }
+      const looksDataCall = {
+        id: this.state.userId,
+        name: user.name,
+        looksCount: this.props.stats.looks_count,
+        isMyProfile: this.state.isMyProfile
+      }
+      this.props.getUserLooks(looksCall);
+      this.props.getUserLooksData(looksDataCall);
     }
-    this.props.navigateTo('userLookScreen', 'feedscreen', userDatax);
+    this.props.navigateTo('userLookScreen', 'feedscreen');
   }
 
   goToAddNewItem(imagePath) {
@@ -226,6 +227,7 @@ function bindAction(dispatch) {
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
+    getUserLooks: data => dispatch(getUserLooks(data)),
   };
 }
 

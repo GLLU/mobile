@@ -11,7 +11,6 @@ import UserLooks from './UserLooks';
 class UserLookScreen extends BasePage {
 
   static propTypes = {
-    userData: React.PropTypes.object,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
@@ -33,11 +32,11 @@ class UserLookScreen extends BasePage {
           <Button transparent onPress={() => this._PopRoute()}>
             <Icon style={styles.headerArrow} name="ios-arrow-back" />
           </Button>
-          <Title style={styles.headerTitle}>{this.props.userData.isMyProfile ? 'My Items' : this.props.userData.name+"'s Items"} <Text style={styles.headerTitleNumber}>{this.props.userData.looksCount}</Text></Title>
+          <Title style={styles.headerTitle}>{this.props.isMyProfile ? 'My Items' : this.props.userName+"'s Items"} <Text style={styles.headerTitleNumber}>{this.props.looksCount}</Text></Title>
         </Header>
         <Content scrollEnabled={false}>
           <View>
-            <UserLooks userId={this.props.userData.id} />
+            <UserLooks userId={this.props.currLookScreenId} />
           </View>
         </Content>
       </Container>
@@ -54,6 +53,10 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+  currLookScreenId: state.userLooks.currId,
+  isMyProfile: state.userLooks.isMyProfile,
+  userName: state.userLooks.name,
+  looksCount: state.userLooks.looksCount
 });
 
 export default connect(mapStateToProps, bindActions)(UserLookScreen);
