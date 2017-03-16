@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     margin: 2
   },
   listStyle: {
-    height: 240,
+    height: 200,
     borderWidth: 1,
     borderColor: '#E0E0E0',
     borderTopWidth: 0,

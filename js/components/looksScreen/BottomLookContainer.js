@@ -14,6 +14,8 @@ import BaseComponent from '../common/BaseComponent';
 export default class BottomLookContainer extends BaseComponent {
   static propTypes = {
     look: React.PropTypes.object,
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
     tempPopRoute: React.PropTypes.func,
     goToProfile: React.PropTypes.func,
     toggleLike: React.PropTypes.func,
@@ -39,11 +41,19 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _renderBuyItButtons(look) {
+    const { width, height } = this.props;
     return look.items.map((item, index) => {
       const title = item.brand ? item.brand.name : 'N/A';
       return (
-        <BuyItButton key={index} title={title} price={item.price} positionTop={item["cover_y_pos"]}
-                     positionLeft={item["cover_x_pos"]} url={item.url}/>
+        <BuyItButton
+          key={index}
+          title={title}
+          price={item.price}
+          width={width}
+          height={height}
+          positionTop={item.cover_y_pos}
+          positionLeft={item.cover_x_pos}
+          url={item.url}/>
       )
     });
   }
@@ -113,9 +123,13 @@ export default class BottomLookContainer extends BaseComponent {
     avatar.bodyType = this.props.look.type;
     return (
       <Animated.View style={{opacity: this.state.fadeAnimContent}} >
-        <TouchableOpacity transparent onPress={() => this.props.tempPopRoute()} style={{zIndex: 99999, marginTop: 10}}>
+        <TouchableOpacity
+          transparent
+          style={{zIndex: 99999, top: 10, left: 10, padding: 5 }}
+          onPress={() => this.props.tempPopRoute()}
+        >
           <Icon
-            style={{color: 'black', marginTop: 10, marginLeft: 10, backgroundColor: 'transparent', position: 'absolute', zIndex: 9999}}
+            style={{color: 'black'}}
             name="ios-arrow-back"/>
         </TouchableOpacity>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>

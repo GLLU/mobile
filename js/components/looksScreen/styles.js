@@ -25,7 +25,7 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     flexDirection: 'row',
-    bottom: 20,
+    marginBottom: 20 + ExtraDimensions.get('STATUS_BAR_HEIGHT'),
     zIndex: 1
   },
 

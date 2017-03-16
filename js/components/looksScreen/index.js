@@ -12,6 +12,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const w = Dimensions.get('window').width;
 const { popRoute, pushRoute } = actions
 const LOADER_HEIGHT = 30;
 
@@ -40,7 +41,9 @@ class LooksScreen extends BasePage {
       fadeAnimContent: new Animated.Value(0),
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
-      showAsFeed: typeof this.props.flatLook === 'number' // Will check if recieved one object or an index of flatLooksData
+      showAsFeed: typeof this.props.flatLook === 'number', // Will check if recieved one object or an index of flatLooksData
+      width: w,
+      height: h,
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
@@ -114,8 +117,14 @@ class LooksScreen extends BasePage {
     }
   }
 
+  handleImageLayout(e) {
+    const { width, height } = e.nativeEvent.layout;
+    this.setState({width, height});
+  }
+
   render() {
     let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
+    const { width, height } = this.state;
     return (
       <View>
         <ScrollView pagingEnabled={true}
@@ -129,8 +138,11 @@ class LooksScreen extends BasePage {
                   resizeMode={'cover'}
                   style={[{opacity: this.state.fadeAnim},styles.itemImage]}
                   source={{uri: look.uri}}
+                  onLayout={this.handleImageLayout.bind(this)}
                   onLoad={this.onLoad()}>
                   <BottomLookContainer
+                    width={width}
+                    height={height}
                     look={look}
                     tempPopRoute={(e) => this._tempPopRoute()}
                     goToProfile={(look) => this._goToProfile(look)}
