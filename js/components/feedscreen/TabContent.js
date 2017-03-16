@@ -59,7 +59,6 @@ class TabContent extends BaseComponent {
   }
 
   distributeImages(looks) {
-    console.log('flatlooks',looks)
     const imagesColumn1 = [];
     const imagesColumn2 = [];
     const colW = (deviceWidth - 10) / 2;
@@ -141,7 +140,6 @@ class TabContent extends BaseComponent {
   }
 
   renderVideo(img, index) {
-    console.log('video',img);
     return (
       <View style={{flex: 1}}>
         <Video source={{uri: img.uri,mainVer: 1, patchVer: 0}}
@@ -155,7 +153,6 @@ class TabContent extends BaseComponent {
   }
 
   renderImage(img, index) {
-    console.log('image',img)
     return (
       <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
         <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
