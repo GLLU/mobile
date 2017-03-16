@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
-import FontSizeCalculator from './../../calculators/FontSize';
 import BaseComponent from './BaseComponent';
 import { noop } from 'lodash'
 const MK = require('react-native-material-kit');
@@ -69,7 +68,14 @@ class SelectPhoto extends BaseComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.photoModal!==undefined){
+      this.setState({isOpen:nextProps.photoModal})
+    }
+  }
+
   render() {
+
     return (
       <Modal
         isOpen={this.props.photoModal}

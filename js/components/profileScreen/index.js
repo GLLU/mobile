@@ -35,11 +35,12 @@ class ProfileScreen extends BasePage {
     super(props);
     const isMyProfile = this.props.userData.id === this.props.myUser.id || this.props.userData.user_id === this.props.myUser.id;
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
+    this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
+    this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.state = {
       isMyProfile,
       isFollowing: this.props.userData.is_following,
       userId: isMyProfile ? this.props.myUser.id : this.props.userData.user_id,
-
       photoModal: false
     }
   }
@@ -190,6 +191,7 @@ class ProfileScreen extends BasePage {
       let avatarUrl = avatar ? avatar.url : null;
       return (
         <Container>
+          <Content>
           <Image source={profileBackground} style={styles.bg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                             style={[styles.linearGradient, {opacity: 0.7}]}/>
@@ -216,6 +218,7 @@ class ProfileScreen extends BasePage {
             { this._renderStats() }
           </Image>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
+          </Content>
         </Container>
       )
     }
