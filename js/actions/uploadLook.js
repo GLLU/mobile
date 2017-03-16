@@ -85,13 +85,24 @@ export function editNewLook(lookId) {
           const look = data.look;
           const url = _.find(look.cover, x => x.version == 'small').url;
           Utils.preloadImages([url]).then(() => {
-            const item = itemMapper(_.first(look.items));
-            const itemId = item.id;
-            const payload = _.merge(look, {
+            let payload = {
               image: url,
-              items: [item],
-              itemId,
-            });
+            };
+            const firstItem = _.first(look.items);
+            if (firstItem) {
+              const item = itemMapper(firstItem);
+              const itemId = item.id;
+              payload = _.merge(payload, look, {
+                items: [item],
+                itemId,
+              });
+            } else {
+              payload = _.merge(payload, look, {
+                items: [],
+                itemId: null,
+              });
+            }
+            
             dispatch({
               type: EDIT_NEW_LOOK,
               payload,
