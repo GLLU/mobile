@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
-const w = Dimensions.get('window').width
+import FontSizeCalculator from './../../calculators/FontSize';
+const w = Dimensions.get('window').width;
 
 module.exports = StyleSheet.create({
   container: {
@@ -19,9 +20,10 @@ module.exports = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center'
   },
-  textColor: {
+  textStyle: {
     color: 'white',
-    padding: 3
+    padding: 3,
+    fontSize: new FontSizeCalculator(10).getSize(),
 
   },
   cancelEdit: {

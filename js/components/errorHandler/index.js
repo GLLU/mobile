@@ -31,10 +31,10 @@ class ErrorHandler extends Component {
 
   render() {
     let text = this.props.error.length > 0 ? `Watch out: ${this.props.error}` : this.props.warning.length > 0 ? `Watch out: ${this.props.warning}` : this.props.info;
-    let color = this.props.error.length > 0 ? '#993333' : this.props.warning.length > 0 ? '#cc9900' : '#316C55';
+    let color = this.props.error.length > 0 ? '#993333' : this.props.warning.length > 0 ? '#cc9900' : '#3C997E';
     return (
       <View style={[styles.container, {backgroundColor: color}]}>
-        <Text style={styles.textColor}>{text}</Text>
+        <Text style={styles.textStyle}>{text}</Text>
         <TouchableOpacity transparent onPress={() => this.hide()} style={styles.headerBtn}>
           <Image source={cancelEdit} style={styles.cancelEdit}/>
         </TouchableOpacity>

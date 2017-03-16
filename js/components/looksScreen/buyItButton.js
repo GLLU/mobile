@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Linking, TouchableWithoutFeedback, Image, Dimensions } from 'react-native';
+import {connect} from 'react-redux'
+import {showInfo} from '../../actions'
 
 const buyItImage = require('../../../images/buyItButton-noprice.png');
 const w = Dimensions.get('window').width;
@@ -43,7 +45,7 @@ class BuyItButton extends Component {
       }).catch(err => console.error('An error occurred', err));
     }
     else{
-      alert("Sorry, we're still working on finding this item online for you. ")
+      this.props.showInfo("Sorry, we're still working on finding this item online for you. ")
     }
   }
 
@@ -74,4 +76,12 @@ class BuyItButton extends Component {
   }
 }
 
-export default BuyItButton;
+function bindActions(dispatch) {
+  return {
+    showInfo: text => dispatch(showInfo(text)),
+  };
+}
+
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, bindActions)(BuyItButton);
