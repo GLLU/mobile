@@ -71,7 +71,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   handleLikePress(isLiked) {
-    this.logEvent('LookScreen', {name: 'Like click', liked: isLiked});
+    this.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
     this.props.toggleLike(isLiked)
   }
 
