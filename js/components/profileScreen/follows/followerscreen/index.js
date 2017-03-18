@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base'
 import { connect } from 'react-redux';
+import EmptyView from './EmptyView'
 import { navigateTo, popRoute, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
 import FollowListView from '../shared/FollowListView'
@@ -17,6 +18,7 @@ class FollowerScreen extends Component {
   constructor(props) {
     super(props);
     this.getFollowersData = this.getFollowersData.bind(this);
+    this._renderOnEmpty = this._renderOnEmpty.bind(this);
     this.currentPageIndex = 1;
   }
 
@@ -37,19 +39,7 @@ class FollowerScreen extends Component {
 
   _renderOnEmpty() {
     return (
-      <View>
-        <View style={{flex:1}} name="spacer"/>
-        <View style={{flex:1}} >
-          <Text style={{textAlign:'center'}}>
-            You have no followers yet
-          </Text>
-          <Text style={{textAlign:'center'}}>
-            Upload a look and get some followers
-          </Text>
-
-        </View>
-        <View style={{flex:1}} name="spacer"/>
-      </View>
+      <EmptyView isMyProfile={this.props.userData.isMyProfile} name={this.props.userData.user.name}/>
     );
   }
 

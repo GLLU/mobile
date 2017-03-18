@@ -161,7 +161,8 @@ class ProfileScreen extends BasePage {
   handleFollowingPress(stat) {
     this.logEvent('ProfileScreen', {name: 'Following click'});
     this.props.navigateTo('followScreen', 'profileScreen', {
-      user: {id: this.state.userId},
+      user: {id: this.state.userId, name:this.props.userData.name},
+      isMyProfile: this.state.isMyProfile,
       mode: stat.type,
       count: stat.count
     });
@@ -170,7 +171,8 @@ class ProfileScreen extends BasePage {
   handleFollowersPress(stat) {
     this.logEvent('ProfileScreen', {name: 'Followers click'});
     this.props.navigateTo('followerScreen', 'profileScreen', {
-      user: {id: this.state.userId},
+      user: {id: this.state.userId, name:this.props.userData.name},
+      isMyProfile: this.state.isMyProfile,
       mode: stat.type,
       count: stat.count
     });
