@@ -6,7 +6,7 @@ import { Container, Content, View } from 'native-base'
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
 import SelectPhoto from '../../../common/SelectPhoto';
-import { navigateTo, popRoute, getUserFollowersData, initUserFollowers } from '../../../../actions';
+import { navigateTo, popRoute, addNewLook, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
 import FollowListView from '../shared/FollowListView'
 
@@ -85,6 +85,7 @@ function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
+    addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserFollowersData: (id, pageNumber, pageSize) => dispatch(getUserFollowersData(id, pageNumber, pageSize)),
     initUserFollowers: () => dispatch(initUserFollowers()),
   };
@@ -93,6 +94,7 @@ function bindAction(dispatch) {
 const mapStateToProps = state => {
   return {
     followers: state.userFollowers.userFollowersData,
+    navigation: state.cardNavigation,
   }
 };
 
