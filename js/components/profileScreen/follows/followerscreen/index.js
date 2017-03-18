@@ -2,9 +2,10 @@
 
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
-import { View } from 'native-base'
+import { Container, Content, View } from 'native-base'
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
+import SelectPhoto from '../../../common/SelectPhoto';
 import { navigateTo, popRoute, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
 import FollowListView from '../shared/FollowListView'
@@ -19,11 +20,17 @@ class FollowerScreen extends Component {
     super(props);
     this.getFollowersData = this.getFollowersData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
+    this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
+    this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
+    this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.currentPageIndex = 1;
+    this.state = {
+      photoModal: false
+    }
   }
 
   componentWillMount() {
-    if(this.props.userData.count){
+    if (this.props.userData.count) {
       this.getFollowersData();
     }
   }
@@ -37,16 +44,39 @@ class FollowerScreen extends Component {
     this.currentPageIndex++;
   }
 
+  _handleOpenPhotoModal() {
+    this.setState({photoModal: true});
+  }
+
+  _handleClosePhotoModal() {
+    this.setState({photoModal: false});
+  }
+
+  goToAddNewItem(imagePath) {
+    this.setState({photoModal: false}, () => {
+      this.props.addNewLook(imagePath).then(() => {
+        this.props.popRoute(this.props.navigation.key);
+        this.props.navigateTo('tagItemScreen', 'profileScreen');
+      });
+    })
+  }
+
   _renderOnEmpty() {
     return (
-      <EmptyView isMyProfile={this.props.userData.isMyProfile} name={this.props.userData.user.name}/>
+      <EmptyView onUploadButtonPress={this._handleOpenPhotoModal} isMyProfile={this.props.userData.isMyProfile}
+                 name={this.props.userData.user.name}/>
     );
   }
 
   render() {
     return (
-        <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData} follows={this.props.followers}
-                        onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
+          <View>
+            <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData}
+                            follows={this.props.followers}
+                            onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
+            <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
+                         onRequestClose={this._handleClosePhotoModal}/>
+          </View>
     );
   }
 }

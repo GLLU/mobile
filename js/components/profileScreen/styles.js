@@ -125,6 +125,7 @@ export default StyleSheet.create({
   addItemContainer: {
     backgroundColor: '#00D7B2',
     width: 55,
+    height: 55,
     justifyContent: 'center'
   },
   addItem: {

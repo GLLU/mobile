@@ -23,7 +23,7 @@ class FollowScreen extends Component {
   }
 
   componentWillMount() {
-    if(this.props.userData.count) {
+    if (this.props.userData.count) {
       this.getFollowsData();
     }
   }

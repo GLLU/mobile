@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { View } from 'native-base';
 
 class EmptyView extends Component {
@@ -19,8 +19,8 @@ class EmptyView extends Component {
     super(props);
   }
 
-  _getText(isMyProfile,name){
-    if(isMyProfile){
+  _getText(isMyProfile, name) {
+    if (isMyProfile) {
       return 'You are not following anyone';
     }
     return `${name} is not following anyone`
@@ -32,7 +32,7 @@ class EmptyView extends Component {
       <View>
         <View style={{flex:1}} name="spacer"/>
         <Text style={{flex:1, textAlign:'center'}}>
-          {this._getText(this.props.isMyProfile,this.props.name)}
+          {this._getText(this.props.isMyProfile, this.props.name)}
         </Text>
         <View style={{flex:1}} name="spacer"/>
       </View>

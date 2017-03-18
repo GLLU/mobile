@@ -219,7 +219,7 @@ class ProfileScreen extends BasePage {
             </View>
             { this._renderStats() }
           </Image>
-          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
+          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
           </Content>
         </Container>
       )

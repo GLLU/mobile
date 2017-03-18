@@ -3,16 +3,23 @@
 import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { View, Icon } from 'native-base';
+import { noop } from 'lodash';
+
+import addItemIcon from '../../../../../images/icons/plus.png';
+
+import styles from '../../styles'
 
 class EmptyView extends Component {
 
   static propTypes = {
     isMyProfile: React.PropTypes.bool,
     name: React.PropTypes.string,
+    onUploadButtonPress: React.PropTypes.func,
   };
 
   static defaultProps = {
-    isMyProfile: true
+    isMyProfile: true,
+    onUploadButtonPress: noop
   };
 
   constructor(props) {
@@ -33,6 +40,14 @@ class EmptyView extends Component {
           <Text style={{textAlign:'center'}}>
             Upload a look and get some followers
           </Text>
+          <View style={{flexDirection:'row', paddingTop: 15}}>
+            <View style={{flex:3}} name="spacer"/>
+            <TouchableOpacity style={[styles.addItemContainer,{justifyContent:'center',flex: 1}]}
+                              onPress={this.props.onUploadButtonPress}>
+              <Image source={addItemIcon} style={[styles.itemPic, styles.addItem]}/>
+            </TouchableOpacity>
+            <View style={{flex:3}} name="spacer"/>
+          </View>
         </View>
       );
     }
