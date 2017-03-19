@@ -38,7 +38,7 @@ class EmptyView extends Component {
       return (
         <View>
           <Text style={{textAlign:'center'}}>
-            Upload a look and get some followers
+            Upload Your Look & Get Followers
           </Text>
           <View style={{flexDirection:'row', paddingTop: 15}}>
             <View style={{flex:3}} name="spacer"/>
