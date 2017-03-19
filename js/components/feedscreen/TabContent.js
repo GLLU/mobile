@@ -68,7 +68,6 @@ class TabContent extends BaseComponent {
   }
 
   distributeImages(looks) {
-    console.log('flatlooks',looks)
     const imagesColumn1 = [];
     const imagesColumn2 = [];
     const colW = (deviceWidth - 10) / 2;
@@ -117,7 +116,7 @@ class TabContent extends BaseComponent {
         }).catch(err => {
           console.log('error', err);
           this.setState({isLoading: false});
-        });  
+        });
       });
     } else {
       this.setState({noMoreData: true})
@@ -149,14 +148,20 @@ class TabContent extends BaseComponent {
     }
   }
 
+  getProgress() {
+    console.log('still playing')
+  }
+
   renderVideo(img, index) {
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1}} >
         <Video source={{uri: img.uri,mainVer: 1, patchVer: 0}}
                resizeMode={'contain'}
                muted={true}
-               style={{width: img.width - 5, height: img.height}}
-               repeat={true} />
+               style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
+               repeat={false}
+               onProgress={this.getProgress()}
+        />
         <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
       </View>
     )
@@ -173,7 +178,12 @@ class TabContent extends BaseComponent {
   _renderImages(images) {
     return images.map((img, index) => {
         return  (
-          <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
+          <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)} onLayout={(event) => {
+            var {x, y, width, height} = event.nativeEvent.layout;
+            if(img.coverType === 'video'){
+              console.log('Y position: ',y)
+            }
+          }}>
             <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
               {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
             </View>

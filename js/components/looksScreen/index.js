@@ -176,7 +176,7 @@ class LooksScreen extends BasePage {
 
   render() {
     let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
-    const { width, height } = this.state;
+    console.log('looksArr',looksArr)
     return (
       <View onLayout={this.handleImageLayout.bind(this)}>
         <ScrollView pagingEnabled={true}
