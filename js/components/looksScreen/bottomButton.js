@@ -78,7 +78,7 @@ export default class BottomButton extends BaseComponent {
 
   _renderInformationButton(hasDescription) {
     return hasDescription ?
-      <InformationButton onPress={this._onInformationClicked}/> :
+      <InformationButton isActive={this.props.isDescriptionActive} onPress={this._onInformationClicked}/> :
       <View name="information button placeholder"></View>;
   }
 

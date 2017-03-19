@@ -55,7 +55,7 @@ export default class DescriptionView extends Component {
     ).start();
   }
 
-  componentWillMount() {
+  componentDidUpdate() {
     if (this.props.isHidden) {
       this._animateHide()
     }
