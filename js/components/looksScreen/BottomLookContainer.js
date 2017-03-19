@@ -81,9 +81,10 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderDescriptionView(isActive) {
     return <DescriptionView
-      isHidden={!isActive}
-      style={styles.bottomDrawerView}
-      description={this.props.look.description}/>;
+      isOpen={isActive}
+      description={this.props.look.description}
+      onRequestClose={this._toggleDescription}
+    />;
   }
 
   _renderCommentsView(isActive) {

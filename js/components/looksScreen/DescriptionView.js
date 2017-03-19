@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet } from 'react-native';
+import BottomDrawerModal from './common/BottomDrawerModal'
+import {noop} from 'lodash'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white"
-  },
   descriptionStyle: {
     paddingLeft: 12,
     paddingRight: 12,
@@ -19,61 +17,31 @@ export default class DescriptionView extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      fadeAnimContent: new Animated.Value(-300)
-    };
   }
 
   static propTypes = {
     description: React.PropTypes.string,
     style: React.PropTypes.any,
-    isHidden: React.PropTypes.bool
+    isOpen: React.PropTypes.bool,
+    onRequestClose: React.PropTypes.func
   };
 
   static defaultProps = {
     style: {},
-    isHidden: true
+    isOpen: false,
+    onRequestClose: noop
   };
-
-  _animateShow() {
-    Animated.spring(          // Uses easing functions
-      this.state.fadeAnimContent,    // The value to drive
-      {
-        toValue: 0,
-        friction: 9
-      }            // Configuration
-    ).start();
-  }
-
-  _animateHide() {
-    Animated.spring(          // Uses easing functions
-      this.state.fadeAnimContent,    // The value to drive
-      {
-        toValue: -300,
-        friction: 9
-      }            // Configuration
-    ).start();
-  }
-
-  componentDidUpdate() {
-    if (this.props.isHidden) {
-      this._animateHide()
-    }
-    else {
-      this._animateShow()
-    }
-  }
 
   render() {
     return (
-      <Animated.View style={[{bottom: this.state.fadeAnimContent}, this.props.style, styles.container]}>
+      <BottomDrawerModal {...this.props}>
         <View>
           <Text style={styles.descriptionStyle}>
             {this.props.description}
           </Text>
         </View>
-        <View style={{height:110}}/>
-      </Animated.View>
+        <View style={{height:100}}/>
+      </BottomDrawerModal>
     );
   }
 }
