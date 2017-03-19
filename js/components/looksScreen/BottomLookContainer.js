@@ -91,8 +91,8 @@ export default class BottomLookContainer extends BaseComponent {
     return <CommentsView
       look_id={this.props.look.id}
       count={this.state.comments}
-      isHidden={!isActive}
-      style={styles.bottomDrawerView}/>
+      isOpen={isActive}
+      onRequestClose={this._toggleComments}/>
   }
 
   _toggleComments(shouldActive) {

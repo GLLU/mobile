@@ -3,20 +3,6 @@ import { Animated, View, Text, StyleSheet } from 'react-native';
 import { noop } from 'lodash'
 import Modal from 'react-native-modalbox'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white"
-  },
-  descriptionStyle: {
-    paddingLeft: 12,
-    paddingRight: 12,
-    color: "black",
-    fontSize: 16
-  }
-
-});
-
 export default class BottomDrawerModal extends Component {
 
   constructor(props) {
@@ -35,13 +21,14 @@ export default class BottomDrawerModal extends Component {
   };
 
   static defaultProps = {
-    style: {},
+    style: {overflow:'visible'},
     isOpen: false,
     onRequestClose: noop
   };
 
   resizeModal(ev) {
-    this.setState({style: {height: ev.nativeEvent.layout.height + 10}});
+    const layout=ev.nativeEvent.layout;
+    this.setState({style: {height: layout.height + 10}});
   }
 
   _onRequestClose(){
@@ -49,7 +36,6 @@ export default class BottomDrawerModal extends Component {
   }
 
   render() {
-    console.log(`isOpen is ${this.props.isOpen}`)
     return (
       <Modal
         {...this.props}

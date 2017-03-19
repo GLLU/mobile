@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet } from 'react-native';
 import BottomDrawerModal from './common/BottomDrawerModal'
-import {noop} from 'lodash'
+import { noop } from 'lodash'
 
 const styles = StyleSheet.create({
   descriptionStyle: {
