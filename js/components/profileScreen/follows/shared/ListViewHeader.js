@@ -11,10 +11,10 @@ import FontSizeCalculator from './../../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingTop: 12,
     paddingBottom: 12,
-    backgroundColor: '#f2f2f2'
+    backgroundColor: '#f2f2f2',
+    height:60
   },
   row: {
     flexDirection: 'row'
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     fontSize: new FontSizeCalculator(26).getSize(),
     color: 'black',
     fontFamily: 'Times New Roman',
-    flex: 10,
+    flex: 9,
     textAlign: 'center'
   },
   followsCount: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#00D7B2',
     textAlign: 'right',
-    flex:1,
+    flex: 2,
   },
   backBtn: {
     color: 'black',
@@ -66,7 +66,7 @@ class ListViewHeader extends Component {
       <View style={[styles.container,styles.column]}>
         <View style={[styles.header,styles.row]}>
           <View style={{flex:0.5}} name="spacer"/>
-          <TouchableOpacity style={{flex:1, justifyContent: 'center'}} onPress={() => this.popRoute()}>
+          <TouchableOpacity style={{flex:1}} onPress={() => this.popRoute()}>
             <Icon style={styles.backBtn} name="ios-arrow-back"/>
           </TouchableOpacity>
           <Text style={styles.followsTitle}>{_.startCase(this.props.title)}</Text>
