@@ -242,6 +242,7 @@ class StepTwo extends BaseComponent {
   }
 
   handleContinuePress() {
+    this.handleUrlEndEditing();
     this.setState({urlOverlayVisible: false}, () => {
       this.props.publishItem();
     });
