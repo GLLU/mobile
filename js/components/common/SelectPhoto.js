@@ -46,8 +46,9 @@ class SelectPhoto extends BaseComponent {
     }).catch(err => {
       alert(err);
     });
-    this.state = {
-      isOpen: props.photoModal
+
+    if(this.props.photoModal!==undefined){
+      this.setState({isOpen: this.props.photoModal})
     }
   }
 
