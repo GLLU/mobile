@@ -157,9 +157,10 @@ export default class BottomLookContainer extends BaseComponent {
                 likes={this.state.likes}
                 toggleLike={this.handleLikePress.bind(this)}
                 toggleMenu={() => this._toggleMenu()}/>
+              {this._renderBuyItButtons(this.props.look)}
             </View>
           </TouchableWithoutFeedback>
-          {this._renderBuyItButtons(this.props.look)}
+
           <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                      closeModal={() => this._toggleMenu()}/>
         </Animated.View>
