@@ -12,7 +12,6 @@ import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
 import AddItemPage from './components/addItemScreen';
-import TagItemPage from './components/addItemScreen';
 import SideBar from './components/sideBar';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';

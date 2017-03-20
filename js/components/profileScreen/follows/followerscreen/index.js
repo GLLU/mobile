@@ -56,7 +56,7 @@ class FollowerScreen extends Component {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
         this.props.popRoute(this.props.navigation.key);
-        this.props.navigateTo('tagItemScreen', 'profileScreen');
+        this.props.navigateTo('addItemScreen', 'profileScreen');
       });
     })
   }

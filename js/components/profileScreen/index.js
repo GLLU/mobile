@@ -115,7 +115,7 @@ class ProfileScreen extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('tagItemScreen', 'profileScreen');
+        this.props.navigateTo('addItemScreen', 'profileScreen');
       });
     })
   }
