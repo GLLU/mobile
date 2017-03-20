@@ -29,7 +29,7 @@ import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
 import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
-import FourOhFourScreen from './components/fourOhFourScreen'
+import BadNavigationScreen from './components/badNavigationScreen'
 
 import { statusBarColor } from './themes/base-theme';
 import Analytics from './lib/analytics/Analytics';
@@ -52,14 +52,6 @@ class AppNavigator extends Component {
       key: React.PropTypes.string,
       routes: React.PropTypes.array,
     })
-  }
-
-  componentWillMount() {
-    // console.log('AppNavigator componentWillMount', this.props.navigation);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
   }
 
   componentDidMount() {
@@ -149,7 +141,7 @@ class AppNavigator extends Component {
       case 'editProfileScreen':
         return <EditProfile userData={props.scene.route.optional}/>;
       default :
-        return <FourOhFourScreen />;
+        return <BadNavigationScreen />;
     }
   }
 
