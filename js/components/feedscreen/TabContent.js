@@ -134,7 +134,7 @@ class TabContent extends BaseComponent {
 
   _handleItemPress(item) {
     this.logEvent('Feedscreen', { name: 'Image click' });
-    this.props.navigateTo('looksScreen', 'feedscreen', item);
+    this.props.navigateTo('looksScreen', 'feedscreen', item.originalIndex);
   }
 
   toggleLikeAction(item, isLiked) {
@@ -149,7 +149,7 @@ class TabContent extends BaseComponent {
   }
 
   getProgress() {
-    console.log('still playing')
+    console.log('Video is still playing')
   }
 
   renderVideo(img, index) {
@@ -178,12 +178,7 @@ class TabContent extends BaseComponent {
   _renderImages(images) {
     return images.map((img, index) => {
         return  (
-          <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)} onLayout={(event) => {
-            var {x, y, width, height} = event.nativeEvent.layout;
-            if(img.coverType === 'video'){
-              console.log('Y position: ',y)
-            }
-          }}>
+          <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
             <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
               {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
             </View>
@@ -200,7 +195,6 @@ class TabContent extends BaseComponent {
         if (this.state.isLoading) {
           return <Spinner color='rgb(230,230,230)'/>;
         }
-
         return null;
       })()}
       </View>);
@@ -214,7 +208,6 @@ class TabContent extends BaseComponent {
         </View>
       );  
     }
-    
   }
 
   render() {

@@ -130,10 +130,10 @@ export default class BottomLookContainer extends BaseComponent {
     avatar.imageUri = this.props.look.avatar.url;
     avatar.bodyType = this.props.look.type;
     return (
-      <Animated.View style={{opacity: this.state.fadeAnimContent}}>
+      <Animated.View style={{opacity: this.state.fadeAnimContent, marginTop: 0}}>
         <TouchableOpacity
           transparent
-          style={{zIndex: 99999, top: 10, left: 10, padding: 5, width: 30, backgroundColor: 'transparent' }}
+          style={{position: 'absolute', zIndex: 99999, top: 10, left: 10, padding: 5, width: 30, backgroundColor: 'transparent' }}
           onPress={() => this.props.tempPopRoute()}
         >
           <Icon
@@ -142,7 +142,7 @@ export default class BottomLookContainer extends BaseComponent {
         </TouchableOpacity>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-            <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
+            <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column',marginTop: 35}]}>
               <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
               {this._renderCommentsView(this.state.isCommentsActive)}
               {this._renderDescriptionView(this.state.isDescriptionActive)}

@@ -4,6 +4,7 @@ import {View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView,
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
+import Spinner from '../loaders/Spinner';
 import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 import { loadMore, replaceAt } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
@@ -11,7 +12,11 @@ import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
-
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+const config = {
+  velocityThreshold: 0.3,
+  directionalOffsetThreshold: 50
+};
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
 const { popRoute, pushRoute } = actions
@@ -45,13 +50,26 @@ class LooksScreen extends BasePage {
       showAsFeed: typeof this.props.flatLook === 'number', // Will check if recieved one object or an index of flatLooksData
       width: w,
       height: h,
+      isAnimatingScrollView: Platform.OS !== 'ios' && typeof this.props.flatLook === 'number'
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
 
   componentDidMount() {
+    console.log('show as feed',this.state.showAsFeed)
+    console.log('props flatlook',this.props.flatLook)
+    console.log(' isAnimatingScrollView',this.state.isAnimatingScrollView)
+    console.log(' typeof',this.state.isAnimatingScrollView)
     if(this.state.showAsFeed){
-      this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true });
+      if(Platform.OS === 'ios') {
+        this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true });
+      } else {
+        this.setState({isAnimatingScrollView: true})
+        InteractionManager.runAfterInteractions(() => {
+          this.setState({isAnimatingScrollView: false})
+          this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true });
+        });
+      }
     }
   }
 
@@ -104,30 +122,58 @@ class LooksScreen extends BasePage {
     }
   }
 
-  componentWillUnmount() {
-    console.log('lookscreen screen will unmount')
-  }
-
-  handleScroll(event) {
-    const contentSizeHeight = event.nativeEvent.contentSize.height;
-    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-    const currentScroll = event.nativeEvent.contentOffset.y
-    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-    if (compare <= LOADER_HEIGHT) {
-      this.loadMoreAsync();
+  onSwipe(gestureName, gestureState, index) {
+    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+    switch (gestureName) {
+      case SWIPE_UP:
+        let nextLook = index+1
+        const { meta: { total } } = this.props;
+        if(nextLook !== total-1) {
+          this._scrollView.scrollTo({ x: 0, y:h*nextLook, animated: true });
+        }
+        if(nextLook % 5 === 0) {
+          this.loadMoreAsync();
+        }
+        break;
+      case SWIPE_DOWN:
+        let previousLook = index-1
+        if(index !== -1) {
+          this._scrollView.scrollTo({ x: 0, y:h*previousLook, animated: true });
+        }
+        if(previousLook % 5 === 0) {
+          this.loadMoreAsync();
+        }
+        break;
+      case SWIPE_LEFT:
+        console.log('swipe left, no action');
+        break;
+      case SWIPE_RIGHT:
+        console.log('swipe right, no action');
+        break;
     }
   }
 
   renderVideo(look, index) {
     const { width, height } = this.state;
+    originalIndexPlusB = look.originalIndex
+    originalIndexMinusB = look.originalIndex
     return (
-      <View key={index}>
+        <GestureRecognizer
+          key={index}
+          onSwipe={this.state.showAsFeed ? (direction, state) => this.onSwipe(direction, state, index) : null}
+          config={config}
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+            position: 'relative',
+            height: h
+          }}>
         <Video
           source={{uri: look.uri,mainVer: 1, patchVer: 0}}
           resizeMode={'stretch'}
           muted={true}
           style={styles.videoBackground}
-          repeat={true}
+          repeat={false}
         />
         <BottomLookContainer
           width={width}
@@ -140,15 +186,23 @@ class LooksScreen extends BasePage {
           isMenuOpen={this.state.isMenuOpen}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
         />
-
-      </View>
+        </GestureRecognizer>
     )
   }
 
   renderImage(look, index) {
     const { width, height } = this.state;
+    originalIndexPlus = look.originalIndex
+    originalIndexMinus = look.originalIndex
     return (
-      <View key={index}>
+      <GestureRecognizer
+        key={index}
+        onSwipe={this.state.showAsFeed ? (direction, state) => this.onSwipe(direction, state, index) : null}
+        config={config}
+        style={{
+          flex: 1,
+          backgroundColor: 'transparent',
+        }}>
         <Animated.Image
           resizeMode={'cover'}
           style={[{opacity: this.state.fadeAnim},styles.itemImage]}
@@ -166,7 +220,7 @@ class LooksScreen extends BasePage {
             reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           />
         </Animated.Image>
-      </View>
+      </GestureRecognizer>
     )
   }
   handleImageLayout(e) {
@@ -174,19 +228,31 @@ class LooksScreen extends BasePage {
     this.setState({width, height});
   }
 
+  renderLoader() {
+    return (
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', opacity: 0.9 }}>
+        <Spinner color='#666666'/>
+      </View>
+    )
+  }
+
   render() {
     let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
-    console.log('looksArr',looksArr)
     return (
       <View onLayout={this.handleImageLayout.bind(this)}>
-        <ScrollView pagingEnabled={true}
+        <ScrollView pagingEnabled={false}
                     ref={(c) => { this._scrollView = c; }}
                     scrollEventThrottle={100}
-                    onScroll={this.handleScroll.bind(this)}>
+
+                    scrollEnabled={false}
+        >
+
           {looksArr.map((look, index) => {
             return look.coverType === "video" ? this.renderVideo(look, index) : this.renderImage(look, index)
           })}
+
         </ScrollView>
+        {this.state.isAnimatingScrollView ? this.renderLoader() : null}
       </View>
     )
   }
