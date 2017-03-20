@@ -137,6 +137,7 @@ export default class BottomLookContainer extends BaseComponent {
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
             <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column'}]}>
+              {this._renderBuyItButtons(this.props.look)}
               {this._renderCommentsView(this.state.isCommentsActive)}
               {this._renderDescriptionView(this.state.isDescriptionActive)}
               <BottomButton
@@ -149,7 +150,6 @@ export default class BottomLookContainer extends BaseComponent {
                 likes={this.state.likes}
                 toggleLike={this.handleLikePress.bind(this)}
                 toggleMenu={() => this._toggleMenu()}/>
-              {this._renderBuyItButtons(this.props.look)}
             </View>
           </TouchableWithoutFeedback>
 

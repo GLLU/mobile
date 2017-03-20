@@ -84,7 +84,7 @@ export default class BottomButton extends BaseComponent {
 
   render() {
     return (
-      <View style={styles.bottomContainer}>
+      <View style={styles.bottomContainer} onLayout={(e)=>console.log(` bottombutton position is ${e.nativeEvent.layout.x},${e.nativeEvent.layout.x}`)}>
         <View style={styles.bottomLeft}>
           <View style={styles.horizontalContainer}>
             <TouchableHighlight style={{marginRight: 10}} onPress={() => this._onLikeClicked()}>

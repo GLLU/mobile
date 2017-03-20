@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { ListView, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
 import { View, Icon } from 'native-base';
 import { noop } from 'lodash'
 import { connect } from 'react-redux';
@@ -10,10 +10,10 @@ const {popRoute} = actions;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
+    paddingTop: Platform.os === 'ios' ? 30 : 10,
     paddingBottom: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    height: 60,
+    height: Platform.os === 'ios' ? 80 : 70,
   },
   row: {
     flexDirection: 'row'
@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
   backBtn: {
     color: 'black',
     backgroundColor: 'transparent',
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   avatar: {
-    alignSelf:'center',
+    alignSelf: 'center',
     height: 40,
     width: 40,
     borderRadius: 20
