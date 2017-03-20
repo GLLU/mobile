@@ -6,13 +6,11 @@ import { actions } from 'react-native-navigation-redux-helpers';
 
 import { closeDrawer } from './actions/drawer';
 
-import Login from './components/login/';
 import Home from './components/home/';
 import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
 import AddItemPage from './components/addItemScreen';
-import TagItemPage from './components/addItemScreen';
 import SideBar from './components/sideBar';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
@@ -31,6 +29,7 @@ import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
 import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
+import BadNavigationScreen from './components/badNavigationScreen'
 
 import { statusBarColor } from './themes/base-theme';
 import Analytics from './lib/analytics/Analytics';
@@ -53,14 +52,6 @@ class AppNavigator extends Component {
       key: React.PropTypes.string,
       routes: React.PropTypes.array,
     })
-  }
-
-  componentWillMount() {
-    // console.log('AppNavigator componentWillMount', this.props.navigation);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // console.log('AppNavigator componentWillReceiveProps', nextProps.navigation);
   }
 
   componentDidMount() {
@@ -127,8 +118,6 @@ class AppNavigator extends Component {
         return <AddItemPage mode={mode} />;
       case 'finishLookScreen':
         return <FinishLookScreen />;
-      case 'login':
-        return <Login />;
       case 'home':
         return <Home />;
       case 'blankPage':
@@ -152,7 +141,7 @@ class AppNavigator extends Component {
       case 'editProfileScreen':
         return <EditProfile userData={props.scene.route.optional}/>;
       default :
-        return <Login />;
+        return <BadNavigationScreen />;
     }
   }
 

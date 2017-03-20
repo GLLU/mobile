@@ -34,7 +34,7 @@ class TagItemPage extends BaseComponent {
   }
 
   handleAddTag(position) {
-    this.logEvent('TagItemScreen', { name: 'Marker add' });
+    this.logEvent('AddItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then(() => {
       this.setState({mode: 'edit'})
     });
