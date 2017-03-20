@@ -30,6 +30,7 @@ import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
 import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
+import FourOhFourScreen from './components/fourOhFourScreen'
 
 import { statusBarColor } from './themes/base-theme';
 import Analytics from './lib/analytics/Analytics';
@@ -151,7 +152,7 @@ class AppNavigator extends Component {
       case 'editProfileScreen':
         return <EditProfile userData={props.scene.route.optional}/>;
       default :
-        return <Login />;
+        return <FourOhFourScreen />;
     }
   }
 
