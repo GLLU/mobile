@@ -8,16 +8,17 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback
 } from 'react-native';
-import { Icon } from 'native-base';
 import _ from 'lodash'
 import styles from './styles';
 import BottomButton from './bottomButton';
-import TopButton from './topButton';
 import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/BaseComponent';
+import LookHeader from './LookHeader'
+
+
 
 export default class BottomLookContainer extends BaseComponent {
   static propTypes = {
@@ -127,24 +128,15 @@ export default class BottomLookContainer extends BaseComponent {
         delay: 250
       }            // Configuration
     ).start();
-    const avatar = {};
-    avatar.imageUri = this.props.look.avatar.url;
-    avatar.bodyType = this.props.look.type;
     return (
       <Animated.View style={{opacity: this.state.fadeAnimContent}}>
-        <TouchableOpacity
-          transparent
-          style={{zIndex: 99999, top: 10, left: 10, padding: 5, width: 30, backgroundColor: 'transparent' }}
-          onPress={() => this.props.tempPopRoute()}
-        >
-          <Icon
-            style={{color: 'black'}}
-            name="ios-arrow-back"/>
-        </TouchableOpacity>
+        <LookHeader
+          avatar={{uri: this.props.look.avatar.url}}
+          onBackNavigationPress={this.props.tempPopRoute}
+          onProfileAvatarPress={() => this.props.goToProfile(this.props.look)}/>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-            <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column',marginTop: 40}]}>
-              <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
+            <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column'}]}>
               {this._renderCommentsView(this.state.isCommentsActive)}
               {this._renderDescriptionView(this.state.isDescriptionActive)}
               <BottomButton

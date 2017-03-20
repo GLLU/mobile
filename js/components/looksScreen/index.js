@@ -12,7 +12,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
 
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height
 const w = Dimensions.get('window').width;
 const { popRoute, pushRoute } = actions
 const LOADER_HEIGHT = 30;
