@@ -70,7 +70,8 @@ class LooksScreen extends BasePage {
   }
 
   _goToProfile(look) {
-      this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: look}, this.props.navigation.key);
+    console.log('_goToProfile', look);
+    this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: {userId: look.user_id}}, this.props.navigation.key);
   }
 
   onLoad() {

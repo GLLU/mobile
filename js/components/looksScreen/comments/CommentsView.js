@@ -138,7 +138,7 @@ class CommentsView extends Component {
   }
 
   onUserNavigate(user) {
-    this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: user}, this.props.navigation.key);
+    this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: {userId: user.id}}, this.props.navigation.key);
   }
 
   _renderFooter() {

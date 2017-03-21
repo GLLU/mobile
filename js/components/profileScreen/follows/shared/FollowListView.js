@@ -63,7 +63,7 @@ class FollowListView extends Component {
   onUserNavigate(user) {
     this.props.popRoute(this.props.navigation.key);
     this.props.popRoute(this.props.navigation.key);
-    this.props.navigateTo('profileScreen', `feedscreen`, user);
+    this.props.navigateTo('profileScreen', `feedscreen`, {userId: user.id});
   }
 
   toggleFollowAction(user, shouldFollow) {
