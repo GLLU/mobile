@@ -92,7 +92,7 @@ class SplashPage extends BasePage {
         break;
       case 'active':
         this.setState({repeat: true})
-        this._root.seek(0.1)
+        this._root.seek(1)
         break;
     }
   }
