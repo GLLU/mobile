@@ -83,7 +83,6 @@ class TabContent extends BaseComponent {
   }
 
   distributeImages(looks) {
-    console.log('flatlooks',looks)
     const imagesColumn1 = [];
     const imagesColumn2 = [];
     const colW = (deviceWidth - 10) / 2;
