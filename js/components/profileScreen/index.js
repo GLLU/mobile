@@ -95,21 +95,21 @@ class ProfileScreen extends BasePage {
   _handleItemsPress() {
     const {myUser, userData} = this.props;
     const user = this.state.isMyProfile ? myUser : userData;
-    if (this.state.userId !== this.props.currLookScreenId) { //here for performance - relate to user looks screen
-      const looksCall = {
-        id: this.state.userId,
-        page: 1,
-      }
-      const looksDataCall = {
-        id: this.state.userId,
-        name: user.name,
-        looksCount: this.props.stats.looks_count,
-        isMyProfile: this.state.isMyProfile
-      }
-      this.props.getUserLooks(looksCall);
-      this.props.getUserLooksData(looksDataCall);
-    }
-    this.props.navigateTo('userLookScreen', 'feedscreen');
+    // if (this.state.userId !== this.props.currLookScreenId) { //here for performance - relate to user looks screen
+    //   const looksCall = {
+    //     id: this.state.userId,
+    //     page: 1,
+    //   }
+    //   const looksDataCall = {
+    //     id: this.state.userId,
+    //     name: user.name,
+    //     looksCount: this.props.stats.looks_count,
+    //     isMyProfile: this.state.isMyProfile
+    //   }
+    //   this.props.getUserLooks(looksCall);
+    //   this.props.getUserLooksData(looksDataCall);
+    // }
+    this.props.navigateTo('userLookScreen', 'feedscreen', { id: user.id });
   }
 
   goToAddNewItem(imagePath) {

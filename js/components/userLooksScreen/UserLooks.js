@@ -252,7 +252,6 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
-    userLooks: state.userLooks.userLooksData,
     myUserId: state.user.id,
     isLoading: state.loader.loading
   }

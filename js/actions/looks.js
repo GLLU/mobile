@@ -16,6 +16,32 @@ export function getLook(lookId):Action {
   };
 }
 
+export function getUserLooksById(id, query = {}):Action {
+  return (dispatch, getState) => {
+    const state = getState().userLooks;
+    const newState = Object.assign({}, state.query, query, {
+      page: {
+        size: 10,
+        number: 1
+      }
+    });
+    if(newState.page === 1) {
+      dispatch(showLoader());
+    }
+    const params = Object.assign({}, {id: id}, query);
+    return dispatch(rest.actions.user_looks(params, {}, (err, userLooksData) => {
+      if (!err && userLooksData) {
+        let looksData = {
+          data: userLooksData,
+          userId: id,
+        }
+        dispatch(setUserLooks(looksData));
+        dispatch(hideLoader());
+      }
+    }));
+  };
+}
+
 export function getUserLooks(data):Action {
   return (dispatch) => {
     if(data.page === 1) {

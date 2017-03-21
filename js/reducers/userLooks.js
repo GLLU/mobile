@@ -1,17 +1,37 @@
 import { SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/looks';
 
 const initialState = {
+  userId: -1,
   userLooksData: [],
   currId: -1,
   name: '',
   looksCount: -1,
-  isMyProfile: true
+  isMyProfile: true,
+  meta: {
+    current_page: 1,
+    next_page: null,
+    prev_page: null,
+    total_pages: 1,
+    total_count: 1,
+  },
+  query: {
+    type: 'relevant',
+    category: null,
+    term: '',
+    all: true,
+    page: {
+      size: 10,
+      number: 1
+    }
+  },
 };
 
 export default function (state:State = initialState, action): State {
   switch(action.type){
     case SET_USER_LOOKS:
-        let userLooksData = action.payload.looks.map(look => {
+        console.log('action payload', action.payload);
+        const meta = _.merge(state.meta, action.payload.data.meta);
+        let userLooksData = action.payload.data.looks.map(look => {
           let cover;
           if(look.cover.type === 'video') {
             cover = _.find(look.cover.list, x => x.version == 'large_720');
@@ -40,6 +60,7 @@ export default function (state:State = initialState, action): State {
         }
         return {
           ...state,
+          meta,
           userLooksData,
           currId: action.payload.currId,
           name: state.name,
