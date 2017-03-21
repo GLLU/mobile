@@ -164,7 +164,7 @@ class TabContent extends BaseComponent {
 
   renderImage(img, index) {
     return (
-      <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
+      <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
         <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
       </Image>
     )
