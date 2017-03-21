@@ -88,6 +88,7 @@ class UserLooks extends Component {
   }
 
   _handleItemPress(item) {
+    item.singleItem = true
     this.props.replaceAt('userLookScreen', { key: 'looksScreen', optional: item}, this.props.navigation.key);
   }
 

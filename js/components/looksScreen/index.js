@@ -16,7 +16,7 @@ class LooksScreen extends BasePage {
     super(props);
     this.state = {
       renderScroll: false,
-      showLoader: Platform.OS !== 'ios'
+      showLoader: Platform.OS !== 'ios',
     }
   }
 
@@ -28,17 +28,17 @@ class LooksScreen extends BasePage {
 
   renderLoader() {
     return (
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+      <Image source={{uri: this.props.flatLook.uri}} resizeMode={'cover'} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <Spinner color='#666666'/>
-      </View>
+      </Image>
     )
   }
 
   renderScrollView() {
     return (
     <View>
-      <LooksContainer {...this.props} renderScroll={this.state.renderScroll} removeLoader={() => this.removeLoader()} />
-      {this.state.showLoader ? this.renderLoader() : null}
+      <LooksContainer {...this.props} renderScroll={this.state.renderScroll} removeLoader={() => this.removeLoader()}/>
+      {this.state.showLoader ? this.renderLoader(true) : null}
     </View>
     )
   }
@@ -48,7 +48,7 @@ class LooksScreen extends BasePage {
   }
 
   render() {
-      return this.state.renderScroll ? this.renderScrollView() : this.renderLoader()
+      return this.state.renderScroll ? this.renderScrollView() : this.renderLoader(false)
     }
 }
 

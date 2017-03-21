@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
-import {View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
+import { View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
@@ -47,11 +47,12 @@ class LooksContainer extends BasePage {
       fadeAnimContent: new Animated.Value(0),
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
-      showAsFeed: typeof this.props.flatLook === 'number', // Will check if recieved one object or an index of flatLooksData
+      showAsFeed: !this.props.flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
       width: w,
       height: h,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof this.props.flatLook === 'number',
-      renderScroll: false
+      renderScroll: false,
+      startAnimte: false
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
@@ -60,16 +61,18 @@ class LooksContainer extends BasePage {
     if(this.state.showAsFeed){
       switch (Platform.OS) {
         case 'ios':
-          this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true });
+          this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook.originalIndex, animated: false });
+          this.setState({startAnimte: true})
           break;
         case 'android':
           InteractionManager.runAfterInteractions(() => {
-            _.delay(() => this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook, animated: true }), 0);
+            _.delay(() => this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook.originalIndex, animated: false }), 0);
             _.delay(() => this.props.removeLoader(), 0);
-            console.log('blab',this.props.flatLook )
           });
           break;
       }
+    } else {
+      _.delay(() => this.props.removeLoader(), 0);
     }
   }
 
@@ -199,9 +202,9 @@ class LooksContainer extends BasePage {
           flex: 1,
           backgroundColor: 'transparent',
         }}>
-        <Animated.Image
+        <Image
           resizeMode={'cover'}
-          style={[{opacity: this.state.fadeAnim},styles.itemImage]}
+          style={styles.itemImage}
           source={{uri: look.uri}}
           onLoad={this.onLoad()}>
           <BottomLookContainer
@@ -215,21 +218,12 @@ class LooksContainer extends BasePage {
             isMenuOpen={this.state.isMenuOpen}
             reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           />
-        </Animated.Image>
+        </Image>
       </GestureRecognizer>
     )
   }
 
-  renderLoader() {
-    return (
-      <View style={{height: h, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
-        <Spinner color='#666666'/>
-      </View>
-    )
-  }
-
   render() {
-    console.log('isAnimatingScrollView',this.state.isAnimatingScrollView)
     let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
     return (
       <ScrollView pagingEnabled={false}
@@ -267,6 +261,7 @@ const mapStateToProps = state => {
     flatLooksData: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
+    userLooks: state.userLooks.userLooksData
   };
 };
 

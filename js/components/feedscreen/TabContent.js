@@ -134,7 +134,7 @@ class TabContent extends BaseComponent {
 
   _handleItemPress(item) {
     this.logEvent('Feedscreen', { name: 'Image click' });
-    this.props.navigateTo('looksScreen', 'feedscreen', item.originalIndex);
+    this.props.navigateTo('looksScreen', 'feedscreen', item);
   }
 
   toggleLikeAction(item, isLiked) {

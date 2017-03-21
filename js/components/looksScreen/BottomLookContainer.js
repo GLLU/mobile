@@ -130,7 +130,7 @@ export default class BottomLookContainer extends BaseComponent {
     avatar.imageUri = this.props.look.avatar.url;
     avatar.bodyType = this.props.look.type;
     return (
-      <Animated.View style={{opacity: this.state.fadeAnimContent, marginTop: 0}}>
+      <View style={{ marginTop: 0}}>
         <TouchableOpacity
           transparent
           style={{position: 'absolute', zIndex: 99999, top: 10, left: 10, padding: 5, width: 30, backgroundColor: 'transparent' }}
@@ -162,7 +162,7 @@ export default class BottomLookContainer extends BaseComponent {
           <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                      closeModal={() => this._toggleMenu()}/>
         </Animated.View>
-      </Animated.View>
+      </View>
     )
   }
 }
