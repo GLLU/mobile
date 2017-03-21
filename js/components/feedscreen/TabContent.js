@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
+import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, Platform, Animated } from 'react-native';
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
+import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import Utils from '../../Utils';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 import Video from 'react-native-video';
+
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -40,11 +42,24 @@ class TabContent extends BaseComponent {
       imagesColumn2,
       isLoading: false,
       noMoreData: false,
+      fadeAnim: new Animated.Value(0),
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
     this.showBodyModal = _.once(this._showBodyModal);
     this.layoutWidth = 0;
+  }
+
+  onLoad() {
+    Animated.timing(this.state.fadeAnim, {
+      toValue: 1,
+      duration: 1500
+    }).start();
+  }
+
+  _onShareClicked() {
+    this.logEvent('LookScreen', { name: 'Share click'});
+    SocialShare.nativeShare();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -219,6 +234,11 @@ class TabContent extends BaseComponent {
             onScroll={this.handleScroll.bind(this)}>
           <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5}]}>
             <View style={{flex: 0.5, flexDirection: 'column'}}>
+              <TouchableOpacity onPress={() => this._onShareClicked()}>
+                <View style={{width: deviceWidth/2-5, height: deviceWidth/4, paddingLeft: 0, marginTop: 5, }}>
+                  <Animated.Image onLoad={this.onLoad()} source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}} style={{ opacity: this.state.fadeAnim, width: deviceWidth/2-10, height: deviceWidth/4,  overflow: 'hidden'}} resizeMode={'contain'}/>
+                </View>
+              </TouchableOpacity>
               {this._renderImages(this.state.imagesColumn1)}
             </View>
             <View style={{flex: 0.5, flexDirection: 'column'}}>
