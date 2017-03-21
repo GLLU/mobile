@@ -27,7 +27,7 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    flexDirection: 'row',
+    flexDirection: 'column',
     bottom: Platform.OS === 'ios' ? 80:softMenuBarHeight + statusBarHeight,
     left: 0,
     zIndex: 1,
@@ -53,33 +53,35 @@ export default StyleSheet.create({
   },
   footerButton: {
     flexWrap: 'wrap',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    flexDirection: 'column',
+    padding: 5,
     alignItems: 'center',
+    justifyContent:'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
-    height: 40,
+    minHeight: 45,
+    minWidth: 45
   },
   footerButtonActive: {
     flexWrap: 'wrap',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    flexDirection: 'column',
+    padding: 5,
     alignItems: 'center',
+    justifyContent:'center',
     backgroundColor: 'rgba(0,215,178, 0.75)',
-
-    height: 40,
+    minHeight: 45,
+    minWidth: 45
   },
   footerButtonIcon: {
-    alignSelf: 'center',
-    fontSize: 25,
-    marginRight: 5
+    height: 25,
+    width: 25,
+    resizeMode: 'contain',
+    alignSelf: 'center'
   },
   footerButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    textAlign: 'center'
   },
   horizontalContainer: {
     flexWrap: 'wrap',

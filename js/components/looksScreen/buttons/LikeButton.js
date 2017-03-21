@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Image, TouchableHighlight, StyleSheet, Text } from 'react-native';
 import * as _ from 'lodash'
 import styles from '../styles'
 
-export default class FooterButton extends Component {
+const likeImage = require('../../../../images/like.png');
+const likeClickedImage = require('../../../../images/likeClicked.png');
+
+export default class LikeButton extends Component {
   constructor(props) {
     super(props);
     this._onPress = this._onPress.bind(this);
@@ -11,13 +14,10 @@ export default class FooterButton extends Component {
 
   static propTypes = {
     onPress: React.PropTypes.func,
-    isActive: React.PropTypes.bool,
-    icon: React.PropTypes.any.isRequired,
   };
 
   static defaultProps = {
     onPress: _.noop,
-    isActive: false
   };
 
   _getStyle(isActive) {
@@ -32,8 +32,10 @@ export default class FooterButton extends Component {
   render() {
     return (
       <TouchableHighlight style={{margin:5}} onPress={this._onPress}>
-        <View style={this._getStyle(this.props.isActive)}>
-          <Image source={this.props.icon} style={styles.footerButtonIcon}/>
+        <View style={[styles.footerButton, {flexDirection: 'column'}]}>
+          <Image source={this.props.isLiked ? likeClickedImage : likeImage}
+                 style={[styles.footerButtonIcon,{width: 35, height: 35}]}/>
+          <Text style={styles.footerButtonText}>{this.props.likes}</Text>
         </View>
       </TouchableHighlight>
     );

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import _ from 'lodash'
 import styles from './styles';
-import BottomButton from './bottomButton';
+import ButtonsBar from './buttons/ButtonsBar';
 import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
 import DescriptionView from './DescriptionView'
@@ -140,7 +140,7 @@ export default class BottomLookContainer extends BaseComponent {
               {this._renderBuyItButtons(this.props.look)}
               {this._renderCommentsView(this.state.isCommentsActive)}
               {this._renderDescriptionView(this.state.isDescriptionActive)}
-              <BottomButton
+              <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
                 hasDescription={!_.isEmpty(this.props.look.description)}

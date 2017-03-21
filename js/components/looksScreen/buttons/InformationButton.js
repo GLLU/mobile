@@ -8,9 +8,6 @@ const infoIcon = require('../../../../images/infoIcon.png');
 export default class InformationButton extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isActive: this.props.isActive
-    }
   }
 
   static propTypes = {
