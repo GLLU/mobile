@@ -68,7 +68,6 @@ class TabContent extends BaseComponent {
   }
 
   distributeImages(looks) {
-    console.log('flatlooks',looks)
     const imagesColumn1 = [];
     const imagesColumn2 = [];
     const colW = (deviceWidth - 10) / 2;
@@ -117,7 +116,7 @@ class TabContent extends BaseComponent {
         }).catch(err => {
           console.log('error', err);
           this.setState({isLoading: false});
-        });  
+        });
       });
     } else {
       this.setState({noMoreData: true})
@@ -149,14 +148,20 @@ class TabContent extends BaseComponent {
     }
   }
 
+  getProgress() {
+    console.log('Video is still playing')
+  }
+
   renderVideo(img, index) {
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1}} >
         <Video source={{uri: img.uri,mainVer: 1, patchVer: 0}}
                resizeMode={'contain'}
                muted={true}
-               style={{width: img.width - 5, height: img.height}}
-               repeat={true} />
+               style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
+               repeat={false}
+               onProgress={this.getProgress()}
+        />
         <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
       </View>
     )
@@ -190,7 +195,6 @@ class TabContent extends BaseComponent {
         if (this.state.isLoading) {
           return <Spinner color='rgb(230,230,230)'/>;
         }
-
         return null;
       })()}
       </View>);
@@ -204,7 +208,6 @@ class TabContent extends BaseComponent {
         </View>
       );  
     }
-    
   }
 
   render() {

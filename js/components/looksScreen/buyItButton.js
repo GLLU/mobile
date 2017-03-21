@@ -84,7 +84,6 @@ class BuyItButton extends Component {
   render() {
     const title = this.getTitle();
     const {positionTop, positionLeft, currency, price, btnText, width, height} = this.props;
-    console.log('buyItButton render', positionTop * height, positionLeft * width, positionTop, positionLeft, currency, price, width, height);
     return (
       <TouchableWithoutFeedback onPress={this.handleOpenLink}>
         <View
