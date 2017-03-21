@@ -3,13 +3,11 @@ import { SET_USER_DATA, SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/p
 const initialState = {
   userId: -1,
   userLooksData: [],
-  currId: -1,
   name: '',
-  looksCount: -1,
-  isMyProfile: true,
   user: {
     id: -1,
     name: '',
+    username: '',
   },
   meta: {
     current_page: 1,
@@ -33,10 +31,10 @@ const initialState = {
 export default function (state:State = initialState, action): State {
   switch(action.type){
     case SET_USER_DATA:
-      console.log('reducer SET_USER_DATA', action.payload)
       return {
         ...state,
         user: action.payload.user,
+        userId: action.payload.user.id,
       };
     case SET_USER_LOOKS:
         console.log('action payload', action.payload);
@@ -72,17 +70,13 @@ export default function (state:State = initialState, action): State {
           ...state,
           meta,
           userLooksData,
-          currId: action.payload.currId,
           name: state.name,
-          looksCount: state.looksCount,
-          isMyProfile: state.isMyProfile,
+          userId: action.payload.userId,
         };
     case SET_USER_LOOKS_DATA:
       return {
         ...state,
         name: action.payload.name,
-        looksCount: action.payload.looksCount,
-        isMyProfile: action.payload.isMyProfile,
       };
     default:
       return state

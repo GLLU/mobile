@@ -59,8 +59,8 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  isMyProfile: state.profile.isMyProfile,
-  userName: state.profile.name,
+  isMyProfile: state.user.id == state.profile.userId,
+  userName: state.profile.user.username,
   looksCount: state.profile.meta.total_count,
 });
 

@@ -52,18 +52,6 @@ export function getUserLooks(id, query = {}):Action {
   };
 }
 
-export function getUserLooksData(data):Action {
-  return (dispatch) => {
-    let looksData = {
-      currId: data.id,
-      name: data.name,
-      looksCount: data.looksCount,
-      isMyProfile: data.isMyProfile
-    }
-    dispatch(setUserLooksData(looksData));
-  };
-}
-
 export function reportAbuse(look_id):Action {
   const data = { look_id }
   return (dispatch) => {

@@ -27,7 +27,6 @@ const toSettings = require('../../../images/icons/um.png');
 
 class ProfileScreen extends BasePage {
   static propTypes = {
-    userData: React.PropTypes.object,
     navigation: React.PropTypes.object,
     myUser: React.PropTypes.object,
     stats: React.PropTypes.object,
@@ -152,7 +151,10 @@ class ProfileScreen extends BasePage {
   handleFollowingPress(stat) {
     this.logEvent('ProfileScreen', {name: 'Following click'});
     this.props.navigateTo('followScreen', 'profileScreen', {
-      user: {id: this.props.userId, name:this.props.userData.name},
+      user: {
+        id: this.props.userId,
+        name: this.props.user.name
+      },
       isMyProfile: this.props.isMyProfile,
       mode: stat.type,
       count: stat.count
@@ -162,7 +164,10 @@ class ProfileScreen extends BasePage {
   handleFollowersPress(stat) {
     this.logEvent('ProfileScreen', {name: 'Followers click'});
     this.props.navigateTo('followerScreen', 'profileScreen', {
-      user: {id: this.props.userId, name:this.props.userData.name},
+      user: {
+        id: this.props.userId,
+        name:this.props.user.name
+      },
       isMyProfile: this.props.isMyProfile,
       mode: stat.type,
       count: stat.count
@@ -199,7 +204,7 @@ class ProfileScreen extends BasePage {
                   userid={this.props.userId}
                   name={user.name}
                   username={user.username}
-                  isMyProfile={this.props.isMyProfile}
+                  isMyProfile={isMyProfile}
                   is_following={this.state.is_following}
                   onFollowPress={this.toggleFollow.bind(this)}
                 /> : null }
@@ -247,7 +252,6 @@ const mapStateToProps = state => {
     stats: state.stats,
     hasUserSize,
     user_size: user_size,
-    currLookScreenId: state.profile.currId,
   };
 };
 
