@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, Linking, Platform } from 'react-native';
+import { Image, Linking, Platform, AppState, Dimensions } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -11,7 +11,7 @@ import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
 import Video from 'react-native-video';
-
+const deviceWidth = Dimensions.get('window').width;
 const { navigateTo } = actions;
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
@@ -48,7 +48,8 @@ const SignUpEmailButton = MKButton.coloredFlatButton()
     borderRadius: 4,
     borderColor: MKColor.Teal,
     borderWidth: 2,
-    marginBottom: 10
+    marginBottom: 10,
+    width: deviceWidth-80
   })
   .withText('Signup with Email')
   .build();
@@ -68,12 +69,32 @@ class SplashPage extends BasePage {
     super(props);
     this.state = {
       name: '',
+      repeat: true
     };
   }
 
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
 
   pushRoute(route) {
       this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    switch(nextAppState) {
+      case 'inactive':
+        this.setState({repeat: false})
+        break;
+      case 'active':
+        this.setState({repeat: true})
+        this._root.seek(1)
+        break;
+    }
   }
 
   connectWithFB() {
@@ -164,7 +185,9 @@ class SplashPage extends BasePage {
                      resizeMode="stretch"
                      muted={true}
                      style={styles.videoBackground}
-                     repeat={true} />
+                     repeat={this.state.repeat}
+                     ref={component => this._root = component}
+                      />
               <Image source={backgroundShadow} style={styles.bgShadow} />
               <View style={styles.logoContainer}>
                 <Image source={logo} style={styles.logo} />
