@@ -39,8 +39,8 @@ export default class DescriptionView extends Component {
           <Text style={styles.descriptionStyle}>
             {this.props.description}
           </Text>
+          <View style={{height:25}}/>
         </View>
-        <View style={{height:120}}/>
       </BottomDrawerModal>
     );
   }

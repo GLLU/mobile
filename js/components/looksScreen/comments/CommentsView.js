@@ -131,7 +131,6 @@ class CommentsView extends Component {
         <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count==0} comments={this.props.comments}
                           onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
-        <View style={{height:120}}/>
       </BottomDrawerModal>
     );
   }

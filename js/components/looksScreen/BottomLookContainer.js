@@ -138,8 +138,6 @@ export default class BottomLookContainer extends BaseComponent {
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
             <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column'}]}>
               {this._renderBuyItButtons(this.props.look)}
-              {this._renderCommentsView(this.state.isCommentsActive)}
-              {this._renderDescriptionView(this.state.isDescriptionActive)}
               <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
@@ -152,7 +150,8 @@ export default class BottomLookContainer extends BaseComponent {
                 toggleMenu={() => this._toggleMenu()}/>
             </View>
           </TouchableWithoutFeedback>
-
+          {this._renderCommentsView(this.state.isCommentsActive)}
+          {this._renderDescriptionView(this.state.isDescriptionActive)}
           <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                      closeModal={() => this._toggleMenu()}/>
         </Animated.View>
