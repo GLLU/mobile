@@ -131,7 +131,7 @@ class AppNavigator extends Component {
       case 'userLookScreen':
         return <UserLookScreen userId={optional.id} />;
       case 'profileScreen':
-        return <ProfileScreen key={props.scene.route.optional.user_id} userData={props.scene.route.optional}/>;
+        return <ProfileScreen userId={optional.userId} key={props.scene.route.optional.user_id} userData={props.scene.route.optional}/>;
       case 'followScreen':
         return <FollowScreen userData={props.scene.route.optional}/>;
       case 'followerScreen':

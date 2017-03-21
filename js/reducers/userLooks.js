@@ -1,4 +1,4 @@
-import { SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/looks';
+import { SET_USER_DATA, SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/looks';
 
 const initialState = {
   userId: -1,
@@ -7,6 +7,10 @@ const initialState = {
   name: '',
   looksCount: -1,
   isMyProfile: true,
+  user: {
+    id: -1,
+    name: '',
+  },
   meta: {
     current_page: 1,
     next_page: null,
@@ -28,6 +32,12 @@ const initialState = {
 
 export default function (state:State = initialState, action): State {
   switch(action.type){
+    case SET_USER_DATA:
+      console.log('reducer SET_USER_DATA', action.payload)
+      return {
+        ...state,
+        user: action.payload.user,
+      };
     case SET_USER_LOOKS:
         console.log('action payload', action.payload);
         const meta = _.merge(state.meta, action.payload.data.meta);

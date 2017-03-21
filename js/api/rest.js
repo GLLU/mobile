@@ -24,7 +24,7 @@ export default reduxApi({
     crud: true,
   },
   users: {
-    url: '/users',
+    url: '/users/:id',
     crud: true,
   },
   size: {
