@@ -26,19 +26,9 @@ export function getUser(id) {
   };
 }
 
-export function getLook(lookId):Action {
-  return (dispatch) => {
-    return dispatch(rest.actions.look({id: lookId},{}, (err, screenLookData) => {
-      if (!err && screenLookData) {
-        dispatch(setLookData(screenLookData));
-      }
-    }));
-  };
-}
-
-export function getUserLooksById(id, query = {}):Action {
+export function getUserLooks(id, query = {}):Action {
   return (dispatch, getState) => {
-    const state = getState().userLooks;
+    const state = getState().profile;
     const newState = Object.assign({}, state.query, query, {
       page: {
         size: 10,
@@ -54,24 +44,6 @@ export function getUserLooksById(id, query = {}):Action {
         let looksData = {
           data: userLooksData,
           userId: id,
-        }
-        dispatch(setUserLooks(looksData));
-        dispatch(hideLoader());
-      }
-    }));
-  };
-}
-
-export function getUserLooks(data):Action {
-  return (dispatch) => {
-    if(data.page === 1) {
-      dispatch(showLoader());
-    }
-    return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
-      if (!err && userLooksData) {
-        let looksData = {
-          looks: userLooksData.looks,
-          currId: data.id,
         }
         dispatch(setUserLooks(looksData));
         dispatch(hideLoader());

@@ -4,17 +4,21 @@ import {View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView,
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import { likeUpdate, unLikeUpdate } from '../../actions/likes';
-import { loadMore, replaceAt } from '../../actions';
-import { reportAbuse } from '../../actions/looks';
+import {
+  likeUpdate,
+  unLikeUpdate,
+  loadMore,
+  replaceAt,
+  reportAbuse,
+  navigateTo,
+  popRoute,
+  pushRoute,
+} from '../../actions/';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
-const { popRoute, pushRoute } = actions
 const LOADER_HEIGHT = 30;
 
 class LooksScreen extends BasePage {

@@ -1,4 +1,4 @@
-import { SET_USER_DATA, SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/looks';
+import { SET_USER_DATA, SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/profile';
 
 const initialState = {
   userId: -1,
@@ -65,7 +65,7 @@ export default function (state:State = initialState, action): State {
             state: look.state,
           });
         });
-        if(action.payload.currId === state.currId){
+        if (meta.current_page > 1) {
           userLooksData.unshift(...state.userLooksData)
         }
         return {

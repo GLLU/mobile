@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { Container, Content, Header, View, Icon, Title, Button, Text } from 'native-base';
 import styles from './styles';
 import {
-  getUserLooksData,
-  getUserLooksById,
   popRoute
 } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -30,10 +28,6 @@ class UserLookScreen extends BasePage {
     this.props.popRoute(this.props.navigation.key);
   }
 
-  componentWillMount() {
-    this.props.getUserLooksById(this.props.userId);
-  }
-
   render() {
     return (
       <Container style={styles.container} theme={glluTheme}>
@@ -49,7 +43,6 @@ class UserLookScreen extends BasePage {
         <Content scrollEnabled={false}>
           <View>
             <UserLooks
-              userLooks={this.props.userLooks}
               userId={this.props.userId} />
           </View>
         </Content>
@@ -61,18 +54,14 @@ class UserLookScreen extends BasePage {
 function bindActions(dispatch) {
   return {
     popRoute: key => dispatch(popRoute(key)),
-    getUserLooksData: name => dispatch(getUserLooksData(name)),
-    getUserLooksById: (id, query) => dispatch(getUserLooksById(id, query)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  currLookScreenId: state.userLooks.currId,
-  userLooks: state.userLooks.userLooksData,
-  isMyProfile: state.userLooks.isMyProfile,
-  userName: state.userLooks.name,
-  looksCount: state.userLooks.meta.total_count
+  isMyProfile: state.profile.isMyProfile,
+  userName: state.profile.name,
+  looksCount: state.profile.meta.total_count,
 });
 
 export default connect(mapStateToProps, bindActions)(UserLookScreen);
