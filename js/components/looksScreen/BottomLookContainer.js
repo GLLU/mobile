@@ -20,16 +20,27 @@ import LookHeader from './LookHeader'
 
 
 export default class BottomLookContainer extends BaseComponent {
+
   static propTypes = {
     look: React.PropTypes.object,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
+    isMenuOpen: React.PropTypes.bool,
     tempPopRoute: React.PropTypes.func,
     goToProfile: React.PropTypes.func,
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
-    isMenuOpen: React.PropTypes.bool,
+    onBottomDrawerOpen: React.PropTypes.func,
+  };
+
+  static defaultProps = {
+    tempPopRoute: _.noop,
+    goToProfile: _.noop,
+    toggleLike: _.noop,
+    toggleMenu: _.noop,
+    reportAbuse: _.noop,
+    onBottomDrawerOpen: _.noop,
   };
 
   constructor(props) {
@@ -67,6 +78,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _toggleDescription(shouldActive) {
+    this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isDescriptionActive: shouldActive, isCommentsActive: false})
   }
 
@@ -96,6 +108,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _toggleComments(shouldActive) {
+    this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
   }
 
