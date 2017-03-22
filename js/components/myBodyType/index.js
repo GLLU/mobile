@@ -83,7 +83,7 @@ class MyBodyType extends BasePage {
         <Content>
           <View style={styles.container}>
             <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
-              sneak={100} initialPage={this.props.currentIndex}
+              sneak={100} initialPage={this.props.currentIndex ? this.props.currentIndex : 3}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
                 {this.props.bodyTypes[this.props.gender].map((img, i) => {
                   const isActive = i === this.props.currentIndex;
