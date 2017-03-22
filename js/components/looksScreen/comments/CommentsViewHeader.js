@@ -3,7 +3,8 @@ import { Animated, View, Text, TouchableHighlight, StyleSheet } from 'react-nati
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    height:40,
     flexDirection: 'row',
     backgroundColor: '#f2f2f2'
   },

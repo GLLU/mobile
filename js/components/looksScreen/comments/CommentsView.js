@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import {noop} from 'lodash'
 import * as _ from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentsListView from './CommentsListView'
+import BottomDrawerModal from '../common/BottomDrawerModal'
 
 import { replaceAt, getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
 
@@ -53,16 +55,18 @@ class CommentsView extends Component {
 
   static propTypes = {
     style: React.PropTypes.any,
-    isHidden: React.PropTypes.bool,
+    isOpen: React.PropTypes.bool,
     comments: React.PropTypes.array,
     count: React.PropTypes.number,
-    look_id: React.PropTypes.number
+    look_id: React.PropTypes.number,
+    onRequestClose: React.PropTypes.func
   };
 
   static defaultProps = {
     style: {},
-    isHidden: true,
+    isOpen: false,
     comments: [],
+    onRequestClose: noop
   };
 
   constructor(props) {
@@ -79,15 +83,6 @@ class CommentsView extends Component {
     };
   }
 
-  componentDidUpdate() {
-    if (this.props.isHidden) {
-      this._animateHide()
-    }
-    else {
-      this._animateShow()
-    }
-  }
-
   componentWillMount(){
     this.getCommentsData();
   }
@@ -99,26 +94,6 @@ class CommentsView extends Component {
   getCommentsData() {
     this.props.getLookCommentsData(this.props.look_id, this.currentPageIndex);
     this.currentPageIndex++;
-  }
-
-  _animateShow() {
-    Animated.spring(          // Uses easing functions
-      this.state.fadeAnimContent,    // The value to drive
-      {
-        toValue: 0,
-        friction: 9
-      }            // Configuration
-    ).start();
-  }
-
-  _animateHide() {
-    Animated.spring(          // Uses easing functions
-      this.state.fadeAnimContent,    // The value to drive
-      {
-        toValue: -500,
-        friction: 9
-      }            // Configuration
-    ).start();
   }
 
   _pushComment(value) {
@@ -143,7 +118,7 @@ class CommentsView extends Component {
 
   _renderFooter() {
     return (
-      <View style={{paddingBottom: 10,paddingTop: 10,flex: 2,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
+      <View style={{paddingBottom: 10,paddingTop: 10,height:60,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
         <CommentInput onSendPress={this._pushComment}/>
       </View>
     );
@@ -151,13 +126,12 @@ class CommentsView extends Component {
 
   render() {
     return (
-      <Animated.View style={[{bottom: this.state.fadeAnimContent},this.props.style,styles.container]}>
+      <BottomDrawerModal {...this.props}>
         <CommentsViewHeader count={this.state.count}/>
         <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count==0} comments={this.props.comments}
                           onEndReached={this.getCommentsData}/>
         {this._renderFooter()}
-        <View style={{height:110}}/>
-      </Animated.View>
+      </BottomDrawerModal>
     );
   }
 }

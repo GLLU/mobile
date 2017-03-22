@@ -70,7 +70,7 @@ class menuModal extends Component {
   }
 
   _onShareClicked() {
-    SocialShare.facebookShare();
+    SocialShare.nativeShare();
   }
 
   _reportAbuse() {
@@ -92,8 +92,8 @@ class menuModal extends Component {
           style={styles.optionBtn}
         >
           <View style={styles.optionInnerContainer}>
-            <Icon name="facebook-with-circle" style={[styles.optionIcon, { color: '#4267b2' }]} />
-            <Text style={styles.optionText}>Share on Facebook</Text>
+            <Icon name="share" style={[styles.optionIcon, { color: '#000000' }]} />
+            <Text style={styles.optionText}>Share</Text>
           </View>
         </TouchableHighlight>
         <View style={styles.optionSeparetor} />

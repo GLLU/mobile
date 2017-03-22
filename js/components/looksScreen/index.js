@@ -4,6 +4,13 @@ import {View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView,
 import Spinner from '../loaders/Spinner';
 import LooksContainer from './looksContainer';
 import { actions } from 'react-native-navigation-redux-helpers';
+import navigateTo from '../../actions/sideBarNav';
+import Video from 'react-native-video';
+
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height
+const w = Dimensions.get('window').width;
+const { popRoute, pushRoute } = actions
+const LOADER_HEIGHT = 30;
 
 class LooksScreen extends BasePage {
   static propTypes = {

@@ -1,8 +1,10 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
-const w = Dimensions.get('window').width
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const width = Dimensions.get('window').width
+const softMenuBarHeight=ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
+const statusBarHeight=ExtraDimensions.get('STATUS_BAR_HEIGHT');
+const height = Platform.OS === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - softMenuBarHeight + statusBarHeight
 
 export default StyleSheet.create({
   container: {},
@@ -10,8 +12,8 @@ export default StyleSheet.create({
     position: 'absolute', width: 50, height: 50, backgroundColor: 'green'
   },
   itemImage: {
-    width: w,
-    height: h,
+    width: width,
+    height: height,
   },
   descriptionStyle: {
     flexDirection: 'row',
@@ -26,11 +28,11 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    flexDirection: 'row',
-    bottom: 20,
-    left: 0,
+    flexDirection: 'column',
+    bottom: 0,
+    right: 0,
     zIndex: 1,
-    width: w,
+    width: width,
   },
   videoBackground: {
     position: 'absolute',
@@ -39,7 +41,7 @@ export default StyleSheet.create({
     bottom: 0,
     right: 0,
     width: null,
-    height: h - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+    height: height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
   },
   bottomLeft: {
     left: 10
@@ -51,33 +53,37 @@ export default StyleSheet.create({
   },
   footerButton: {
     flexWrap: 'wrap',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    flexDirection: 'column',
+    padding: 5,
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-
-    height: 40,
+    justifyContent:'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    minHeight: 45,
+    minWidth: 45,
+    borderRadius: 10,
   },
   footerButtonActive: {
     flexWrap: 'wrap',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    flexDirection: 'column',
+    padding: 5,
     alignItems: 'center',
+    justifyContent:'center',
     backgroundColor: 'rgba(0,215,178, 0.75)',
-
-    height: 40,
+    minHeight: 45,
+    minWidth: 45,
+    borderRadius: 10,
   },
   footerButtonIcon: {
-    alignSelf: 'center',
-    fontSize: 25,
-    marginRight: 5
+    height: 25,
+    width: 25,
+    resizeMode: 'contain',
+    alignSelf: 'center'
   },
   footerButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    textAlign: 'center'
   },
   horizontalContainer: {
     flexWrap: 'wrap',
@@ -121,12 +127,11 @@ export default StyleSheet.create({
     backgroundColor: 'transparent'
   },
   lookInfo: {
-    height: h - 35,
-    justifyContent: 'space-between'
+    height: height,
   },
   buyItContainer: {
     position: 'absolute',
-    height: h,
+    height: height,
     top: 0
   },
   menuIcon: {
@@ -136,6 +141,7 @@ export default StyleSheet.create({
   bottomDrawerView: {
     position: 'absolute',
     left: 0,
-    right: 0
+    right: 0,
+    bottom: 0
   }
 });
