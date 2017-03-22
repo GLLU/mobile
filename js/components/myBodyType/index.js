@@ -38,10 +38,6 @@ class MyBodyType extends BasePage {
     gender: React.PropTypes.string
   }
 
-  componentDidMount() {
-    console.log('props: ',this.props)
-  }
-
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
