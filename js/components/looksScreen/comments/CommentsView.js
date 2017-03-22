@@ -87,10 +87,6 @@ class CommentsView extends Component {
     this.getCommentsData();
   }
 
-  componentWillUnmount() {
-    this.props.initLookComments();
-  }
-
   getCommentsData() {
     this.props.getLookCommentsData(this.props.look_id, this.currentPageIndex);
     this.currentPageIndex++;
