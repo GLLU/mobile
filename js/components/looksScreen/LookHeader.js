@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.os === 'ios' ? 30 : 10,
     paddingBottom: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'transparent',
     height: Platform.os === 'ios' ? 80 : 70,
   },
   row: {
