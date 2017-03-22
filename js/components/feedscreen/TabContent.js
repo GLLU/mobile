@@ -219,11 +219,18 @@ class TabContent extends BaseComponent {
   _renderLoading() {
     if (this.props.reloading) {
       return (
-        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
+        <View style={styles.spinnerContainer}>
           <Spinner color='#666666'/>
         </View>
       );
     }
+  }
+
+  _renderRefreshingCover() {
+    return(
+      this.state.isRefreshing &&
+        <View style={styles.refreshingCover}/>
+    )
   }
 
   _renderRefreshControl() {
@@ -277,6 +284,7 @@ class TabContent extends BaseComponent {
             </View>
           </View>
           {this._renderLoadMore()}
+          {this._renderRefreshingCover()}
         </ScrollView>
         {this._renderLoading()}
       </View>
@@ -297,6 +305,28 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 5,
   },
+  spinnerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent'
+  },
+  refreshingCover: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  }
 });
 
 function bindActions(dispatch) {
