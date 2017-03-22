@@ -59,7 +59,8 @@ export default StyleSheet.create({
     justifyContent:'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     minHeight: 45,
-    minWidth: 45
+    minWidth: 45,
+    borderRadius: 10,
   },
   footerButtonActive: {
     flexWrap: 'wrap',
@@ -69,7 +70,8 @@ export default StyleSheet.create({
     justifyContent:'center',
     backgroundColor: 'rgba(0,215,178, 0.75)',
     minHeight: 45,
-    minWidth: 45
+    minWidth: 45,
+    borderRadius: 10,
   },
   footerButtonIcon: {
     height: 25,

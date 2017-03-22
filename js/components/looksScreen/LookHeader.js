@@ -61,15 +61,17 @@ class LookHeader extends Component {
       <View style={[styles.container, styles.column]}>
         { Platform.OS === 'ios' ? <View style={{height: 40}}/> : null}
         <View style={[styles.header, styles.row]}>
-          <TouchableOpacity style={{flex: 2, justifyContent: 'center', flexDirection: 'row'}}
+          <View style={{flex: 1}} name="spacer"/>
+          <TouchableOpacity style={{flex: 4, justifyContent: 'center', flexDirection: 'row', backgroundColor:'rgba(255,255,255,0.5)', borderRadius:25}}
                             onPress={this.props.onBackNavigationPress}>
             <Icon style={styles.backBtn} name="ios-arrow-back"/>
           </TouchableOpacity>
-          <View style={{flex: 12}} name="spacer"/>
-          <TouchableOpacity style={{flex: 2, justifyContent: 'center', flexDirection: 'row'}}
+          <View style={{flex: 24}} name="spacer"/>
+          <TouchableOpacity style={{flex: 4, justifyContent: 'center', flexDirection: 'row'}}
                             onPress={this.props.onProfileAvatarPress}>
             <Image source={this.props.avatar} style={styles.avatar} name="ios-arrow-back"/>
           </TouchableOpacity>
+          <View style={{flex: 1}} name="spacer"/>
         </View>
       </View>
     );
