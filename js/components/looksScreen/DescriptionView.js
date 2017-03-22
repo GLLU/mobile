@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     color: "black",
-    fontSize: 16
+    fontSize: 16,
   }
 
 });

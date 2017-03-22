@@ -17,7 +17,8 @@ export default StyleSheet.create({
   },
   descriptionStyle: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: 20
   },
   topLeft: {
     left: 10
@@ -39,7 +40,6 @@ export default StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    flex: 1,
     width: null,
     height: height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
   },

@@ -19,7 +19,6 @@ import BaseComponent from '../common/BaseComponent';
 import LookHeader from './LookHeader'
 
 
-
 export default class BottomLookContainer extends BaseComponent {
   static propTypes = {
     look: React.PropTypes.object,
@@ -129,14 +128,14 @@ export default class BottomLookContainer extends BaseComponent {
       }            // Configuration
     ).start();
     return (
-      <Animated.View style={{opacity: this.state.fadeAnimContent}}>
+      <View style={{marginTop: 0}}>
         <LookHeader
           avatar={{uri: this.props.look.avatar.url}}
           onBackNavigationPress={this.props.tempPopRoute}
           onProfileAvatarPress={() => this.props.goToProfile(this.props.look)}/>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-            <View style={[styles.lookInfo,{flexGrow: 1, flexDirection: 'column'}]}>
+            <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
               {this._renderBuyItButtons(this.props.look)}
               <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
@@ -155,7 +154,7 @@ export default class BottomLookContainer extends BaseComponent {
           <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                      closeModal={() => this._toggleMenu()}/>
         </Animated.View>
-      </Animated.View>
+      </View>
     )
   }
 }
