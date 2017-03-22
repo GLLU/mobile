@@ -77,7 +77,6 @@ class MyBodyType extends BasePage {
   }
 
   render() {
-    console.log('currIndex',this.props.currentIndex)
     return (
       <Container theme={glluTheme}>
         <Header style={styles.header}>
