@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import {
   View,
-  StyleSheet,
-  Platform
+  StyleSheet
 } from 'react-native';
 import * as _ from 'lodash'
-import SocialShare from '../../../lib/social';
 import InformationButton from './InformationButton'
 import CommentsButton from './CommentsButton'
-import ShareButton from './ShareButton'
 import MenuButton from './MenuButton'
 import LikeButton from './LikeButton'
 import BaseComponent from '../../common/BaseComponent';
@@ -87,11 +84,6 @@ export default class ButtonsBar extends BaseComponent {
     this.props.toggleComments(...arguments);
   }
 
-  _onShareClicked() {
-    this.logEvent('LookScreen', {name: 'Share click'});
-    SocialShare.nativeShare();
-  }
-
   _onMenuClicked() {
     this.logEvent('LookScreen', {name: 'Menu click'});
     this.props.toggleMenu();
@@ -109,7 +101,6 @@ export default class ButtonsBar extends BaseComponent {
         <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onPress={() => this._onLikeClicked()}/>
         { this._renderInformationButton(this.props.hasDescription) }
         <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
-        <ShareButton onPress={() => this._onShareClicked()}/>
         <MenuButton onPress={() => this._onMenuClicked()}/>
       </View>
     )
