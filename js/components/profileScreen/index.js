@@ -4,22 +4,29 @@ import { Image, Animated, InteractionManager, TouchableOpacity, Text, } from 're
 import styles from './styles';
 import { Container, Content, View, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import ItemsGallery  from './ItemsGallery';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData, getUserLooks } from '../../actions';
+import {
+  getUser,
+  getStats,
+  getUserBodyType,
+  addNewLook,
+  navigateTo,
+  getUserLooksData,
+  getUserLooks,
+  popRoute,
+  pushRoute,
+} from '../../actions';
 import _ from 'lodash';
 import SelectPhoto from '../common/SelectPhoto';
 const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
-const {popRoute} = actions;
 
 class ProfileScreen extends BasePage {
   static propTypes = {
-    userData: React.PropTypes.object,
     navigation: React.PropTypes.object,
     myUser: React.PropTypes.object,
     stats: React.PropTypes.object,
@@ -33,14 +40,11 @@ class ProfileScreen extends BasePage {
 
   constructor(props) {
     super(props);
-    const isMyProfile = this.props.userData.id === this.props.myUser.id || this.props.userData.user_id === this.props.myUser.id;
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.state = {
-      isMyProfile,
-      isFollowing: this.props.userData.is_following,
-      userId: isMyProfile ? this.props.myUser.id : this.props.userData.user_id,
+      is_following: props.user.is_following,
       photoModal: false
     }
   }
@@ -56,7 +60,8 @@ class ProfileScreen extends BasePage {
   }
 
   componentWillMount() {
-    this.props.getStats(this.state.userId);
+    this.props.getUser(this.props.userId);
+    this.props.getStats(this.props.userId);
   }
 
   handleSettingsPress() {
@@ -69,14 +74,14 @@ class ProfileScreen extends BasePage {
   }
 
   _renderleftBtn() {
-    return this.state.isMyProfile ?
+    return this.props.isMyProfile ?
       <Image source={toFeedScreen} style={styles.toFeedScreenBtn}/>
       :
       <Icon style={styles.backBtn} name="ios-arrow-back"/>
   }
 
   _renderRightBtn() {
-    return this.state.isMyProfile ?
+    return this.props.isMyProfile ?
       <TouchableOpacity onPress={this.handleSettingsPress.bind(this)}>
         <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn}/>
       </TouchableOpacity>
@@ -94,23 +99,7 @@ class ProfileScreen extends BasePage {
   }
 
   _handleItemsPress() {
-    const {myUser, userData} = this.props;
-    const user = this.state.isMyProfile ? myUser : userData;
-    if (this.state.userId !== this.props.currLookScreenId) { //here for performance - relate to user looks screen
-      const looksCall = {
-        id: this.state.userId,
-        page: 1,
-      }
-      const looksDataCall = {
-        id: this.state.userId,
-        name: user.name,
-        looksCount: this.props.stats.looks_count,
-        isMyProfile: this.state.isMyProfile
-      }
-      this.props.getUserLooks(looksCall);
-      this.props.getUserLooksData(looksDataCall);
-    }
-    this.props.navigateTo('userLookScreen', 'feedscreen');
+    this.props.pushRoute({key: 'userLookScreen', optional: { id: this.props.userId }}, this.props.navigation.key);
   }
 
   goToAddNewItem(imagePath) {
@@ -129,18 +118,19 @@ class ProfileScreen extends BasePage {
     this.setState({photoModal: false});
   }
 
-  toggleFollow(isFollowing) {
-    this.logEvent('ProfileScreen', {name: 'Follow click', isFollowing});
-    this.setState({isFollowing: isFollowing});
-    this.props.getStats(this.state.userId);
+  toggleFollow(is_following) {
+    this.logEvent('ProfileScreen', {name: 'Follow click', is_following});
+    this.setState({is_following: is_following}, ()  => {
+      this.props.getStats(this.props.userId);  
+    });
   }
 
   _renderStats() {
 
-    if (this.props.stats.latest_looks && this.props.stats.user_id === this.state.userId) {
+    if (this.props.stats.latest_looks && this.props.stats.user_id === this.props.userId) {
       return (
         <View>
-          <ItemsGallery isMyProfile={this.state.isMyProfile}
+          <ItemsGallery isMyProfile={this.props.isMyProfile}
                         latest_looks={this.props.stats.latest_looks}
                         looksCount={this.props.stats.looks_count}
                         itemPress={(item) => this._handleItemPress(item) }
@@ -162,8 +152,11 @@ class ProfileScreen extends BasePage {
   handleFollowingPress(stat) {
     this.logEvent('ProfileScreen', {name: 'Following click'});
     this.props.navigateTo('followScreen', 'profileScreen', {
-      user: {id: this.state.userId, name:this.props.userData.name},
-      isMyProfile: this.state.isMyProfile,
+      user: {
+        id: this.props.userId,
+        name: this.props.user.name
+      },
+      isMyProfile: this.props.isMyProfile,
       mode: stat.type,
       count: stat.count
     });
@@ -172,8 +165,11 @@ class ProfileScreen extends BasePage {
   handleFollowersPress(stat) {
     this.logEvent('ProfileScreen', {name: 'Followers click'});
     this.props.navigateTo('followerScreen', 'profileScreen', {
-      user: {id: this.state.userId, name:this.props.userData.name},
-      isMyProfile: this.state.isMyProfile,
+      user: {
+        id: this.props.userId,
+        name:this.props.user.name
+      },
+      isMyProfile: this.props.isMyProfile,
       mode: stat.type,
       count: stat.count
     });
@@ -185,9 +181,8 @@ class ProfileScreen extends BasePage {
   }
 
   render() {
-    const {isMyProfile} = this.state;
-    const {myUser, userData} = this.props;
-    const user = isMyProfile ? myUser : userData;
+    const { isMyProfile, user } = this.props;
+    console.log('profileScreen render', user);
     let about_me = user.about_me;
     let avatar = user.avatar;
     if (!_.isEmpty(user)) {
@@ -196,20 +191,23 @@ class ProfileScreen extends BasePage {
         <Container>
           <Content>
           <Image source={profileBackground} style={styles.bg}>
-            <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
-                            style={[styles.linearGradient, {opacity: 0.7}]}/>
+            <LinearGradient
+              colors={['#0C0C0C', '#4C4C4C']}
+              style={[styles.linearGradient, {opacity: 0.7}]}
+            />
             <View style={styles.header}>
               <TouchableOpacity transparent onPress={this.handleBackToFeedPress.bind(this)} style={styles.headerBtn}>
                 { this._renderleftBtn() }
               </TouchableOpacity>
               { avatarUrl ?
-                <ProfileView profilePic={avatarUrl}
-                             userid={this.state.userId}
-                             name={user.name}
-                             username={user.username}
-                             isMyProfile={this.state.isMyProfile}
-                             isFollowing={this.state.isFollowing}
-                             onFollowPress={this.toggleFollow.bind(this)}
+                <ProfileView
+                  profilePic={avatarUrl}
+                  userid={this.props.userId}
+                  name={user.name}
+                  username={user.username}
+                  isMyProfile={isMyProfile}
+                  is_following={this.state.is_following}
+                  onFollowPress={this.toggleFollow.bind(this)}
                 /> : null }
               <TouchableOpacity transparent onPress={() => this._PopRoute()} style={styles.headerBtn}>
                 { this._renderRightBtn() }
@@ -234,6 +232,8 @@ function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
+    pushRoute:(route, key) => dispatch(pushRoute(route, key)),
+    getUser: (id) => dispatch(getUser(id)),
     getStats: (id) => dispatch(getStats(id)),
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
@@ -248,10 +248,11 @@ const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
     myUser: state.user,
+    isMyProfile: state.user.id == state.profile.user.id,
+    user: state.profile.user,
     stats: state.stats,
     hasUserSize,
     user_size: user_size,
-    currLookScreenId: state.userLooks.currId
   };
 };
 

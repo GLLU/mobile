@@ -4,22 +4,28 @@ import { View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
+import {
+  likeUpdate,
+  unLikeUpdate,
+  loadMore,
+  replaceAt,
+  reportAbuse,
+  navigateTo,
+  popRoute,
+  pushRoute,
+} from '../../actions/';
 import Spinner from '../loaders/Spinner';
-import { likeUpdate, unLikeUpdate } from '../../actions/likes';
-import { loadMore, replaceAt } from '../../actions';
-import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import _ from 'lodash';
+
 const config = {
   velocityThreshold: 0.3,
   directionalOffsetThreshold: 50
 };
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
-const { popRoute, pushRoute } = actions
 const LOADER_HEIGHT = 30;
 
 class LooksContainer extends BasePage {
@@ -91,7 +97,7 @@ class LooksContainer extends BasePage {
   }
 
   _goToProfile(look) {
-      this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: look}, this.props.navigation.key);
+      this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: { userId: look.user_id }}, this.props.navigation.key);
   }
 
   onLoad() {
@@ -261,7 +267,7 @@ const mapStateToProps = state => {
     flatLooksData: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
-    userLooks: state.userLooks.userLooksData
+    userLooks: state.profile.userLooksData
   };
 };
 

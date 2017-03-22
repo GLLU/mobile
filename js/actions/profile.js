@@ -3,46 +3,52 @@ import rest from '../api/rest';
 import { showLoader, hideLoader } from './index';
 
 export const SET_LOOK_DATA = 'SET_LOOK_DATA';
+export const SET_USER_DATA = 'SET_USER_DATA';
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
 
-export function getLook(lookId):Action {
+export function getUser(id) {
+  console.log('getUser', id)
   return (dispatch) => {
-    return dispatch(rest.actions.look({id: lookId},{}, (err, screenLookData) => {
-      if (!err && screenLookData) {
-        dispatch(setLookData(screenLookData));
+    dispatch(showLoader());
+    dispatch(rest.actions.users.get({id}, (err, data) => {
+      console.log('getUser response', data);
+      if (!err && data) {
+        dispatch({
+          type: SET_USER_DATA,
+          payload: data,
+        });
+        dispatch(hideLoader());
+      } else {
+        throw err;
       }
     }));
   };
 }
 
-export function getUserLooks(data):Action {
-  return (dispatch) => {
-    if(data.page === 1) {
+export function getUserLooks(id, query = {}):Action {
+  return (dispatch, getState) => {
+    const state = getState().profile;
+    const newState = Object.assign({}, state.query, query, {
+      page: {
+        size: 10,
+        number: 1
+      }
+    });
+    if(newState.page === 1) {
       dispatch(showLoader());
     }
-    return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
+    const params = Object.assign({}, {id: id}, query);
+    return dispatch(rest.actions.user_looks(params, {}, (err, userLooksData) => {
       if (!err && userLooksData) {
         let looksData = {
-          looks: userLooksData.looks,
-          currId: data.id,
+          data: userLooksData,
+          userId: id,
         }
         dispatch(setUserLooks(looksData));
         dispatch(hideLoader());
       }
     }));
-  };
-}
-
-export function getUserLooksData(data):Action {
-  return (dispatch) => {
-    let looksData = {
-      currId: data.id,
-      name: data.name,
-      looksCount: data.looksCount,
-      isMyProfile: data.isMyProfile
-    }
-    dispatch(setUserLooksData(looksData));
   };
 }
 

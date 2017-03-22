@@ -11,9 +11,8 @@ import myBodyType from './myBodyType';
 import filters from './filters';
 import uploadLook from './uploadLook';
 import feed from './feed';
-import look from './look';
 import lookComments from './lookComments';
-import userLooks from './userLooks';
+import profile from './profile';
 import userFollows from './userFollows';
 import userFollowers from './userFollowers';
 import stats from './stats';
@@ -33,8 +32,7 @@ export default combineReducers({
   filters,
   uploadLook,
   feed,
-  look,
-  userLooks,
+  profile,
   stats,
   api,
   userFollows,

@@ -22,7 +22,7 @@ const deviceWidth = Dimensions.get('window').width;
 class UserLooks extends Component {
 
   static propTypes = {
-    userLooks: React.PropTypes.array,
+    profile: React.PropTypes.array,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     userId: React.PropTypes.number,
@@ -30,8 +30,7 @@ class UserLooks extends Component {
 
   constructor(props) {
     super(props);
-    const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.userLooks);
-    const isMyProfile = this.props.userId === this.props.myUserId
+    const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.profile);
     this.state = {
       filterHeight: 0,
       imagesColumn1,
@@ -40,12 +39,15 @@ class UserLooks extends Component {
       photoModal: false,
       refreshing: false,
       pagination: 1,
-      isMyProfile
     };
   }
 
+  componentWillMount() {
+    this.props.getUserLooks(this.props.userId);
+  }
+
   componentWillReceiveProps(nextProps) {
-    const { imagesColumn1, imagesColumn2 } = this.distributeImages(nextProps.userLooks);
+    const { imagesColumn1, imagesColumn2 } = this.distributeImages(nextProps.profile);
     this.setState({
       imagesColumn1,
       imagesColumn2,
@@ -78,12 +80,9 @@ class UserLooks extends Component {
     if (compare == 1) {
       this.setState({
         pagination: this.state.pagination+=1,
-      })
-      let data = {
-        id: this.props.userId,
-        page: this.state.pagination
-      }
-      this.props.getUserLooks(data);
+      }, () => {
+        this.props.getUserLooks(this.props.userId, { page: this.state.pagination });
+      });
     }
   }
 
@@ -136,7 +135,7 @@ class UserLooks extends Component {
              {look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index)}
             </View>
           </TouchableOpacity>
-          { this.state.isMyProfile && (
+          { this.props.isMyProfile && (
               <Button
                 onPress={this._handleEditPress.bind(this, look)}
                 style={{position: 'absolute', top: 5, right: 5, height: 30, width: 30}}
@@ -207,7 +206,7 @@ class UserLooks extends Component {
           >
             <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
-                { this.state.isMyProfile ? this._renderAddItemButton() : null}
+                { this.props.isMyProfile ? this._renderAddItemButton() : null}
                 {this._renderImages(this.state.imagesColumn1)}
               </View>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
@@ -245,7 +244,7 @@ function bindActions(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     editNewLook: (id) => dispatch(editNewLook(id)),
-    getUserLooks: data => dispatch(getUserLooks(data)),
+    getUserLooks: (id, query) => dispatch(getUserLooks(id, query)),
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
@@ -253,8 +252,8 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     navigation: state.cardNavigation,
-    userLooks: state.userLooks.userLooksData,
-    myUserId: state.user.id,
+    isMyProfile: state.user.id == state.profile.userId,
+    profile: state.profile.userLooksData,
     isLoading: state.loader.loading
   }
 };

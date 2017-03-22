@@ -62,7 +62,7 @@ class NavigationBarView extends BaseComponent {
 
   goToProfile() {
     this.logEvent('Feedscreen', { name: 'Profile click' });
-    this.props.navigateTo('profileScreen', 'feedscreen', this.props.user);
+    this.props.navigateTo('profileScreen', 'feedscreen', {userId: this.props.user.id});
   }
 
   openCamera() {

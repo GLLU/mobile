@@ -8,7 +8,7 @@ import { likeUpdate, unLikeUpdate } from './likes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
-import { getUserLooksData, getUserLooks } from './looks';
+import { getUserLooks, getUser } from './profile';
 import { getFeed, resetFeed, loadMore } from './feed';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import {
@@ -115,7 +115,6 @@ export {
   hideWarning,
   showInfo,
   hideInfo,
-  getUserLooksData,
   getUserLooks,
   likeUpdate,
   unLikeUpdate,
@@ -124,6 +123,7 @@ export {
   getUserFollowsData,
   initUserFollows,
   getUserFollowersData,
+  getUser,
   initUserFollowers,
   getLookCommentsData,
   initLookComments,
