@@ -94,6 +94,7 @@ class ProfileScreen extends BasePage {
   }
 
   _handleItemPress(item) {
+    item.singleItem = true
     this.props.navigateTo('looksScreen', 'feedscreen', item);
   }
 

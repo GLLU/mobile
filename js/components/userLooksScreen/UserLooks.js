@@ -87,6 +87,7 @@ class UserLooks extends Component {
   }
 
   _handleItemPress(item) {
+    item.singleItem = true
     this.props.replaceAt('userLookScreen', { key: 'looksScreen', optional: item}, this.props.navigation.key);
   }
 
@@ -120,7 +121,7 @@ class UserLooks extends Component {
 
   renderImage(img, index) {
     return (
-      <Image source={{uri: img.uri.replace('-staging', '')}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
+      <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
     )
   }
 
