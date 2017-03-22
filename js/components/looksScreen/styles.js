@@ -28,8 +28,8 @@ export default StyleSheet.create({
   bottomContainer: {
     position: 'absolute',
     flexDirection: 'column',
-    bottom: Platform.OS === 'ios' ? 80:softMenuBarHeight + statusBarHeight,
-    left: 0,
+    bottom: 0,
+    right: 0,
     zIndex: 1,
     width: width,
   },

@@ -10,10 +10,11 @@ const {popRoute} = actions;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Platform.os === 'ios' ? 30 : 10,
+    paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: 'transparent',
-    height: Platform.os === 'ios' ? 80 : 70,
+    height: Platform.os === 'ios' ? 110 : 70,
+
   },
   row: {
     flexDirection: 'row'
@@ -57,14 +58,15 @@ class LookHeader extends Component {
 
   render() {
     return (
-      <View style={[styles.container,styles.column]}>
-        <View style={[styles.header,styles.row]}>
-          <TouchableOpacity style={{flex:1, justifyContent:'center', flexDirection:'row'}}
+      <View style={[styles.container, styles.column]}>
+        { Platform.OS === 'ios' ? <View style={{height: 40}}/> : null}
+        <View style={[styles.header, styles.row]}>
+          <TouchableOpacity style={{flex: 2, justifyContent: 'center', flexDirection: 'row'}}
                             onPress={this.props.onBackNavigationPress}>
             <Icon style={styles.backBtn} name="ios-arrow-back"/>
           </TouchableOpacity>
-          <View style={{flex:12}} name="spacer"/>
-          <TouchableOpacity style={{flex:2, justifyContent:'center', flexDirection:'row'}}
+          <View style={{flex: 12}} name="spacer"/>
+          <TouchableOpacity style={{flex: 2, justifyContent: 'center', flexDirection: 'row'}}
                             onPress={this.props.onProfileAvatarPress}>
             <Image source={this.props.avatar} style={styles.avatar} name="ios-arrow-back"/>
           </TouchableOpacity>

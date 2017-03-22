@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TouchableHighlight,
-  Platform,
-  Dimensions,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from 'react-native';
 import * as _ from 'lodash'
 import SocialShare from '../../../lib/social';
@@ -18,24 +13,20 @@ import MenuButton from './MenuButton'
 import LikeButton from './LikeButton'
 import BaseComponent from '../../common/BaseComponent';
 
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-const softMenuBarHeight = ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
-const statusBarHeight = ExtraDimensions.get('STATUS_BAR_HEIGHT');
-
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 80 : softMenuBarHeight + statusBarHeight,
+    bottom: 70,
     right: 0,
     zIndex: 1,
     padding: 10,
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  row:{
+  row: {
     flexDirection: 'row',
   },
-  column:{
+  column: {
     flexDirection: 'column',
   }
 });
@@ -51,7 +42,7 @@ export default class ButtonsBar extends BaseComponent {
     toggleDescription: React.PropTypes.func,
     isCommentsActive: React.PropTypes.bool,
     toggleComments: React.PropTypes.func,
-    direction: React.PropTypes.oneOf(['row','column'])
+    direction: React.PropTypes.oneOf(['row', 'column'])
   };
 
   static defaultProps = {
@@ -114,11 +105,11 @@ export default class ButtonsBar extends BaseComponent {
 
   render() {
     return (
-      <View style={[styles.container,styles[this.props.direction]]}>
-        <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onPress={()=>this._onLikeClicked()}/>
+      <View style={[styles.container, styles[this.props.direction]]}>
+        <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onPress={() => this._onLikeClicked()}/>
         { this._renderInformationButton(this.props.hasDescription) }
         <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
-        <ShareButton onPress={()=>this._onShareClicked()}/>
+        <ShareButton onPress={() => this._onShareClicked()}/>
         <MenuButton onPress={() => this._onMenuClicked()}/>
       </View>
     )
