@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, Platform, Animated } from 'react-native';
+import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, Platform, Animated, RefreshControl } from 'react-native';
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
@@ -43,6 +43,7 @@ class TabContent extends BaseComponent {
       isLoading: false,
       noMoreData: false,
       fadeAnim: new Animated.Value(0),
+      isRefreshing: false,
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
@@ -77,7 +78,7 @@ class TabContent extends BaseComponent {
       if (!this.props.hasUserSize) {
         setTimeout(() => {
           this.showBodyModal();
-        }, 3000);  
+        }, 3000);
       }
     }
   }
@@ -221,8 +222,37 @@ class TabContent extends BaseComponent {
         <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
           <Spinner color='#666666'/>
         </View>
-      );  
+      );
     }
+  }
+
+  _renderRefreshControl() {
+    return(
+      <RefreshControl
+        refreshing={this.state.isRefreshing}
+        onRefresh={this.onRefresh.bind(this)}
+        tintColor="#666666"
+        colors={['#666666']}
+        progressBackgroundColor="#fff"
+      />
+    )
+  }
+
+  onRefresh() {
+    this.setState({isRefreshing: true})
+    const { getFeed, query } = this.props
+
+    getFeed(query)
+      .then((looks) => {
+        return Utils.preloadLookImages(looks)
+      })
+      .then(() => {
+        this.setState({isRefreshing: false})
+      })
+      .catch(error => {
+        console.log('Error when preload image', error)
+        this.setState({isRefreshing: false})
+      });
   }
 
   render() {
@@ -231,7 +261,8 @@ class TabContent extends BaseComponent {
         <ScrollView
             style={{flex: 1}}
             scrollEventThrottle={100}
-            onScroll={this.handleScroll.bind(this)}>
+            onScroll={this.handleScroll.bind(this)}
+            refreshControl={this._renderRefreshControl.bind(this)()}>
           <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5}]}>
             <View style={{flex: 0.5, flexDirection: 'column'}}>
               <TouchableOpacity onPress={() => this._onShareClicked()}>

@@ -48,7 +48,7 @@ class MainView extends Component {
 
   preloadLookImages(looks) {
     Utils.preloadLookImages(looks).then(() => {
-      this.setState({reloading: false});  
+      this.setState({reloading: false});
     }).catch(err => {
       console.log('something wrong with preload image', err);
       this.setState({reloading: false});
@@ -59,7 +59,7 @@ class MainView extends Component {
     this.setState({reloading: true}, () => {
       this.props.getFeed(query).then((looks) => {
         this.preloadLookImages(looks);
-      });  
+      });
     });
   }
 
@@ -67,7 +67,7 @@ class MainView extends Component {
     this.setState({reloading: true}, () => {
       this.props.resetFeed().then((looks) => {
         this.preloadLookImages(looks);
-      });  
+      });
     });
   }
 
@@ -135,7 +135,7 @@ class MainView extends Component {
       <View style={myStyles.mainView}>
         {this.props.searchStatus ? <SearchBar onLayout={e => this._handleSearchLayoutChanged(e)} handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.props.query.term}/> : null}
         <FilterBar
-             onLayout={e => this._handleFilterLayoutChanged(e)}
+            onLayout={e => this._handleFilterLayoutChanged(e)}
             type={this.props.query.type}
             category={this.props.query.category}
             filterFeed={this._filterFeed.bind(this)}
