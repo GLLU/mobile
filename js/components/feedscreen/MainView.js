@@ -6,6 +6,7 @@ import { getFeed, resetFeed, loadMore } from '../../actions';
 import FilterBar from './filters/FilterBar';
 import TabContent from './TabContent';
 import SearchBar from './SearchBar';
+import SearchView from './SearchView'
 import Utils from '../../Utils';
 import _ from 'lodash';
 
@@ -48,7 +49,7 @@ class MainView extends Component {
 
   preloadLookImages(looks) {
     Utils.preloadLookImages(looks).then(() => {
-      this.setState({reloading: false});  
+      this.setState({reloading: false});
     }).catch(err => {
       console.log('something wrong with preload image', err);
       this.setState({reloading: false});
@@ -59,7 +60,7 @@ class MainView extends Component {
     this.setState({reloading: true}, () => {
       this.props.getFeed(query).then((looks) => {
         this.preloadLookImages(looks);
-      });  
+      });
     });
   }
 
@@ -67,7 +68,7 @@ class MainView extends Component {
     this.setState({reloading: true}, () => {
       this.props.resetFeed().then((looks) => {
         this.preloadLookImages(looks);
-      });  
+      });
     });
   }
 
@@ -92,7 +93,7 @@ class MainView extends Component {
   }
 
   _renderFeed() {
-    const { reloading } = this.state;
+    const {reloading} = this.state;
     const tabLabel = this.props.query.type === 'relevant' ? 'BEST MATCH' : 'RECENT';
     return (
       <TabContent
@@ -126,21 +127,30 @@ class MainView extends Component {
     }
   }
 
+  renderSearchView() {
+    if (this.props.searchStatus) {
+      return (
+        <SearchView
+          onSearchBarLayout={e => this._handleSearchLayoutChanged(e)}
+          handleSearchInput={(term) => this._handleSearchInput(term)}
+          clearText={this.props.query.term}
+          onFilterBarLayout={e => this._handleFilterLayoutChanged(e)}
+          typeFilter={this.props.query.type}
+          categoryFilter={this.props.query.category}
+          clearFilter={this._clearFilter.bind(this)}
+          filterFeed={this._filterFeed.bind(this)}
+        />);
+    }
+  }
+
   render() {
     let mainViewStyle = {flexGrow: 1};
     if (this.mainViewHeight) {
-      mainViewStyle = _.merge(mainViewStyle, { height: this.mainViewHeight - this.state.filterHeight - this.state.searchHeight });
+      mainViewStyle = _.merge(mainViewStyle, {height: this.mainViewHeight - this.state.filterHeight - this.state.searchHeight});
     }
-    return(
+    return (
       <View style={myStyles.mainView}>
-        {this.props.searchStatus ? <SearchBar onLayout={e => this._handleSearchLayoutChanged(e)} handleSearchInput={(term) => this._handleSearchInput(term)} clearText={this.props.query.term}/> : null}
-        <FilterBar
-             onLayout={e => this._handleFilterLayoutChanged(e)}
-            type={this.props.query.type}
-            category={this.props.query.category}
-            filterFeed={this._filterFeed.bind(this)}
-            clearFilter={this._clearFilter.bind(this)}
-            />
+        {this.renderSearchView()}
         <View style={mainViewStyle} onLayout={e => this._handleMainviewHeight(e)}>
           { this._renderFeed() }
         </View>
