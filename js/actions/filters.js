@@ -17,8 +17,9 @@ export function loadCategories():Action {
         if (!err && data) {
           // load in another thread
           setTimeout(() => {
-            Utils.preloadImages(data.tags.map(x => x.icon.url)).catch()
-            Utils.preloadImages(data.tags.map(x => x.icon.url_hover)).catch();
+            const tags = data.tags || [];
+            Utils.preloadImages(tags.map(x => x.icon.url)).catch()
+            Utils.preloadImages(tags.map(x => x.icon.url_hover)).catch();
           }, 1);
 
           resolve(dispatch({

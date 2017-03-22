@@ -247,12 +247,12 @@ class TabContent extends BaseComponent {
 
   onRefresh() {
     this.setState({isRefreshing: true})
-    const { getFeed, query } = this.props
+    const { getFeed, query } = this.props;
+
+    // reset the first page
+    query.page.number = 1;
 
     getFeed(query)
-      .then((looks) => {
-        return Utils.preloadLookImages(looks)
-      })
       .then(() => {
         this.setState({isRefreshing: false})
       })
