@@ -38,6 +38,10 @@ class MyBodyType extends BasePage {
     gender: React.PropTypes.string
   }
 
+  componentDidMount() {
+    console.log('props: ',this.props)
+  }
+
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
@@ -73,6 +77,7 @@ class MyBodyType extends BasePage {
   }
 
   render() {
+    console.log('currIndex',this.props.currentIndex)
     return (
       <Container theme={glluTheme}>
         <Header style={styles.header}>
@@ -83,7 +88,7 @@ class MyBodyType extends BasePage {
         <Content>
           <View style={styles.container}>
             <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
-              sneak={100} initialPage={this.props.currentIndex}
+              sneak={100} initialPage={this.props.currentIndex ? this.props.currentIndex : 3}
               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
                 {this.props.bodyTypes[this.props.gender].map((img, i) => {
                   const isActive = i === this.props.currentIndex;
