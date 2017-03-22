@@ -13,7 +13,7 @@ import BaseComponent from '../../common/BaseComponent';
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 70,
+    bottom: 100,
     right: 0,
     zIndex: 1,
     padding: 10,
