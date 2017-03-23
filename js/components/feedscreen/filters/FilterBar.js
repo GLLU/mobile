@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {  Button, Icon } from 'native-base';
+import { Button, Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 import RadioButtons from 'react-native-radio-buttons';
-import {View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet} from 'react-native';
-import SearchBar from '../SearchBar';
+import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet } from 'react-native';
+import FilterGroup from './FilterGroup';
 import BaseComponent from '../../common/BaseComponent';
 
 import CategoryStrip from '../../common/CategoryStrip';
@@ -94,6 +94,31 @@ const myStyles = StyleSheet.create({
   },
 });
 
+const filters = [
+  {
+    name: 'Items',
+    icon: {
+      url: require('../../../../images/filters/filter-categories.png'),
+      url_hover: require('../../../../images/filters/filter-categories-active.png')
+    },
+
+  },
+  {
+    name: 'Gender',
+    icon: {
+      url: require('../../../../images/filters/filter-gender.png'),
+      url_hover: require('../../../../images/filters/filter-gender-active.png')
+    }
+  },
+  {
+    name: 'Body',
+    icon: {
+      url: require('../../../../images/filters/filter-body.png'),
+      url_hover: require('../../../../images/filters/filter-body-active.png')
+    }
+  },
+]
+
 import { loadCategories } from '../../../actions/filters';
 
 class FilterView extends BaseComponent {
@@ -112,7 +137,8 @@ class FilterView extends BaseComponent {
     super(props);
     this.state = {
       isOpen: false,
-      filterStatusIcon: 'ios-arrow-forward'
+      filterStatusIcon: 'ios-arrow-forward',
+      filters:filters
     };
   }
 
@@ -121,9 +147,9 @@ class FilterView extends BaseComponent {
   }
 
   filterByCategory(item) {
-    const { category } = this.props;
+    const {category} = this.props;
     if (!category || item.id != category.id) {
-      this.logEvent('Feedscreen', { name: 'Category select', category: item.name });
+      this.logEvent('Feedscreen', {name: 'Category select', category: item.name});
       this.props.filterFeed({category: item});
     } else {
       this.props.filterFeed({category: null});
@@ -136,41 +162,41 @@ class FilterView extends BaseComponent {
 
   toggleFilter() {
     let filterStatusIcon = !this.state.isOpen ? "ios-arrow-down" : "ios-arrow-forward"
-    this.setState({ isOpen: !this.state.isOpen, filterStatusIcon });
+    this.setState({isOpen: !this.state.isOpen, filterStatusIcon});
   }
 
   _handleCloseFilter() {
-    this.setState({ isOpen: false });
+    this.setState({isOpen: false});
   }
 
   handleToggleFilterPress() {
-    this.logEvent('Feedscreen', { name: 'FilterBy click' });
+    this.logEvent('Feedscreen', {name: 'FilterBy click'});
     this.toggleFilter();
   }
 
   _renderCategories() {
-    const { category, categories } = this.props;
+    const {category, categories} = this.props;
     return (
       <CategoryStrip
-          categories={categories}
-          selectedCategory={category}
-          onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
+        categories={categories}
+        selectedCategory={category}
+        onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
   }
 
   _rederFilterText() {
     if (this.props.category) {
       return (
-          <Text style={myStyles.TextResults}>
-            {this.props.category.name}
-          </Text>
-        );
+        <Text style={myStyles.TextResults}>
+          {this.props.category.name}
+        </Text>
+      );
     }
 
     return null;
   }
 
   _renderFilters() {
-    return(
+    return (
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
           {this._renderCategories()}
@@ -181,27 +207,14 @@ class FilterView extends BaseComponent {
 
   render() {
     const labelColor = !_.isEmpty(this.props.category) ? '#1DE9B6' : '#212121';
-    return(
+    console.log(`this.state.isOpen: ${this.state.isOpen}`)
+    return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>
           <View style={{flex: 1, flexDirection: 'row'}}>
-            <Button transparent onPress={this.handleToggleFilterPress.bind(this)} style={myStyles.btnFilter}>
-                <Icon name="md-options" style={[myStyles.normalBtn, { color: labelColor }]} />
-                <Text style={[myStyles.Textlabel, { color: labelColor }]}>Filter by</Text>
-            </Button>
+            {/*<FilterButton selected={this.state.isOpen} onPress={this.handleToggleFilterPress.bind(this)}/>*/}
+            <FilterGroup onSelectionChange={(filters)=>this.setState({filters:filters})} filters={this.state.filters}/>
             {this._rederFilterText()}
-          </View>
-          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
-            <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
-              RESET
-              </Button>
-            {this.state.isOpen ?
-              <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
-                  <Icon name={this.state.filterStatusIcon} style={[myStyles.smallBtn]} />
-              </Button>
-              :
-              null
-            }
           </View>
         </View>
         {this.state.isOpen ? this._renderFilters() : null}
