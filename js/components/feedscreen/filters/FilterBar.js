@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Icon } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
-import RadioButtons from 'react-native-radio-buttons';
 import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet } from 'react-native';
 import FilterGroup from './FilterGroup';
 import BaseComponent from '../../common/BaseComponent';
@@ -29,7 +26,7 @@ const myStyles = StyleSheet.create({
 
 const filters = [
   {
-    key:'items',
+    key: 'items',
     name: 'Items',
     icon: {
       url: require('../../../../images/filters/filter-categories.png'),
@@ -38,7 +35,7 @@ const filters = [
 
   },
   {
-    key:'gender',
+    key: 'gender',
     name: 'Gender',
     icon: {
       url: require('../../../../images/filters/filter-gender.png'),
@@ -46,7 +43,7 @@ const filters = [
     }
   },
   {
-    key:'body',
+    key: 'body',
     name: 'Body',
     icon: {
       url: require('../../../../images/filters/filter-body.png'),
@@ -55,8 +52,8 @@ const filters = [
   },
 ]
 
-filters.forEach(filter=>{
-  filter.filters=[filter,filter,filter,filter,filter]
+filters.forEach((filter, i) => {
+  filter.filters = _.map(_.times((i + 1) * 4), x => filter)
 });
 
 import { loadCategories } from '../../../actions/filters';
@@ -75,12 +72,12 @@ class FilterView extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this._renderFilters=this._renderFilters.bind(this);
+    this._renderFilters = this._renderFilters.bind(this);
     this.state = {
       isOpen: false,
       filterStatusIcon: 'ios-arrow-forward',
-      openFilter:'',
-      filters:filters
+      openFilter: '',
+      filters: filters
     };
   }
 
@@ -88,32 +85,9 @@ class FilterView extends BaseComponent {
     this.props.loadCategories();
   }
 
-  filterByCategory(item) {
-    const {category} = this.props;
-    if (!category || item.id != category.id) {
-      this.logEvent('Feedscreen', {name: 'Category select', category: item.name});
-      this.props.filterFeed({category: item});
-    } else {
-      this.props.filterFeed({category: null});
-    }
-  }
-
-  clearFilter() {
-    this.props.clearFilter();
-  }
-
   toggleFilter() {
     let filterStatusIcon = !this.state.isOpen ? "ios-arrow-down" : "ios-arrow-forward"
     this.setState({isOpen: !this.state.isOpen, filterStatusIcon});
-  }
-
-  _handleCloseFilter() {
-    this.setState({isOpen: false});
-  }
-
-  handleToggleFilterPress() {
-    this.logEvent('Feedscreen', {name: 'FilterBy click'});
-    this.toggleFilter();
   }
 
   _renderSubFilters(filters) {
@@ -121,7 +95,7 @@ class FilterView extends BaseComponent {
   }
 
   _renderFilters(openFilter) {
-    const currentFilter=_.find(this.state.filters,filter=>filter.name===openFilter);
+    const currentFilter = _.find(this.state.filters, filter => filter.name === openFilter);
     return (
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
@@ -131,14 +105,12 @@ class FilterView extends BaseComponent {
     )
   }
 
-  _setFilters(filters){
-    const openFilter = _.find(filters,filter=>filter.selected) || {name:''};
-    this.setState({filters:filters, openFilter:openFilter.name})
+  _setFilters(filters) {
+    const openFilter = _.find(filters, filter => filter.selected) || {name: ''};
+    this.setState({filters: filters, openFilter: openFilter.name})
   }
 
   render() {
-    const labelColor = !_.isEmpty(this.props.category) ? '#1DE9B6' : '#212121';
-    console.log(`this.state.openFilter: ${this.state.openFilter}`)
     return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>

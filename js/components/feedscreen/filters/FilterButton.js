@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, UIManager, LayoutAnimation } from 'react-native'
+import { StyleSheet, Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
-import {noop} from 'lodash'
+import { noop } from 'lodash'
 
 const styles = StyleSheet.create({
   categoryItem: {
     height: 85,
     width: 80,
-    marginHorizontal:4,
+    marginHorizontal: 4,
     justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'column',
   },
   categoryItemTitle: {
@@ -20,8 +21,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   categoryItemImage: {
-    height: 60,
-    width: 60 * 150 / 170,
+    height: 50,
+    width: 50,
     alignSelf: 'center',
   },
   btnCategoryItem: {
@@ -37,12 +38,12 @@ class FilterButton extends Component {
     onPress: React.PropTypes.func,
   }
 
-  static defaultProps={
-    onPress:noop,
-    filter:{
-      selected:false,
-      name:'Items',
-      icon:{
+  static defaultProps = {
+    onPress: noop,
+    filter: {
+      selected: false,
+      name: 'Items',
+      icon: {
         url: require('../../../../images/filters/filter-categories.png'),
         url_hover: require('../../../../images/filters/filter-categories-active.png')
       }
@@ -55,8 +56,6 @@ class FilterButton extends Component {
     this.state = {
       selected: props.filter.selected
     }
-
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,34 +64,28 @@ class FilterButton extends Component {
     })
   }
 
-  componentWillUpdate() {
-    LayoutAnimation.easeInEaseOut();
-  }
-
-  _renderIcon(icon, selected, width, height) {
+  _renderIcon(icon, selected) {
     const uri = selected ? icon['url_hover'] : icon['url'];
-    return <Image source={uri} style={[styles.categoryItemImage, { width, height }]} resizeMode={'contain'}/>;
+    return <Image source={uri} style={styles.categoryItemImage} resizeMode={'contain'}/>;
   }
 
   handlePressItem(filter) {
-    const shouldSelect=!this.state.selected;
-    this.props.filter.selected=shouldSelect;
+    const shouldSelect = !this.state.selected;
+    this.props.filter.selected = shouldSelect;
     this.props.onPress(filter);
     this.setState({selected: shouldSelect});
   }
 
   render() {
-    const { filter } = this.props;
-    const { selected } = this.state;
-    const iconWidth = 50;
-    const iconHeight = 50;
-    return (<View style={[styles.categoryItem]}>
+    const {filter} = this.props;
+    const {selected} = this.state;
+    return (<View style={styles.categoryItem}>
       <Text style={styles.categoryItemTitle}>{filter.name}</Text>
       <Button
         transparent
         onPress={() => this.handlePressItem(filter)}
         style={[styles.btnCategoryItem]}>
-        {this._renderIcon(filter.icon, selected, iconWidth, iconHeight)}
+        {this._renderIcon(filter.icon, selected)}
       </Button>
     </View>);
   }
