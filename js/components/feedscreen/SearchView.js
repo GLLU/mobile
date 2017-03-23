@@ -8,7 +8,6 @@ import _ from 'lodash';
 const myStyles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
-    //flex: 1,
   },
 });
 

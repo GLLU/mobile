@@ -26,7 +26,7 @@ const myStyles = StyleSheet.create({
 
 const filters = [
   {
-    key: 'items',
+    id: 'items',
     name: 'Items',
     icon: {
       url: require('../../../../images/filters/filter-categories.png'),
@@ -35,7 +35,7 @@ const filters = [
 
   },
   {
-    key: 'gender',
+    id: 'gender',
     name: 'Gender',
     icon: {
       url: require('../../../../images/filters/filter-gender.png'),
@@ -43,7 +43,7 @@ const filters = [
     }
   },
   {
-    key: 'body',
+    id: 'body',
     name: 'Body',
     icon: {
       url: require('../../../../images/filters/filter-body.png'),
@@ -53,12 +53,16 @@ const filters = [
 ]
 
 filters.forEach((filter, i) => {
-  filter.filters = _.map(_.times((i + 1) * 4), x => filter)
+  filter.filters = _.map(_.times((i + 1) * 4), iteration => {
+    const x=_.cloneDeep(filter);
+    x.id=iteration;
+    return x;
+  })
 });
 
 import { loadCategories } from '../../../actions/filters';
 
-class FilterView extends BaseComponent {
+class FilterBar extends BaseComponent {
   static propTypes = {
     loadCategories: React.PropTypes.func,
     categories: React.PropTypes.array,
@@ -85,36 +89,47 @@ class FilterView extends BaseComponent {
     this.props.loadCategories();
   }
 
-  toggleFilter() {
-    let filterStatusIcon = !this.state.isOpen ? "ios-arrow-down" : "ios-arrow-forward"
-    this.setState({isOpen: !this.state.isOpen, filterStatusIcon});
-  }
-
-  _renderSubFilters(filters) {
-    return <FilterGroup filters={filters}/>;
+  _renderSubFilters(filters,openFilter) {
+    return <FilterGroup onSelectionChange={(filters)=>this._setSubFilters(openFilter,filters)} filters={filters}/>;
   }
 
   _renderFilters(openFilter) {
-    const currentFilter = _.find(this.state.filters, filter => filter.name === openFilter);
+    const currentFilter = _.find(this.state.filters, filter => filter.id === openFilter);
     return (
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
-          {this._renderSubFilters(currentFilter.filters)}
+          {this._renderSubFilters(currentFilter.filters,openFilter)}
         </View>
       </View>
     )
   }
 
   _setFilters(filters) {
-    const openFilter = _.find(filters, filter => filter.selected) || {name: ''};
-    this.setState({filters: filters, openFilter: openFilter.name})
+    const openFilter = _.find(filters, filter => filter.selected) || {id: 0};
+    this.setState({filters: filters, openFilter: openFilter.id})
+  }
+
+  _setSubFilters(openFilter,subFilters) {
+    const filters = _.cloneDeep(this.state.filters);
+    filters.forEach(filter=>{
+      if(filter.id===openFilter)
+      {
+        filter.filters=subFilters;
+      }
+    });
+    this._setFilters(filters);
   }
 
   render() {
+    const activeFilter = {
+      color: '#757575',
+      underline: true
+    }
     return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>
-          <FilterGroup onSelectionChange={this._setFilters.bind(this)} filters={this.state.filters}/>
+          <FilterGroup activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
+                       filters={this.state.filters}/>
         </View>
         {!_.isEmpty(this.state.openFilter) ? this._renderFilters(this.state.openFilter) : null}
       </View>
@@ -137,4 +152,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindActions)(FilterView);
+export default connect(mapStateToProps, bindActions)(FilterBar);

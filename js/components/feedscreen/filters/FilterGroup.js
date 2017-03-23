@@ -4,17 +4,16 @@ import { View, Text, Button } from 'native-base';
 import FilterButton from './FilterButton'
 import _ from 'lodash'
 
-const styles = StyleSheet.create({});
-
 class FilterGroup extends Component {
   static propTypes = {
     filters: React.PropTypes.array,
     onSelectionChange: React.PropTypes.func,
+    activeStyle: React.PropTypes.object,
   }
 
   static defaultProps = {
     onSelectionChange: _.noop,
-    filters: []
+    filters: [],
   }
 
   constructor(props) {
@@ -28,7 +27,7 @@ class FilterGroup extends Component {
   onSelectValue(filter) {
     let iteratee = () => false;
     if (filter.selected === true) {
-      iteratee = (filter1, filter2) => filter1.name === filter2.name;
+      iteratee = (filter1, filter2) => filter1.id === filter2.id;
     }
 
     const filters = _.map(this.props.filters, item => {
@@ -58,7 +57,7 @@ class FilterGroup extends Component {
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
         {_.map(filters, (filter, i) => {
           return (
-            <FilterButton onPress={this.onSelectValue} key={i} filter={filter}/>
+            <FilterButton activeStyle={this.props.activeStyle} onPress={this.onSelectValue} key={i} filter={filter}/>
           );
         })}
       </View>

@@ -34,11 +34,16 @@ const styles = StyleSheet.create({
 
 class FilterButton extends Component {
   static propTypes = {
+    activeStyle: React.PropTypes.object,
     filter: React.PropTypes.object,
     onPress: React.PropTypes.func,
   }
 
   static defaultProps = {
+    activeStyle: {
+      color: '#00D7B2',
+      underline: false
+    },
     onPress: noop,
     filter: {
       selected: false,
@@ -52,7 +57,6 @@ class FilterButton extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       selected: props.filter.selected
     }
@@ -65,7 +69,7 @@ class FilterButton extends Component {
   }
 
   _renderIcon(icon, selected) {
-    const uri = selected ? icon['url_hover'] : icon['url'];
+    const uri = this.props.activeStyle.underline || !selected ? icon['url'] : icon['url_hover'];
     return <Image source={uri} style={styles.categoryItemImage} resizeMode={'contain'}/>;
   }
 
@@ -76,11 +80,22 @@ class FilterButton extends Component {
     this.setState({selected: shouldSelect});
   }
 
+  getHiglight(shouldHighlight) {
+    if (shouldHighlight) {
+      return {
+        borderBottomColor: this.props.activeStyle.color,
+        borderBottomWidth: 3
+      }
+    }
+    return {}
+  }
+
   render() {
     const {filter} = this.props;
     const {selected} = this.state;
-    return (<View style={styles.categoryItem}>
-      <Text style={styles.categoryItemTitle}>{filter.name}</Text>
+    return (<View style={[styles.categoryItem, this.getHiglight(selected && this.props.activeStyle.underline)]}>
+      <Text
+        style={[styles.categoryItemTitle, {color: selected ? this.props.activeStyle.color : this.props.color}]}>{filter.name}</Text>
       <Button
         transparent
         onPress={() => this.handlePressItem(filter)}
