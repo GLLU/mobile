@@ -41,22 +41,42 @@ export function addNewLook(image) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
-            Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
+            Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
               dispatch(hideProcessing());
               if (data) {
-                const url = _.find(data.look.cover.list, x => x.version == 'small').url;
-                Utils.preloadImages([url]).then(() => {
+                const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'large_720').url;
+                console.log('urlll',url)
+                console.log('data.look.cover',data.look.cover)
+                if(data.look.cover.type !== "image") {
+                  console.log('data.look.cover.type',data.look.cover.type)
                   const payload = _.merge(data.look, {
-                    image: url,
-                    items: [],
-                    itemId: null,
-                  });
+                        image: url,
+                        items: [],
+                        itemId: null,
+                      });
                   dispatch({
                     type: EDIT_NEW_LOOK,
                     payload,
                   });
+                  console.log('uploaded');
                   resolve(payload);
-                }).catch(reject);
+                } else {
+                  Utils.preloadImages([url]).then(() => {
+                    console.log('blabxxx')
+                    const payload = _.merge(data.look, {
+                      image: url,
+                      items: [],
+                      itemId: null,
+                    });
+                    dispatch({
+                      type: EDIT_NEW_LOOK,
+                      payload,
+                    });
+                    resolve(payload);
+                  }).catch(reject);
+                }
+
+                console.log('blabxxx222')
               } else {
                 reject('Uplaod error');
               }

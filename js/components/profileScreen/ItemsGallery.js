@@ -53,8 +53,12 @@ class ItemsGallery extends Component {
         console.log('lookss',look)
         if (index < limiter) {
           let thumbImage = _.find(look.cover.list, image => image.version == 'thumb');
-          let cover = _.find(look.cover.list, image => image.version == 'medium')
-
+          let cover;
+          if(look.cover.type === 'video') {
+            cover = _.find(look.cover.list, x => x.version == 'large_720');
+          } else {
+            cover = _.find(look.cover.list, x => x.version == 'medium');
+          }
           flatLooksArr.push({
             liked: look.is_liked,
             type: look.user_size.body_type,
@@ -74,7 +78,7 @@ class ItemsGallery extends Component {
           });
           return (
             <TouchableOpacity onPress={(e) => this.props.itemPress(flatLooksArr[index])} key={index}>
-              <Image source={{uri: thumbImage.url}} style={styles.itemPic}/>
+              <Image source={{uri: cover.url}} style={styles.itemPic}/>
             </TouchableOpacity>
           )
         }

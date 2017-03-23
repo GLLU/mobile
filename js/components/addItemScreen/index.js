@@ -12,6 +12,7 @@ import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
 import _ from 'lodash';
+import VideoWithTags from '../common/VideoWithTags';
 
 const IMAGE_VIEW_PADDING = 80;
 
@@ -71,6 +72,7 @@ class AddItemPage extends BasePage {
       mode: props.mode,
       allowContinue: false,
     };
+    console.log('ADDITEMINDEX')
   }
 
   _handleLayoutImage(e) {
@@ -139,7 +141,7 @@ class AddItemPage extends BasePage {
         title = 'Addional Info';
         break;
       default:
-        title = this.props.item == null ? 'Tap the screen to tag an item' : 'Drag & Drop to change location';
+        title = this.props.item === null ? 'Tap the screen to tag an item' : 'Drag & Drop to change location';
     }
     return title;
   }
@@ -167,10 +169,33 @@ class AddItemPage extends BasePage {
     const { items, image, itemId } = this.props;
     const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
+    return image.search(".mp4") > -1 ? this.renderVideoWithTags() : this.renderImageWithTags()
+
+  }
+
+  renderImageWithTags() {
+    const { items, image, itemId } = this.props;
+    const { imageWidth } = this.state;
+    const mode = this.getCurrentMode();
     return (
       <ImageWithTags
         itemId={itemId}
         width={imageWidth}
+        mode={mode}
+        items={items}
+        image={image}/>
+    );
+  }
+
+  renderVideoWithTags() {
+    console.warn('videoooo')
+    const { items, image, itemId } = this.props;
+    const { imageWidth } = this.state;
+    const mode = this.getCurrentMode();
+    return (
+      <VideoWithTags
+        itemId={itemId}
+        width={400}
         mode={mode}
         items={items}
         image={image}/>
@@ -197,11 +222,11 @@ class AddItemPage extends BasePage {
     const { item } = this.props;
     switch(this.state.currentStep) {
       case -1:
-        return item != null;
+        return item !== null;
       case 0:
-        return item && item.brand != null;
+        return item && item.brand !== null;
       case 1:
-        return item && item.category != null;
+        return item && item.category !== null;
       case 2:
         return false;
       default:
@@ -210,7 +235,7 @@ class AddItemPage extends BasePage {
   }
 
   renderContent() {
-    if (this.state.currentStep == -1) {
+    if (this.state.currentStep === -1) {
       const { mode } = this.state;
       return (
         <StepMarker
@@ -220,7 +245,7 @@ class AddItemPage extends BasePage {
     }
 
 
-    if (this.state.currentStep != 2) {
+    if (this.state.currentStep !== 2) {
       return (
         <Grid style={{flex: 1}}>
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
@@ -240,8 +265,8 @@ class AddItemPage extends BasePage {
 
   render() {
     const allowContinue = this.getAllowContinue();
-    const bgColor = (this.state.currentStep != 2 ? '#000000' : '#F2F2F2');
-    const fgColor = (this.state.currentStep != 2 ? '#F2F2F2' : '#000000');
+    const bgColor = (this.state.currentStep !== 2 ? '#000000' : '#F2F2F2');
+    const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
       <Gllu.Screen
         backgroundColor={bgColor}
@@ -275,7 +300,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const { itemId, lookId, image, items} = state.uploadLook;
-  const item = itemId != null ? _.find(items, x => x.id == itemId) : null;
+  const item = itemId !== null ? _.find(items, x => x.id === itemId) : null;
   return {
     navigation: state.cardNavigation,
     item,

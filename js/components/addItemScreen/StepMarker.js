@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { createLookItem, setTagPosition, pushRoute, popRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
+import VideoWithTags from '../common/VideoWithTags';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Gllu from '../common';
 import Container from '../common/Container';
@@ -45,23 +46,49 @@ class TagItemPage extends BaseComponent {
     this.props.updateLookItem();
   }
 
-  render() {
+  renderImageWithTags() {
     const { items, image, itemId } = this.props;
     const { mode } = this.state;
+   return (
+     <View
+       style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+       <ImageWithTags
+         ref={(ref) => this.imageEditor = ref}
+         mode={mode}
+         itemId={itemId}
+         items={items}
+         image={image}
+         onMarkerCreate={this.handleAddTag.bind(this)}
+         onDragEnd={this.handleOnDragEnd.bind(this)}/>
+     </View>
+   )
+  }
 
+  renderVideoWithTags() {
+    const { items, image, itemId } = this.props;
+    const { mode } = this.state;
+    console.warn('itemid',itemId)
     return (
       <View
         style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
-          <ImageWithTags
-              ref={(ref) => this.imageEditor = ref}
-              mode={mode}
-              itemId={itemId}
-              items={items}
-              image={image}
-              onMarkerCreate={this.handleAddTag.bind(this)}
-              onDragEnd={this.handleOnDragEnd.bind(this)}/>
-        </View>
-    );
+        <VideoWithTags
+          ref={(ref) => this.imageEditor = ref}
+          mode={mode}
+          itemId={itemId}
+          items={items}
+          image={image}
+          onMarkerCreate={this.handleAddTag.bind(this)}
+          onDragEnd={this.handleOnDragEnd.bind(this)}/>
+      </View>
+    )
+  }
+
+  render() {
+    const { items, image, itemId } = this.props;
+    const { mode } = this.state;
+    console.log('image',image)
+    console.log('propsss',this.props)
+    return image.search(".mp4") > -1 ? this.renderVideoWithTags() : this.renderImageWithTags();
   }
 }
 

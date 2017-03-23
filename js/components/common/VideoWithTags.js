@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
+import { Text, Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import { View } from 'native-base';
 import FitImage from 'react-native-fit-image';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
+import Video from 'react-native-video';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 export const EDIT_MODE = 'edit';
 export const CREATE_MODE = 'create';
 export const VIEW_MODE = 'view';
-
+const deviceHeight = Dimensions.get('window').height;
 const itemBackground = require('../../../images/tag-background.png');
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
+const w = Dimensions.get('window').weight;
 
 const styles = StyleSheet.create({
   base: {
@@ -36,9 +39,19 @@ const styles = StyleSheet.create({
     height: 48,
     width: TAG_WIDTH,
   },
+  videoBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flex: 1,
+    width: null,
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+  },
 });
 
-class ImageWithTags extends Component {
+class VideoWithTags extends Component {
 
   static propTypes = {
     itemId: React.PropTypes.number,
@@ -56,6 +69,7 @@ class ImageWithTags extends Component {
     this.state = {
       locationX: 0,
       locationY: 0,
+      repeat: false
     }
 
     // this._setupPanResponder(this.state.locationX, this.state.locationY);
@@ -143,12 +157,12 @@ class ImageWithTags extends Component {
                   key={i}
                   {...this.panResponder.panHandlers}
                   style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                <Image source={itemBackground} style={styles.itemBgImage} />
+                {/*<Image source={itemBackground} style={styles.itemBgImage} />*/}
               </Animated.View>);
       }
 
       return (<View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          <Image source={itemBackground} style={styles.itemBgImage} />
+          {/*<Image source={itemBackground} style={styles.itemBgImage} />*/}
         </View>);
     });
   }
@@ -167,50 +181,102 @@ class ImageWithTags extends Component {
     return { width, height };
   }
 
-  _render() {
+  componentDidMount() {
+    //
+    let that = this
+    //this.props.startVideo()
+    //setTimeout(function(){ that.setState({repeat: true}); }, 7500);
 
+
+  }
+
+  onLoadS() {
+    console.log('onLoad start')
+    // this.setState({repeat: false})
+  }
+
+  onLoad() {
+    //console.log('onLoad')
+    //    !this.state.repeat ? this.setState({repeat: true}) : null;
+  }
+  showProgress() {
+    console.log('boom')
+  }
+
+  _render() {
+    console.log('imageee',this.props.image);
+    console.log('imageee',this.props.image);
+    console.log('video', 'https://cdn1.gllu.com/uploads/look_video/look-2300/look-video-30/large_720_5E98533B-AAA3-4D6B-8830-EEE2623BB58C.mp4')
     const { width, height } = this.getRenderingDimensions();
     if (this.props.showMarker) {
-      console.log('fixImage')
       return (
-        <FitImage source={{uri: this.props.image}} style={[styles.itemsContainer]}>
-          <View style={[styles.draggableContainer, {width, height}]}>
-            {this.renderTags()}
-          </View>
-        </FitImage>
+      <View style={{flex: 1}} >
+        <Video source={this.state.repeat ? {uri: this.props.image, mainVer: 1, patchVer: 0} : require('../../../android/app/src/main/res/raw/newspla.mp4')}
+               resizeMode="stretch"
+               muted={true}
+               style={styles.videoBackground}
+               repeat={true}
+               onLoad={this.onLoad()}
+               onBuffer={this.onLoadS()}
+               onProgress={this.showProgress()}
+        />
+
+        <View style={[styles.draggableContainer, {width, height}]}>
+          {this.renderTags()}
+        </View>
+      </View>
       );
     }
     console.log(' dont fixImage')
     return (
-      <Image
-        source={{ uri: this.props.image }}
-        style={[styles.itemsContainer, {width, height}]}/>
+      <Video source={{ uri: this.props.image}}
+             resizeMode="stretch"
+             muted={true}
+             style={styles.videoBackground}
+             repeat={false}
+      />
     );
   }
 
+  renderWelcome() {
+    let that = this
+    setTimeout(function(){ that.setState({repeat: true}); }, 7500);
+    return (
+      <View style={{height: 200, width: 200, backgroundColor : 'red', borderRadius: 200}}>
+        <Text> Awesome, now you can start editing your video</Text>
+      </View>
+    )
+  }
+
   _renderContent() {
-    if (this.props.items.length == 0) {
+    if (this.props.items.length === 0) {
       const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
-      return(<Tag onPress={this._handlePress.bind(this)}>
-            {this._render()}
-          </Tag>);
+      return(
+        <Tag onPress={this.state.repeat ? this._handlePress.bind(this) : null}>
+            {this.state.repeat ? this._render() : this.renderWelcome()}
+        </Tag>);
     }
     return this._render();
   }
 
+  _handleFirstPress() {
+    this.setState({repeat: true})
+  }
+
   render() {
+    console.warn('happenned')
     const style = [styles.base, this.props.style];
     return (
-      <View style={style}>
+      <View style={style} >
         {this._renderContent()}
       </View>
     );
   }
 }
 
-ImageWithTags.defaultProps = {
+VideoWithTags.defaultProps = {
   mode: VIEW_MODE,
   showMarker: true,
 };
 
-export default ImageWithTags;
+export default VideoWithTags;

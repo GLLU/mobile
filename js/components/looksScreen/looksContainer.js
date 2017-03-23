@@ -178,6 +178,7 @@ class LooksContainer extends BasePage {
 
   renderVideo(look, index) {
     const {width, height} = this.state;
+    console.log('look',look)
     return (
       <GestureRecognizer
         key={index}
@@ -258,7 +259,8 @@ class LooksContainer extends BasePage {
       >
 
         {looksArr.map((look, index) => {
-          return look.coverType === "video" ? this.renderVideo(look, index) : this.renderImage(look, index)
+          console.log('look0',look)
+          return look.uri.search(".mp4") > -1 ? this.renderVideo(look, index) : this.renderImage(look, index)
         })}
       </ScrollView>
     )
