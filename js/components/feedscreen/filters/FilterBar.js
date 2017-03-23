@@ -128,7 +128,7 @@ class FilterBar extends BaseComponent {
     return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>
-          <FilterGroup activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
+          <FilterGroup mode='single' activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
                        filters={this.state.filters}/>
         </View>
         {!_.isEmpty(this.state.openFilter) ? this._renderFilters(this.state.openFilter) : null}
