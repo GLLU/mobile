@@ -6,13 +6,7 @@ import RadioButtons from 'react-native-radio-buttons';
 import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet } from 'react-native';
 import FilterGroup from './FilterGroup';
 import BaseComponent from '../../common/BaseComponent';
-
-import CategoryStrip from '../../common/CategoryStrip';
-const MK = require('react-native-material-kit');
-
-const {
-  MKColor,
-} = MK;
+import _ from 'lodash'
 
 const myStyles = StyleSheet.create({
   container: {
@@ -20,82 +14,22 @@ const myStyles = StyleSheet.create({
   },
   filter: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     backgroundColor: '#F5F5F5',
-  },
-  btnFilter: {
-    marginLeft: 5,
-    alignSelf: 'center',
-  },
-  btnCloseFilter: {
-    marginLeft: 15,
-    alignSelf: 'center',
-    marginRight: 5,
-  },
-  btnReset: {
-    alignSelf: 'center',
-  },
-  TextlabelReset: {
-    color: '#757575',
-    fontSize: 13,
-    fontWeight: '500',
-  },
-  smallBtn: {
-    fontSize: 15,
-    color: 'grey',
-  },
-  Textlabel: {
-    paddingTop: 0,
-    fontSize: 15,
-    fontWeight: 'normal',
-    textAlign: 'left',
-  },
-  TextResults: {
-    paddingTop: 12,
-    marginLeft: 10,
-    textAlign: 'left',
-    fontSize: 12,
-    fontWeight: 'normal',
-    color: '#757575'
   },
   filterActions: {
     backgroundColor: '#F5F5F5',
-    padding: 5,
-    marginBottom: 10,
-    height: 150,
+    height: 120,
+    paddingHorizontal: 10
   },
   filterActionsGrid: {
     backgroundColor: '#FFFFFF',
-    paddingTop: 10,
-    height: 110,
-  },
-  radioView: {
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    flex: 1,
-  },
-  radioOption: { // the box
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  radioOptionSelected: {
-    borderBottomColor: MKColor.Teal,
-    borderBottomWidth: 2,
-  },
-  radioBtnText: { //the text
-    color: 'lightgrey',
-    fontSize: 17,
-    textAlign: 'center',
-    paddingBottom: 5
-  },
-  radioBtnTextSelected: { //the text
-    color: MKColor.Teal
-  },
+    height: 100
+  }
 });
 
 const filters = [
   {
+    key:'items',
     name: 'Items',
     icon: {
       url: require('../../../../images/filters/filter-categories.png'),
@@ -104,6 +38,7 @@ const filters = [
 
   },
   {
+    key:'gender',
     name: 'Gender',
     icon: {
       url: require('../../../../images/filters/filter-gender.png'),
@@ -111,6 +46,7 @@ const filters = [
     }
   },
   {
+    key:'body',
     name: 'Body',
     icon: {
       url: require('../../../../images/filters/filter-body.png'),
@@ -118,6 +54,10 @@ const filters = [
     }
   },
 ]
+
+filters.forEach(filter=>{
+  filter.filters=[filter,filter,filter,filter,filter]
+});
 
 import { loadCategories } from '../../../actions/filters';
 
@@ -135,9 +75,11 @@ class FilterView extends BaseComponent {
 
   constructor(props) {
     super(props);
+    this._renderFilters=this._renderFilters.bind(this);
     this.state = {
       isOpen: false,
       filterStatusIcon: 'ios-arrow-forward',
+      openFilter:'',
       filters:filters
     };
   }
@@ -174,50 +116,35 @@ class FilterView extends BaseComponent {
     this.toggleFilter();
   }
 
-  _renderCategories() {
-    const {category, categories} = this.props;
-    return (
-      <CategoryStrip
-        categories={categories}
-        selectedCategory={category}
-        onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
+  _renderSubFilters(filters) {
+    return <FilterGroup filters={filters}/>;
   }
 
-  _rederFilterText() {
-    if (this.props.category) {
-      return (
-        <Text style={myStyles.TextResults}>
-          {this.props.category.name}
-        </Text>
-      );
-    }
-
-    return null;
-  }
-
-  _renderFilters() {
+  _renderFilters(openFilter) {
+    const currentFilter=_.find(this.state.filters,filter=>filter.name===openFilter);
     return (
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
-          {this._renderCategories()}
+          {this._renderSubFilters(currentFilter.filters)}
         </View>
       </View>
     )
   }
 
+  _setFilters(filters){
+    const openFilter = _.find(filters,filter=>filter.selected) || {name:''};
+    this.setState({filters:filters, openFilter:openFilter.name})
+  }
+
   render() {
     const labelColor = !_.isEmpty(this.props.category) ? '#1DE9B6' : '#212121';
-    console.log(`this.state.isOpen: ${this.state.isOpen}`)
+    console.log(`this.state.openFilter: ${this.state.openFilter}`)
     return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            {/*<FilterButton selected={this.state.isOpen} onPress={this.handleToggleFilterPress.bind(this)}/>*/}
-            <FilterGroup onSelectionChange={(filters)=>this.setState({filters:filters})} filters={this.state.filters}/>
-            {this._rederFilterText()}
-          </View>
+          <FilterGroup onSelectionChange={this._setFilters.bind(this)} filters={this.state.filters}/>
         </View>
-        {this.state.isOpen ? this._renderFilters() : null}
+        {!_.isEmpty(this.state.openFilter) ? this._renderFilters(this.state.openFilter) : null}
       </View>
     )
   }

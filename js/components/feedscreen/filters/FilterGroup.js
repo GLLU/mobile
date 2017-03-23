@@ -42,10 +42,24 @@ class FilterGroup extends Component {
     this.props.onSelectionChange(filters)
   }
 
-  render() {
+  renderAsScrollView(content){
     return (
+      <ScrollView horizontal={true} >
+        {content}
+      </ScrollView>
+    );
+  }
+
+  renderAsView(content){
+    return content;
+  }
+
+  render() {
+    const {filters} = this.props;
+    const renderer=(filters||[]).length>4? this.renderAsScrollView:this.renderAsView;
+    return renderer(
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
-        {_.map(this.props.filters, (filter, i) => {
+        {_.map(filters, (filter, i) => {
           return (
             <FilterButton onPress={this.onSelectValue} key={i} filter={filter}/>
           );

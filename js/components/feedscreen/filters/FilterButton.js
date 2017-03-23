@@ -5,9 +5,9 @@ import {noop} from 'lodash'
 
 const styles = StyleSheet.create({
   categoryItem: {
-    height: 100,
+    height: 85,
     width: 80,
-    padding: 5,
+    marginHorizontal:4,
     justifyContent: 'center',
     flexDirection: 'column',
   },
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   btnCategoryItem: {
     alignSelf: 'center',
-    height: 60,
+    height: 50,
     alignItems: 'center',
   },
 });
@@ -86,7 +86,7 @@ class FilterButton extends Component {
     const { selected } = this.state;
     const iconWidth = 50;
     const iconHeight = 50;
-    return (<View style={[styles.categoryItem, ]}>
+    return (<View style={[styles.categoryItem]}>
       <Text style={styles.categoryItemTitle}>{filter.name}</Text>
       <Button
         transparent
