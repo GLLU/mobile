@@ -77,23 +77,27 @@ class CommentsView extends Component {
     this.onUserNavigate = this.onUserNavigate.bind(this);
     this.currentPageIndex = 1;
     this.state = {
-      fadeAnimContent: new Animated.Value(-500),
       count:this.props.count,
       isTrueEndReached: false
     };
   }
 
-  componentWillMount(){
-    this.getCommentsData();
-  }
-
-  componentWillUnmount() {
-    this.props.initLookComments();
-  }
-
   getCommentsData() {
     this.props.getLookCommentsData(this.props.look_id, this.currentPageIndex);
     this.currentPageIndex++;
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.isOpen!==this.props.isOpen){
+      if(!nextProps.isOpen){
+        this.props.initLookComments();
+        this.currentPageIndex=1;
+      }
+      else{
+        this.getCommentsData();
+      }
+    }
+
   }
 
   _pushComment(value) {
