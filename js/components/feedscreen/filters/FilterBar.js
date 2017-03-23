@@ -96,9 +96,6 @@ const myStyles = StyleSheet.create({
 
 import { loadCategories } from '../../../actions/filters';
 
-const BEST_MATCH = 'Best Match';
-const RECENT = 'Recent';
-const feedTypes = [ BEST_MATCH,  RECENT ];
 class FilterView extends BaseComponent {
   static propTypes = {
     loadCategories: React.PropTypes.func,
@@ -172,45 +169,12 @@ class FilterView extends BaseComponent {
     return null;
   }
 
-  renderRadioContainer(optionNodes){
-    return (
-      <View style={myStyles.radioView}>
-        {optionNodes}
-      </View>
-    )
-  }
-
-  renderRadioOption(option, selected, onSelect, index) {
-    return (
-      <View key={index} style={[myStyles.radioOption, selected ? myStyles.radioOptionSelected : null]}>
-        <TouchableWithoutFeedback onPress={onSelect} >
-          <View >
-            <Text style={[ myStyles.radioBtnText, selected ? myStyles.radioBtnTextSelected : null]}>{option}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-    )
-  }
-
-  setFeedTypeSelectedOption(selectedFeedType){
-    const type = selectedFeedType == BEST_MATCH ? 'relevant' : 'recent';
-    this.props.filterFeed({type})
-  }
-
   _renderFilters() {
-    const selectedOption = this.props.type == 'relevant' ? BEST_MATCH : RECENT;
     return(
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
           {this._renderCategories()}
         </View>
-        <RadioButtons
-          options={ feedTypes }
-          onSelection={ this.setFeedTypeSelectedOption.bind(this) }
-          selectedOption={ selectedOption }
-          renderOption={ this.renderRadioOption }
-          renderContainer={ this.renderRadioContainer }
-        />
       </View>
     )
   }

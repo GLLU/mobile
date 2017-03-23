@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 import _ from 'lodash';
 
 const myStyles = StyleSheet.create({
-  mainView: {
+  container: {
     backgroundColor: '#FFFFFF',
     //flex: 1,
   },
@@ -14,10 +14,8 @@ const myStyles = StyleSheet.create({
 
 class SearchView extends Component {
   static propTypes = {
-    onSearchBarLayout: React.PropTypes.func,
     handleSearchInput: React.PropTypes.func,
     clearText: React.PropTypes.string,
-    onFilterBarLayout: React.PropTypes.func,
     typeFilter: React.PropTypes.string,
     categoryFilter: React.PropTypes.string,
     clearFilter: React.PropTypes.func,
@@ -41,11 +39,11 @@ class SearchView extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <SearchBar onLayout={e => this.props.onSearchBarLayout(e)}
-                   handleSearchInput={(term) => this.props.handleSearchInput(term)} clearText={this.props.clearText}/>
+      <View style={myStyles.container}>
+        <SearchBar
+          handleSearchInput={(term) => this.props.handleSearchInput(term)}
+          clearText={this.props.clearText}/>
         <FilterBar
-          onLayout={e => this.props.onFilterBarLayout(e)}
           type={this.props.typeFilter}
           category={this.props.categoryFilter}
           filterFeed={this.props.filterFeed.bind(this)}

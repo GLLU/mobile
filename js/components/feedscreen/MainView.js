@@ -3,9 +3,7 @@ import { StyleSheet } from 'react-native';
 import { View } from 'native-base';
 import { connect } from 'react-redux';
 import { getFeed, resetFeed, loadMore } from '../../actions';
-import FilterBar from './filters/FilterBar';
 import TabContent from './TabContent';
-import SearchBar from './SearchBar';
 import SearchView from './SearchView'
 import Utils from '../../Utils';
 import _ from 'lodash';
@@ -31,8 +29,6 @@ class MainView extends Component {
     this.state = {
       locked: false,
       isOpen: false,
-      filterHeight: 45,
-      searchHeight: 60,
       reloading: false,
     };
   }
@@ -98,43 +94,21 @@ class MainView extends Component {
     return (
       <TabContent
         reloading={reloading}
-        filterHeight={this.state.filterHeight}
         handleSwipeTab={this.handleSwipeTab.bind(this)}
         tabLabel={tabLabel}/>
     );
-  }
-
-  _handleMainviewHeight(e) {
-    const height = e.nativeEvent.layout.height;
-    this.mainViewHeight = height;
   }
 
   _handleSearchInput(term) {
     this._filterFeed({term})
   }
 
-  _handleFilterLayoutChanged(e) {
-    const height = e.nativeEvent.layout.height;
-    if (height != this.state.filterHeight) {
-      this.setState({filterHeight: height});
-    }
-  }
-
-  _handleSearchLayoutChanged(e) {
-    const height = e.nativeEvent.layout.height;
-    if (height != this.state.searchHeight) {
-      this.setState({searchHeight: height});
-    }
-  }
-
   renderSearchView() {
     if (this.props.searchStatus) {
       return (
         <SearchView
-          onSearchBarLayout={e => this._handleSearchLayoutChanged(e)}
           handleSearchInput={(term) => this._handleSearchInput(term)}
           clearText={this.props.query.term}
-          onFilterBarLayout={e => this._handleFilterLayoutChanged(e)}
           typeFilter={this.props.query.type}
           categoryFilter={this.props.query.category}
           clearFilter={this._clearFilter.bind(this)}
@@ -144,14 +118,10 @@ class MainView extends Component {
   }
 
   render() {
-    let mainViewStyle = {flexGrow: 1};
-    if (this.mainViewHeight) {
-      mainViewStyle = _.merge(mainViewStyle, {height: this.mainViewHeight - this.state.filterHeight - this.state.searchHeight});
-    }
     return (
       <View style={myStyles.mainView}>
         {this.renderSearchView()}
-        <View style={mainViewStyle} onLayout={e => this._handleMainviewHeight(e)}>
+        <View style={{flexGrow: 1, alignSelf:'stretch'}}>
           { this._renderFeed() }
         </View>
       </View>
