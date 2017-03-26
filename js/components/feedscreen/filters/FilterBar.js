@@ -32,7 +32,7 @@ const filters = [
       url: require('../../../../images/filters/filter-categories.png'),
       url_hover: require('../../../../images/filters/filter-categories-active.png')
     },
-
+    renderType: 'radio-multi'
   },
   {
     id: 'gender',
@@ -41,6 +41,7 @@ const filters = [
       url: require('../../../../images/filters/filter-gender.png'),
       url_hover: require('../../../../images/filters/filter-gender-active.png')
     },
+    renderType: 'radio-single',
     filters: [
       {
         id: 'male',
@@ -61,7 +62,7 @@ const filters = [
         }
       },
       {
-        id: 'all',
+        id: '',
         name: 'All',
         kind: 'gender',
         icon: {
@@ -77,7 +78,8 @@ const filters = [
     icon: {
       url: require('../../../../images/filters/filter-body.png'),
       url_hover: require('../../../../images/filters/filter-body-active.png')
-    }
+    },
+    renderType: 'radio-multi'
   },
 ];
 
@@ -140,7 +142,16 @@ class FilterBar extends BaseComponent {
   }
 
   _renderSubFilters(filters, openFilter) {
-    return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)} filters={filters}/>;
+    switch (openFilter.renderType) {
+      case 'radio-single':
+        return <FilterGroup mode='single' onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
+                            filters={filters}/>;
+      //case 'range':
+      case 'radio-multi':
+      default:
+        return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
+                            filters={filters}/>;
+    }
   }
 
   _renderFilters(openFilter) {
@@ -154,6 +165,11 @@ class FilterBar extends BaseComponent {
     )
   }
 
+  _generateQueryFromFilters(filters) {
+
+    return query;
+  }
+
   _filterFeed(filters) {
     const selections = _.chain(filters)
       .map(filter => filter.filters)
@@ -163,12 +179,10 @@ class FilterBar extends BaseComponent {
     let query = {};
     selections.forEach(selection => query[selection.kind] = selection.id)
     this.props.filterFeed(query)
-
   }
 
   _setFilters(filters) {
     const openFilter = _.find(filters, filter => filter.selected) || {};
-    this._filterFeed(filters);
     this.setState({filters: filters, openFilter: openFilter})
   }
 
@@ -179,6 +193,7 @@ class FilterBar extends BaseComponent {
         filter.filters = subFilters;
       }
     });
+    this._filterFeed(filters);
     this._setFilters(filters);
   }
 
