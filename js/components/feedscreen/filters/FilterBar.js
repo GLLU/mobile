@@ -106,10 +106,9 @@ class FilterBar extends BaseComponent {
   constructor(props) {
     super(props);
     this._renderFilters = this._renderFilters.bind(this);
-    this.setInnerFilters= this.setInnerFilters.bind(this);
+    this.setInnerFilters = this.setInnerFilters.bind(this);
+    this._filterFeed = this._filterFeed.bind(this);
     this.state = {
-      isOpen: false,
-      filterStatusIcon: 'ios-arrow-forward',
       openFilter: {},
       filters: filters
     };
@@ -120,19 +119,19 @@ class FilterBar extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setInnerFilters('items',nextProps.categories);
-    this.setInnerFilters('body_type',nextProps.bodyTypes);
+    this.setInnerFilters('items', nextProps.categories);
+    this.setInnerFilters('body_type', nextProps.bodyTypes);
   }
 
-  setInnerFilters(filterId, innerCategories){
-    if(innerCategories!==undefined){
+  setInnerFilters(filterId, innerCategories) {
+    if (innerCategories !== undefined) {
       let {filters} = this.state;
       filters = this.mapInnerFilters(filters, filterId, innerCategories);
       this.setState({filters});
     }
   }
 
-  mapInnerFilters(filters, filterId,innerCategories) {
+  mapInnerFilters(filters, filterId, innerCategories) {
     let mainFilter = _.find(filters, filter => filter.id === filterId);
     mainFilter.filters = innerCategories;
     const iteratee = (filter1, filter2) => filter1.id === filter2.id;
@@ -155,9 +154,21 @@ class FilterBar extends BaseComponent {
     )
   }
 
+  _filterFeed(filters) {
+    const selections = _.chain(filters)
+      .map(filter => filter.filters)
+      .flatten()
+      .filter(filter => filter.selected)
+      .value();
+    let query = {};
+    selections.forEach(selection => query[selection.kind] = selection.id)
+    this.props.filterFeed(query)
+
+  }
+
   _setFilters(filters) {
     const openFilter = _.find(filters, filter => filter.selected) || {};
-    //this.props.filterFeed(filters);
+    this._filterFeed(filters);
     this.setState({filters: filters, openFilter: openFilter})
   }
 

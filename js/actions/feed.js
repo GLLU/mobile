@@ -15,12 +15,16 @@ export function getFeed(query):Action {
   return (dispatch, getState) => {
     // dispatch(showLoader());
     const state = getState().feed;
-    const newState = Object.assign({}, state.query, query, {
+    let stateQuery = _.cloneDeep(state.query);
+    const newState = Object.assign(stateQuery, query, {
       page: {
         size: 10,
         number: 1
       }
     });
+    console.log(`diff ${JSON.stringify(query)}`)
+    console.log(`old state ${JSON.stringify(state.query)}`)
+    console.log(`new state ${JSON.stringify(newState)}`)
     const params = parseQueryFromState(newState);
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.feeds(params, (err, data) => {
@@ -41,7 +45,8 @@ export function resetFeed():Action {
   return (dispatch, getState) => {
     // dispatch(showLoader());
     const params = {
-      type: 'relevant',
+      gender: null,
+      body_type: null,
       category: null,
       term: '',
       page: {

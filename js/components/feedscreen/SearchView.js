@@ -45,8 +45,8 @@ class SearchView extends Component {
         <FilterBar
           type={this.props.typeFilter}
           category={this.props.categoryFilter}
-          filterFeed={this.props.filterFeed.bind(this)}
-          clearFilter={this.props.clearFilter.bind(this)}
+          filterFeed={this.props.filterFeed}
+          clearFilter={this.props.clearFilter}
         />
       </View>
     )

@@ -72,19 +72,14 @@ class MainView extends Component {
     this._filterFeed({}, true);
   }
 
-  _filterFeed(query, reset = false) {
-    if (reset) {
-      return this.resetFeed();
+  _filterFeed(query) {
+    if (_.isEmpty(query)) {
+      this.resetFeed()
     }
-    let newState = {};
-    const oldState = _.cloneDeep(this.props.query);
-    if (reset) {
-      newState = {type: 'relevant', category: null, term: ''};
-    } else {
-      newState = _.merge(this.props.query, query);
-    }
-    if (!_.isEqual(newState, oldState)) {
-      this.getFeed(newState);
+    else {
+      if (!_.isEqual(query, this.props.query)) {
+        this.getFeed(query);
+      }
     }
   }
 
@@ -121,7 +116,7 @@ class MainView extends Component {
     return (
       <View style={myStyles.mainView}>
         {this.renderSearchView()}
-        <View style={{flexGrow: 1, alignSelf:'stretch'}}>
+        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
           { this._renderFeed() }
         </View>
       </View>
