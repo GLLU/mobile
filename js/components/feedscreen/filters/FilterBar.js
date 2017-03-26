@@ -41,11 +41,11 @@ const filters = [
       url: require('../../../../images/filters/filter-gender.png'),
       url_hover: require('../../../../images/filters/filter-gender-active.png')
     },
-    filters:[
+    filters: [
       {
         id: 'male',
         name: 'Male',
-        kind:'gender',
+        kind: 'gender',
         icon: {
           url: require('../../../../images/filters/filter-gender.png'),
           url_hover: require('../../../../images/filters/filter-gender-active.png')
@@ -54,7 +54,7 @@ const filters = [
       {
         id: 'female',
         name: 'Female',
-        kind:'gender',
+        kind: 'gender',
         icon: {
           url: require('../../../../images/filters/filter-gender.png'),
           url_hover: require('../../../../images/filters/filter-gender-active.png')
@@ -63,7 +63,7 @@ const filters = [
     ]
   },
   {
-    id: 'body',
+    id: 'body_type',
     name: 'Body',
     icon: {
       url: require('../../../../images/filters/filter-body.png'),
@@ -97,6 +97,7 @@ class FilterBar extends BaseComponent {
   constructor(props) {
     super(props);
     this._renderFilters = this._renderFilters.bind(this);
+    this.setInnerFilters= this.setInnerFilters.bind(this);
     this.state = {
       isOpen: false,
       filterStatusIcon: 'ios-arrow-forward',
@@ -109,25 +110,29 @@ class FilterBar extends BaseComponent {
     this.props.loadCategories();
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.categories!==undefined)
-    {
+  componentWillReceiveProps(nextProps) {
+    this.setInnerFilters('items',nextProps.categories);
+    this.setInnerFilters('body_type',nextProps.bodyTypes);
+  }
+
+  setInnerFilters(filterId, innerCategories){
+    if(innerCategories!==undefined){
       let {filters} = this.state;
-      filters = this.setInnerCategoryFilters(filters,nextProps.categories);
+      filters = this.mapInnerFilters(filters, filterId, innerCategories);
       this.setState({filters});
     }
   }
 
-  setInnerCategoryFilters(filters, innerCategories){
-    let categoriesFilter= _.find(filters,filter=>filter.id==='items')
-    categoriesFilter.filters = innerCategories;
+  mapInnerFilters(filters, filterId,innerCategories) {
+    let mainFilter = _.find(filters, filter => filter.id === filterId);
+    mainFilter.filters = innerCategories;
     const iteratee = (filter1, filter2) => filter1.id === filter2.id;
-    filters = _.map(filters, item => iteratee(filter, categoriesFilter) ? filter : categoriesFilter);
+    filters = _.map(filters, filter => iteratee(filter, mainFilter) ? mainFilter : filter);
     return filters;
   }
 
-  _renderSubFilters(filters,openFilter) {
-    return <FilterGroup onSelectionChange={(filters)=>this._setSubFilters(openFilter,filters)} filters={filters}/>;
+  _renderSubFilters(filters, openFilter) {
+    return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)} filters={filters}/>;
   }
 
   _renderFilters(openFilter) {
@@ -135,7 +140,7 @@ class FilterBar extends BaseComponent {
     return (
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
-          {this._renderSubFilters(currentFilter.filters,openFilter)}
+          {this._renderSubFilters(currentFilter.filters, openFilter)}
         </View>
       </View>
     )
@@ -146,12 +151,11 @@ class FilterBar extends BaseComponent {
     this.setState({filters: filters, openFilter: openFilter.id})
   }
 
-  _setSubFilters(openFilter,subFilters) {
+  _setSubFilters(openFilter, subFilters) {
     const filters = _.cloneDeep(this.state.filters);
-    filters.forEach(filter=>{
-      if(filter.id===openFilter)
-      {
-        filter.filters=subFilters;
+    filters.forEach(filter => {
+      if (filter.id === openFilter) {
+        filter.filters = subFilters;
       }
     });
     this._setFilters(filters);
@@ -181,12 +185,34 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const tags = state.filters.categories ? state.filters.categories : [];
+  const categories = state.filters.categories ? state.filters.categories : [];
+  let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
+  bodyTypes = mapBodyTypes(bodyTypes);
   return {
-    categories: tags,
+    categories: categories,
+    bodyTypes: bodyTypes,
     minPrice: state.filters.minPrice,
     maxPrice: state.filters.maxPrice
   }
 };
+
+const mapBodyTypes = (bodytypes) => {
+  return _.chain(Object.keys(bodytypes))
+    .map(key =>
+      _.map(bodytypes[key], bodyType => {
+        return {
+          id: bodyType.body_type,
+          name: bodyType.name,
+          gender: key,
+          kind: 'body_type',
+          icon: {
+            url: bodyType.imageOriUrl,
+            url_hover: bodyType.imageOriUrl,
+          }
+        };
+      }))
+    .flatten()
+    .value();
+}
 
 export default connect(mapStateToProps, bindActions)(FilterBar);
