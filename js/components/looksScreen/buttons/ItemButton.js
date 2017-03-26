@@ -13,7 +13,7 @@ class ItemButton extends Component {
     this.iconNotActive = category.icon.url
     this.iconActive = category.icon.url_hover
     this.state = {
-      icon: iconActive
+      icon: this.iconActive
     }
   }
 

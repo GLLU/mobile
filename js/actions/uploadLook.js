@@ -44,7 +44,7 @@ export function addNewLook(image) {
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
               dispatch(hideProcessing());
               if (data) {
-                const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'large_720').url;
+                const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
                 console.log('urlll',url)
                 console.log('data.look.cover',data.look.cover)
                 if(data.look.cover.type !== "image") {

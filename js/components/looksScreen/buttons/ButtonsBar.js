@@ -126,18 +126,30 @@ export default class ButtonsBar extends BaseComponent {
     this.setState({itemY: evt.nativeEvent.layout.y})
   }
 
-  render() {
+  renderItemVideoDataLine() {
     return (
-    <View style={[styles.container, styles['row']]}>
       <View style={[styles.leftContainer, styles[this.props.direction]]}>
         <ItemDataLine isOpen={this.state.itemLineOpen} onPress={() => this._onLikeClicked()}  itemY={this.state.itemY} data={this.props.items[0]}/>
       </View>
+    )
+  }
+
+  renderItemButton() {
+    return (
+      <View onLayout={this.handleTextLayout}>
+        <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={this.props.items[0].category.name}/>
+      </View>
+    )
+  }
+
+  render() {
+    return (
+    <View style={[styles.container, styles['row']]}>
+      { this.props.lookType === 'video' ? this.renderItemVideoDataLine() : null }
       <View style={[styles.rightContainer, styles[this.props.direction]]} >
         <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onPress={() => this._onLikeClicked()} />
         { this._renderInformationButton(this.props.hasDescription) }
-        <View onLayout={this.handleTextLayout}>
-          <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={this.props.items[0].category.name}/>
-        </View>
+        { this.props.lookType === 'video' ? this.renderItemButton() : null }
         <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
         <MenuButton onPress={() => this._onMenuClicked()}/>
       </View>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight, StyleSheet, Text } from 'react-native';
+import { View, Image, TouchableHighlight, TouchableOpacity, StyleSheet, Text, Animated } from 'react-native';
 import * as _ from 'lodash'
 import styles from '../styles'
 const buyItImage = require('../../../../images/buyItButton-noprice.png');
@@ -11,7 +11,7 @@ const likeClickedImage = require('../../../../images/likeClicked.png');
 export default class ItemDataLine extends Component {
   constructor(props) {
     super(props);
-    this._onPress = this._onPress.bind(this);
+
   }
 
   static propTypes = {
@@ -37,17 +37,19 @@ export default class ItemDataLine extends Component {
     if(this.props.isOpen){
       return (
         <TouchableHighlight>
-          <View style={[styles.footerButton, {flex: 1, flexDirection: 'row', flexGrow: 10, marginTop: this.props.itemY-5}]}>
+          <Animated.View style={[styles.footerButton, {flex: 1, flexDirection: 'row', flexGrow: 10, marginTop: this.props.itemY-5}]}>
 
             <Text style={[styles.footerButtonText, {marginLeft: 10, marginRight: 10}]}>{this.props.data.brand.name}</Text>
             <View style={{padding: 5, borderLeftWidth: 2, borderRightWidth: 2, borderColor: 'gray'}}>
               <Text style={styles.footerButtonText}>250$</Text>
             </View>
             <View style={{ padding: 5, borderColor: 'gray', marginLeft: 5}}>
-              <Image source={bagItImage}
-                     style={[styles.footerButtonIcon,{width: 25, height: 25}]}/>
+              <TouchableOpacity>
+                <Image source={bagItImage}
+                       style={[styles.footerButtonIcon,{width: 25, height: 25}]}/>
+              </TouchableOpacity>
             </View>
-          </View>
+          </Animated.View>
         </TouchableHighlight>
       );
     } else return null

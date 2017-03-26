@@ -67,8 +67,6 @@ class TagItemPage extends BaseComponent {
   renderVideoWithTags() {
     const { items, image, itemId } = this.props;
     const { mode } = this.state;
-    console.warn('itemid',itemId)
-    console.warn('image',image)
     return (
       <View
         style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>

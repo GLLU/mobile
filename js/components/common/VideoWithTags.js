@@ -228,7 +228,7 @@ class VideoWithTags extends Component {
       return (
       <View style={{flex: 1}} >
 
-        <Video source={{uri: image}}
+        <Video source={{uri: this.props.image}}
                resizeMode="contain"
                muted={true}
                style={{width: w, height: h, overflow: 'hidden', flexGrow: h, flexBasis: 1}}
@@ -241,7 +241,7 @@ class VideoWithTags extends Component {
     console.log(' dont fixImage')
     return (
       <View style={{flex: 1}} >
-        <Video source={{uri: image}}
+        <Video source={{uri: this.props.image}}
                resizeMode="contain"
                muted={true}
                style={{width: width, height: height, overflow: 'hidden', flexGrow: h, flexBasis: 1}}

@@ -168,6 +168,7 @@ export default class BottomLookContainer extends BaseComponent {
                 toggleMenu={() => this._toggleMenu()}
                 items={this.props.look.items}
                 activeItem={this.state.activeItem}
+                lookType={this.props.lookType}
               />
             </View>
           </TouchableWithoutFeedback>

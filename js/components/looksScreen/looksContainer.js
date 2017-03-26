@@ -208,6 +208,7 @@ class LooksContainer extends BasePage {
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+          lookType={"video"}
         />
       </GestureRecognizer>
     )
