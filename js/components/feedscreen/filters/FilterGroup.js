@@ -43,10 +43,7 @@ class FilterGroup extends Component {
 
   onMultipleSelectValue(filter) {
     iteratee = (filter1, filter2) => filter1.id === filter2.id;
-
-
     const filters = _.map(this.props.filters, item => iteratee(item, filter) ? filter : item);
-
     this.props.onSelectionChange(filters)
   }
 

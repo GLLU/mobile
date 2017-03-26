@@ -40,7 +40,27 @@ const filters = [
     icon: {
       url: require('../../../../images/filters/filter-gender.png'),
       url_hover: require('../../../../images/filters/filter-gender-active.png')
-    }
+    },
+    filters:[
+      {
+        id: 'male',
+        name: 'Male',
+        kind:'gender',
+        icon: {
+          url: require('../../../../images/filters/filter-gender.png'),
+          url_hover: require('../../../../images/filters/filter-gender-active.png')
+        }
+      },
+      {
+        id: 'female',
+        name: 'Female',
+        kind:'gender',
+        icon: {
+          url: require('../../../../images/filters/filter-gender.png'),
+          url_hover: require('../../../../images/filters/filter-gender-active.png')
+        }
+      }
+    ]
   },
   {
     id: 'body',
@@ -50,15 +70,15 @@ const filters = [
       url_hover: require('../../../../images/filters/filter-body-active.png')
     }
   },
-]
+];
 
-filters.forEach((filter, i) => {
-  filter.filters = _.map(_.times((i + 1) * 4), iteration => {
-    const x=_.cloneDeep(filter);
-    x.id=iteration;
-    return x;
-  })
-});
+// filters.forEach((filter, i) => {
+//   filter.filters = _.map(_.times((i + 1) * 4), iteration => {
+//     const x=_.cloneDeep(filter);
+//     x.id=iteration;
+//     return x;
+//   })
+// });
 
 import { loadCategories } from '../../../actions/filters';
 
@@ -87,6 +107,23 @@ class FilterBar extends BaseComponent {
 
   componentWillMount() {
     this.props.loadCategories();
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.categories!==undefined)
+    {
+      let {filters} = this.state;
+      filters = this.setInnerCategoryFilters(filters,nextProps.categories);
+      this.setState({filters});
+    }
+  }
+
+  setInnerCategoryFilters(filters, innerCategories){
+    let categoriesFilter= _.find(filters,filter=>filter.id==='items')
+    categoriesFilter.filters = innerCategories;
+    const iteratee = (filter1, filter2) => filter1.id === filter2.id;
+    filters = _.map(filters, item => iteratee(filter, categoriesFilter) ? filter : categoriesFilter);
+    return filters;
   }
 
   _renderSubFilters(filters,openFilter) {
@@ -124,7 +161,7 @@ class FilterBar extends BaseComponent {
     const activeFilter = {
       color: '#757575',
       underline: true
-    }
+    };
     return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>

@@ -69,7 +69,10 @@ class FilterButton extends Component {
   }
 
   _renderIcon(icon, selected) {
-    const uri = this.props.activeStyle.underline || !selected ? icon['url'] : icon['url_hover'];
+    let uri = this.props.activeStyle.underline || !selected ? icon['url'] : icon['url_hover'];
+    if(!_.isNumber(uri)){
+      uri={uri:uri};
+    }
     return <Image source={uri} style={styles.categoryItemImage} resizeMode={'contain'}/>;
   }
 
