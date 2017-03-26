@@ -12,4 +12,14 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: '#F2F2F2'
   },
+  videoBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flex: 1,
+    width: null,
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+  },
 });

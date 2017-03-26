@@ -37,7 +37,7 @@ class TagItemPage extends BaseComponent {
   handleAddTag(position) {
     this.logEvent('AddItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'edit'})
+      this.setState({mode: 'view'})
     });
   }
 
@@ -68,6 +68,7 @@ class TagItemPage extends BaseComponent {
     const { items, image, itemId } = this.props;
     const { mode } = this.state;
     console.warn('itemid',itemId)
+    console.warn('image',image)
     return (
       <View
         style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
@@ -86,9 +87,7 @@ class TagItemPage extends BaseComponent {
   render() {
     const { items, image, itemId } = this.props;
     const { mode } = this.state;
-    console.log('image',image)
-    console.log('propsss',this.props)
-    return image.search(".mp4") > -1 ? this.renderVideoWithTags() : this.renderImageWithTags();
+    return this.props.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags();
   }
 }
 

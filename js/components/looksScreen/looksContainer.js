@@ -195,7 +195,7 @@ class LooksContainer extends BasePage {
           resizeMode={'stretch'}
           muted={true}
           style={styles.videoBackground}
-          repeat={false}
+          repeat={true}
         />
         <BottomLookContainer
           width={width}

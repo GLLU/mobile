@@ -75,7 +75,7 @@ class StepZero extends BaseComponent {
   }
 
   findOrCreateBrand(value, createNew) {
-    const brandName = typeof value == 'string' ? value : value.name;
+    const brandName = typeof value === 'string' ? value : value.name;
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
     f(value).then(() => {
       setTimeout(() => {

@@ -58,7 +58,7 @@ export function addNewLook(image) {
                     type: EDIT_NEW_LOOK,
                     payload,
                   });
-                  console.log('uploaded');
+                  console.log('uploaded', payload);
                   resolve(payload);
                 } else {
                   Utils.preloadImages([url]).then(() => {

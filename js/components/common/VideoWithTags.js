@@ -39,16 +39,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: TAG_WIDTH,
   },
-  videoBackground: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    flex: 1,
-    width: null,
-    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
-  },
+
 });
 
 class VideoWithTags extends Component {
@@ -69,7 +60,8 @@ class VideoWithTags extends Component {
     this.state = {
       locationX: 0,
       locationY: 0,
-      repeat: false
+      repeat: false,
+      image: this.props.image
     }
 
     // this._setupPanResponder(this.state.locationX, this.state.locationY);
@@ -136,6 +128,20 @@ class VideoWithTags extends Component {
     });
   }
 
+  _handlePressWithoutPress () {
+    const locationX = 1;
+    const locationY = 1;
+    const { width, height } = this.getRenderingDimensions();
+    this._setupPanResponder(locationX, locationY);
+
+    // convert location into relative positions
+    const left = locationX / width;
+    const top = locationY / height;
+    this.setState({locationX: left, locationY: top}, () => {
+      this.props.createLookItemForVideo({locationX: left, locationY: top});
+    });
+  }
+
   normalizePosition(value) {
     return Math.min(Math.max(value, 0.1), 0.9);
   }
@@ -144,26 +150,37 @@ class VideoWithTags extends Component {
     const { items, itemId, mode } = this.props;
 
     const { width, height } = this.getRenderingDimensions();
+    console.log('width', width)
+    console.log('height', height)
 
     return items.map((item, i) => {
+      console.log('item', item)
       const x = this.normalizePosition(item.locationX);
       const y = this.normalizePosition(item.locationY);
       const left = parseInt(x * width);
       const top = parseInt(y * height);
+      console.log('top', top)
+      console.log('left', left)
+      console.log('h', h)
 
-      if (mode != VIEW_MODE) {
+      if (mode !== VIEW_MODE) {
+        console.log('no view mode')
         const layout = this._pan.getLayout();
-        return (<Animated.View
-                  key={i}
-                  {...this.panResponder.panHandlers}
-                  style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                {/*<Image source={itemBackground} style={styles.itemBgImage} />*/}
-              </Animated.View>);
+        return (
+          <Animated.View
+              key={i}
+              {...this.panResponder.panHandlers}
+              style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+            <Image source={itemBackground} style={styles.itemBgImage} />
+          </Animated.View>
+    );
       }
-
-      return (<View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          {/*<Image source={itemBackground} style={styles.itemBgImage} />*/}
-        </View>);
+      console.log('view mode')
+      return (
+        <View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+          <Image source={itemBackground} style={styles.itemBgImage} />
+        </View>
+      );
     });
   }
 
@@ -182,6 +199,7 @@ class VideoWithTags extends Component {
   }
 
   componentDidMount() {
+    this._handlePressWithoutPress()
     //
     let that = this
     //this.props.startVideo()
@@ -204,56 +222,42 @@ class VideoWithTags extends Component {
   }
 
   _render() {
-    console.log('imageee',this.props.image);
-    console.log('imageee',this.props.image);
-    console.log('video', 'https://cdn1.gllu.com/uploads/look_video/look-2300/look-video-30/large_720_5E98533B-AAA3-4D6B-8830-EEE2623BB58C.mp4')
+    const image = 'https://cdn1.gllu.com/uploads/look_video/look-2300/look-video-30/large_720_5E98533B-AAA3-4D6B-8830-EEE2623BB58C.mp4'
     const { width, height } = this.getRenderingDimensions();
-    if (this.props.showMarker) {
+    if (!this.props.showMarker) {
       return (
       <View style={{flex: 1}} >
-        <Video source={this.state.repeat ? {uri: this.props.image, mainVer: 1, patchVer: 0} : require('../../../android/app/src/main/res/raw/newspla.mp4')}
-               resizeMode="stretch"
+
+        <Video source={{uri: image}}
+               resizeMode="contain"
                muted={true}
-               style={styles.videoBackground}
+               style={{width: w, height: h, overflow: 'hidden', flexGrow: h, flexBasis: 1}}
                repeat={true}
-               onLoad={this.onLoad()}
-               onBuffer={this.onLoadS()}
-               onProgress={this.showProgress()}
         />
 
-        <View style={[styles.draggableContainer, {width, height}]}>
-          {this.renderTags()}
-        </View>
       </View>
       );
     }
     console.log(' dont fixImage')
     return (
-      <Video source={{ uri: this.props.image}}
-             resizeMode="stretch"
-             muted={true}
-             style={styles.videoBackground}
-             repeat={false}
-      />
+      <View style={{flex: 1}} >
+        <Video source={{uri: image}}
+               resizeMode="contain"
+               muted={true}
+               style={{width: width, height: height, overflow: 'hidden', flexGrow: h, flexBasis: 1}}
+               repeat={true}
+        />
+      </View>
+
     );
   }
 
-  renderWelcome() {
-    let that = this
-    setTimeout(function(){ that.setState({repeat: true}); }, 7500);
-    return (
-      <View style={{height: 200, width: 200, backgroundColor : 'red', borderRadius: 200}}>
-        <Text> Awesome, now you can start editing your video</Text>
-      </View>
-    )
-  }
-
   _renderContent() {
-    if (this.props.items.length === 0) {
+    if (false) {
       const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
       return(
-        <Tag onPress={this.state.repeat ? this._handlePress.bind(this) : null}>
-            {this.state.repeat ? this._render() : this.renderWelcome()}
+        <Tag onPress={this._handlePress.bind(this)}>
+            {this._render()}
         </Tag>);
     }
     return this._render();
@@ -264,7 +268,6 @@ class VideoWithTags extends Component {
   }
 
   render() {
-    console.warn('happenned')
     const style = [styles.base, this.props.style];
     return (
       <View style={style} >

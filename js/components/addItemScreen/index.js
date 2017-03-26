@@ -64,16 +64,24 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
+    isVideo = this.props.image.search(".mp4") > -1
+    console.log('isVideo',isVideo)
     this.state = {
-      currentStep: -1,
+      isVideo,
+      currentStep: isVideo ? 0 : -1,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
-      mode: props.mode,
+      mode: isVideo ? 'view' : props.mode,
       allowContinue: false,
     };
     console.log('ADDITEMINDEX')
   }
+
+  componentDidMount() {
+    console.log('image from redux',this.props.image)
+  }
+
 
   _handleLayoutImage(e) {
     const { width, height } = e.nativeEvent.layout;
@@ -169,7 +177,7 @@ class AddItemPage extends BasePage {
     const { items, image, itemId } = this.props;
     const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
-    return image.search(".mp4") > -1 ? this.renderVideoWithTags() : this.renderImageWithTags()
+    return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()
 
   }
 
@@ -188,17 +196,19 @@ class AddItemPage extends BasePage {
   }
 
   renderVideoWithTags() {
-    console.warn('videoooo')
+    console.log('videoooo', this.props.image)
     const { items, image, itemId } = this.props;
     const { imageWidth } = this.state;
+
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
         itemId={itemId}
-        width={400}
+        width={230}
         mode={mode}
-        items={items}
-        image={image}/>
+        image={image}
+        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
+      />
     );
   }
 
@@ -234,12 +244,20 @@ class AddItemPage extends BasePage {
     }
   }
 
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
   renderContent() {
     if (this.state.currentStep === -1) {
-      const { mode } = this.state;
+      const { isVideo, mode } = this.state;
       return (
         <StepMarker
           mode={mode}
+          isVideo={isVideo}
           />
       );
     }
