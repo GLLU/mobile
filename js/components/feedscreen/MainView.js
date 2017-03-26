@@ -7,6 +7,7 @@ import TabContent from './TabContent';
 import SearchView from './SearchView'
 import Utils from '../../Utils';
 import _ from 'lodash';
+import VisibilityContainer from "../common/VisibilityContainer";
 
 const myStyles = StyleSheet.create({
   mainView: {
@@ -99,17 +100,17 @@ class MainView extends Component {
   }
 
   renderSearchView() {
-    if (this.props.searchStatus) {
-      return (
+    return (
+      <VisibilityContainer visible={this.props.searchStatus}>
         <SearchView
           handleSearchInput={(term) => this._handleSearchInput(term)}
           clearText={this.props.query.term}
           typeFilter={this.props.query.type}
-          categoryFilter={this.props.query.category}
           clearFilter={this._clearFilter.bind(this)}
           filterFeed={this._filterFeed.bind(this)}
-        />);
-    }
+        />
+      </VisibilityContainer>
+    );
   }
 
   render() {
