@@ -47,12 +47,14 @@ export default class BottomLookContainer extends BaseComponent {
     super(props);
     this._toggleDescription = this._toggleDescription.bind(this);
     this._toggleComments = this._toggleComments.bind(this);
+    this._toggleItem = this._toggleItem.bind(this);
     this.state = {
       likes: this.props.look.likes,
       isLiked: this.props.look.liked,
       comments: this.props.look.comments || 0,
       isDescriptionActive: false,
       isCommentsActive: false,
+      activeItem: '',
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
       fadeAnimContentOnPress: new Animated.Value(1)
@@ -111,6 +113,9 @@ export default class BottomLookContainer extends BaseComponent {
     this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
   }
+  _toggleItem(shouldActive) {
+    this.props.onBottomDrawerOpen(shouldActive);
+  }
 
   toggleBottomContainer() {
     if (this.state.fadeAnimContentOnPress._value === 1) {
@@ -153,13 +158,17 @@ export default class BottomLookContainer extends BaseComponent {
               <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
+                toggleItem={this._toggleItem}
                 hasDescription={!_.isEmpty(this.props.look.description)}
                 isDescriptionActive={this.state.isDescriptionActive}
                 toggleDescription={this._toggleDescription}
                 isLiked={this.state.isLiked}
                 likes={this.state.likes}
                 toggleLike={this.handleLikePress.bind(this)}
-                toggleMenu={() => this._toggleMenu()}/>
+                toggleMenu={() => this._toggleMenu()}
+                items={this.props.look.items}
+                activeItem={this.state.activeItem}
+              />
             </View>
           </TouchableWithoutFeedback>
           {this._renderCommentsView(this.state.isCommentsActive)}
