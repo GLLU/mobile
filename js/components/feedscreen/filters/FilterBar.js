@@ -218,7 +218,10 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const categories = state.filters.categories ? state.filters.categories : [];
+  const categories = state.filters.categories ? state.filters.categories.map(category=>{
+    category.id=category.name;
+    return category;
+  }) : [];
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
   bodyTypes = mapBodyTypes(bodyTypes);
   return {
