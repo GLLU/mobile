@@ -110,7 +110,7 @@ class FilterBar extends BaseComponent {
     this.state = {
       isOpen: false,
       filterStatusIcon: 'ios-arrow-forward',
-      openFilter: '',
+      openFilter: {},
       filters: filters
     };
   }
@@ -145,7 +145,7 @@ class FilterBar extends BaseComponent {
   }
 
   _renderFilters(openFilter) {
-    const currentFilter = _.find(this.state.filters, filter => filter.id === openFilter);
+    const currentFilter = _.find(this.state.filters, filter => filter.id === openFilter.id);
     return (
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
@@ -158,13 +158,13 @@ class FilterBar extends BaseComponent {
   _setFilters(filters) {
     const openFilter = _.find(filters, filter => filter.selected) || {id: 0};
     //this.props.filterFeed(filters);
-    this.setState({filters: filters, openFilter: openFilter.id})
+    this.setState({filters: filters, openFilter: openFilter})
   }
 
   _setSubFilters(openFilter, subFilters) {
     const filters = _.cloneDeep(this.state.filters);
     filters.forEach(filter => {
-      if (filter.id === openFilter) {
+      if (filter.id === openFilter.id) {
         filter.filters = subFilters;
       }
     });
