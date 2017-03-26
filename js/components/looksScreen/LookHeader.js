@@ -13,22 +13,29 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: 'transparent',
-    height: Platform.os === 'ios' ? 110 : 70,
+    height: 100
 
   },
   row: {
     flexDirection: 'row'
   },
   header: {
-    flex: 0.5
+    paddingTop: Platform.OS === 'ios' ? 20 : 0
   },
   column: {
     flexDirection: 'column'
   },
   backBtn: {
     color: 'black',
-    backgroundColor: 'transparent',
-    alignSelf: 'center'
+    alignSelf: 'center',
+  },
+  backBtnContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.5)'
   },
   avatar: {
     alignSelf: 'center',
@@ -59,10 +66,9 @@ class LookHeader extends Component {
   render() {
     return (
       <View style={[styles.container, styles.column]}>
-        { Platform.OS === 'ios' ? <View style={{height: 40}}/> : null}
         <View style={[styles.header, styles.row]}>
           <View style={{flex: 1}} name="spacer"/>
-          <TouchableOpacity style={{flex: 4, justifyContent: 'center', flexDirection: 'row', backgroundColor:'rgba(255,255,255,0.5)', borderRadius:25}}
+          <TouchableOpacity style={[styles.backBtnContainer, {flex: 3}]}
                             onPress={this.props.onBackNavigationPress}>
             <Icon style={styles.backBtn} name="ios-arrow-back"/>
           </TouchableOpacity>

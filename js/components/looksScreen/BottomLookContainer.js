@@ -164,9 +164,9 @@ export default class BottomLookContainer extends BaseComponent {
           </TouchableWithoutFeedback>
           {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderDescriptionView(this.state.isDescriptionActive)}
-          <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-                     closeModal={() => this._toggleMenu()}/>
         </Animated.View>
+        <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+                   closeModal={() => this._toggleMenu()}/>
       </View>
     )
   }
