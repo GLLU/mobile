@@ -16,7 +16,6 @@ class SearchView extends Component {
     handleSearchInput: React.PropTypes.func,
     clearText: React.PropTypes.string,
     typeFilter: React.PropTypes.string,
-    categoryFilter: React.PropTypes.string,
     clearFilter: React.PropTypes.func,
     filterFeed: React.PropTypes.func
 
@@ -44,7 +43,6 @@ class SearchView extends Component {
           clearText={this.props.clearText}/>
         <FilterBar
           type={this.props.typeFilter}
-          category={this.props.categoryFilter}
           filterFeed={this.props.filterFeed}
           clearFilter={this.props.clearFilter}
         />

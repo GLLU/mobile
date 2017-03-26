@@ -100,7 +100,6 @@ class FilterBar extends BaseComponent {
     minPrice: React.PropTypes.number,
     maxPrice: React.PropTypes.number,
     type: React.PropTypes.string,
-    category: React.PropTypes.object,
     filterFeed: React.PropTypes.func,
     clearFilter: React.PropTypes.func,
   }
@@ -112,7 +111,7 @@ class FilterBar extends BaseComponent {
     this._filterFeed = this._filterFeed.bind(this);
     this.state = {
       openFilter: {},
-      filters: filters
+      filters: _.cloneDeep(filters)
     };
   }
 
@@ -135,9 +134,12 @@ class FilterBar extends BaseComponent {
 
   mapInnerFilters(filters, filterId, innerCategories) {
     let mainFilter = _.find(filters, filter => filter.id === filterId);
-    mainFilter.filters = innerCategories;
-    const iteratee = (filter1, filter2) => filter1.id === filter2.id;
-    filters = _.map(filters, filter => iteratee(filter, mainFilter) ? mainFilter : filter);
+    if(_.isEmpty(mainFilter.filters))
+    {
+      mainFilter.filters = innerCategories;
+      const iteratee = (filter1, filter2) => filter1.id === filter2.id;
+      filters = _.map(filters, filter => iteratee(filter, mainFilter) ? mainFilter : filter);
+    }
     return filters;
   }
 
@@ -163,11 +165,6 @@ class FilterBar extends BaseComponent {
         </View>
       </View>
     )
-  }
-
-  _generateQueryFromFilters(filters) {
-
-    return query;
   }
 
   _filterFeed(filters) {
