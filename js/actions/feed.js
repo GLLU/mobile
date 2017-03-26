@@ -6,23 +6,19 @@ export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const RESET_FEED_DATA = 'RESET_FEED_DATA';
 
 const parseQueryFromState = function(state) {
-  const params = Object.assign({}, state, { category: state.category ? state.category.name : null })
-  return params;
+  return Object.assign({}, state, { category: state.category ? state.category.name : null })
 }
 
 export function getFeed(query):Action {
-  return (dispatch, getState) => {
-    const state = getState().feed;
-    let stateQuery = _.cloneDeep(state.query);
-    const newState = Object.assign(stateQuery, query, {
+  return (dispatch) => {
+    const newState = Object.assign({}, query, {
       page: {
         size: 10,
         number: 1
       }
     });
-    const params = parseQueryFromState(newState);
     return new Promise((resolve, reject) => {
-      return dispatch(rest.actions.feeds(params, (err, data) => {
+      return dispatch(rest.actions.feeds(newState, (err, data) => {
         if (!err && data) {
           dispatch(setFeedData({data, query: newState}));
           resolve(data.looks);
