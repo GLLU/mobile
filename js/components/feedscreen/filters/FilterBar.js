@@ -47,13 +47,22 @@ const filters = [
         name: 'Male',
         kind: 'gender',
         icon: {
-          url: require('../../../../images/filters/filter-gender.png'),
-          url_hover: require('../../../../images/filters/filter-gender-active.png')
+          url: require('../../../../images/filters/genders/filter-gender-male.png'),
+          url_hover: require('../../../../images/filters/genders/filter-gender-male-active.png')
         }
       },
       {
         id: 'female',
         name: 'Female',
+        kind: 'gender',
+        icon: {
+          url: require('../../../../images/filters/genders/filter-gender-female.png'),
+          url_hover: require('../../../../images/filters/genders/filter-gender-female-active.png')
+        }
+      },
+      {
+        id: 'all',
+        name: 'All',
         kind: 'gender',
         icon: {
           url: require('../../../../images/filters/filter-gender.png'),
