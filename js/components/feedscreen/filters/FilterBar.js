@@ -148,6 +148,7 @@ class FilterBar extends BaseComponent {
 
   _setFilters(filters) {
     const openFilter = _.find(filters, filter => filter.selected) || {id: 0};
+    //this.props.filterFeed(filters);
     this.setState({filters: filters, openFilter: openFilter.id})
   }
 
