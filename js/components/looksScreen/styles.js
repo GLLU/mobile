@@ -4,7 +4,7 @@ import ExtraDimensions from 'react-native-extra-dimensions-android';
 const width = Dimensions.get('window').width
 const softMenuBarHeight=ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
 const statusBarHeight=ExtraDimensions.get('STATUS_BAR_HEIGHT');
-const height = Platform.OS === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - softMenuBarHeight + statusBarHeight
+const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
 export default StyleSheet.create({
   container: {},
