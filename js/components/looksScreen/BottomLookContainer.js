@@ -152,7 +152,6 @@ export default class BottomLookContainer extends BaseComponent {
     ).start();
     return (
       <View style={{marginTop: 0}}>
-        {this._renderBuyItButtons(this.props.look)}
         <LookHeader
           avatar={{uri: this.props.look.avatar.url}}
           onBackNavigationPress={this.props.tempPopRoute}
@@ -175,6 +174,7 @@ export default class BottomLookContainer extends BaseComponent {
           {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderDescriptionView(this.state.isDescriptionActive)}
         </Animated.View>
+        {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                    closeModal={() => this._toggleMenu()}/>
       </View>
