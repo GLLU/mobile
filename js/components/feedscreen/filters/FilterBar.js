@@ -109,6 +109,7 @@ class FilterBar extends BaseComponent {
     this._renderFilters = this._renderFilters.bind(this);
     this.setInnerFilters = this.setInnerFilters.bind(this);
     this._filterFeed = this._filterFeed.bind(this);
+    this.setDefaultSelections = this.setDefaultSelections.bind(this);
     this.state = {
       openFilter: {},
       filters: _.cloneDeep(filters)
@@ -122,6 +123,27 @@ class FilterBar extends BaseComponent {
   componentWillReceiveProps(nextProps) {
     this.setInnerFilters('items', nextProps.categories);
     this.setInnerFilters('body_type', nextProps.bodyTypes);
+    this.setDefaultSelections(this.state.filters, nextProps.defaultFilters, this.state.didConsumeDefaultValues)
+  }
+
+  setDefaultSelections(filters, defaultFilters) {
+
+    if (defaultFilters !== this.props.defaultFilters && defaultFilters !== undefined) {
+      _.chain(Object.keys(defaultFilters))
+        .map(index => {
+          return {key: index, value: defaultFilters[index]}
+        })
+        .filter(kvp => !_.isEmpty(kvp.value))
+        .each(kvp => {
+          let mainFilter = _.find(filters, filter => filter.id === kvp.key);
+          if (!_.isEmpty(mainFilter.filters)) {
+            mainFilter.filters.forEach(subFilter => subFilter.selected = subFilter.id === kvp.value)
+          }
+        })
+        .value();
+      this._filterFeed(filters);
+      this.setState({filters})
+    }
   }
 
   setInnerFilters(filterId, innerCategories) {
@@ -134,8 +156,7 @@ class FilterBar extends BaseComponent {
 
   mapInnerFilters(filters, filterId, innerCategories) {
     let mainFilter = _.find(filters, filter => filter.id === filterId);
-    if(_.isEmpty(mainFilter.filters))
-    {
+    if (_.isEmpty(mainFilter.filters)) {
       mainFilter.filters = innerCategories;
       const iteratee = (filter1, filter2) => filter1.id === filter2.id;
       filters = _.map(filters, filter => iteratee(filter, mainFilter) ? mainFilter : filter);
@@ -218,15 +239,28 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const categories = state.filters.categories ? state.filters.categories.map(category=>{
-    category.id=category.name;
+  const categories = state.filters.categories ? state.filters.categories.map(category => {
+    category.id = category.name;
     return category;
   }) : [];
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
   bodyTypes = mapBodyTypes(bodyTypes);
+  let defaultFilters = {
+    gender: '',
+    body_type: ''
+  };
+  if (state.user.user_size) {
+    const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
+    const myGender = state.user.gender ? state.user.gender : '';
+    defaultFilters = {
+      gender: myGender,
+      body_type: myBodyType
+    };
+  }
   return {
     categories: categories,
     bodyTypes: bodyTypes,
+    defaultFilters: defaultFilters,
     minPrice: state.filters.minPrice,
     maxPrice: state.filters.maxPrice
   }
