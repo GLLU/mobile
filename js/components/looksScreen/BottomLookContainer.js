@@ -13,6 +13,7 @@ import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import MenuModal from './menuModal';
 import BuyItButton from './buyItButton';
+import ItemMarker from './markers/ItemMarker';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/BaseComponent';
@@ -63,17 +64,26 @@ export default class BottomLookContainer extends BaseComponent {
     const {width, height} = this.props;
     return look.items.map((item, index) => {
       const title = item.brand ? item.brand.name : 'N/A';
+
       return (
-        <BuyItButton
+        <ItemMarker
           key={index}
-          title={title}
-          price={item.price}
-          width={width}
-          height={height}
-          positionTop={item.cover_y_pos}
-          positionLeft={item.cover_x_pos}
-          url={item.url}/>
+          containerWidth={width}
+          containerHeight={height}
+          pinPositionTop={item.cover_y_pos}
+          pinPositionLeft={item.cover_x_pos}/>
       )
+      // return (
+      //   <BuyItButton
+      //     key={index}
+      //     title={title}
+      //     price={item.price}
+      //     width={width}
+      //     height={height}
+      //     positionTop={item.cover_y_pos}
+      //     positionLeft={item.cover_x_pos}
+      //     url={item.url}/>
+      // )
     });
   }
 
@@ -142,6 +152,7 @@ export default class BottomLookContainer extends BaseComponent {
     ).start();
     return (
       <View style={{marginTop: 0}}>
+        {this._renderBuyItButtons(this.props.look)}
         <LookHeader
           avatar={{uri: this.props.look.avatar.url}}
           onBackNavigationPress={this.props.tempPopRoute}
@@ -149,7 +160,6 @@ export default class BottomLookContainer extends BaseComponent {
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
             <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
-              {this._renderBuyItButtons(this.props.look)}
               <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
