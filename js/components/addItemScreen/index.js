@@ -174,10 +174,6 @@ class AddItemPage extends BasePage {
   }
 
   renderImageView() {
-    const { items, image, itemId } = this.props;
-    const { imageWidth } = this.state;
-    const mode = this.getCurrentMode();
-    return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()
 
   }
 
@@ -196,10 +192,7 @@ class AddItemPage extends BasePage {
   }
 
   renderVideoWithTags() {
-    console.log('videoooo', this.props.image)
-    const { items, image, itemId } = this.props;
-    const { imageWidth } = this.state;
-
+    const { image, itemId } = this.props;
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
@@ -262,12 +255,11 @@ class AddItemPage extends BasePage {
       );
     }
 
-
     if (this.state.currentStep !== 2) {
       return (
         <Grid style={{flex: 1}}>
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
-            {this.renderImageView()}
+            {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
           </Row>
           <Row size={30} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>
             <View style={styles.wrapper}>

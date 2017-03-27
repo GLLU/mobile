@@ -10,6 +10,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
 import cl.json.RNSharePackage;
@@ -60,6 +61,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new ImagePickerPackage(),
             new GoogleAnalyticsBridgePackage(),
             new FlurryAnalyticsPackage(),
             new RNSharePackage(),

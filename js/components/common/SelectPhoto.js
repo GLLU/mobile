@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import ImagePickerVideo from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
 import BaseComponent from './BaseComponent';
 import { noop } from 'lodash'
@@ -64,7 +65,7 @@ class SelectPhoto extends BaseComponent {
     const settings = {
       width: width,
       height: height,
-      mediaType: 'video'
+      mediaType: 'any'
     };
     switch (type) {
       case 'camera':

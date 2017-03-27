@@ -31,6 +31,7 @@
     "react-native-flurry-analytics": "git+https://github.com/Yonatani/react-native-flurry-analytics.git",
     "react-native-google-analytics-bridge": "^4.0.0",
     "react-native-image-crop-picker": "^0.10.9",
+    "react-native-image-picker": "^0.24.1",
     "react-native-joi": "0.0.5",
     "react-native-keyboard-spacer": "^0.3.1",
     "react-native-keychain": "git+https://github.com/Foodee/react-native-keychain.git",

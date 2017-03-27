@@ -27,6 +27,7 @@ import _ from 'lodash';
 import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
+import VideoWithTags from '../common/VideoWithTags';
 
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
@@ -143,10 +144,12 @@ class StepTwo extends BaseComponent {
 
   constructor(props) {
     super(props);
+    const isVideo = this.props.image.search(".mp4") > -1
     this.state = {
       images:['', '', ''],
       video: '',
       videoUrl: '',
+      isVideo,
       location: 'us',
       trustLevel: '0',
       confirm: false,
@@ -354,6 +357,39 @@ class StepTwo extends BaseComponent {
     return null;
   }
 
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
+  renderImageWithTags() {
+    const { items, image, itemId } = this.props;
+    const { imageWidth } = this.state;
+    const mode = this.getCurrentMode();
+    return (
+      <ImageWithTags
+        items={items}
+        image={image}
+        width={80}
+        showMarker={false}
+        createLookItem={createLookItem}/>
+    );
+  }
+
+  renderVideoWithTags() {
+    const { image, itemId } = this.props;
+    return (
+      <VideoWithTags
+        itemId={itemId}
+        width={80}
+        image={image}
+        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
+      />
+    );
+  }
+
   render() {
     const { items, createLookItem, image, tags} = this.props;
     return(
@@ -362,12 +398,7 @@ class StepTwo extends BaseComponent {
           <Row style={styles.row, { flexDirection: 'row' }}>
             <Col size={25} style={{paddingRight: 20}}>
               <TouchableOpacity onPress={this.handleImagePress.bind(this)}>
-                <ImageWithTags
-                    items={items}
-                    image={image}
-                    width={80}
-                    showMarker={false}
-                    createLookItem={createLookItem}/>
+                {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
               </TouchableOpacity>
             </Col>
             <Col size={75} style={{flexDirection: 'column'}}>

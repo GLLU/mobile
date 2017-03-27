@@ -47,7 +47,7 @@ class VideoWithTags extends Component {
   static propTypes = {
     itemId: React.PropTypes.number,
     image: React.PropTypes.string.isRequired,
-    items: React.PropTypes.array.isRequired,
+    items: React.PropTypes.array,
     width: React.PropTypes.number,
     mode: React.PropTypes.string,
     showMarker: React.PropTypes.bool,
@@ -63,8 +63,6 @@ class VideoWithTags extends Component {
       repeat: false,
       image: this.props.image
     }
-
-    // this._setupPanResponder(this.state.locationX, this.state.locationY);
   }
 
   componentWillMount() {
@@ -111,23 +109,6 @@ class VideoWithTags extends Component {
     });
   }
 
-  getTag() {
-    return { locationX: this.state.locationX, locationY: this.state.locationY };
-  }
-
-  _handlePress(e) {
-    const {locationX, locationY} = e.nativeEvent;
-    const { width, height } = this.getRenderingDimensions();
-    this._setupPanResponder(locationX, locationY);
-
-    // convert location into relative positions
-    const left = locationX / width;
-    const top = locationY / height;
-    this.setState({locationX: left, locationY: top}, () => {
-      this.props.onMarkerCreate({locationX: left, locationY: top});
-    });
-  }
-
   _handlePressWithoutPress () {
     const locationX = 1;
     const locationY = 1;
@@ -146,44 +127,6 @@ class VideoWithTags extends Component {
     return Math.min(Math.max(value, 0.1), 0.9);
   }
 
-  renderTags() {
-    const { items, itemId, mode } = this.props;
-
-    const { width, height } = this.getRenderingDimensions();
-    console.log('width', width)
-    console.log('height', height)
-
-    return items.map((item, i) => {
-      console.log('item', item)
-      const x = this.normalizePosition(item.locationX);
-      const y = this.normalizePosition(item.locationY);
-      const left = parseInt(x * width);
-      const top = parseInt(y * height);
-      console.log('top', top)
-      console.log('left', left)
-      console.log('h', h)
-
-      if (mode !== VIEW_MODE) {
-        console.log('no view mode')
-        const layout = this._pan.getLayout();
-        return (
-          <Animated.View
-              key={i}
-              {...this.panResponder.panHandlers}
-              style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-            <Image source={itemBackground} style={styles.itemBgImage} />
-          </Animated.View>
-    );
-      }
-      console.log('view mode')
-      return (
-        <View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          <Image source={itemBackground} style={styles.itemBgImage} />
-        </View>
-      );
-    });
-  }
-
   getRenderingDimensions() {
     let width = 30;
     let height = 40;
@@ -199,54 +142,20 @@ class VideoWithTags extends Component {
   }
 
   componentDidMount() {
-    this._handlePressWithoutPress()
-    //
-    let that = this
-    //this.props.startVideo()
-    //setTimeout(function(){ that.setState({repeat: true}); }, 7500);
+    this._handlePressWithoutPress()  // auto creating an item to continue for further steps, will be refactored when items will be shown on video
 
-
-  }
-
-  onLoadS() {
-    console.log('onLoad start')
-    // this.setState({repeat: false})
-  }
-
-  onLoad() {
-    //console.log('onLoad')
-    //    !this.state.repeat ? this.setState({repeat: true}) : null;
-  }
-  showProgress() {
-    console.log('boom')
   }
 
   _render() {
-    const image = 'https://cdn1.gllu.com/uploads/look_video/look-2300/look-video-30/large_720_5E98533B-AAA3-4D6B-8830-EEE2623BB58C.mp4'
     const { width, height } = this.getRenderingDimensions();
-    if (!this.props.showMarker) {
-      return (
-      <View style={{flex: 1}} >
-
-        <Video source={{uri: this.props.image}}
-               resizeMode="contain"
-               muted={true}
-               style={{width: w, height: h, overflow: 'hidden', flexGrow: h, flexBasis: 1}}
-               repeat={true}
-        />
-
-      </View>
-      );
-    }
-    console.log(' dont fixImage')
+    console.warn('image',this.props.image)
     return (
       <View style={{flex: 1}} >
         <Video source={{uri: this.props.image}}
                resizeMode="contain"
                muted={true}
                style={{width: width, height: height, overflow: 'hidden', flexGrow: h, flexBasis: 1}}
-               repeat={true}
-        />
+               repeat={true}/>
       </View>
 
     );
@@ -261,10 +170,6 @@ class VideoWithTags extends Component {
         </Tag>);
     }
     return this._render();
-  }
-
-  _handleFirstPress() {
-    this.setState({repeat: true})
   }
 
   render() {
