@@ -43,6 +43,7 @@ class ItemMarkerWithView extends Component {
     pinPositionTop: React.PropTypes.number.isRequired,
     pinPositionLeft: React.PropTypes.number.isRequired,
     containerWidth: React.PropTypes.number,
+    brand: React.PropTypes.object,
     containerHeight: React.PropTypes.number,
     item: React.PropTypes.object,
     onPress: React.PropTypes.func

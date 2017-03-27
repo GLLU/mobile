@@ -49,7 +49,7 @@ class ItemView extends Component {
   static propTypes = {
     containerDimensions: React.PropTypes.object,
     position: React.PropTypes.object,
-    brand: React.PropTypes.string,
+    brand: React.PropTypes.object,
     price: React.PropTypes.number,
     currency: React.PropTypes.string,
     url: React.PropTypes.string,

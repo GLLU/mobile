@@ -104,7 +104,7 @@ class ItemMarker extends Component {
 
   render() {
     const containerDimensions = {width: this.props.containerWidth, height: this.props.containerHeight}
-    const markerDimensions = {width: 50, height: 50};
+    const markerDimensions = {width: 40, height: 40};
 
     const pinPosition = {
       x: parseInt(this.props.pinPositionLeft * containerDimensions.width),
