@@ -46,8 +46,8 @@ class ItemMarker extends Component {
     onPress: noop
   }
 
-  onPress(e, pinPosition) {
-    this.props.onPress(e,pinPosition);
+  onPress(e, position) {
+    this.props.onPress(e,position);
   }
 
   getOrientation(dimensions, pinPosition) {
@@ -115,7 +115,7 @@ class ItemMarker extends Component {
     const position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions);
 
     return (
-      <TouchableWithoutFeedback onPress={(e) => this.onPress(e, pinPosition)}>
+      <TouchableWithoutFeedback onPress={(e) => this.onPress(e, position)}>
         <View style={[styles.container, {top: position.y, left: position.x}]}>
           <Image
             source={this.getMarkerImageByOrientation(orientation)}
