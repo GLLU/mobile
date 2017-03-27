@@ -12,7 +12,7 @@ import _ from 'lodash'
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import MenuModal from './menuModal';
-import ItemMarker from './markers/ItemMarkerWithView';
+import ItemMarkerWithView from './markers/ItemMarkerWithView';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/BaseComponent';
@@ -61,18 +61,15 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderBuyItButtons(look) {
     const {width, height} = this.props;
-    return look.items.map((item, index) => {
-      const title = item.brand ? item.brand.name : 'N/A';
-
-      return (
-        <ItemMarker
-          key={index}
-          containerWidth={width}
-          containerHeight={height}
-          pinPositionTop={item.cover_y_pos}
-          pinPositionLeft={item.cover_x_pos}/>
-      )
-    });
+    return look.items.map((item, index) =>
+      <ItemMarkerWithView
+        key={index}
+        item={item}
+        containerWidth={width}
+        containerHeight={height}
+        pinPositionTop={item.cover_y_pos}
+        pinPositionLeft={item.cover_x_pos}/>
+    );
   }
 
   _toggleDescription(shouldActive) {
