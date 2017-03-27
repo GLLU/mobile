@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Text, Button, Input, InputGroup, Icon } from 'native-base';
+import { StyleSheet, TextInput } from 'react-native';
+import { View, Button, Icon } from 'native-base';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import styles from './styles';
@@ -17,19 +17,17 @@ const myStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  searchInputGroup: {
+  searchInput: {
     borderBottomWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
+    paddingLeft:10,
     flex: 1,
-  },
-  searchInput: {
-    borderLeftWidth: 0,
     backgroundColor: 'white',
-    borderLeftColor: 'black',
     fontFamily: 'PlayfairDisplay-Regular',
     fontSize: new FontSizeCalculator(14).getSize(),
-    fontWeight: '200'
+    fontWeight: '200',
+    color: '#757575'
   },
   btnCloseFilter: {
     marginLeft: 15,
@@ -43,6 +41,7 @@ class SearchBar extends BaseComponent {
     handleSearchInput: React.PropTypes.func,
     clearText: React.PropTypes.string
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +52,7 @@ class SearchBar extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.clearText === ''){
+    if (nextProps.clearText === '') {
       this.setState({
         text: ''
       })
@@ -61,11 +60,11 @@ class SearchBar extends BaseComponent {
   }
 
   _doSearch(text) {
-    this.logEvent('Feedscreen', { name: 'Search' });
+    this.logEvent('Feedscreen', {name: 'Search'});
     this.props.handleSearchInput(text)
   }
 
-  handleTextInput(text){
+  handleTextInput(text) {
     this.setState({
       text: text
     }, () => {
@@ -74,7 +73,7 @@ class SearchBar extends BaseComponent {
   }
 
   clearSearch() {
-    this.logEvent('Feedscreen', { name: 'Clear search' });
+    this.logEvent('Feedscreen', {name: 'Clear search'});
     this.setState({
       text: ''
     })
@@ -82,13 +81,16 @@ class SearchBar extends BaseComponent {
   }
 
   render() {
-    return(
+    return (
       <View style={myStyles.searchBar}>
-        <InputGroup style={myStyles.searchInputGroup}>
-          <Input style={myStyles.searchInput} placeholder='( e.g. Yellow Shirt ZARA )' onChangeText={(text) => this.handleTextInput(text)} value={this.state.text}/>
-        </InputGroup>
+        <TextInput
+          style={myStyles.searchInput}
+          placeholder='( e.g. Yellow Shirt ZARA )'
+          underlineColorAndroid='transparent'
+          onChangeText={(text) => this.handleTextInput(text)}
+          value={this.state.text}/>
         <Button transparent iconRight onPress={() => this.clearSearch()} style={[myStyles.btnCloseFilter]}>
-          <Icon name="ios-close-circle-outline" style={[styles.smallBtn]} />
+          <Icon name="ios-close-circle-outline" style={[styles.smallBtn]}/>
         </Button>
       </View>
     )

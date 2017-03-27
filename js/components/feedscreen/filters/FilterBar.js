@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {  Button, Icon } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
-import RadioButtons from 'react-native-radio-buttons';
-import {View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet} from 'react-native';
-import SearchBar from '../SearchBar';
+import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet } from 'react-native';
+import FilterGroup from './FilterGroup';
 import BaseComponent from '../../common/BaseComponent';
-
-import CategoryStrip from '../../common/CategoryStrip';
-const MK = require('react-native-material-kit');
-
-const {
-  MKColor,
-} = MK;
+import _ from 'lodash'
 
 const myStyles = StyleSheet.create({
   container: {
@@ -20,102 +11,107 @@ const myStyles = StyleSheet.create({
   },
   filter: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     backgroundColor: '#F5F5F5',
-  },
-  btnFilter: {
-    marginLeft: 5,
-    alignSelf: 'center',
-  },
-  btnCloseFilter: {
-    marginLeft: 15,
-    alignSelf: 'center',
-    marginRight: 5,
-  },
-  btnReset: {
-    alignSelf: 'center',
-  },
-  TextlabelReset: {
-    color: '#757575',
-    fontSize: 13,
-    fontWeight: '500',
-  },
-  smallBtn: {
-    fontSize: 15,
-    color: 'grey',
-  },
-  Textlabel: {
-    paddingTop: 0,
-    fontSize: 15,
-    fontWeight: 'normal',
-    textAlign: 'left',
-  },
-  TextResults: {
-    paddingTop: 12,
-    marginLeft: 10,
-    textAlign: 'left',
-    fontSize: 12,
-    fontWeight: 'normal',
-    color: '#757575'
   },
   filterActions: {
     backgroundColor: '#F5F5F5',
-    padding: 5,
-    marginBottom: 10,
-    height: 150,
+    height: 120,
+    paddingHorizontal: 10
   },
   filterActionsGrid: {
     backgroundColor: '#FFFFFF',
-    paddingTop: 10,
-    height: 110,
-  },
-  radioView: {
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    flex: 1,
-  },
-  radioOption: { // the box
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  radioOptionSelected: {
-    borderBottomColor: MKColor.Teal,
-    borderBottomWidth: 2,
-  },
-  radioBtnText: { //the text
-    color: 'lightgrey',
-    fontSize: 17,
-    textAlign: 'center',
-    paddingBottom: 5
-  },
-  radioBtnTextSelected: { //the text
-    color: MKColor.Teal
-  },
+    height: 100
+  }
 });
+
+const filters = [
+  {
+    id: 'items',
+    name: 'Items',
+    icon: {
+      url: require('../../../../images/filters/filter-categories.png'),
+      url_hover: require('../../../../images/filters/filter-categories-active.png')
+    },
+    renderType: 'radio-multi'
+  },
+  {
+    id: 'gender',
+    name: 'Gender',
+    icon: {
+      url: require('../../../../images/filters/filter-gender.png'),
+      url_hover: require('../../../../images/filters/filter-gender-active.png')
+    },
+    renderType: 'radio-single',
+    filters: [
+      {
+        id: 'male',
+        name: 'Male',
+        kind: 'gender',
+        icon: {
+          url: require('../../../../images/filters/genders/filter-gender-male.png'),
+          url_hover: require('../../../../images/filters/genders/filter-gender-male-active.png')
+        }
+      },
+      {
+        id: 'female',
+        name: 'Female',
+        kind: 'gender',
+        icon: {
+          url: require('../../../../images/filters/genders/filter-gender-female.png'),
+          url_hover: require('../../../../images/filters/genders/filter-gender-female-active.png')
+        }
+      },
+      {
+        id: '',
+        name: 'All',
+        kind: 'gender',
+        icon: {
+          url: require('../../../../images/filters/filter-gender.png'),
+          url_hover: require('../../../../images/filters/filter-gender-active.png')
+        }
+      }
+    ]
+  },
+  {
+    id: 'body_type',
+    name: 'Body',
+    icon: {
+      url: require('../../../../images/filters/filter-body.png'),
+      url_hover: require('../../../../images/filters/filter-body-active.png')
+    },
+    renderType: 'radio-multi'
+  },
+];
+
+// filters.forEach((filter, i) => {
+//   filter.filters = _.map(_.times((i + 1) * 4), iteration => {
+//     const x=_.cloneDeep(filter);
+//     x.id=iteration;
+//     return x;
+//   })
+// });
 
 import { loadCategories } from '../../../actions/filters';
 
-const BEST_MATCH = 'Best Match';
-const RECENT = 'Recent';
-const feedTypes = [ BEST_MATCH,  RECENT ];
-class FilterView extends BaseComponent {
+class FilterBar extends BaseComponent {
   static propTypes = {
     loadCategories: React.PropTypes.func,
     categories: React.PropTypes.array,
     minPrice: React.PropTypes.number,
     maxPrice: React.PropTypes.number,
     type: React.PropTypes.string,
-    category: React.PropTypes.object,
     filterFeed: React.PropTypes.func,
     clearFilter: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
+    this._renderFilters = this._renderFilters.bind(this);
+    this.setInnerFilters = this.setInnerFilters.bind(this);
+    this._filterFeed = this._filterFeed.bind(this);
     this.state = {
-      isOpen: false,
-      filterStatusIcon: 'ios-arrow-forward'
+      openFilter: {},
+      filters: _.cloneDeep(filters)
     };
   }
 
@@ -123,124 +119,93 @@ class FilterView extends BaseComponent {
     this.props.loadCategories();
   }
 
-  filterByCategory(item) {
-    const { category } = this.props;
-    if (!category || item.id != category.id) {
-      this.logEvent('Feedscreen', { name: 'Category select', category: item.name });
-      this.props.filterFeed({category: item});
-    } else {
-      this.props.filterFeed({category: null});
+  componentWillReceiveProps(nextProps) {
+    this.setInnerFilters('items', nextProps.categories);
+    this.setInnerFilters('body_type', nextProps.bodyTypes);
+  }
+
+  setInnerFilters(filterId, innerCategories) {
+    if (innerCategories !== undefined) {
+      let {filters} = this.state;
+      filters = this.mapInnerFilters(filters, filterId, innerCategories);
+      this.setState({filters});
     }
   }
 
-  clearFilter() {
-    this.props.clearFilter();
-  }
-
-  toggleFilter() {
-    let filterStatusIcon = !this.state.isOpen ? "ios-arrow-down" : "ios-arrow-forward"
-    this.setState({ isOpen: !this.state.isOpen, filterStatusIcon });
-  }
-
-  _handleCloseFilter() {
-    this.setState({ isOpen: false });
-  }
-
-  handleToggleFilterPress() {
-    this.logEvent('Feedscreen', { name: 'FilterBy click' });
-    this.toggleFilter();
-  }
-
-  _renderCategories() {
-    const { category, categories } = this.props;
-    return (
-      <CategoryStrip
-          categories={categories}
-          selectedCategory={category}
-          onCategorySelected={(cat) => this.filterByCategory(cat)}/>)
-  }
-
-  _rederFilterText() {
-    if (this.props.category) {
-      return (
-          <Text style={myStyles.TextResults}>
-            {this.props.category.name}
-          </Text>
-        );
+  mapInnerFilters(filters, filterId, innerCategories) {
+    let mainFilter = _.find(filters, filter => filter.id === filterId);
+    if(_.isEmpty(mainFilter.filters))
+    {
+      mainFilter.filters = innerCategories;
+      const iteratee = (filter1, filter2) => filter1.id === filter2.id;
+      filters = _.map(filters, filter => iteratee(filter, mainFilter) ? mainFilter : filter);
     }
-
-    return null;
+    return filters;
   }
 
-  renderRadioContainer(optionNodes){
+  _renderSubFilters(filters, openFilter) {
+    switch (openFilter.renderType) {
+      case 'radio-single':
+        return <FilterGroup mode='single' onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
+                            filters={filters}/>;
+      //case 'range':
+      case 'radio-multi':
+      default:
+        return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
+                            filters={filters}/>;
+    }
+  }
+
+  _renderFilters(openFilter) {
+    const currentFilter = _.find(this.state.filters, filter => filter.id === openFilter.id);
     return (
-      <View style={myStyles.radioView}>
-        {optionNodes}
-      </View>
-    )
-  }
-
-  renderRadioOption(option, selected, onSelect, index) {
-    return (
-      <View key={index} style={[myStyles.radioOption, selected ? myStyles.radioOptionSelected : null]}>
-        <TouchableWithoutFeedback onPress={onSelect} >
-          <View >
-            <Text style={[ myStyles.radioBtnText, selected ? myStyles.radioBtnTextSelected : null]}>{option}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-    )
-  }
-
-  setFeedTypeSelectedOption(selectedFeedType){
-    const type = selectedFeedType == BEST_MATCH ? 'relevant' : 'recent';
-    this.props.filterFeed({type})
-  }
-
-  _renderFilters() {
-    const selectedOption = this.props.type == 'relevant' ? BEST_MATCH : RECENT;
-    return(
       <View style={[myStyles.filterActions]}>
         <View style={myStyles.filterActionsGrid}>
-          {this._renderCategories()}
+          {this._renderSubFilters(currentFilter.filters, openFilter)}
         </View>
-        <RadioButtons
-          options={ feedTypes }
-          onSelection={ this.setFeedTypeSelectedOption.bind(this) }
-          selectedOption={ selectedOption }
-          renderOption={ this.renderRadioOption }
-          renderContainer={ this.renderRadioContainer }
-        />
       </View>
     )
+  }
+
+  _filterFeed(filters) {
+    const selections = _.chain(filters)
+      .map(filter => filter.filters)
+      .flatten()
+      .filter(filter => filter.selected)
+      .value();
+    let query = {};
+    selections.forEach(selection => query[selection.kind] = selection.id)
+    this.props.filterFeed(query)
+  }
+
+  _setFilters(filters) {
+    const openFilter = _.find(filters, filter => filter.selected) || {};
+    this.setState({filters: filters, openFilter: openFilter})
+  }
+
+  _setSubFilters(openFilter, subFilters) {
+    const filters = _.cloneDeep(this.state.filters);
+    filters.forEach(filter => {
+      if (filter.id === openFilter.id) {
+        filter.filters = subFilters;
+      }
+    });
+    this._filterFeed(filters);
+    this._setFilters(filters);
   }
 
   render() {
-    const labelColor = !_.isEmpty(this.props.category) ? '#1DE9B6' : '#212121';
-    return(
+    const activeFilter = {
+      color: '#757575',
+      underline: true
+    };
+    return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <Button transparent onPress={this.handleToggleFilterPress.bind(this)} style={myStyles.btnFilter}>
-                <Icon name="md-options" style={[myStyles.normalBtn, { color: labelColor }]} />
-                <Text style={[myStyles.Textlabel, { color: labelColor }]}>Filter by</Text>
-            </Button>
-            {this._rederFilterText()}
-          </View>
-          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 5}}>
-            <Button transparent onPress={() => this.clearFilter()} style={[myStyles.btnReset]} textStyle={myStyles.TextlabelReset}>
-              RESET
-              </Button>
-            {this.state.isOpen ?
-              <Button transparent iconRight onPress={() => this._handleCloseFilter()} style={[myStyles.btnCloseFilter]}>
-                  <Icon name={this.state.filterStatusIcon} style={[myStyles.smallBtn]} />
-              </Button>
-              :
-              null
-            }
-          </View>
+          <FilterGroup mode='single' activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
+                       filters={this.state.filters}/>
         </View>
-        {this.state.isOpen ? this._renderFilters() : null}
+        {!_.isEmpty(this.state.openFilter) ? this._renderFilters(this.state.openFilter) : null}
       </View>
     )
   }
@@ -253,12 +218,37 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const tags = state.filters.categories ? state.filters.categories : [];
+  const categories = state.filters.categories ? state.filters.categories.map(category=>{
+    category.id=category.name;
+    return category;
+  }) : [];
+  let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
+  bodyTypes = mapBodyTypes(bodyTypes);
   return {
-    categories: tags,
+    categories: categories,
+    bodyTypes: bodyTypes,
     minPrice: state.filters.minPrice,
     maxPrice: state.filters.maxPrice
   }
 };
 
-export default connect(mapStateToProps, bindActions)(FilterView);
+const mapBodyTypes = (bodytypes) => {
+  return _.chain(Object.keys(bodytypes))
+    .map(key =>
+      _.map(bodytypes[key], bodyType => {
+        return {
+          id: bodyType.body_type,
+          name: bodyType.name,
+          gender: key,
+          kind: 'body_type',
+          icon: {
+            url: bodyType.imageOriUrl,
+            url_hover: bodyType.imageOriUrl,
+          }
+        };
+      }))
+    .flatten()
+    .value();
+}
+
+export default connect(mapStateToProps, bindActions)(FilterBar);
