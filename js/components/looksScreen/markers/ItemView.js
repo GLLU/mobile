@@ -6,29 +6,37 @@ import {
   Linking,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  Image,
-  Dimensions
+  Image
 } from 'react-native';
 import { connect } from 'react-redux'
 import { showInfo } from '../../../actions'
-
-const buyItImage = require('../../../../images/buyItButton-noprice.png');
-const w = Dimensions.get('window').width;
-const h = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'absolute',
-    alignItems: 'flex-start',
-    backgroundColor: 'white'
+    alignItems: 'stretch',
   },
   row: {
-    height: 30,
+    flex: 1,
     padding: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    textAlign: 'center'
+  },
+  titleColors: {
+    color: 'black',
+    backgroundColor: '#f4b85a',
+  },
+  buyColors: {
+    color: '#f4b85a',
+    backgroundColor: 'black'
+  },
+  topRoundCorners: {
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5
+  },
+  bottomRoundCorners: {
+    borderBottomRightRadius: 5,
+    borderBottomLeftRadius: 5
   }
 });
 
@@ -39,7 +47,8 @@ class ItemView extends Component {
   }
 
   static propTypes = {
-    position: React.PropTypes,
+    containerDimensions: React.PropTypes.object,
+    position: React.PropTypes.object,
     brand: React.PropTypes.string,
     price: React.PropTypes.number,
     currency: React.PropTypes.string,
@@ -49,7 +58,7 @@ class ItemView extends Component {
   static defaultProps = {
     position: {x: 0, y: 0},
     price: 0,
-    brand: {name:'N/A'},
+    brand: {name: 'N/A'},
     currency: '£',
     url: ''
   }
@@ -78,14 +87,27 @@ class ItemView extends Component {
     return title;
   }
 
+  limitPosition(containerDimensions, position) {
+    if (containerDimensions !== undefined && containerDimensions.width - position.x < 100) {
+      position.x -= 20;
+    }
+
+    if (containerDimensions !== undefined && containerDimensions.height - position.y < 100) {
+      position.y -= 20;
+    }
+    return position;
+  }
+
   render() {
     const title = this.getTitle(this.props.brand);
-    const {position, currency, price, btnText, width, height} = this.props;
+
+    const position = this.limitPosition(this.props.containerDimensions, this.props.position);
     return (
       <TouchableWithoutFeedback onPress={this.handleOpenLink}>
         <View style={[styles.container, {top: position.y, left: position.x}]}>
-          <Text>{title}</Text>
-          <Text>Buy Now!</Text>
+          <Text style={[styles.row, styles.titleColors, styles.topRoundCorners]}>{title}</Text>
+          <Text style={[styles.row, styles.buyColors, styles.bottomRoundCorners]}>Buy
+            Now!</Text>
         </View>
       </TouchableWithoutFeedback>
     );

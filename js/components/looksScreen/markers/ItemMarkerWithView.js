@@ -34,7 +34,8 @@ class ItemMarkerWithView extends Component {
     this.hideView = this.hideView.bind(this);
     this.state = {
       isViewActive: false,
-      position: {}}
+      position: {}
+    }
 
   }
 
@@ -43,7 +44,7 @@ class ItemMarkerWithView extends Component {
     pinPositionLeft: React.PropTypes.number.isRequired,
     containerWidth: React.PropTypes.number,
     containerHeight: React.PropTypes.number,
-    item:React.PropTypes.object,
+    item: React.PropTypes.object,
     onPress: React.PropTypes.func
   };
 
@@ -51,11 +52,11 @@ class ItemMarkerWithView extends Component {
     onPress: noop
   };
 
-  onPress(e, pinPosition) {
+  onPress(e, position) {
     this.setState({
       isViewActive: true,
-      position: pinPosition
-    }, ()=>setTimeout(this.hideView, 5000))
+      position
+    }, () => setTimeout(this.hideView, 5000))
   }
 
   hideView() {
@@ -66,7 +67,10 @@ class ItemMarkerWithView extends Component {
     if (!this.state.isViewActive) {
       return <ItemMarker {...this.props} onPress={this.onPress}/>
     }
-    return <ItemView{...this.props.item} position={this.state.position}/>
+    return <ItemView
+      {...this.props.item}
+      containerDimensions={{width: this.props.containerWidth, height: this.props.containerHeight}}
+      position={this.state.position}/>
 
   }
 }
