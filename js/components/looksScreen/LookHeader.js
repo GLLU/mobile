@@ -68,10 +68,12 @@ class LookHeader extends Component {
       <View style={[styles.container, styles.column]}>
         <View style={[styles.header, styles.row]}>
           <View style={{flex: 1}} name="spacer"/>
-          <TouchableOpacity style={[styles.backBtnContainer, {flex: 3}]}
+          <View style={{flex: 3}}>
+          <TouchableOpacity style={styles.backBtnContainer}
                             onPress={this.props.onBackNavigationPress}>
             <Icon style={styles.backBtn} name="ios-arrow-back"/>
           </TouchableOpacity>
+          </View>
           <View style={{flex: 24}} name="spacer"/>
           <TouchableOpacity style={{flex: 4, justifyContent: 'center', flexDirection: 'row'}}
                             onPress={this.props.onProfileAvatarPress}>
