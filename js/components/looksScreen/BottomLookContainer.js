@@ -12,8 +12,7 @@ import _ from 'lodash'
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import MenuModal from './menuModal';
-import BuyItButton from './buyItButton';
-import ItemMarker from './markers/ItemMarker';
+import ItemMarker from './markers/ItemMarkerWithView';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/BaseComponent';

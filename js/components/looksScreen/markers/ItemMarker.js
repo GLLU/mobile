@@ -9,8 +9,7 @@ import {
   Image,
   Dimensions
 } from 'react-native';
-import { connect } from 'react-redux'
-import { showInfo } from '../../../actions'
+
 import { noop } from 'lodash'
 
 const markerTopLeft = require('../../../../images/markers/marker-top-left.png');
@@ -48,7 +47,7 @@ class ItemMarker extends Component {
   }
 
   onPress(e, pinPosition) {
-    console.log(`clicked item at position ${JSON.stringify(pinPosition)}`)
+    this.props.onPress(e,pinPosition);
   }
 
   getOrientation(dimensions, pinPosition) {
@@ -92,11 +91,11 @@ class ItemMarker extends Component {
   getMarkerImageByOrientation(orientation) {
     switch (orientation) {
       case 'top-left':
-        return markerBottomRight
+        return markerBottomRight;
       case 'top-right':
-        return markerBottomLeft
+        return markerBottomLeft;
       case 'bottom-left':
-        return markerTopRight
+        return markerTopRight;
       case 'bottom-right':
       default:
         return markerTopLeft
@@ -127,12 +126,4 @@ class ItemMarker extends Component {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    showInfo: text => dispatch(showInfo(text)),
-  };
-}
-
-const mapStateToProps = state => ({});
-
-export default connect(mapStateToProps, bindActions)(ItemMarker);
+export default ItemMarker;

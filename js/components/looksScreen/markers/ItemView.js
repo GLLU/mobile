@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native';
 import { connect } from 'react-redux'
-import { showInfo } from '../../actions'
+import { showInfo } from '../../../actions'
 
 const buyItImage = require('../../../../images/buyItButton-noprice.png');
 const w = Dimensions.get('window').width;
