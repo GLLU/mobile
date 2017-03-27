@@ -73,17 +73,6 @@ export default class BottomLookContainer extends BaseComponent {
           pinPositionTop={item.cover_y_pos}
           pinPositionLeft={item.cover_x_pos}/>
       )
-      // return (
-      //   <BuyItButton
-      //     key={index}
-      //     title={title}
-      //     price={item.price}
-      //     width={width}
-      //     height={height}
-      //     positionTop={item.cover_y_pos}
-      //     positionLeft={item.cover_x_pos}
-      //     url={item.url}/>
-      // )
     });
   }
 
@@ -152,7 +141,6 @@ export default class BottomLookContainer extends BaseComponent {
     ).start();
     return (
       <View style={{marginTop: 0}}>
-        {this._renderBuyItButtons(this.props.look)}
         <LookHeader
           avatar={{uri: this.props.look.avatar.url}}
           onBackNavigationPress={this.props.tempPopRoute}
@@ -175,6 +163,7 @@ export default class BottomLookContainer extends BaseComponent {
           {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderDescriptionView(this.state.isDescriptionActive)}
         </Animated.View>
+        {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                    closeModal={() => this._toggleMenu()}/>
       </View>
