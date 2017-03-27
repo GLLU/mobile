@@ -33,7 +33,6 @@ export default class ItemDataLine extends Component {
 
 
   render() {
-    console.log('props item',this.props.data)
     if(this.props.isOpen){
       return (
         <TouchableHighlight>
