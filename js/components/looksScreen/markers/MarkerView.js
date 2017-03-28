@@ -12,21 +12,12 @@ import {
 
 import { noop } from 'lodash'
 
+import markerDirections from './markerDirections'
+
 const markerTopLeft = require('../../../../images/markers/marker-top-left.png');
 const markerTopRight = require('../../../../images/markers/marker-top-right.png');
 const markerBottomLeft = require('../../../../images/markers/marker-bottom-left.png');
 const markerBottomRight = require('../../../../images/markers/marker-bottom-right.png');
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  marker: {
-    resizeMode: 'cover'
-  }
-});
 
 class MarkerView extends Component {
   constructor(props) {
@@ -35,57 +26,23 @@ class MarkerView extends Component {
   }
 
   static propTypes = {
-    pinPositionTop: React.PropTypes.number.isRequired,
-    pinPositionLeft: React.PropTypes.number.isRequired,
-    containerWidth: React.PropTypes.number,
-    containerHeight: React.PropTypes.number,
-    onPress: React.PropTypes.func
+    position: React.PropTypes.object,
+    dimensions: React.PropTypes.object,
+    containerDimensions: React.PropTypes.object,
+    orientation: React.PropTypes.oneOf(markerDirections),
+    onPress: React.PropTypes.func,
   }
 
   static defaultProps = {
+    dimensions: {
+      width: 40,
+      height: 40
+    },
     onPress: noop
   }
 
-  onPress(e, position) {
-    this.props.onPress(e,position);
-  }
-
-  getOrientation(dimensions, pinPosition) {
-    const isTop = pinPosition.y < dimensions.height / 2;
-    const isLeft = pinPosition.x < dimensions.width / 2;
-    if (isTop && isLeft) {
-      return 'top-left'
-    }
-    if (isTop && !isLeft) {
-      return 'top-right'
-    }
-    if (!isTop && isLeft) {
-      return 'bottom-left'
-    }
-    return 'bottom-right'
-  }
-
-  getPositionByOrientation(orientation, pinPosition, markerDimensions) {
-    switch (orientation) {
-      case 'top-left':
-        return {
-          x: pinPosition.x - markerDimensions.width,
-          y: pinPosition.y - markerDimensions.height,
-        }
-      case 'top-right':
-        return {
-          x: pinPosition.x,
-          y: pinPosition.y - markerDimensions.height,
-        }
-      case 'bottom-left':
-        return {
-          x: pinPosition.x - markerDimensions.width,
-          y: pinPosition.y,
-        }
-      case 'bottom-right':
-      default:
-        return pinPosition
-    }
+  onPress(e) {
+    this.props.onPress(e);
   }
 
   getMarkerImageByOrientation(orientation) {
@@ -103,23 +60,12 @@ class MarkerView extends Component {
   }
 
   render() {
-    const containerDimensions = {width: this.props.containerWidth, height: this.props.containerHeight}
-    const markerDimensions = {width: 40, height: 40};
-
-    const pinPosition = {
-      x: parseInt(this.props.pinPositionLeft * containerDimensions.width),
-      y: parseInt(this.props.pinPositionTop * containerDimensions.height)
-    };
-
-    const orientation = this.getOrientation(containerDimensions, pinPosition);
-    const position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions);
-
     return (
-      <TouchableWithoutFeedback onPress={(e) => this.onPress(e, position)}>
-        <View style={[styles.container, {top: position.y, left: position.x}]}>
+      <TouchableWithoutFeedback onPress={(e) => this.onPress(e)}>
+        <View>
           <Image
-            source={this.getMarkerImageByOrientation(orientation)}
-            style={[styles.marker, markerDimensions]}/>
+            source={this.getMarkerImageByOrientation(this.props.orientation)}
+            style={[{resizeMode: 'cover'}, this.props.dimensions]}/>
         </View>
       </TouchableWithoutFeedback >
     );

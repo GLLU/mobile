@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux'
 import { showInfo } from '../../../actions'
+import { noop } from 'lodash'
 
 const styles = StyleSheet.create({
   container: {
@@ -44,23 +45,36 @@ class ItemPopup extends Component {
   constructor(props) {
     super(props);
     this.handleOpenLink = this.handleOpenLink.bind(this);
+    this.measureDOM = this.measureDOM . bind(this);
   }
 
   static propTypes = {
-    containerDimensions: React.PropTypes.object,
-    position: React.PropTypes.object,
     brand: React.PropTypes.object,
     price: React.PropTypes.number,
     currency: React.PropTypes.string,
     url: React.PropTypes.string,
+    onLayout: React.PropTypes.func,
   };
 
   static defaultProps = {
-    position: {x: 0, y: 0},
     price: 0,
     brand: {name: 'N/A'},
     currency: '£',
-    url: ''
+    url: '',
+    onLayout: noop
+  }
+
+  componentDidMount(){
+    setTimeout(this.measureDOM)
+  }
+
+  measureDOM(){
+    this.popupDOM.measure((ox, oy, width, height, px, py) => {
+      const nativeEvent = {
+        layout: {ox, oy, width, height, px, py}
+      };
+      this.props.onLayout({nativeEvent})
+    })
   }
 
   handleOpenLink() {
@@ -87,24 +101,11 @@ class ItemPopup extends Component {
     return title;
   }
 
-  limitPosition(containerDimensions, position) {
-    if (containerDimensions !== undefined && containerDimensions.width - position.x < 100) {
-      position.x -= 20;
-    }
-
-    if (containerDimensions !== undefined && containerDimensions.height - position.y < 100) {
-      position.y -= 20;
-    }
-    return position;
-  }
-
   render() {
     const title = this.getTitle(this.props.brand);
-
-    const position = this.limitPosition(this.props.containerDimensions, this.props.position);
     return (
       <TouchableWithoutFeedback onPress={this.handleOpenLink}>
-        <View style={[styles.container, {top: position.y, left: position.x}]}>
+        <View ref={popupDOM=>{this.popupDOM=popupDOM}}>
           <Text style={[styles.row, styles.titleColors, styles.topRoundCorners]}>{title}</Text>
           <Text style={[styles.row, styles.buyColors, styles.bottomRoundCorners]}>Buy
             Now!</Text>

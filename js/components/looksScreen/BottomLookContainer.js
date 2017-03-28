@@ -65,10 +65,8 @@ export default class BottomLookContainer extends BaseComponent {
       <ItemMarker
         key={index}
         item={item}
-        containerWidth={width}
-        containerHeight={height}
-        pinPositionTop={item.cover_y_pos}
-        pinPositionLeft={item.cover_x_pos}/>
+        containerDimensions={{width:width,height:height}}
+        pinPosition={{y: item.cover_y_pos, x: item.cover_x_pos}}/>
     );
   }
 
