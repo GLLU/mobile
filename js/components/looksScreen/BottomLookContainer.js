@@ -12,7 +12,7 @@ import _ from 'lodash'
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import MenuModal from './menuModal';
-import ItemMarkerWithView from './markers/ItemMarkerWithView';
+import ItemMarker from './markers/ItemMarker';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/BaseComponent';
@@ -62,7 +62,7 @@ export default class BottomLookContainer extends BaseComponent {
   _renderBuyItButtons(look) {
     const {width, height} = this.props;
     return look.items.map((item, index) =>
-      <ItemMarkerWithView
+      <ItemMarker
         key={index}
         item={item}
         containerWidth={width}

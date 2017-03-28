@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class ItemView extends Component {
+class ItemPopup extends Component {
   constructor(props) {
     super(props);
     this.handleOpenLink = this.handleOpenLink.bind(this);
@@ -122,4 +122,4 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps, bindActions)(ItemView);
+export default connect(mapStateToProps, bindActions)(ItemPopup);
