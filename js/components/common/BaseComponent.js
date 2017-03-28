@@ -3,19 +3,26 @@ import Utils from '../../Utils';
 import Config from 'react-native-config';
 import _ from 'lodash';
 import Analytics from '../../lib/analytics/Analytics';
+import { Platform } from 'react-native';
+
+
 
 class BaseComponent extends Component {
   constructor(props) {
     super(props);
-
-    this.bugsnag = Utils.getBugsnagClient();
-    this.setBugsnagUser(props.user);
-    this.setLeaveBreadcrumb(props);
+    if(Config.BUGSNAG_API_KEY) { // on debug there is no bugsnag api. see .env.staging
+      this.bugsnag = Utils.getBugsnagClient();
+      this.setBugsnagUser(props.user);
+      this.setLeaveBreadcrumb(props);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setBugsnagUser(nextProps.user);
-    this.setLeaveBreadcrumb(nextProps);
+    if(Config.BUGSNAG_API_KEY) { // on debug there is no bugsnag api. see .env.staging
+      this.setBugsnagUser(nextProps.user);
+      this.setLeaveBreadcrumb(nextProps);
+    }
+
   }
 
   setLeaveBreadcrumb(props) {
