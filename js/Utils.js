@@ -1,6 +1,6 @@
 import { Image } from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import { Client } from 'bugsnag-react-native';
+import { Client, Configuration } from 'bugsnag-react-native';
 import Config from 'react-native-config';
 import _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -23,7 +23,10 @@ export default class Utils {
   }
 
   static getBugsnagClient() {
-    return new Client(Config.BUGSNAG_API_KEY)
+
+    const config = new Configuration(Config.BUGSNAG_API_KEY)
+    config.codeBundleId = Config.codeBundleId
+    return new Client(config)
   }
 
   static resetKeychainData() {
