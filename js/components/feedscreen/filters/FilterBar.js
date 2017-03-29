@@ -124,12 +124,12 @@ class FilterBar extends BaseComponent {
   componentWillReceiveProps(nextProps) {
     this.setInnerFilters('items', nextProps.categories);
     this.setInnerFilters('body_type', nextProps.bodyTypes);
-    this.setDefaultSelections(this.state.filters, nextProps.defaultFilters, this.state.didConsumeDefaultValues)
+    this.setDefaultSelections(this.state.filters, nextProps.query, this.state.didConsumeDefaultValues)
   }
 
   setDefaultSelections(filters, defaultFilters,didConsumeDefaultValues) {
 
-    if (!didConsumeDefaultValues&&defaultFilters !== this.props.defaultFilters && defaultFilters !== undefined) {
+    if (!didConsumeDefaultValues&&defaultFilters !== this.props.query && defaultFilters !== undefined) {
       _.chain(Object.keys(defaultFilters))
         .map(index => {
           return {key: index, value: defaultFilters[index]}
@@ -142,7 +142,6 @@ class FilterBar extends BaseComponent {
           }
         })
         .value();
-      this._filterFeed(filters);
       this.setState({filters,didConsumeDefaultValues:true})
     }
   }
@@ -249,22 +248,11 @@ const mapStateToProps = state => {
   }) : [];
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
   bodyTypes = mapBodyTypes(bodyTypes);
-  let defaultFilters = {
-    gender: '',
-    body_type: ''
-  };
-  if (state.user.user_size) {
-    const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
-    const myGender = state.user.gender ? state.user.gender : '';
-    defaultFilters = {
-      gender: myGender,
-      body_type: myBodyType
-    };
-  }
+
   return {
     categories: categories,
     bodyTypes: bodyTypes,
-    defaultFilters: defaultFilters,
+    query: state.query,
     minPrice: state.filters.minPrice,
     maxPrice: state.filters.maxPrice
   }
