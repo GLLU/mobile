@@ -11,6 +11,7 @@ target 'gllu' do
   pod 'FBSDKLoginKit', '4.17'
   pod 'FBSDKShareKit', '4.17'
   pod 'QBImagePickerController'
+  pod 'RSKImageCropper'
   pod 'Flurry-iOS-SDK/FlurrySDK'
 
 end
