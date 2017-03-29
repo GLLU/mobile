@@ -113,7 +113,7 @@ class FilterBar extends BaseComponent {
     this.state = {
       openFilter: {},
       filters: _.cloneDeep(filters),
-      didSetDefaultFilters:false
+      didConsumeDefaultValues:false
     };
   }
 
@@ -127,9 +127,9 @@ class FilterBar extends BaseComponent {
     this.setDefaultSelections(this.state.filters, nextProps.defaultFilters, this.state.didConsumeDefaultValues)
   }
 
-  setDefaultSelections(filters, defaultFilters) {
+  setDefaultSelections(filters, defaultFilters,didConsumeDefaultValues) {
 
-    if (!this.state.didSetDefaultFilters&&defaultFilters !== this.props.defaultFilters && defaultFilters !== undefined) {
+    if (!didConsumeDefaultValues&&defaultFilters !== this.props.defaultFilters && defaultFilters !== undefined) {
       _.chain(Object.keys(defaultFilters))
         .map(index => {
           return {key: index, value: defaultFilters[index]}
@@ -143,7 +143,7 @@ class FilterBar extends BaseComponent {
         })
         .value();
       this._filterFeed(filters);
-      this.setState({filters,didSetDefaultFilters:true})
+      this.setState({filters,didConsumeDefaultValues:true})
     }
   }
 
