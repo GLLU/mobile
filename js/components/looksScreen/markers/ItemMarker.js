@@ -60,22 +60,42 @@ class ItemMarker extends Component {
     })
   }
 
+  getContainerStyle(position, orientation, popupDimensions, ispopupVisible) {
+    let containerStyles = [styles.container];
+    let positionStyle = {
+      top: position.y,
+      left: position.x
+    };
+    if (!orientation.top) {
+      if (ispopupVisible) {
+        positionStyle.top -= popupDimensions.height;
+      }
+      containerStyles.push(positionStyle);
+      containerStyles.push(styles.flexReverse)
+    }
+    else {
+      containerStyles.push(positionStyle);
+      containerStyles.push(styles.flex)
+    }
+    return containerStyles;
+  }
+
   getOrientation(dimensions, pinPosition) {
     const top = pinPosition.y < dimensions.height / 2;
     const left = pinPosition.x < dimensions.width / 2;
     return {
       top,
       left,
-      bottom:!top,
-      right:!left
+      bottom: !top,
+      right: !left
     };
   }
 
   getPositionByOrientation(orientation, pinPosition, markerDimensions) {
-    let actualPosition = _.cloneDeep(pinPosition);
-    if (orientation.top) {
-      actualPosition.y = pinPosition.y - markerDimensions.height
-    }
+    let actualPosition = {
+      y: pinPosition.y - markerDimensions.height,
+      x: pinPosition.x
+    };
     if (orientation.left) {
       actualPosition.x = pinPosition.x - markerDimensions.width
     }
@@ -143,27 +163,6 @@ class ItemMarker extends Component {
       </View>
     )
   }
-
-  getContainerStyle(position, orientation, popupDimensions, ispopupVisible) {
-    let containerStyles = [styles.container];
-    let positionStyle = {
-      top: position.y,
-      left: position.x
-    };
-    if (!orientation.top) {
-      if (ispopupVisible) {
-        positionStyle.top -= popupDimensions.height;
-      }
-      containerStyles.push(positionStyle);
-      containerStyles.push(styles.flexReverse)
-    }
-    else {
-      containerStyles.push(positionStyle);
-      containerStyles.push(styles.flex)
-    }
-    return containerStyles;
-  }
-
 }
 
 function bindActions(dispatch) {
