@@ -17,6 +17,7 @@ import {
 } from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 
 class UserLooks extends Component {
 
@@ -124,30 +125,10 @@ class UserLooks extends Component {
               </Button>
             )
           }
-          {this.renderLookStatus(look)}
+          { this.state.isMyProfile ? this.renderLookStatus(look) : null}
         </View>
       );
     });
-  }
-
-  _renderAddItemButton() {
-    const addItem = {
-      height: 770,
-      width: 770,
-      uri: addItemIcon
-    }
-    const colW = (deviceWidth - 10) / 2;
-    addItem.height = addItem.height * colW / addItem.width ;
-    addItem.width = colW;
-    return (
-      <TouchableOpacity onPress={(e) => this._handleOpenPhotoModal()}>
-        <View style={{width: addItem.width, height: addItem.height, paddingLeft: 0 }}>
-          <Image source={addItemIcon} style={{width: addItem.width - 5, height: addItem.height, resizeMode: 'contain' }} >
-            <Text style={{position: 'relative', top: addItem.height / 2, marginTop: 20, textAlign: 'center',  backgroundColor: 'transparent', color: 'white'}}>Add New Item</Text>
-          </Image>
-        </View>
-      </TouchableOpacity>
-    )
   }
 
   _handleOpenPhotoModal() {
@@ -157,7 +138,7 @@ class UserLooks extends Component {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen', 'userLookScreen');
+        this.props.navigateTo('addItemScreen', 'profilescreen');
       });
     })
   }
@@ -169,7 +150,6 @@ class UserLooks extends Component {
         <View style={[styles.mainGrid]}>
             <View style={[{flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
-                { this.state.isMyProfile ? this._renderAddItemButton() : null}
                 {this._renderImages(this.state.imagesColumn1)}
               </View>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
@@ -177,7 +157,6 @@ class UserLooks extends Component {
               </View>
             </View>
         </View>
-        <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} />
       </View>
     )
   }
