@@ -112,7 +112,8 @@ class FilterBar extends BaseComponent {
     this.setDefaultSelections = this.setDefaultSelections.bind(this);
     this.state = {
       openFilter: {},
-      filters: _.cloneDeep(filters)
+      filters: _.cloneDeep(filters),
+      didConsumeDefaultValues:false
     };
   }
 
@@ -126,9 +127,9 @@ class FilterBar extends BaseComponent {
     this.setDefaultSelections(this.state.filters, nextProps.defaultFilters, this.state.didConsumeDefaultValues)
   }
 
-  setDefaultSelections(filters, defaultFilters) {
+  setDefaultSelections(filters, defaultFilters,didConsumeDefaultValues) {
 
-    if (defaultFilters !== this.props.defaultFilters && defaultFilters !== undefined) {
+    if (!didConsumeDefaultValues&&defaultFilters !== this.props.defaultFilters && defaultFilters !== undefined) {
       _.chain(Object.keys(defaultFilters))
         .map(index => {
           return {key: index, value: defaultFilters[index]}
@@ -142,7 +143,7 @@ class FilterBar extends BaseComponent {
         })
         .value();
       this._filterFeed(filters);
-      this.setState({filters})
+      this.setState({filters,didConsumeDefaultValues:true})
     }
   }
 
@@ -166,13 +167,16 @@ class FilterBar extends BaseComponent {
 
   _renderSubFilters(filters, openFilter) {
     switch (openFilter.renderType) {
+
+      //case 'range':
+
+      // case 'radio-multi':
+      //
+      //   return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
+      //                       filters={filters}/>;
+      default:
       case 'radio-single':
         return <FilterGroup mode='single' onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
-                            filters={filters}/>;
-      //case 'range':
-      case 'radio-multi':
-      default:
-        return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
                             filters={filters}/>;
     }
   }
