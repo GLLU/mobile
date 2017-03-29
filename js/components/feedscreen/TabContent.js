@@ -22,7 +22,6 @@ class TabContent extends BaseComponent {
   static propTypes = {
     hasUserSize: React.PropTypes.bool,
     flatLooks: React.PropTypes.array,
-    meta: React.PropTypes.object,
     query: React.PropTypes.object,
     reloading: React.PropTypes.bool,
     handleSwipeTab: React.PropTypes.func,
@@ -202,16 +201,17 @@ class TabContent extends BaseComponent {
   }
 
   _renderLoadMore() {
-    return (<View style={styles.loader}>
-      {(() => {
-        if (this.state.noMoreData) {
-          return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
-        }
-        if (this.state.isLoading) {
-          return <Spinner color='rgb(230,230,230)'/>;
-        }
-        return null;
-      })()}
+    return (
+      <View style={styles.loader}>
+        {(() => {
+          if (this.state.noMoreData) {
+            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
+          }
+          if (this.state.isLoading) {
+            return <Spinner color='rgb(230,230,230)'/>;
+          }
+          return null;
+        })()}
       </View>);
   }
 
@@ -226,7 +226,7 @@ class TabContent extends BaseComponent {
   }
 
   render() {
-    return(
+    return (
       <View style={styles.tab}>
         <ScrollView
             style={{flex: 1}}

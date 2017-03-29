@@ -21,7 +21,7 @@ export function getUserLooks(data):Action {
     if(data.page === 1) {
       dispatch(showLoader());
     }
-    return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 6, "page[number]" : data.page}, {}, (err, userLooksData) => {
+    return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 8, "page[number]" : data.page}, {}, (err, userLooksData) => {
       if (!err && userLooksData) {
         let looksData = {
           looks: userLooksData.looks,

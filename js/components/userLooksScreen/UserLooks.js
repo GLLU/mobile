@@ -40,7 +40,7 @@ class UserLooks extends Component {
       photoModal: false,
       refreshing: false,
       pagination: 1,
-      isMyProfile
+      isMyProfile,
     };
   }
 
@@ -68,23 +68,6 @@ class UserLooks extends Component {
     });
 
     return { imagesColumn1, imagesColumn2 };
-  }
-
-  handleScroll(event) {
-    const contentSizeHeight = event.nativeEvent.contentSize.height;
-    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-    const currentScroll = event.nativeEvent.contentOffset.y
-    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-    if (compare == 1) {
-      this.setState({
-        pagination: this.state.pagination+=1,
-      })
-      let data = {
-        id: this.props.userId,
-        page: this.state.pagination
-      }
-      this.props.getUserLooks(data);
-    }
   }
 
   _handleItemPress(item) {
@@ -196,16 +179,7 @@ class UserLooks extends Component {
       <View style={styles.tab}>
 
         <View style={[styles.mainGrid]}>
-          <ScrollView scrollEventThrottle={100} onScroll={this.handleScroll.bind(this)}
-                      pagingEnabled={false}
-                      refreshControl={
-                        <RefreshControl
-                          refreshing={this.state.refreshing}
-                          onRefresh={this._onRefresh.bind(this)}
-                        />
-                      }
-          >
-            <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
+            <View style={[{flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
                 { this.state.isMyProfile ? this._renderAddItemButton() : null}
                 {this._renderImages(this.state.imagesColumn1)}
@@ -214,7 +188,6 @@ class UserLooks extends Component {
                 {this._renderImages(this.state.imagesColumn2)}
               </View>
             </View>
-          </ScrollView>
         </View>
         <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} />
       </View>
@@ -234,7 +207,6 @@ const styles = StyleSheet.create({
   },
   mainGrid: {
     backgroundColor: '#FFFFFF',
-    height: deviceHeight,
     marginTop: -10
   },
 });

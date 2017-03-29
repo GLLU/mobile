@@ -10,11 +10,11 @@ export default StyleSheet.create({
   bg: {
     flex: 1,
     width: w,
-    height: h
+    height: 450
   },
   linearGradient: {
     width: w,
-    height: h,
+    height:450,
     position: 'absolute',
     top: 0,
     left: 0
@@ -62,7 +62,6 @@ export default StyleSheet.create({
   description: {
     backgroundColor: 'transparent',
     margin: 15,
-    height: 80,
   },
   descriptionText: {
     color: 'white',
@@ -113,7 +112,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     marginLeft: 15,
     marginRight: 15,
-    marginTop: 30,
+    marginTop: 5,
     backgroundColor: 'transparent',
 
   },
