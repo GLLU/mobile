@@ -35,7 +35,7 @@ class MainView extends Component {
   }
 
   componentWillMount() {
-    this.getFeed(this.props.query);
+    this.getFeed(this.props.defaultFilters);
   }
 
   handleSwipeTab(locked) {
@@ -133,10 +133,25 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  query: state.feed.query,
-});
+const mapStateToProps = state => {
+  let defaultFilters = {
+    gender: '',
+    body_type: ''
+  };
+  if (state.user.user_size) {
+    const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
+    const myGender = state.user.gender ? state.user.gender : '';
+    defaultFilters = {
+      gender: myGender,
+      body_type: myBodyType
+    };
+  }
+  return {
+    defaultFilters: defaultFilters,
+    navigation: state.cardNavigation,
+    query: state.feed.query,
+  };
+}
 
 export default connect(mapStateToProps, bindActions)(MainView);
 
