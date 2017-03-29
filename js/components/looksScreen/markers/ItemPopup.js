@@ -45,7 +45,6 @@ class ItemPopup extends Component {
   constructor(props) {
     super(props);
     this.handleOpenLink = this.handleOpenLink.bind(this);
-    this.measureDOM = this.measureDOM . bind(this);
   }
 
   static propTypes = {
@@ -54,6 +53,7 @@ class ItemPopup extends Component {
     currency: React.PropTypes.string,
     url: React.PropTypes.string,
     onLayout: React.PropTypes.func,
+    dimensions: React.PropTypes.object
   };
 
   static defaultProps = {
@@ -62,19 +62,6 @@ class ItemPopup extends Component {
     currency: '£',
     url: '',
     onLayout: noop
-  }
-
-  componentDidMount(){
-    setTimeout(this.measureDOM)
-  }
-
-  measureDOM(){
-    this.popupDOM.measure((ox, oy, width, height, px, py) => {
-      const nativeEvent = {
-        layout: {ox, oy, width, height, px, py}
-      };
-      this.props.onLayout({nativeEvent})
-    })
   }
 
   handleOpenLink() {
@@ -105,7 +92,7 @@ class ItemPopup extends Component {
     const title = this.getTitle(this.props.brand);
     return (
       <TouchableWithoutFeedback onPress={this.handleOpenLink}>
-        <View ref={popupDOM=>{this.popupDOM=popupDOM}}>
+        <View style={this.props.dimensions? this.props.dimensions:null}>
           <Text style={[styles.row, styles.titleColors, styles.topRoundCorners]}>{title}</Text>
           <Text style={[styles.row, styles.buyColors, styles.bottomRoundCorners]}>Buy
             Now!</Text>
