@@ -128,7 +128,6 @@ class FilterBar extends BaseComponent {
   }
 
   setDefaultSelections(filters, defaultFilters,didConsumeDefaultValues) {
-
     if (!didConsumeDefaultValues&&defaultFilters !== this.props.query && defaultFilters !== undefined) {
       _.chain(Object.keys(defaultFilters))
         .map(index => {
@@ -137,7 +136,7 @@ class FilterBar extends BaseComponent {
         .filter(kvp => !_.isEmpty(kvp.value))
         .each(kvp => {
           let mainFilter = _.find(filters, filter => filter.id === kvp.key);
-          if (!_.isEmpty(mainFilter.filters)) {
+          if (mainFilter!==undefined&&!_.isEmpty(mainFilter.filters)) {
             mainFilter.filters.forEach(subFilter => subFilter.selected = subFilter.id === kvp.value)
           }
         })
@@ -252,7 +251,7 @@ const mapStateToProps = state => {
   return {
     categories: categories,
     bodyTypes: bodyTypes,
-    query: state.query,
+    query: state.feed.query,
     minPrice: state.filters.minPrice,
     maxPrice: state.filters.maxPrice
   }
