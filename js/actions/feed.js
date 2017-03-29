@@ -10,7 +10,6 @@ const parseQueryFromState = function(state) {
 }
 
 export function getFeed(query):Action {
-  console.log('get feeeeed')
   return (dispatch) => {
     const newState = Object.assign({}, query, {
       page: {

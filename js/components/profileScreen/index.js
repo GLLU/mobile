@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import BasePage from '../common/BasePage';
-import { Image, Animated, InteractionManager, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { Image, TouchableOpacity, Text, ScrollView } from 'react-native';
 import styles from './styles';
 import { Container, Content, View, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
-import Spinner from '../loaders/Spinner';
 import StatsView  from './StatsView';
-import UserLookScreen from '../userLooksScreen/index';
 import { getStats, getUserBodyType, addNewLook, navigateTo, getUserLooksData, getUserLooks } from '../../actions';
 import _ from 'lodash';
+import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
 const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const {popRoute} = actions;
-const LOADER_HEIGHT = 30;
 
 class ProfileScreen extends BasePage {
   static propTypes = {
@@ -55,15 +53,14 @@ class ProfileScreen extends BasePage {
         gender: this.props.myUser.gender,
         bodyType: this.props.myUser.user_size.body_type
       }
-      this.props.getUserBodyType(data); //its here for performance, doesnt relate to this screen
+      this.props.getUserBodyType(data);
     }
-
   }
 
   componentWillMount() {
     const {myUser, userData} = this.props;
     const user = this.state.isMyProfile ? myUser : userData;
-    if (this.state.userId !== this.props.currLookScreenId) { //here for performance - relate to user looks screen
+    if (this.state.userId !== this.props.currLookScreenId) {
       const looksCall = {
         id: this.state.userId,
         page: 1,
@@ -107,15 +104,6 @@ class ProfileScreen extends BasePage {
 
   componentWillUnmount() {
     console.log('profile unmounted')
-  }
-
-  _handleItemPress(item) {
-    item.singleItem = true
-    this.props.navigateTo('looksScreen', 'feedscreen', item);
-  }
-
-  _handleItemsPress() {
-
   }
 
   goToAddNewItem(imagePath) {
@@ -244,7 +232,7 @@ class ProfileScreen extends BasePage {
                 </View>
                 { this._renderStats() }
               </Image>
-              {this.props.userLooks.length > 0 ? <UserLookScreen /> : null}
+              {this.props.userLooks.length > 0 ? <UserLooks isMyProfile={this.state.isMyProfile} /> : null}
             </ScrollView>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
