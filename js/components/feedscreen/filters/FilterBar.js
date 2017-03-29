@@ -167,13 +167,16 @@ class FilterBar extends BaseComponent {
 
   _renderSubFilters(filters, openFilter) {
     switch (openFilter.renderType) {
+
+      //case 'range':
+
+      // case 'radio-multi':
+      //
+      //   return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
+      //                       filters={filters}/>;
+      default:
       case 'radio-single':
         return <FilterGroup mode='single' onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
-                            filters={filters}/>;
-      //case 'range':
-      case 'radio-multi':
-      default:
-        return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
                             filters={filters}/>;
     }
   }
