@@ -72,7 +72,7 @@ class LooksContainer extends BasePage {
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
-          this._scrollView.scrollTo({x: 0, y: h * 2, animated: false});
+          this._scrollView.scrollTo({x: 0, y: h * this.props.flatLook.originalIndex, animated: false});
           this.setState({startAnimte: true})
           break;
         case 'android':
