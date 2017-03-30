@@ -29,7 +29,6 @@ const config = {
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
 const {popRoute, pushRoute} = actions
-const LOADER_HEIGHT = 30;
 
 class LooksContainer extends BasePage {
   static propTypes = {
@@ -253,9 +252,7 @@ class LooksContainer extends BasePage {
                     this._scrollView = c;
                   }}
                   scrollEventThrottle={100}
-
-                  scrollEnabled={false}
-      >
+                  scrollEnabled={false}>
 
         {looksArr.map((look, index) => {
           return look.coverType === "video" ? this.renderVideo(look, index) : this.renderImage(look, index)
