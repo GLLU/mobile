@@ -232,7 +232,7 @@ class ProfileScreen extends BasePage {
                 </View>
                 { this._renderStats() }
               </Image>
-              {this.props.userLooks.length > 0 ? <UserLooks isMyProfile={this.state.isMyProfile} /> : null}
+              {this.props.userLooks.length > 0 && this.props.userLooksUserId === this.state.userId ? <UserLooks isMyProfile={this.state.isMyProfile} /> : null}
             </ScrollView>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
@@ -267,6 +267,7 @@ const mapStateToProps = state => {
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
     userLooks: state.userLooks.userLooksData,
+    userLooksUserId: state.userLooks.currId,
 
   };
 };
