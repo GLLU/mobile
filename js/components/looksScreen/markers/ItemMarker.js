@@ -17,8 +17,13 @@ import ItemPopup from './ItemPopup'
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    alignItems: 'flex-start',
+    position: 'absolute'
+  },
+  align:{
+    alignItems: 'flex-start'
+  },
+  alignReverse:{
+    alignItems: 'flex-end'
   },
   flex: {
     flexDirection: 'column',
@@ -60,14 +65,14 @@ class ItemMarker extends Component {
     })
   }
 
-  getContainerStyle(position, orientation, popupDimensions, ispopupVisible) {
+  getContainerStyle(position, orientation, popupDimensions, isPopupVisible) {
     let containerStyles = [styles.container];
     let positionStyle = {
       top: position.y,
       left: position.x
     };
     if (!orientation.top) {
-      if (ispopupVisible) {
+      if (isPopupVisible) {
         positionStyle.top -= popupDimensions.height;
       }
       containerStyles.push(positionStyle);
@@ -76,6 +81,12 @@ class ItemMarker extends Component {
     else {
       containerStyles.push(positionStyle);
       containerStyles.push(styles.flex)
+    }
+    if (orientation.left){
+      containerStyles.push(styles.align)
+    }
+    else{
+      containerStyles.push(styles.alignReverse)
     }
     return containerStyles;
   }
@@ -91,13 +102,22 @@ class ItemMarker extends Component {
     };
   }
 
-  getPositionByOrientation(orientation, pinPosition, markerDimensions) {
+  getPositionByOrientation(orientation, pinPosition, markerDimensions, isViewActive, popupDimensions,) {
     let actualPosition = {
       y: pinPosition.y - markerDimensions.height,
       x: pinPosition.x
     };
     if (orientation.left) {
       actualPosition.x = pinPosition.x - markerDimensions.width
+    }
+    else{
+      if(isViewActive)
+      {
+        actualPosition.x = pinPosition.x-popupDimensions.width
+      }
+      else{
+        actualPosition.x = pinPosition.x - markerDimensions.width
+      }
     }
     return actualPosition;
   }
@@ -141,9 +161,9 @@ class ItemMarker extends Component {
 
     const markerDimensions = {width: 40, height: 25};
 
-    const popupDimensions = {width: 70, height: 60};
+    const popupDimensions = {width: 120, height: 60};
 
-    let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions);
+    let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions, this.state.isViewActive,popupDimensions);
 
     const closeToEdgeIndicator = this.isPositionCloseToEdge(this.props.containerDimensions, position);
 

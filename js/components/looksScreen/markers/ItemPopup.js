@@ -66,7 +66,6 @@ class ItemPopup extends Component {
 
   handleOpenLink() {
     const url = this.props.url;
-    console.log(`item of brand ${this.props.title} that costs ${this.props.price} ${this.props.currency} clicked!`);
     if (url) {
       Linking.canOpenURL(url).then(supported => {
         if (!supported) {
@@ -83,17 +82,17 @@ class ItemPopup extends Component {
   }
 
   getTitle(brand) {
+    const titleLength=12;
     let title = brand ? brand.name : 'N/A';
-    title = title.length > 9 ? title.slice(0, 6) + '...' : title;
+    title = title.length > titleLength ? title.slice(0, titleLength-3) + '...' : title;
     return title;
   }
 
   render() {
-    const title = this.getTitle(this.props.brand);
     return (
       <TouchableWithoutFeedback onPress={this.handleOpenLink}>
         <View style={this.props.dimensions? this.props.dimensions:null}>
-          <Text style={[styles.row, styles.titleColors, styles.topRoundCorners]}>{title}</Text>
+          <Text style={[styles.row, styles.titleColors, styles.topRoundCorners]}>{this.getTitle(this.props.brand)}</Text>
           <Text style={[styles.row, styles.buyColors, styles.bottomRoundCorners]}>Buy
             Now!</Text>
         </View>
