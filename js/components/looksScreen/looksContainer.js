@@ -28,7 +28,7 @@ const config = {
 };
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
-const {popRoute, pushRoute} = actions
+const {popRoute, pushRoute} = actions;
 
 class LooksContainer extends BasePage {
   static propTypes = {
@@ -63,7 +63,8 @@ class LooksContainer extends BasePage {
       height: h,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof this.props.flatLook === 'number',
       renderScroll: false,
-      startAnimte: false
+      startAnimte: false,
+      currScrollIndex: this.props.flatLook.originalIndex
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
@@ -72,14 +73,14 @@ class LooksContainer extends BasePage {
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
-          this._scrollView.scrollTo({x: 0, y: h * this.props.flatLook.originalIndex, animated: false});
+          this._scrollView.scrollTo({x: 0, y: h, animated: false});
           this.setState({startAnimte: true})
           break;
         case 'android':
           InteractionManager.runAfterInteractions(() => {
             _.delay(() => this._scrollView.scrollTo({
               x: 0,
-              y: h * this.props.flatLook.originalIndex,
+              y: h,
               animated: false
             }), 0);
             _.delay(() => this.props.removeLoader(), 0);
@@ -109,13 +110,6 @@ class LooksContainer extends BasePage {
     this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: look}, this.props.navigation.key);
   }
 
-  onLoad() {
-    Animated.timing(this.state.fadeAnim, {
-      toValue: 1,
-      duration: 750
-    }).start();
-  }
-
   onToggleDrawer(shouldOpen){
     this.setState({isBottomDrawerOpen:shouldOpen})
   }
@@ -128,7 +122,6 @@ class LooksContainer extends BasePage {
     const {meta: {total}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
-
     if (pageSize * pageNumber < total) {
       this.setState({isLoading: true}, () => {
         this.props.loadMore().then(() => {
@@ -148,21 +141,25 @@ class LooksContainer extends BasePage {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP:
-        let nextLook = index + 1
+        let nextLook = index + 1;
         const {meta: {total}} = this.props;
-        if (nextLook !== total - 1) {
-          this._scrollView.scrollTo({x: 0, y: h * nextLook, animated: true});
+        if (this.state.currScrollIndex < total-1) {
+          this._scrollView.scrollTo({x: 0, y: 0, animated: false});
+          this._scrollView.scrollTo({x: 0, y: h, animated: true});
+          this.setState({currScrollIndex: this.state.currScrollIndex+1})
         }
-        if (nextLook % 5 === 0) {
+        if (this.state.currScrollIndex % 5 === 0) {
           this.loadMoreAsync();
         }
         break;
       case SWIPE_DOWN:
         let previousLook = index - 1
-        if (index !== -1) {
-          this._scrollView.scrollTo({x: 0, y: h * previousLook, animated: true});
+        if (this.state.currScrollIndex !== 0) {
+          this._scrollView.scrollTo({x: 0, y: h+h, animated: false});
+          this._scrollView.scrollTo({x: 0, y: h, animated: true});
+          this.setState({currScrollIndex: this.state.currScrollIndex-1})
         }
-        if (previousLook % 5 === 0) {
+        if (this.state.currScrollIndex % 5 === 0) {
           this.loadMoreAsync();
         }
         break;
@@ -179,7 +176,7 @@ class LooksContainer extends BasePage {
     const {width, height} = this.state;
     return (
       <GestureRecognizer
-        key={index}
+        key={look.originalIndex}
         onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
         config={config}
         style={{
@@ -215,7 +212,7 @@ class LooksContainer extends BasePage {
     const {width, height} = this.state;
     return (
       <GestureRecognizer
-        key={index}
+        key={look.originalIndex}
         onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
         config={config}
         style={{
@@ -244,8 +241,40 @@ class LooksContainer extends BasePage {
     )
   }
 
+  getFlatFeed () {
+    let looksArr = ''
+    const {meta: {total}} = this.props;
+    switch(this.state.currScrollIndex) {
+      case 0:
+         return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex+2], // fictional
+          this.props.flatLooksData[this.state.currScrollIndex],
+          this.props.flatLooksData[this.state.currScrollIndex+1]
+        ]
+        break;
+      case total-1:
+        return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex-1],
+          this.props.flatLooksData[this.state.currScrollIndex],
+          this.props.flatLooksData[this.state.currScrollIndex-2] // fictional
+        ]
+      default:
+        return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex-1],
+          this.props.flatLooksData[this.state.currScrollIndex],
+          this.props.flatLooksData[this.state.currScrollIndex+1]
+        ]
+    }
+  }
+
   render() {
-    let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
+    let looksArr = ''
+    if(this.state.showAsFeed) {
+      looksArr = this.getFlatFeed()
+    } else {
+      looksArr = [this.props.flatLook]
+    }
+    console.log('looksArr',looksArr)
     return (
       <ScrollView pagingEnabled={false}
                   ref={(c) => {

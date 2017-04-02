@@ -55,8 +55,8 @@ class LooksScreen extends BasePage {
   }
 
   render() {
-      return this.state.renderScroll ? this.renderScrollView() : this.renderLoader(false)
-    }
+    return this.state.renderScroll ? this.renderScrollView() : this.renderLoader(false)
+  }
 }
 
 export default LooksScreen;

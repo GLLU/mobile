@@ -12,9 +12,7 @@ import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 import Video from 'react-native-video';
 
-
 const deviceWidth = Dimensions.get('window').width;
-
 const LOADER_HEIGHT = 30;
 
 class TabContent extends BaseComponent {
