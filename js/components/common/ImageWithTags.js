@@ -9,8 +9,8 @@ export const EDIT_MODE = 'edit';
 export const CREATE_MODE = 'create';
 export const VIEW_MODE = 'view';
 
-const itemBackground = require('../../../images/tag-background.png');
-const TAG_WIDTH = 100;
+const tagMarker = require('../../../images/tag-marker.png');
+const TAG_WIDTH = 40;
 const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
 
@@ -25,15 +25,17 @@ const styles = StyleSheet.create({
     height: 500
   },
   itemBgImage: {
-    height: 48,
+    height: 20,
     width: TAG_WIDTH,
+    resizeMode: 'contain'
+
   },
   itemsContainer: {
     backgroundColor: 'transparent',
   },
   itemMarker: {
     position: 'absolute',
-    height: 48,
+    height: 20,
     width: TAG_WIDTH,
   },
 });
@@ -143,12 +145,12 @@ class ImageWithTags extends Component {
                   key={i}
                   {...this.panResponder.panHandlers}
                   style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                <Image source={itemBackground} style={styles.itemBgImage} />
+                <Image source={tagMarker} style={styles.itemBgImage} />
               </Animated.View>);
       }
 
       return (<View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          <Image source={itemBackground} style={styles.itemBgImage} />
+          <Image source={tagMarker} style={styles.itemBgImage} />
         </View>);
     });
   }

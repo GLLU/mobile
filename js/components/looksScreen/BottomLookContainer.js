@@ -12,7 +12,7 @@ import _ from 'lodash'
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import MenuModal from './menuModal';
-import BuyItButton from './buyItButton';
+import ItemMarker from './markers/ItemMarker';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/BaseComponent';
@@ -61,20 +61,13 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderBuyItButtons(look) {
     const {width, height} = this.props;
-    return look.items.map((item, index) => {
-      const title = item.brand ? item.brand.name : 'N/A';
-      return (
-        <BuyItButton
-          key={index}
-          title={title}
-          price={item.price}
-          width={width}
-          height={height}
-          positionTop={item.cover_y_pos}
-          positionLeft={item.cover_x_pos}
-          url={item.url}/>
-      )
-    });
+    return look.items.map((item, index) =>
+      <ItemMarker
+        key={index}
+        item={item}
+        containerDimensions={{width:width,height:height}}
+        pinPosition={{y: item.cover_y_pos, x: item.cover_x_pos}}/>
+    );
   }
 
   _toggleDescription(shouldActive) {
@@ -149,7 +142,6 @@ export default class BottomLookContainer extends BaseComponent {
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
             <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
-              {this._renderBuyItButtons(this.props.look)}
               <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
@@ -165,6 +157,7 @@ export default class BottomLookContainer extends BaseComponent {
           {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderDescriptionView(this.state.isDescriptionActive)}
         </Animated.View>
+        {this._renderBuyItButtons(this.props.look)}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                    closeModal={() => this._toggleMenu()}/>
       </View>
