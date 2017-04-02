@@ -137,11 +137,10 @@ class LooksContainer extends BasePage {
     }
   }
 
-  onSwipe(gestureName, gestureState, index) {
+  onSwipe(gestureName) {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP:
-        let nextLook = index + 1;
         const {meta: {total}} = this.props;
         if (this.state.currScrollIndex < total-1) {
           this._scrollView.scrollTo({x: 0, y: 0, animated: false});
@@ -153,7 +152,6 @@ class LooksContainer extends BasePage {
         }
         break;
       case SWIPE_DOWN:
-        let previousLook = index - 1
         if (this.state.currScrollIndex !== 0) {
           this._scrollView.scrollTo({x: 0, y: h+h, animated: false});
           this._scrollView.scrollTo({x: 0, y: h, animated: true});
