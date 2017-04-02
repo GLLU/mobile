@@ -153,7 +153,7 @@ const ACTION_HANDLERS = {
 // Reducer
 const initialState = {
   gender: 'female',
-  modalShowing: false,
+  modalShowing: true,
   bodyTypes: bodyTypeList,
   currentBodyType:  Object.assign({},bodyTypeList['female'][3]),
   currentIndex: 3

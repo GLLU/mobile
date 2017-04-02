@@ -116,6 +116,7 @@ class CustomAutocomplete extends Autocomplete {
 
   componentDidMount() {
     this.textInput.focus();
+
   }
 
   _renderTextInput() {
@@ -155,7 +156,7 @@ class CustomAutocomplete extends Autocomplete {
               </ScrollView>
               <View style={styles.btnContainer} >
                 <Button transparent onPress={() => this.props.findOrCreateBrand(this.props.query, true)} style={styles.btnCreateNew} >
-                  <Text style={styles.btnCreateNewText}>Create new...</Text>
+                  <Text style={styles.btnCreateNewText}>Add a New Brand "{this.props.query}"</Text>
                 </Button>
               </View>
             </View>);
@@ -165,7 +166,7 @@ class CustomAutocomplete extends Autocomplete {
     return (<View style={styles.autocompleteResults}>
               <View style={[styles.btnContainer, {borderTopWidth: 1}]} >
                 <Button transparent onPress={() => this.props.findOrCreateBrand(this.props.query, true)} style={styles.btnCreateNew} >
-                  <Text style={styles.btnCreateNewText}>Create new...</Text>
+                  <Text style={styles.btnCreateNewText}>Add a New Brand "{this.props.query}"</Text>
                 </Button>
               </View>
             </View>);
@@ -192,6 +193,7 @@ class CustomAutocomplete extends Autocomplete {
   }
 
   render() {
+    console.log('props',this.props)
     const { containerStyle, inputContainerStyle, query, selected } = this.props;
     const { dataSource } = this.state;
     const brands = dataSource._dataBlob.s1;

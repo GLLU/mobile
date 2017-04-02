@@ -92,7 +92,7 @@ class ItemPopup extends Component {
       <TouchableWithoutFeedback onPress={this.handleOpenLink}>
         <View style={this.props.dimensions? this.props.dimensions:null}>
           <Text style={[styles.row, styles.titleColors, styles.topRoundCorners]}>{this.getTitle(this.props.brand)}</Text>
-          <Text style={[styles.row, styles.buyColors, styles.bottomRoundCorners]}>Buy
+          <Text style={[styles.row, styles.buyColors, styles.bottomRoundCorners]}>Shop
             Now!</Text>
         </View>
       </TouchableWithoutFeedback>
