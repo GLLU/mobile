@@ -28,8 +28,8 @@ const config = {
 };
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
-const {popRoute, pushRoute} = actions
-let count = 0
+const {popRoute, pushRoute} = actions;
+
 class LooksContainer extends BasePage {
   static propTypes = {
     flatLook: React.PropTypes.oneOfType([
@@ -110,10 +110,6 @@ class LooksContainer extends BasePage {
     this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: look}, this.props.navigation.key);
   }
 
-  onLoad() {
-
-  }
-
   onToggleDrawer(shouldOpen){
     this.setState({isBottomDrawerOpen:shouldOpen})
   }
@@ -126,7 +122,6 @@ class LooksContainer extends BasePage {
     const {meta: {total}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
-
     if (pageSize * pageNumber < total) {
       this.setState({isLoading: true}, () => {
         this.props.loadMore().then(() => {
@@ -252,7 +247,7 @@ class LooksContainer extends BasePage {
     switch(this.state.currScrollIndex) {
       case 0:
          return looksArr = [
-          this.props.flatLooksData[this.state.currScrollIndex+2],
+          this.props.flatLooksData[this.state.currScrollIndex+2], // fictional
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex+1]
         ]

@@ -28,13 +28,9 @@ class LooksScreen extends BasePage {
   }
 
   componentDidMount() {
-    if(Platform.OS === 'ios') {
+    InteractionManager.runAfterInteractions(() => {
       this.setState({renderScroll: true})
-    } else {
-      InteractionManager.runAfterInteractions(() => {
-        this.setState({renderScroll: true})
-      });
-    }
+    });
   }
 
   renderLoader() {
