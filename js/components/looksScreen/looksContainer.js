@@ -220,8 +220,7 @@ class LooksContainer extends BasePage {
         <Image
           resizeMode={'cover'}
           style={styles.itemImage}
-          source={{uri: look.uri}}
-          onLoad={this.onLoad()}>
+          source={{uri: look.uri}}>
           <BottomLookContainer
             width={width}
             height={height}

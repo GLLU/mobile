@@ -77,7 +77,7 @@ class MyBodyType extends BasePage {
       <Container theme={glluTheme}>
         <Header style={styles.header}>
           <View style={styles.headerTitleContainer}>
-            <Title style={{fontFamily: 'PlayfairDisplay-Regular', alignSelf: 'center'}}>My Body Type</Title>
+            <Title style={{fontFamily: 'PlayfairDisplay-Regular', alignSelf: 'center'}}>My Body Shape</Title>
           </View>
         </Header>
         <Content>

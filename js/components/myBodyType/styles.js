@@ -17,6 +17,7 @@ export default StyleSheet.create({
     color: fontColor
   },
   container: {
+    marginTop: 50,
     height: h - h/2.5  ,
     paddingTop: 5,
     paddingHorizontal: 10,

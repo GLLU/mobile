@@ -95,7 +95,7 @@ class EditProfile extends BasePage {
             handleTextInput={(text) => this._handleAboutMeTextInput(text)}
           />
           <View style={styles.editBodyTypeTitleContainer}>
-            <Text style={styles.editBodyTypeTitle}>EDIT BODY TYPE</Text>
+            <Text style={styles.editBodyTypeTitle}>EDIT BODY SHAPE</Text>
           </View>
           <View style={styles.bodyMeasureContainer}>
             <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size}/>
