@@ -116,7 +116,6 @@ class CustomAutocomplete extends Autocomplete {
 
   componentDidMount() {
     this.textInput.focus();
-
   }
 
   _renderTextInput() {
@@ -193,7 +192,6 @@ class CustomAutocomplete extends Autocomplete {
   }
 
   render() {
-    console.log('props',this.props)
     const { containerStyle, inputContainerStyle, query, selected } = this.props;
     const { dataSource } = this.state;
     const brands = dataSource._dataBlob.s1;
