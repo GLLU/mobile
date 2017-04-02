@@ -5,8 +5,6 @@ import {
   Text,
   Linking,
   TouchableWithoutFeedback,
-  TouchableOpacity,
-  Image
 } from 'react-native';
 import { connect } from 'react-redux'
 import { showInfo } from '../../../actions'
@@ -53,7 +51,8 @@ class ItemPopup extends Component {
     currency: React.PropTypes.string,
     url: React.PropTypes.string,
     onLayout: React.PropTypes.func,
-    dimensions: React.PropTypes.object
+    dimensions: React.PropTypes.object,
+    showInfo: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -107,6 +106,4 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({});
-
-export default connect(mapStateToProps, bindActions)(ItemPopup);
+export default connect(noop, bindActions)(ItemPopup);

@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   View,
-  Text,
-  Linking,
   TouchableWithoutFeedback,
-  TouchableOpacity,
   Image,
-  Dimensions
 } from 'react-native';
-
 import { noop } from 'lodash'
 
 const markerRight = require('../../../../images/markers/marker-right.png')
@@ -27,14 +21,14 @@ class MarkerView extends Component {
     containerDimensions: React.PropTypes.object,
     isLeft: React.PropTypes.bool,
     onPress: React.PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     dimensions: {
       height: 20
     },
     onPress: noop
-  }
+  };
 
   onPress(e) {
     this.props.onPress(e);

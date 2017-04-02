@@ -2,15 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
-  Linking,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  Image,
-  Dimensions
 } from 'react-native';
-import { connect } from 'react-redux'
-import { showInfo } from '../../../actions'
 import _, { noop } from 'lodash'
 import MarkerView from './MarkerView'
 import ItemPopup from './ItemPopup'
@@ -185,12 +177,4 @@ class ItemMarker extends Component {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    showInfo: text => dispatch(showInfo(text)),
-  };
-}
-
-const mapStateToProps = state => ({});
-
-export default connect(mapStateToProps, bindActions)(ItemMarker);
+export default ItemMarker;
