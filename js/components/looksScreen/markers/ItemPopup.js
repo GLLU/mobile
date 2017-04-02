@@ -106,4 +106,6 @@ function bindActions(dispatch) {
   };
 }
 
-export default connect(noop, bindActions)(ItemPopup);
+const mapStateToProps= ()=>({});
+
+export default connect(mapStateToProps, bindActions)(ItemPopup);
