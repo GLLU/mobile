@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Dimensions, TouchableOpacity, Image, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { View, Grid, Col, Row } from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -74,7 +74,7 @@ class AddItemPage extends BasePage {
   }
 
   _handleLayoutImage(e) {
-    const { width, height } = e.nativeEvent.layout;
+    const { width } = e.nativeEvent.layout;
     const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
     this.setState({
       imageWidth: w
@@ -97,13 +97,10 @@ class AddItemPage extends BasePage {
     this.props.replaceAt('addItemScreen', { key: route }, this.props.navigation.key);
   }
 
-  backToFeedScreen() {
-    this.replaceRoute('feedscreen');
-  }
-
   selectTab(step) {
     this.swiper.scrollBy(step);
   }
+
 
   continueAction() {
     this.props.updateLookItem().then(response => {
@@ -139,7 +136,7 @@ class AddItemPage extends BasePage {
         title = 'Addional Info';
         break;
       default:
-        title = this.props.item == null ? 'Tap the screen to tag an item' : 'Drag & Drop to change location';
+        title = 'Drag & Drop to change location';
     }
     return title;
   }
@@ -154,10 +151,6 @@ class AddItemPage extends BasePage {
 
   getCurrentMode() {
     switch(this.state.currentStep) {
-      // case 0:
-      //   return 'create';
-      // case 1:
-      //   return 'edit';
       default:
         return 'view';
     }
@@ -197,11 +190,11 @@ class AddItemPage extends BasePage {
     const { item } = this.props;
     switch(this.state.currentStep) {
       case -1:
-        return item != null;
+        return item !== null;
       case 0:
-        return item && item.brand != null;
+        return item && item.brand !== null;
       case 1:
-        return item && item.category != null;
+        return item && item.category !== null;
       case 2:
         return false;
       default:
@@ -210,7 +203,7 @@ class AddItemPage extends BasePage {
   }
 
   renderContent() {
-    if (this.state.currentStep == -1) {
+    if (this.state.currentStep === -1) {
       const { mode } = this.state;
       return (
         <StepMarker
@@ -219,8 +212,7 @@ class AddItemPage extends BasePage {
       );
     }
 
-
-    if (this.state.currentStep != 2) {
+    if (this.state.currentStep !== 2) {
       return (
         <Grid style={{flex: 1}}>
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
@@ -234,14 +226,14 @@ class AddItemPage extends BasePage {
         </Grid>
       );
     }
-
     return <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>;
   }
 
   render() {
+    console.log('mode', this.state.mode)
     const allowContinue = this.getAllowContinue();
-    const bgColor = (this.state.currentStep != 2 ? '#000000' : '#F2F2F2');
-    const fgColor = (this.state.currentStep != 2 ? '#F2F2F2' : '#000000');
+    const bgColor = (this.state.currentStep !== 2 ? '#000000' : '#F2F2F2');
+    const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
       <Gllu.Screen
         backgroundColor={bgColor}
@@ -249,8 +241,7 @@ class AddItemPage extends BasePage {
         onBackPress={() => this.handleBackButton()}
         onNextPress={() => this.handleContinue()}
         title={this.getHeadingTitle()}
-        showNext={allowContinue}
-      >
+        showNext={allowContinue}>
         {this.renderContent()}
       </Gllu.Screen>
     );
@@ -275,7 +266,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const { itemId, lookId, image, items} = state.uploadLook;
-  const item = itemId != null ? _.find(items, x => x.id == itemId) : null;
+  const item = itemId !== null ? _.find(items, x => x.id === itemId) : null;
   return {
     navigation: state.cardNavigation,
     item,

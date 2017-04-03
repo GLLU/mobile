@@ -13,6 +13,7 @@ const tagMarker = require('../../../images/tag-marker.png');
 const TAG_WIDTH = 40;
 const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
+const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   base: {
@@ -93,7 +94,7 @@ class ImageWithTags extends Component {
             dy : this._pan.y
         }]),
         onPanResponderGrant: () => { },
-        onPanResponderRelease        : (e, gesture) => {
+        onPanResponderRelease: (e, gesture) => {
           this._pan.setOffset(this._value);
           this._setupPanResponder(this._value.x, this._value.y);
           const { width, height } = this.getRenderingDimensions();
@@ -109,6 +110,21 @@ class ImageWithTags extends Component {
 
   getTag() {
     return { locationX: this.state.locationX, locationY: this.state.locationY };
+  }
+
+  componentDidMount() {
+    const locationX = w/2;
+    const locationY = h/2;
+    const { width, height } = this.getRenderingDimensions();
+    this._setupPanResponder(locationX, locationY);
+
+    // convert location into relative positions
+    const left = locationX / 2;
+    const top = locationY / 2;
+    this.setState({locationX: left, locationY: top}, () => {
+      this.props.onMarkerCreate({locationX: left, locationY: top});
+      //this.props.createLookItemForVideo({locationX: left, locationY: top});
+    });
   }
 
   _handlePress(e) {
