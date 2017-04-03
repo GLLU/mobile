@@ -111,15 +111,17 @@ class ItemMarker extends Component {
     if (orientation.top) {
       actualPosition.y = pinPosition.y - markerDimensions.height
     }
+    else {
+      if (isViewActive) {
+        actualPosition.y = pinPosition.y - (popupDimensions.height - markerDimensions.height)
+      }
+    }
     if (orientation.left) {
       actualPosition.x = pinPosition.x - markerDimensions.width
     }
     else {
       if (isViewActive) {
-        actualPosition.x = pinPosition.x - popupDimensions.width
-      }
-      else {
-        actualPosition.x = pinPosition.x - markerDimensions.width
+        actualPosition.x = pinPosition.x - (popupDimensions.width - markerDimensions.width)
       }
     }
     return actualPosition;
@@ -134,7 +136,7 @@ class ItemMarker extends Component {
     return closeToEdgeIndicator
   }
 
-  limitPosition(position, closeToEdgeIndicator, containerDimensions) {
+  limitPosition(position, closeToEdgeIndicator, containerDimensions,isViewActive,popupDimensions) {
     if (closeToEdgeIndicator.left) {
       position.x = 20;
     }
@@ -142,7 +144,12 @@ class ItemMarker extends Component {
       position.y = 20;
     }
     if (closeToEdgeIndicator.right) {
-      position.x = containerDimensions.width - 80;
+      if(isViewActive){
+        position.x = containerDimensions.width - (popupDimensions.width + 40);
+      }
+      else{
+        position.x = containerDimensions.width - 80;
+      }
     }
     if (closeToEdgeIndicator.bottom) {
       position.y = containerDimensions.height - 80;
@@ -170,7 +177,7 @@ class ItemMarker extends Component {
 
     const closeToEdgeIndicator = this.isPositionCloseToEdge(this.props.containerDimensions, position);
 
-    position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions);
+    position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions, this.state.isViewActive,popupDimensions);
 
     const markerOrientation = (_.chain(Object.keys(closeToEdgeIndicator)).map(key => closeToEdgeIndicator[key]).sum() > 1) ? this.reverseOrientation(orientation) : orientation;
 
@@ -181,7 +188,6 @@ class ItemMarker extends Component {
                     position={position}
                     dimensions={markerDimensions}
                     onPress={this.onPress}/>
-        <View style={{padding: 10}}/>
         { this.state.isViewActive ? this._renderPopup(this.props.item, popupDimensions) : null}
       </View>
     )

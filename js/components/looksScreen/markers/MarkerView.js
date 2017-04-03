@@ -59,7 +59,7 @@ class MarkerView extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={(e) => this.onPress(e)}>
-        <View>
+        <View style={{paddingVertical:10}}>
           <Image
             source={this.getMarkerByOrientation(this.props.orientation)}
             style={[{resizeMode: 'contain'}, this.props.dimensions]}/>
