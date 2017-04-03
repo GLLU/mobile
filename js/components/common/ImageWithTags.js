@@ -113,18 +113,21 @@ class ImageWithTags extends Component {
   }
 
   componentDidMount() {
-    const locationX = w/2;
-    const locationY = h/2;
-    const { width, height } = this.getRenderingDimensions();
-    this._setupPanResponder(locationX, locationY);
+    if(this.props.mode !== VIEW_MODE) {
+      const locationX = w/2;
+      const locationY = h/2;
+      const { width, height } = this.getRenderingDimensions();
+      this._setupPanResponder(locationX, locationY);
 
-    // convert location into relative positions
-    const left = locationX / 2;
-    const top = locationY / 2;
-    this.setState({locationX: left, locationY: top}, () => {
-      this.props.onMarkerCreate({locationX: left, locationY: top});
-      //this.props.createLookItemForVideo({locationX: left, locationY: top});
-    });
+      // convert location into relative positions
+      const left = locationX / 2;
+      const top = locationY / 2;
+      this.setState({locationX: left, locationY: top}, () => {
+        this.props.onMarkerCreate({locationX: left, locationY: top});
+        //this.props.createLookItemForVideo({locationX: left, locationY: top});
+      });
+    }
+
   }
 
   _handlePress(e) {
@@ -155,7 +158,7 @@ class ImageWithTags extends Component {
       const left = parseInt(x * width);
       const top = parseInt(y * height);
 
-      if (mode != VIEW_MODE) {
+      if (mode !== VIEW_MODE) {
         const layout = this._pan.getLayout();
         return (<Animated.View
                   key={i}
@@ -187,13 +190,14 @@ class ImageWithTags extends Component {
 
   _render() {
     const { width, height } = this.getRenderingDimensions();
+
     if (this.props.showMarker) {
       return (
-        <FitImage source={{uri: this.props.image}} style={[styles.itemsContainer]}>
-          <View style={[styles.draggableContainer, {width, height}]}>
+        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
+          <View style={[styles.draggableContainer]}>
             {this.renderTags()}
           </View>
-        </FitImage>
+        </Image>
       );
     }
 
@@ -205,12 +209,6 @@ class ImageWithTags extends Component {
   }
 
   _renderContent() {
-    if (this.props.items.length == 0) {
-      const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
-      return(<Tag onPress={this._handlePress.bind(this)}>
-            {this._render()}
-          </Tag>);
-    }
     return this._render();
   }
 
