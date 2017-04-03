@@ -6,8 +6,10 @@ import {
 } from 'react-native';
 import { noop } from 'lodash'
 
-const markerRight = require('../../../../images/markers/marker-right.png')
-const markerLeft = require('../../../../images/markers/marker-left.png')
+const markerTopLeft = require('../../../../images/markers/marker-top-left.png')
+const markerTopRight = require('../../../../images/markers/marker-top-right.png')
+const markerBottomLeft = require('../../../../images/markers/marker-bottom-left.png')
+const markerBottomRight = require('../../../../images/markers/marker-bottom-right.png')
 
 class MarkerView extends Component {
   constructor(props) {
@@ -19,13 +21,14 @@ class MarkerView extends Component {
     position: React.PropTypes.object,
     dimensions: React.PropTypes.object,
     containerDimensions: React.PropTypes.object,
-    isLeft: React.PropTypes.bool,
+    orientation: React.PropTypes.object,
     onPress: React.PropTypes.func,
   };
 
   static defaultProps = {
     dimensions: {
-      height: 20
+      height: 30,
+      width:30
     },
     onPress: noop
   };
@@ -34,12 +37,31 @@ class MarkerView extends Component {
     this.props.onPress(e);
   }
 
+  getMarkerByOrientation(orientation) {
+    if (orientation.top) {
+      if (orientation.left) {
+        return markerBottomRight;
+      }
+      else {
+        return markerBottomLeft;
+      }
+    }
+    else {
+      if (orientation.left) {
+        return markerTopRight;
+      }
+      else {
+        return markerTopLeft;
+      }
+    }
+  }
+
   render() {
     return (
       <TouchableWithoutFeedback onPress={(e) => this.onPress(e)}>
         <View>
           <Image
-            source={this.props.isLeft?markerRight:markerLeft}
+            source={this.getMarkerByOrientation(this.props.orientation)}
             style={[{resizeMode: 'contain'}, this.props.dimensions]}/>
         </View>
       </TouchableWithoutFeedback >

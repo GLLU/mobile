@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute'
   },
-  align:{
+  align: {
     alignItems: 'flex-start'
   },
-  alignReverse:{
+  alignReverse: {
     alignItems: 'flex-end'
   },
   flex: {
@@ -74,10 +74,10 @@ class ItemMarker extends Component {
       containerStyles.push(positionStyle);
       containerStyles.push(styles.flex)
     }
-    if (orientation.left){
+    if (orientation.left) {
       containerStyles.push(styles.align)
     }
-    else{
+    else {
       containerStyles.push(styles.alignReverse)
     }
     return containerStyles;
@@ -94,20 +94,31 @@ class ItemMarker extends Component {
     };
   }
 
+  reverseOrientation(orientation) {
+    return {
+      top: !orientation.top,
+      left: !orientation.left,
+      bottom: !orientation.bottom,
+      right: !orientation.right
+    }
+  }
+
   getPositionByOrientation(orientation, pinPosition, markerDimensions, isViewActive, popupDimensions,) {
     let actualPosition = {
-      y: pinPosition.y - markerDimensions.height,
-      x: pinPosition.x
+      x: pinPosition.x,
+      y: pinPosition.y
     };
+    if (orientation.top) {
+      actualPosition.y = pinPosition.y - markerDimensions.height
+    }
     if (orientation.left) {
       actualPosition.x = pinPosition.x - markerDimensions.width
     }
-    else{
-      if(isViewActive)
-      {
-        actualPosition.x = pinPosition.x-popupDimensions.width
+    else {
+      if (isViewActive) {
+        actualPosition.x = pinPosition.x - popupDimensions.width
       }
-      else{
+      else {
         actualPosition.x = pinPosition.x - markerDimensions.width
       }
     }
@@ -151,22 +162,22 @@ class ItemMarker extends Component {
     };
     const orientation = this.getOrientation(this.props.containerDimensions, pinPosition);
 
-    const markerDimensions = {width: 40, height: 25};
+    const markerDimensions = {width: 35, height: 35};
 
     const popupDimensions = {width: 120, height: 60};
 
-    let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions, this.state.isViewActive,popupDimensions);
+    let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions, this.state.isViewActive, popupDimensions);
 
     const closeToEdgeIndicator = this.isPositionCloseToEdge(this.props.containerDimensions, position);
 
     position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions);
 
-    const isLeftMarker = (_.chain(Object.keys(closeToEdgeIndicator)).map(key => closeToEdgeIndicator[key]).sum() > 1) ? !orientation.left : orientation.left;
+    const markerOrientation = (_.chain(Object.keys(closeToEdgeIndicator)).map(key => closeToEdgeIndicator[key]).sum() > 1) ? this.reverseOrientation(orientation) : orientation;
 
     return (
       <View style={this.getContainerStyle(position, orientation, popupDimensions, this.state.isViewActive)}>
         <MarkerView {...this.props}
-                    isLeft={isLeftMarker}
+                    orientation={markerOrientation}
                     position={position}
                     dimensions={markerDimensions}
                     onPress={this.onPress}/>
