@@ -230,7 +230,6 @@ class AddItemPage extends BasePage {
   }
 
   render() {
-    console.log('mode', this.state.mode)
     const allowContinue = this.getAllowContinue();
     const bgColor = (this.state.currentStep !== 2 ? '#000000' : '#F2F2F2');
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
