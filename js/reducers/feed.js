@@ -82,8 +82,8 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
-    console.log('currentLooksData', action.payload.data.looks)
-    const newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, state.flatLooksData.length));
+    const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
+    const newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
       ...state,
