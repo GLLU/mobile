@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import BaseComponent from '../common/BaseComponent';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { createLookItem, setTagPosition, pushRoute, popRoute, updateLookItem } from '../../actions';
+import { createLookItem, setTagPosition, pushRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-import Gllu from '../common';
-import Container from '../common/Container';
-
-const IMAGE_VIEW_PADDING = 15;
 
 class TagItemPage extends BaseComponent {
 
@@ -45,6 +40,13 @@ class TagItemPage extends BaseComponent {
     this.props.updateLookItem();
   }
 
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
   render() {
     const { items, image, itemId } = this.props;
     const { mode } = this.state;
@@ -59,7 +61,8 @@ class TagItemPage extends BaseComponent {
               items={items}
               image={image}
               onMarkerCreate={this.handleAddTag.bind(this)}
-              onDragEnd={this.handleOnDragEnd.bind(this)}/>
+              onDragEnd={this.handleOnDragEnd.bind(this)}
+              createLookItemForVideo={this.createLookItemForVideo.bind(this)}/>
         </View>
     );
   }
