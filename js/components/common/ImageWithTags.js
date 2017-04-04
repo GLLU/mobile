@@ -4,6 +4,7 @@ import { View } from 'native-base';
 import FitImage from 'react-native-fit-image';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 export const EDIT_MODE = 'edit';
 export const CREATE_MODE = 'create';
@@ -12,7 +13,7 @@ export const VIEW_MODE = 'view';
 const tagMarker = require('../../../images/tag-marker.png');
 const TAG_WIDTH = 40;
 const BORDER_WIDTH = 5;
-const h = Dimensions.get('window').height;
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -120,8 +121,8 @@ class ImageWithTags extends Component {
       this._setupPanResponder(locationX, locationY);
 
       // convert location into relative positions
-      const left = locationX / 2;
-      const top = locationY / 2;
+      const left = locationX / w;
+      const top = locationY / h;
       this.setState({locationX: left, locationY: top}, () => {
         this.props.onMarkerCreate({locationX: left, locationY: top});
         //this.props.createLookItemForVideo({locationX: left, locationY: top});
@@ -175,22 +176,13 @@ class ImageWithTags extends Component {
   }
 
   getRenderingDimensions() {
-    let width = 30;
-    let height = 40;
-    if (this.props.width) {
-      width = parseInt(this.props.width);
-      height = parseInt(width * 16 / 9);
-    } else {
-      height = parseInt(h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight);
-      width = parseInt(height * 9 / 16);
-    }
-
+    let width = w;
+    let height = h;
     return { width, height };
   }
 
   _render() {
     const { width, height } = this.getRenderingDimensions();
-
     if (this.props.showMarker) {
       return (
         <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
