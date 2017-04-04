@@ -103,7 +103,7 @@ class ItemMarker extends Component {
     }
   }
 
-  getPositionByOrientation(orientation, pinPosition, markerDimensions, isViewActive, popupDimensions,) {
+  getPositionByOrientation(orientation, pinPosition, markerDimensions) {
     let actualPosition = {
       x: pinPosition.x,
       y: pinPosition.y
@@ -111,20 +111,25 @@ class ItemMarker extends Component {
     if (orientation.top) {
       actualPosition.y = pinPosition.y - markerDimensions.height
     }
-    else {
-      if (isViewActive) {
-        actualPosition.y = pinPosition.y - (popupDimensions.height - markerDimensions.height)
-      }
-    }
     if (orientation.left) {
       actualPosition.x = pinPosition.x - markerDimensions.width
     }
-    else {
-      if (isViewActive) {
-        actualPosition.x = pinPosition.x - (popupDimensions.width - markerDimensions.width)
-      }
-    }
     return actualPosition;
+  }
+
+  adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions) {
+    let adjustedPosition = {
+      x: position.x,
+      y: position.y
+    };
+    if (orientation.bottom) {
+      adjustedPosition.y = position.y - (popupDimensions.height - markerDimensions.height)
+    }
+    if (orientation.right) {
+      adjustedPosition.x = position.x - (popupDimensions.width - markerDimensions.width)
+    }
+    return adjustedPosition;
+
   }
 
   isPositionCloseToEdge(containerDimensions, position) {
@@ -136,7 +141,7 @@ class ItemMarker extends Component {
     return closeToEdgeIndicator
   }
 
-  limitPosition(position, closeToEdgeIndicator, containerDimensions,isViewActive,popupDimensions) {
+  limitPosition(position, closeToEdgeIndicator, containerDimensions) {
     if (closeToEdgeIndicator.left) {
       position.x = 20;
     }
@@ -144,12 +149,7 @@ class ItemMarker extends Component {
       position.y = 20;
     }
     if (closeToEdgeIndicator.right) {
-      if(isViewActive){
-        position.x = containerDimensions.width - (popupDimensions.width + 40);
-      }
-      else{
-        position.x = containerDimensions.width - 80;
-      }
+      position.x = containerDimensions.width - 80;
     }
     if (closeToEdgeIndicator.bottom) {
       position.y = containerDimensions.height - 80;
@@ -173,11 +173,15 @@ class ItemMarker extends Component {
 
     const popupDimensions = {width: 120, height: 60};
 
-    let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions, this.state.isViewActive, popupDimensions);
+    let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions);
 
     const closeToEdgeIndicator = this.isPositionCloseToEdge(this.props.containerDimensions, position);
 
-    position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions, this.state.isViewActive,popupDimensions);
+    position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions);
+
+    if (this.state.isViewActive) {
+      position = this.adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions)
+    }
 
     const markerOrientation = (_.chain(Object.keys(closeToEdgeIndicator)).map(key => closeToEdgeIndicator[key]).sum() > 1) ? this.reverseOrientation(orientation) : orientation;
 
