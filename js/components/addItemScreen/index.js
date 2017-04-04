@@ -20,16 +20,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2'
   },
-  header: {
-    fontFamily: 'PlayfairDisplay-Regular',
-    lineHeight: glluTheme.toolbarLineHeight,
-    fontSize: 24,
-    fontWeight: '400',
-    color: '#FFFFFF',
-    marginLeft: glluTheme.tooolbarTextMarginLeft,
-    textAlign: 'center',
-    alignSelf: 'center'
-  },
   backIcon: {
     color: '#FFFFFF'
   },
@@ -41,12 +31,26 @@ const styles = StyleSheet.create({
     zIndex: 1,
     height: 130,
     width: w
-
   },
   mainView: {
     flex: 1,
     backgroundColor: '#F2F2F2'
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 20,
+    height: 30,
+    zIndex: 1,
+    flexDirection: 'row',
+    width: w,
+    justifyContent: 'space-between'
+  },
+  headerTitle: {
+    backgroundColor: 'transparent',
+    fontWeight: '600',
+    fontSize: 17,
+    alignSelf: 'center'
+  }
 });
 
 class AddItemPage extends BasePage {
@@ -248,11 +252,11 @@ class AddItemPage extends BasePage {
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
       <View>
-        <View style={{position: 'absolute', top: 20, height: 30, zIndex: 1, flexDirection: 'row', width: w, justifyContent: 'space-between'}}>
+        <View style={styles.headerContainer}>
           <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
             <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-back" />
           </Button>
-          <Text style={{backgroundColor: 'transparent', fontWeight: '600', fontSize: 17, alignSelf: 'center'}}>{this.getHeadingTitle()}</Text>
+          <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
           {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}></View>}
         </View>
         {this.renderContent()}

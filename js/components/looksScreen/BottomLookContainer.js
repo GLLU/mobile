@@ -61,7 +61,6 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderBuyItButtons(look) {
     const {width, height} = this.props;
-    console.warn('lookI',look)
     return look.items.map((item, index) =>
       <ItemMarker
         key={index}
