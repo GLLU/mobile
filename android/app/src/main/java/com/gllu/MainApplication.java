@@ -5,6 +5,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 
 import android.app.Application;
 import android.util.Log;
@@ -84,6 +85,10 @@ public class MainApplication extends Application
         super.onCreate();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+        // FORCE LTR
+            I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
+            sharedI18nUtilInstance.allowRTL(getApplicationContext(), false);
+
     }
 
     @Override

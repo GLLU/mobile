@@ -1,6 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  Animated,
+  InteractionManager,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Platform
+} from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
@@ -12,15 +21,14 @@ import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 const config = {
   velocityThreshold: 0.3,
   directionalOffsetThreshold: 50
 };
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const w = Dimensions.get('window').width;
-const { popRoute, pushRoute } = actions
-const LOADER_HEIGHT = 30;
+const {popRoute, pushRoute} = actions;
 
 class LooksContainer extends BasePage {
   static propTypes = {
@@ -40,33 +48,41 @@ class LooksContainer extends BasePage {
     reportAbuse: React.PropTypes.func,
     loadMore: React.PropTypes.func,
   }
+
   constructor(props) {
     super(props);
+    this.onToggleDrawer=this.onToggleDrawer.bind(this);
     this.state = {
       fadeAnim: new Animated.Value(0.35),
       fadeAnimContent: new Animated.Value(0),
       likes: this.props.flatLook.likes,
       liked: this.props.flatLook.liked,
       showAsFeed: !this.props.flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
+      isBottomDrawerOpen: false,
       width: w,
       height: h,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof this.props.flatLook === 'number',
       renderScroll: false,
-      startAnimte: false
+      startAnimte: false,
+      currScrollIndex: this.props.flatLook.originalIndex
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
 
   componentDidMount() {
-    if(this.state.showAsFeed){
+    if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
-          this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook.originalIndex, animated: false });
+          this._scrollView.scrollTo({x: 0, y: h, animated: false});
           this.setState({startAnimte: true})
           break;
         case 'android':
           InteractionManager.runAfterInteractions(() => {
-            _.delay(() => this._scrollView.scrollTo({ x: 0, y: h*this.props.flatLook.originalIndex, animated: false }), 0);
+            _.delay(() => this._scrollView.scrollTo({
+              x: 0,
+              y: h,
+              animated: false
+            }), 0);
             _.delay(() => this.props.removeLoader(), 0);
           });
           break;
@@ -76,12 +92,12 @@ class LooksContainer extends BasePage {
     }
   }
 
-  _toggleLike(isLiked){
+  _toggleLike(isLiked) {
     if (isLiked) {
-      let data = {id: this.props.flatLook.id, likes: this.state.likes+1, liked: true}
+      let data = {id: this.props.flatLook.id, likes: this.state.likes + 1, liked: true}
       this.props.likeUpdate(data);
     } else {
-      let data = {id: this.props.flatLook.id, likes: this.state.likes-1, liked: false}
+      let data = {id: this.props.flatLook.id, likes: this.state.likes - 1, liked: false}
       this.props.unLikeUpdate(data);
     }
   }
@@ -91,14 +107,11 @@ class LooksContainer extends BasePage {
   }
 
   _goToProfile(look) {
-      this.props.replaceAt('looksScreen', { key: 'profileScreen', optional: look}, this.props.navigation.key);
+    this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: look}, this.props.navigation.key);
   }
 
-  onLoad() {
-    Animated.timing(this.state.fadeAnim, {
-      toValue: 1,
-      duration: 750
-    }).start();
+  onToggleDrawer(shouldOpen){
+    this.setState({isBottomDrawerOpen:shouldOpen})
   }
 
   loadMore() {
@@ -106,10 +119,9 @@ class LooksContainer extends BasePage {
     if (this.state.isLoading) {
       return;
     }
-    const { meta: { total }, query } = this.props;
+    const {meta: {total}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
-
     if (pageSize * pageNumber < total) {
       this.setState({isLoading: true}, () => {
         this.props.loadMore().then(() => {
@@ -125,25 +137,27 @@ class LooksContainer extends BasePage {
     }
   }
 
-  onSwipe(gestureName, gestureState, index) {
+  onSwipe(gestureName) {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP:
-        let nextLook = index+1
-        const { meta: { total } } = this.props;
-        if(nextLook !== total-1) {
-          this._scrollView.scrollTo({ x: 0, y:h*nextLook, animated: true });
+        const {meta: {total}} = this.props;
+        if (this.state.currScrollIndex < total-1) {
+          this._scrollView.scrollTo({x: 0, y: 0, animated: false});
+          this._scrollView.scrollTo({x: 0, y: h, animated: true});
+          this.setState({currScrollIndex: this.state.currScrollIndex+1})
         }
-        if(nextLook % 5 === 0) {
+        if (this.state.currScrollIndex % 5 === 0) {
           this.loadMoreAsync();
         }
         break;
       case SWIPE_DOWN:
-        let previousLook = index-1
-        if(index !== -1) {
-          this._scrollView.scrollTo({ x: 0, y:h*previousLook, animated: true });
+        if (this.state.currScrollIndex !== 0) {
+          this._scrollView.scrollTo({x: 0, y: h+h, animated: false});
+          this._scrollView.scrollTo({x: 0, y: h, animated: true});
+          this.setState({currScrollIndex: this.state.currScrollIndex-1})
         }
-        if(previousLook % 5 === 0) {
+        if (this.state.currScrollIndex % 5 === 0) {
           this.loadMoreAsync();
         }
         break;
@@ -157,46 +171,47 @@ class LooksContainer extends BasePage {
   }
 
   renderVideo(look, index) {
-    const { width, height } = this.state;
+    const {width, height} = this.state;
     return (
-        <GestureRecognizer
-          key={index}
-          onSwipe={this.state.showAsFeed ? (direction, state) => this.onSwipe(direction, state, index) : null}
-          config={config}
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-            position: 'relative',
-            height: h
-          }}>
-          <Video
-            source={{uri: look.uri,mainVer: 1, patchVer: 0}}
-            resizeMode={'stretch'}
-            muted={true}
-            style={styles.videoBackground}
-            repeat={false}
-          />
-          <BottomLookContainer
-            width={width}
-            height={height}
-            look={look}
-            tempPopRoute={(e) => this._tempPopRoute()}
-            goToProfile={(look) => this._goToProfile(look)}
-            toggleLike={(isLiked) => this._toggleLike(isLiked)}
-            toggleMenu={() => this._toggleMenu()}
-            isMenuOpen={this.state.isMenuOpen}
-            reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-          />
-        </GestureRecognizer>
+      <GestureRecognizer
+        key={look.originalIndex}
+        onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
+        config={config}
+        style={{
+          flex: 1,
+          backgroundColor: 'transparent',
+          position: 'relative',
+          height: h
+        }}>
+        <Video
+          source={{uri: look.uri, mainVer: 1, patchVer: 0}}
+          resizeMode={'stretch'}
+          muted={true}
+          style={styles.videoBackground}
+          repeat={false}
+        />
+        <BottomLookContainer
+          width={width}
+          height={height}
+          look={look}
+          tempPopRoute={(e) => this._tempPopRoute()}
+          goToProfile={(look) => this._goToProfile(look)}
+          toggleLike={(isLiked) => this._toggleLike(isLiked)}
+          toggleMenu={() => this._toggleMenu()}
+          isMenuOpen={this.state.isMenuOpen}
+          onBottomDrawerOpen={this.onToggleDrawer}
+          reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+        />
+      </GestureRecognizer>
     )
   }
 
   renderImage(look, index) {
-    const { width, height } = this.state;
+    const {width, height} = this.state;
     return (
       <GestureRecognizer
-        key={index}
-        onSwipe={this.state.showAsFeed ? (direction, state) => this.onSwipe(direction, state, index) : null}
+        key={look.originalIndex}
+        onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
         config={config}
         style={{
           flex: 1,
@@ -205,8 +220,7 @@ class LooksContainer extends BasePage {
         <Image
           resizeMode={'cover'}
           style={styles.itemImage}
-          source={{uri: look.uri}}
-          onLoad={this.onLoad()}>
+          source={{uri: look.uri}}>
           <BottomLookContainer
             width={width}
             height={height}
@@ -216,6 +230,7 @@ class LooksContainer extends BasePage {
             toggleLike={(isLiked) => this._toggleLike(isLiked)}
             toggleMenu={() => this._toggleMenu()}
             isMenuOpen={this.state.isMenuOpen}
+            onBottomDrawerOpen={this.onToggleDrawer}
             reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           />
         </Image>
@@ -223,21 +238,52 @@ class LooksContainer extends BasePage {
     )
   }
 
+  getFlatFeed () {
+    let looksArr = ''
+    const {meta: {total}} = this.props;
+    switch(this.state.currScrollIndex) {
+      case 0:
+         return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex+2], // fictional
+          this.props.flatLooksData[this.state.currScrollIndex],
+          this.props.flatLooksData[this.state.currScrollIndex+1]
+        ]
+        break;
+      case total-1:
+        return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex-1],
+          this.props.flatLooksData[this.state.currScrollIndex],
+          this.props.flatLooksData[this.state.currScrollIndex-2] // fictional
+        ]
+      default:
+        return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex-1],
+          this.props.flatLooksData[this.state.currScrollIndex],
+          this.props.flatLooksData[this.state.currScrollIndex+1]
+        ]
+    }
+  }
+
   render() {
-    let looksArr = this.state.showAsFeed ? this.props.flatLooksData : [this.props.flatLook]
+    let looksArr = ''
+    if(this.state.showAsFeed) {
+      looksArr = this.getFlatFeed()
+    } else {
+      looksArr = [this.props.flatLook]
+    }
+    console.log('looksArr',looksArr)
     return (
       <ScrollView pagingEnabled={false}
-                  ref={(c) => { this._scrollView = c; }}
+                  ref={(c) => {
+                    this._scrollView = c;
+                  }}
                   scrollEventThrottle={100}
-
-                  scrollEnabled={false}
-      >
-
+                  scrollEnabled={false}>
         {looksArr.map((look, index) => {
           return look.coverType === "video" ? this.renderVideo(look, index) : this.renderImage(look, index)
         })}
       </ScrollView>
-      )
+    )
   }
 }
 

@@ -3,7 +3,6 @@ import { View, BackAndroid, StatusBar, NavigationExperimental } from 'react-nati
 import { connect } from 'react-redux';
 import { Drawer } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
-
 import { closeDrawer } from './actions/drawer';
 
 import Home from './components/home/';
@@ -24,7 +23,6 @@ import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
 import SettingsScreen from './components/settingsScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
-import UserLookScreen from './components/userLooksScreen/index.js';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
 import FinishLookScreen from './components/finishLookScreen';
@@ -128,8 +126,6 @@ class AppNavigator extends Component {
         return <MyBodyMeasure />;
       case 'looksScreen':
         return <LooksScreen flatLook={props.scene.route.optional}/>;
-      case 'userLookScreen':
-        return <UserLookScreen />;
       case 'profileScreen':
         return <ProfileScreen key={props.scene.route.optional.user_id} userData={props.scene.route.optional}/>;
       case 'followScreen':

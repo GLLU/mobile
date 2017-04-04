@@ -8,9 +8,6 @@ const bubbleIcon = require('../../../../images/bubble.png');
 export default class CommentsButton extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isActive: this.props.isActive
-    }
   }
 
   static propTypes = {

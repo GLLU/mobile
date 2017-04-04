@@ -333,7 +333,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colorPack.primary,
+    backgroundColor: '#4682B4',
   },
   buttonText: {
     fontWeight: '500',

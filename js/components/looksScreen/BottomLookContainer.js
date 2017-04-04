@@ -8,28 +8,39 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback
 } from 'react-native';
-import { Icon } from 'native-base';
 import _ from 'lodash'
 import styles from './styles';
-import BottomButton from './bottomButton';
-import TopButton from './topButton';
+import ButtonsBar from './buttons/ButtonsBar';
 import MenuModal from './menuModal';
-import BuyItButton from './buyItButton';
+import ItemMarker from './markers/ItemMarker';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/BaseComponent';
+import LookHeader from './LookHeader'
+
 
 export default class BottomLookContainer extends BaseComponent {
+
   static propTypes = {
     look: React.PropTypes.object,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
+    isMenuOpen: React.PropTypes.bool,
     tempPopRoute: React.PropTypes.func,
     goToProfile: React.PropTypes.func,
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
-    isMenuOpen: React.PropTypes.bool,
+    onBottomDrawerOpen: React.PropTypes.func,
+  };
+
+  static defaultProps = {
+    tempPopRoute: _.noop,
+    goToProfile: _.noop,
+    toggleLike: _.noop,
+    toggleMenu: _.noop,
+    reportAbuse: _.noop,
+    onBottomDrawerOpen: _.noop,
   };
 
   constructor(props) {
@@ -50,23 +61,17 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderBuyItButtons(look) {
     const {width, height} = this.props;
-    return look.items.map((item, index) => {
-      const title = item.brand ? item.brand.name : 'N/A';
-      return (
-        <BuyItButton
-          key={index}
-          title={title}
-          price={item.price}
-          width={width}
-          height={height}
-          positionTop={item.cover_y_pos}
-          positionLeft={item.cover_x_pos}
-          url={item.url}/>
-      )
-    });
+    return look.items.map((item, index) =>
+      <ItemMarker
+        key={index}
+        item={item}
+        containerDimensions={{width:width,height:height}}
+        pinPosition={{y: item.cover_y_pos, x: item.cover_x_pos}}/>
+    );
   }
 
   _toggleDescription(shouldActive) {
+    this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isDescriptionActive: shouldActive, isCommentsActive: false})
   }
 
@@ -81,20 +86,22 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderDescriptionView(isActive) {
     return <DescriptionView
-      isHidden={!isActive}
-      style={styles.bottomDrawerView}
-      description={this.props.look.description}/>;
+      isOpen={isActive}
+      description={this.props.look.description}
+      onRequestClose={this._toggleDescription}
+    />;
   }
 
   _renderCommentsView(isActive) {
     return <CommentsView
       look_id={this.props.look.id}
       count={this.state.comments}
-      isHidden={!isActive}
-      style={styles.bottomDrawerView}/>
+      isOpen={isActive}
+      onRequestClose={this._toggleComments}/>
   }
 
   _toggleComments(shouldActive) {
+    this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
   }
 
@@ -126,27 +133,16 @@ export default class BottomLookContainer extends BaseComponent {
         delay: 250
       }            // Configuration
     ).start();
-    const avatar = {};
-    avatar.imageUri = this.props.look.avatar.url;
-    avatar.bodyType = this.props.look.type;
     return (
-      <View style={{ marginTop: 0}}>
-        <TouchableOpacity
-          transparent
-          style={{position: 'absolute', zIndex: 99999, top: 10, left: 10, padding: 5, width: 30, backgroundColor: 'transparent' }}
-          onPress={() => this.props.tempPopRoute()}
-        >
-          <Icon
-            style={{color: 'black'}}
-            name="ios-arrow-back"/>
-        </TouchableOpacity>
+      <View style={{marginTop: 0}}>
+        <LookHeader
+          avatar={{uri: this.props.look.avatar.url}}
+          onBackNavigationPress={this.props.tempPopRoute}
+          onProfileAvatarPress={() => this.props.goToProfile(this.props.look)}/>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-            <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column',marginTop: 35}]}>
-              <TopButton avatar={avatar} onPress={() => this.props.goToProfile(this.props.look)}/>
-              {this._renderCommentsView(this.state.isCommentsActive)}
-              {this._renderDescriptionView(this.state.isDescriptionActive)}
-              <BottomButton
+            <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
+              <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
                 hasDescription={!_.isEmpty(this.props.look.description)}
@@ -158,10 +154,12 @@ export default class BottomLookContainer extends BaseComponent {
                 toggleMenu={() => this._toggleMenu()}/>
             </View>
           </TouchableWithoutFeedback>
-          {this._renderBuyItButtons(this.props.look)}
-          <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-                     closeModal={() => this._toggleMenu()}/>
+          {this._renderCommentsView(this.state.isCommentsActive)}
+          {this._renderDescriptionView(this.state.isDescriptionActive)}
         </Animated.View>
+        {this._renderBuyItButtons(this.props.look)}
+        <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+                   closeModal={() => this._toggleMenu()}/>
       </View>
     )
   }

@@ -9,10 +9,11 @@ export const EDIT_MODE = 'edit';
 export const CREATE_MODE = 'create';
 export const VIEW_MODE = 'view';
 
-const itemBackground = require('../../../images/tag-background.png');
-const TAG_WIDTH = 100;
+const tagMarker = require('../../../images/tag-marker.png');
+const TAG_WIDTH = 40;
 const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
+const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   base: {
@@ -25,15 +26,17 @@ const styles = StyleSheet.create({
     height: 500
   },
   itemBgImage: {
-    height: 48,
+    height: 20,
     width: TAG_WIDTH,
+    resizeMode: 'contain'
+
   },
   itemsContainer: {
     backgroundColor: 'transparent',
   },
   itemMarker: {
     position: 'absolute',
-    height: 48,
+    height: 20,
     width: TAG_WIDTH,
   },
 });
@@ -91,7 +94,7 @@ class ImageWithTags extends Component {
             dy : this._pan.y
         }]),
         onPanResponderGrant: () => { },
-        onPanResponderRelease        : (e, gesture) => {
+        onPanResponderRelease: (e, gesture) => {
           this._pan.setOffset(this._value);
           this._setupPanResponder(this._value.x, this._value.y);
           const { width, height } = this.getRenderingDimensions();
@@ -107,6 +110,21 @@ class ImageWithTags extends Component {
 
   getTag() {
     return { locationX: this.state.locationX, locationY: this.state.locationY };
+  }
+
+  componentDidMount() {
+    const locationX = w/2;
+    const locationY = h/2;
+    const { width, height } = this.getRenderingDimensions();
+    this._setupPanResponder(locationX, locationY);
+
+    // convert location into relative positions
+    const left = locationX / 2;
+    const top = locationY / 2;
+    this.setState({locationX: left, locationY: top}, () => {
+      this.props.onMarkerCreate({locationX: left, locationY: top});
+      //this.props.createLookItemForVideo({locationX: left, locationY: top});
+    });
   }
 
   _handlePress(e) {
@@ -143,12 +161,12 @@ class ImageWithTags extends Component {
                   key={i}
                   {...this.panResponder.panHandlers}
                   style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                <Image source={itemBackground} style={styles.itemBgImage} />
+                <Image source={tagMarker} style={styles.itemBgImage} />
               </Animated.View>);
       }
 
       return (<View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          <Image source={itemBackground} style={styles.itemBgImage} />
+          <Image source={tagMarker} style={styles.itemBgImage} />
         </View>);
     });
   }

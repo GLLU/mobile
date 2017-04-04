@@ -1,5 +1,4 @@
 import type { Action } from '../actions/types';
-import { showLoader, hideLoader } from './index';
 import _ from 'lodash';
 import rest from '../api/rest';
 
@@ -7,29 +6,23 @@ export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const RESET_FEED_DATA = 'RESET_FEED_DATA';
 
 const parseQueryFromState = function(state) {
-  const params = Object.assign({}, state, { category: state.category ? state.category.name : null })
-  return params;
+  return Object.assign({}, state, { category: state.category ? state.category.name : null })
 }
 
 export function getFeed(query):Action {
-  return (dispatch, getState) => {
-    // dispatch(showLoader());
-    const state = getState().feed;
-    const newState = Object.assign({}, state.query, query, {
+  return (dispatch) => {
+    const newState = Object.assign({}, query, {
       page: {
         size: 10,
         number: 1
       }
     });
-    const params = parseQueryFromState(newState);
     return new Promise((resolve, reject) => {
-      return dispatch(rest.actions.feeds(params, (err, data) => {
+      return dispatch(rest.actions.feeds(newState, (err, data) => {
         if (!err && data) {
           dispatch(setFeedData({data, query: newState}));
-          // dispatch(hideLoader());
           resolve(data.looks);
         } else {
-          // dispatch(hideLoader());
           reject();
         }
       }));
@@ -39,9 +32,9 @@ export function getFeed(query):Action {
 
 export function resetFeed():Action {
   return (dispatch, getState) => {
-    // dispatch(showLoader());
     const params = {
-      type: 'relevant',
+      gender: null,
+      body_type: null,
       category: null,
       term: '',
       page: {
@@ -59,10 +52,8 @@ export function resetFeed():Action {
               query: params
             }
           });
-          // dispatch(hideLoader());
           resolve(data.looks);
         } else {
-          // dispatch(hideLoader());
           reject();
         }
       }));
