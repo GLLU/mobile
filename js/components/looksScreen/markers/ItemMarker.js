@@ -122,9 +122,6 @@ class ItemMarker extends Component {
       x: position.x,
       y: position.y
     };
-    if (orientation.bottom) {
-      adjustedPosition.y = position.y - (popupDimensions.height - markerDimensions.height)
-    }
     if (orientation.right) {
       adjustedPosition.x = position.x - (popupDimensions.width - markerDimensions.width)
     }
@@ -169,21 +166,39 @@ class ItemMarker extends Component {
     };
     const orientation = this.getOrientation(this.props.containerDimensions, pinPosition);
 
+    console.log(`pinPosition`,pinPosition)
+
+    console.log(`orientation`,orientation)
+
+
     const markerDimensions = {width: 35, height: 35};
 
     const popupDimensions = {width: 120, height: 60};
 
     let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions);
 
+    console.log(`position after orientation adjustment`,position)
+
     const closeToEdgeIndicator = this.isPositionCloseToEdge(this.props.containerDimensions, position);
 
     position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions);
 
+    console.log(`position after border limit adjustment`,position)
+
     if (this.state.isViewActive) {
       position = this.adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions)
+      console.log(`position after popup adjustment`,position)
     }
 
     const markerOrientation = (_.chain(Object.keys(closeToEdgeIndicator)).map(key => closeToEdgeIndicator[key]).sum() > 1) ? this.reverseOrientation(orientation) : orientation;
+
+
+
+
+
+
+
+
 
     return (
       <View style={this.getContainerStyle(position, orientation, popupDimensions, this.state.isViewActive)}>
