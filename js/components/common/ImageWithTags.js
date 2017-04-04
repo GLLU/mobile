@@ -128,7 +128,6 @@ class ImageWithTags extends Component {
         //this.props.createLookItemForVideo({locationX: left, locationY: top});
       });
     }
-
   }
 
   _handlePress(e) {

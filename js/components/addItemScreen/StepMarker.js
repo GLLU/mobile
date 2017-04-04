@@ -6,6 +6,7 @@ import { createLookItem, setTagPosition, pushRoute, updateLookItem } from '../..
 import ImageWithTags from '../common/ImageWithTags';
 const h = Dimensions.get('window').height;
 const w = Dimensions.get('window').width;
+
 class TagItemPage extends BaseComponent {
 
   static propTypes = {
