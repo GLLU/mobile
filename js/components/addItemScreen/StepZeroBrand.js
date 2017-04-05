@@ -88,6 +88,12 @@ class StepZeroBrand extends BaseComponent {
   findOrCreateBrand(value, createNew) {
     const brandName = typeof value === 'string' ? value : value.name;
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
+    f(value).then(() => {
+      console.log('brand added')
+
+    }).catch(err => {
+      console.log('error', err);
+    })
     this.setState({modalVisible: false, brandName});
 
     if (createNew) {

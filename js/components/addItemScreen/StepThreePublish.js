@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: 10,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   confirmText: {
     flex: 1,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class StepTwo extends BaseComponent {
+class StepThreePublish extends BaseComponent {
   static propTypes = {
     image: React.PropTypes.string,
     state: React.PropTypes.string,
@@ -455,4 +455,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindActions)(StepTwo);
+export default connect(mapStateToProps, bindActions)(StepThreePublish);

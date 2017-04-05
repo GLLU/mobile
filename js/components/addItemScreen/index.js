@@ -8,7 +8,7 @@ import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
 import StepTwoOccasions from './StepTwoOccasions';
-import StepTwo from './StepTwo';
+import StepThreePublish from './StepThreePublish';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
@@ -230,7 +230,7 @@ class AddItemPage extends BasePage {
         </Grid>
       );
     }
-    return <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>;
+    return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
   }
 
   renderNext(fgColor) {
