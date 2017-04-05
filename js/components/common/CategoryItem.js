@@ -4,28 +4,28 @@ import { View, Text, Button } from 'native-base';
 
 const styles = StyleSheet.create({
   categoryItem: {
-    height: 100,
-    width: 80,
-    padding: 5,
+    height: 70,
+    width: 75,
+    margin: 10,
+
     justifyContent: 'center',
     flexDirection: 'column',
+    borderRadius: 10
   },
   categoryItemTitle: {
-    color: '#757575',
+    color: 'white',
     fontSize: 13,
     textAlign: 'center',
     alignSelf: 'center',
-    height: 25,
-    marginBottom: 5,
+    marginBottom: 5
   },
   categoryItemImage: {
-    height: 60,
-    width: 60 * 150 / 170,
+    width: 40,
+    height: 40,
     alignSelf: 'center',
   },
   btnCategoryItem: {
     alignSelf: 'center',
-    height: 60,
     alignItems: 'center',
   },
 });
@@ -59,8 +59,9 @@ class CategoryItem extends Component {
   }
 
   _renderIcon(icon, selected, width, height) {
+    console.warn('width',width, 'height',height)
     const uri = selected ? icon['url_hover'] : icon['url'];
-    return <Image source={{uri: uri}} style={[styles.categoryItemImage, { width, height }]} resizeMode={'contain'}/>;
+    return <Image source={{uri: uri}} style={[styles.categoryItemImage]} resizeMode={'contain'}/>;
   }
 
   handlePressItem(item) {
@@ -74,12 +75,12 @@ class CategoryItem extends Component {
     const { selected } = this.state;
     const iconWidth = itemWidth * 5 / 8;
     const iconHeight = iconWidth * 150 / 170;
-    return (<View style={[styles.categoryItem, { width: itemWidth}]}>
+    return (<View style={[styles.categoryItem]}>
               <Text style={styles.categoryItemTitle}>{item.name}</Text>
               <Button
                 transparent
                 onPress={() => this.handlePressItem(item)}
-                style={[styles.btnCategoryItem, { width: (itemWidth * 7 / 8)}]}>
+                style={[styles.btnCategoryItem, ]}>
                 {this._renderIcon(item.icon, selected, iconWidth, iconHeight)}
               </Button>
             </View>);

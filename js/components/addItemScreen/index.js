@@ -7,6 +7,7 @@ import glluTheme from '../../themes/gllu-theme';
 import StepMarker from './StepMarker';
 import StepZero from './StepZero';
 import StepOne from './StepOne';
+import OccasionsStrip from '../common/OccasionsStrip';
 import StepTwo from './StepTwo';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
@@ -24,13 +25,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF'
   },
   wrapper: {
-    flex: 1,
-    backgroundColor: '#F2F2F2',
-    position: 'absolute',
-    bottom: 0,
-    zIndex: 1,
-    height: 130,
-    width: w
+    backgroundColor: 'red',
+    width: w,
   },
   mainView: {
     flex: 1,
@@ -75,7 +71,7 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: -1,
+      currentStep: 0,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -94,7 +90,7 @@ class AddItemPage extends BasePage {
 
   handleContinue() {
     const { currentStep } = this.state;
-    if (currentStep < 2) {
+    if (currentStep < 1) {
       this.setState({currentStep: this.state.currentStep + 1});  
     }
   }
@@ -141,13 +137,10 @@ class AddItemPage extends BasePage {
         title = 'Choose a Brand';
         break;
       case 1:
-        title = 'Choose a Category';
-        break;
-      case 2:
         title = 'Addional Info';
         break;
       default:
-        title = 'Drag & Drop to change location';
+        title = 'Place marker to tag an item';
     }
     return title;
   }
@@ -188,25 +181,27 @@ class AddItemPage extends BasePage {
   }
 
   renderActions() {
-    switch(this.state.currentStep) {
-      case 0:
-        return <StepZero key={0} onValid={this.handleStepZeroValid.bind(this)}/>;
-      case 1:
-        return <StepOne key={1} onValid={this.continueAction.bind(this)}/>;
-    }
-    return null;
+    return (
+      <View style={{position: 'absolute', height: h, zIndex: 2}}>
+        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70}}>
+          <OccasionsStrip  onValid={this.continueAction.bind(this)}/>
+          <StepOne onValid={this.continueAction.bind(this)}/>
+        </View>
+        <StepZero onValid={this.handleStepZeroValid.bind(this)}/>
+      </View>
+    )
   }
 
   getAllowContinue() {
+
     const { item } = this.props;
+    console.log('itemm', item);
     switch(this.state.currentStep) {
       case -1:
         return item !== null;
       case 0:
-        return item && item.brand !== null;
+        return item && item.brand && item.category !== null;
       case 1:
-        return item && item.category !== null;
-      case 2:
         return false;
       default:
         return true;
@@ -223,14 +218,12 @@ class AddItemPage extends BasePage {
       );
     }
 
-    if (this.state.currentStep !== 2) {
+    if (this.state.currentStep !== 1) {
       return (
         <Grid style={{flex: 1}}>
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
             {this.renderImageView()}
-            <View style={styles.wrapper}>
-              {this.renderActions()}
-            </View>
+            {this.renderActions()}
           </Row>
         </Grid>
       );
@@ -248,7 +241,6 @@ class AddItemPage extends BasePage {
 
   render() {
     const allowContinue = this.getAllowContinue();
-    const bgColor = (this.state.currentStep !== 2 ? '#000000' : '#F2F2F2');
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
       <View>

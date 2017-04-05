@@ -85,12 +85,14 @@ class CategoryStrip extends Component {
     const { selectedCategory, categories } = this.props;
     return categories.map((item, index) => {
       const selected = selectedCategory && selectedCategory.id === item.id ? true : false;
-      return (<CategoryItem
+      return (
+        <CategoryItem
                 key={index}
                 item={item}
                 itemWidth={ITEM_WIDTH}
                 selected={selected}
-                onPress={this._handleSelectCategory.bind(this)}/>);
+                onPress={this._handleSelectCategory.bind(this)}/>
+      );
     });
   }
 
@@ -105,7 +107,7 @@ class CategoryStrip extends Component {
             ref={(ref) => this._categoryScrollView = ref}
             keyboardShouldPersistTap={true}
             pagingEnabled={false}
-            horizontal={true}
+            horizontal={false}
             decelerationRate={'fast'}
             scrollEventThrottle={0}
             directionalLockEnabled={true}

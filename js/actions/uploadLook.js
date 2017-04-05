@@ -260,6 +260,7 @@ export function addItemType(categoryItem) {
     }
 
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+      console.log('data',data)
       dispatch({
         type: ADD_ITEM_TYPE,
         payload: categoryItem
@@ -282,14 +283,16 @@ export function addBrandName(payload) {
     const params = {
       brand_id: payload.id,
     }
-
+    console.log('1')
     return new Promise((resolve, reject) => {
       return _updateItem(lookId, itemId, params, dispatch).then(data => {
         dispatch({
           type: ADD_BRAND_NAME,
           payload: payload
         });
+        console.log('2')
         dispatch(addItemTag(payload.name)).catch(reject);
+        console.log('3')
         resolve();
       }).catch(reject);
     });

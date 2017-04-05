@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
+import { StyleSheet, Platform, Dimensions } from 'react-native';
 import { View, Text } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import {
   addItemType,
 } from '../../actions';
-import Category from '../common/CategoryStrip';
-import FontSizeCalculator from './../../calculators/FontSize';
+import Category from './CategoryStrip';
+import FontSizeCalculator from '../../calculators/FontSize';
 import _ from 'lodash';
 import Gllu from '../common';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from './BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
@@ -25,14 +22,11 @@ const styles = StyleSheet.create({
   },
   titleLabelInfo: {
     fontFamily: 'Montserrat',
-    flexWrap: 'nowrap',
-    color: 'white',
+    color: '#7f7f7f',
     fontWeight: '300',
-    fontSize: new FontSizeCalculator(14).getSize(),
-    justifyContent: 'center',
-    alignSelf: 'center',
-    backgroundColor: 'transparent',
-    paddingTop: 5,
+    fontSize: new FontSizeCalculator(15).getSize(),
+    textAlign: 'center',
+    backgroundColor: 'lightblue'
   },
   textBtn: {
     fontWeight: '500',
@@ -93,7 +87,7 @@ const styles = StyleSheet.create({
 });
 
 
-class StepOne extends BaseComponent {
+class OccasionsStrip extends BaseComponent {
   static propTypes = {
     categories: React.PropTypes.array,
     selectedCategory: React.PropTypes.object,
@@ -102,60 +96,31 @@ class StepOne extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      fadeAnimContentOnPress: new Animated.Value(90)
-    }
   }
 
   selectCategory(item) {
     if (item.id !== this.props.selectedCategory) {
-      console.warn('blab')
       this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
       this.props.addItemType(item);
     }
   }
 
-  toggleBottomContainer() {
-    if (this.state.fadeAnimContentOnPress._value === 90) {
-      Animated.timing(          // Uses easing functions
-        this.state.fadeAnimContentOnPress,    // The value to drive
-        {
-          toValue: 0,
-          delay: 250
-        }            // Configuration
-      ).start();
-    } else {
-      Animated.timing(          // Uses easing functions
-        this.state.fadeAnimContentOnPress,    // The value to drive
-        {
-          toValue: 90,
-          delay: 250
-        }            // Configuration
-      ).start();
-    }
-  }
-
-  render() { //
+  render() {
     const { categories, selectedCategory } = this.props;
-    console.warn('selectedCategory',selectedCategory)
     return(
-      <View style={{ flexDirection: 'row', height: h / 1.8,}}>
-        <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-          <View style={{width: 20, height: 50, backgroundColor: 'rgba(32, 32, 32, 0.4)', alignSelf: 'center'}}>
-            <FontAwesome style={{transform: [{ rotate: '90deg'}], fontSize: 16, marginTop: 20}} name="bars"/>
-          </View>
-        </TouchableWithoutFeedback>
-        <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.7)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
-          <Text numberOfLines={1} style={styles.titleLabelInfo}>Item Type</Text>
+      <View style={{ width: 90, height: 100}}>
+        <Text style={styles.titleLabelInfo}>occas Type</Text>
+        <View style={{backgroundColor: '#FFFFFF', height: h / 2}}>
           <Category
             categories={categories}
             selectedCategory={selectedCategory}
             onCategorySelected={(cat) => this.selectCategory(cat)}/>
-        </Animated.View>
+        </View>
       </View>
     )
   }
 }
+import { connect } from 'react-redux';
 function bindActions(dispatch) {
   return {
     addItemType: (type) => dispatch(addItemType(type)),
@@ -171,4 +136,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindActions)(StepOne);
+export default connect(mapStateToProps, bindActions)(OccasionsStrip);

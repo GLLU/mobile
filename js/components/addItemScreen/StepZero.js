@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { View, Text, Icon } from 'native-base';
 import {
   addBrandName,
@@ -13,7 +13,9 @@ import glluTheme from '../../themes/gllu-theme';
 import _ from 'lodash';
 import Gllu from '../common';
 import BaseComponent from '../common/BaseComponent';
-
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
+const w = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   titleLabelInfo: {
     fontFamily: 'Montserrat',
@@ -75,15 +77,15 @@ class StepZero extends BaseComponent {
   }
 
   findOrCreateBrand(value, createNew) {
-    const brandName = typeof value == 'string' ? value : value.name;
+    const brandName = typeof value === 'string' ? value : value.name;
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
     f(value).then(() => {
-      setTimeout(() => {
-        this.setState({modalVisible: false, brandName});
-      }, 500);
+      console.log('blabyyy')
+
     }).catch(err => {
       console.log('error', err);
     })
+    this.setState({modalVisible: false, brandName});
 
     if (createNew) {
       this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
@@ -132,24 +134,23 @@ class StepZero extends BaseComponent {
     const { brands, brand} = this.props;
     const { brandName, modalVisible } = this.state;
     const _brand = brandName ? brand : null;
-    console.log('clear brandh', brandName, _brand)
+    console.warn(modalVisible)
     return (
-      <View style={{flex: 1, padding: 25}}>
-        <Text style={styles.titleLabelInfo}>Brand Name</Text>
-        <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
-          <Text
-            style={styles.input}
-          >
-            {brandName}
-          </Text>
-          {this.renderClearIcon()}
-        </TouchableOpacity>
+      <View style={{flex: 1}}>
+        <View style={{ padding: 25, backgroundColor: '#F2F2F2',  width: w, height: 150, alignSelf: 'center', position: 'absolute', bottom: 0}}>
+          <Text style={styles.titleLabelInfo}>Brand Name</Text>
+          <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
+            <Text style={styles.input}>
+              {brandName}
+            </Text>
+            {this.renderClearIcon()}
+          </TouchableOpacity>
+        </View>
         <Modal
           animationType={"slide"}
           transparent={false}
           visible={modalVisible}
-          onRequestClose={() => this.setState({modalVisible: false})}
-        >
+          onRequestClose={() => this.setState({modalVisible: false})}>
           <BrandNameInput
             style={{marginTop: 10}}
                   brand={_brand}
