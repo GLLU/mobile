@@ -9,8 +9,8 @@ export const EDIT_MODE = 'edit';
 export const CREATE_MODE = 'create';
 export const VIEW_MODE = 'view';
 
-const tagMarker = require('../../../images/tag-marker.png');
-const TAG_WIDTH = 40;
+const tagMarker = require('../../../images/markers/marker-top-right.png');
+const TAG_WIDTH = 30;
 const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
 const w = Dimensions.get('window').width;
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     height: 500
   },
   itemBgImage: {
-    height: 20,
+    height: 30,
     width: TAG_WIDTH,
     resizeMode: 'contain'
 
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   itemMarker: {
     position: 'absolute',
-    height: 20,
+    height: 30,
     width: TAG_WIDTH,
   },
 });

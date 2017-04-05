@@ -26,8 +26,8 @@ const config = {
   velocityThreshold: 0.3,
   directionalOffsetThreshold: 50
 };
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
-const w = Dimensions.get('window').width;
+const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const width = Dimensions.get('window').width;
 const {popRoute, pushRoute} = actions;
 
 class LooksContainer extends BasePage {
@@ -59,8 +59,6 @@ class LooksContainer extends BasePage {
       liked: this.props.flatLook.liked,
       showAsFeed: !this.props.flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
       isBottomDrawerOpen: false,
-      width: w,
-      height: h,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof this.props.flatLook === 'number',
       renderScroll: false,
       startAnimte: false,
@@ -80,7 +78,7 @@ class LooksContainer extends BasePage {
           InteractionManager.runAfterInteractions(() => {
             _.delay(() => this._scrollView.scrollTo({
               x: 0,
-              y: h,
+              y: height,
               animated: false
             }), 0);
             _.delay(() => this.props.removeLoader(), 0);
@@ -171,7 +169,6 @@ class LooksContainer extends BasePage {
   }
 
   renderVideo(look, index) {
-    const {width, height} = this.state;
     return (
       <GestureRecognizer
         key={look.originalIndex}
@@ -207,7 +204,6 @@ class LooksContainer extends BasePage {
   }
 
   renderImage(look, index) {
-    const {width, height} = this.state;
     return (
       <GestureRecognizer
         key={look.originalIndex}
