@@ -8,7 +8,7 @@ import {
   loadOccasionTags,
   toggleOccasionTag
 } from '../../actions';
-import OccassionsStrip from '../common/OccassionsStrip';
+import OccasionsStrip from '../common/OccasionsStrip';
 import FontSizeCalculator from '../../calculators/FontSize';
 import _ from 'lodash';
 import Gllu from '../common';
@@ -167,7 +167,7 @@ class StepTwoOccasions extends BaseComponent {
       <View style={{ flexDirection: 'row', height: h / 1.8,}}>
         <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
           <Text numberOfLines={1} style={styles.titleLabelInfo}>Item Type</Text>
-          <OccassionsStrip
+          <OccasionsStrip
             categories={occasionTags}
             selectedCategory={selectedOccassions}
             onCategorySelected={(cat) => this.selectCategory(cat)}/>

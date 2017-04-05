@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class OccassionsStrip extends Component {
+class OccasionsStrip extends Component {
   static propTypes = {
     categories: React.PropTypes.array,
     selectedCategory: React.PropTypes.oneOfType([
@@ -130,4 +130,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindActions)(OccassionsStrip);
+export default connect(mapStateToProps, bindActions)(OccasionsStrip);
