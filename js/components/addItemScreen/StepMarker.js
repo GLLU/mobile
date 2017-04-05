@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import BaseComponent from '../common/BaseComponent';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { createLookItem, setTagPosition, pushRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
+const h = Dimensions.get('window').height;
+const w = Dimensions.get('window').width;
 
 class TagItemPage extends BaseComponent {
 
@@ -53,7 +55,7 @@ class TagItemPage extends BaseComponent {
 
     return (
       <View
-        style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+        style={{height: h, width: w, flexDirection: 'column', alignItems: 'center'}}>
           <ImageWithTags
               ref={(ref) => this.imageEditor = ref}
               mode={mode}

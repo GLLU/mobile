@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet } from 'react-native';
-import { View, Grid, Col, Row } from 'native-base';
+import { StyleSheet, Text, Dimensions } from 'react-native';
+import { View, Grid, Col, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import StepMarker from './StepMarker';
@@ -12,22 +12,13 @@ import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
 import _ from 'lodash';
-
+const h = Dimensions.get('window').height;
+const w = Dimensions.get('window').width;
 const IMAGE_VIEW_PADDING = 80;
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2'
-  },
-  header: {
-    fontFamily: 'PlayfairDisplay-Regular',
-    lineHeight: glluTheme.toolbarLineHeight,
-    fontSize: 24,
-    fontWeight: '400',
-    color: '#FFFFFF',
-    marginLeft: glluTheme.tooolbarTextMarginLeft,
-    textAlign: 'center',
-    alignSelf: 'center'
   },
   backIcon: {
     color: '#FFFFFF'
@@ -35,11 +26,31 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#F2F2F2',
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 1,
+    height: 130,
+    width: w
   },
   mainView: {
     flex: 1,
     backgroundColor: '#F2F2F2'
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 20,
+    height: 30,
+    zIndex: 1,
+    flexDirection: 'row',
+    width: w,
+    justifyContent: 'space-between'
+  },
+  headerTitle: {
+    backgroundColor: 'transparent',
+    fontWeight: '600',
+    fontSize: 17,
+    alignSelf: 'center'
+  }
 });
 
 class AddItemPage extends BasePage {
@@ -217,8 +228,6 @@ class AddItemPage extends BasePage {
         <Grid style={{flex: 1}}>
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
             {this.renderImageView()}
-          </Row>
-          <Row size={30} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>
             <View style={styles.wrapper}>
               {this.renderActions()}
             </View>
@@ -229,20 +238,29 @@ class AddItemPage extends BasePage {
     return <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>;
   }
 
+  renderNext(fgColor) {
+    return (
+      <Button transparent onPress={() => this.handleContinue()}>
+        <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-forward" />
+      </Button>
+    )
+  }
+
   render() {
     const allowContinue = this.getAllowContinue();
     const bgColor = (this.state.currentStep !== 2 ? '#000000' : '#F2F2F2');
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
-      <Gllu.Screen
-        backgroundColor={bgColor}
-        foregroundColor={fgColor}
-        onBackPress={() => this.handleBackButton()}
-        onNextPress={() => this.handleContinue()}
-        title={this.getHeadingTitle()}
-        showNext={allowContinue}>
+      <View>
+        <View style={styles.headerContainer}>
+          <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
+            <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-back" />
+          </Button>
+          <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
+          {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}></View>}
+        </View>
         {this.renderContent()}
-      </Gllu.Screen>
+      </View>
     );
   }
 }

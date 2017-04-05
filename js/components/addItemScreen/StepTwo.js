@@ -357,7 +357,7 @@ class StepTwo extends BaseComponent {
   render() {
     const { items, createLookItem, image, tags} = this.props;
     return(
-      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
+      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20, marginTop: 50}}>
         <Grid>
           <Row style={styles.row, { flexDirection: 'row' }}>
             <Col size={25} style={{paddingRight: 20}}>

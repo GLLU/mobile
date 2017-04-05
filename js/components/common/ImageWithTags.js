@@ -4,6 +4,7 @@ import { View } from 'native-base';
 import FitImage from 'react-native-fit-image';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 export const EDIT_MODE = 'edit';
 export const CREATE_MODE = 'create';
@@ -12,7 +13,7 @@ export const VIEW_MODE = 'view';
 const tagMarker = require('../../../images/markers/marker-top-right.png');
 const TAG_WIDTH = 30;
 const BORDER_WIDTH = 5;
-const h = Dimensions.get('window').height;
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -113,18 +114,20 @@ class ImageWithTags extends Component {
   }
 
   componentDidMount() {
-    const locationX = w/2;
-    const locationY = h/2;
-    const { width, height } = this.getRenderingDimensions();
-    this._setupPanResponder(locationX, locationY);
+    if(this.props.mode !== VIEW_MODE) {
+      const locationX = w/2;
+      const locationY = h/2;
+      const { width, height } = this.getRenderingDimensions();
+      this._setupPanResponder(locationX, locationY);
 
-    // convert location into relative positions
-    const left = locationX / 2;
-    const top = locationY / 2;
-    this.setState({locationX: left, locationY: top}, () => {
-      this.props.onMarkerCreate({locationX: left, locationY: top});
-      //this.props.createLookItemForVideo({locationX: left, locationY: top});
-    });
+      // convert location into relative positions
+      const left = locationX / w;
+      const top = locationY / h;
+      this.setState({locationX: left, locationY: top}, () => {
+        this.props.onMarkerCreate({locationX: left, locationY: top});
+        //this.props.createLookItemForVideo({locationX: left, locationY: top});
+      });
+    }
   }
 
   _handlePress(e) {
@@ -155,7 +158,7 @@ class ImageWithTags extends Component {
       const left = parseInt(x * width);
       const top = parseInt(y * height);
 
-      if (mode != VIEW_MODE) {
+      if (mode !== VIEW_MODE) {
         const layout = this._pan.getLayout();
         return (<Animated.View
                   key={i}
@@ -172,16 +175,8 @@ class ImageWithTags extends Component {
   }
 
   getRenderingDimensions() {
-    let width = 30;
-    let height = 40;
-    if (this.props.width) {
-      width = parseInt(this.props.width);
-      height = parseInt(width * 16 / 9);
-    } else {
-      height = parseInt(h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight);
-      width = parseInt(height * 9 / 16);
-    }
-
+    let width = w;
+    let height = h;
     return { width, height };
   }
 
@@ -189,11 +184,11 @@ class ImageWithTags extends Component {
     const { width, height } = this.getRenderingDimensions();
     if (this.props.showMarker) {
       return (
-        <FitImage source={{uri: this.props.image}} style={[styles.itemsContainer]}>
-          <View style={[styles.draggableContainer, {width, height}]}>
+        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
+          <View style={[styles.draggableContainer]}>
             {this.renderTags()}
           </View>
-        </FitImage>
+        </Image>
       );
     }
 
@@ -205,12 +200,6 @@ class ImageWithTags extends Component {
   }
 
   _renderContent() {
-    if (this.props.items.length == 0) {
-      const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
-      return(<Tag onPress={this._handlePress.bind(this)}>
-            {this._render()}
-          </Tag>);
-    }
     return this._render();
   }
 

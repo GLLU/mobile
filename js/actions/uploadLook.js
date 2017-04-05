@@ -183,7 +183,6 @@ function _updateItem(lookId, itemId, params, dispatch, options = {}) {
   const body = {
     item: Object.assign({}, params),
   }
-
   return makeRequest(dispatch, rest.actions.items.put, [
     { look_id: lookId, id: itemId },
     { body: JSON.stringify(body)}
