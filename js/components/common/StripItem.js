@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     height: 70,
     width: 75,
     margin: 10,
-
     justifyContent: 'center',
     flexDirection: 'column',
     borderRadius: 10
@@ -59,7 +58,6 @@ class CategoryItem extends Component {
   }
 
   _renderIcon(icon, selected, width, height) {
-    console.warn('width',width, 'height',height)
     const uri = selected ? icon['url_hover'] : icon['url'];
     return <Image source={{uri: uri}} style={[styles.categoryItemImage]} resizeMode={'contain'}/>;
   }
@@ -75,7 +73,8 @@ class CategoryItem extends Component {
     const { selected } = this.state;
     const iconWidth = itemWidth * 5 / 8;
     const iconHeight = iconWidth * 150 / 170;
-    return (<View style={[styles.categoryItem]}>
+    return (
+      <View style={[styles.categoryItem]}>
               <Text style={styles.categoryItemTitle}>{item.name}</Text>
               <Button
                 transparent
@@ -83,8 +82,9 @@ class CategoryItem extends Component {
                 style={[styles.btnCategoryItem, ]}>
                 {this._renderIcon(item.icon, selected, iconWidth, iconHeight)}
               </Button>
-            </View>);
-    }
+            </View>
+    );
+  }
 }
 
 export default CategoryItem;

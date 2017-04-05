@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class CategoryStrip extends Component {
+class OccassionsStrip extends Component {
   static propTypes = {
     categories: React.PropTypes.array,
     selectedCategory: React.PropTypes.oneOfType([
@@ -72,13 +72,15 @@ class CategoryStrip extends Component {
   }
 
   _handleSelectCategory(item) {
+    this.setState({selected: this.state.selected === item.id ? null : item.id})
     this.props.onCategorySelected(item);
   }
 
   _drawCategoryItems() {
     const { selectedCategory, categories } = this.props;
     return categories.map((item, index) => {
-      const selected = selectedCategory && selectedCategory.id === item.id ? true : false;
+      let isSelected = _.find(selectedCategory, Occassion => Occassion.id === item.id)
+      const selected = !!isSelected || this.state.selected === item.id;
       return (
         <CategoryItem
                 key={index}
@@ -91,6 +93,7 @@ class CategoryStrip extends Component {
   }
 
   render() {
+
     // const contentOffsetX = this.normalizeContentOffsetX(this.state.positionX);
 
     return (
@@ -127,4 +130,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindActions)(CategoryStrip);
+export default connect(mapStateToProps, bindActions)(OccassionsStrip);

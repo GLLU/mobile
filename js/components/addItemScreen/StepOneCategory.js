@@ -6,8 +6,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
   addItemType,
+  loadCategories,
 } from '../../actions';
-import Category from '../common/CategoryStrip';
+import CategoryStrip from '../common/CategoryStrip';
 import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import Gllu from '../common';
@@ -93,10 +94,13 @@ const styles = StyleSheet.create({
 });
 
 
-class StepOne extends BaseComponent {
+class StepOneCategory extends BaseComponent {
   static propTypes = {
     categories: React.PropTypes.array,
-    selectedCategory: React.PropTypes.object,
+    selectedCategory: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.bool,
+    ]),
     addItemType: React.PropTypes.func,
   }
 
@@ -107,11 +111,17 @@ class StepOne extends BaseComponent {
     }
   }
 
+  componentWillMount() {
+    this.props.loadCategories().catch(err => {
+      console.log('unable to load categories');
+    });
+  }
+
   selectCategory(item) {
     if (item.id !== this.props.selectedCategory) {
-      console.warn('blab')
       this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
       this.props.addItemType(item);
+      this.toggleBottomContainer()
     }
   }
 
@@ -137,17 +147,17 @@ class StepOne extends BaseComponent {
 
   render() { //
     const { categories, selectedCategory } = this.props;
-    console.warn('selectedCategory',selectedCategory)
+    const btnColor = !this.props.selectedCategory ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return(
       <View style={{ flexDirection: 'row', height: h / 1.8,}}>
         <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-          <View style={{width: 20, height: 50, backgroundColor: 'rgba(32, 32, 32, 0.4)', alignSelf: 'center'}}>
+          <View style={{width: 20, height: 50, backgroundColor: btnColor, alignSelf: 'center'}}>
             <FontAwesome style={{transform: [{ rotate: '90deg'}], fontSize: 16, marginTop: 20}} name="bars"/>
           </View>
         </TouchableWithoutFeedback>
-        <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.7)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
+        <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
           <Text numberOfLines={1} style={styles.titleLabelInfo}>Item Type</Text>
-          <Category
+          <CategoryStrip
             categories={categories}
             selectedCategory={selectedCategory}
             onCategorySelected={(cat) => this.selectCategory(cat)}/>
@@ -156,19 +166,21 @@ class StepOne extends BaseComponent {
     )
   }
 }
+
 function bindActions(dispatch) {
   return {
     addItemType: (type) => dispatch(addItemType(type)),
+    loadCategories: () => dispatch(loadCategories()),
   };
 }
 
 const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id == itemId);
+  const item = _.find(items, item => item.id === itemId);
   return {
     categories: state.filters.categories,
-    selectedCategory: item ? item.category : null,
+    selectedCategory: item.category ? item.category : false,
   };
 };
 
-export default connect(mapStateToProps, bindActions)(StepOne);
+export default connect(mapStateToProps, bindActions)(StepOneCategory);

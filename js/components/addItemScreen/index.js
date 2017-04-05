@@ -5,9 +5,9 @@ import { View, Grid, Col, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import StepMarker from './StepMarker';
-import StepZero from './StepZero';
-import StepOne from './StepOne';
-import OccasionsStrip from '../common/OccasionsStrip';
+import StepZeroBrand from './StepZeroBrand';
+import StepOneCategory from './StepOneCategory';
+import StepTwoOccasions from './StepTwoOccasions';
 import StepTwo from './StepTwo';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
@@ -71,7 +71,7 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 0,
+      currentStep: -1,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -87,6 +87,8 @@ class AddItemPage extends BasePage {
       imageWidth: w
     })
   }
+
+
 
   handleContinue() {
     const { currentStep } = this.state;
@@ -182,12 +184,12 @@ class AddItemPage extends BasePage {
 
   renderActions() {
     return (
-      <View style={{position: 'absolute', height: h, zIndex: 2}}>
+      <View style={{position: 'absolute', height: h, zIndex: 1}}>
         <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70}}>
-          <OccasionsStrip  onValid={this.continueAction.bind(this)}/>
-          <StepOne onValid={this.continueAction.bind(this)}/>
+          <StepTwoOccasions  onValid={this.continueAction.bind(this)}/>
+          <StepOneCategory onValid={this.continueAction.bind(this)}/>
         </View>
-        <StepZero onValid={this.handleStepZeroValid.bind(this)}/>
+        <StepZeroBrand onValid={this.handleStepZeroValid.bind(this)}/>
       </View>
     )
   }
@@ -200,7 +202,7 @@ class AddItemPage extends BasePage {
       case -1:
         return item !== null;
       case 0:
-        return item && item.brand && item.category !== null;
+        return item && item.brand && item.category !== null && item.occasions.length > 0;
       case 1:
         return false;
       default:

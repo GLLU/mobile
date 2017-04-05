@@ -195,7 +195,7 @@ class ImageWithTags extends Component {
     return (
       <Image
         source={{ uri: this.props.image }}
-        style={[styles.itemsContainer, {width, height}]}/>
+        style={[styles.itemsContainer, {width, height}]} resizeMode={'stretch'}/>
     );
   }
 
