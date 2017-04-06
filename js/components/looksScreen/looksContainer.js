@@ -237,6 +237,13 @@ class LooksContainer extends BasePage {
   getFlatFeed () {
     let looksArr = ''
     const {meta: {total}} = this.props;
+
+    if (total == 1) {
+       return looksArr = [
+        this.props.flatLooksData[this.state.currScrollIndex]
+      ]
+    }
+
     switch(this.state.currScrollIndex) {
       case 0:
          return looksArr = [
