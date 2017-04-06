@@ -71,7 +71,7 @@ class LooksContainer extends BasePage {
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
-          this._scrollView.scrollTo({x: 0, y: h, animated: false});
+          this._scrollView.scrollTo({x: 0, y: height, animated: false});
           this.setState({startAnimte: true})
           break;
         case 'android':
@@ -142,7 +142,7 @@ class LooksContainer extends BasePage {
         const {meta: {total}} = this.props;
         if (this.state.currScrollIndex < total-1) {
           this._scrollView.scrollTo({x: 0, y: 0, animated: false});
-          this._scrollView.scrollTo({x: 0, y: h, animated: true});
+          this._scrollView.scrollTo({x: 0, y: height, animated: true});
           this.setState({currScrollIndex: this.state.currScrollIndex+1})
         }
         if (this.state.currScrollIndex % 5 === 0) {
@@ -151,8 +151,8 @@ class LooksContainer extends BasePage {
         break;
       case SWIPE_DOWN:
         if (this.state.currScrollIndex !== 0) {
-          this._scrollView.scrollTo({x: 0, y: h+h, animated: false});
-          this._scrollView.scrollTo({x: 0, y: h, animated: true});
+          this._scrollView.scrollTo({x: 0, y: height+height, animated: false});
+          this._scrollView.scrollTo({x: 0, y: height, animated: true});
           this.setState({currScrollIndex: this.state.currScrollIndex-1})
         }
         if (this.state.currScrollIndex % 5 === 0) {
@@ -178,7 +178,7 @@ class LooksContainer extends BasePage {
           flex: 1,
           backgroundColor: 'transparent',
           position: 'relative',
-          height: h
+          height: height
         }}>
         <Video
           source={{uri: look.uri, mainVer: 1, patchVer: 0}}

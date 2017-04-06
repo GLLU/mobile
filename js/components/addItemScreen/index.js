@@ -1,45 +1,52 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet } from 'react-native';
-import { View, Grid, Col, Row } from 'native-base';
+import { StyleSheet, Text, Dimensions } from 'react-native';
+import { View, Grid, Col, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import StepMarker from './StepMarker';
-import StepZero from './StepZero';
-import StepOne from './StepOne';
-import StepTwo from './StepTwo';
+import StepZeroBrand from './StepZeroBrand';
+import StepOneCategory from './StepOneCategory';
+import StepTwoOccasions from './StepTwoOccasions';
+import StepThreePublish from './StepThreePublish';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
 import _ from 'lodash';
-
+const h = Dimensions.get('window').height;
+const w = Dimensions.get('window').width;
 const IMAGE_VIEW_PADDING = 80;
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2'
   },
-  header: {
-    fontFamily: 'PlayfairDisplay-Regular',
-    lineHeight: glluTheme.toolbarLineHeight,
-    fontSize: 24,
-    fontWeight: '400',
-    color: '#FFFFFF',
-    marginLeft: glluTheme.tooolbarTextMarginLeft,
-    textAlign: 'center',
-    alignSelf: 'center'
-  },
   backIcon: {
     color: '#FFFFFF'
   },
   wrapper: {
-    flex: 1,
-    backgroundColor: '#F2F2F2',
+    backgroundColor: 'red',
+    width: w,
   },
   mainView: {
     flex: 1,
     backgroundColor: '#F2F2F2'
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 20,
+    height: 30,
+    zIndex: 1,
+    flexDirection: 'row',
+    width: w,
+    justifyContent: 'space-between'
+  },
+  headerTitle: {
+    backgroundColor: 'transparent',
+    fontWeight: '600',
+    fontSize: 17,
+    alignSelf: 'center'
+  }
 });
 
 class AddItemPage extends BasePage {
@@ -81,9 +88,11 @@ class AddItemPage extends BasePage {
     })
   }
 
+
+
   handleContinue() {
     const { currentStep } = this.state;
-    if (currentStep < 2) {
+    if (currentStep < 1) {
       this.setState({currentStep: this.state.currentStep + 1});  
     }
   }
@@ -124,19 +133,32 @@ class AddItemPage extends BasePage {
   }
 
   getHeadingTitle() {
+    const { item } = this.props;
     let title = '';
     switch (this.state.currentStep) {
       case 0:
-        title = 'Choose a Brand';
+        title = this.getStepsTitle();
         break;
       case 1:
-        title = 'Choose a Category';
-        break;
-      case 2:
-        title = 'Addional Info';
+        title = 'Additional Info';
         break;
       default:
-        title = 'Drag & Drop to change location';
+        title = 'Place marker to tag an item';
+    }
+    return title;
+  }
+
+  getStepsTitle() {
+    const { item } = this.props;
+    let title = 'Choose a Category'
+    if(item.category !== null) {
+      title = 'Now Pick the brand';
+    }
+    if(item.brand) {
+      title = 'For which Occasion?';
+    }
+    if(item.occasions.length > 0) {
+      title = 'Edit or Continue';
     }
     return title;
   }
@@ -177,25 +199,26 @@ class AddItemPage extends BasePage {
   }
 
   renderActions() {
-    switch(this.state.currentStep) {
-      case 0:
-        return <StepZero key={0} onValid={this.handleStepZeroValid.bind(this)}/>;
-      case 1:
-        return <StepOne key={1} onValid={this.continueAction.bind(this)}/>;
-    }
-    return null;
+    return (
+      <View style={{position: 'absolute', height: h, zIndex: 1}}>
+        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70}}>
+          <StepTwoOccasions  onValid={this.continueAction.bind(this)}/>
+          <StepOneCategory onValid={this.continueAction.bind(this)}/>
+        </View>
+        <StepZeroBrand onValid={this.handleStepZeroValid.bind(this)}/>
+      </View>
+    )
   }
 
   getAllowContinue() {
+
     const { item } = this.props;
     switch(this.state.currentStep) {
       case -1:
         return item !== null;
       case 0:
-        return item && item.brand !== null;
+        return item && item.brand && item.category !== null && item.occasions.length > 0;
       case 1:
-        return item && item.category !== null;
-      case 2:
         return false;
       default:
         return true;
@@ -212,37 +235,41 @@ class AddItemPage extends BasePage {
       );
     }
 
-    if (this.state.currentStep !== 2) {
+    if (this.state.currentStep !== 1) {
       return (
         <Grid style={{flex: 1}}>
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
             {this.renderImageView()}
-          </Row>
-          <Row size={30} style={{flexDirection: 'row', backgroundColor: '#F2F2F2'}}>
-            <View style={styles.wrapper}>
-              {this.renderActions()}
-            </View>
+            {this.renderActions()}
           </Row>
         </Grid>
       );
     }
-    return <StepTwo key={2} publishItem={this.publishAction.bind(this)}/>;
+    return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
+  }
+
+  renderNext(fgColor) {
+    return (
+      <Button transparent onPress={() => this.handleContinue()}>
+        <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-forward" />
+      </Button>
+    )
   }
 
   render() {
     const allowContinue = this.getAllowContinue();
-    const bgColor = (this.state.currentStep !== 2 ? '#000000' : '#F2F2F2');
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
-      <Gllu.Screen
-        backgroundColor={bgColor}
-        foregroundColor={fgColor}
-        onBackPress={() => this.handleBackButton()}
-        onNextPress={() => this.handleContinue()}
-        title={this.getHeadingTitle()}
-        showNext={allowContinue}>
+      <View>
+        <View style={styles.headerContainer}>
+          <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
+            <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-back" />
+          </Button>
+          <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
+          {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}></View>}
+        </View>
         {this.renderContent()}
-      </Gllu.Screen>
+      </View>
     );
   }
 }

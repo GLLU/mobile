@@ -30,7 +30,6 @@ class BrandNameInput extends Component {
 
   constructor(props) {
     super(props);
-    console.log('BrandNameInput constructor', props);
     this.state = {
       query: props.brand ? props.brand.name : '',
       data: props.brands
