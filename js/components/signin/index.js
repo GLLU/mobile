@@ -46,7 +46,8 @@ class SignInPage extends BasePage {
           email: '',
           password: '',
           passwordValid: 'times',
-          emailValid: 'times'
+          emailValid: 'times',
+          allValid: false
       };
 
   }
@@ -64,7 +65,6 @@ class SignInPage extends BasePage {
         emailValid } = this.state;
 
     let validationArray = [ passwordValid, emailValid ];
-
     return (validationArray.indexOf('times') === -1)
   }
 
@@ -120,7 +120,8 @@ class SignInPage extends BasePage {
 
   handleSigninPress() {
     this.logEvent('SignInEmailScreen', { name: 'Lets GLLU click' });
-    this.singinWithEmail();
+
+   this.singinWithEmail();
   }
 
   handleForgotPasswordPress() {
@@ -129,6 +130,7 @@ class SignInPage extends BasePage {
   }
 
   render() {
+    let allValid = this.checkValidations()
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>
@@ -160,12 +162,12 @@ class SignInPage extends BasePage {
                     <Text style={[styles.label,  this.state.password.length !== 0 ? styles.addOpacity : null]}>Password</Text>
                   </TouchableWithoutFeedback>
                   <InputGroup style={styles.formGroup}>
-                        <Input style={styles.formInput} ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
-                    </InputGroup>
+                    <Input style={styles.formInput} ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
+                  </InputGroup>
                     { this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
             </Grid>
-            <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}>
+            <Button color='lightgrey' style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}>
               Let's GLLU
             </Button>
               <View style={styles.alreadyBox}>
