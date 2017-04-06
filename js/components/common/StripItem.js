@@ -48,9 +48,12 @@ class CategoryItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      selected: nextProps.selected
-    })
+    if(nextProps.item.kind === 'category') {
+      this.setState({
+        selected: nextProps.selected
+      })
+    }
+
   }
 
   componentWillUpdate() {
@@ -63,14 +66,19 @@ class CategoryItem extends Component {
   }
 
   handlePressItem(item) {
-    this.setState({selected: !this.state.selected}, () => {
-      this.props.onPress(item)
-    });
+    if(item.kind !== 'category') {
+      this.setState({selected: !this.state.selected}, () => {
+        this.props.onPress(item)
+      });
+    } else {
+      this.props.handleCategorySelected(item)
+    }
+
   }
 
   render() {
     const { item, itemWidth, onPress } = this.props;
-    const { selected } = this.state;
+    const { selected } = this.props;
     const iconWidth = itemWidth * 5 / 8;
     const iconHeight = iconWidth * 150 / 170;
     return (

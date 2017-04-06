@@ -107,7 +107,14 @@ class StepOneCategory extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fadeAnimContentOnPress: new Animated.Value(90)
+      fadeAnimContentOnPress: new Animated.Value(0)
+    }
+  }
+
+  componentDidMount() {
+    if(!this.props.selectedCategory) {
+      let that = this
+      setTimeout(function(){ that.toggleBottomContainer(); }, 500);
     }
   }
 
@@ -121,7 +128,8 @@ class StepOneCategory extends BaseComponent {
     if (item.id !== this.props.selectedCategory) {
       this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
       this.props.addItemType(item);
-      this.toggleBottomContainer()
+      let that = this
+      setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
     }
   }
 
@@ -147,7 +155,7 @@ class StepOneCategory extends BaseComponent {
 
   render() { //
     const { categories, selectedCategory } = this.props;
-    const btnColor = !this.props.selectedCategory ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+    const btnColor = !this.props.selectedCategory ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)';
     return(
       <View style={{ flexDirection: 'row', height: h / 1.8,}}>
         <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>

@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { View} from 'native-base';
 import CategoryItem from './StripItem';
-import _ from 'lodash';
-
-import {
-  loadCategories,
-} from '../../actions';
-
-const screen = Dimensions.get('window');
 
 const ITEM_WIDTH = 80;
 
@@ -27,84 +20,55 @@ class CategoryStrip extends Component {
       React.PropTypes.array,
     ]),
     onCategorySelected: React.PropTypes.func,
-    loadCategories: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      positionX: this.getPositionX(props.categories, props.selectedCategory)
+      selected: this.props.selectedCategory ? this.props.selectedCategory : null
     }
-    this.scrollViewWidth = screen.width;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const positionX = this.getPositionX(nextProps.categories, nextProps.selectedCategory);
-    // this._categoryScrollView.scrollTo({x: positionX, y: 0});
-    this.setState({positionX});
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    this.normalizeContentOffsetX();
-  }
-
-  normalizeContentOffsetX() {
-    const positionX = this.state.positionX;
-    const midPoint = this.scrollViewWidth / 2;
-    const maxLeft = this.props.categories.length * ITEM_WIDTH - this.scrollViewWidth;
-    let x = 0;
-    if (positionX < midPoint) {
-      x = 0;
-    } else {
-      x = positionX - midPoint + ITEM_WIDTH / 2;
-      x = Math.min(x, maxLeft);
-    }
-    
-    this._categoryScrollView.scrollTo({x: x, y: 0});
-  }
-
-  getPositionX(categories, selectedCategory) {
-    let posInCategories = 0;
-    if (selectedCategory) {
-      posInCategories = _.findIndex(categories, { 'id': selectedCategory.id });
-    }
-    return posInCategories * ITEM_WIDTH;
   }
 
   _handleSelectCategory(item) {
     this.props.onCategorySelected(item);
+
+  }
+  _handleCategorySelected(item) {
+    this.setState({selected: item}, () => {
+      this._handleSelectCategory(item)
+    });
   }
 
   _drawCategoryItems() {
-    const { selectedCategory, categories } = this.props;
+    const { categories } = this.props;
+    let selected;
     return categories.map((item, index) => {
-      const selected = selectedCategory && selectedCategory.id === item.id ? true : false;
+       selected = this.state.selected && this.state.selected.id === item.id ? true : false;
       return (
         <CategoryItem
                 key={index}
                 item={item}
                 itemWidth={ITEM_WIDTH}
                 selected={selected}
-                onPress={this._handleSelectCategory.bind(this)}/>
+                onPress={this._handleSelectCategory.bind(this)}
+                handleCategorySelected={(item) => this._handleCategorySelected(item)}
+        />
       );
     });
   }
 
   render() {
-    // const contentOffsetX = this.normalizeContentOffsetX(this.state.positionX);
 
     return (
       <View style={[styles.categoriesContainer]}>
         <ScrollView
-            onLayout={(e) => this.scrollViewWidth = e.nativeEvent.layout.width}
-            ref={(ref) => this._categoryScrollView = ref}
             keyboardShouldPersistTap={true}
             pagingEnabled={false}
             horizontal={false}
             decelerationRate={'fast'}
             scrollEventThrottle={0}
-            directionalLockEnabled={true}
-            alwaysBounceHorizontal={true}
+            directionalLockEnabled={false}
+            alwaysBounceHorizontal={false}
             contentInset={{top: 0, left: 0, bottom: 0, right: 0}}
             showsHorizontalScrollIndicator={false}>
           {this._drawCategoryItems()}
@@ -114,17 +78,4 @@ class CategoryStrip extends Component {
   }
 }
 
-import { connect } from 'react-redux';
-function bindActions(dispatch) {
-  return {
-    loadCategories: () => dispatch(loadCategories()),
-  };
-}
-
-const mapStateToProps = state => {
-  return {
-
-  };
-};
-
-export default connect(mapStateToProps, bindActions)(CategoryStrip);
+export default CategoryStrip

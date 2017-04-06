@@ -61,7 +61,6 @@ class OccasionsDropdown extends BaseComponent {
 
   handleItemsSelected(selectedItems) {
     this.setState({selectedItems}, () => {
-      console.log('handleItemsSelected', selectedItems);
       selectedItems.map(tag => {
         this._toggleOccasionTag(tag, false);
       });

@@ -61,8 +61,6 @@ class ImageWithTags extends Component {
       locationX: 0,
       locationY: 0,
     }
-
-    // this._setupPanResponder(this.state.locationX, this.state.locationY);
   }
 
   componentWillMount() {
@@ -71,7 +69,7 @@ class ImageWithTags extends Component {
 
   loadMarkerFromProps(props) {
     const { mode, itemId, items } = props;
-    if (mode != VIEW_MODE && itemId) {
+    if (mode !== VIEW_MODE && itemId) {
       const item = _.find(items, x => x.id === itemId);
       const { locationX, locationY } = item;
       const { width, height } = this.getRenderingDimensions();
@@ -114,7 +112,7 @@ class ImageWithTags extends Component {
   }
 
   componentDidMount() {
-    if(this.props.mode !== VIEW_MODE) {
+    if(this.props.mode !== VIEW_MODE && this.props.items.length === 0) {
       const locationX = w/2;
       const locationY = h/2;
       const { width, height } = this.getRenderingDimensions();

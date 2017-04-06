@@ -476,6 +476,7 @@ export function addPhotosVideo(image) {
 }
 
 export function toggleOccasionTag(tag, selected) {
+  console.log('tag',tag)
   return (dispatch, getState) => {
     const state = getState();
     const { lookId, itemId } = state.uploadLook;
@@ -483,6 +484,7 @@ export function toggleOccasionTag(tag, selected) {
       // remove
       dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tag.id}, (err, data) => {
         if (!err) {
+          console.log('data',tag)
           dispatch({
             type: REMOVE_ITEM_OCCASION_TAG,
             payload: tag
@@ -497,6 +499,7 @@ export function toggleOccasionTag(tag, selected) {
       }
       dispatch(rest.actions.item_occasions.post({look_id: lookId, item_id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
+          console.log('data',data)
           dispatch({
             type: ADD_ITEM_OCCASION_TAG,
             payload: data.item_tag.tag

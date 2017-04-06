@@ -133,16 +133,32 @@ class AddItemPage extends BasePage {
   }
 
   getHeadingTitle() {
+    const { item } = this.props;
     let title = '';
     switch (this.state.currentStep) {
       case 0:
-        title = 'Choose a Brand';
+        title = this.getStepsTitle();
         break;
       case 1:
-        title = 'Addional Info';
+        title = 'Additional Info';
         break;
       default:
         title = 'Place marker to tag an item';
+    }
+    return title;
+  }
+
+  getStepsTitle() {
+    const { item } = this.props;
+    let title = 'Choose a Category'
+    if(item.category !== null) {
+      title = 'Now Pick the brand';
+    }
+    if(item.brand) {
+      title = 'For which Occasion?';
+    }
+    if(item.occasions.length > 0) {
+      title = 'Edit or Continue';
     }
     return title;
   }
@@ -197,7 +213,6 @@ class AddItemPage extends BasePage {
   getAllowContinue() {
 
     const { item } = this.props;
-    console.log('itemm', item);
     switch(this.state.currentStep) {
       case -1:
         return item !== null;
