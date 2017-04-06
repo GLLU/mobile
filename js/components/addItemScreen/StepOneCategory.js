@@ -108,12 +108,12 @@ class StepOneCategory extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fadeAnimContentOnPress: new Animated.Value(0)
+      fadeAnimContentOnPress: Platform.OS ==='ios' ? new Animated.Value(0) : new Animated.Value(90)
     }
   }
 
   componentDidMount() {
-    if(!this.props.selectedCategory) {
+    if(!this.props.selectedCategory && Platform.OS === 'ios') {
       let that = this
       setTimeout(function(){ that.toggleBottomContainer(); }, 500);
     }
@@ -129,13 +129,16 @@ class StepOneCategory extends BaseComponent {
     if (item.id !== this.props.selectedCategory) {
       this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
       this.props.addItemType(item);
-      let that = this
-      setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
+      if(Platform.OS === 'ios') {
+        let that = this
+        setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
+      }
+
     }
   }
 
   toggleBottomContainer() {
-    InteractionManager.runAfterInteractions(() => {
+
       if (this.state.fadeAnimContentOnPress._value === 90) {
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
@@ -153,20 +156,25 @@ class StepOneCategory extends BaseComponent {
           }            // Configuration
         ).start();
       }
-    });
 
+  }
+
+  renderOpenButton() {
+    const btnColor = !this.props.selectedCategory ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)';
+    return (
+      <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
+        <View style={{width: 20, height: 50, backgroundColor: btnColor, alignSelf: 'center'}}>
+          <FontAwesome style={{transform: [{ rotate: '90deg'}], fontSize: 16, marginTop: 20}} name="bars"/>
+        </View>
+      </TouchableWithoutFeedback>
+    )
   }
 
   render() { //
     const { categories, selectedCategory } = this.props;
-    const btnColor = !this.props.selectedCategory ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)';
     return(
       <View style={{ flexDirection: 'row', height: h / 1.8,}}>
-        <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-          <View style={{width: 20, height: 50, backgroundColor: btnColor, alignSelf: 'center'}}>
-            <FontAwesome style={{transform: [{ rotate: '90deg'}], fontSize: 16, marginTop: 20}} name="bars"/>
-          </View>
-        </TouchableWithoutFeedback>
+        {this.renderOpenButton()}
         <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
           <Text numberOfLines={1} style={styles.titleLabelInfo}>Item Type</Text>
           <CategoryStrip
