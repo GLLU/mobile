@@ -242,8 +242,9 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const categories = state.filters.categories ? state.filters.categories.map(category => {
-    category.id = category.name;
-    return category;
+    let categoryClone = _.cloneDeep(category);
+    categoryClone.id = categoryClone.name;
+    return categoryClone;
   }) : [];
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
   bodyTypes = mapBodyTypes(bodyTypes);

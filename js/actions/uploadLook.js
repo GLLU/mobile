@@ -254,13 +254,13 @@ export function addItemType(categoryItem) {
   return (dispatch, getState) => {
     const state = getState();
     const { lookId, itemId } = state.uploadLook;
-
+    console.log(categoryItem)
     const params = {
       category_id: categoryItem.id,
     }
 
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
-      console.log('data',data)
+      console.log('dataAA',data)
       dispatch({
         type: ADD_ITEM_TYPE,
         payload: categoryItem
