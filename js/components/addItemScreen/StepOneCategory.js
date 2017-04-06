@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
+import { StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated, InteractionManager } from 'react-native';
 import { View, Text } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -14,6 +14,7 @@ import _ from 'lodash';
 import Gllu from '../common';
 import BaseComponent from '../common/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 
@@ -134,23 +135,26 @@ class StepOneCategory extends BaseComponent {
   }
 
   toggleBottomContainer() {
-    if (this.state.fadeAnimContentOnPress._value === 90) {
-      Animated.timing(          // Uses easing functions
-        this.state.fadeAnimContentOnPress,    // The value to drive
-        {
-          toValue: 0,
-          delay: 250
-        }            // Configuration
-      ).start();
-    } else {
-      Animated.timing(          // Uses easing functions
-        this.state.fadeAnimContentOnPress,    // The value to drive
-        {
-          toValue: 90,
-          delay: 250
-        }            // Configuration
-      ).start();
-    }
+    InteractionManager.runAfterInteractions(() => {
+      if (this.state.fadeAnimContentOnPress._value === 90) {
+        Animated.timing(          // Uses easing functions
+          this.state.fadeAnimContentOnPress,    // The value to drive
+          {
+            toValue: 0,
+            delay: 250
+          }            // Configuration
+        ).start();
+      } else {
+        Animated.timing(          // Uses easing functions
+          this.state.fadeAnimContentOnPress,    // The value to drive
+          {
+            toValue: 90,
+            delay: 250
+          }            // Configuration
+        ).start();
+      }
+    });
+
   }
 
   render() { //

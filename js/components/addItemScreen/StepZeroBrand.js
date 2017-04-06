@@ -77,12 +77,18 @@ class StepZeroBrand extends BaseComponent {
   }
 
   componentWillReceiveProps(props) {
-    if(this.props.selectedCategory && !props.brand) {
+
+    if(this.props.selectedCategory && !props.brand && this.state.fadeAnimContentOnPress._value === 0) {
+      console.warn('lol')
       this.toggleBottomContainer()
     }
     this.setState({
       brandName: props.brand ? props.brand.name : null,
     });
+
+    if(this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
+      this.toggleBottomContainer()
+    }
   }
 
   findOrCreateBrand(value, createNew) {

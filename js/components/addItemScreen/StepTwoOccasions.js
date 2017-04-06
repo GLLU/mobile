@@ -119,7 +119,8 @@ class StepTwoOccasions extends BaseComponent {
   }
 
   componentWillReceiveProps(props) {
-    if(this.props.selectedCategory && props.brand && this.state.selectedOccasions.length === 0) {
+    console.warn('lol2')
+    if(this.props.selectedCategory && props.brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
       this.toggleBottomContainer()
     }
     this.setState({
