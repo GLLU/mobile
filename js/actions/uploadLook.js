@@ -183,7 +183,6 @@ function _updateItem(lookId, itemId, params, dispatch, options = {}) {
   const body = {
     item: Object.assign({}, params),
   }
-
   return makeRequest(dispatch, rest.actions.items.put, [
     { look_id: lookId, id: itemId },
     { body: JSON.stringify(body)}
@@ -255,12 +254,13 @@ export function addItemType(categoryItem) {
   return (dispatch, getState) => {
     const state = getState();
     const { lookId, itemId } = state.uploadLook;
-
+    console.log(categoryItem)
     const params = {
       category_id: categoryItem.id,
     }
 
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+      console.log('dataAA',data)
       dispatch({
         type: ADD_ITEM_TYPE,
         payload: categoryItem
@@ -283,14 +283,16 @@ export function addBrandName(payload) {
     const params = {
       brand_id: payload.id,
     }
-
+    console.log('1')
     return new Promise((resolve, reject) => {
       return _updateItem(lookId, itemId, params, dispatch).then(data => {
         dispatch({
           type: ADD_BRAND_NAME,
           payload: payload
         });
+        console.log('2')
         dispatch(addItemTag(payload.name)).catch(reject);
+        console.log('3')
         resolve();
       }).catch(reject);
     });
@@ -474,6 +476,7 @@ export function addPhotosVideo(image) {
 }
 
 export function toggleOccasionTag(tag, selected) {
+  console.log('tag',tag)
   return (dispatch, getState) => {
     const state = getState();
     const { lookId, itemId } = state.uploadLook;
@@ -481,6 +484,7 @@ export function toggleOccasionTag(tag, selected) {
       // remove
       dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tag.id}, (err, data) => {
         if (!err) {
+          console.log('data',tag)
           dispatch({
             type: REMOVE_ITEM_OCCASION_TAG,
             payload: tag
@@ -495,6 +499,7 @@ export function toggleOccasionTag(tag, selected) {
       }
       dispatch(rest.actions.item_occasions.post({look_id: lookId, item_id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
+          console.log('data',data)
           dispatch({
             type: ADD_ITEM_OCCASION_TAG,
             payload: data.item_tag.tag

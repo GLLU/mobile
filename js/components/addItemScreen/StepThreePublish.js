@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: 10,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   confirmText: {
     flex: 1,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class StepTwo extends BaseComponent {
+class StepThreePublish extends BaseComponent {
   static propTypes = {
     image: React.PropTypes.string,
     state: React.PropTypes.string,
@@ -355,19 +355,18 @@ class StepTwo extends BaseComponent {
   }
 
   render() {
-    const { items, createLookItem, image, tags} = this.props;
+    const { image, tags} = this.props;
     return(
-      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
+      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20, marginTop: 50}}>
         <Grid>
-          <Row style={styles.row, { flexDirection: 'row' }}>
+          <Row style={[styles.row, { flexDirection: 'row' }]}>
             <Col size={25} style={{paddingRight: 20}}>
               <TouchableOpacity onPress={this.handleImagePress.bind(this)}>
-                <ImageWithTags
-                    items={items}
-                    image={image}
-                    width={80}
-                    showMarker={false}
-                    createLookItem={createLookItem}/>
+                  <Image
+                      style={{width: 90, height: 160}}
+                      source={{uri: image}}
+                      resizeMode={'stretch'}
+                      />
               </TouchableOpacity>
             </Col>
             <Col size={75} style={{flexDirection: 'column'}}>
@@ -381,12 +380,6 @@ class StepTwo extends BaseComponent {
                 onEndEditing={this.handleDescriptionEndEditing.bind(this)}
                 onChangeText={(text) => this.updateSelectValue('description', text)}/>
             </Col>
-          </Row>
-          <Row style={styles.row}>
-            <Text style={styles.titleLabelInfo}>Occassions</Text>
-            <OccasionsDropdown
-              selectedTags={this.props.occasions}
-              toggleOccasionTag={this.props.toggleOccasionTag.bind(this)}/>
           </Row>
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Add tags</Text>
@@ -462,4 +455,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindActions)(StepTwo);
+export default connect(mapStateToProps, bindActions)(StepThreePublish);

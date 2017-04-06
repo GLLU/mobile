@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated } from 'react-native';
 import { View, Text, Icon } from 'native-base';
 import {
   addBrandName,
   createBrandName,
   removeBrandName,
 } from '../../actions';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -13,26 +14,32 @@ import glluTheme from '../../themes/gllu-theme';
 import _ from 'lodash';
 import Gllu from '../common';
 import BaseComponent from '../common/BaseComponent';
-
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
+const w = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   titleLabelInfo: {
     fontFamily: 'Montserrat',
-    color: '#7f7f7f',
+    color: 'white',
     fontWeight: '300',
     fontSize: new FontSizeCalculator(15).getSize(),
-    marginBottom: 8
+    marginBottom: 8,
+    paddingTop: 10,
+    textAlign: 'center'
   },
   inputContainer: {
-    height: 50,
-    backgroundColor: 'white',
+    height: 35,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    borderRadius: 10
   },
   input: {
     flex: 1,
     textAlignVertical: 'center',
     paddingLeft: 3,
+
   },
   iconCheckCompleteContainer: {
     position: 'absolute',
@@ -50,7 +57,7 @@ const styles = StyleSheet.create({
 });
 
 
-class StepZero extends BaseComponent {
+class StepZeroBrand extends BaseComponent {
   static propTypes = {
     brand: React.PropTypes.object,
     brands: React.PropTypes.array,
@@ -65,25 +72,29 @@ class StepZero extends BaseComponent {
     this.state = {
       modalVisible: false,
       brandName: props.brand ? props.brand.name : null,
+      fadeAnimContentOnPress: new Animated.Value(0)
     }
   }
 
   componentWillReceiveProps(props) {
+    if(this.props.selectedCategory && !props.brand) {
+      this.toggleBottomContainer()
+    }
     this.setState({
       brandName: props.brand ? props.brand.name : null,
     });
   }
 
   findOrCreateBrand(value, createNew) {
-    const brandName = typeof value == 'string' ? value : value.name;
+    const brandName = typeof value === 'string' ? value : value.name;
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
     f(value).then(() => {
-      setTimeout(() => {
-        this.setState({modalVisible: false, brandName});
-      }, 500);
+      console.log('brand added')
+
     }).catch(err => {
       console.log('error', err);
     })
+    this.setState({modalVisible: false, brandName});
 
     if (createNew) {
       this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
@@ -113,6 +124,26 @@ class StepZero extends BaseComponent {
     }); 
   }
 
+  toggleBottomContainer() {
+    if (this.state.fadeAnimContentOnPress._value === 100) {
+      Animated.timing(          // Uses easing functions
+        this.state.fadeAnimContentOnPress,    // The value to drive
+        {
+          toValue: 0,
+          delay: 250
+        }            // Configuration
+      ).start();
+    } else {
+      Animated.timing(          // Uses easing functions
+        this.state.fadeAnimContentOnPress,    // The value to drive
+        {
+          toValue: 100,
+          delay: 250
+        }            // Configuration
+      ).start();
+    }
+  }
+
   renderClearIcon() {
     if (this.state.brandName) {
       return (
@@ -132,24 +163,31 @@ class StepZero extends BaseComponent {
     const { brands, brand} = this.props;
     const { brandName, modalVisible } = this.state;
     const _brand = brandName ? brand : null;
-    console.log('clear brandh', brandName, _brand)
+    const btnColor = !this.props.brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+
     return (
-      <View style={{flex: 1, padding: 25}}>
-        <Text style={styles.titleLabelInfo}>Brand Name</Text>
-        <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
-          <Text
-            style={styles.input}
-          >
-            {brandName}
-          </Text>
-          {this.renderClearIcon()}
-        </TouchableOpacity>
+      <View>
+        <View style={{position: 'absolute', bottom: 0 ,justifyContent: 'center', alignItems: 'center', flex: 1, alignSelf: 'center', width: w}}>
+          <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
+            <View style={{ backgroundColor: btnColor, width: 50, height: 30, justifyContent: 'center', alignSelf: 'center'}}>
+              <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
+            </View>
+          </TouchableWithoutFeedback>
+          <Animated.View style={{borderRadius: 10, paddingLeft: 25, paddingRight: 25, width: w-100, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
+            <Text style={styles.titleLabelInfo}>Brand Name</Text>
+            <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
+              <Text style={styles.input}>
+                {brandName}
+              </Text>
+              {this.renderClearIcon()}
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
         <Modal
           animationType={"slide"}
           transparent={false}
           visible={modalVisible}
-          onRequestClose={() => this.setState({modalVisible: false})}
-        >
+          onRequestClose={() => this.setState({modalVisible: false})}>
           <BrandNameInput
             style={{marginTop: 10}}
                   brand={_brand}
@@ -172,10 +210,11 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id == itemId);
+  const item = _.find(items, item => item.id === itemId);
   return {
     brand: item ? item.brand : null,
+    selectedCategory: item ? item.category : null,
   };
 };
 
-export default connect(mapStateToProps, bindActions)(StepZero);
+export default connect(mapStateToProps, bindActions)(StepZeroBrand);
