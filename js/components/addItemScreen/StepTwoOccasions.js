@@ -107,7 +107,7 @@ class StepTwoOccasions extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fadeAnimContentOnPress: new Animated.Value(0),
+      fadeAnimContentOnPress: Platform.OS ==='ios' ? new Animated.Value(0) : new Animated.Value(90),
       selectedOccasions: this.props.itemOccasions
     }
   }
@@ -119,12 +119,13 @@ class StepTwoOccasions extends BaseComponent {
   }
 
   componentWillReceiveProps(props) {
-    if(this.props.selectedCategory && props.brand && this.state.selectedOccasions.length === 0) {
-      this.toggleBottomContainer()
+    if(Platform.OS === 'ios') {
+      if(this.props.selectedCategory && props.brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
+        this.toggleBottomContainer()
+      }
     }
-    this.setState({
-      brandName: props.brand ? props.brand.name : null,
-    });
+
+
   }
 
   selectOccasion(selectedOccasion) {
@@ -138,8 +139,11 @@ class StepTwoOccasions extends BaseComponent {
       selectedOccasions.push(selectedOccasion)
     }
     this.setState({selectedOccasions})
-    let that = this
-    setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
+    if(Platform.OS === 'ios') {
+      let that = this
+      setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
+    }
+
 
   }
 
@@ -163,10 +167,20 @@ class StepTwoOccasions extends BaseComponent {
     }
   }
 
+  renderOpenButton() {
+    const btnColor = this.state.selectedOccasions.length === 0 ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+    return (
+      <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
+        <View style={{width: 20, height: 50, backgroundColor: btnColor, alignSelf: 'center'}}>
+          <FontAwesome style={{transform: [{ rotate: '90deg'}], fontSize: 16, marginTop: 20}} name="bars"/>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+
   render() { //
     const { occasionTags } = this.props;
     const selectedOccasions = this.state.selectedOccasions;
-    const btnColor = this.state.selectedOccasions.length === 0 ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return(
       <View style={{ flexDirection: 'row', height: h / 1.8,}}>
         <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
@@ -176,11 +190,7 @@ class StepTwoOccasions extends BaseComponent {
             selectedOccasions={selectedOccasions}
             onOccasionSelected={(cat) => this.selectOccasion(cat)}/>
         </Animated.View>
-        <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-          <View style={{width: 20, height: 50, backgroundColor: btnColor, alignSelf: 'center'}}>
-            <FontAwesome style={{transform: [{ rotate: '90deg'}], fontSize: 16, marginTop: 20}} name="bars"/>
-          </View>
-        </TouchableWithoutFeedback>
+        {this.renderOpenButton()}
       </View>
     )
   }

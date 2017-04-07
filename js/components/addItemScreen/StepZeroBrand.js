@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated } from 'react-native';
+import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated, UIManager } from 'react-native';
 import { View, Text, Icon } from 'native-base';
 import {
   addBrandName,
@@ -7,7 +7,7 @@ import {
   removeBrandName,
 } from '../../actions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
 import glluTheme from '../../themes/gllu-theme';
@@ -72,17 +72,28 @@ class StepZeroBrand extends BaseComponent {
     this.state = {
       modalVisible: false,
       brandName: props.brand ? props.brand.name : null,
-      fadeAnimContentOnPress: new Animated.Value(0)
+      fadeAnimContentOnPress: Platform.OS === 'ios' ? new Animated.Value(0) : new Animated.Value(100)
     }
   }
 
   componentWillReceiveProps(props) {
-    if(this.props.selectedCategory && !props.brand) {
-      this.toggleBottomContainer()
+    if(Platform.OS === 'ios') {
+      if(this.props.selectedCategory && !props.brand && this.state.fadeAnimContentOnPress._value === 0) {
+        this.toggleBottomContainer()
+      }
+      this.setState({
+        brandName: props.brand ? props.brand.name : null,
+      });
+
+      if(this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
+        this.toggleBottomContainer()
+      }
+    } else {
+      this.setState({
+        brandName: props.brand ? props.brand.name : null,
+      });
     }
-    this.setState({
-      brandName: props.brand ? props.brand.name : null,
-    });
+
   }
 
   findOrCreateBrand(value, createNew) {
@@ -121,7 +132,7 @@ class StepZeroBrand extends BaseComponent {
     this.logEvent('UploadLookScreen', { name: 'Choose brand cancel' });
     this.setState({
       modalVisible: false
-    }); 
+    });
   }
 
   toggleBottomContainer() {
@@ -159,20 +170,26 @@ class StepZeroBrand extends BaseComponent {
     return null;
   }
 
+  renderOpenButton() {
+    const btnColor = !this.props.brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+    return (
+      <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
+        <View style={{ backgroundColor: btnColor, width: 50, height: 30, justifyContent: 'center', alignSelf: 'center'}}>
+          <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+
   render() {
     const { brands, brand} = this.props;
     const { brandName, modalVisible } = this.state;
     const _brand = brandName ? brand : null;
-    const btnColor = !this.props.brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
 
     return (
       <View>
         <View style={{position: 'absolute', bottom: 0 ,justifyContent: 'center', alignItems: 'center', flex: 1, alignSelf: 'center', width: w}}>
-          <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-            <View style={{ backgroundColor: btnColor, width: 50, height: 30, justifyContent: 'center', alignSelf: 'center'}}>
-              <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
-            </View>
-          </TouchableWithoutFeedback>
+          {this.renderOpenButton()}
           <Animated.View style={{borderRadius: 10, paddingLeft: 25, paddingRight: 25, width: w-100, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
             <Text style={styles.titleLabelInfo}>Brand Name</Text>
             <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
@@ -190,10 +207,10 @@ class StepZeroBrand extends BaseComponent {
           onRequestClose={() => this.setState({modalVisible: false})}>
           <BrandNameInput
             style={{marginTop: 10}}
-                  brand={_brand}
-                  brands={brands}
-                  onCancel={this.handleBrandCancel.bind(this)}
-                  findOrCreateBrand={this.findOrCreateBrand.bind(this)}/>
+            brand={_brand}
+            brands={brands}
+            onCancel={this.handleBrandCancel.bind(this)}
+            findOrCreateBrand={this.findOrCreateBrand.bind(this)}/>
         </Modal>
       </View>
     )

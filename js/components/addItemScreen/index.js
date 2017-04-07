@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Text, Dimensions } from 'react-native';
+import { StyleSheet, Text, Dimensions, Platform } from 'react-native';
 import { View, Grid, Col, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
@@ -13,7 +13,8 @@ import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import Gllu from '../common';
 import _ from 'lodash';
-const h = Dimensions.get('window').height;
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 const IMAGE_VIEW_PADDING = 80;
 
@@ -34,10 +35,10 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     position: 'absolute',
-    top: 20,
+    top: 10,
     height: 30,
-    zIndex: 1,
     flexDirection: 'row',
+    zIndex: 2,
     width: w,
     justifyContent: 'space-between'
   },
@@ -200,7 +201,7 @@ class AddItemPage extends BasePage {
 
   renderActions() {
     return (
-      <View style={{position: 'absolute', height: h, zIndex: 1}}>
+      <View style={{position: 'absolute', height: h, zIndex: 2}}>
         <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70}}>
           <StepTwoOccasions  onValid={this.continueAction.bind(this)}/>
           <StepOneCategory onValid={this.continueAction.bind(this)}/>
@@ -237,7 +238,7 @@ class AddItemPage extends BasePage {
 
     if (this.state.currentStep !== 1) {
       return (
-        <Grid style={{flex: 1}}>
+        <Grid >
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
             {this.renderImageView()}
             {this.renderActions()}
@@ -256,19 +257,25 @@ class AddItemPage extends BasePage {
     )
   }
 
-  render() {
+  renderHeader() {
     const allowContinue = this.getAllowContinue();
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
+      <View style={styles.headerContainer}>
+        <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
+          <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-back" />
+        </Button>
+        <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
+        {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}></View>}
+      </View>
+    )
+  }
+
+  render() {
+    return (
       <View>
-        <View style={styles.headerContainer}>
-          <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
-            <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-back" />
-          </Button>
-          <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
-          {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}></View>}
-        </View>
         {this.renderContent()}
+        {this.renderHeader()}
       </View>
     );
   }

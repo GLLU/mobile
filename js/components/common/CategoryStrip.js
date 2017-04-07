@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions, LayoutAnimation } from 'react-native';
 import { View} from 'native-base';
 import CategoryItem from './StripItem';
 
@@ -33,6 +33,11 @@ class CategoryStrip extends Component {
     this.props.onCategorySelected(item);
 
   }
+
+  componentWillUpdate() {
+    LayoutAnimation.easeInEaseOut();
+  }
+
   _handleCategorySelected(item) {
     this.setState({selected: item}, () => {
       this._handleSelectCategory(item)
