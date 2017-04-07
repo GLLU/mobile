@@ -75,18 +75,14 @@ export default class Utils {
   }
 
   static preloadLookImages(looks) {
-    const coverUrls = looks.map(look => look.cover.type === "image" ? _.find(look.cover.list, x => x.version == 'medium').url : _.find(look.cover.list, x => x.version == 'large_720').url);
+    const coverUrls = looks.map(look => look.cover.type === "image" ? _.find(look.cover.list, x => x.version === 'medium').url : _.find(look.cover.list, x => x.version === 'large_720').url);
     return this.preloadImages(coverUrls);
   }
 
   static preloadImages(urls) {
     return Promise.all(
       urls.map(url => {
-        return new Promise((resolve, reject) => {
-          Image.getSize(url, (width, height) => {
-            resolve({width, height});
-          }, reject);  
-        });
+        return Image.prefetch(url)
       })
     );
   }

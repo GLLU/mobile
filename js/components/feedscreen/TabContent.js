@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Text, Platform, Animated, RefreshControl } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Platform,
+  Animated,
+  RefreshControl
+} from 'react-native';
 import { View } from 'native-base';
 import LikeView from './items/LikeView';
 import TypeView from './items/TypeView';
@@ -33,13 +43,10 @@ class TabContent extends BaseComponent {
 
   constructor(props) {
     super(props);
-    const { imagesColumn1, imagesColumn2 } = this.distributeImages(this.props.flatLooks);
     this.state = {
-      imagesColumn1,
-      imagesColumn2,
       isLoading: false,
       noMoreData: false,
-      fadeAnim: new Animated.Value(0),
+      //fadeAnim: new Animated.Value(0),
       isRefreshing: false,
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
@@ -56,17 +63,13 @@ class TabContent extends BaseComponent {
   }
 
   _onShareClicked() {
-    this.logEvent('LookScreen', { name: 'Share click'});
+    this.logEvent('LookScreen', {name: 'Share click'});
     SocialShare.nativeShare();
   }
 
   componentWillReceiveProps(nextProps) {
     const total = nextProps.meta.total;
-    const flatLooks = nextProps.flatLooks;
-    const { imagesColumn1, imagesColumn2 } = this.distributeImages(flatLooks);
     this.setState({
-      imagesColumn1,
-      imagesColumn2,
       total,
     });
 
@@ -78,24 +81,6 @@ class TabContent extends BaseComponent {
         }, 3000);
       }
     }
-  }
-
-  distributeImages(looks) {
-    const imagesColumn1 = [];
-    const imagesColumn2 = [];
-    const colW = (deviceWidth - 10) / 2;
-    _.filter(looks, x => x.width && x.height).map((look, index) => {
-      const { width, height } = look;
-      look.width = colW;
-      look.height = height * colW / width ;
-      if (index % 2 === 0) {
-        imagesColumn1.push(look);
-      } else {
-        imagesColumn2.push(look);
-      }
-    });
-
-    return { imagesColumn1, imagesColumn2 };
   }
 
   handleScroll(event) {
@@ -116,7 +101,7 @@ class TabContent extends BaseComponent {
     if (this.state.isLoading) {
       return;
     }
-    const { meta: { total }, query } = this.props;
+    const {meta: {total}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
@@ -138,7 +123,7 @@ class TabContent extends BaseComponent {
   }
 
   _showBodyModal() {
-     this.props.showBodyTypeModal();
+    this.props.showBodyTypeModal();
   }
 
   scrollDebounced(e) {
@@ -146,17 +131,17 @@ class TabContent extends BaseComponent {
   }
 
   _handleItemPress(item) {
-    this.logEvent('Feedscreen', { name: 'Image click' });
+    this.logEvent('Feedscreen', {name: 'Image click'});
     this.props.navigateTo('looksScreen', 'feedscreen', item);
   }
 
   toggleLikeAction(item, isLiked) {
-    this.logEvent('Feedscreen', { name: 'Like Image click' });
+    this.logEvent('Feedscreen', {name: 'Like Image click'});
     if (isLiked) {
-      let data = {id: item.id, likes: item.likes+1, liked: true}
+      let data = {id: item.id, likes: item.likes + 1, liked: true}
       this.props.likeUpdate(data);
     } else {
-      let data = {id: item.id, likes: item.likes-1, liked: false}
+      let data = {id: item.id, likes: item.likes - 1, liked: false}
       this.props.unLikeUpdate(data);
     }
   }
@@ -167,8 +152,8 @@ class TabContent extends BaseComponent {
 
   renderVideo(img, index) {
     return (
-      <View style={{flex: 1}} >
-        <Video source={{uri: img.uri,mainVer: 1, patchVer: 0}}
+      <View style={{flex: 1}}>
+        <Video source={{uri: img.uri, mainVer: 1, patchVer: 0}}
                resizeMode={'contain'}
                muted={true}
                style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
@@ -182,7 +167,7 @@ class TabContent extends BaseComponent {
 
   renderImage(img, index) {
     return (
-      <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }}>
+      <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain'}}>
         <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
       </Image>
     )
@@ -190,12 +175,13 @@ class TabContent extends BaseComponent {
 
   _renderImages(images) {
     return images.map((img, index) => {
-        return  (
-          <TouchableOpacity key={index} onPress={(e) => this._handleItemPress(img)}>
-            <View style={{width: img.width, height: img.height, paddingLeft: 0 }}>
-              {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
-            </View>
-          </TouchableOpacity>);
+      return (
+        <View key={img.id} style={{width: img.width, height: img.height, paddingLeft: 0}}>
+          <TouchableOpacity onPress={(e) => this._handleItemPress(img)}>
+            {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
+          </TouchableOpacity>
+        </View>);
+
     });
   }
 
@@ -225,14 +211,14 @@ class TabContent extends BaseComponent {
   }
 
   _renderRefreshingCover() {
-    return(
+    return (
       this.state.isRefreshing &&
-        <View style={styles.refreshingCover}/>
+      <View style={styles.refreshingCover}/>
     )
   }
 
   _renderRefreshControl() {
-    return(
+    return (
       <RefreshControl
         refreshing={this.state.isRefreshing}
         onRefresh={this.onRefresh.bind(this)}
@@ -245,7 +231,7 @@ class TabContent extends BaseComponent {
 
   onRefresh() {
     this.setState({isRefreshing: true})
-    const { getFeed, query } = this.props;
+    const {getFeed, query} = this.props;
 
     // reset the first page
     query.page.number = 1;
@@ -264,21 +250,23 @@ class TabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
-            style={{flex: 1}}
-            scrollEventThrottle={100}
-            onScroll={this.handleScroll.bind(this)}
-            refreshControl={this._renderRefreshControl.bind(this)()}>
-          <View style={[{flex: 1, flexDirection: 'row', paddingLeft: 5}]}>
+          style={{flex: 1}}
+          scrollEventThrottle={100}
+          onScroll={this.handleScroll.bind(this)}
+          refreshControl={this._renderRefreshControl.bind(this)()}>
+          <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', paddingLeft: 5}}>
             <View style={{flex: 0.5, flexDirection: 'column'}}>
               <TouchableOpacity onPress={() => this._onShareClicked()}>
-                <View style={{width: deviceWidth/2-5, height: deviceWidth/4, paddingLeft: 0, marginTop: 5, }}>
-                  <Animated.Image onLoad={this.onLoad()} source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}} style={{ opacity: this.state.fadeAnim, width: deviceWidth/2-10, height: deviceWidth/4,  overflow: 'hidden'}} resizeMode={'contain'}/>
+                <View style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4, paddingLeft: 0, marginTop: 5}}>
+                  <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+                                  style={{width: deviceWidth / 2 - 10, height: deviceWidth / 4}}
+                                  resizeMode={'contain'}/>
                 </View>
               </TouchableOpacity>
-              {this._renderImages(this.state.imagesColumn1)}
+              {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
             </View>
             <View style={{flex: 0.5, flexDirection: 'column'}}>
-              {this._renderImages(this.state.imagesColumn2)}
+              {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
             </View>
           </View>
           {this._renderLoadMore()}
@@ -340,10 +328,11 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
+  const flatLooks = mapImages(state.feed.flatLooksData);
   const user_size = hasUserSize ? state.user.user_size : '';
   return {
     modalShowing: state.myBodyType.modalShowing,
-    flatLooks: state.feed.flatLooksData,
+    flatLooks: flatLooks,
     meta: state.feed.meta,
     query: state.feed.query,
     hasUserSize,
@@ -351,5 +340,17 @@ const mapStateToProps = state => {
     user_gender: state.user.gender
   }
 };
+
+const mapImages = (looks) => {
+  let images = _.cloneDeep(looks) || [];
+  const colW = (deviceWidth - 10) / 2;
+  images = _.filter(images, x => x.width && x.height).map((look) => {
+    const {width, height} = look;
+    look.width = colW;
+    look.height = height / width * colW;
+    return look;
+  });
+  return images;
+}
 
 export default connect(mapStateToProps, bindActions)(TabContent);
