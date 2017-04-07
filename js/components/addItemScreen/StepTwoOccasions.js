@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   }
 });
 
-
 class StepTwoOccasions extends BaseComponent {
   static propTypes = {
     categories: React.PropTypes.array,
@@ -124,8 +123,6 @@ class StepTwoOccasions extends BaseComponent {
         this.toggleBottomContainer()
       }
     }
-
-
   }
 
   selectOccasion(selectedOccasion) {
@@ -143,8 +140,6 @@ class StepTwoOccasions extends BaseComponent {
       let that = this
       setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
     }
-
-
   }
 
   toggleBottomContainer() {
