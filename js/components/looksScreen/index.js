@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
-import {View, Image, Animated, InteractionManager, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
+import {View, Image, InteractionManager, Platform } from 'react-native';
 import Spinner from '../loaders/Spinner';
 import LooksContainer from './looksContainer';
 import { actions } from 'react-native-navigation-redux-helpers';
-import navigateTo from '../../actions/sideBarNav';
-import Video from 'react-native-video';
 
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height
-const w = Dimensions.get('window').width;
-const { popRoute, pushRoute } = actions
-const LOADER_HEIGHT = 30;
 
 class LooksScreen extends BasePage {
   static propTypes = {
@@ -56,7 +50,6 @@ class LooksScreen extends BasePage {
   }
 
   render() {
-    console.log('state',this.state.renderScroll)
     return this.state.renderScroll ? this.renderScrollView() : this.renderLoader(false)
   }
 }
