@@ -25,6 +25,7 @@ import SettingsScreen from './components/settingsScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import ProcessCropping from './components/common/Cropping';
+import SpinnerClothing from './components/loaders/SpinnerClothing';
 import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
 import BadNavigationScreen from './components/badNavigationScreen'
@@ -182,7 +183,7 @@ class AppNavigator extends Component {
           />
         </Drawer>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
-        {this.props.isProcessing ? <ProcessCropping /> : null}
+        {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.error ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}

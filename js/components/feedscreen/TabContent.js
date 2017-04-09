@@ -180,8 +180,8 @@ class TabContent extends BaseComponent {
           <TouchableOpacity onPress={(e) => this._handleItemPress(img)}>
             {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
           </TouchableOpacity>
-        </View>);
-
+        </View>
+      );
     });
   }
 
@@ -327,7 +327,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
+  const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const flatLooks = mapImages(state.feed.flatLooksData);
   const user_size = hasUserSize ? state.user.user_size : '';
   return {
