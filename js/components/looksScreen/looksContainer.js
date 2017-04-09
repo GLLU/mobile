@@ -72,7 +72,7 @@ class LooksContainer extends BasePage {
       switch (Platform.OS) {
         case 'ios':
           this._scrollView.scrollTo({x: 0, y: height, animated: false});
-          _.delay(() => this.props.removeLoader(), 1000);
+          _.delay(() => this.props.removeLoader(), 1000); // Looks smoother
           break;
         case 'android':
           InteractionManager.runAfterInteractions(() => {
