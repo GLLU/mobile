@@ -68,19 +68,22 @@ class TabContent extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const total = nextProps.meta.total;
-    this.setState({
-      total,
-    });
+    if(nextProps.cardNavigationStack.length < 2) {
+      const total = nextProps.meta.total;
+      this.setState({
+        total,
+      });
 
-    // show modal after done loading for 3 seconds
-    if (this.props.reloading && this.props.reloading != nextProps.reloading) {
-      if (!this.props.hasUserSize) {
-        setTimeout(() => {
-          this.showBodyModal();
-        }, 3000);
+      // show modal after done loading for 3 seconds
+      if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
+        if (!this.props.hasUserSize) {
+          setTimeout(() => {
+            this.showBodyModal();
+          }, 3000);
+        }
       }
     }
+
   }
 
   handleScroll(event) {
@@ -132,7 +135,14 @@ class TabContent extends BaseComponent {
 
   _handleItemPress(item) {
     this.logEvent('Feedscreen', {name: 'Image click'});
-    this.props.navigateTo('looksScreen', 'feedscreen', item);
+    let that = this
+    if(Platform.OS === 'ios') {
+      setTimeout(function(){ that.props.navigateTo('looksScreen', 'feedscreen', item); }, 200);
+    } else {
+      this.props.navigateTo('looksScreen', 'feedscreen', item);
+    }
+
+
   }
 
   toggleLikeAction(item, isLiked) {
@@ -247,34 +257,39 @@ class TabContent extends BaseComponent {
   }
 
   render() {
-    return (
-      <View style={styles.tab}>
-        <ScrollView
-          style={{flex: 1}}
-          scrollEventThrottle={100}
-          onScroll={this.handleScroll.bind(this)}
-          refreshControl={this._renderRefreshControl.bind(this)()}>
-          <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', paddingLeft: 5}}>
-            <View style={{flex: 0.5, flexDirection: 'column'}}>
-              <TouchableOpacity onPress={() => this._onShareClicked()}>
-                <View style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4, paddingLeft: 0, marginTop: 5}}>
-                  <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
-                                  style={{width: deviceWidth / 2 - 10, height: deviceWidth / 4}}
-                                  resizeMode={'contain'}/>
-                </View>
-              </TouchableOpacity>
-              {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
+    if(true) {
+      return (
+        <View style={styles.tab}>
+          <ScrollView
+            style={{flex: 1}}
+            scrollEventThrottle={100}
+            onScroll={this.handleScroll.bind(this)}
+            refreshControl={this._renderRefreshControl.bind(this)()}>
+            <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', paddingLeft: 5}}>
+              <View style={{flex: 0.5, flexDirection: 'column'}}>
+                <TouchableOpacity onPress={() => this._onShareClicked()}>
+                  <View style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4, paddingLeft: 0, marginTop: 5}}>
+                    <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+                           style={{width: deviceWidth / 2 - 10, height: deviceWidth / 4}}
+                           resizeMode={'contain'}/>
+                  </View>
+                </TouchableOpacity>
+                {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
+              </View>
+              <View style={{flex: 0.5, flexDirection: 'column'}}>
+                {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
+              </View>
             </View>
-            <View style={{flex: 0.5, flexDirection: 'column'}}>
-              {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
-            </View>
-          </View>
-          {this._renderLoadMore()}
-          {this._renderRefreshingCover()}
-        </ScrollView>
-        {this._renderLoading()}
-      </View>
-    )
+            {this._renderLoadMore()}
+            {this._renderRefreshingCover()}
+          </ScrollView>
+          {this._renderLoading()}
+        </View>
+      )
+    } else {
+      return null
+    }
+
   }
 }
 
@@ -337,7 +352,8 @@ const mapStateToProps = state => {
     query: state.feed.query,
     hasUserSize,
     user_size: user_size,
-    user_gender: state.user.gender
+    user_gender: state.user.gender,
+    cardNavigationStack: state.cardNavigation.routes
   }
 };
 

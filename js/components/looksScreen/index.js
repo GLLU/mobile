@@ -22,14 +22,14 @@ class LooksScreen extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      renderScroll: false,
-      showLoader: Platform.OS !== 'ios',
+      renderScroll: Platform.OS === 'ios',
+      showLoader: true,
     }
   }
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.setState({renderScroll: true})
+      Platform.OS !== 'ios' ? this.setState({renderScroll: true}) : null
     });
   }
 
