@@ -23,9 +23,9 @@ const initialState = {
 const parseLook = function (look, index, flatLooksDataLength) {
   let cover;
   if (look.cover.type === 'video') {
-    cover = _.find(look.cover.list, x => x.version == 'large_720');
+    cover = _.find(look.cover.list, x => x.version === 'large_720');
   } else {
-    cover = _.find(look.cover.list, x => x.version == 'medium');
+    cover = _.find(look.cover.list, x => x.version === 'medium');
   }
 
   return Object.assign({}, {

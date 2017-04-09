@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "echo &quot;config/.env.staging&quot; &gt; /tmp/envfile">
+               scriptText = "echo &quot;config/.env.production&quot; &gt; /tmp/envfile">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
