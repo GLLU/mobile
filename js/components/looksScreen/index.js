@@ -28,14 +28,15 @@ class LooksScreen extends BasePage {
   }
 
   componentDidMount() {
+    let that = this
     InteractionManager.runAfterInteractions(() => {
-      Platform.OS !== 'ios' ? this.setState({renderScroll: true}) : null
+      Platform.OS !== 'ios' ? that.setState({renderScroll: true}) : null
     });
   }
 
   renderLoader() {
     return (
-      <Image source={{uri: this.props.flatLook.uri}} resizeMode={'cover'} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+      <Image source={{uri: this.props.flatLook.uri}} resizeMode={'cover'} style={[Platform.OS === 'ios' ? {zIndex: 1} : null ,{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }]}>
         <Spinner color='#666666'/>
       </Image>
     )
@@ -44,8 +45,8 @@ class LooksScreen extends BasePage {
   renderScrollView() {
     return (
     <View>
+      {this.state.showLoader ? this.renderLoader() : null}
       <LooksContainer {...this.props} renderScroll={this.state.renderScroll} removeLoader={() => this.removeLoader()}/>
-      {this.state.showLoader ? this.renderLoader(true) : null}
     </View>
     )
   }
@@ -55,6 +56,7 @@ class LooksScreen extends BasePage {
   }
 
   render() {
+    console.log('state',this.state.renderScroll)
     return this.state.renderScroll ? this.renderScrollView() : this.renderLoader(false)
   }
 }
