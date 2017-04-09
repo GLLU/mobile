@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2'
   },
   backIcon: {
-    color: '#FFFFFF'
+    color: 'blue'
   },
   wrapper: {
     backgroundColor: 'red',
