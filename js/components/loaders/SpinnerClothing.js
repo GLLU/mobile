@@ -34,7 +34,7 @@ export default class Spinner extends NativeBaseComponent {
     };
 
     return (
-       <Image source={require('../images/gifs/fashion2.gif')} resizeMode={'contain'} style={{width: w,height: h, backgroundColor: 'transparent', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} />
+       <Image source={require('../images/gifs/fashion2.gif')} resizeMode={'contain'} style={{width: w,height: h, backgroundColor: 'rgba(32, 32, 32, 0.6)', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} />
     );
   }
 

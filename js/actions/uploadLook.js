@@ -42,7 +42,7 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
-              dispatch(hideProcessing());
+
               if (data) {
                 const url = _.find(data.look.cover.list, x => x.version == 'small').url;
                 Utils.preloadImages([url]).then(() => {
@@ -56,6 +56,7 @@ export function addNewLook(image) {
                     payload,
                   });
                   resolve(payload);
+                  dispatch(hideProcessing());
                 }).catch(reject);
               } else {
                 reject('Uplaod error');
@@ -135,7 +136,7 @@ export function setTagPosition(payload) {
 
 export function createLookItem(position) {
   return (dispatch, getState) => {
-    dispatch(showLoader());
+    //dispatch(showLoader());
     const state = getState();
     const lookId = state.uploadLook.lookId;
     const body = {
@@ -146,7 +147,7 @@ export function createLookItem(position) {
     };
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.items.post({look_id: lookId}, { body: JSON.stringify(body) } , (err, data) => {
-        dispatch(hideLoader());
+        //dispatch(hideLoader());
         if (!err) {
           resolve(dispatch({
               type: CREATE_LOOK_ITEM_BY_POSITION,

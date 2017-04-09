@@ -180,8 +180,8 @@ class TabContent extends BaseComponent {
           <TouchableOpacity onPress={(e) => this._handleItemPress(img)}>
             {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
           </TouchableOpacity>
-        </View>);
-
+        </View>
+      );
     });
   }
 
