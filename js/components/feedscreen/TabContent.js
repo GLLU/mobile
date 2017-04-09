@@ -136,13 +136,11 @@ class TabContent extends BaseComponent {
   _handleItemPress(item) {
     this.logEvent('Feedscreen', {name: 'Image click'});
     let that = this
-    if(Platform.OS === 'ios') {
+    if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to we let the TouchableOpacity end. and then go to next page.
       setTimeout(function(){ that.props.navigateTo('looksScreen', 'feedscreen', item); }, 200);
     } else {
       this.props.navigateTo('looksScreen', 'feedscreen', item);
     }
-
-
   }
 
   toggleLikeAction(item, isLiked) {
@@ -337,7 +335,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const hasUserSize = state.user.user_size != null && !_.isEmpty(state.user.user_size);
+  const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const flatLooks = mapImages(state.feed.flatLooksData);
   const user_size = hasUserSize ? state.user.user_size : '';
   return {
