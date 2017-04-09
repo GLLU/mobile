@@ -257,7 +257,6 @@ class TabContent extends BaseComponent {
   }
 
   render() {
-    if(true) {
       return (
         <View style={styles.tab}>
           <ScrollView
@@ -286,10 +285,6 @@ class TabContent extends BaseComponent {
           {this._renderLoading()}
         </View>
       )
-    } else {
-      return null
-    }
-
   }
 }
 
