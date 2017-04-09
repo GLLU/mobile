@@ -37,14 +37,13 @@ export function addNewLook(image) {
     dispatch(showProcessing());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      if (user && user.id != -1) {
+      if (user && user.id !== -1) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
             Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
-
               if (data) {
-                const url = _.find(data.look.cover.list, x => x.version == 'small').url;
+                const url = _.find(data.look.cover.list, x => x.version === 'small').url;
                 Utils.preloadImages([url]).then(() => {
                   const payload = _.merge(data.look, {
                     image: url,
@@ -67,7 +66,6 @@ export function addNewLook(image) {
             reject('Authorization error')  
           }
         }).catch(reject);
-        
       } else {
         reject('Authorization error')
       }
@@ -259,7 +257,6 @@ export function addItemType(categoryItem) {
     const params = {
       category_id: categoryItem.id,
     }
-
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
       console.log('dataAA',data)
       dispatch({
@@ -284,16 +281,13 @@ export function addBrandName(payload) {
     const params = {
       brand_id: payload.id,
     }
-    console.log('1')
     return new Promise((resolve, reject) => {
       return _updateItem(lookId, itemId, params, dispatch).then(data => {
         dispatch({
           type: ADD_BRAND_NAME,
           payload: payload
         });
-        console.log('2')
         dispatch(addItemTag(payload.name)).catch(reject);
-        console.log('3')
         resolve();
       }).catch(reject);
     });
@@ -355,7 +349,6 @@ export function addItemTag(tag) {
     const body = {
       tag_name: tag
     }
-
     return new Promise((resolve, reject) => {
       return makeRequest(dispatch, rest.actions.item_tags.post, [
         { look_id: lookId, item_id: itemId },
@@ -424,7 +417,6 @@ export function addDescription(description) {
     const params = {
       description,
     }
-
     return _updateLook(lookId, params, dispatch).then(data => {
       dispatch({
         type: ADD_DESCRIPTION,
@@ -443,7 +435,6 @@ export function addUrl(url) {
     const params = {
       url,
     }
-
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
       dispatch({
         type: ADD_ITEM_URL,
@@ -477,7 +468,6 @@ export function addPhotosVideo(image) {
 }
 
 export function toggleOccasionTag(tag, selected) {
-  console.log('tag',tag)
   return (dispatch, getState) => {
     const state = getState();
     const { lookId, itemId } = state.uploadLook;
@@ -485,7 +475,6 @@ export function toggleOccasionTag(tag, selected) {
       // remove
       dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tag.id}, (err, data) => {
         if (!err) {
-          console.log('data',tag)
           dispatch({
             type: REMOVE_ITEM_OCCASION_TAG,
             payload: tag
@@ -500,7 +489,6 @@ export function toggleOccasionTag(tag, selected) {
       }
       dispatch(rest.actions.item_occasions.post({look_id: lookId, item_id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
-          console.log('data',data)
           dispatch({
             type: ADD_ITEM_OCCASION_TAG,
             payload: data.item_tag.tag
