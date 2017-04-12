@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform } from 'react-native'
-import { View, Text, Button } from 'native-base';
+import { View, Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
@@ -99,7 +99,7 @@ class NavigationBarView extends BaseComponent {
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
           <Button transparent onPress={() => this.openSearch()}>
-            <Image source={searchIcon} style={styles.btnImage} />
+            {this.props.searchStatus ? <Icon name="ios-close-circle-outline" style={[styles.smallBtn]}/> : <Image source={searchIcon} style={styles.btnImage} />}
           </Button>
         </View>
       </View>
