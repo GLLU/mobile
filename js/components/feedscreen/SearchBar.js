@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, Text } from 'react-native';
 import { View, Button, Icon } from 'native-base';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
@@ -33,6 +33,15 @@ const myStyles = StyleSheet.create({
     marginLeft: 15,
     alignSelf: 'center',
     marginRight: 5,
+    borderWidth: 0.4,
+    borderColor: '#757575',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    height: 20,
+  },
+  clearText: {
+    color: '#757575',
+    fontSize: 13
   },
 });
 
@@ -90,7 +99,7 @@ class SearchBar extends BaseComponent {
           onChangeText={(text) => this.handleTextInput(text)}
           value={this.state.text}/>
         <Button transparent iconRight onPress={() => this.clearSearch()} style={[myStyles.btnCloseFilter]}>
-          <Icon name="ios-close-circle-outline" style={[styles.smallBtn]}/>
+          <Text style={myStyles.clearText}>Clear</Text>
         </Button>
       </View>
     )
