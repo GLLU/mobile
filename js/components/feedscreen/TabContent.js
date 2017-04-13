@@ -54,13 +54,6 @@ class TabContent extends BaseComponent {
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
     this.showBodyModal = _.once(this._showBodyModal);
     this.layoutWidth = 0;
-    const pusher = new Pusher('7bc79c4d0641769c1471', {
-      encrypted: true
-    });
-    const channel = pusher.subscribe('notifications_9');
-    channel.bind('Like', function(data) {
-      console.log(data.message);
-    });
   }
 
   onLoad() {

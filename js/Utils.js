@@ -4,6 +4,7 @@ import { Client, Configuration } from 'bugsnag-react-native';
 import Config from 'react-native-config';
 import _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
+import Pusher from 'pusher-js/react-native';
 
 export default class Utils {
   static format_measurement(value, measurements_scale) {
@@ -27,6 +28,16 @@ export default class Utils {
     const config = new Configuration(Config.BUGSNAG_API_KEY)
     config.codeBundleId = Config.codeBundleId
     return new Client(config)
+  }
+
+  static getPusherClient() {
+    const pusher =  new Pusher(Config.PUSHER_KEY, {
+      encrypted: true
+    });
+    const channel = pusher.subscribe('notifications_9');
+    channel.bind('Like', function(data) {
+      console.log(data.message);
+    });
   }
 
   static resetKeychainData() {
