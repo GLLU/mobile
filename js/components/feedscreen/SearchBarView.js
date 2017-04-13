@@ -4,10 +4,9 @@ import { View, Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
+import SearchBar from './SearchBar';
 
-const userIcon = require('../../../images/icons/user.png');
-const hanger = require('../../../images/icons/hangerEmpty.png');
-const hangerNotification = require('../../../images/icons/hangerGreenCircle.png');
+const homeIcon = require('../../../images/icons/blackLogo.png');
 const bagIcon = require('../../../images/icons/bag.png');
 const rectangleIcon = require('../../../images/icons/rectangle.png')
 const searchIcon = require('../../../images/icons/search.png')
@@ -18,18 +17,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     flexDirection: 'row',
-    paddingLeft: 0
+    paddingLeft: 0,
+    marginBottom: 5
   },
-  btnImageHanger: {
-    height: 25,
-    width: 25,
-    resizeMode: 'contain'
+  btnProfile: {
+    paddingVertical: 0,
+    paddingHorizontal: 7,
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  btnFilter: {
+    paddingVertical: 0,
+    alignItems: 'center',
+    paddingHorizontal: 0,
+    justifyContent: 'center',
+    alignSelf: 'center'
   },
   btnCamera: {
   },
   btnImage: {
-    height: 20,
-    width: 20,
+    height: 22,
+    width: 22,
+    marginBottom: 2,
+    alignSelf: 'center',
+    justifyContent: 'center',
     resizeMode: 'contain'
   },
   normalBtn: {
@@ -45,7 +56,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class NavigationBarView extends BaseComponent {
+class SearchBarView extends BaseComponent {
   static propTypes = {
     user: React.PropTypes.object,
     handleSearchStatus: React.PropTypes.func,
@@ -58,10 +69,6 @@ class NavigationBarView extends BaseComponent {
     this.state = {
       hasNotify: false
     };
-  }
-
-  componentDidMount() {
-
   }
 
   goToProfile() {
@@ -79,31 +86,21 @@ class NavigationBarView extends BaseComponent {
     this.props.handleSearchStatus();
   }
 
-  openMenu() {
-    console.log('Open Menu');
-  }
-
-  goToShopping() {
-    console.log('Go To Shopping');
-  }
-
   render() {
-    const hangerBtn = !this.state.hasNotify ? hangerNotification : hanger;
     return(
       <View style={styles.navigationBar}>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <Button transparent >
-            <Image source={hangerBtn} style={styles.btnImageHanger} />
-          </Button>
+        <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
+          <View style={styles.btnProfile}>
+            <Image source={homeIcon} style={styles.btnImage} />
+          </View>
+        </View>
+        <View style={{flexGrow: 10, flexDirection: 'row', justifyContent: 'center', }}>
+          <SearchBar handleSearchInput={(term) => this.props.handleSearchInput(term)}
+                     clearText={this.props.clearText} />
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
-            <Image source={cameraIcon} style={styles.btnImage} />
-          </Button>
-        </View>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
-            <Image source={userIcon} style={styles.btnImage} />
+          <Button transparent onPress={() => this.openSearch()} style={styles.btnFilter}>
+            {this.props.searchStatus ? <Icon name="ios-close-circle-outline" style={[styles.smallBtn]}/> : <Icon name="ios-options-outline" style={[styles.smallBtn]}/>}
           </Button>
         </View>
       </View>
@@ -123,4 +120,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindActions)(NavigationBarView);
+export default connect(mapStateToProps, bindActions)(SearchBarView);

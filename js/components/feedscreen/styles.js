@@ -22,7 +22,9 @@ module.exports = StyleSheet.create({
   mainNavHeader: {
     backgroundColor: '#f2f2f2',
     paddingHorizontal: 0,
-    paddingLeft: 0
+    paddingLeft: 0,
+    flexDirection: 'column',
+    paddingTop: 25
   },
   Textlabel: {
     paddingTop: 0,

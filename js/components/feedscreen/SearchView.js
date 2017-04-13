@@ -38,9 +38,6 @@ class SearchView extends Component {
   render() {
     return (
       <View style={myStyles.container}>
-        <SearchBar
-          handleSearchInput={(term) => this.props.handleSearchInput(term)}
-          clearText={this.props.clearText}/>
         <FilterBar
           type={this.props.typeFilter}
           filterFeed={this.props.filterFeed}
