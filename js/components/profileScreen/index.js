@@ -16,7 +16,7 @@ const profileBackground = require('../../../images/psbg.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const {popRoute} = actions;
-
+const LOADER_HEIGHT = 30;
 class ProfileScreen extends BasePage {
   static propTypes = {
     userData: React.PropTypes.object,
@@ -43,8 +43,10 @@ class ProfileScreen extends BasePage {
       isFollowing: this.props.userData.is_following,
       userId: isMyProfile ? this.props.myUser.id : this.props.userData.user_id,
       photoModal: false,
-      pagination: 1
+
     }
+    this.loadMoreAsync = _.debounce(this.getUserLooksFunc, 100)
+    this.pagination = 1
   }
 
   componentDidMount() {
@@ -170,22 +172,24 @@ class ProfileScreen extends BasePage {
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const currentScroll = event.nativeEvent.contentOffset.y
     const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-    console.log('compare',compare)
-    console.log('currentScroll',currentScroll)
-    console.log('layoutMeasurementHeight',layoutMeasurementHeight)
-    console.log('contentSizeHeight',contentSizeHeight)
-    if (compare > 10) {
-      console.log('compare == 1')
-      this.setState({
-        pagination: this.state.pagination+=1,
-      })
+    if (compare <= LOADER_HEIGHT && !this.props.isLoading) {
+      this.pagination+=1
       let data = {
         id: this.state.userId,
-        page: this.state.pagination
+        page: this.pagination
       }
-      console.log('data',data)
-      this.props.getUserLooks(data);
+      this.loadMoreAsync()
+
     }
+  }
+
+  getUserLooksFunc() {
+    this.pagination+=1
+    let data = {
+      id: this.state.userId,
+      page: this.pagination
+    }
+    this.props.getUserLooks(data)
   }
 
   handleBackToFeedPress() {
