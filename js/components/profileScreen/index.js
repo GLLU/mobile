@@ -203,7 +203,6 @@ class ProfileScreen extends BasePage {
     const user = isMyProfile ? myUser : userData;
     let about_me = user.about_me;
     let avatar = user.avatar;
-    console.log('userLooks',this.props.userLooks.length)
     if (!_.isEmpty(user)) {
       let avatarUrl = avatar ? avatar.url : null;
       return (
