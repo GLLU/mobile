@@ -21,6 +21,7 @@ import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 import Video from 'react-native-video';
+import Pusher from 'pusher-js/react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;

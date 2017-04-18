@@ -9,13 +9,11 @@ import FontSizeCalculator from './../../calculators/FontSize';
 const myStyles = StyleSheet.create({
   searchBar: {
     position: 'relative',
-    height: 60,
-    bottom: 0,
-    left: 0,
-    right: 0,
     backgroundColor: 'white',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexGrow: 1,
+    borderRadius: 10
   },
   searchInput: {
     borderBottomWidth: 0,
@@ -25,9 +23,10 @@ const myStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: new FontSizeCalculator(14).getSize(),
+    fontSize: new FontSizeCalculator(12).getSize(),
     fontWeight: '200',
-    color: '#757575'
+    color: '#757575',
+    borderRadius: 10
   },
   btnCloseFilter: {
     marginLeft: 15,

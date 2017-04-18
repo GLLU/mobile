@@ -34,6 +34,12 @@ class MainView extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.searchTerm !== this.props.searchTerm) {
+      this._handleSearchInput(nextProps.searchTerm)
+    }
+  }
+
   componentWillMount() {
     this.getFeed(this.props.defaultFilters);
   }

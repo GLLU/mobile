@@ -5,8 +5,7 @@ import { noop } from 'lodash'
 
 const styles = StyleSheet.create({
   categoryItem: {
-    height: 85,
-    width: 80,
+    height: 52.5,
     marginHorizontal: 4,
     justifyContent: 'center',
     alignItems: 'center',
@@ -21,8 +20,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   categoryItemImage: {
-    height: 50,
-    width: 50,
+    height: 45,
+    width: 45,
     alignSelf: 'center',
   },
   btnCategoryItem: {
@@ -96,16 +95,16 @@ class FilterButton extends Component {
   render() {
     const {filter} = this.props;
     const {selected} = this.state;
-    return (<View style={[styles.categoryItem, this.getHiglight(selected && this.props.activeStyle.underline)]}>
-      <Text
-        style={[styles.categoryItemTitle, {color: selected ? this.props.activeStyle.color : this.props.color}]}>{filter.name}</Text>
-      <Button
-        transparent
-        onPress={() => this.handlePressItem(filter)}
-        style={[styles.btnCategoryItem]}>
-        {this._renderIcon(filter.icon, selected)}
-      </Button>
-    </View>);
+    return (
+      <View style={[styles.categoryItem, this.getHiglight(selected && this.props.activeStyle.underline)]}>
+        <Button
+          transparent
+          onPress={() => this.handlePressItem(filter)}
+          style={[styles.btnCategoryItem]}>
+          {this._renderIcon(filter.icon, selected)}
+        </Button>
+      </View>
+    );
   }
 }
 

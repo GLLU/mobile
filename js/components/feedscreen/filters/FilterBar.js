@@ -14,9 +14,9 @@ const myStyles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   filterActions: {
+    marginTop: 12,
     backgroundColor: '#F5F5F5',
-    height: 120,
-    paddingHorizontal: 10
+    height: 60,
   },
   filterActionsGrid: {
     backgroundColor: '#FFFFFF',

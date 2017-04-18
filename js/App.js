@@ -4,6 +4,7 @@ import { Platform, StyleSheet } from 'react-native';
 import CodePush from 'react-native-code-push';
 import { Container, Content, Text, View } from 'native-base';
 import Modal from 'react-native-modalbox';
+import Utils from './Utils';
 
 import AppNavigator from './AppNavigator';
 import ProgressBar from './components/loaders/ProgressBar';
@@ -34,6 +35,7 @@ class App extends Component {
       showInstalling: false,
       downloadProgress: 0,
     };
+    Utils.getPusherClient();
   }
 
   componentDidMount() {
@@ -59,6 +61,7 @@ class App extends Component {
         this.setState({ downloadProgress: (receivedBytes / totalBytes) * 100 });
       }
     );
+
   }
 
   render() {

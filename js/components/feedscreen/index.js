@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Header, Content, View } from 'native-base';
 import styles from './styles';
 import NavigationBarView from './NavigationBarView';
+import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
@@ -82,6 +83,15 @@ class FeedPage extends BasePage {
     this.setState({contentHeight: height - glluTheme.toolbarHeight});
   }
 
+  _clearFilter() {
+    this.setState({searchTerm: ''})
+  }
+
+  _handleSearchInput(term) {
+    console.log('term',term)
+    this.setState({searchTerm: term})
+  }
+
   render() {
     const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};
     let contentStyle = { flex: 1 };
@@ -91,16 +101,21 @@ class FeedPage extends BasePage {
     return (
       <Gllu.Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
         {!this.props.modalShowing ?
-          <Header style={styles.mainNavHeader}>
-            <NavigationBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
-          </Header>
+          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 95}]}>
+              <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+              {!this.state.searchStatus ?
+                <NavigationBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+                :
+                null
+              }
+          </View>
         :
           null
         }
         <Content
             scrollEnabled={false}
             contentContainerStyle={contentStyle}>
-          <MainView searchStatus={this.state.searchStatus}/>
+          <MainView searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
             <MyBodyModal />
