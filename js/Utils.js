@@ -57,7 +57,6 @@ export default class Utils {
   }
 
   static postMultipartForm(api_key, path, formData, fileField, file, method = 'POST') {
-    console.warn('post')
     return new Promise((resolve, reject) => {
       formData.push({
         name : fileField,

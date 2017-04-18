@@ -41,13 +41,10 @@ export function addNewLook(image) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
-            console.warn('type',image.type)
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
               dispatch(hideProcessing());
               if (data) {
                 const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-                console.log('urlll',url)
-                console.log('data.look.cover',data.look.cover)
                 if(data.look.cover.type !== "image") {
                   console.log('data.look.cover.type',data.look.cover.type)
                   const payload = _.merge(data.look, {
@@ -59,11 +56,9 @@ export function addNewLook(image) {
                     type: EDIT_NEW_LOOK,
                     payload,
                   });
-                  console.log('uploaded', payload);
                   resolve(payload);
                 } else {
                   Utils.preloadImages([url]).then(() => {
-                    console.log('blabxxx')
                     const payload = _.merge(data.look, {
                       image: url,
                       items: [],
@@ -77,7 +72,6 @@ export function addNewLook(image) {
                   }).catch(reject);
                 }
 
-                console.log('blabxxx222')
               } else {
                 reject('Uplaod error');
               }

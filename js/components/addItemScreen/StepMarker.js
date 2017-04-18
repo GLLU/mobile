@@ -33,7 +33,7 @@ class TagItemPage extends BaseComponent {
   handleAddTag(position) {
     this.logEvent('AddItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'edit'})
+      this.setState({mode: 'view'})
     });
   }
 
@@ -52,7 +52,24 @@ class TagItemPage extends BaseComponent {
   render() {
     const { items, image, itemId } = this.props;
     const { mode } = this.state;
+   return (
+     <View
+       style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+       <ImageWithTags
+         ref={(ref) => this.imageEditor = ref}
+         mode={mode}
+         itemId={itemId}
+         items={items}
+         image={image}
+         onMarkerCreate={this.handleAddTag.bind(this)}
+         onDragEnd={this.handleOnDragEnd.bind(this)}/>
+     </View>
+   )
+  }
 
+  renderVideoWithTags() {
+    const { items, image, itemId } = this.props;
+    const { mode } = this.state;
     return (
       <View
         style={{height: h, width: w, flexDirection: 'column', alignItems: 'center'}}>

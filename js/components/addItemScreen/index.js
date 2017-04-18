@@ -16,6 +16,8 @@ import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
+import VideoWithTags from '../common/VideoWithTags';
+
 const IMAGE_VIEW_PADDING = 80;
 
 const styles = StyleSheet.create({
@@ -71,7 +73,11 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
+    console.warn('isVideo')
+    isVideo = this.props.image.search(".mp4") > -1
+
     this.state = {
+      isVideo,
       currentStep: -1,
       locationX: 0,
       locationY: 0,
@@ -79,7 +85,13 @@ class AddItemPage extends BasePage {
       mode: props.mode,
       allowContinue: false,
     };
+    console.log('ADDITEMINDEX')
   }
+
+  componentDidMount() {
+    console.log('image from redux',this.props.image)
+  }
+
 
   _handleLayoutImage(e) {
     const { width } = e.nativeEvent.layout;
@@ -180,6 +192,10 @@ class AddItemPage extends BasePage {
   }
 
   renderImageView() {
+
+  }
+
+  renderImageWithTags() {
     const { items, image, itemId } = this.props;
     const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
@@ -190,6 +206,20 @@ class AddItemPage extends BasePage {
         mode={mode}
         items={items}
         image={image}/>
+    );
+  }
+
+  renderVideoWithTags() {
+    const { image, itemId } = this.props;
+    const mode = this.getCurrentMode();
+    return (
+      <VideoWithTags
+        itemId={itemId}
+        width={230}
+        mode={mode}
+        image={image}
+        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
+      />
     );
   }
 
@@ -226,12 +256,20 @@ class AddItemPage extends BasePage {
     }
   }
 
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
   renderContent() {
     if (this.state.currentStep === -1) {
       const { mode } = this.state;
       return (
         <StepMarker
           mode={mode}
+          isVideo={isVideo}
           />
       );
     }
@@ -240,7 +278,7 @@ class AddItemPage extends BasePage {
       return (
         <Grid >
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
-            {this.renderImageView()}
+            {this.state.isVideo ? null : this.renderImageWithTags()}
             {this.renderActions()}
           </Row>
         </Grid>

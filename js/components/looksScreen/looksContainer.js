@@ -284,7 +284,8 @@ class LooksContainer extends BasePage {
                   scrollEventThrottle={100}
                   scrollEnabled={false}>
         {looksArr.map((look, index) => {
-          return look.coverType === "video" ? this.renderVideo(look, index) : this.renderImage(look, index)
+          console.log('look0',look)
+          return look.uri.search(".mp4") > -1 ? this.renderVideo(look, index) : this.renderImage(look, index)
         })}
       </ScrollView>
     )

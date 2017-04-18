@@ -64,6 +64,7 @@ class SelectPhoto extends BaseComponent {
     const settings = {
       width: width,
       height: height,
+      mediaType: 'any'
     };
     switch (type) {
       case 'camera':

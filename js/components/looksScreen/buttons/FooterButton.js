@@ -12,7 +12,8 @@ export default class FooterButton extends Component {
   static propTypes = {
     onPress: React.PropTypes.func,
     isActive: React.PropTypes.bool,
-    icon: React.PropTypes.any.isRequired,
+    icon: React.PropTypes.any,
+    iconUrl: React.PropTypes.any,
   };
 
   static defaultProps = {
@@ -33,7 +34,7 @@ export default class FooterButton extends Component {
     return (
       <TouchableHighlight style={{margin:5}} onPress={this._onPress}>
         <View style={this._getStyle(this.props.isActive)}>
-          <Image source={this.props.icon} style={styles.footerButtonIcon}/>
+          <Image source={this.props.icon ? this.props.icon : { uri: this.props.iconUrl } } style={styles.footerButtonIcon}/>
         </View>
       </TouchableHighlight>
     );

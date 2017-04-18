@@ -27,6 +27,7 @@ import _ from 'lodash';
 import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
+import VideoWithTags from '../common/VideoWithTags';
 
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
@@ -143,10 +144,12 @@ class StepThreePublish extends BaseComponent {
 
   constructor(props) {
     super(props);
+    const isVideo = this.props.image.search(".mp4") > -1
     this.state = {
       images:['', '', ''],
       video: '',
       videoUrl: '',
+      isVideo,
       location: 'us',
       trustLevel: '0',
       confirm: false,
@@ -352,6 +355,39 @@ class StepThreePublish extends BaseComponent {
     }
 
     return null;
+  }
+
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
+  renderImageWithTags() {
+    const { items, image, itemId } = this.props;
+    const { imageWidth } = this.state;
+    const mode = this.getCurrentMode();
+    return (
+      <ImageWithTags
+        items={items}
+        image={image}
+        width={80}
+        showMarker={false}
+        createLookItem={createLookItem}/>
+    );
+  }
+
+  renderVideoWithTags() {
+    const { image, itemId } = this.props;
+    return (
+      <VideoWithTags
+        itemId={itemId}
+        width={80}
+        image={image}
+        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
+      />
+    );
   }
 
   render() {
