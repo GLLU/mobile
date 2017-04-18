@@ -104,7 +104,7 @@ class FilterBar extends BaseComponent {
     this.state = {
       openFilter: {},
       filters: _.cloneDeep(filters),
-      didConsumeDefaultValues:false
+      didConsumeDefaultValues: false
     };
   }
 
@@ -115,11 +115,12 @@ class FilterBar extends BaseComponent {
   componentWillReceiveProps(nextProps) {
     this.setInnerFilters('items', nextProps.categories);
     this.setInnerFilters('body_type', nextProps.bodyTypes);
-    this.setDefaultSelections(this.state.filters, nextProps.query, this.state.didConsumeDefaultValues)
+    this.setDefaultSelections(this.state.filters, nextProps.query, this.state.didConsumeDefaultValues);
+    this.setHighlightedFilters();
   }
 
-  setDefaultSelections(filters, defaultFilters,didConsumeDefaultValues) {
-    if (!didConsumeDefaultValues&&defaultFilters !== this.props.query && defaultFilters !== undefined) {
+  setDefaultSelections(filters, defaultFilters, didConsumeDefaultValues) {
+    if (!didConsumeDefaultValues && defaultFilters !== this.props.query && defaultFilters !== undefined) {
       _.chain(Object.keys(defaultFilters))
         .map(index => {
           return {key: index, value: defaultFilters[index]}
@@ -127,12 +128,12 @@ class FilterBar extends BaseComponent {
         .filter(kvp => !_.isEmpty(kvp.value))
         .each(kvp => {
           let mainFilter = _.find(filters, filter => filter.id === kvp.key);
-          if (mainFilter!==undefined&&!_.isEmpty(mainFilter.filters)) {
+          if (mainFilter !== undefined && !_.isEmpty(mainFilter.filters)) {
             mainFilter.filters.forEach(subFilter => subFilter.selected = subFilter.id === kvp.value)
           }
         })
         .value();
-      this.setState({filters,didConsumeDefaultValues:true})
+      this.setState({filters, didConsumeDefaultValues: true})
     }
   }
 
@@ -152,6 +153,16 @@ class FilterBar extends BaseComponent {
       filters = _.map(filters, filter => iteratee(filter, mainFilter) ? mainFilter : filter);
     }
     return filters;
+  }
+
+  setHighlightedFilters() {
+    const {filters} = this.state;
+    const filtersWithHighlights = _.map(filters, filter => {
+      const selectedFilter = _.find(filter.filters, innerFilter => innerFilter.selected);
+      filter.highlight = selectedFilter !== undefined;
+      return filter;
+    });
+    this.setState({filters: filtersWithHighlights})
   }
 
   _renderSubFilters(filters, openFilter) {

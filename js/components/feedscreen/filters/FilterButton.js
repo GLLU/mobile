@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
-import { noop } from 'lodash'
+import * as _ from "lodash";
 
 const styles = StyleSheet.create({
   categoryItem: {
@@ -43,16 +43,17 @@ class FilterButton extends Component {
       color: '#00D7B2',
       underline: false
     },
-    onPress: noop,
+    onPress: _.noop,
     filter: {
       selected: false,
       name: 'Items',
+      highlight: false,
       icon: {
         url: require('../../../../images/filters/filter-categories.png'),
         url_hover: require('../../../../images/filters/filter-categories-active.png')
       }
     }
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -68,9 +69,9 @@ class FilterButton extends Component {
   }
 
   _renderIcon(icon, selected) {
-    let uri = this.props.activeStyle.underline || !selected ? icon['url'] : icon['url_hover'];
-    if(!_.isNumber(uri)){
-      uri={uri:uri};
+    let uri = this.props.filter.highlight || (selected && !this.props.activeStyle.underline) ? icon['url_hover'] : icon['url'];
+    if (!_.isNumber(uri)) {
+      uri = {uri: uri};
     }
     return <Image source={uri} style={styles.categoryItemImage} resizeMode={'contain'}/>;
   }
