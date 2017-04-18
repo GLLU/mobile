@@ -166,7 +166,7 @@ class TabContent extends BaseComponent {
                resizeMode={'contain'}
                muted={true}
                style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
-               repeat={false}
+               repeat={true}
                onProgress={this.getProgress()}
         />
         <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>

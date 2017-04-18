@@ -37,14 +37,19 @@ export function addNewLook(image) {
     dispatch(showProcessing());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      if (user && user.id !== -1) {
+      if (user && user.id != -1) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
-            Utils.postMultipartForm(api_key, '/looks', [], 'look[image]', image).then((data) => {
+            console.warn('type',image.type)
+            Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
+              dispatch(hideProcessing());
               if (data) {
-                const url = _.find(data.look.cover.list, x => x.version === 'small').url;
-                Utils.preloadImages([url]).then(() => {
+                const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+                console.log('urlll',url)
+                console.log('data.look.cover',data.look.cover)
+                if(data.look.cover.type !== "image") {
+                  console.log('data.look.cover.type',data.look.cover.type)
                   const payload = _.merge(data.look, {
                     image: url,
                     items: [],
@@ -54,25 +59,41 @@ export function addNewLook(image) {
                     type: EDIT_NEW_LOOK,
                     payload,
                   });
+                  console.log('uploaded', payload);
                   resolve(payload);
-                  dispatch(hideProcessing());
-                }).catch(reject);
+                } else {
+                  Utils.preloadImages([url]).then(() => {
+                    console.log('blabxxx')
+                    const payload = _.merge(data.look, {
+                      image: url,
+                      items: [],
+                      itemId: null,
+                    });
+                    dispatch({
+                      type: EDIT_NEW_LOOK,
+                      payload,
+                    });
+                    resolve(payload);
+                  }).catch(reject);
+                }
+
+                console.log('blabxxx222')
               } else {
                 reject('Uplaod error');
               }
-            }).catch(reject); 
+            }).catch(reject);
           } else {
             dispatch(hideProcessing());
-            reject('Authorization error')  
+            reject('Authorization error')
           }
         }).catch(reject);
+
       } else {
         reject('Authorization error')
       }
     });
   }
 }
-
 export function editNewLook(lookId) {
   return (dispatch, getState) => {
     dispatch(showProcessing());

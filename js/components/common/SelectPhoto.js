@@ -42,6 +42,12 @@ class SelectPhoto extends BaseComponent {
   _handleSelectPhoto(type) {
     this.logEvent('Feedscreen', {name: 'Select photo from', type: type});
     this._triggerPhotoPicker(type).then(image => {
+      if(image.path.search(".mp4") > -1) {
+        image.path = image.path.replace('file://', '')
+        image.type = 'look[video]'
+      } else {
+        image.type = 'look[image]'
+      }
       this.props.addNewItem(image);
     }).catch(err => {
       alert(err);
@@ -58,8 +64,6 @@ class SelectPhoto extends BaseComponent {
     const settings = {
       width: width,
       height: height,
-      includeBase64: true,
-      cropping: true
     };
     switch (type) {
       case 'camera':

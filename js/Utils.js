@@ -57,6 +57,7 @@ export default class Utils {
   }
 
   static postMultipartForm(api_key, path, formData, fileField, file, method = 'POST') {
+    console.warn('post')
     return new Promise((resolve, reject) => {
       formData.push({
         name : fileField,
@@ -72,7 +73,7 @@ export default class Utils {
         const json = JSON.parse(resp.data);
         const status = resp.respInfo.status;
         if (status === 200 || status === 201) {
-          resolve(json); 
+          resolve(json);
         } else if (status === 422) { //validation error
           reject(json);
         } else { //generic error
