@@ -4,6 +4,7 @@ import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimen
 import FilterGroup from './FilterGroup';
 import BaseComponent from '../../common/BaseComponent';
 import _ from 'lodash'
+import { loadCategories } from '../../../actions/filters';
 
 const myStyles = StyleSheet.create({
   container: {
@@ -82,16 +83,6 @@ const filters = [
     renderType: 'radio-multi'
   },
 ];
-
-// filters.forEach((filter, i) => {
-//   filter.filters = _.map(_.times((i + 1) * 4), iteration => {
-//     const x=_.cloneDeep(filter);
-//     x.id=iteration;
-//     return x;
-//   })
-// });
-
-import { loadCategories } from '../../../actions/filters';
 
 class FilterBar extends BaseComponent {
   static propTypes = {
