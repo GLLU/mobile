@@ -23,7 +23,7 @@ const myStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: new FontSizeCalculator(14).getSize(),
+    fontSize: new FontSizeCalculator(12).getSize(),
     fontWeight: '200',
     color: '#757575',
     borderRadius: 10

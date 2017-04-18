@@ -6,7 +6,6 @@ import { noop } from 'lodash'
 const styles = StyleSheet.create({
   categoryItem: {
     height: 52.5,
-    width: 40,
     marginHorizontal: 4,
     justifyContent: 'center',
     alignItems: 'center',
@@ -96,7 +95,6 @@ class FilterButton extends Component {
   render() {
     const {filter} = this.props;
     const {selected} = this.state;
-    console.log('filter',filter)
     return (
       <View style={[styles.categoryItem, this.getHiglight(selected && this.props.activeStyle.underline)]}>
         <Button
