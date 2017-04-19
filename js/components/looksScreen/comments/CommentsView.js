@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import {noop} from 'lodash'
+import { noop } from 'lodash'
 import * as _ from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentsListView from './CommentsListView'
 import BottomDrawerModal from '../common/BottomDrawerModal'
+import Spinner from '../../loaders/Spinner';
 
 import { replaceAt, getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
 
@@ -59,7 +60,8 @@ class CommentsView extends Component {
     comments: React.PropTypes.array,
     count: React.PropTypes.number,
     look_id: React.PropTypes.number,
-    onRequestClose: React.PropTypes.func
+    onRequestClose: React.PropTypes.func,
+    areCommentsLoaded: React.PropTypes.bool
   };
 
   static defaultProps = {
@@ -75,9 +77,10 @@ class CommentsView extends Component {
     this._pushComment = this._pushComment.bind(this);
     this.getCommentsData = this.getCommentsData.bind(this);
     this.onUserNavigate = this.onUserNavigate.bind(this);
+    this._renderListView = this._renderListView.bind(this);
     this.currentPageIndex = 1;
     this.state = {
-      count:this.props.count,
+      count: this.props.count,
       isTrueEndReached: false
     };
   }
@@ -87,13 +90,13 @@ class CommentsView extends Component {
     this.currentPageIndex++;
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.isOpen!==this.props.isOpen){
-      if(!nextProps.isOpen){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isOpen !== this.props.isOpen) {
+      if (!nextProps.isOpen) {
         this.props.initLookComments();
-        this.currentPageIndex=1;
+        this.currentPageIndex = 1;
       }
-      else{
+      else {
         this.getCommentsData();
       }
     }
@@ -113,7 +116,7 @@ class CommentsView extends Component {
       children: []
     };
     this.props.addLookComment(comment);
-    this.setState({count:this.state.count+1})
+    this.setState({count: this.state.count + 1})
   }
 
   onUserNavigate(user) {
@@ -122,18 +125,26 @@ class CommentsView extends Component {
 
   _renderFooter() {
     return (
-      <View style={{paddingBottom: 10,paddingTop: 10,height:60,flexDirection:'column', backgroundColor:'#f2f2f2'}}>
+      <View
+        style={{paddingBottom: 10, paddingTop: 10, height: 60, flexDirection: 'column', backgroundColor: '#f2f2f2'}}>
         <CommentInput onSendPress={this._pushComment}/>
       </View>
     );
+  }
+
+  _renderListView() {
+    return (
+      <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count == 0}
+                        comments={this.props.comments}
+                        onEndReached={this.getCommentsData}/>
+    )
   }
 
   render() {
     return (
       <BottomDrawerModal {...this.props}>
         <CommentsViewHeader count={this.state.count}/>
-        <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count==0} comments={this.props.comments}
-                          onEndReached={this.getCommentsData}/>
+        {this.props.areCommentsLoaded ? this._renderListView() : <Spinner/>}
         {this._renderFooter()}
       </BottomDrawerModal>
     );
@@ -153,6 +164,7 @@ const mapStateToProps = state => {
   return ({
     myUser: state.user,
     comments: state.lookComments.lookCommentsData,
+    areCommentsLoaded: state.lookComments.currId !== -1,
     navigation: state.cardNavigation
   });
 };
