@@ -270,8 +270,8 @@ const mapBodyTypes = (bodytypes) => {
           gender: key,
           kind: 'body_type',
           icon: {
-            url: bodyType.imageOriUrl,
-            url_hover: bodyType.imageOriUrl,
+            url: bodyType.filterImageUrl,
+            url_hover: bodyType.filterImageUrlActive,
           }
         };
       }))
