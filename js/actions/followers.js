@@ -11,7 +11,7 @@ export function setUserFollowersData(data): Action {
   };
 }
 
-export function getUserFollowersData(id, pageNumber = 1, pageSize = 25): Action {
+export function getUserFollowersData(id, pageNumber = 1, pageSize = 25) {
   return (dispatch) => {
     return dispatch(rest.actions.followers({
       user_id: id,
@@ -31,7 +31,7 @@ export function getUserFollowersData(id, pageNumber = 1, pageSize = 25): Action 
   };
 }
 
-export function initUserFollowers(data): Action {
+export function initUserFollowers(data) {
   return {
     type: INIT_USER_FOLLOWERS,
     payload: data

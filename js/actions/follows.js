@@ -37,21 +37,21 @@ export function unfollow(id) {
   };
 }
 
-export function initUserFollows(data): Action {
+export function initUserFollows(data) {
   return {
     type: INIT_USER_FOLLOWS,
     payload: data
   };
 }
 
-export function setUserFollowsData(data): Action {
+export function setUserFollowsData(data) {
   return {
     type: SET_USER_FOLLOWS_DATA,
     payload: data
   };
 }
 
-export function getUserFollowsData(id, pageNumber = 1, pageSize = 25): Action {
+export function getUserFollowsData(id, pageNumber = 1, pageSize = 25) {
   return (dispatch) => {
     return dispatch(rest.actions.follows({
       user_id: id,
