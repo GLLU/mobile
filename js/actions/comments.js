@@ -12,7 +12,7 @@ export function setLookCommentsData(data): Action {
   };
 }
 
-export function getLookCommentsData(id, pageNumber = 1, pageSize = 25): Action {
+export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
   return (dispatch) => {
     return dispatch(rest.actions.comments({
       look_id: id,
@@ -32,7 +32,7 @@ export function getLookCommentsData(id, pageNumber = 1, pageSize = 25): Action {
   };
 }
 
-export function initLookComments(data): Action {
+export function initLookComments(data) {
   return {
     type: INIT_LOOK_COMMENTS,
     payload: data
