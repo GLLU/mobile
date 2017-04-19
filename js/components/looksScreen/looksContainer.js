@@ -140,33 +140,37 @@ class LooksContainer extends BasePage {
   onSwipe(gestureName) {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
-      case SWIPE_UP:
+      case SWIPE_UP: {
         const {meta: {total}} = this.props;
-        if (this.state.currScrollIndex < total-1) {
+        if (this.state.currScrollIndex < total - 1) {
           this._scrollView.scrollTo({x: 0, y: 0, animated: false});
           this._scrollView.scrollTo({x: 0, y: height, animated: true});
-          this.setState({currScrollIndex: this.state.currScrollIndex+1})
+          this.setState({currScrollIndex: this.state.currScrollIndex + 1})
         }
         if (this.state.currScrollIndex % 5 === 0) {
           this.loadMoreAsync();
         }
         break;
-      case SWIPE_DOWN:
+      }
+      case SWIPE_DOWN: {
         if (this.state.currScrollIndex !== 0) {
-          this._scrollView.scrollTo({x: 0, y: height+height, animated: false});
+          this._scrollView.scrollTo({x: 0, y: height + height, animated: false});
           this._scrollView.scrollTo({x: 0, y: height, animated: true});
-          this.setState({currScrollIndex: this.state.currScrollIndex-1})
+          this.setState({currScrollIndex: this.state.currScrollIndex - 1})
         }
         if (this.state.currScrollIndex % 5 === 0) {
           this.loadMoreAsync();
         }
         break;
+      }
       case SWIPE_LEFT:
         console.log('swipe left, no action');
         break;
       case SWIPE_RIGHT:
         console.log('swipe right, no action');
         break;
+      default:
+        console.log('have we broken the 4th wall?')
     }
   }
 
