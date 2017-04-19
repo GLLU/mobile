@@ -25,20 +25,14 @@ export function unLikeUpdate(data) {
 }
 
 export function like(id) {
-  return (dispatch, getState) => {
-    dispatch(rest.actions.likes.post({look_id: id}, {}, (err, data) => {
-      if (!err) {
-      }
-    }));
+  return (dispatch) => {
+    dispatch(rest.actions.likes.post({look_id: id}, {}));
   };
 }
 
 export function unlike(id) {
   return (dispatch) => {
-    dispatch(rest.actions.likes.delete({look_id: id}, (err, data) => {
-      if (!err) {
-      }
-    }));
+    dispatch(rest.actions.likes.delete({look_id: id}));
   };
 }
 
