@@ -22,6 +22,8 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import * as _ from "lodash";
+
 const config = {
   velocityThreshold: 0.3,
   directionalOffsetThreshold: 50
