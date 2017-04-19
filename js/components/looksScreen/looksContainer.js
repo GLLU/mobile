@@ -22,6 +22,8 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import * as _ from "lodash";
+
 const config = {
   velocityThreshold: 0.3,
   directionalOffsetThreshold: 50
@@ -250,31 +252,30 @@ class LooksContainer extends BasePage {
           this.props.flatLooksData[this.state.currScrollIndex+2], // fictional
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex+1]
-        ]
-        break;
+        ];
       case total-1:
         return looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex-1],
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex-2] // fictional
-        ]
+        ];
       default:
         return looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex-1],
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex+1]
-        ]
+        ];
     }
   }
 
   render() {
-    let looksArr = ''
+    let looksArr = '';
     if(this.state.showAsFeed) {
       looksArr = this.getFlatFeed()
     } else {
       looksArr = [this.props.flatLook]
     }
-    console.log('looksArr',looksArr)
+    console.log('looksArr',looksArr);
     return (
       <ScrollView pagingEnabled={false}
                   ref={(c) => {

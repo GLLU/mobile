@@ -288,51 +288,42 @@ export default class ModalDropdown extends Component {
       props.key = preservedProps.key;
       props.onPress = preservedProps.onPress;
       switch (row.type.displayName) {
-        case 'TouchableHighlight':
-        {
+        case 'TouchableHighlight': {
           return (
             <TouchableHighlight {...props}>
               {row.props.children}
             </TouchableHighlight>
           );
         }
-          break;
-        case 'TouchableOpacity':
-        {
+        case 'TouchableOpacity': {
           return (
             <TouchableOpacity {...props}>
               {row.props.children}
             </TouchableOpacity>
           );
         }
-          break;
-        case 'TouchableWithoutFeedback':
-        {
+        case 'TouchableWithoutFeedback': {
           return (
             <TouchableWithoutFeedback {...props}>
               {row.props.children}
             </TouchableWithoutFeedback>
           );
         }
-          break;
-        case 'TouchableWithNativeFeedback':
-        {
+        case 'TouchableWithNativeFeedback': {
           return (
             <TouchableWithNativeFeedback {...props}>
               {row.props.children}
             </TouchableWithNativeFeedback>
           );
         }
-          break;
         default:
-          break;
+          return (
+            <TouchableHighlight {...preservedProps}>
+              {row}
+            </TouchableHighlight>
+          );
       }
     }
-    return (
-      <TouchableHighlight {...preservedProps}>
-        {row}
-      </TouchableHighlight>
-    );
   }
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {

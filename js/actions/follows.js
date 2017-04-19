@@ -26,44 +26,38 @@ export function unFollowUpdate(data) {
 }
 
 export function follow(id) {
-  return (dispatch, getState) => {
-    dispatch(rest.actions.follows.post({user_id: id}, {}, (err, data) => {
-      if (!err) {
-      }
-    }));
+  return (dispatch) => {
+    dispatch(rest.actions.follows.post({user_id: id}, {}));
   };
 }
 
 export function unfollow(id) {
   return (dispatch) => {
-    dispatch(rest.actions.follows.delete({user_id: id}, (err, data) => {
-      if (!err) {
-      }
-    }));
+    dispatch(rest.actions.follows.delete({user_id: id}));
   };
 }
 
-export function initUserFollows(data): Action {
+export function initUserFollows(data) {
   return {
     type: INIT_USER_FOLLOWS,
     payload: data
   };
 }
 
-export function setUserFollowsData(data): Action {
+export function setUserFollowsData(data) {
   return {
     type: SET_USER_FOLLOWS_DATA,
     payload: data
   };
 }
 
-export function getUserFollowsData(id, pageNumber = 1, pageSize = 25): Action {
+export function getUserFollowsData(id, pageNumber = 1, pageSize = 25) {
   return (dispatch) => {
     return dispatch(rest.actions.follows({
       user_id: id,
-      page:{
-        size:pageSize,
-        number:pageNumber
+      page: {
+        size: pageSize,
+        number: pageNumber
       }
     }, {}, (err, userFollowsData) => {
       if (!err && userFollowsData) {

@@ -40,13 +40,9 @@ export function initLookComments(data): Action {
 }
 
 export function comment(id, body) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(rest.actions.comments.post({look_id: id},
-      {body: JSON.stringify({body})},
-      (err, data) => {
-        if (!err) {
-        }
-      }));
+      {body: JSON.stringify({body})}));
   };
 }
 

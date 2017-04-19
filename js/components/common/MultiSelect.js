@@ -284,7 +284,7 @@ export default class MultiSelect extends Component {
       </View>
     );
   }
-};
+}
 
 
 var styles = StyleSheet.create({
