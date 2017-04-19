@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image } from 'react-native'
 import { View, Text, Button } from 'native-base';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 const styles = StyleSheet.create({
   categoryItem: {
