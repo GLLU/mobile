@@ -8,7 +8,7 @@ const initialState = {
   info:null
 };
 
-export default function (state:State = initialState, action:Action): State {
+export default function (state = initialState, action) {
   switch(action.type){
     case SHOW_ERROR:
       return {
