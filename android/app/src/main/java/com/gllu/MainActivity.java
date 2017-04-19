@@ -1,8 +1,6 @@
 package com.gllu;
 
 import android.content.Intent;
-import android.os.Bundle;
-import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
 
 import com.facebook.react.ReactActivity;
