@@ -5,7 +5,7 @@ export const SET_LOOK_COMMENTS_DATA = 'SET_LOOK_COMMENTS_DATA';
 export const INIT_LOOK_COMMENTS = 'INIT_LOOK_COMMENTS';
 export const ADD_LOOK_COMMENT = 'ADD_LOOK_COMMENT';
 
-export function setLookCommentsData(data): Action {
+export function setLookCommentsData(data) {
   return {
     type: SET_LOOK_COMMENTS_DATA,
     payload: data
