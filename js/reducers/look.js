@@ -6,7 +6,7 @@ const initialState = {
   is_liked: false
 };
 
-export default function (state:State = initialState, action): State {
+export default function (state = initialState, action) {
   switch(action.type){
     case SET_LOOK_DATA:
       return {

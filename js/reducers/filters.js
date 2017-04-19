@@ -2,14 +2,6 @@ import _ from 'lodash';
 import type { Action } from '../actions/types';
 import { SET_BRANDS, SET_CATEGORIES, SET_OCCASION_TAGS, SET_ITEM_SIZES } from '../actions/filters';
 
-export type State = {
-    minPrice: number,
-    maxPrice: number,
-    categories: array,
-    images: array,
-    brands: array
-}
-
 const initialState = {
   minPrice: 1,
   maxPrice: 1000,

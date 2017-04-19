@@ -1,4 +1,5 @@
 import { SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/looks';
+import _ from 'lodash'
 
 const initialState = {
   userLooksData: [],
@@ -8,7 +9,7 @@ const initialState = {
   isMyProfile: true
 };
 
-export default function (state:State = initialState, action): State {
+export default function (state = initialState, action) {
   switch(action.type){
     case SET_USER_LOOKS:
         let userLooksData = action.payload.looks.map(look => {
