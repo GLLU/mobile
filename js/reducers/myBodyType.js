@@ -13,6 +13,8 @@ const bodyTypeList = {
       imageEditUrl: require('../../images/INVERTED_TRIANGLE_Edit.png'),
       shapeActive: require('../../images/INVERTED_TRIANGLE_green.png'),
       shapeDeactive: require('../../images/INVERTED_TRIANGLE_gray.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-inverted-triangle-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-inverted-triangle.png')
     },
     {
       name: 'Lean Column',
@@ -22,7 +24,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/LEAN_COLUMN.png'),
       imageEditUrl: require('../../images/LEAN_COLUMN_Edit.png'),
       shapeActive: require('../../images/LEAN_COLUMN_Shape_green.png'),
-      shapeDeactive: require('../../images/LEAN_COLUMN_Shape_gray.png')
+      shapeDeactive: require('../../images/LEAN_COLUMN_Shape_gray.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-lean-column-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-lean-column.png')
     },
     {
       name: 'Rectangle',
@@ -32,7 +36,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/FULL_HOURGLASS_blank.png'),
       imageEditUrl: require('../../images/FULL_HOURGLASS.png'),
       shapeActive: require('../../images/RECTANGLE_Shape_green.png'),
-      shapeDeactive: require('../../images/RECTANGLE_Shape_gray.png')
+      shapeDeactive: require('../../images/RECTANGLE_Shape_gray.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-rectangle-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-rectangle.png')
     },
     {
       name: 'Apple',
@@ -42,7 +48,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/APPLE.png'),
       imageEditUrl: require('../../images/APPLE_Edit.png'),
       shapeActive: require('../../images/APPLE_Shape_green.png'),
-      shapeDeactive: require('../../images/APPLE_Shape_gray.png')
+      shapeDeactive: require('../../images/APPLE_Shape_gray.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-apple-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-apple.png')
     },
     {
       name: 'Pear',
@@ -52,7 +60,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/PEAR.png'),
       imageEditUrl: require('../../images/PEAR_Edit.png'),
       shapeActive: require('../../images/PEAR_Shape_green.png'),
-      shapeDeactive: require('../../images/PEAR_Shape_gray.png')
+      shapeDeactive: require('../../images/PEAR_Shape_gray.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-pear-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-pear.png')
     },
     {
       name: 'Full Hourglass',
@@ -62,7 +72,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/FULL_HOURGLASS.png'),
       imageEditUrl: require('../../images/FULL_HOURGLASS_Edit.png'),
       shapeActive: require('../../images/FULL_HOURGLASS_Shape_green.png'),
-      shapeDeactive: require('../../images/FULL_HOURGLASS_Shape_gray.png')
+      shapeDeactive: require('../../images/FULL_HOURGLASS_Shape_gray.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-full-hourglass-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-full-hourglass.png')
     }
   ],
   male: [
@@ -74,7 +86,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_trapezoid.png'),
       imageEditUrl: require('../../images/maleBodyTypes/bodies/trapezoid_e.png'),
       shapeActive: require('../../images/maleBodyTypes/shapes/trapezoid_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/trapezoid_gry.png')
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/trapezoid_gry.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/male-trapezoid-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/male-trapezoid.png')
     },
     {
       name: 'Inverted Triangle',
@@ -84,7 +98,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_Invert.png'),
       imageEditUrl: require('../../images/maleBodyTypes/bodies/Invert_e.png'),
       shapeActive: require('../../images/maleBodyTypes/shapes/rev_triangle_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/rev_triangle_gry.png')
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/rev_triangle_gry.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/male-inverted-triangle-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/male-inverted-triangle.png')
     },
     {
       name: 'Rectangle',
@@ -94,7 +110,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_rectangle.png'),
       imageEditUrl: require('../../images/maleBodyTypes/bodies/rectangle_e.png'),
       shapeActive: require('../../images/maleBodyTypes/shapes/rec_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/rec_gry.png')
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/rec_gry.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/male-rectangle-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/male-rectangle.png')
     },
     {
       name: 'Triangle',
@@ -104,7 +122,9 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_triangle.png'),
       imageEditUrl: require('../../images/maleBodyTypes/bodies/triangle_e.png'),
       shapeActive: require('../../images/maleBodyTypes/shapes/triangle_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/triangle_gry.png')
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/triangle_gry.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/male-triangle-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/male-triangle.png')
     },
     {
       name: 'Oval',
@@ -114,10 +134,12 @@ const bodyTypeList = {
       imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_oval.png'),
       imageEditUrl: require('../../images/maleBodyTypes/bodies/oval_e.png'),
       shapeActive: require('../../images/maleBodyTypes/shapes/oval_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/oval_gry.png')
+      shapeDeactive: require('../../images/maleBodyTypes/shapes/oval_gry.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/male-oval-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/male-oval.png')
     }
   ]
-}
+};
 
 // Action Handlers
 const ACTION_HANDLERS = {
