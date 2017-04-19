@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { StyleSheet, Text, Dimensions, Platform } from 'react-native';
-import { View, Grid, Col, Row, Button, Icon} from 'native-base';
+import { View, Grid, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
-import glluTheme from '../../themes/gllu-theme';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
@@ -11,7 +10,6 @@ import StepTwoOccasions from './StepTwoOccasions';
 import StepThreePublish from './StepThreePublish';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
-import Gllu from '../common';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
@@ -73,9 +71,7 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
-    console.warn('isVideo')
     isVideo = this.props.image.search(".mp4") > -1
-
     this.state = {
       isVideo,
       currentStep: -1,
@@ -101,7 +97,11 @@ class AddItemPage extends BasePage {
     })
   }
 
-
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
+        this.handleContinue();
+    }
+  }
 
   handleContinue() {
     const { currentStep } = this.state;
@@ -128,10 +128,6 @@ class AddItemPage extends BasePage {
     this.props.updateLookItem().then(response => {
       this.selectTab(this.state.currentStep + 1);
     });
-  }
-
-  tagAnotherAction() {
-    this.props.pushRoute({ key: 'addItemScreen' }, this.props.navigation.key);
   }
 
   publishAction() {
@@ -191,10 +187,6 @@ class AddItemPage extends BasePage {
     }
   }
 
-  renderImageView() {
-
-  }
-
   renderImageWithTags() {
     const { items, image, itemId } = this.props;
     const { imageWidth } = this.state;
@@ -211,11 +203,11 @@ class AddItemPage extends BasePage {
 
   renderVideoWithTags() {
     const { image, itemId } = this.props;
+    const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
         itemId={itemId}
-        width={230}
         mode={mode}
         image={image}
         createLookItemForVideo={this.createLookItemForVideo.bind(this)}
@@ -242,7 +234,6 @@ class AddItemPage extends BasePage {
   }
 
   getAllowContinue() {
-
     const { item } = this.props;
     switch(this.state.currentStep) {
       case -1:
@@ -278,7 +269,7 @@ class AddItemPage extends BasePage {
       return (
         <Grid >
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
-            {this.state.isVideo ? null : this.renderImageWithTags()}
+            {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
             {this.renderActions()}
           </Row>
         </Grid>

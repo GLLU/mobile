@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
-import { Text, Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Dimensions, PanResponder, Animated } from 'react-native';
 import { View } from 'native-base';
-import FitImage from 'react-native-fit-image';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
 import Video from 'react-native-video';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-
-export const EDIT_MODE = 'edit';
-export const CREATE_MODE = 'create';
 export const VIEW_MODE = 'view';
-const deviceHeight = Dimensions.get('window').height;
-const itemBackground = require('../../../images/tag-background.png');
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
-const w = Dimensions.get('window').weight;
+const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   base: {
@@ -137,37 +130,26 @@ class VideoWithTags extends Component {
       height = parseInt(h - BORDER_WIDTH * 2 - glluTheme.toolbarHeight);
       width = parseInt(height * 9 / 16);
     }
-
     return { width, height };
   }
 
   componentDidMount() {
     this._handlePressWithoutPress()  // auto creating an item to continue for further steps, will be refactored when items will be shown on video
-
   }
 
   _render() {
-    const { width, height } = this.getRenderingDimensions();
     return (
-      <View style={{flex: 1}} >
+      <View style={{flex: 1, paddingHorizontal: 0, padding: 0}} >
         <Video source={{uri: this.props.image}}
-               resizeMode="contain"
+               resizeMode="stretch"
                muted={true}
-               style={{width: width, height: height, overflow: 'hidden', flexGrow: h, flexBasis: 1}}
+               style={{width: w, height: h, overflow: 'hidden'}}
                repeat={true}/>
       </View>
-
     );
   }
 
   _renderContent() {
-    if (false) {
-      const Tag = Platform.OS === 'ios' ? TouchableWithoutFeedback : TouchableOpacity;
-      return(
-        <Tag onPress={this._handlePress.bind(this)}>
-            {this._render()}
-        </Tag>);
-    }
     return this._render();
   }
 

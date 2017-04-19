@@ -4,6 +4,7 @@ import { View, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { createLookItem, setTagPosition, pushRoute, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
+import VideoWithTags from '../common/VideoWithTags';
 const h = Dimensions.get('window').height;
 const w = Dimensions.get('window').width;
 
@@ -50,21 +51,27 @@ class TagItemPage extends BaseComponent {
   }
 
   render() {
-    const { items, image, itemId } = this.props;
-    const { mode } = this.state;
+    const { isVideo } = this.props;
    return (
-     <View
-       style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
-       <ImageWithTags
-         ref={(ref) => this.imageEditor = ref}
-         mode={mode}
-         itemId={itemId}
-         items={items}
-         image={image}
-         onMarkerCreate={this.handleAddTag.bind(this)}
-         onDragEnd={this.handleOnDragEnd.bind(this)}/>
+     <View style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+       {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
      </View>
    )
+  }
+
+  renderImageWithTags() {
+    const { items, image, itemId, isVideo } = this.props;
+    const { mode } = this.state;
+    return (
+      <ImageWithTags
+        ref={(ref) => this.imageEditor = ref}
+        mode={mode}
+        itemId={itemId}
+        items={items}
+        image={image}
+        onMarkerCreate={this.handleAddTag.bind(this)}
+        onDragEnd={this.handleOnDragEnd.bind(this)}/>
+    )
   }
 
   renderVideoWithTags() {
@@ -73,7 +80,7 @@ class TagItemPage extends BaseComponent {
     return (
       <View
         style={{height: h, width: w, flexDirection: 'column', alignItems: 'center'}}>
-          <ImageWithTags
+          <VideoWithTags
               ref={(ref) => this.imageEditor = ref}
               mode={mode}
               itemId={itemId}
