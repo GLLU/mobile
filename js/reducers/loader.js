@@ -7,7 +7,7 @@ const initialState = {
   processing: false,
 };
 
-export default function (state:State = initialState, action:Action): State {
+export default function (state = initialState, action:Action) {
   if (action.type === SHOW_LOADER) {
     return {
       ...state,

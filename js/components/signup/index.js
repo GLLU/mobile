@@ -188,10 +188,6 @@ class SignUpPage extends BasePage {
     ImagePicker.openPicker({
       cropping: false,
     }).then(image => {
-      data = {
-      image,
-      }
-
       image.type = 'multipart/form-data'
       image.uri = image.path;
       this.setState({avatar: image, avatarIcon: 'check'})

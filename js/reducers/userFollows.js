@@ -6,7 +6,7 @@ const initialState = {
   currId: -1
 };
 
-export default function (state: State = initialState, action): State {
+export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_USER_FOLLOWS_DATA:
       let userFollowsData = action.payload.follows.map(followMapper.mapFollow);

@@ -4,7 +4,7 @@ import rest from '../api/rest';
 export const SET_USER_FOLLOWERS_DATA = 'SET_USER_FOLLOWERS_DATA';
 export const INIT_USER_FOLLOWERS = 'INIT_USER_FOLLOWERS';
 
-export function setUserFollowersData(data): Action {
+export function setUserFollowersData(data) {
   return {
     type: SET_USER_FOLLOWERS_DATA,
     payload: data
