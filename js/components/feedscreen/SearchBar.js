@@ -29,18 +29,18 @@ const myStyles = StyleSheet.create({
     borderRadius: 10
   },
   btnCloseFilter: {
-    marginLeft: 15,
+    marginLeft: 10,
     alignSelf: 'center',
     marginRight: 5,
     borderWidth: 0.4,
     borderColor: '#757575',
     borderRadius: 8,
-    paddingHorizontal: 10,
+    paddingHorizontal: 6,
     height: 20,
   },
   clearText: {
     color: '#757575',
-    fontSize: 13
+    fontSize: new FontSizeCalculator(12).getSize()
   },
 });
 

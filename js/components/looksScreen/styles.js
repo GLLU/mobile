@@ -1,9 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-
 const width = Dimensions.get('window').width
-const softMenuBarHeight=ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
-const statusBarHeight=ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
 export default StyleSheet.create({
@@ -36,12 +33,12 @@ export default StyleSheet.create({
   },
   videoBackground: {
     position: 'absolute',
-    top: 0,
+    top: 0 ,
     left: 0,
     bottom: 0,
     right: 0,
     width: null,
-    height: height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+    height: height
   },
   bottomLeft: {
     left: 10
@@ -59,7 +56,7 @@ export default StyleSheet.create({
     justifyContent:'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     minHeight: 45,
-    minWidth: 45,
+
     borderRadius: 10,
   },
   footerButtonActive: {

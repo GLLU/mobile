@@ -169,7 +169,7 @@ class TabContent extends BaseComponent {
                repeat={false}
                onProgress={this.getProgress()}
         />
-        <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
+
       </View>
     )
   }
@@ -188,6 +188,7 @@ class TabContent extends BaseComponent {
         <View key={img.id} style={{width: img.width, height: img.height, paddingLeft: 0}}>
           <TouchableOpacity onPress={(e) => this._handleItemPress(img)}>
             {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
+            {img.coverType === 'video' ? <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/> : null}
           </TouchableOpacity>
         </View>
       );

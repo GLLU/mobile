@@ -62,10 +62,13 @@
         </dict>
       </dict>
     </dict>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>$(PRODUCT_NAME) microphone use</string>
     <key>NSCameraUsageDescription</key>
-    <string>test app and upload</string>
+    <string>$(PRODUCT_NAME) camera use
+$(PRODUCT_NAME) camera use</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string/>
+    <string>location privacy</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Sharing photos in GLLU</string>
     <key>UIAppFonts</key>
@@ -109,5 +112,7 @@
     <string>$(CODEPUSH_KEY)</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>$(PRODUCT_NAME) media library use</string>
   </dict>
 </plist>

@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import FooterButton from './FooterButton'
 
 const bubbleIcon = require('../../../../images/bubble.png');
-
+//get the category icon
 export default class CommentsButton extends Component {
   constructor(props) {
     super(props);

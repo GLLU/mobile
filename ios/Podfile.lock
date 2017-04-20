@@ -13,7 +13,7 @@ PODS:
     - FBSDKCoreKit
   - Flurry-iOS-SDK/FlurrySDK (7.8.2)
   - QBImagePickerController (3.4.0)
-  - RSKImageCropper (1.6.0)
+  - RSKImageCropper (1.6.1)
 
 DEPENDENCIES:
   - FBSDKCoreKit (= 4.17)
@@ -21,7 +21,17 @@ DEPENDENCIES:
   - FBSDKShareKit (= 4.17)
   - Flurry-iOS-SDK/FlurrySDK
   - QBImagePickerController
-  - RSKImageCropper
+  - RSKImageCropper (from `https://github.com/ruslanskorb/RSKImageCropper.git`, branch `master`)
+
+EXTERNAL SOURCES:
+  RSKImageCropper:
+    :branch: master
+    :git: https://github.com/ruslanskorb/RSKImageCropper.git
+
+CHECKOUT OPTIONS:
+  RSKImageCropper:
+    :commit: 92734986c479a88d4dfe9cc26eb390ff21903728
+    :git: https://github.com/ruslanskorb/RSKImageCropper.git
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -30,8 +40,8 @@ SPEC CHECKSUMS:
   FBSDKShareKit: 9b573d03fbee36cbaf42d5bb1f2bc019e0d72347
   Flurry-iOS-SDK: 8ed76252016d0162a893363c108a010ab97d424c
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  RSKImageCropper: 6903235c7a8a79acb1e1f3490e2c911b858f8208
+  RSKImageCropper: 0df8c99e77a8ea7ca7a8b83ef468556f31584254
 
-PODFILE CHECKSUM: cb8c48d94850171987ebab5ae1a490831da331b6
+PODFILE CHECKSUM: 9c323a02f009411a6e8cd9f818c4cf35a10611cc
 
 COCOAPODS: 1.2.0

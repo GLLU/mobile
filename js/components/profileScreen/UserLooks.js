@@ -92,11 +92,12 @@ class UserLooks extends Component {
   renderVideo(img) {
     return (
       <View style={{flex: 1}}>
-        <Video source={{uri: img.uri,mainVer: 1, patchVer: 0}}
+        <Video source={{uri: img.uri, mainVer: 1, patchVer: 0}}
                resizeMode={'contain'}
                muted={true}
-               style={{width: img.width - 5, height: img.height}}
-               repeat={true} />
+               style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
+               repeat={true}
+        />
       </View>
     )
   }

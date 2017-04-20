@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { StyleSheet, Text, Dimensions, Platform } from 'react-native';
-import { View, Grid, Col, Row, Button, Icon} from 'native-base';
+import { View, Grid, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
-import glluTheme from '../../themes/gllu-theme';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
@@ -11,11 +10,12 @@ import StepTwoOccasions from './StepTwoOccasions';
 import StepThreePublish from './StepThreePublish';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
-import Gllu from '../common';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
+import VideoWithTags from '../common/VideoWithTags';
+
 const IMAGE_VIEW_PADDING = 80;
 
 const styles = StyleSheet.create({
@@ -71,7 +71,9 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
+    isVideo = this.props.image.search(".mp4") > -1
     this.state = {
+      isVideo,
       currentStep: -1,
       locationX: 0,
       locationY: 0,
@@ -79,7 +81,13 @@ class AddItemPage extends BasePage {
       mode: props.mode,
       allowContinue: false,
     };
+    console.log('ADDITEMINDEX')
   }
+
+  componentDidMount() {
+    console.log('image from redux',this.props.image)
+  }
+
 
   _handleLayoutImage(e) {
     const { width } = e.nativeEvent.layout;
@@ -89,7 +97,11 @@ class AddItemPage extends BasePage {
     })
   }
 
-
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
+        this.handleContinue();
+    }
+  }
 
   handleContinue() {
     const { currentStep } = this.state;
@@ -116,10 +128,6 @@ class AddItemPage extends BasePage {
     this.props.updateLookItem().then(response => {
       this.selectTab(this.state.currentStep + 1);
     });
-  }
-
-  tagAnotherAction() {
-    this.props.pushRoute({ key: 'addItemScreen' }, this.props.navigation.key);
   }
 
   publishAction() {
@@ -179,7 +187,7 @@ class AddItemPage extends BasePage {
     }
   }
 
-  renderImageView() {
+  renderImageWithTags() {
     const { items, image, itemId } = this.props;
     const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
@@ -190,6 +198,20 @@ class AddItemPage extends BasePage {
         mode={mode}
         items={items}
         image={image}/>
+    );
+  }
+
+  renderVideoWithTags() {
+    const { image, itemId } = this.props;
+    const { imageWidth } = this.state;
+    const mode = this.getCurrentMode();
+    return (
+      <VideoWithTags
+        itemId={itemId}
+        mode={mode}
+        image={image}
+        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
+      />
     );
   }
 
@@ -212,7 +234,6 @@ class AddItemPage extends BasePage {
   }
 
   getAllowContinue() {
-
     const { item } = this.props;
     switch(this.state.currentStep) {
       case -1:
@@ -226,12 +247,20 @@ class AddItemPage extends BasePage {
     }
   }
 
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
   renderContent() {
     if (this.state.currentStep === -1) {
       const { mode } = this.state;
       return (
         <StepMarker
           mode={mode}
+          isVideo={isVideo}
           />
       );
     }
@@ -240,7 +269,7 @@ class AddItemPage extends BasePage {
       return (
         <Grid >
           <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
-            {this.renderImageView()}
+            {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
             {this.renderActions()}
           </Row>
         </Grid>
