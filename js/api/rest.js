@@ -51,6 +51,10 @@ export default reduxApi({
     url: "/abuse",
     crud: true,
   },
+  notifications: {
+    url: "/notifications",
+    crud: true,
+  },
   looks: {
     url: '/looks/:id',
     crud: true
