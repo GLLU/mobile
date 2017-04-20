@@ -54,7 +54,7 @@ class FeedPage extends BasePage {
       }
     });
 
-    this.props.getNotifications()
+    this.props.getNotifications() // can stay here, still thinking about it
   }
 
   setUser(name) {
@@ -93,8 +93,8 @@ class FeedPage extends BasePage {
   }
 
   _handleSearchInput(term) {
-    console.log('term',term)
     this.setState({searchTerm: term})
+    this.props.getNotifications() // need to be moved to notification page
   }
 
   render() {

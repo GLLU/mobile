@@ -6,7 +6,11 @@ import Pusher from 'pusher-js/react-native';
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
 export const ADD_USER_NOTIFICATION = 'ADD_USER_NOTIFICATION';
 
-export function setUserNotifications(data) {
+export function setUserNotifications(notificationsData, page) {
+  const data = {
+    notificationsData,
+    page
+  }
   return {
     type: SET_USER_NOTIFICATIONS,
     payload: data
@@ -21,25 +25,26 @@ export function addUserNotification(data) {
 }
 
 export function getNotifications() {
+
   return (dispatch, getState) => {
-    return dispatch(rest.actions.notifications({}, {}, (err, notificationsData) => {
+    let page = getState().notifications.page+1
+    return dispatch(rest.actions.notifications({"page[size]" : 2, "page[number]" : page,}, {}, (err, notificationsData) => {
       if (!err && notificationsData) {
-        dispatch(setUserNotifications(notificationsData));
         const userId = getState().user.id;
-        getPusherClient(userId);
+        _.isEmpty(getState().notifications.allNotifications) ? getPusherClient(dispatch, userId) : null
+        dispatch(setUserNotifications(notificationsData, page++));
       }
     }));
   };
 }
 
-function getPusherClient(userId) {
-  console.log('Config.PUSHER_KEY',Config.PUSHER_KEY)
+function getPusherClient(dispatch, userId) {
   const pusher = new Pusher(Config.PUSHER_KEY, {
     encrypted: true
   });
   const channel = pusher.subscribe('notifications_'+userId);
   channel.bind('Like', function(data) {
-    console.warn('got push notification',data.message);
+      dispatch(addUserNotification(data.message))
   });
 }
 

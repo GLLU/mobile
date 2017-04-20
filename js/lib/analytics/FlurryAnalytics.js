@@ -21,7 +21,7 @@ class FlurrAnalytics extends BaseAnalytic {
       FlurryAnalytics.setCrashReportingEnabled(true);
       FlurryAnalytics.setDebugLogEnabled(false);      
     }
-
+    console.log('flurykeyyyy',Config)
     const key = Platform.OS === 'ios' ? Config.FLURRY_API_KEY_IOS : Config.FLURRY_API_KEY_ANDROID
     FlurryAnalytics.startSession(key);
   }
