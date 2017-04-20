@@ -163,7 +163,7 @@ class TabContent extends BaseComponent {
     return (
       <View style={{flex: 1}}>
         <Video source={{uri: img.uri, mainVer: 1, patchVer: 0}}
-               resizeMode={'contain'}
+               resizeMode={'stretch'}
                muted={true}
                style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
                repeat={false}
@@ -185,7 +185,7 @@ class TabContent extends BaseComponent {
   _renderImages(images) {
     return images.map((img, index) => {
       return (
-        <View key={img.id} style={{width: img.width, height: img.height, paddingLeft: 0}}>
+        <View key={img.id} style={{width: img.width, height: img.height, paddingLeft: 0, marginTop: 5}}>
           <TouchableOpacity onPress={(e) => this._handleItemPress(img)}>
             {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
             {img.coverType === 'video' ? <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/> : null}
@@ -270,7 +270,7 @@ class TabContent extends BaseComponent {
                   <View style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4, paddingLeft: 0, marginTop: 5}}>
                     <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
                            style={{width: deviceWidth / 2 - 10, height: deviceWidth / 4}}
-                           resizeMode={'contain'}/>
+                           resizeMode={'stretch'}/>
                   </View>
                 </TouchableOpacity>
                 {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}

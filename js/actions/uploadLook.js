@@ -37,12 +37,12 @@ export function addNewLook(image) {
     dispatch(showProcessing());
     return new Promise((resolve, reject) => {
       const user = getState().user;
-      if (user && user.id != -1) {
+      if (user && user.id !== -1) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
-              dispatch(hideProcessing());
+
               if (data) {
                 const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
                 if(data.look.cover.type !== "image") {
@@ -52,11 +52,13 @@ export function addNewLook(image) {
                     items: [],
                     itemId: null,
                   });
+
                   dispatch({
                     type: EDIT_NEW_LOOK,
                     payload,
                   });
                   resolve(payload);
+                  dispatch(hideProcessing());
                 } else {
                   Utils.preloadImages([url]).then(() => {
                     const payload = _.merge(data.look, {
@@ -69,9 +71,9 @@ export function addNewLook(image) {
                       payload,
                     });
                     resolve(payload);
+                    dispatch(hideProcessing());
                   }).catch(reject);
                 }
-
               } else {
                 reject('Uplaod error');
               }
