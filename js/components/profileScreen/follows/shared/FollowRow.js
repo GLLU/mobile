@@ -77,7 +77,7 @@ class FollowRow extends Component {
         <Text style={styles.followUsername}>@{this.props.username}</Text>
       </View>
     )
-  };
+  }
 
   renderFollowView() {
     if (this.props.is_me) {
@@ -97,7 +97,7 @@ class FollowRow extends Component {
         {this.renderFollowView()}
       </TouchableOpacity>
     )
-  };
+  }
 }
 
 export default FollowRow;

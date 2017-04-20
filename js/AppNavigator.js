@@ -113,8 +113,7 @@ class AppNavigator extends Component {
       case 'feedscreen':
         return <FeedPage />;
       case 'addItemScreen':
-        const mode = optional ? optional.mode : 'create';
-        return <AddItemPage mode={mode} />;
+        return <AddItemPage mode={optional ? optional.mode : 'create'}/>;
       case 'finishLookScreen':
         return <FinishLookScreen />;
       case 'home':
@@ -146,7 +145,9 @@ class AppNavigator extends Component {
     return (
       <View style={{flex: 1}}>
         <Drawer
-          ref={(ref) => { this._drawer = ref; }}
+          ref={(ref) => {
+            this._drawer = ref;
+          }}
           type="overlay"
           tweenDuration={150}
           content={<SideBar />}
@@ -164,7 +165,7 @@ class AppNavigator extends Component {
           }}
           tweenHandler={(ratio) => {  //eslint-disable-line
             return {
-              drawer: { shadowRadius: ratio < 0.2 ? ratio * 5 * 5 : 5 },
+              drawer: {shadowRadius: ratio < 0.2 ? ratio * 5 * 5 : 5},
               main: {
                 opacity: (2 - ratio) / 2,
               },

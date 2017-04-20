@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { noop } from 'lodash'
+import _ from 'lodash'
 import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import CommentRow from './CommentRow'
 
@@ -36,7 +36,7 @@ export default class CommentsListView extends Component {
     style: {},
     comments: [],
     isEmpty: true,
-    onUserPress: noop
+    onUserPress: _.noop
 
   };
 

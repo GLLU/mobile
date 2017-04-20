@@ -4,6 +4,9 @@ import Config from 'react-native-config';
 import _ from 'lodash';
 import Analytics from '../../lib/analytics/Analytics';
 
+/*global __DEV__ */
+const DEV=__DEV__;
+
 class BaseComponent extends Component {
   constructor(props) {
     super(props);
@@ -32,11 +35,12 @@ class BaseComponent extends Component {
   }
 
   notifyError(error) {
-    if (!__DEV__) {
+    if (!DEV) {
       this.bugsnag.notify(error, (report) => {
-        report.metadata = { "account": {
-          "company": "GLLU Ltd.",
-          "machine_name": Config.MACHINE_NAME
+        report.metadata = {
+          "account": {
+            "company": "GLLU Ltd.",
+            "machine_name": Config.MACHINE_NAME
           }
         }
       });
@@ -51,7 +55,7 @@ class BaseComponent extends Component {
     // set it async to not affect main thread
     setTimeout(() => {
       console.log('BaseComponent logEvent', name);
-      Analytics.logEvent(name, params);  
+      Analytics.logEvent(name, params);
     }, 10);
   }
 }

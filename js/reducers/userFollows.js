@@ -6,9 +6,9 @@ const initialState = {
   currId: -1
 };
 
-export default function (state: State = initialState, action): State {
+export default function (state = initialState, action) {
   switch (action.type) {
-    case actions.SET_USER_FOLLOWS_DATA:
+    case actions.SET_USER_FOLLOWS_DATA: {
       let userFollowsData = action.payload.follows.map(followMapper.mapFollow);
       if (action.payload.currId === state.currId) {
         userFollowsData.unshift(...state.userFollowsData)
@@ -18,6 +18,7 @@ export default function (state: State = initialState, action): State {
         userFollowsData,
         currId: action.payload.currId
       };
+    }
     case actions.INIT_USER_FOLLOWS:
       return {
         ...state,

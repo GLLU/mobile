@@ -18,6 +18,7 @@
     "moment": "^2.13.0",
     "native-base": "0.5.20",
     "npm": "^4.1.2",
+    "pusher-js": "^4.0.0",
     "react": "^15.4.2",
     "react-native": "^0.39.2",
     "react-native-autocomplete-input": "github:l-urence/react-native-autocomplete-input",

@@ -6,7 +6,7 @@ const initialState = {
   currId: -1
 };
 
-function setLookComments(state: State, action): State {
+function setLookComments(state, action) {
   let lookCommentsData = action.payload.comments;
   if (action.payload.currId === state.currId) {
     lookCommentsData.unshift(...state.lookCommentsData)
@@ -18,14 +18,14 @@ function setLookComments(state: State, action): State {
   };
 }
 
-function initLookComments(state: State): State {
+function initLookComments(state) {
   return {
     ...state,
     ...initialState
   };
 }
 
-function addLookComment(state: State, action): State {
+function addLookComment(state, action) {
   let comment = action.payload;
   let lookCommentsData = _.union(state.lookCommentsData, [comment]);
   return {
@@ -34,7 +34,7 @@ function addLookComment(state: State, action): State {
   };
 }
 
-export default function (state: State = initialState, action): State {
+export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_LOOK_COMMENTS_DATA:
       return setLookComments(state, action);

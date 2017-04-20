@@ -5,13 +5,16 @@ import Config from 'react-native-config';
 import BaseAnalytic from './BaseAnalytic';
 import _ from 'lodash';
 
+/*global __DEV__ */
+const DEV=__DEV__;
+
 class FlurrAnalytics extends BaseAnalytic {
   constructor() {
     super();
     FlurryAnalytics.setAppVersion(Config.APP_VERSION);
     FlurryAnalytics.setSessionContinueSeconds(10);
     FlurryAnalytics.setEventLoggingEnabled(true);
-    if (__DEV__) {
+    if (DEV) {
       FlurryAnalytics.setCrashReportingEnabled(false);
       FlurryAnalytics.setDebugLogEnabled(true);
     } else {

@@ -61,7 +61,7 @@ class EditProfile extends BasePage {
       includeBase64: true,
       cropping: false,
     }).then(image => {
-      data = {
+      const data = {
         image,
         id: this.props.user.id
       }

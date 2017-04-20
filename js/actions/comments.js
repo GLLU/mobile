@@ -5,14 +5,14 @@ export const SET_LOOK_COMMENTS_DATA = 'SET_LOOK_COMMENTS_DATA';
 export const INIT_LOOK_COMMENTS = 'INIT_LOOK_COMMENTS';
 export const ADD_LOOK_COMMENT = 'ADD_LOOK_COMMENT';
 
-export function setLookCommentsData(data): Action {
+export function setLookCommentsData(data) {
   return {
     type: SET_LOOK_COMMENTS_DATA,
     payload: data
   };
 }
 
-export function getLookCommentsData(id, pageNumber = 1, pageSize = 25): Action {
+export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
   return (dispatch) => {
     return dispatch(rest.actions.comments({
       look_id: id,
@@ -32,7 +32,7 @@ export function getLookCommentsData(id, pageNumber = 1, pageSize = 25): Action {
   };
 }
 
-export function initLookComments(data): Action {
+export function initLookComments(data) {
   return {
     type: INIT_LOOK_COMMENTS,
     payload: data
@@ -40,13 +40,9 @@ export function initLookComments(data): Action {
 }
 
 export function comment(id, body) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(rest.actions.comments.post({look_id: id},
-      {body: JSON.stringify({body})},
-      (err, data) => {
-        if (!err) {
-        }
-      }));
+      {body: JSON.stringify({body})}));
   };
 }
 

@@ -1,10 +1,6 @@
 import _ from 'lodash';
 import type { Action } from '../actions/types';
 
-export type State = {
-    list: array
-}
-
 const initialState = {
   list: [
     {name: 'us', text: 'US', icon: require('../../images/flags/us.png')},
