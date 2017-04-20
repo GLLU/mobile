@@ -14,9 +14,9 @@ export default function (state:State = initialState, action): State {
         let userLooksData = action.payload.looks.map(look => {
           let cover;
           if(look.cover.type === 'video') {
-            cover = _.find(look.cover.list, x => x.version == 'large_720');
+            cover = _.find(look.cover.list, x => x.version === 'large_720');
           } else {
-            cover = _.find(look.cover.list, x => x.version == 'medium');
+            cover = _.find(look.cover.list, x => x.version === 'medium');
           }
           return Object.assign({}, {
             liked: look.is_liked,
@@ -27,12 +27,14 @@ export default function (state:State = initialState, action): State {
             uri: cover.url ? cover.url : null,
             width: cover ? cover.width : null,
             height: cover ? cover.height : null,
+            coverType: look.cover.type,
             avatar: look.user.avatar,
             name: look.user.name,
             username: look.user.username,
             about_me: look.user.about_me,
             items: look.items,
             state: look.state,
+
           });
         });
         if(action.payload.currId === state.currId){

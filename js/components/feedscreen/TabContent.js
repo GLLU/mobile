@@ -166,7 +166,7 @@ class TabContent extends BaseComponent {
                resizeMode={'contain'}
                muted={true}
                style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
-               repeat={true}
+               repeat={false}
                onProgress={this.getProgress()}
         />
 

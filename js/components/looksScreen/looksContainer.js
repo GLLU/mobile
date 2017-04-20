@@ -171,7 +171,7 @@ class LooksContainer extends BasePage {
   renderVideo(look, index) {
     return (
       <GestureRecognizer
-        key={look.originalIndex}
+        key={look.originalIndex ? look.originalIndex : 0}
         onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
         config={config}
         style={{
@@ -207,7 +207,7 @@ class LooksContainer extends BasePage {
   renderImage(look, index) {
     return (
       <GestureRecognizer
-        key={look.originalIndex}
+        key={look.originalIndex ? look.originalIndex : 0}
         onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
         config={config}
         style={{
@@ -239,7 +239,7 @@ class LooksContainer extends BasePage {
     let looksArr = ''
     const {meta: {total}} = this.props;
 
-    if (total == 1) {
+    if (total === 1) {
        return looksArr = [
         this.props.flatLooksData[this.state.currScrollIndex]
       ]
@@ -275,7 +275,6 @@ class LooksContainer extends BasePage {
     } else {
       looksArr = [this.props.flatLook]
     }
-    console.log('looksArr',looksArr)
     return (
       <ScrollView pagingEnabled={false}
                   ref={(c) => {
@@ -284,7 +283,6 @@ class LooksContainer extends BasePage {
                   scrollEventThrottle={100}
                   scrollEnabled={false}>
         {looksArr.map((look, index) => {
-          console.log('look0',look)
           return look.uri.search(".mp4") > -1 ? this.renderVideo(look, index) : this.renderImage(look, index)
         })}
       </ScrollView>
