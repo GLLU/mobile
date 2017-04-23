@@ -6,7 +6,7 @@ import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
-import { getNotifications }  from './notifications';
+import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications }  from './notifications';
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData, getUserLooks } from './looks';
@@ -132,5 +132,7 @@ export {
   getFeed,
   resetFeed,
   loadMore,
-  getNotifications
+  getNotifications,
+  goToNotificationSubjectScreen,
+  markAsReadNotifications
 };

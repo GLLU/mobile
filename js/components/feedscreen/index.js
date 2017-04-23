@@ -94,7 +94,7 @@ class FeedPage extends BasePage {
 
   _handleSearchInput(term) {
     this.setState({searchTerm: term})
-    this.props.getNotifications() // need to be moved to notification page
+
   }
 
   render() {

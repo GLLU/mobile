@@ -7,7 +7,7 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {popRoute} = actions;
-import FontSizeCalculator from './../../../../calculators/FontSize';
+import FontSizeCalculator from './../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
   container: {

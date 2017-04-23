@@ -60,13 +60,14 @@ class NavigationBarView extends BaseComponent {
     };
   }
 
-  componentDidMount() {
-
-  }
-
   goToProfile() {
     this.logEvent('Feedscreen', { name: 'Profile click' });
     this.props.navigateTo('profileScreen', 'feedscreen', this.props.user);
+  }
+
+  handleNotificationsPress() {
+    this.logEvent('ProfileScreen', {name: 'Notifications click'});
+    this.props.navigateTo('notificationsScreen', 'feedscreen');
   }
 
   openCamera() {
@@ -74,25 +75,12 @@ class NavigationBarView extends BaseComponent {
     this.props.handleOpenPhotoModal();
   }
 
-  openSearch() {
-    this.logEvent('Feedscreen', { name: 'Search click' });
-    this.props.handleSearchStatus();
-  }
-
-  openMenu() {
-    console.log('Open Menu');
-  }
-
-  goToShopping() {
-    console.log('Go To Shopping');
-  }
-
   render() {
     const hangerBtn = !this.state.hasNotify ? hangerNotification : hanger;
     return(
       <View style={styles.navigationBar}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <Button transparent >
+          <Button transparent onPress={() => this.handleNotificationsPress()}>
             <Image source={hangerBtn} style={styles.btnImageHanger} />
           </Button>
         </View>
