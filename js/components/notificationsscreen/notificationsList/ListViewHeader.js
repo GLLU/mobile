@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
   column: {
     flexDirection: 'column'
   },
-  followsTitle: {
+  notificationsTitle: {
     fontSize: new FontSizeCalculator(26).getSize(),
     color: 'black',
     fontFamily: 'Times New Roman',
     flex: 9,
     textAlign: 'center'
   },
-  followsCount: {
+  notificationsCount: {
     fontSize: new FontSizeCalculator(26).getSize(),
     fontWeight: 'bold',
     color: '#00D7B2',
@@ -69,8 +69,8 @@ class ListViewHeader extends Component {
           <TouchableOpacity style={{flex:1}} onPress={() => this.popRoute()}>
             <Icon style={styles.backBtn} name="ios-arrow-back"/>
           </TouchableOpacity>
-          <Text style={styles.followsTitle}>{_.startCase(this.props.title)}</Text>
-          { this.props.count ? <Text style={styles.followsCount}>{this.props.count}</Text> : null }
+          <Text style={styles.notificationsTitle}>{_.startCase(this.props.title)}</Text>
+          { this.props.count ? <Text style={styles.notificationsCount}>{this.props.count}</Text> : null }
           <View style={{flex:0.5}} name="spacer"/>
         </View>
         {/*{search will come here}*/}

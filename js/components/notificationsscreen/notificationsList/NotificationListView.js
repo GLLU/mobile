@@ -61,6 +61,7 @@ class NotificationListView extends Component {
   }
 
   onUserNavigate(props) {
+    console.log('propskk',props)
     if(props.action_kind === 'Follow') {
       this.props.popRoute(this.props.navigation.key);
       this.props.popRoute(this.props.navigation.key);
@@ -117,8 +118,8 @@ function bindAction(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     followUpdate: (id) => dispatch(followUpdate(id)),
     unFollowUpdate: (id) => dispatch(unFollowUpdate(id)),
-    goToNotificationSubjectScreen: (id) => dispatch(goToNotificationSubjectScreen(id)),
-    markAsReadNotifications: (id) => dispatch(markAsReadNotifications(id))
+    goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
+    markAsReadNotifications: (notificationId) => dispatch(markAsReadNotifications(notificationId))
   };
 }
 

@@ -81,6 +81,7 @@ export function goToNotificationSubjectScreen(lookId, notificationId) {
       if (!err && lookData) {
         lookData = mapNotificationLookObj(lookData.look)
         lookData.singleItem = true
+        console.log('notificationId',notificationId)
         dispatch(markAsReadNotifications(notificationId))
         dispatch(navigateTo('looksScreen', 'feedscreen', lookData));
         dispatch(hideLoader())

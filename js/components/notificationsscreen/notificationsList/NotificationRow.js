@@ -83,6 +83,11 @@ class FollowRow extends Component {
   }
 
   onUserPress() {
+    this.props.onUserPress(this.props);
+    this.setState({isRead: true})
+  }
+
+  onNotificationPress() {
     this.props.onMarkAsReadPress(this.props);
     this.setState({isRead: true})
   }
@@ -104,7 +109,7 @@ class FollowRow extends Component {
 
   renderNotificationImage() {
     return (
-      <View onPress={this.onUserPress.bind(this)} style={styles.imageContainer}>
+      <View onPress={this.onNotificationPress.bind(this)} style={styles.imageContainer}>
         {this.props.coverImage ? <Image resizeMode='cover' style={styles.notificationImage} source={{uri : this.props.coverImage.url}} /> : null}
       </View>
     )
@@ -124,8 +129,9 @@ class FollowRow extends Component {
   }
 
   renderFollowView() {
-    return <FollowView onPress={this.onFollowPress} style={styles.followView}
-                       user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>
+    console.log('isfolow',this.props) // Will be FollowView Component
+    return <View onPress={this.onFollowPress} style={styles.followView}
+                       user={{id:this.props.user_id, isFollowing: this.state.isFollowing}}/>
   }
 
   render() {

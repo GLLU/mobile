@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 export function notificationMapper(notification) {
   let cover;
+  console.log('notif',notification)
   cover = notification.go_to_object.data.cover ? notification.go_to_object.data.cover : null
   return {
     id: notification.id,
