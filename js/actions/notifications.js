@@ -6,6 +6,7 @@ import { showLoader, hideLoader, navigateTo } from './index';
 // Actions
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
 export const ADD_USER_NOTIFICATION = 'ADD_USER_NOTIFICATION';
+export const MARK_AS_READ_NOTIFICATION = 'MARK_AS_READ_NOTIFICATION';
 
 export function setUserNotifications(notificationsData, page) {
   const data = {
@@ -25,6 +26,13 @@ export function addUserNotification(data) {
   };
 }
 
+export function markAsRead(notificationId) {
+  return {
+    type: MARK_AS_READ_NOTIFICATION,
+    payload: notificationId
+  };
+}
+
 export function getNotifications() {
 
   return (dispatch, getState) => {
@@ -40,11 +48,9 @@ export function getNotifications() {
 }
 
 export function markAsReadNotifications(notificationId) {
-  console.log('before call')
   return (dispatch, getState) => {
-    console.log('before2 call')
     return dispatch(rest.actions.markAsReadNotification.put({"id": notificationId}, {}, (err, notificationsData) => {
-      console.log('after call', err)
+      dispatch(markAsRead(notificationId))
       if (err) {
         console.log('err',err)
       }
@@ -57,13 +63,12 @@ export function goToNotificationSubjectScreen(lookId, notificationId) {
     dispatch(showLoader())
     return dispatch(rest.actions.looks({"id": lookId}, {}, (err, lookData) => {
       if (!err && lookData) {
-        console.log(' before looksData',lookData)
         lookData = mapNotificationLookObj(lookData.look)
         lookData.singleItem = true
-        console.log(' after looksData',lookData)
         dispatch(markAsReadNotifications(notificationId))
         dispatch(navigateTo('looksScreen', 'feedscreen', lookData));
         dispatch(hideLoader())
+
       }
     }));
   };
@@ -74,8 +79,10 @@ function getPusherClient(dispatch, userId) {
     encrypted: true
   });
   const channel = pusher.subscribe('notifications_'+userId);
-  channel.bind('Like', function(data) {
+  channel.bind_global(function(event, data) {
+    if(event === 'Like' || event === 'Follow' || event === 'Comment') {
       dispatch(addUserNotification(data.message))
+    }
   });
 }
 

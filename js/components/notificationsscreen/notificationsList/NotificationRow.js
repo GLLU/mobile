@@ -1,46 +1,62 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import TimeAgo from 'react-native-timeago';
+import FollowView from '../../profileScreen/follows/FollowView'
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
-
   },
   textContainer: {
-    flex: 7,
+    flex: 6,
+    flexDirection: 'column',
+    marginLeft: 12,
+    alignSelf: 'flex-start'
+  },
+  imageContainer: {
+    flex: 2,
     flexDirection: 'column',
     marginLeft: 12
   },
   markAsRead: {
     height: 10,
     width: 10,
-    backgroundColor: '#00D7B2',
+    backgroundColor: '#00D780',
     borderRadius: 5,
     alignSelf: 'flex-start'
-
   },
   followName: {
-    flex: 0.5,
+    flex: 1,
     color: 'black',
   },
   followUsername: {
-    flex: 0.5,
+    flex: 1,
     color: '#00a9ff'
   },
   photoContainer: {
     flex: 2,
+    width: 40,
+    height: 40,
   },
-  photo: {
+  avatarImage: {
     flex: 1,
     width: 40,
     height: 40,
     borderRadius: 20
   },
+  notificationImage: {
+    flex: 1,
+    width: 40,
+    height: 40,
+    alignSelf: 'center',
+    borderRadius: 5
+  },
   followView: {
-    flex: 3
+    flex: 2,
+
   }
 });
 
@@ -86,23 +102,44 @@ class FollowRow extends Component {
     )
   }
 
-  renderMarkAsReadBtn() {
+  renderNotificationImage() {
     return (
-    <TouchableOpacity style={styles.markAsRead} onPress={this.onUserPress.bind(this)}>
-      <View style={styles.markAsRead} />
-    </TouchableOpacity>
+      <View onPress={this.onUserPress.bind(this)} style={styles.imageContainer}>
+        {this.props.coverImage ? <Image resizeMode='cover' style={styles.notificationImage} source={{uri : this.props.coverImage.url}} /> : null}
+      </View>
     )
   }
 
+  renderMarkAsReadBtn(isRead) {
+    if(isRead) {
+      return (
+        <View style={[styles.markAsRead, {backgroundColor: 'white'}]}  />
+      )
+    } else {
+      return (
+        <TouchableOpacity style={[styles.markAsRead]} onPress={this.onUserPress.bind(this)} />
+      )
+    }
+
+  }
+
+  renderFollowView() {
+    return <FollowView onPress={this.onFollowPress} style={styles.followView}
+                       user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>
+  }
+
   render() {
-    let bgColor = this.state.isRead ? 'white' : '#BDE6E9'
+    const { isRead } = this.state;
+    let bgColor = isRead ? 'white' : '#BDE6E9'
     return (
       <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style, {backgroundColor: bgColor}]}>
         <View style={styles.photoContainer}>
-          <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo}/>
+          <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.avatarImage}/>
         </View>
-        {this.renderFollowText()}
-        {this.renderMarkAsReadBtn()}
+        { this.renderFollowText() }
+        { this.props.action_kind !== 'Follow' ? this.renderNotificationImage() : this.renderFollowView() }
+        { this.renderMarkAsReadBtn(isRead) }
+
       </TouchableOpacity>
     )
   }

@@ -53,7 +53,14 @@ export default reduxApi({
     crud: true,
   },
   markAsReadNotification: {
-    url: "/notifications/:id",
+    url: "/notifications/:id/?read=true",
+    ptions: {
+      method: 'put'
+    },
+    crud: true,
+  },
+  markAsNotReadNotification: {
+    url: "/notifications/:id/", //in the future this will make is_read = false
     ptions: {
       method: 'put'
     },

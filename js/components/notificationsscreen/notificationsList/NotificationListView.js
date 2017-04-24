@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
 
 import ListViewHeader from './ListViewHeader';
-import FollowRow from './FollowRow';
+import NotificationRow from './NotificationRow';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
   },
 });
 
-class FollowListView extends Component {
+class NotificationListView extends Component {
 
   static propTypes = {
-    follows: React.PropTypes.array,
+    notifications: React.PropTypes.object,
     onEndReached: React.PropTypes.func,
     headerData: React.PropTypes.object,
     renderEmpty: React.PropTypes.func
@@ -40,19 +40,18 @@ class FollowListView extends Component {
     this.renderListView = this.renderListView.bind(this);
     const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this.state = {
-      dataSource: ds.cloneWithRows(props.follows),
+      dataSource: ds.cloneWithRows(props.notifications.allNotifications),
       isTrueEndReached: false
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('follow',nextProps)
-    if (_.isEmpty(nextProps.follows)) {
+    if (_.isEmpty(nextProps.notifications.allNotifications)) {
       this.setState({isTrueEndReached: true});
     }
-    if (nextProps.follows !== this.props.follows) {
+    if (nextProps.notifications !== this.props.notifications.allNotifications) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.follows)
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.notifications.allNotifications)
       })
     }
   }
@@ -67,14 +66,12 @@ class FollowListView extends Component {
       this.props.popRoute(this.props.navigation.key);
       this.props.navigateTo('profileScreen', `feedscreen`, props);
     } else  {
-      console.log('propssss',props)
       this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id);
     }
 
   }
 
   onMarkAsReadPress(props) {
-    console.log('props',props)
     this.props.markAsReadNotifications(props.id)
   }
 
@@ -93,7 +90,7 @@ class FollowListView extends Component {
       <ListView
         style={styles.container}
         dataSource={this.state.dataSource}
-        renderRow={(data) => <FollowRow onMarkAsReadPress={this.onMarkAsReadPress.bind(this)} onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
+        renderRow={(data) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress.bind(this)} onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
         enableEmptySections={true}
         onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
@@ -103,7 +100,6 @@ class FollowListView extends Component {
   }
 
   render() {
-    console.log('rendered')
     const count = this.props.headerData.count ? this.props.headerData.count : null
     return (
       <View>
@@ -132,5 +128,5 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindAction)(FollowListView);
+export default connect(mapStateToProps, bindAction)(NotificationListView);
 

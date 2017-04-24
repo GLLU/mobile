@@ -2,28 +2,22 @@
 
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
-import { Container, Content, View } from 'native-base'
+import { View } from 'native-base'
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
 import { navigateTo, popRoute, getNotifications } from '../../actions';
 
-import FollowListView from './notificationsList/FollowListView'
+import NotificationListView from './notificationsList/NotificationListView'
 
 class NotificationsScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.getFollowersData = this.getFollowersData.bind(this);
+    this.getNotificationsData = this.getNotificationsData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
   }
 
-  componentWillMount() {
-    // if (this.props.userData.count) {
-    //   this.getFollowersData();
-    // }
-  }
-
-  getFollowersData() {
+  getNotificationsData() {
     this.props.getNotifications() // need to be moved to notification page
   }
 
@@ -51,12 +45,11 @@ class NotificationsScreen extends Component {
     let headerData = {
       mode: 'Notifications',
     }
-    console.log('blab')
     return (
           <View>
-            <FollowListView renderEmpty={this._renderOnEmpty} headerData={headerData}
-                            follows={this.props.notifications}
-                            onEndReached={this.getFollowersData} mode={headerData.mode}/>
+            <NotificationListView renderEmpty={this._renderOnEmpty} headerData={headerData}
+                            notifications={this.props.notifications}
+                            onEndReached={this.getNotificationsData} mode={headerData.mode}/>
           </View>
     );
   }
@@ -72,8 +65,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    followers: state.userFollowers.userFollowersData,
-    notifications: state.notifications.allNotifications,
+    notifications: state.notifications,
     navigation: state.cardNavigation,
   }
 };

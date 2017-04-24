@@ -31,6 +31,21 @@ export default function (state = initialState, action) {
         allNotifications: existNotifications,
       };
     }
+    case actions.MARK_AS_READ_NOTIFICATION: {
+      let existNotifications = state.allNotifications;
+      let editedNotification = _.find(existNotifications, {id: action.payload})
+      editedNotification.is_read = true
+       let newNotificationArr = existNotifications.map((notification, index) => {
+        if (notification.id === action.payload) {
+          return editedNotification;
+        }
+        return notification
+      })
+      return {
+        ...state,
+        allNotifications: newNotificationArr,
+      };
+    }
     default:
       return state
   }
