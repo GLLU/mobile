@@ -7,6 +7,8 @@ import { showLoader, hideLoader, navigateTo } from './index';
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
 export const ADD_USER_NOTIFICATION = 'ADD_USER_NOTIFICATION';
 export const MARK_AS_READ_NOTIFICATION = 'MARK_AS_READ_NOTIFICATION';
+export const CLEAR_NEW_NOTIFICATIONS = 'CLEAR_NEW_NOTIFICATIONS';
+export const GOT_NEW_NOTIFICATIONS = 'GOT_NEW_NOTIFICATIONS';
 
 export function setUserNotifications(notificationsData, page) {
   const data = {
@@ -30,6 +32,20 @@ export function markAsRead(notificationId) {
   return {
     type: MARK_AS_READ_NOTIFICATION,
     payload: notificationId
+  };
+}
+
+export function clearNewNotifications() {
+  return {
+    type: CLEAR_NEW_NOTIFICATIONS,
+    payload: false
+  };
+}
+
+export function gotNewNotifications() {
+  return {
+    type: GOT_NEW_NOTIFICATIONS,
+    payload: true
   };
 }
 
@@ -82,6 +98,8 @@ function getPusherClient(dispatch, userId) {
   channel.bind_global(function(event, data) {
     if(event === 'Like' || event === 'Follow' || event === 'Comment') {
       dispatch(addUserNotification(data.message))
+      dispatch(gotNewNotifications())
+
     }
   });
 }

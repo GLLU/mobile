@@ -2,16 +2,19 @@ import * as actions from '../actions/notifications';
 import { notificationMapper } from '../mappers/notificationsMapper'
 
 const initialState = {
-  page: 0
+  page: 0,
+  newNotifications: false
 };
 
 export default function (state = initialState, action) {
 
   switch (action.type) {
     case actions.SET_USER_NOTIFICATIONS: {
+      let newNotifications;
       let allNotifications = []
       if(state.page === 0){
         allNotifications = action.payload.notificationsData.notifications.map(notificationMapper)
+        newNotifications = !allNotifications[0].is_read
       } else {
         allNotifications = state.allNotifications
         allNotifications = allNotifications.concat(action.payload.notificationsData.notifications.map(notificationMapper))
@@ -19,7 +22,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         allNotifications,
-        page: action.payload.page
+        page: action.payload.page,
+        newNotifications
       };
     }
     case actions.ADD_USER_NOTIFICATION: {
@@ -44,6 +48,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         allNotifications: newNotificationArr,
+      };
+    }
+    case actions.CLEAR_NEW_NOTIFICATIONS: {
+      return {
+        ...state,
+        newNotifications: false,
+      };
+    }
+    case actions.GOT_NEW_NOTIFICATIONS: {
+      return {
+        ...state,
+        newNotifications: true,
       };
     }
     default:

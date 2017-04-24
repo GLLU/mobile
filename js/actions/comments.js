@@ -47,7 +47,6 @@ export function comment(id, body) {
 }
 
 export function addLookComment(data) {
-  console.log('data',data)
   return (dispatch) => {
     dispatch({
       type: ADD_LOOK_COMMENT,

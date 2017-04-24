@@ -42,7 +42,6 @@ const findItem = function(state) {
 // Action Handlers
 const ACTION_HANDLERS = {
   [EDIT_NEW_LOOK]: (state, action) => {
-    console.log("Reducer EDIT_NEW_LOOK", action.payload)
     return {
       ...state,
       ...action.payload,
@@ -57,7 +56,6 @@ const ACTION_HANDLERS = {
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
     const item = action.payload.item;
-    console.log('CREATE_LOOK_ITEM_BY_POSITION', item);
     const itemId = item.id
     const items = state.items;
     items.push(itemMapper(item));
@@ -74,7 +72,6 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_TAG_POSITION]: (state, action) => {
-    console.log('SET_TAG_POSITION', action.payload);
     state.items = mutateItem(state, 'locationX', action.payload.locationX);
     state.items = mutateItem(state, 'locationY', action.payload.locationY);
     return {

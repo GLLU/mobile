@@ -6,8 +6,8 @@ import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
 
 const userIcon = require('../../../images/icons/user.png');
-const hanger = require('../../../images/icons/hangerEmpty.png');
-const hangerNotification = require('../../../images/icons/hangerGreenCircle.png');
+const emptyNotification = require('../../../images/icons/emptyNotification.png');
+const gotNotification = require('../../../images/icons/hangerGreenCircle.png');
 const bagIcon = require('../../../images/icons/bag.png');
 const rectangleIcon = require('../../../images/icons/rectangle.png')
 const searchIcon = require('../../../images/icons/search.png')
@@ -56,8 +56,14 @@ class NavigationBarView extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      hasNotify: false
+      gotNewNotifications: this.props.gotNewNotifications
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.state.gotNewNotifications !== nextProps.gotNewNotifications) {
+      this.setState({gotNewNotifications: nextProps.gotNewNotifications})
+    }
   }
 
   goToProfile() {
@@ -76,12 +82,12 @@ class NavigationBarView extends BaseComponent {
   }
 
   render() {
-    const hangerBtn = !this.state.hasNotify ? hangerNotification : hanger;
+    const notificationBtn = this.state.gotNewNotifications ? gotNotification : emptyNotification;
     return(
       <View style={styles.navigationBar}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
           <Button transparent onPress={() => this.handleNotificationsPress()}>
-            <Image source={hangerBtn} style={styles.btnImageHanger} />
+            <Image source={notificationBtn} style={styles.btnImageHanger} />
           </Button>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
@@ -108,6 +114,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     user: state.user,
+    gotNewNotifications: state.notifications.newNotifications
   }
 };
 

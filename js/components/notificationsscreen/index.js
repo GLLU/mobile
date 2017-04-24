@@ -5,7 +5,7 @@ import { ListView, Image, TouchableOpacity, Text } from 'react-native';
 import { View } from 'native-base'
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
-import { navigateTo, popRoute, getNotifications } from '../../actions';
+import { navigateTo, popRoute, getNotifications, clearNewNotifications } from '../../actions';
 
 import NotificationListView from './notificationsList/NotificationListView'
 
@@ -15,6 +15,10 @@ class NotificationsScreen extends Component {
     super(props);
     this.getNotificationsData = this.getNotificationsData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.clearNewNotifications()
   }
 
   getNotificationsData() {
@@ -60,6 +64,7 @@ function bindAction(dispatch) {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
     getNotifications: name => dispatch(getNotifications(name)),
+    clearNewNotifications: name => dispatch(clearNewNotifications(name)),
   };
 }
 

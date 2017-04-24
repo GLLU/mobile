@@ -13,7 +13,6 @@ export const RESET_STATE = 'RESET_STATE';
 let api_key = ''
 const setRestOptions = function(dispatch, rest, user) {
   api_key = user.api_key;
-  console.log('apikey',api_key)
   rest.use("options", function() {
     return {
       headers: {

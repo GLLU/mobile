@@ -60,7 +60,6 @@ class MainView extends Component {
   }
 
   getFeed(query) {
-    console.log('get it')
     this.setState({reloading: true}, () => {
       this.props.getFeed(query).then((looks) => {
         this.preloadLookImages(looks);
@@ -86,7 +85,6 @@ class MainView extends Component {
     }
     else {
       if (!_.isEqual(query, this.props.query)) {
-        console.log('filter')
         this.getFeed(query);
       }
     }

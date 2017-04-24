@@ -54,12 +54,10 @@ export default class CommentRow extends Component {
   };
 
   _onUserPress() {
-    console.log('omg I should navigate!!!');
     this.props.onUserPress(this.props.user);
   }
 
   render() {
-    console.log('imgavatar',this.props.user.avatar.url)
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={this._onUserPress} style={{flex:2}} name="avatar">

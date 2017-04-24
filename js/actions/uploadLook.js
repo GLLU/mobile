@@ -46,7 +46,6 @@ export function addNewLook(image) {
               if (data) {
                 const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
                 if(data.look.cover.type !== "image") {
-                  console.log('data.look.cover.type',data.look.cover.type)
                   const payload = _.merge(data.look, {
                     image: url,
                     items: [],
@@ -270,12 +269,10 @@ export function addItemType(categoryItem) {
   return (dispatch, getState) => {
     const state = getState();
     const { lookId, itemId } = state.uploadLook;
-    console.log(categoryItem)
     const params = {
       category_id: categoryItem.id,
     }
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
-      console.log('dataAA',data)
       dispatch({
         type: ADD_ITEM_TYPE,
         payload: categoryItem
