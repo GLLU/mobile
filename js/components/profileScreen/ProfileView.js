@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
   logoutText: {
     textAlign: 'center',
     color: '#00D7B2',
+  },
+  followView: {
+    flex: 3
   }
 });
 
@@ -113,7 +116,7 @@ class ProfileView extends BaseComponent {
             </TouchableOpacity>
             :
             <FollowView user={{id:this.props.userid, isFollowing:this.props.isFollowing}}
-                        onPress={this.toggleFollowAction.bind(this)}/>
+                        onPress={this.toggleFollowAction.bind(this)} style={styles.followView}/>
           }
         </View>
       </View>
