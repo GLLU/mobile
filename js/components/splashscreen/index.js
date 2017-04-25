@@ -133,7 +133,13 @@ class SplashPage extends BasePage {
 
   handleEmailSignupPress() {
     this.logEvent('Splashscreen', {name: 'Email signup click'});
-    this.pushRoute('genderselect');
+    console.log('this.props',this.props)
+    if(this.props.invitation_token !== -1) {
+      this.pushRoute('genderselect');
+    } else {
+      this.pushRoute('activationcode');
+    }
+
   }
 
   handleTermPress() {
@@ -218,6 +224,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+  invitation_token: state.user.invitation_token
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

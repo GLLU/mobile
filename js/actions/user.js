@@ -68,6 +68,14 @@ export function setUser(user:string):Action {
   };
 }
 
+export function setInvitationToken(user:string):Action {
+
+  return {
+    type: SET_INVITATION_TOKEN,
+    payload: user,
+  };
+}
+
 export function loginViaFacebook(data):Action {
   return (dispatch) => {
     const access_token = data.access_token;
@@ -87,6 +95,18 @@ export function loginViaFacebook(data):Action {
       }
     }));
   };
+}
+
+export function useInvitationCode(token):Action {
+    return dispatch(rest.actions.invitation.post({"token": token}, (err, data) => {
+      if (!err && data) {
+        //signInFromRest(dispatch, data);
+        console.log('invitation token passed and approved: ',code)
+      } else {
+        alert('Unable to login via Facebook');
+      }
+    }));
+
 }
 
 const signUp = function(dispatch, data) {

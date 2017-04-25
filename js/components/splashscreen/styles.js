@@ -50,13 +50,13 @@ module.exports = StyleSheet.create({
     alignSelf: 'center',
   },
   logoContainer: {
-    flex: 0.3,
     marginTop: 0,
     paddingTop: 80,
     paddingLeft: 10,
     paddingRight: 10,
     alignSelf: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   logo: {
     width: 175,

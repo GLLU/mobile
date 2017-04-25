@@ -15,6 +15,7 @@ import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
+import ActivationCodeScreen from './components/activationCodeScreen';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import LooksScreen from './components/looksScreen';
@@ -102,6 +103,8 @@ class AppNavigator extends Component {
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
+      case 'activationcode':
+        return <ActivationCodeScreen />;
       case 'signupemail':
         return <SignUpPage gender={props.scene.route.gender}/>;
       case 'genderselect':

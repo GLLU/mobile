@@ -16,6 +16,10 @@ export default reduxApi({
     url: "/auth",
     crud: true,
   },
+  invitation: {
+    url: "/invitation_usage",
+    crud: true,
+  },
   password_recovery: {
     url: "/password_recovery",
     crud: true,
