@@ -2,7 +2,6 @@ import _ from 'lodash';
 
 export function notificationMapper(notification) {
   let cover;
-  console.log('notif',notification)
   cover = notification.go_to_object.data.cover ? notification.go_to_object.data.cover : null
   return {
     id: notification.id,
@@ -20,7 +19,6 @@ export function notificationMapper(notification) {
 }
 
 function getTextByAction(actionKind) {
-  console.log(actionKind)
   switch (actionKind) {
     case 'Like': {
       return 'liked your look';

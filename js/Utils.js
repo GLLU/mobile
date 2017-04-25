@@ -84,7 +84,11 @@ export default class Utils {
   static preloadImages(urls) {
     return Promise.all(
       urls.map(url => {
-        return Image.prefetch(url)
+        if(url.search(".mp4") > -1) {
+          return url
+        } else {
+          return Image.prefetch(url)
+        }
       })
     );
   }
