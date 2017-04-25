@@ -7,10 +7,6 @@ import BaseComponent from '../common/BaseComponent';
 import SearchBar from './SearchBar';
 
 const homeIcon = require('../../../images/icons/blackLogo.png');
-const bagIcon = require('../../../images/icons/bag.png');
-const rectangleIcon = require('../../../images/icons/rectangle.png')
-const searchIcon = require('../../../images/icons/search.png')
-const cameraIcon = require('../../../images/icons/camera.png')
 
 const styles = StyleSheet.create({
   navigationBar: {

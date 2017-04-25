@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     flexDirection: 'row',
-    paddingLeft: 0
+    paddingLeft: 0,
+    paddingBottom: 5
   },
   btnImageHanger: {
     height: 25,

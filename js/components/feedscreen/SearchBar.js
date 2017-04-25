@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text } from 'react-native';
+import { StyleSheet, TextInput, Text, Platform } from 'react-native';
 import { View, Button, Icon } from 'native-base';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
@@ -13,7 +13,8 @@ const myStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexGrow: 1,
-    borderRadius: 10
+    borderRadius: 10,
+
   },
   searchInput: {
     borderBottomWidth: 0,
@@ -26,7 +27,8 @@ const myStyles = StyleSheet.create({
     fontSize: new FontSizeCalculator(12).getSize(),
     fontWeight: '200',
     color: '#757575',
-    borderRadius: 10
+    borderRadius: 10,
+    height: Platform.OS === 'ios' ? 30 : 40
   },
   btnCloseFilter: {
     marginLeft: 10,
@@ -35,12 +37,14 @@ const myStyles = StyleSheet.create({
     borderWidth: 0.4,
     borderColor: '#757575',
     borderRadius: 8,
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
     height: 20,
+    width: 50
   },
   clearText: {
     color: '#757575',
-    fontSize: new FontSizeCalculator(12).getSize()
+    fontSize: new FontSizeCalculator(12).getSize(),
+
   },
 });
 
