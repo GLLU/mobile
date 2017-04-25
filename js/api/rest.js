@@ -1,7 +1,4 @@
 import reduxApi from "redux-api";
-import _ from 'lodash';
-import navigateTo from '../actions/sideBarNav';
-import { setUser } from '../actions/user';
 import { setCategories } from '../actions/filters';
 const adapterFetch = require("redux-api/lib/adapters/fetch");
 
@@ -49,6 +46,24 @@ export default reduxApi({
   },
   report_abuse: {
     url: "/abuse",
+    crud: true,
+  },
+  getNotifications: {
+    url: "/notifications",
+    crud: true,
+  },
+  markAsReadNotification: {
+    url: "/notifications/:id/?read=true",
+    ptions: {
+      method: 'put'
+    },
+    crud: true,
+  },
+  markAsNotReadNotification: {
+    url: "/notifications/:id/", //in the future this will make is_read = false
+    ptions: {
+      method: 'put'
+    },
     crud: true,
   },
   looks: {

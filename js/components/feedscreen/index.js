@@ -9,7 +9,7 @@ import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
-import { addNewLook, setUser, pushRoute, navigateTo } from '../../actions';
+import { addNewLook, setUser, pushRoute, navigateTo, getNotifications } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
 import Gllu from '../common';
@@ -43,6 +43,7 @@ class FeedPage extends BasePage {
   }
 
   componentWillMount() {
+
     if (!this.props.user || this.props.user.id == -1) {
       this.props.navigateTo('splashscreen');
     }
@@ -52,6 +53,8 @@ class FeedPage extends BasePage {
         return true;
       }
     });
+
+    this.props.getNotifications() // can stay here, still thinking about it
   }
 
   setUser(name) {
@@ -61,7 +64,6 @@ class FeedPage extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        console.log('now will navigate')
         this.props.navigateTo('addItemScreen', 'feedscreen', { mode: 'create' });
       });
     })
@@ -90,8 +92,8 @@ class FeedPage extends BasePage {
   }
 
   _handleSearchInput(term) {
-    console.log('term',term)
     this.setState({searchTerm: term})
+
   }
 
   render() {
@@ -135,6 +137,7 @@ function bindActions(dispatch) {
     pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),
+    getNotifications: name => dispatch(getNotifications(name)),
   };
 }
 

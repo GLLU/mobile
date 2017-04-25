@@ -61,6 +61,7 @@ export function resetUserNavigation() {
 }
 
 export function setUser(user:string):Action {
+
   return {
     type: SET_USER,
     payload: user,

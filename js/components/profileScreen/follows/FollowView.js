@@ -4,7 +4,6 @@ import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   followBtn: {
     backgroundColor: '#00D7B2',
-    width: 75,
     height: 25,
     justifyContent: 'center',
     margin: 5,
@@ -53,7 +52,7 @@ class FollowView extends Component {
 
   renderFollowButton() {
     return (
-      <TouchableOpacity style={styles.followBtn} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.followBtn ,this.props.style]} onPress={this.handleFollowPress}>
         <Text style={styles.followText}>Follow</Text>
       </TouchableOpacity>
     )

@@ -81,7 +81,6 @@ class AddItemPage extends BasePage {
       mode: props.mode,
       allowContinue: false,
     };
-    console.log('ADDITEMINDEX')
   }
 
   componentDidMount() {

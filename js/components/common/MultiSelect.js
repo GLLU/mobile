@@ -143,7 +143,6 @@ export default class MultiSelect extends Component {
   }
 
   _getRow(item) {
-    console.log('get row', item)
     return (
       <TouchableOpacity onPress={() => this._toggleItem(item)} style={{paddingLeft: 20, paddingRight: 20}}>
         <View>
@@ -183,7 +182,6 @@ export default class MultiSelect extends Component {
       items = this.state.items;
     }
 
-    console.log('items', items);
     if (items.length) {
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       let dataSource = ds.cloneWithRows(items);

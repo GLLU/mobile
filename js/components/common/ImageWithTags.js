@@ -182,7 +182,6 @@ class ImageWithTags extends Component {
 
     const { width, height } = this.getRenderingDimensions();
     if (this.props.showMarker) {
-      console.log('fixImage')
       return (
         <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
           <View style={[styles.draggableContainer]}>
@@ -191,7 +190,6 @@ class ImageWithTags extends Component {
         </Image>
       );
     }
-    console.log(' dont fixImage')
     return (
       <Image
         source={{ uri: this.props.image }}

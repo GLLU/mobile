@@ -137,7 +137,7 @@ class TabContent extends BaseComponent {
   _handleItemPress(item) {
     this.logEvent('Feedscreen', {name: 'Image click'});
     let that = this
-    if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to we let the TouchableOpacity end. and then go to next page.
+    if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to, we let the TouchableOpacity end. and then go to next page.
       setTimeout(function(){ that.props.navigateTo('looksScreen', 'feedscreen', item); }, 200);
     } else {
       this.props.navigateTo('looksScreen', 'feedscreen', item);

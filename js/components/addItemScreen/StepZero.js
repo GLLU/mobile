@@ -132,7 +132,6 @@ class StepZero extends BaseComponent {
     const { brands, brand} = this.props;
     const { brandName, modalVisible } = this.state;
     const _brand = brandName ? brand : null;
-    console.log('clear brandh', brandName, _brand)
     return (
       <View style={{flex: 1, padding: 25}}>
         <Text style={styles.titleLabelInfo}>Brand Name</Text>

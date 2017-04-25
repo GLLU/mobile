@@ -21,10 +21,10 @@ import LooksScreen from './components/looksScreen';
 import ProfileScreen from './components/profileScreen';
 import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
+import NotificationsScreen from './components/notificationsscreen';
 import SettingsScreen from './components/settingsScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
-import ProcessCropping from './components/common/Cropping';
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
@@ -132,6 +132,8 @@ class AppNavigator extends Component {
         return <FollowScreen userData={props.scene.route.optional}/>;
       case 'followerScreen':
         return <FollowerScreen userData={props.scene.route.optional}/>;
+      case 'notificationsScreen':
+        return <NotificationsScreen/>;
       case 'settingsScreen':
         return <SettingsScreen/>;
       case 'editProfileScreen':

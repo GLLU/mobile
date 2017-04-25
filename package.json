@@ -3,7 +3,7 @@
   "version": "5.2.1",
   "private": true,
   "scripts": {
-    "postinstall": "remotedev-debugger",
+    "postinstall": "remotedev-debugger [options]",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint",
     "test": "jest"
@@ -47,6 +47,7 @@
     "react-native-store": "^0.4.1",
     "react-native-swipe-gestures": "^1.0.2",
     "react-native-swiper": "^1.5.4",
+    "react-native-timeago": "^0.3.0",
     "react-native-triangle": "0.0.6",
     "react-native-vector-icons": "^2.1.0",
     "react-native-video": "^0.9.0",
@@ -83,7 +84,7 @@
     "jest-react-native": "17.0.0",
     "mocha": "^2.5.3",
     "react-test-renderer": "15.3.2",
-    "remote-redux-devtools-on-debugger": "^0.4.6",
+    "remote-redux-devtools-on-debugger": "^0.4.7",
     "remotedev-server": "^0.1.2",
     "yarn": "^0.19.1"
   },

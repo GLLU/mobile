@@ -105,7 +105,6 @@ export default class ButtonsBar extends BaseComponent {
   }
 
   _onItemClick() {
-    console.log('props',this.props)
     this.props.toggleItem(...arguments);
     this.setState({itemLineOpen: !this.state.itemLineOpen})
   }

@@ -6,6 +6,7 @@ import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
+import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications, clearNewNotifications }  from './notifications';
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData, getUserLooks } from './looks';
@@ -36,7 +37,7 @@ import {
   addLocation,
   addTrustLevel,
   addPhotosVideo,
-  toggleOccasionTag
+  toggleOccasionTag,
 } from './uploadLook';
 import { setUser, loginViaFacebook, checkLogin, getStats, logout } from './user';
 import navigateTo from './sideBarNav';
@@ -131,4 +132,8 @@ export {
   getFeed,
   resetFeed,
   loadMore,
+  getNotifications,
+  goToNotificationSubjectScreen,
+  markAsReadNotifications,
+  clearNewNotifications
 };

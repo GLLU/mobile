@@ -5,10 +5,10 @@ import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-nativ
 import { Container, Header, Content, View } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate } from '../../../../actions';
+import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
 
 import ListViewHeader from './ListViewHeader';
-import FollowRow from './FollowRow';
+import NotificationRow from './NotificationRow';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
   },
 });
 
-class FollowListView extends Component {
+class NotificationListView extends Component {
 
   static propTypes = {
-    follows: React.PropTypes.array,
+    notifications: React.PropTypes.object,
     onEndReached: React.PropTypes.func,
     headerData: React.PropTypes.object,
     renderEmpty: React.PropTypes.func
@@ -40,18 +40,18 @@ class FollowListView extends Component {
     this.renderListView = this.renderListView.bind(this);
     const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this.state = {
-      dataSource: ds.cloneWithRows(props.follows),
+      dataSource: ds.cloneWithRows(props.notifications.allNotifications),
       isTrueEndReached: false
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (_.isEmpty(nextProps.follows)) {
+    if (_.isEmpty(nextProps.notifications.allNotifications)) {
       this.setState({isTrueEndReached: true});
     }
-    if (nextProps.follows !== this.props.follows) {
+    if (nextProps.notifications !== this.props.notifications.allNotifications) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.follows)
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.notifications.allNotifications)
       })
     }
   }
@@ -60,10 +60,20 @@ class FollowListView extends Component {
     return r1 !== r2;
   }
 
-  onUserNavigate(user) {
-    this.props.popRoute(this.props.navigation.key);
-    this.props.popRoute(this.props.navigation.key);
-    this.props.navigateTo('profileScreen', `feedscreen`, user);
+  onUserNavigate(props) {
+    console.log('propskk',props)
+    if(props.action_kind === 'Follow') {
+      this.props.popRoute(this.props.navigation.key);
+      this.props.popRoute(this.props.navigation.key);
+      this.props.navigateTo('profileScreen', `feedscreen`, props);
+    } else  {
+      this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id);
+    }
+
+  }
+
+  onMarkAsReadPress(props) {
+    this.props.markAsReadNotifications(props.id)
   }
 
   toggleFollowAction(user, shouldFollow) {
@@ -81,7 +91,7 @@ class FollowListView extends Component {
       <ListView
         style={styles.container}
         dataSource={this.state.dataSource}
-        renderRow={(data) => <FollowRow onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
+        renderRow={(data) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress.bind(this)} onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
         enableEmptySections={true}
         onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
@@ -95,7 +105,7 @@ class FollowListView extends Component {
     return (
       <View>
         <ListViewHeader count={count} title={`My ${this.props.headerData.mode}`}/>
-        {this.props.headerData.count > 0 ? this.renderListView() : this.props.renderEmpty()}
+        {this.props.headerData.count > 0 ? this.renderListView() : this.renderListView()}
       </View>
     );
   }
@@ -107,7 +117,9 @@ function bindAction(dispatch) {
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     followUpdate: (id) => dispatch(followUpdate(id)),
-    unFollowUpdate: (id) => dispatch(unFollowUpdate(id))
+    unFollowUpdate: (id) => dispatch(unFollowUpdate(id)),
+    goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
+    markAsReadNotifications: (notificationId) => dispatch(markAsReadNotifications(notificationId))
   };
 }
 
@@ -117,5 +129,5 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindAction)(FollowListView);
+export default connect(mapStateToProps, bindAction)(NotificationListView);
 
