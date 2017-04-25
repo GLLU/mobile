@@ -122,7 +122,7 @@ class FollowRow extends Component {
       )
     } else {
       return (
-        <TouchableOpacity style={[styles.markAsRead]} onPress={this.onUserPress.bind(this)} />
+        <TouchableOpacity style={[styles.markAsRead]} onPress={this.onNotificationPress.bind(this)} />
       )
     }
 
@@ -144,7 +144,6 @@ class FollowRow extends Component {
         { this.renderFollowText() }
         { this.props.action_kind !== 'Follow' ? this.renderNotificationImage() : this.renderFollowView() }
         { this.renderMarkAsReadBtn(isRead) }
-
       </TouchableOpacity>
     )
   }
