@@ -255,7 +255,7 @@ class AddItemPage extends BasePage {
 
   renderContent() {
     if (this.state.currentStep === -1) {
-      const { mode } = this.state;
+      const { mode, isVideo } = this.state;
       return (
         <StepMarker
           mode={mode}
