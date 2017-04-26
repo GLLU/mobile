@@ -20,6 +20,10 @@ export default reduxApi({
     url: "/invitation_usage",
     crud: true,
   },
+  invitation_check_if_exists: {
+    url: "/invitations_finder?token=:token",
+    crud: true,
+  },
   password_recovery: {
     url: "/password_recovery",
     crud: true,

@@ -81,12 +81,16 @@ module.exports = StyleSheet.create({
     marginBottom: 5
   },
   formItem: {
-    marginLeft: 50,
-    marginRight: 50,
-    borderBottomWidth: 2,
-    borderColor: 'rgba(192,192,192, .3)',
+    marginLeft: 80,
+    marginRight: 80,
+    borderBottomWidth: 4,
+    borderColor: 'white',
     paddingLeft: 0,
     alignItems: 'flex-end'
+  },
+  formItemGetCode: {
+    borderBottomWidth: 3,
+    borderColor: 'rgba(192,192,192, .3)',
   },
   formGroup: {
     borderColor: 'transparent',
@@ -94,7 +98,6 @@ module.exports = StyleSheet.create({
     paddingLeft: 0
   },
   label: {
-    color: 'lightgrey',
     fontSize: 16,
     alignSelf: 'center',
     marginTop: 20,
@@ -109,8 +112,12 @@ module.exports = StyleSheet.create({
     marginTop: (Platform.OS === 'ios') ? 22 : 0,
     alignItems: 'stretch',
     color: '#FFFFFF',
-    marginLeft: 10,
-    top: (Platform.OS === 'ios') ? 0 : 13,
+    textAlign: 'center',
+    top: (Platform.OS === 'ios') ? 5 : 13,
+  },
+  formInputGetCode: {
+    marginTop: (Platform.OS === 'ios') ? 10 : 0,
+    textAlign: 'left'
   },
   formBtn: {
     alignSelf: 'center',
@@ -120,7 +127,7 @@ module.exports = StyleSheet.create({
     height: 40,
     backgroundColor: '#ADADAD',
     borderRadius: 0,
-    opacity: 0.8
+    opacity: 1
   },
   validationPassed: {
     backgroundColor: MKColor.Teal
@@ -131,8 +138,8 @@ module.exports = StyleSheet.create({
   },
   alreadyTxt: {
     color: '#FFFFFF',
-    fontSize: 16,
-    opacity: 0.8
+    fontSize: 13,
+    opacity: 1
   },
   alreadyBtn: {
     backgroundColor: 'transparent',

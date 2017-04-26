@@ -13,6 +13,7 @@ export const RESET_STATE = 'RESET_STATE';
 let api_key = ''
 const setRestOptions = function(dispatch, rest, user) {
   api_key = user.api_key;
+  console.log('api key',api_key)
   rest.use("options", function() {
     return {
       headers: {
@@ -98,15 +99,32 @@ export function loginViaFacebook(data):Action {
 }
 
 export function useInvitationCode(token):Action {
+  console.log('token',token)
+  return (dispatch) => {
     return dispatch(rest.actions.invitation.post({"token": token}, (err, data) => {
-      if (!err && data) {
+      if (!err) {
         //signInFromRest(dispatch, data);
-        console.log('invitation token passed and approved: ',code)
+        console.log('invitation token passed and approved: ',data)
       } else {
         alert('Unable to login via Facebook');
       }
     }));
+  }
+}
 
+export function invitationCheckExistance(token):Action {
+  console.log('token',token)
+  return (dispatch) => {
+    return dispatch(rest.actions.invitation_check_if_exists.get({"token": token}, (err, data) => {
+      console.log('err',err)
+      if (!err && data) {
+        //signInFromRest(dispatch, data);
+        console.log('invitation token passed and approved: ',data)
+      } else {
+        alert('Unable to login via Facebook');
+      }
+    }));
+  }
 }
 
 const signUp = function(dispatch, data) {

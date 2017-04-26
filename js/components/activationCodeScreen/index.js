@@ -7,7 +7,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
-import { useInvitationCode } from '../../actions/user';
+import { invitationCheckExistance } from '../../actions/user';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 import {
@@ -39,9 +39,9 @@ class ActivationCodeScreen extends BasePage {
   constructor(props) {
     super(props);
       this.state = {
+          renderEnterCode: true,
           email: '',
-          password: '',
-          passwordValid: 'times',
+          code: '',
           emailValid: 'times',
           allValid: false
       };
@@ -81,14 +81,8 @@ class ActivationCodeScreen extends BasePage {
     });
   }
 
-  validatePasswordInput(password) {
-    passwordRule.validate(password, (err) => {
-      if(!err){
-          this.setState({password, passwordValid: 'check'});
-      } else {
-          this.setState({password, passwordValid: 'times'});
-      }
-    });
+  setInvitationCode(code) {
+    this.setState({ code });
   }
 
   focusOnInput(refAttr) {
@@ -117,12 +111,81 @@ class ActivationCodeScreen extends BasePage {
   handleSigninPress() {
     this.logEvent('SignInEmailScreen', { name: 'Lets GLLU click' });
 
-   this.singinWithEmail();
+   this.props.invitationCheckExistance(this.state.code);
+  }
+
+  validateTextInput(value) {
+      this.setState({ name: value });
   }
 
   handleForgotPasswordPress() {
     this.logEvent('SignInEmailScreen', { name: 'Forgot password click' });
     this.pushRoute('forgotpassword');
+  }
+
+  _renderEnterCode() {
+    return (
+      <View style={{  justifyContent: 'center' }}>
+        <View style={styles.logoContainer}>
+          <Text style={styles.invitationText}>Hey,</Text>
+          <Text style={styles.invitationText}>This version is for invitees only.</Text>
+          <Text style={styles.invitationText}>Please enter your invitation code below.</Text>
+        </View>
+        <View>
+          <Grid>
+            <Row style={styles.formItem}>
+              <InputGroup style={styles.formGroup}>
+                <Input style={styles.formInput} placeholder="Enter Invitation Code" placeholderTextColor="white" onChangeText={(code) => this.setInvitationCode(code)}/>
+              </InputGroup>
+            </Row>
+          </Grid>
+          <Button color='white' style={[styles.formBtn, styles.validationPassed  ]} onPress={this.handleSigninPress.bind(this)}>
+            Submit
+          </Button>
+          <View style={styles.alreadyBox}>
+            <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Don't have code? <Text style={[styles.alreadyTxt, {fontWeight: '600', opacity: 10}]}>Apply for code</Text></Text>
+            <Button color={MKColor.Teal} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderGetCode.bind(this)}><Text style={{color: MKColor.Teal, fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> here</Text></Button>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  renderEnterCode() {
+    this.setState({renderEnterCode: true})
+  }
+
+  renderGetCode() {
+    this.setState({renderEnterCode: false})
+  }
+
+  _renderGetCode() {
+    return (
+      <View style={{  justifyContent: 'center' }}>
+        <View>
+          <Grid>
+            <Row style={[styles.formItem, styles.formItemGetCode]}>
+              <InputGroup style={styles.formGroup}>
+                <Input style={[styles.formInput, styles.formInputGetCode]} placeholder="Name" placeholderTextColor="white" ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
+              </InputGroup>
+            </Row>
+            <Row style={[styles.formItem, styles.formItemGetCode]}>
+              <InputGroup style={styles.formGroup}>
+                <Input style={[styles.formInput, styles.formInputGetCode]} placeholder="Email" ref='email' keyboardType={'email-address'} placeholderTextColor="white" onChangeText={(email) => this.validateEmailInput(email)}/>
+              </InputGroup>
+            </Row>
+          </Grid>
+          <Button color='white' style={[styles.formBtn, styles.validationPassed  ]} onPress={this.handleSigninPress.bind(this)}>
+            Ask for Code
+          </Button>
+          <View style={styles.alreadyBox}>
+            <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
+            <Button color={MKColor.Teal} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderEnterCode.bind(this)}><Text style={{color: MKColor.Teal, fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> Click here</Text></Button>
+          </View>
+        </View>
+      </View>
+      )
+
   }
 
   render() {
@@ -135,33 +198,10 @@ class ActivationCodeScreen extends BasePage {
               <Button transparent onPress={() => this.popRoute()}>
                 <Icon style={styles.headerArrow} name="ios-arrow-back" />
               </Button>
-              <Title style={styles.headerTitle}>Sign in</Title>
+              <Title style={styles.headerTitle}>Invitation Code</Title>
             </Header>
             <Content scrollEnabled={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
-              <View style={{  justifyContent: 'center' }}>
-                <View style={styles.logoContainer}>
-                  <Text style={styles.invitationText}>Hey,</Text>
-                  <Text style={styles.invitationText}>This version is for invitees only.</Text>
-                  <Text style={styles.invitationText}>Please enter your invitation code below.</Text>
-                </View>
-                <View>
-                  <Grid>
-                      <Row style={styles.formItem}>
-                        <InputGroup style={styles.formGroup}>
-                          <Input style={styles.formInput} placeholder="Enter Invitation Code" ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
-                        </InputGroup>
-                          { this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
-                      </Row>
-                  </Grid>
-                  <Button color='lightgrey' style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}>
-                    Submit
-                  </Button>
-                    <View style={styles.alreadyBox}>
-                      <Text style={styles.alreadyTxt}>Forgot your password?</Text>
-                      <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={this.handleForgotPasswordPress.bind(this)}>Click Here</Button>
-                    </View>
-                  </View>
-              </View>
+              { this.state.renderEnterCode ? this._renderEnterCode() : this._renderGetCode() }
             </Content>
             <View style={styles.bottomContainerContent}>
               <Text style={styles.text}>By signing-up I agree to gllu's </Text>
@@ -178,7 +218,7 @@ class ActivationCodeScreen extends BasePage {
 
 function bindAction(dispatch) {
   return {
-      useInvitationCode: (data) => dispatch(useInvitationCode(data)),
+      invitationCheckExistance: (code) => dispatch(invitationCheckExistance(code)),
       popRoute: key => dispatch(popRoute(key)),
       pushRoute: (route, key) => dispatch(pushRoute(route, key))
   };
