@@ -31,14 +31,20 @@ class TagItemPage extends BaseComponent {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(this.state.mode !== nextProps.mode)  {
+      this.setState({mode: nextProps.mode})
+    }
+  }
+
   handleAddTag(position) {
     this.logEvent('AddItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'view'})
     });
   }
 
   handleOnDragEnd(position) {
+    console.log('handleOnDragEnd')
     this.props.setTagPosition(position);
     this.props.updateLookItem();
   }
@@ -46,7 +52,6 @@ class TagItemPage extends BaseComponent {
   createLookItemForVideo(position) {
     this.logEvent('AddItemScreen', { name: 'Marker add video' });
     this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'view'})
     });
   }
 

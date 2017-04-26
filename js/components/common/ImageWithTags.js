@@ -85,7 +85,6 @@ class ImageWithTags extends Component {
     this._pan = new Animated.ValueXY();
     this._pan.addListener((value) => this._value = value);
     this._pan.setOffset({x: locationX, y: locationY})
-
     this.panResponder = PanResponder.create({
         onStartShouldSetPanResponder : () => true,
         onPanResponderMove           : Animated.event([null,{
@@ -197,15 +196,11 @@ class ImageWithTags extends Component {
     );
   }
 
-  _renderContent() {
-    return this._render();
-  }
-
   render() {
     const style = [styles.base, this.props.style];
     return (
       <View style={style}>
-        {this._renderContent()}
+        {this._render()}
       </View>
     );
   }
