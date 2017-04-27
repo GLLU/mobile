@@ -99,12 +99,12 @@ class AppNavigator extends Component {
   }
 
   _renderScene(props) { // eslint-disable-line class-methods-use-this
-    const optional = props.scene.route.optional;
+    const optional = props.scene.route.optional ? props.scene.route.optional: '';
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
       case 'activationcode':
-        return <ActivationCodeScreen />;
+        return <ActivationCodeScreen continueTo={props.scene.route} />;
       case 'signupemail':
         return <SignUpPage gender={props.scene.route.gender}/>;
       case 'genderselect':
@@ -190,7 +190,7 @@ class AppNavigator extends Component {
         </Drawer>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
         {this.props.isProcessing ? <SpinnerClothing /> : null}
-        {this.props.error ? <ErrorHandler /> : null}
+        {this.props.fatal_error ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}
       </View>

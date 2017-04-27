@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN } from '../actions/user';
+import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN, SET_INVITATION_IS_USED } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -17,7 +17,8 @@ const initialState = {
   avatar: null,
   can_simple_login: null,
   api_key: null,
-  invitation_token: -1
+  invitation_token: -1,
+  invitation_is_used: false
 };
 
 // Action Handlers
@@ -36,6 +37,13 @@ const ACTION_HANDLERS = {
       invitation_token: action.payload
     };
   },
+  [SET_INVITATION_IS_USED]: (state, action) => {
+    console.log('changesss')
+    return {
+      ...state,
+      invitation_is_used: true
+    };
+  },
   [COMPLETE_EDIT_BODY_MEASURE]: (state, action) => {
     return {
       ...state,
@@ -49,9 +57,11 @@ const ACTION_HANDLERS = {
     }
   },
   [RESET_STATE]: (state, action) => {
+    console.log('statecc',state)
     return {
       ...initialState,
-      invitation_token: state.invitation_token
+      invitation_token: state.invitation_token,
+      invitation_is_used: state.invitation_is_used
     };
   }
 }

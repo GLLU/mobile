@@ -1,6 +1,6 @@
 import { openDrawer, closeDrawer } from './drawer';
 import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
-import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo } from './errorHandler';
+import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
 import { loadCategories, loadBrands, loadItemSizes, loadOccasionTags } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
@@ -112,6 +112,8 @@ export {
   hideProcessing,
   showError,
   hideError,
+  showFatalError,
+  hideFatalError,
   showWarning,
   hideWarning,
   showInfo,

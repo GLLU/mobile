@@ -45,7 +45,6 @@ class ActivationCodeScreen extends BasePage {
           emailValid: 'times',
           allValid: false
       };
-
   }
 
   singinWithEmail() {
@@ -55,6 +54,7 @@ class ActivationCodeScreen extends BasePage {
           this.props.emailSignIn(data);
       }
   }
+
   checkValidations() {
     let {
         passwordValid,
@@ -85,10 +85,6 @@ class ActivationCodeScreen extends BasePage {
     this.setState({ code });
   }
 
-  focusOnInput(refAttr) {
-    this.refs[refAttr]._textInput.focus();
-  }
-
   handleTermPress() {
     this.handleOpenLink(TERMS_URL);
   }
@@ -110,17 +106,11 @@ class ActivationCodeScreen extends BasePage {
 
   handleSigninPress() {
     this.logEvent('SignInEmailScreen', { name: 'Lets GLLU click' });
-
-   this.props.invitationCheckExistance(this.state.code);
+    this.props.invitationCheckExistance(this.state.code, this.props.navigation.routes[1].optional);
   }
 
   validateTextInput(value) {
       this.setState({ name: value });
-  }
-
-  handleForgotPasswordPress() {
-    this.logEvent('SignInEmailScreen', { name: 'Forgot password click' });
-    this.pushRoute('forgotpassword');
   }
 
   _renderEnterCode() {
@@ -142,10 +132,11 @@ class ActivationCodeScreen extends BasePage {
           <Button color='white' style={[styles.formBtn, styles.validationPassed  ]} onPress={this.handleSigninPress.bind(this)}>
             Submit
           </Button>
-          <View style={styles.alreadyBox}>
+          <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Don't have code? <Text style={[styles.alreadyTxt, {fontWeight: '600', opacity: 10}]}>Apply for code</Text></Text>
             <Button color={MKColor.Teal} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderGetCode.bind(this)}><Text style={{color: MKColor.Teal, fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> here</Text></Button>
           </View>
+            {this.props.error ? this.renderError() : null}
         </View>
       </View>
     )
@@ -178,7 +169,7 @@ class ActivationCodeScreen extends BasePage {
           <Button color='white' style={[styles.formBtn, styles.validationPassed  ]} onPress={this.handleSigninPress.bind(this)}>
             Ask for Code
           </Button>
-          <View style={styles.alreadyBox}>
+          <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
             <Button color={MKColor.Teal} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderEnterCode.bind(this)}><Text style={{color: MKColor.Teal, fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> Click here</Text></Button>
           </View>
@@ -186,6 +177,16 @@ class ActivationCodeScreen extends BasePage {
       </View>
       )
 
+  }
+
+  renderError() {
+    return(
+    <View style={[styles.centerBox, styles.errorContainer]}>
+      <Text style={styles.errorText}>{this.props.error}</Text>
+      <Text style={styles.errorText}>Please try again or ask for new code</Text>
+    </View>
+
+    )
   }
 
   render() {
@@ -218,7 +219,7 @@ class ActivationCodeScreen extends BasePage {
 
 function bindAction(dispatch) {
   return {
-      invitationCheckExistance: (code) => dispatch(invitationCheckExistance(code)),
+      invitationCheckExistance: (code, continueTo) => dispatch(invitationCheckExistance(code, continueTo)),
       popRoute: key => dispatch(popRoute(key)),
       pushRoute: (route, key) => dispatch(pushRoute(route, key))
   };
@@ -226,6 +227,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+  error: state.errorHandler.error
 });
 
 export default connect(mapStateToProps, bindAction)(ActivationCodeScreen);

@@ -132,7 +132,15 @@ module.exports = StyleSheet.create({
   validationPassed: {
     backgroundColor: MKColor.Teal
   },
-  alreadyBox: {
+  errorText: {
+    color: 'orange',
+    textAlign: 'center',
+    fontSize: 12
+  },
+  errorContainer: {
+    flexDirection: 'column'
+  },
+  centerBox: {
     alignSelf: 'center',
     flexDirection:'row',
   },
