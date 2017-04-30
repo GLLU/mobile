@@ -71,12 +71,12 @@ class FinishLookPage extends BasePage {
 
   handleFacebookPress() {
     this.logEvent('CongratsScreen', { name: 'Facebook Share click' });
-    SocialShare.facebookShare();
+    SocialShare.facebookShare(this.props.shareToken);
   }
 
   handleOthersPress() {
     this.logEvent('CongratsScreen', { name: 'Other Share click' });
-    SocialShare.nativeShare(); 
+    SocialShare.nativeShare(this.props.shareToken);
   }
 
   handleGlluAgainPress() {
@@ -186,6 +186,7 @@ const mapStateToProps = state => {
     lookId,
     image,
     items,
+    shareToken: state.user.invitation_share_token
   };
 };
 

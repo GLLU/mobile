@@ -234,6 +234,7 @@ class LooksContainer extends BasePage {
             toggleMenu={() => this._toggleMenu()}
             isMenuOpen={this.state.isMenuOpen}
             onBottomDrawerOpen={this.onToggleDrawer}
+            shareToken={this.props.shareToken}
             reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           />
         </Image>
@@ -315,7 +316,8 @@ const mapStateToProps = state => {
     flatLooksData: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
-    userLooks: state.userLooks.userLooksData
+    userLooks: state.userLooks.userLooksData,
+    shareToken: state.user.invitation_share_token
   };
 };
 

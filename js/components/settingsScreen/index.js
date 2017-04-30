@@ -62,7 +62,7 @@ class SettingsScreen extends BasePage {
 
   handleShare() {
     this.logEvent('SettingsScreen', { name: 'Share click' });
-    SocialShare.nativeShare();
+    SocialShare.nativeShare(this.props.shareToken);
   }
 
   handleOpenLink(url, type = 'link') {
@@ -150,7 +150,8 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    navigation: state.cardNavigation
+    navigation: state.cardNavigation,
+    shareToken: state.user.invitation_share_token
   };
 };
 

@@ -65,7 +65,7 @@ class TabContent extends BaseComponent {
 
   _onShareClicked() {
     this.logEvent('LookScreen', {name: 'Share click'});
-    SocialShare.nativeShare();
+    SocialShare.nativeShare(this.props.shareToken);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -348,7 +348,8 @@ const mapStateToProps = state => {
     hasUserSize,
     user_size: user_size,
     user_gender: state.user.gender,
-    cardNavigationStack: state.cardNavigation.routes
+    cardNavigationStack: state.cardNavigation.routes,
+    shareToken: state.user.invitation_share_token
   }
 };
 

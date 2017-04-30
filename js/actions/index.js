@@ -39,7 +39,14 @@ import {
   addPhotosVideo,
   toggleOccasionTag,
 } from './uploadLook';
-import { setUser, loginViaFacebook, checkLogin, getStats, logout, setInvitationToken, invitationCheckExistance } from './user';
+import { setUser,
+  loginViaFacebook,
+  checkLogin,
+  getStats,
+  logout,
+  setInvitationToken,
+  invitationCheckExistance,
+  createInvitationCode } from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
@@ -139,5 +146,6 @@ export {
   markAsReadNotifications,
   clearNewNotifications,
   setInvitationToken,
-  invitationCheckExistance
+  invitationCheckExistance,
+  createInvitationCode
 };

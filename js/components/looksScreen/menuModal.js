@@ -70,7 +70,7 @@ class menuModal extends Component {
   }
 
   _onShareClicked() {
-    SocialShare.nativeShare();
+    SocialShare.nativeShare(this.props.shareToken);
   }
 
   _reportAbuse() {

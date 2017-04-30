@@ -9,7 +9,7 @@ import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyModal from '../common/myBodyModal';
-import { addNewLook, setUser, pushRoute, navigateTo, getNotifications } from '../../actions';
+import { addNewLook, setUser, pushRoute, navigateTo, getNotifications, createInvitationCode } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
 import Gllu from '../common';
@@ -40,6 +40,10 @@ class FeedPage extends BasePage {
       photoModal: false,
       contentHeight: null
     };
+  }
+
+  componentDidMount() {
+    this.props.createInvitationCode() // Will be removed in the future
   }
 
   componentWillMount() {
@@ -138,6 +142,7 @@ function bindActions(dispatch) {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
+    createInvitationCode: name => dispatch(createInvitationCode(name)),
   };
 }
 

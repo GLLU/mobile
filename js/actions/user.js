@@ -11,6 +11,7 @@ export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const SET_INVITATION_TOKEN = 'SET_INVITATION_TOKEN';
 export const SET_INVITATION_IS_USED = 'SET_INVITATION_IS_USED';
+export const SET_INVITATION_SHARE_TOKEN = 'SET_INVITATION_SHARE_TOKEN';
 
 let api_key = ''
 const setRestOptions = function(dispatch, rest, user) {
@@ -49,7 +50,7 @@ const signInFromRest = function(dispatch, data, invitation_token, invitationToke
       dispatch(useInvitationCode(invitation_token))
       dispatch(setInvitationTokenIsUsed())
     }
-
+    dispatch(createInvitationCode());
     dispatch(resetUserNavigation());
   })
 };
@@ -91,6 +92,13 @@ export function setInvitationTokenIsUsed():Action {
   };
 }
 
+export function setInvitationInvitationShareToken(shareToken):Action {
+  return {
+    type: SET_INVITATION_SHARE_TOKEN,
+    payload: shareToken,
+  };
+}
+
 export function loginViaFacebook(data):Action {
   return (dispatch, getState) => {
     const user = getState().user;
@@ -121,6 +129,18 @@ export function useInvitationCode(token):Action {
         console.log('invitation token passed and approved: ',data)
       } else {
         alert('Unable to use invitation code');
+      }
+    }));
+  }
+}
+
+export function createInvitationCode():Action {
+  return (dispatch) => {
+    return dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({"limit_by_days": 3})}, (err, data) => {
+      if (!err && !_.isEmpty(data)) {
+        dispatch(setInvitationInvitationShareToken(data.invitation.token))
+      } else {
+        console.log('Unable to create invitation code ',err)
       }
     }));
   }
@@ -184,9 +204,6 @@ const signUp = function(dispatch, data) {
 
 export function emailSignUp(data):Action {
   return (dispatch, getState) => {
-    const user = getState().user;
-    const invitation_is_used = user.invitation_is_used;
-    const invitation_token = user.invitation_token;
     dispatch(hideFatalError());
     if(data) {
       signUp(dispatch, data).then(data => {
