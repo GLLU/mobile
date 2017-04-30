@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     position: 'absolute',
-    top: 10,
+    top: Platform.OS === 'ios' ? 20 : 10,
     height: 30,
     flexDirection: 'row',
     zIndex: 2,
     width: w,
-    justifyContent: 'space-between'
+    justifyContent: 'space-around'
   },
   headerTitle: {
     backgroundColor: 'transparent',
@@ -279,8 +279,8 @@ class AddItemPage extends BasePage {
 
   renderNext(fgColor) {
     return (
-      <Button transparent onPress={() => this.handleContinue()}>
-        <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-forward" />
+      <Button transparent onPress={() => this.handleContinue()} style={{width: 30, height: 30, backgroundColor: '#05d7b2', borderRadius: 15}}>
+        <Icon style={[ { color: 'white', marginLeft: 2 }]} name="ios-arrow-forward" />
       </Button>
     )
   }
