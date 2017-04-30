@@ -5,14 +5,14 @@ import { Image, Linking, Platform, AppState, Dimensions } from 'react-native';
 import { Container, Content, Text, View, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
-import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+import Utils from '../../Utils.js'
 import { connect } from 'react-redux';
 import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
 import Video from 'react-native-video';
 const deviceWidth = Dimensions.get('window').width;
-const { navigateTo } = actions;
+import { navigateTo } from '../../actions';
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const logo = require('../../../images/logo.png');
@@ -100,40 +100,25 @@ class SplashPage extends BasePage {
   connectWithFB() {
     this.logEvent('Splashscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
-    LoginManager.logInWithReadPermissions(PERMISSIONS).then(
-      (result) => {
-        if (result.isCancelled) {
-          alert('Login cancelled');
-        } else {
-          const diffPermissions = _.difference(PERMISSIONS, result.grantedPermissions);
-          if (diffPermissions.length == 0) {
-            AccessToken.getCurrentAccessToken().then(
-              (data) => {
-                const infoRequest = new GraphRequest('/me?fields=id,name,email,gender', null, (error, result) => {
-                  if (error) {
-                    alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
-                  } else {
-                    const jsonData = { access_token: data["accessToken"], expiration_time: data["expirationTime"], data: result };
-                    this.props.loginViaFacebook(jsonData);
-                  }
-                });
-                new GraphRequestManager().addRequest(infoRequest).start();
-              }
-            );
-          } else {
-            alert(`Missing permissions: ${diffPermissions.join(', ')}`);
-          }
-        }
-      },
-      (error) => {
-        alert('Login fail with error: ' + error);
-      }
-    );
+    if(this.props.invitation_token !== -1) {
+      Utils.loginWithFacebook().then((data) => this.props.loginViaFacebook(data))
+        .catch((err) => console.log('facebook login Error',err))
+    } else {
+      this.props.navigateTo('activationcode', 'splashscreen', 'facebook');
+    }
+
   }
 
   handleEmailSignupPress() {
     this.logEvent('Splashscreen', {name: 'Email signup click'});
-    this.pushRoute('genderselect');
+    console.log('this.props',this.props)
+    if(this.props.invitation_token !== -1) {
+      this.pushRoute('genderselect');
+    } else {
+      //this.pushRoute('activationcode');
+      this.props.navigateTo('activationcode', 'splashscreen', 'genderselect');
+    }
+
   }
 
   handleTermPress() {
@@ -211,13 +196,14 @@ function bindAction(dispatch) {
   return {
     emailSignIn: (data) => dispatch(emailSignIn(data)),
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    navigateTo: (route, homeRoute, continueTo) => dispatch(navigateTo(route, homeRoute, continueTo)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+  invitation_token: state.user.invitation_token
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

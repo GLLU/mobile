@@ -1,6 +1,6 @@
 import { openDrawer, closeDrawer } from './drawer';
 import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
-import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo } from './errorHandler';
+import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
 import { loadCategories, loadBrands, loadItemSizes, loadOccasionTags } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
@@ -39,7 +39,14 @@ import {
   addPhotosVideo,
   toggleOccasionTag,
 } from './uploadLook';
-import { setUser, loginViaFacebook, checkLogin, getStats, logout } from './user';
+import { setUser,
+  loginViaFacebook,
+  checkLogin,
+  getStats,
+  logout,
+  setInvitationToken,
+  invitationCheckExistance,
+  createInvitationCode } from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
@@ -112,6 +119,8 @@ export {
   hideProcessing,
   showError,
   hideError,
+  showFatalError,
+  hideFatalError,
   showWarning,
   hideWarning,
   showInfo,
@@ -135,5 +144,8 @@ export {
   getNotifications,
   goToNotificationSubjectScreen,
   markAsReadNotifications,
-  clearNewNotifications
+  clearNewNotifications,
+  setInvitationToken,
+  invitationCheckExistance,
+  createInvitationCode
 };

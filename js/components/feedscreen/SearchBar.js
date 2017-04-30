@@ -3,7 +3,6 @@ import { StyleSheet, TextInput, Text, Platform } from 'react-native';
 import { View, Button, Icon } from 'native-base';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
-import styles from './styles';
 import FontSizeCalculator from './../../calculators/FontSize';
 
 const myStyles = StyleSheet.create({
@@ -14,7 +13,6 @@ const myStyles = StyleSheet.create({
     alignItems: 'center',
     flexGrow: 1,
     borderRadius: 10,
-
   },
   searchInput: {
     borderBottomWidth: 0,

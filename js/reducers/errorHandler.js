@@ -1,9 +1,10 @@
 
 import type { Action } from '../actions/types';
-import { SHOW_ERROR, HIDE_ERROR, SHOW_WARNING, HIDE_WARNING, SHOW_INFO, HIDE_INFO } from '../actions/errorHandler';
+import { SHOW_ERROR, HIDE_ERROR, SHOW_WARNING, HIDE_WARNING, SHOW_INFO, HIDE_INFO, SHOW_FATAL_ERROR, HIDE_FATAL_ERROR } from '../actions/errorHandler';
 
 const initialState = {
   error: null,
+  fatal_error: null,
   warning: null,
   info:null
 };
@@ -19,6 +20,16 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: null,
+      };
+    case SHOW_FATAL_ERROR:
+      return {
+        ...state,
+        fatal_error: action.payload,
+      };
+    case HIDE_FATAL_ERROR:
+      return {
+        ...state,
+        fatal_error: null,
       };
     case SHOW_WARNING:
       return {

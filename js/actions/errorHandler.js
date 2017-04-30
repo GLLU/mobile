@@ -2,6 +2,8 @@ import type { Action } from './types';
 
 export const SHOW_ERROR = 'SHOW_ERROR';
 export const HIDE_ERROR = 'HIDE_ERROR';
+export const SHOW_FATAL_ERROR = 'SHOW_FATAL_ERROR';
+export const HIDE_FATAL_ERROR = 'SHOW_FATAL_ERROR';
 export const SHOW_WARNING = 'SHOW_WARNING';
 export const HIDE_WARNING = 'HIDE_WARNING';
 export const SHOW_INFO = 'SHOW_INFO';
@@ -17,6 +19,19 @@ export function showError(err): Action {
 export function hideError(): Action {
   return {
     type: HIDE_ERROR,
+  };
+}
+
+export function showFatalError(err): Action {
+  return {
+    type: SHOW_FATAL_ERROR,
+    payload: err
+  };
+}
+
+export function hideFatalError(): Action {
+  return {
+    type: HIDE_FATAL_ERROR,
   };
 }
 

@@ -169,7 +169,8 @@ export default class BottomLookContainer extends BaseComponent {
         </Animated.View>
         { !this.props.lookType ? this._renderBuyItButtons(this.props.look) : null}
         <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-                   closeModal={() => this._toggleMenu()}/>
+                   closeModal={() => this._toggleMenu()}
+                   shareToken={this.props.shareToken}/>
       </View>
     )
   }
