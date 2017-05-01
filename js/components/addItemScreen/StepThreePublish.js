@@ -31,7 +31,8 @@ import VideoWithTags from '../common/VideoWithTags';
 
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
-
+const dollarBill = require('../../../images/dollar-bill.png')
+const smartphone = require('../../../images/smartphone.png')
 const deviceWidth = Dimensions.get('window').width;
 const wModal = deviceWidth / 1.5;
 const hModal = wModal / 2;
@@ -322,20 +323,24 @@ class StepThreePublish extends BaseComponent {
             <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', opacity: 0.8, position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
             </View>
             <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'absolute', left: 0, top: 0, right: 0, bottom: 0}}>
-              <View style={{backgroundColor: '#FFFFFF', height: 300, width: 300}}>
-                <View style={{flex: 1, justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
-                  <View style={{flex: 6, justifyContent: 'space-around', alignItems: 'center', paddingBottom: 10}}>
-                    <H3
+              <View style={{backgroundColor: '#FFFFFF', height: 350, width: 300}}>
+                <View style={{flex: 1,  alignItems: 'center', padding: 20}}>
+                  <View style={{flex: 6,  paddingBottom: 10}}>
+                    <Text
+                      style={[styles.text, {fontSize: 18}]}
+                    >
+                      Want to make more money?
+                    </Text>
+                    <View style={{width: 100, flexDirection: 'row', paddingVertical: 15}}>
+                      <Image resizeMode={'contain'} source={smartphone} style={{width: 100, height: 100}}/>
+                      <Image resizeMode={'contain'} source={dollarBill} style={{width: 100, height: 100}}/>
+                    </View>
+                    <Text
                       style={[styles.text, {fontSize: 14}]}
                     >
-                      You want to make 5x more $$$?
-                    </H3>
-                    <H3
-                      style={[styles.text, {fontSize: 14}]}
-                    >
-                      Just list the specific URL of the purchased item
-                    </H3>
-                    <Text style={{fontSize: 12, textAlign: 'center'}}>(i.e. name of the exact page of the item in the online store)</Text>
+                      Make sure to copy-paste the exact
+                      webpage of the item in your image
+                    </Text>
                   </View>
                   <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
                     <Gllu.Button
