@@ -125,7 +125,7 @@ class ProfileScreen extends BasePage {
   }
 
   toggleFollow(isFollowing) {
-    this.logEvent('ProfileScreen', {name: 'Follow click', isFollowing});
+    this.logEvent('ProfileScreen', {name: 'Follow click', isFollowing:isFollowing.toString()});
     this.setState({isFollowing: isFollowing});
     this.props.getStats(this.state.userId);
   }
