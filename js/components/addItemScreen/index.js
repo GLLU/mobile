@@ -74,7 +74,7 @@ class AddItemPage extends BasePage {
     isVideo = this.props.image.search(".mp4") > -1
     this.state = {
       isVideo,
-      currentStep: 0,
+      currentStep: -1,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
