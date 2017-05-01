@@ -116,7 +116,7 @@ class FinishLookPage extends BasePage {
             <H2
               style={[styles.text, {fontSize: 22}]}
             >
-              HELP PEOPLE TO KNOW HOW FASHION YOU ARE
+              SHARE YOUR STYLE WITH OTHER FRIENDS
             </H2>
           </View>
           <View style={{flex: 2, flexDirection: 'column', justifyContent: 'space-around', paddingTop: 20}}>
@@ -126,14 +126,14 @@ class FinishLookPage extends BasePage {
               </Button>
               <Button transparent iconLeft onPress={this.handleOthersPress.bind(this)}>
                 <Icon size={30} name='md-share'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
-                Share on others...
+                Share on other channels
               </Button>
           </View>
           <View style={{flex: 2}}>
             <Gllu.Button
               onPress={this.handleGlluAgainPress.bind(this)}
               style={{alignSelf: 'center', width: 200}}
-              text="Let's GLLU again!"
+              text="Post another look!"
             />
           </View>
           <TouchableOpacity
