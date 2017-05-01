@@ -349,7 +349,7 @@ class StepThreePublish extends BaseComponent {
                       text="OK. Let's do it"
                     />
                     <Text style={styles.link} onPress={this.handleContinuePress.bind(this)}>
-                      Continue Anayway
+                      Continue Anyway
                     </Text>
                   </View>
                 </View>
