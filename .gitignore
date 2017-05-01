@@ -34,6 +34,8 @@ local.properties
 android/local.properties
 android/gradle.properties
 android/build.gradle
+android/app/src/main/assets/index.android.bundle
+android/app/src/main/assets/index.android.bundle.meta
 
 # node.js
 #
