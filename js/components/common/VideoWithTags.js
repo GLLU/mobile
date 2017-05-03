@@ -141,7 +141,7 @@ class VideoWithTags extends Component {
     return (
       <View style={{flex: 1, paddingHorizontal: 0, padding: 0}} >
         <Video source={{uri: this.props.image}}
-               resizeMode="stretch"
+               resizeMode="contain"
                muted={true}
                style={{width: w, height: h, overflow: 'hidden'}}
                repeat={true}/>

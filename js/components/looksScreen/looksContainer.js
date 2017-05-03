@@ -188,7 +188,7 @@ class LooksContainer extends BasePage {
         }}>
         <Video
           source={{uri: look.uri, mainVer: 1, patchVer: 0}}
-          resizeMode={'stretch'}
+          resizeMode={'contain'}
           muted={true}
           style={styles.videoBackground}
           repeat={true}
@@ -223,6 +223,12 @@ class LooksContainer extends BasePage {
         <Image
           resizeMode={'cover'}
           style={styles.itemImage}
+          source={{uri: look.uri}}
+        blurRadius={5}>
+          <View style={{backgroundColor: 'rgba(0,0,0,0.6)'}}>
+          <Image
+          resizeMode={'contain'}
+          style={styles.itemImage}
           source={{uri: look.uri}}>
           <BottomLookContainer
             width={width}
@@ -237,6 +243,8 @@ class LooksContainer extends BasePage {
             shareToken={this.props.shareToken}
             reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           />
+        </Image>
+          </View>
         </Image>
       </GestureRecognizer>
     )

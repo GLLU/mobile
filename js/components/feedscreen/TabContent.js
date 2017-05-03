@@ -18,6 +18,7 @@ import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import Utils from '../../Utils';
 import BaseComponent from '../common/BaseComponent';
+import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 import Video from 'react-native-video';
@@ -49,11 +50,13 @@ class TabContent extends BaseComponent {
       noMoreData: false,
       //fadeAnim: new Animated.Value(0),
       isRefreshing: false,
+      currentScrollPosition: 0
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
     this.showBodyModal = _.once(this._showBodyModal);
     this.layoutWidth = 0;
+    this.currPosition = 0
   }
 
   onLoad() {
@@ -66,6 +69,11 @@ class TabContent extends BaseComponent {
   _onShareClicked() {
     this.logEvent('LookScreen', {name: 'Share click'});
     SocialShare.nativeShare(this.props.shareToken);
+  }
+
+  componentDidMount() {
+    let that = this
+    setInterval(function(){ that.handleScrollPositionForVideo(); }, 3000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -98,6 +106,13 @@ class TabContent extends BaseComponent {
       if (compare <= LOADER_HEIGHT) {
         this.loadMoreAsync();
       }
+    }
+    this.currPosition = event.nativeEvent.contentOffset.y;
+  }
+
+  handleScrollPositionForVideo() {
+    if(this.state.currentScrollPosition !== this.currPosition) {
+      this.setState({currentScrollPosition: this.currPosition})
     }
   }
 
@@ -134,16 +149,6 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
-  _handleItemPress(item) {
-    this.logEvent('Feedscreen', {name: 'Image click'});
-    let that = this
-    if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to, we let the TouchableOpacity end. and then go to next page.
-      setTimeout(function(){ that.props.navigateTo('looksScreen', 'feedscreen', item); }, 200);
-    } else {
-      this.props.navigateTo('looksScreen', 'feedscreen', item);
-    }
-  }
-
   toggleLikeAction(item, isLiked) {
     this.logEvent('Feedscreen', {name: 'Like Image click'});
     if (isLiked) {
@@ -155,42 +160,16 @@ class TabContent extends BaseComponent {
     }
   }
 
-  getProgress() {
-    console.log('Video is still playing')
-  }
-
-  renderVideo(img, index) {
-    return (
-      <View style={{flex: 1}}>
-        <Video source={{uri: img.uri, mainVer: 1, patchVer: 0}}
-               resizeMode={'stretch'}
-               muted={true}
-               style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
-               repeat={false}
-               onProgress={this.getProgress()}
-        />
-
-      </View>
-    )
-  }
-
-  renderImage(img, index) {
-    return (
-      <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain'}}>
-        <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
-      </Image>
-    )
-  }
-
   _renderImages(images) {
     return images.map((img, index) => {
       return (
-        <View key={img.id} style={{width: img.width, height: img.height, paddingLeft: 0, marginTop: 5}}>
-          <TouchableOpacity onPress={(e) => this._handleItemPress(img)}>
-            {img.coverType === 'video' ? this.renderVideo(img, index) : this.renderImage(img, index)}
-            {img.coverType === 'video' ? <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/> : null}
-          </TouchableOpacity>
-        </View>
+        <MediaContainer img={img}
+                        key={img.id}
+                        index={index}
+                        currScroll={this.state.currentScrollPosition}
+                        likeUpdate={(data) => this.props.likeUpdate(data)}
+                        unLikeUpdate={(data) => this.props.likeUpdate(data)}
+                        navigateTo={(route, homeRoute, optional) => this.props.navigateTo(route, homeRoute, optional)}/>
       );
     });
   }
@@ -242,10 +221,8 @@ class TabContent extends BaseComponent {
   onRefresh() {
     this.setState({isRefreshing: true})
     const {getFeed, query} = this.props;
-
     // reset the first page
     query.page.number = 1;
-
     getFeed(query)
       .then(() => {
         this.setState({isRefreshing: false})
