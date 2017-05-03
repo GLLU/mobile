@@ -160,11 +160,12 @@ class TabContent extends BaseComponent {
     }
   }
 
-  _renderImages(images) {
-    return images.map((img, index) => {
+  _renderLooks(looks) {
+    console.log('card',this.props.cardNavigationStack)
+    return looks.map((look, index) => {
       return (
-        <MediaContainer img={img}
-                        key={img.id}
+        <MediaContainer look={look}
+                        key={look.id}
                         index={index}
                         currScroll={this.state.currentScrollPosition}
                         likeUpdate={(data) => this.props.likeUpdate(data)}
@@ -250,10 +251,10 @@ class TabContent extends BaseComponent {
                            resizeMode={'stretch'}/>
                   </View>
                 </TouchableOpacity>
-                {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
+                {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
               </View>
               <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderImages(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
+                {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
               </View>
             </View>
             {this._renderLoadMore()}

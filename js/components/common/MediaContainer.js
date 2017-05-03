@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image } from 'react-native';
-import { View, } from 'native-base';
+import { View, Button } from 'native-base';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -42,8 +42,8 @@ class MediaContainer extends BaseComponent {
     }
   }
 
-  renderVideo(img) {
-    let video = img;
+  renderVideo(look) {
+    let video = look;
     return (
       <View style={{flex: 1}} onLayout={(e) => console.log(e.nativeEvent.layout)}>
         <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
@@ -57,18 +57,18 @@ class MediaContainer extends BaseComponent {
     )
   }
 
-  renderImage(img, index) {
+  renderImage(look, index) {
     return (
-      <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain'}}>
-        <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/>
+      <Image source={{uri: look.uri}} style={{width: look.width - 5, height: look.height, resizeMode: 'contain'}}>
+        <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
       </Image>
     )
   }
 
   componentWillReceiveProps(nextProps) {
 
-    if(this.props.img.coverType === 'video') {
-      if(nextProps.currScroll < this.state.currVideoPosition+nextProps.img.height && nextProps.currScroll > this.state.currVideoPosition-deviceHeight) {
+    if(this.props.look.coverType === 'video') {
+      if(nextProps.currScroll < this.state.currVideoPosition+nextProps.look.height && nextProps.currScroll > this.state.currVideoPosition-deviceHeight) {
         this.setState({shouldPlay: 1})
       } else {
         this.setState({shouldPlay: 0})
@@ -90,19 +90,19 @@ class MediaContainer extends BaseComponent {
   }
 
   setVideoPosition(e) {
-    if(this.props.img.coverType === 'video') {
+    if(this.props.look.coverType === 'video') {
       this.setState({currVideoPosition: e.nativeEvent.layout.y})
     }
 
   }
 
   render() {
-    const { img, index } = this.props
-    return (
-      <View style={{width: img.width, height: img.height, paddingLeft: 0, marginTop: 5}} onLayout={(e) => this.setVideoPosition(e)}>
-        <TouchableOpacity onPress={(e) => this._handleItemPress(img)}>
-          {img.coverType === 'video' ? this.renderVideo(img) : this.renderImage(img, index)}
-          {img.coverType === 'video' ? <LikeView index={index} item={img} onPress={this.toggleLikeAction.bind(this)}/> : null}
+    const { look, index } = this.props
+    return(
+      <View style={{width: look.width, height: look.height, paddingLeft: 0, marginTop: 5}} onLayout={(e) => this.setVideoPosition(e)}>
+        <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
+          {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look, index)}
+          {look.coverType === 'video' ? <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/> : null}
         </TouchableOpacity>
       </View>
     )
