@@ -45,7 +45,7 @@ class MediaContainer extends BaseComponent {
   renderVideo(look) {
     let video = look;
     return (
-      <View style={{flex: 1}} onLayout={(e) => console.log(e.nativeEvent.layout)}>
+      <View style={{flex: 1}}>
         <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                resizeMode={'stretch'}
                muted={true}

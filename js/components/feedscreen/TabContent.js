@@ -161,7 +161,6 @@ class TabContent extends BaseComponent {
   }
 
   _renderLooks(looks) {
-    console.log('card',this.props.cardNavigationStack)
     return looks.map((look, index) => {
       return (
         <MediaContainer look={look}
