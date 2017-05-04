@@ -220,12 +220,6 @@ class LooksContainer extends BasePage {
           flex: 1,
           backgroundColor: 'transparent',
         }}>
-        <Image
-          resizeMode={'cover'}
-          style={styles.itemImage}
-          source={{uri: look.uri}}
-        blurRadius={5}>
-          <View style={{backgroundColor: 'rgba(0,0,0,0.6)'}}>
             <Image
             resizeMode={'contain'}
             style={styles.itemImage}
@@ -244,8 +238,6 @@ class LooksContainer extends BasePage {
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
               />
             </Image>
-          </View>
-        </Image>
       </GestureRecognizer>
     )
   }

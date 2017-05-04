@@ -183,27 +183,17 @@ class ImageWithTags extends Component {
     const { width, height } = this.getRenderingDimensions();
     if (this.props.showMarker) {
       return (
-        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'cover'} blurRadius={5}>
-          <View style={{backgroundColor: 'rgba(0,0,0,0.4)'}}>
-            <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'contain'}>
-              <View style={[styles.draggableContainer]}>
-                {this.renderTags()}
-              </View>
-            </Image>
+        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
+          <View style={[styles.draggableContainer]}>
+            {this.renderTags()}
           </View>
         </Image>
       );
     }
     return (
-      <Image
-        source={{ uri: this.props.image }}
-        style={[styles.itemsContainer, {width, height}]} resizeMode={'cover'} blurRadius={5}>
-        <View style={{backgroundColor: 'rgba(0,0,0,0.4)'}}>
           <Image
             source={{ uri: this.props.image }}
-            style={[styles.itemsContainer, {width, height}]} resizeMode={'contain'}/>
-        </View>
-      </Image>
+            style={[styles.itemsContainer, {width, height}]} resizeMode={'stretch'}/>
     );
   }
 

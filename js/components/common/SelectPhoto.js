@@ -65,6 +65,7 @@ class SelectPhoto extends BaseComponent {
       width: width,
       height: height,
       mediaType: 'any',
+      cropping: true
     };
     switch (type) {
       case 'camera':
