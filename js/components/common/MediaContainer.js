@@ -6,6 +6,7 @@ import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
 import Video from 'react-native-video';
 import LikeView from '../feedscreen/items/LikeView';
+import PlayButton from './PlayButton';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
@@ -28,6 +29,7 @@ class MediaContainer extends BaseComponent {
     this.state = {
       currVideoPosition: -1,
       shouldPlay: 0,
+      isMuted: true
     }
 
   }
@@ -40,6 +42,7 @@ class MediaContainer extends BaseComponent {
     } else {
       this.props.navigateTo('looksScreen', 'feedscreen', item);
     }
+    this.setState({isMuted: true})
   }
 
   renderVideo(look) {
@@ -48,7 +51,7 @@ class MediaContainer extends BaseComponent {
       <View style={{flex: 1}}>
         <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                resizeMode={'stretch'}
-               muted={true}
+               muted={this.state.isMuted}
                style={{width: video.width - 5, height: video.height, overflow: 'hidden'}}
                repeat={true}
                rate={this.state.shouldPlay}
@@ -96,13 +99,27 @@ class MediaContainer extends BaseComponent {
 
   }
 
+  _togglePlaySoundAction() {
+    this.setState({isMuted: !this.state.isMuted})
+  }
+
+  renderVideoGrid(index, look) {
+
+    return(
+      <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+        <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
+        <PlayButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()}/>
+      </View>
+    )
+  }
+
   render() {
     const { look, index } = this.props
     return(
       <View style={{width: look.width, height: look.height, paddingLeft: 0, marginTop: 5}} onLayout={(e) => this.setVideoPosition(e)}>
         <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look, index)}
-          {look.coverType === 'video' ? <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/> : null}
+          {look.coverType === 'video' ? this.renderVideoGrid(index, look) : null}
         </TouchableOpacity>
       </View>
     )

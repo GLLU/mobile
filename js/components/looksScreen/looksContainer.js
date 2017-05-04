@@ -189,7 +189,7 @@ class LooksContainer extends BasePage {
         <Video
           source={{uri: look.uri, mainVer: 1, patchVer: 0}}
           resizeMode={'contain'}
-          muted={true}
+          muted={this.state.currScrollIndex !== look.originalIndex}
           style={styles.videoBackground}
           repeat={true}
         />
@@ -226,24 +226,24 @@ class LooksContainer extends BasePage {
           source={{uri: look.uri}}
         blurRadius={5}>
           <View style={{backgroundColor: 'rgba(0,0,0,0.6)'}}>
-          <Image
-          resizeMode={'contain'}
-          style={styles.itemImage}
-          source={{uri: look.uri}}>
-          <BottomLookContainer
-            width={width}
-            height={height}
-            look={look}
-            tempPopRoute={(e) => this._tempPopRoute()}
-            goToProfile={(look) => this._goToProfile(look)}
-            toggleLike={(isLiked) => this._toggleLike(isLiked)}
-            toggleMenu={() => this._toggleMenu()}
-            isMenuOpen={this.state.isMenuOpen}
-            onBottomDrawerOpen={this.onToggleDrawer}
-            shareToken={this.props.shareToken}
-            reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-          />
-        </Image>
+            <Image
+            resizeMode={'contain'}
+            style={styles.itemImage}
+            source={{uri: look.uri}}>
+              <BottomLookContainer
+                width={width}
+                height={height}
+                look={look}
+                tempPopRoute={(e) => this._tempPopRoute()}
+                goToProfile={(look) => this._goToProfile(look)}
+                toggleLike={(isLiked) => this._toggleLike(isLiked)}
+                toggleMenu={() => this._toggleMenu()}
+                isMenuOpen={this.state.isMenuOpen}
+                onBottomDrawerOpen={this.onToggleDrawer}
+                shareToken={this.props.shareToken}
+                reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+              />
+            </Image>
           </View>
         </Image>
       </GestureRecognizer>
