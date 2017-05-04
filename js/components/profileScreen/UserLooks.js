@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import { View, Text, Button, Icon } from 'native-base';
 import _ from 'lodash';
-import SelectPhoto from '../common/SelectPhoto';
 import Video from 'react-native-video';
 import {
   addNewLook,
@@ -97,6 +96,7 @@ class UserLooks extends Component {
                muted={true}
                style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
                repeat={true}
+               rate={1}
         />
       </View>
     )

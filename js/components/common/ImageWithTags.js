@@ -30,10 +30,11 @@ const styles = StyleSheet.create({
     height: 30,
     width: TAG_WIDTH,
     resizeMode: 'contain'
-
   },
   itemsContainer: {
     backgroundColor: 'transparent',
+    width: w,
+    height: h,
   },
   itemMarker: {
     position: 'absolute',
@@ -182,9 +183,13 @@ class ImageWithTags extends Component {
     const { width, height } = this.getRenderingDimensions();
     if (this.props.showMarker) {
       return (
-        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
-          <View style={[styles.draggableContainer]}>
-            {this.renderTags()}
+        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'cover'} blurRadius={5}>
+          <View style={{backgroundColor: 'rgba(0,0,0,0.4)'}}>
+            <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'contain'}>
+              <View style={[styles.draggableContainer]}>
+                {this.renderTags()}
+              </View>
+            </Image>
           </View>
         </Image>
       );
@@ -192,7 +197,13 @@ class ImageWithTags extends Component {
     return (
       <Image
         source={{ uri: this.props.image }}
-        style={[styles.itemsContainer, {width, height}]} resizeMode={'stretch'}/>
+        style={[styles.itemsContainer, {width, height}]} resizeMode={'cover'} blurRadius={5}>
+        <View style={{backgroundColor: 'rgba(0,0,0,0.4)'}}>
+          <Image
+            source={{ uri: this.props.image }}
+            style={[styles.itemsContainer, {width, height}]} resizeMode={'contain'}/>
+        </View>
+      </Image>
     );
   }
 

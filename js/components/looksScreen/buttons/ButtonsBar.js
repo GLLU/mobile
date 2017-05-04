@@ -121,7 +121,6 @@ export default class ButtonsBar extends BaseComponent {
   }
 
   handleTextLayout(evt){
-    console.log('layout ',evt.nativeEvent.layout);
     this.setState({itemY: evt.nativeEvent.layout.y})
   }
 
