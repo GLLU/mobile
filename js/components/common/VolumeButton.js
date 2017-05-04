@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class PlayButton extends Component {
+class VolumeButton extends Component {
 
   static propTypes = {
     look: React.PropTypes.object,
@@ -59,7 +59,7 @@ class PlayButton extends Component {
 
   render() {
     const {look, isMuted} = this.props
-    let volumeIcon = isMuted ? 'ios-play' : 'ios-pause'
+    let volumeIcon = isMuted ? 'ios-volume-off' : 'ios-volume-down'
     let volumeColor = isMuted ? 'rgba(0,0,0,0.6)' : 'rgba(29,233,182,0.6)'
     return (
       <View style={[styles.likeContainer, { marginTop: look.height - 35, backgroundColor: volumeColor}]}>
@@ -71,5 +71,5 @@ class PlayButton extends Component {
   }
 }
 
-export default PlayButton
+export default VolumeButton
 

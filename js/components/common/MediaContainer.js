@@ -6,7 +6,7 @@ import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
 import Video from 'react-native-video';
 import LikeView from '../feedscreen/items/LikeView';
-import PlayButton from './PlayButton';
+import VolumeButton from './VolumeButton';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
@@ -108,7 +108,7 @@ class MediaContainer extends BaseComponent {
     return(
       <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
         <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
-        <PlayButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()}/>
+        <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()}/>
       </View>
     )
   }
