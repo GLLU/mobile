@@ -4,6 +4,7 @@ import { View, Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
+import {openCamera} from '../../lib/camera/CameraUtils'
 
 const userIcon = require('../../../images/icons/user.png');
 const emptyNotification = require('../../../images/icons/emptyNotification.png');
@@ -77,9 +78,10 @@ class NavigationBarView extends BaseComponent {
     this.props.navigateTo('notificationsScreen', 'feedscreen');
   }
 
-  openCamera() {
+  async openCamera() {
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
-    this.props.handleOpenPhotoModal();
+    const filePath = await openCamera();
+    //this.props.handleOpenPhotoModal();
   }
 
   render() {

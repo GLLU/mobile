@@ -10,10 +10,13 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.gllu.customPackages.CameraReactPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
+
 import cl.json.RNSharePackage;
+
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.oblador.keychain.KeychainPackage;
@@ -26,6 +29,7 @@ import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
 import java.util.Arrays;
@@ -44,10 +48,10 @@ public class MainApplication extends Application
     private final ReactNativeHost mReactNativeHost =
             new ReactNativeHost(this) {
 
-    @Override
-    protected String getJSBundleFile() {
-      return CodePush.getJSBundleFile();
-    }
+                @Override
+                protected String getJSBundleFile() {
+                    return CodePush.getJSBundleFile();
+                }
 
 
                 @Override
@@ -59,21 +63,22 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
-            new GoogleAnalyticsBridgePackage(),
-            new FlurryAnalyticsPackage(),
-            new RNSharePackage(),
-            new RNFetchBlobPackage(),
-            BugsnagReactNative.getPackage(),
-            new KeychainPackage(),
-            new ReactNativeConfigPackage(),
-            new LinearGradientPackage(),
-            new ReactVideoPackage(),
-            new ExtraDimensionsPackage(),
-            new PickerPackage(),
-            new ReactMaterialKitPackage(),
-            new VectorIconsPackage(),
-            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
-            new FBSDKPackage(mCallbackManager)
+                            new CameraReactPackage(),
+                            new GoogleAnalyticsBridgePackage(),
+                            new FlurryAnalyticsPackage(),
+                            new RNSharePackage(),
+                            new RNFetchBlobPackage(),
+                            BugsnagReactNative.getPackage(),
+                            new KeychainPackage(),
+                            new ReactNativeConfigPackage(),
+                            new LinearGradientPackage(),
+                            new ReactVideoPackage(),
+                            new ExtraDimensionsPackage(),
+                            new PickerPackage(),
+                            new ReactMaterialKitPackage(),
+                            new VectorIconsPackage(),
+                            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
+                            new FBSDKPackage(mCallbackManager)
                     );
                 }
             };
@@ -84,8 +89,8 @@ public class MainApplication extends Application
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         // FORCE LTR
-            I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
-            sharedI18nUtilInstance.allowRTL(getApplicationContext(), false);
+        I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
+        sharedI18nUtilInstance.allowRTL(getApplicationContext(), false);
 
     }
 
