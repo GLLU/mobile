@@ -73,7 +73,7 @@ class TabContent extends BaseComponent {
 
   componentDidMount() {
     let that = this
-    setInterval(function(){ that.handleScrollPositionForVideo(); }, 3000);
+    setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -164,7 +164,7 @@ class TabContent extends BaseComponent {
     return looks.map((look, index) => {
       return (
         <MediaContainer look={look}
-                        key={look.id}
+                        key={index}
                         index={index}
                         currScroll={this.state.currentScrollPosition}
                         likeUpdate={(data) => this.props.likeUpdate(data)}

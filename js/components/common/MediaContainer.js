@@ -9,6 +9,7 @@ import LikeView from '../feedscreen/items/LikeView';
 import VolumeButton from './VolumeButton';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const logo = require('../../../images/icons/loading1.png');
 
 
 const styles = StyleSheet.create({
@@ -28,7 +29,7 @@ class MediaContainer extends BaseComponent {
     super(props);
     this.state = {
       currVideoPosition: -1,
-      shouldPlay: 0,
+      shouldPlay: 1,
       isMuted: true
     }
 
@@ -61,22 +62,16 @@ class MediaContainer extends BaseComponent {
   }
 
   renderImage(look, index) {
-    return (
-      <Image source={{uri: look.uri}} style={{width: look.width - 5, height: look.height, resizeMode: 'contain'}}>
-        <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
-      </Image>
-    )
+     let  ShouldP = this.props.currScroll < this.state.currVideoPosition+deviceHeight && this.props.currScroll > this.state.currVideoPosition-deviceHeight
+
+      return (
+        <Image source={ShouldP ? {uri: look.uri} : logo} style={{width: look.width - 5, height: look.height, resizeMode: 'contain'}}>
+          <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
+        </Image>
+      )
   }
 
   componentWillReceiveProps(nextProps) {
-
-    if(this.props.look.coverType === 'video') {
-      if(nextProps.currScroll < this.state.currVideoPosition+nextProps.look.height && nextProps.currScroll > this.state.currVideoPosition-deviceHeight) {
-        this.setState({shouldPlay: 1})
-      } else {
-        this.setState({shouldPlay: 0})
-      }
-    }
 
 
   }
@@ -93,9 +88,9 @@ class MediaContainer extends BaseComponent {
   }
 
   setVideoPosition(e) {
-    if(this.props.look.coverType === 'video') {
+
       this.setState({currVideoPosition: e.nativeEvent.layout.y})
-    }
+
 
   }
 
