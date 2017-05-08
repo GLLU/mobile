@@ -9,18 +9,17 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 
 import android.app.Application;
 
+
 import com.facebook.react.ReactApplication;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
-import cl.json.RNSharePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.oblador.keychain.KeychainPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
@@ -61,7 +60,6 @@ public class MainApplication extends Application
                             new MainReactPackage(),
             new GoogleAnalyticsBridgePackage(),
             new FlurryAnalyticsPackage(),
-            new RNSharePackage(),
             new RNFetchBlobPackage(),
             BugsnagReactNative.getPackage(),
             new KeychainPackage(),
@@ -70,7 +68,6 @@ public class MainApplication extends Application
             new ReactVideoPackage(),
             new ExtraDimensionsPackage(),
             new PickerPackage(),
-            new ReactMaterialKitPackage(),
             new VectorIconsPackage(),
             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
             new FBSDKPackage(mCallbackManager)
