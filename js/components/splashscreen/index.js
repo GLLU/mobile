@@ -28,7 +28,6 @@ import {
 
 const {
   MKButton,
-  MKColor,
 } = MK;
 
 const {
@@ -46,7 +45,7 @@ const SignUpEmailButton = MKButton.coloredFlatButton()
   .withStyle({
     height: 40,
     borderRadius: 4,
-    borderColor: MKColor.Teal,
+    borderColor: '#009688',
     borderWidth: 2,
     marginBottom: 10,
     width: deviceWidth-80
@@ -154,7 +153,7 @@ class SplashPage extends BasePage {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <Button color={MKColor.Teal} style={styles.alreadyBtn} textStyle={{fontSize: 13}} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
+            <Button color={'#009688'} style={styles.alreadyBtn} textStyle={{fontSize: 13}} onPress={() => this.pushRoute('signinemail') }>Login Here</Button>
           </View>
         </View>
     )
