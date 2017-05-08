@@ -140,15 +140,11 @@ class VideoWithTags extends Component {
   render() {
     const style = [styles.base, this.props.style];
     return (
-      <View style={style} >
-        <View style={{flex: 1, paddingHorizontal: 0, padding: 0}} >
-          <Video source={{uri: this.props.image}}
-                 resizeMode="contain"
-                 muted={true}
-                 style={{ overflow: 'hidden'}}
-                 repeat={true}/>
-        </View>
-      </View>
+      <Video source={{uri: this.props.image}}
+             resizeMode="contain"
+             muted={true}
+             style={{width: w - 5, height: h, overflow: 'hidden'}}
+             repeat={true}/>
     );
   }
 }
