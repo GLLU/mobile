@@ -137,27 +137,17 @@ class VideoWithTags extends Component {
     this._handlePressWithoutPress()  // auto creating an item to continue for further steps, will be refactored when items will be shown on video
   }
 
-  _render() {
-    return (
-      <View style={{flex: 1, paddingHorizontal: 0, padding: 0}} >
-        <Video source={{uri: this.props.image}}
-               resizeMode="contain"
-               muted={true}
-               style={{width: w, height: h, overflow: 'hidden'}}
-               repeat={true}/>
-      </View>
-    );
-  }
-
-  _renderContent() {
-    return this._render();
-  }
-
   render() {
     const style = [styles.base, this.props.style];
     return (
       <View style={style} >
-        {this._renderContent()}
+        <View style={{flex: 1, paddingHorizontal: 0, padding: 0}} >
+          <Video source={{uri: this.props.image}}
+                 resizeMode="contain"
+                 muted={true}
+                 style={{ overflow: 'hidden'}}
+                 repeat={true}/>
+        </View>
       </View>
     );
   }

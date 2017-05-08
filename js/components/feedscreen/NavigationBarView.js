@@ -82,15 +82,21 @@ class NavigationBarView extends BaseComponent {
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
     let file = {};
     file.path = await openCamera();
-    //this.props.handleOpenPhotoModal();
     if(file.path.search(".mp4") > -1) {
       file.path = file.path.replace('file://', '')
       file.type = 'look[video]'
     } else {
       file.type = 'look[image]'
     }
-    console.log('filepath',file)
     this.props.addNewItem(file);
+  }
+
+  handleOpenCamera() {
+    if(Platform.OS !== 'ios') {
+      this.openCamera()
+    } else {
+      this.props.handleOpenPhotoModal();
+    }
   }
 
   render() {
@@ -103,7 +109,7 @@ class NavigationBarView extends BaseComponent {
           </Button>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
+          <Button transparent onPress={() => this.handleOpenCamera()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </Button>
         </View>
