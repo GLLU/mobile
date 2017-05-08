@@ -11,47 +11,25 @@ import styles from './styles';
 import { loginViaFacebook } from '../../actions/user';
 import _ from 'lodash';
 import Video from 'react-native-video';
-const deviceWidth = Dimensions.get('window').width;
 import { navigateTo } from '../../actions';
-const background = require('../../../images/background.png');
-const backgroundShadow = require('../../../images/background-shadow-70p.png');
-const logo = require('../../../images/logo.png');
-const MK = require('react-native-material-kit');
-
 import glluTheme from '../../themes/gllu-theme';
 import { emailSignIn } from '../../actions/user';
+import SignUpEmailButton from './SignUpEmailButton'
 
 import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
 
-const {
-  MKButton,
-} = MK;
+const background = require('../../../images/background.png');
+const backgroundShadow = require('../../../images/background-shadow-70p.png');
+const logo = require('../../../images/logo.png');
 
 const {
     pushRoute
 } = actions;
 
 let PERMISSIONS = ["email", "public_profile"];
-
-const SignUpEmailButton = MKButton.coloredFlatButton()
-  .withBackgroundColor('transparent')
-  .withTextStyle({
-    color: 'white',
-    fontWeight: '600',
-  })
-  .withStyle({
-    height: 40,
-    borderRadius: 4,
-    borderColor: '#009688',
-    borderWidth: 2,
-    marginBottom: 10,
-    width: deviceWidth-80
-  })
-  .withText('Signup with Email')
-  .build();
 
 class SplashPage extends BasePage {
 
