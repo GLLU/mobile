@@ -29,6 +29,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
     public static final int RECORD_VIDEO = 1;
     private static final int PICK_GALLERY = 2;
     private String mFileType = "";
+    private boolean mImageTaken = false;
 
 
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
@@ -42,7 +43,16 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         String mVideoPath = intent.getStringExtra(cameraRecorderActivity.VIDEO_PATH);
 
                         mPromise.resolve(mVideoPath);
-                    } else if (resultCode == 1001) {
+                    }
+                    else if (resultCode == 1234){
+
+                        mImageTaken = true;
+                        String mStringUri = intent.getStringExtra("stringUri");
+                        CropImage.activity(Uri.parse(mStringUri))
+                                .setAspectRatio(9,16)
+                                .start(getCurrentActivity());
+                    }
+                    else if (resultCode == 1001) {
 
                         mFileType = intent.getStringExtra("file_type");
                         openGallery(mFileType);
@@ -55,7 +65,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         if (mFileType.equals("image")) {
                             // start cropping activity for pre-acquired image saved on the device
                             CropImage.activity(uri)
-                                    .setInitialCropWindowPaddingRatio(0)
+                                    .setAspectRatio(9,16)
                                     .start(getCurrentActivity());
                         } else {
                             String realPath = FileUtils.getPath(getReactApplicationContext(), uri);
@@ -72,6 +82,11 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         Log.d("martinResult", realPath);
                         mPromise.resolve("file://" + realPath);
                     }
+                    else if (mImageTaken){
+                        Intent intent2 = new Intent(getCurrentActivity(), cameraRecorderActivity.class);
+                        getCurrentActivity().startActivityForResult(intent2, RECORD_VIDEO);
+                    }
+                    mImageTaken = false;
             }
         }
     };

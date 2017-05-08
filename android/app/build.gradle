@@ -175,7 +175,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.facebook.react:react-native:+'
-    compile 'com.github.MartinMobilize:material-camera:0.5.0'
+    compile 'com.github.MartinMobilize:material-camera:0.5.1'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 
     // From node_modules
