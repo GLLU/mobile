@@ -120,7 +120,9 @@ class SplashPage extends BasePage {
   renderMainView() {
     return (
         <View style={styles.signupContainer}>
+          <View style={{height:50}} >
           <SignUpEmailButton onPress={this.handleEmailSignupPress.bind(this)} />
+          </View>
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}
                        borderRadius={4}

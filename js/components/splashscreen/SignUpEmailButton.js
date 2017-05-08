@@ -8,8 +8,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
   },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   btn: {
-    height: 40,
     borderRadius: 4,
     borderColor: '#009688',
     borderWidth: 2,
@@ -17,11 +21,10 @@ const styles = StyleSheet.create({
     width: deviceWidth - 80
   },
   text: {
-    height:40,
     color: 'white',
     fontWeight: '600',
     textAlign: 'center',
-    textAlignVertical: 'center'
+    alignSelf: 'center'
   }
 });
 
@@ -41,9 +44,9 @@ class SignUpEmailButton extends Component {
 
   render() {
     return (
-      <View style={[styles.container, styles.btn]}>
+      <View style={[styles.container, styles.center, styles.btn]}>
         <TouchableHighlight onPress={this.props.onPress}>
-        <Text style={styles.text}>Signup with Email</Text>
+          <Text style={styles.text}>Signup with Email</Text>
         </TouchableHighlight>
       </View>
     );
