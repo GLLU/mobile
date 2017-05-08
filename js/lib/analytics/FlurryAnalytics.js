@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform } from 'react-native';
-import FlurryAnalytics from 'react-native-flurry-analytics';
+import RNFlurryAnalytics from 'react-native-flurry-analytics';
 import Config from 'react-native-config';
 import BaseAnalytic from './BaseAnalytic';
 import _ from 'lodash';
@@ -8,30 +8,30 @@ import _ from 'lodash';
 /*global __DEV__ */
 const DEV=__DEV__;
 
-class FlurrAnalytics extends BaseAnalytic {
+class FlurryAnalytics extends BaseAnalytic {
   constructor() {
     super();
-    FlurryAnalytics.setAppVersion(Config.APP_VERSION);
-    FlurryAnalytics.setSessionContinueSeconds(10);
-    FlurryAnalytics.setEventLoggingEnabled(true);
+    RNFlurryAnalytics.setAppVersion(Config.APP_VERSION);
+    RNFlurryAnalytics.setSessionContinueSeconds(10);
+    RNFlurryAnalytics.setEventLoggingEnabled(true);
     if (DEV) {
-      FlurryAnalytics.setCrashReportingEnabled(false);
-      FlurryAnalytics.setDebugLogEnabled(true);
+      RNFlurryAnalytics.setCrashReportingEnabled(false);
+      RNFlurryAnalytics.setDebugLogEnabled(true);
     } else {
-      FlurryAnalytics.setCrashReportingEnabled(true);
-      FlurryAnalytics.setDebugLogEnabled(false);      
+      RNFlurryAnalytics.setCrashReportingEnabled(true);
+      RNFlurryAnalytics.setDebugLogEnabled(false);
     }
-    console.log('flurykeyyyy',Config)
+    console.log('flurykeyyyy',Config);
     const key = Platform.OS === 'ios' ? Config.FLURRY_API_KEY_IOS : Config.FLURRY_API_KEY_ANDROID
-    FlurryAnalytics.startSession(key);
+    RNFlurryAnalytics.startSession(key);
   }
 
   setUser(user) {
     console.log('FlurryAnalytics.setUser', user);
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
-        FlurryAnalytics.setUserId(this.encryptUserId(user.id));
-        FlurryAnalytics.setUserGender(user.gender == 'male' ? 'm' : 'f');
+        RNFlurryAnalytics.setUserId(this.encryptUserId(user.id));
+        RNFlurryAnalytics.setUserGender(user.gender === 'male' ? 'm' : 'f');
       }
     }
   }
@@ -49,14 +49,14 @@ class FlurrAnalytics extends BaseAnalytic {
   logEvent(name, params = {}, timed = false) {
     console.log('FlurryAnalytics.logEvent', name, params, timed);
     delete params['name']
-    FlurryAnalytics.logEvent(name, params, timed);
+    RNFlurryAnalytics.logEvent(name, params, timed);
   }
 
   endTimedEvent(name, params = {}) {
     console.log('FlurryAnalytics.endTimedEvent', name, params);
     delete params['name']
-    FlurryAnalytics.endTimedEvent(name, params);
+    RNFlurryAnalytics.endTimedEvent(name, params);
   }
 }
 
-export default FlurrAnalytics;
+export default FlurryAnalytics;
