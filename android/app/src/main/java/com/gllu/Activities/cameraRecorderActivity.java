@@ -28,6 +28,7 @@ public class cameraRecorderActivity extends Activity {
         Intent intent = getIntent();
         int mMaxLength = intent.getIntExtra(MAX_LENGTH, 15);
         new MaterialCamera(this)
+                .defaultToFrontFacing(true)
                 .qualityProfile(MaterialCamera.QUALITY_480P)
                 .start(CAMERA_RQ);
         Log.d(msg, "The onCreate() event");
@@ -93,17 +94,16 @@ public class cameraRecorderActivity extends Activity {
                 finish();
 
             }
+            else if(resultCode == 1234){
+                setResult(resultCode, data);
+                finish();
+            }
             else if(resultCode == 1001){
                 setResult(resultCode, data);
                 finish();
             }
             else if(resultCode == RESULT_CANCELED){
                 finish();
-            }
-            else if(data != null) {
-                Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
-                e.printStackTrace();
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
