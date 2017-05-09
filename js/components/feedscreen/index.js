@@ -109,7 +109,7 @@ class FeedPage extends BasePage {
     return (
       <Gllu.Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
         {!this.props.modalShowing ?
-          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 95}]}>
+          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
               <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
               {!this.state.searchStatus ?
                 <NavigationBarView searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
