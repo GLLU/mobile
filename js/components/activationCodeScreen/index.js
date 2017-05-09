@@ -124,7 +124,7 @@ class ActivationCodeScreen extends BasePage {
             </Row>
           </Grid>
           <Button color='white' style={[styles.formBtn, styles.validationPassed  ]} onPress={this.handleSigninPress.bind(this)}>
-            Submit
+            <Text>Submit</Text>
           </Button>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Don't have code? <Text style={[styles.alreadyTxt, {fontWeight: '600', opacity: 10}]}>Apply for code</Text></Text>

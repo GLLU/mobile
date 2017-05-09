@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { Drawer } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { closeDrawer } from './actions/drawer';
-
-import Home from './components/home/';
 import BlankPage from './components/blankPage';
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
@@ -75,21 +73,17 @@ class AppNavigator extends Component {
 
   componentDidUpdate() {
     if (this.props.drawerState === 'opened') {
-      this.openDrawer();
+      this.props.openDrawer()
     }
 
     if (this.props.drawerState === 'closed') {
-      this._drawer.close();
+      this.props.closeDrawer()
     }
 
   }
 
   popRoute() {
     this.props.popRoute();
-  }
-
-  openDrawer() {
-    this._drawer.open();
   }
 
   closeDrawer() {
@@ -119,8 +113,6 @@ class AppNavigator extends Component {
         return <AddItemPage mode={optional ? optional.mode : 'create'}/>;
       case 'finishLookScreen':
         return <FinishLookScreen />;
-      case 'home':
-        return <Home />;
       case 'blankPage':
         return <BlankPage />;
       case 'myBodyType':
@@ -150,9 +142,6 @@ class AppNavigator extends Component {
     return (
       <View style={{flex: 1}}>
         <Drawer
-          ref={(ref) => {
-            this._drawer = ref;
-          }}
           type="overlay"
           tweenDuration={150}
           content={<SideBar />}
@@ -201,6 +190,7 @@ class AppNavigator extends Component {
 function bindAction(dispatch) {
   return {
     closeDrawer: () => dispatch(closeDrawer()),
+    openDrawer: () => dispatch(openDrawer()),
     popRoute: key => dispatch(popRoute(key)),
   };
 }

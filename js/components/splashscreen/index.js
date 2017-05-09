@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, Linking, Platform, AppState, Dimensions, Text } from 'react-native';
-import { Container, Content, Text, View, Button } from 'native-base';
+import { View, Image, Linking, Platform, AppState, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Container, Content, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { actions } from 'react-native-navigation-redux-helpers';
 import Utils from '../../Utils.js'
@@ -133,7 +133,7 @@ class SplashPage extends BasePage {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <Button color={'#009688'} style={styles.alreadyBtn} textStyle={{fontSize: 13}} onPress={() => this.pushRoute('signinemail') }><Text>Login Here</Text></Button>
+            <TouchableOpacity onPress={() => this.pushRoute('signinemail') }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
           </View>
         </View>
     )

@@ -44,4 +44,4 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindActions)(BadNavigationScreen);
+  export default connect(mapStateToProps, bindActions)(BadNavigationScreen);

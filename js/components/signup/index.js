@@ -251,11 +251,11 @@ class SignUpPage extends BasePage {
               </Row>
             </Grid>
             <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}>
-              Let's GLLU
+              <Text>Let's GLLU</Text>
             </Button>
             <View style={styles.alreadyBox}>
               <Text style={styles.alreadyTxt}>Already a user?</Text>
-              <Button color={'#009688'} style={styles.alreadyBtn} onPress={this.handleLoginPress.bind(this)}>Login Here</Button>
+              <Button color={'#009688'} style={styles.alreadyBtn} onPress={this.handleLoginPress.bind(this)}><Text>Login Here</Text></Button>
             </View>
             </View>
 
