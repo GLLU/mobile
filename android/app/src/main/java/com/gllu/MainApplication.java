@@ -15,6 +15,7 @@ import com.gllu.customPackages.CameraReactPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
+import cl.json.RNSharePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.oblador.keychain.KeychainPackage;
@@ -76,7 +77,6 @@ public class MainApplication extends Application
                             new VectorIconsPackage(),
                             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
                             new FBSDKPackage(mCallbackManager)
-
                     );
                 }
             };
