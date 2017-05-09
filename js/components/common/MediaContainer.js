@@ -31,8 +31,7 @@ class MediaContainer extends BaseComponent {
       shouldPlay: 1,
       isMuted: true
     }
-    this.bgColor = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
-
+    this.bgColor = Utils.getLoaderImage()
   }
 
   _handleItemPress(item) {
@@ -64,7 +63,7 @@ class MediaContainer extends BaseComponent {
   renderImage(look, index) {
      let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
       return (
-        <Image source={{uri: look.uri}} style={{width: look.width - 5, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}}>
+        <Image borderRadius={5} source={{uri: look.uri}} style={{width: look.width - 5, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}}>
           <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
         </Image>
       )
@@ -103,7 +102,7 @@ class MediaContainer extends BaseComponent {
     const { look, index } = this.props
     return(
       <View style={{width: look.width, height: look.height, paddingLeft: 0, marginTop: 5}} onLayout={(e) => this.setLookPosition(e)}>
-        <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
+        <TouchableOpacity onPress={(e) => this._handleItemPress(look)} >
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look, index)}
           {look.coverType === 'video' ? this.renderVideoGrid(index, look) : null}
         </TouchableOpacity>

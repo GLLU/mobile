@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     alignSelf: 'center',
-    marginTop: (Platform.OS == 'ios' ? 10 : 0)
+    marginTop: (Platform.OS === 'ios' ? 10 : 0)
   },
 });
 

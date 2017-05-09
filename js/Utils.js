@@ -78,9 +78,9 @@ export default class Utils {
   }
 
   static getLoaderImage() {
-    const loaderImageNumber = Math.floor((Math.random() * 5) + 1);
-    const loadersArr = ['',green, rainbow, hearts, yellow, grey]
-    return loadersArr[loaderImageNumber];
+    const loadersArr = ['#e1f7d5', '#ffbdbd', '#c9c9ff', '#f1cbff', '#f6dbdb', '#f2e3c6', '#d3ece1', '#c2eec7', '#eed2e8', '#4e4e56', '#da635d', '#dcd0c0', '#b1938b', '#06b8d2', '#98f2e1' ]
+    const loaderColor = loadersArr[Math.floor(Math.random()*loadersArr.length)];
+    return loaderColor;
   }
 
   static resetKeychainData() {
