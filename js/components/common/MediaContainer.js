@@ -7,9 +7,9 @@ import Video from 'react-native-video';
 import LikeView from '../feedscreen/items/LikeView';
 import VolumeButton from './VolumeButton';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import Utils from '../../Utils';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const logo = require('../../../images/icons/loading1.png');
-
 
 const styles = StyleSheet.create({
   clearText: {
@@ -31,6 +31,7 @@ class MediaContainer extends BaseComponent {
       shouldPlay: 1,
       isMuted: true
     }
+    this.bgColor = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
 
   }
 
@@ -52,7 +53,7 @@ class MediaContainer extends BaseComponent {
         <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                resizeMode={'stretch'}
                muted={this.state.isMuted}
-               style={{width: video.width - 5, height: video.height, overflow: 'hidden'}}
+               style={{width: video.width - 5, height: video.height, overflow: 'hidden', backgroundColor: this.bgColor}}
                repeat={true}
                rate={this.state.shouldPlay}
         />
@@ -63,7 +64,7 @@ class MediaContainer extends BaseComponent {
   renderImage(look, index) {
      let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
       return (
-        <Image source={ShouldShowLookImage ? {uri: look.uri} : logo} style={{width: look.width - 5, height: look.height, resizeMode: 'stretch'}}>
+        <Image source={{uri: look.uri}} style={{width: look.width - 5, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}}>
           <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
         </Image>
       )

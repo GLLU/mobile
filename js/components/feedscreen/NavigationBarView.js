@@ -115,7 +115,6 @@ class NavigationBarView extends BaseComponent {
           </TouchableOpacity>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-
           <TouchableOpacity transparent onPress={() => this.handleOpenCamera()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </TouchableOpacity>
