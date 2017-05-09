@@ -1,12 +1,11 @@
 /* @flow */
 
-import React from 'react';
+import React, {Component} from 'react';
 import { ActivityIndicator } from 'react-native';
-import NativeBaseComponent from 'native-base/Components/Base/NativeBaseComponent';
-import computeProps from 'native-base/Utils/computeProps';
+import computeProps from 'native-base/src/Utils/computeProps';
 
 
-export default class Spinner extends NativeBaseComponent {
+export default class Spinner extends Component {
 
   prepareRootProps() {
     const type = {
@@ -26,10 +25,10 @@ export default class Spinner extends NativeBaseComponent {
       if (this.props.color) {
         return this.props.color;
       } else if (this.props.inverse) {
-        return this.getTheme().inverseSpinnerColor;
+        return 'red'
       }
 
-      return this.getTheme().defaultSpinnerColor;
+      return 'blue';
     };
 
     return (

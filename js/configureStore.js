@@ -7,7 +7,7 @@ import sequenceAction from 'redux-sequence-action';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import reducer from './reducers';
 import promise from './promise';
-import createLogger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 
 export default function configureStore(onCompletion:()=>void):any {
   const logger = createLogger();

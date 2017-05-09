@@ -5,9 +5,9 @@ import CodePush from 'react-native-code-push';
 import { Container, Content, Text, View } from 'native-base';
 import Modal from 'react-native-modalbox';
 import AppNavigator from './AppNavigator';
-import ProgressBar from './components/loaders/ProgressBar';
 
 import theme from './themes/base-theme';
+import Spinner from "./components/loaders/Spinner";
 
 const styles = StyleSheet.create({
   container: {
@@ -104,7 +104,7 @@ class App extends Component {
                     >
                       Downloading update... {`${parseInt(this.state.downloadProgress, 10)} %`}
                     </Text>
-                    <ProgressBar
+                    <Spinner
                       color="theme.brandPrimary"
                       progress={parseInt(this.state.downloadProgress, 10)}
                     />
