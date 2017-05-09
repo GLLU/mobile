@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import myStyles from '../styles';
 import RadioButtons from 'react-native-radio-buttons';
-const MK = require('react-native-material-kit');
-
-const {
-  MKColor,
-} = MK;
 
 const scales = ['CM', 'INCH'];
 
@@ -37,7 +32,7 @@ export default class CmInchRangeView extends Component {
       <View key={index}>
         <TouchableWithoutFeedback onPress={onSelect}>
           <View style={myStyles.radioOption}>
-            <Text style={[myStyles.radioBtn, selected ? {color: MKColor.Teal} : null]}>{option}</Text>
+            <Text style={[myStyles.radioBtn, selected ? {color: '#009688'} : null]}>{option}</Text>
             { index === 0 ? <Text style={myStyles.radioSlash}>/</Text> : null }
           </View>
         </TouchableWithoutFeedback>

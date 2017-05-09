@@ -4,12 +4,7 @@ import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-const MK = require('react-native-material-kit');
 import FontSizeCalculator from './../../calculators/FontSize';
-
-const {
-    MKColor,
-} = MK;
 
 module.exports = StyleSheet.create({
   header: {
@@ -127,7 +122,7 @@ module.exports = StyleSheet.create({
     opacity: 0.8
   },
   validationPassed: {
-    backgroundColor: MKColor.Teal
+    backgroundColor: '#009688'
   },
   alreadyBox: {
     alignSelf: 'center',

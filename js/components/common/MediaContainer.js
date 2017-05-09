@@ -9,6 +9,7 @@ import VolumeButton from './VolumeButton';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Utils from '../../Utils';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const logo = require('../../../images/icons/loading1.png');
 
 const styles = StyleSheet.create({
   clearText: {

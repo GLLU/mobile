@@ -83,7 +83,6 @@ export default class Utils {
     return loadersArr[loaderImageNumber];
   }
 
-
   static resetKeychainData() {
     return Keychain.resetGenericPassword();
   }

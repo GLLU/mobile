@@ -3,11 +3,6 @@ const deviceWidth = Dimensions.get('window').width;
 const w = deviceWidth / 2 - 50;
 let fontSizeDefault = 14;
 let fontColor = '#000';
-const MK = require('react-native-material-kit');
-
-const {
-    MKColor,
-} = MK;
 
 export default StyleSheet.create({
   selectBodyTypeText: {
@@ -109,7 +104,7 @@ export default StyleSheet.create({
     marginRight: 4,
   },
   infoDetailTextColorChange: {
-    color: MKColor.Teal
+    color: '#009688'
   },
   toggleContainer: {
     flexWrap: 'wrap',

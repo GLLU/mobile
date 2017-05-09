@@ -3,14 +3,9 @@ import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'r
 import Modal from 'react-native-modalbox';
 import SocialShare from '../../lib/social';
 import Icon from 'react-native-vector-icons/Entypo';
-const MK = require('react-native-material-kit');
 const deviceWidth = Dimensions.get('window').width;
 const wModal = deviceWidth / 1.5;
 const hModal = wModal / 2;
-
-const {
-  MKColor,
-} = MK;
 
 const styles = StyleSheet.create({
   menuModal: {
@@ -36,7 +31,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 14,
-    color: MKColor.Teal,
+    color: '#009688',
     alignSelf: 'center'
   },
   optionSeparetor: {
