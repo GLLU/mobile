@@ -7,7 +7,8 @@ import { setIndex } from '../../actions/list';
 import navigateTo from '../../actions/sideBarNav';
 import myTheme from '../../themes/base-theme';
 
-import styles from './style';
+import * as styles from './style';
+import {StyleSheet} from "react-native";
 
 class SideBar extends Component {
 
@@ -22,7 +23,7 @@ class SideBar extends Component {
 
   render() {
     return (
-      <Content theme={myTheme} style={styles.sidebar} >
+      <Content theme={myTheme} style={StyleSheet.flatten(styles.sidebar)} >
         <List>
           <ListItem button onPress={() => this.navigateTo('home')} >
             <Text>Home</Text>

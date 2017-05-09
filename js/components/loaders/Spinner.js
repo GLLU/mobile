@@ -24,11 +24,8 @@ export default class Spinner extends Component {
     const getColor = () => {
       if (this.props.color) {
         return this.props.color;
-      } else if (this.props.inverse) {
-        return 'red'
       }
-
-      return 'blue';
+      return '#45D56E';
     };
 
     return (

@@ -1,7 +1,5 @@
 
-const React = require('react-native');
-
-const { StyleSheet } = React;
+import { StyleSheet } from 'react-native';
 
 module.exports = StyleSheet.create({
   sidebar: {
