@@ -134,11 +134,14 @@ class VideoWithTags extends Component {
   }
 
   componentDidMount() {
-    this._handlePressWithoutPress()  // auto creating an item to continue for further steps, will be refactored when items will be shown on video
+    if(!this.props.itemId) {
+      this._handlePressWithoutPress()  // auto creating an item to continue for further steps, will be refactored when items will be shown on video
+    }
   }
 
   render() {
     const style = [styles.base, this.props.style];
+    console.log('path:', this.props.image)
     return (
       <Video source={{uri: this.props.image}}
              resizeMode="contain"

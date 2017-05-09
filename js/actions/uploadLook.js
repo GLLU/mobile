@@ -50,6 +50,7 @@ export function addNewLook(image) {
                     image: url,
                     items: [],
                     itemId: null,
+                    localFilePath: image.localPath
                   });
 
                   dispatch({
