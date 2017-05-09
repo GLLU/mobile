@@ -4,16 +4,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
 import BaseComponent from './BaseComponent';
 import { noop } from 'lodash'
-const MK = require('react-native-material-kit');
 const galleryIcon = require('../../../images/icons/original-gallery.png')
 const cameraIcon = require('../../../images/icons/original-photo-camera.png')
 const deviceWidth = Dimensions.get('window').width;
 const wModal = deviceWidth / 1.5;
 const hModal = wModal / 2;
-
-const {
-  MKColor,
-} = MK;
 
 const styles = StyleSheet.create({
   photoModal: {
@@ -98,7 +93,7 @@ class SelectPhoto extends BaseComponent {
         >
           <View style={{flexDirection: 'row'}}>
             <Image source={galleryIcon} style={[ {width: 20, height: 20, marginRight: 10}]}/>
-            <Text style={{ fontSize: 14, color: MKColor.Teal, alignSelf: 'center' }}>Choose from Gallery</Text>
+            <Text style={{ fontSize: 14, color: '#009688', alignSelf: 'center' }}>Choose from Gallery</Text>
           </View>
         </TouchableHighlight>
         <View style={{width: wModal-20, marginLeft: 10, marginRight: 10, borderWidth: 0.7, borderColor: 'grey'}}/>
@@ -109,7 +104,7 @@ class SelectPhoto extends BaseComponent {
         >
           <View style={{flexDirection: 'row'}}>
             <Image source={cameraIcon} style={[ {width: 20, height: 20, marginRight: 10}]}/>
-            <Text style={{ fontSize: 14, color: MKColor.Teal, alignSelf: 'center' }}>Take one with the Camera</Text>
+            <Text style={{ fontSize: 14, color: '#009688', alignSelf: 'center' }}>Take one with the Camera</Text>
           </View>
         </TouchableHighlight>
       </Modal>

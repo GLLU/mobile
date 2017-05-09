@@ -3,13 +3,8 @@ const React = require('react-native');
 import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
-const MK = require('react-native-material-kit');
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import FontSizeCalculator from './../../calculators/FontSize';
-
-const {
-    MKColor,
-} = MK;
 
 module.exports = StyleSheet.create({
   header: {
@@ -127,7 +122,7 @@ module.exports = StyleSheet.create({
     opacity: 0.8
   },
   validationPassed: {
-    backgroundColor: MKColor.Teal
+    backgroundColor: '#009688'
   },
   countrySelectView: {
     flex:1,
