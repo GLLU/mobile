@@ -20,11 +20,6 @@ const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/backgrounds/bags.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
-const MK = require('react-native-material-kit');
-
-const {
-  MKColor,
-} = MK;
 
 import { emailRule, passwordRule } from '../../validators';
  
@@ -155,7 +150,7 @@ class SignInPage extends BasePage {
                     <InputGroup style={styles.formGroup}>
                         <Input style={styles.formInput} focus={true} ref='email' keyboardType={'email-address'} onChangeText={(email) => this.validateEmailInput(email)}/>
                     </InputGroup>
-                    { this.state.email.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
+                    { this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
                 <Row style={styles.formItem}>
                   <TouchableWithoutFeedback onPress={() => this.focusOnInput('password')} >
@@ -164,7 +159,7 @@ class SignInPage extends BasePage {
                   <InputGroup style={styles.formGroup}>
                     <Input style={styles.formInput} ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
                   </InputGroup>
-                    { this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
+                    { this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                 </Row>
             </Grid>
             <Button color='lightgrey' style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}>
@@ -172,7 +167,7 @@ class SignInPage extends BasePage {
             </Button>
               <View style={styles.alreadyBox}>
                 <Text style={styles.alreadyTxt}>Forgot your password?</Text>
-                <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={this.handleForgotPasswordPress.bind(this)}>Click Here</Button>
+                <Button color={'#009688'} style={styles.alreadyBtn} onPress={this.handleForgotPasswordPress.bind(this)}>Click Here</Button>
               </View>
             </View>
           </Content>

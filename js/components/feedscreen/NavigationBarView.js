@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform } from 'react-native'
+import { StyleSheet, Image, Platform, TouchableOpacity } from 'react-native'
 import { View, Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
@@ -19,8 +19,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     flexDirection: 'row',
-    paddingLeft: 0,
-    paddingBottom: 5
+    paddingBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5
+
+
   },
   btnImageHanger: {
     height: 25,
@@ -106,19 +110,20 @@ class NavigationBarView extends BaseComponent {
     return(
       <View style={styles.navigationBar}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <Button transparent onPress={() => this.handleNotificationsPress()}>
+          <TouchableOpacity transparent onPress={() => this.handleNotificationsPress()}>
             <Image source={notificationBtn} style={styles.btnImageHanger} />
-          </Button>
+          </TouchableOpacity>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.handleOpenCamera()} style={styles.btnCamera}>
+
+          <TouchableOpacity transparent onPress={() => this.handleOpenCamera()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
-          </Button>
+          </TouchableOpacity>
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
+          <TouchableOpacity transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
             <Image source={userIcon} style={styles.btnImage} />
-          </Button>
+          </TouchableOpacity>
         </View>
       </View>
     )
