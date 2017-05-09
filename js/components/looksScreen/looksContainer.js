@@ -221,7 +221,7 @@ class LooksContainer extends BasePage {
           backgroundColor: 'transparent',
         }}>
             <Image
-            resizeMode={'contain'}
+            resizeMode={'stretch'}
             style={styles.itemImage}
             source={{uri: look.uri}}>
               <BottomLookContainer

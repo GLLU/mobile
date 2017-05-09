@@ -67,10 +67,10 @@ class CategoryItem extends Component {
 
   handlePressItem(item) {
     if(item.kind !== 'category') {
-      this.setState({selected: !this.state.selected}, () => {
-        this.props.onPress(item)
-      });
+      this.setState({selected: !this.state.selected});
+      this.props.onPress(item)
     } else {
+      this.setState({selected: !this.state.selected});
       this.props.handleCategorySelected(item)
     }
 
@@ -78,7 +78,7 @@ class CategoryItem extends Component {
 
   render() {
     const { item, itemWidth, onPress } = this.props;
-    const { selected } = this.props;
+    const { selected } = this.state;
     const iconWidth = itemWidth * 5 / 8;
     const iconHeight = iconWidth * 150 / 170;
     return (

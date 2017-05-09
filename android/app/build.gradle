@@ -91,7 +91,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.gllu"
@@ -171,8 +171,11 @@ dependencies {
     compile project(':react-native-code-push')
     compile project(':react-native-fbsdk')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.facebook.react:react-native:+'
+    compile 'com.github.MartinMobilize:material-camera:0.5.1'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+
     // From node_modules
 }
 
