@@ -48,8 +48,10 @@ class MediaContainer extends BaseComponent {
                repeat={true}
                rate={this.state.shouldPlay}
         />
-        {video.coverType === 'video' ? this.renderVideoGrid(video) : null}
-        <MediaBorderPatch media={video} />
+
+        <MediaBorderPatch media={video}>
+          {video.coverType === 'video' ? this.renderVideoGrid(video) : null}
+        </MediaBorderPatch>
       </View>
     )
   }
@@ -58,10 +60,10 @@ class MediaContainer extends BaseComponent {
      let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
       return (
       <View>
-        <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}}>
+        <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} />
+        <MediaBorderPatch media={look} >
           <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
-        </Image>
-        <MediaBorderPatch media={look} />
+        </MediaBorderPatch>
       </View>
       )
   }

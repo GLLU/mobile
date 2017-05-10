@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
 import BaseComponent from '../common/BaseComponent';
 const deviceWidth = Dimensions.get('window').width;
 
-class MediaBorderPatch extends BaseComponent {
+class MediaBorderPatch extends Component {
 
   constructor(props) {
     super(props);
@@ -22,7 +22,10 @@ class MediaBorderPatch extends BaseComponent {
       media.height = deviceWidth / 4;
     }
     return(
-      <View style={{width: media.width, height: media.height, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, position: 'absolute', top: 0}}>
+      <View style={{width: media.width, zIndex: 2, height: media.height, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, position: 'absolute', top: 0}}>
+        <View style={{zIndex: 1, bottom: 5}}>
+          {this.props.children}
+        </View>
         <View style={{width: media.width+1, height: media.height+1, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, borderRadius: 10, overflow: 'hidden', position: 'absolute', top: -4, left: -4}} />
       </View>
     )
