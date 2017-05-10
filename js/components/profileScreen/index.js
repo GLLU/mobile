@@ -1,8 +1,8 @@
 import React from 'react';
 import BasePage from '../common/BasePage';
-import { Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { Image, TouchableOpacity, Text, ScrollView,View } from 'react-native';
 import styles from './styles';
-import { Container, Content, View, Icon } from 'native-base';
+import { Container, Content,  Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import LinearGradient from 'react-native-linear-gradient';

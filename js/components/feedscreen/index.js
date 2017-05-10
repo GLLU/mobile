@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Dimensions, BackAndroid } from 'react-native';
+import { Dimensions, BackAndroid, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { Header, Content, View } from 'native-base';
+import { Header, Content, StyleProvider, getTheme } from 'native-base';
 import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
@@ -107,7 +107,7 @@ class FeedPage extends BasePage {
       _.merge(contentStyle, { height: this.state.contentHeight });
     }
     return (
-      <Gllu.Container style={styles.container} theme={glluTheme} onLayout={e => this._handleLayout(e)}>
+      <Gllu.Container style={StyleSheet.flatten(styles.container)} onLayout={e => this._handleLayout(e)}>
         {!this.props.modalShowing ?
           <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 95}]}>
               <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
@@ -120,6 +120,7 @@ class FeedPage extends BasePage {
         :
           null
         }
+        <StyleProvider style={getTheme(glluTheme)}>
         <Content
             scrollEnabled={false}
             contentContainerStyle={contentStyle}>
@@ -130,6 +131,7 @@ class FeedPage extends BasePage {
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
         </Content>
+        </StyleProvider>
       </Gllu.Container>
     );
   }

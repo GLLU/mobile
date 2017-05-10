@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { View } from 'native-base';
+import { StyleSheet,View } from 'react-native';
 import FilterBar from './filters/FilterBar';
-import SearchBar from './SearchBar';
 import _ from 'lodash';
 
 const myStyles = StyleSheet.create({

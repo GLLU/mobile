@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { View, Button, Text, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
+import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text } from 'react-native';
+import {  Button, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import TagInput from './forms/TagInput';

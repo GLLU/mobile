@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
-import { View, Text, Button, Icon } from 'native-base';
+import { View, Text,Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import {  Button, Icon } from 'native-base';
 import _ from 'lodash';
 import Video from 'react-native-video';
 import {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, UIManager, LayoutAnimation } from 'react-native'
-import { View, Text, Button } from 'native-base';
+import { StyleSheet, Image, UIManager, LayoutAnimation,View, Text, } from 'react-native'
+import { Button } from 'native-base';
 
 const styles = StyleSheet.create({
   categoryItem: {

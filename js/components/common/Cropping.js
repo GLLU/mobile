@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
-import { Text } from 'native-base';
+import { View, Image, StyleSheet, Dimensions, ActivityIndicator,Text } from 'react-native';
 import glluTheme from '../../themes/gllu-theme';
 
 const w = Dimensions.get('window').width;

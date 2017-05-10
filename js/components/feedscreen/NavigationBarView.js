@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform } from 'react-native'
-import { View, Text, Button, Icon } from 'native-base';
+import { StyleSheet, Image, Platform ,View, Text} from 'react-native'
+import { Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
@@ -92,12 +92,12 @@ class NavigationBarView extends BaseComponent {
           </Button>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
+          <Button transparent onPress={() => this.openCamera()} style={StyleSheet.flatten(styles.btnCamera)}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </Button>
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Button transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
+          <Button transparent onPress={() => this.goToProfile()} style={StyleSheet.flatten(styles.btnProfile)}>
             <Image source={userIcon} style={styles.btnImage} />
           </Button>
         </View>

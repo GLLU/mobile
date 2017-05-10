@@ -9,11 +9,9 @@ import {
   Text,
   Platform,
   Animated,
-  RefreshControl
+  RefreshControl,
+  View
 } from 'react-native';
-import { View } from 'native-base';
-import LikeView from './items/LikeView';
-import TypeView from './items/TypeView';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import Utils from '../../Utils';

@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, TouchableOpacity, Text } from 'react-native';
-import { Container, Content, View } from 'native-base'
+import { ListView, Image, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
 import SelectPhoto from '../../../common/SelectPhoto';

@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
-import { View, Icon } from 'native-base';
+import { View,ListView, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
+import {  Icon } from 'native-base';
 import { noop } from 'lodash'
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';

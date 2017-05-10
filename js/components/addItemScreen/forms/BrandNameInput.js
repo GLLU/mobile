@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native'
+import { StyleSheet ,View} from 'react-native'
 import { connect } from 'react-redux';
-import { View } from 'native-base';
 
 import Autocomplete from './CustomAutocomplete';
 import { loadBrands } from '../../../actions';

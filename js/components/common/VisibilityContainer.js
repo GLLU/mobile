@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'native-base';
+import { View } from 'react-native';
 
 // When you need to make something invisible, but still mounted
 class VisibilityContainer extends Component {

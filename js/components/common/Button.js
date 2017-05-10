@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, Image, UIManager, LayoutAnimation } from 'react-native'
-import { View, Text, Button } from 'native-base';
+import { Text,StyleSheet, Dimensions, Image, UIManager, LayoutAnimation } from 'react-native'
+import { Button } from 'native-base';
 import BaseComponent from './BaseComponent';
 import FontSizeCalculator from './../../calculators/FontSize';
 import glluTheme from '../../themes/gllu-theme';

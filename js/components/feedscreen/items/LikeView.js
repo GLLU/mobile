@@ -1,11 +1,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform } from 'react-native';
-import { View, Button, Text } from 'native-base';
+import { StyleSheet, Image, Platform, View, Text } from 'react-native';
+import {  Button } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
-
-import { connect } from 'react-redux';
 
 const likeIcon = require('../../../../images/icons/like.png');
 const likedIcon = require('../../../../images/icons/liked.png');

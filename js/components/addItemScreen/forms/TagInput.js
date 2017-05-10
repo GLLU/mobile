@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput } from 'react-native'
-import { View } from 'native-base';
+import { StyleSheet, TextInput,View } from 'react-native'
 import Tags from './Tags';
 import _ from 'lodash';
 

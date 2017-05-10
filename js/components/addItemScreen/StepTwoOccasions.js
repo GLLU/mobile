@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
-import { View, Text } from 'native-base';
+import { View, Text,StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   addItemType,

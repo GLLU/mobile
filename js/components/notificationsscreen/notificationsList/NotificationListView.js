@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Container, Header, Content, View } from 'native-base';
+import { ListView, Image, StyleSheet, TouchableOpacity, Text,View  } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';

@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Alert, Linking} from 'react-native';
-import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title, ListItem, Text } from 'native-base';
+import { StyleSheet, Alert, Linking,Text} from 'react-native';
+import { Container, Header, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import { back, logout } from '../../actions';
 import SocialShare from '../../lib/social';

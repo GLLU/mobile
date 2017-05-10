@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image } from 'react-native'
-import { View, Text, Button } from 'native-base';
+import { StyleSheet, Image,View } from 'react-native'
+import {  Button } from 'native-base';
 import * as _ from 'lodash';
 
 const styles = StyleSheet.create({
@@ -101,7 +101,7 @@ class FilterButton extends Component {
         <Button
           transparent
           onPress={() => this.handlePressItem(filter)}
-          style={[styles.btnCategoryItem]}>
+          style={StyleSheet.flatten(styles.btnCategoryItem)}>
           {this._renderIcon(filter.icon, selected)}
         </Button>
       </View>

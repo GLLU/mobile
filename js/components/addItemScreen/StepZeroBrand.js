@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated, UIManager } from 'react-native';
-import { View, Text, Icon } from 'native-base';
+import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated, UIManager, View, Text,  } from 'react-native';
+import { Icon } from 'native-base';
 import {
   addBrandName,
   createBrandName,

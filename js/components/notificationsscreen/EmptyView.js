@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { View, Icon } from 'native-base';
+import { ListView, Image, StyleSheet, TouchableOpacity,View, Text } from 'react-native';
 import { noop } from 'lodash';
 
 

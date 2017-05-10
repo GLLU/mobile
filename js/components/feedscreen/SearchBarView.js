@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform } from 'react-native'
-import { View, Text, Button, Icon } from 'native-base';
+import { StyleSheet, Image, Platform,View } from 'react-native'
+import { Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
@@ -95,8 +95,8 @@ class SearchBarView extends BaseComponent {
                      clearText={this.props.clearText} />
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.openSearch()} style={styles.btnFilter}>
-            {this.props.searchStatus ? <Icon name="ios-close-circle-outline" style={[styles.smallBtn]}/> : <Icon name="ios-options-outline" style={[styles.smallBtn]}/>}
+          <Button transparent onPress={() => this.openSearch()} style={StyleSheet.flatten(styles.btnFilter)}>
+            <Icon name={this.props.searchStatus?"ios-close-circle-outline":"ios-options-outline"} style={StyleSheet.flatten(styles.smallBtn)}/>
           </Button>
         </View>
       </View>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Text, Dimensions, Platform } from 'react-native';
-import { View, Grid, Row, Button, Icon} from 'native-base';
+import { StyleSheet, Text, Dimensions, Platform,View } from 'react-native';
+import { Grid, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';

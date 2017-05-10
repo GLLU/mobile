@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image } from 'react-native';
-import { View, Button } from 'native-base';
+import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image,View  } from 'react-native';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';

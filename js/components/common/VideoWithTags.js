@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, PanResponder, Animated } from 'react-native';
-import { View } from 'native-base';
+import { StyleSheet, Dimensions, PanResponder, Animated,View } from 'react-native';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
 import Video from 'react-native-video';

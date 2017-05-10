@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, Platform } from 'react-native';
-import { View, Button, Icon } from 'native-base';
+import { StyleSheet, TextInput, Text, Platform,View } from 'react-native';
+import {  Button } from 'native-base';
 import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -99,7 +99,7 @@ class SearchBar extends BaseComponent {
           underlineColorAndroid='transparent'
           onChangeText={(text) => this.handleTextInput(text)}
           value={this.state.text}/>
-        <Button transparent iconRight onPress={() => this.clearSearch()} style={[myStyles.btnCloseFilter]}>
+        <Button transparent iconRight onPress={() => this.clearSearch()} style={StyleSheet.flatten(myStyles.btnCloseFilter)}>
           <Text style={myStyles.clearText}>Clear</Text>
         </Button>
       </View>

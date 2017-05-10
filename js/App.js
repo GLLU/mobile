@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet,Text, View, } from 'react-native';
 import CodePush from 'react-native-code-push';
-import { Container, Content, Text, View } from 'native-base';
+import { Container, Content,  StyleProvider, getTheme } from 'native-base';
 import Modal from 'react-native-modalbox';
 import AppNavigator from './AppNavigator';
 
@@ -64,7 +64,8 @@ class App extends Component {
   render() {
     if (this.state.showDownloadingModal) {
       return (
-        <Container theme={theme} style={{ backgroundColor: theme.defaultBackgroundColor }}>
+        <Container style={{ backgroundColor: theme.defaultBackgroundColor }}>
+          <StyleProvider style={getTheme(theme)}>
           <Content style={styles.container}>
             <Modal
               style={[styles.modal, styles.modal1]}
@@ -113,6 +114,7 @@ class App extends Component {
               </View>
             </Modal>
           </Content>
+          </StyleProvider>
         </Container>
       );
     }
