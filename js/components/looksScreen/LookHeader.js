@@ -71,7 +71,7 @@ class LookHeader extends Component {
           <View style={{flex: 3}}>
           <TouchableOpacity style={styles.backBtnContainer}
                             onPress={this.props.onBackNavigationPress}>
-            <Icon style={styles.backBtn} name="ios-arrow-back"/>
+            <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           </View>
           <View style={{flex: 24}} name="spacer"/>

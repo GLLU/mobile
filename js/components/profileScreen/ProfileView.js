@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     color: '#00D7B2',
   },
   followView: {
-    flex: 3
+    width:80
   }
 });
 

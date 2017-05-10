@@ -71,7 +71,7 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
-    isVideo = this.props.image.search(".mp4") > -1
+    isVideo = this.props.coverType;
     this.state = {
       isVideo,
       currentStep: -1,
@@ -188,12 +188,10 @@ class AddItemPage extends BasePage {
 
   renderImageWithTags() {
     const { items, image, itemId } = this.props;
-    const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags
         itemId={itemId}
-        width={imageWidth}
         mode={mode}
         items={items}
         image={image}/>
@@ -202,7 +200,6 @@ class AddItemPage extends BasePage {
 
   renderVideoWithTags() {
     const { image, itemId } = this.props;
-    const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
@@ -266,12 +263,10 @@ class AddItemPage extends BasePage {
 
     if (this.state.currentStep !== 1) {
       return (
-        <Grid >
-          <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
+        <View>
             {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
             {this.renderActions()}
-          </Row>
-        </Grid>
+        </View>
       );
     }
     return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
@@ -280,7 +275,7 @@ class AddItemPage extends BasePage {
   renderNext(fgColor) {
     return (
       <Button transparent onPress={() => this.handleContinue()} style={{width: 30, height: 30, backgroundColor: '#05d7b2', borderRadius: 15}}>
-        <Icon style={[ { color: 'white', marginLeft: 2 }]} name="ios-arrow-forward" />
+        <Icon style={{ color: 'white', marginLeft: 2 }} name="ios-arrow-forward" />
       </Button>
     )
   }
@@ -291,10 +286,10 @@ class AddItemPage extends BasePage {
     return (
       <View style={styles.headerContainer}>
         <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
-          <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-back" />
+          <Icon style={{ color: fgColor }} name="ios-arrow-back" />
         </Button>
         <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
-        {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}></View>}
+        {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
       </View>
     )
   }

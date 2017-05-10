@@ -9,12 +9,13 @@ export default StyleSheet.create({
     fontSize: 22,
     fontWeight: '300',
     fontFamily: 'Times New Roman',
-    color: '#FFFFFF',
+    color: '#000000',
     textAlign: 'left'
   },
   headerTitleContainer: {
     borderBottomWidth: 1.5,
     borderColor: 'lightgrey',
+    paddingTop: 10,
     paddingBottom: 10,
     width: 200,
     paddingLeft: 0

@@ -58,7 +58,7 @@ class MyBodyMeasure extends BasePage {
     return (
       <Container>
         <View style={{height: 50}}>
-          <View style={[styles.header,{flexDirection:'row'}]}>
+          <View style={[styles.header,{flexDirection:'row', flex: 1, alignItems:'center'}]}>
             <Button transparent onPress={() => this.popRoute()}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back"/>
             </Button>

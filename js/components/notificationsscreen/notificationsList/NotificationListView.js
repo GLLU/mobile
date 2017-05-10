@@ -39,7 +39,7 @@ class NotificationListView extends Component {
     this.renderListView = this.renderListView.bind(this);
     const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this.state = {
-      dataSource: ds.cloneWithRows(props.notifications.allNotifications),
+      dataSource: ds.cloneWithRows(props.notifications.allNotifications||[]),
       isTrueEndReached: false
     };
   }
@@ -50,7 +50,7 @@ class NotificationListView extends Component {
     }
     if (nextProps.notifications !== this.props.notifications.allNotifications) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.notifications.allNotifications)
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.notifications.allNotifications||[])
       })
     }
   }

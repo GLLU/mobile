@@ -67,7 +67,7 @@ class ListViewHeader extends Component {
         <View style={[styles.header,styles.row]}>
           <View style={{flex:0.5}} name="spacer"/>
           <TouchableOpacity style={{flex:1}} onPress={() => this.popRoute()}>
-            <Icon style={styles.backBtn} name="ios-arrow-back"/>
+            <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           <Text style={styles.followsTitle}>{_.startCase(this.props.title)}</Text>
           { this.props.count ? <Text style={styles.followsCount}>{this.props.count}</Text> : null }

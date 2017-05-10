@@ -118,12 +118,9 @@ class UserLooks extends Component {
             </View>
           </TouchableOpacity>
           { this.state.isMyProfile && (
-              <Button
-                onPress={this._handleEditPress.bind(this, look)}
-                style={{position: 'absolute', top: 5, right: 5, height: 30, width: 30}}>
-                <View style={{position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, backgroundColor: '#000'}}/>
-                <Icon name='ios-create-outline' style={{color: '#000'}} size={28}/>
-              </Button>
+            <TouchableOpacity onPress={this._handleEditPress.bind(this, look)} style={{position: 'absolute',  top: 5, right: 5, height: 30, width: 30, backgroundColor:'#00d7b2',alignItems:'center'}}>
+              <Icon name='ios-create-outline' style={{color: '#000'}} size={28}/>
+            </TouchableOpacity>
             )
           }
           { this.state.isMyProfile ? this.renderLookStatus(look) : null}
