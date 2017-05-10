@@ -222,7 +222,7 @@ class TabContent extends BaseComponent {
                 <TouchableOpacity onPress={() => this._onShareClicked()}>
                   <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
                     <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
-                           style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4}}
+                           style={{width: deviceWidth / 2, height: deviceWidth / 4}}
                            resizeMode={'stretch'}/>
                     <MediaBorderPatch />
                   </View>

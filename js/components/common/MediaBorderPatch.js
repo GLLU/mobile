@@ -18,7 +18,7 @@ class MediaBorderPatch extends Component {
     if(this.props.media) {
        media = this.props.media
     } else {
-      media.width = deviceWidth / 2 - 5;
+      media.width = deviceWidth / 2 ;
       media.height = deviceWidth / 4;
     }
     return(
