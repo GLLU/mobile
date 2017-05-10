@@ -13,7 +13,6 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import Spinner from '../loaders/Spinner';
 import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 import { loadMore, replaceAt } from '../../actions';
 import { reportAbuse } from '../../actions/looks';

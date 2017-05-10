@@ -218,9 +218,9 @@ class TabContent extends BaseComponent {
             onScroll={this.handleScroll.bind(this)}
             refreshControl={this._renderRefreshControl.bind(this)()}>
             <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
+              <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
                 <TouchableOpacity onPress={() => this._onShareClicked()}>
-                  <View style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4}}>
+                  <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
                     <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
                            style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4}}
                            resizeMode={'stretch'}/>

@@ -101,6 +101,7 @@ class FeedPage extends BasePage {
   }
 
   render() {
+
     const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};
     let contentStyle = { flex: 1 };
     if (this.state.contentHeight) {

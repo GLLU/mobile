@@ -17,6 +17,7 @@ export function getFeed(query):Action {
         number: 1
       }
     });
+    console.log('query', query)
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.feeds(newState, (err, data) => {
         if (!err && data) {
