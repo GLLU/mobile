@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, TouchableOpacity } from 'react-native'
-import { View, Text, Button, Icon } from 'native-base';
+import { View } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
@@ -9,9 +9,6 @@ import {openCamera} from '../../lib/camera/CameraUtils'
 const userIcon = require('../../../images/icons/user.png');
 const emptyNotification = require('../../../images/icons/emptyNotification.png');
 const gotNotification = require('../../../images/icons/hangerGreenCircle.png');
-const bagIcon = require('../../../images/icons/bag.png');
-const rectangleIcon = require('../../../images/icons/rectangle.png')
-const searchIcon = require('../../../images/icons/search.png')
 const cameraIcon = require('../../../images/icons/camera.png')
 
 const styles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Image, Platform, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import { View, Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
@@ -95,9 +95,9 @@ class SearchBarView extends BaseComponent {
                      clearText={this.props.clearText} />
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <TouchableWithoutFeedback transparent onPress={() => this.openSearch()} style={styles.btnFilter}>
+          <TouchableOpacity transparent onPress={() => this.openSearch()} style={styles.btnFilter}>
             {this.props.searchStatus ? <Icon name="ios-close-circle-outline" style={[styles.smallBtn]}/> : <Icon name="ios-options-outline" style={[styles.smallBtn]}/>}
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
       </View>
     )

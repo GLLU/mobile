@@ -12,17 +12,12 @@ import {
   RefreshControl,
   View
 } from 'react-native';
-import LikeView from './items/LikeView';
-import TypeView from './items/TypeView';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
-import Utils from '../../Utils';
 import BaseComponent from '../common/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
-import Video from 'react-native-video';
-import Pusher from 'pusher-js/react-native';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 
 const deviceWidth = Dimensions.get('window').width;
@@ -58,13 +53,6 @@ class TabContent extends BaseComponent {
     this.showBodyModal = _.once(this._showBodyModal);
     this.layoutWidth = 0;
     this.currPosition = 0
-  }
-
-  onLoad() {
-    Animated.timing(this.state.fadeAnim, {
-      toValue: 1,
-      duration: 1500
-    }).start();
   }
 
   _onShareClicked() {
@@ -146,17 +134,6 @@ class TabContent extends BaseComponent {
 
   scrollDebounced(e) {
     this.showBodyModal();
-  }
-
-  toggleLikeAction(item, isLiked) {
-    this.logEvent('Feedscreen', {name: 'Like Image click'});
-    if (isLiked) {
-      let data = {id: item.id, likes: item.likes + 1, liked: true}
-      this.props.likeUpdate(data);
-    } else {
-      let data = {id: item.id, likes: item.likes - 1, liked: false}
-      this.props.unLikeUpdate(data);
-    }
   }
 
   _renderLooks(looks) {

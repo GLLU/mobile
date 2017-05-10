@@ -39,7 +39,7 @@ class MediaContainer extends BaseComponent {
 
   renderVideo(video) {
     return (
-      <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10}}>
+      <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.bgColor}}>
 
         <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                resizeMode={'stretch'}
@@ -60,7 +60,6 @@ class MediaContainer extends BaseComponent {
       <View>
         <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}}>
           <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
-
         </Image>
         <MediaBorderPatch media={look} />
       </View>
