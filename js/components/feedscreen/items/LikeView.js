@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     width: 25,
     resizeMode: 'contain',
     alignSelf: 'center',
-    marginTop: 5
+    marginTop: 3
   },
   countLikeLabel: {
     color: '#FFFFFF',
@@ -77,7 +77,7 @@ class LikeView extends Component {
     return (
       <View style={[styles.likeContainer, { marginTop: img.height - 35 }]}>
         <Image source={bgShadow} style={styles.bgShadow}/>
-        <Grid>
+        <Grid style={{ marginBottom: 6}}>
           <Col style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
