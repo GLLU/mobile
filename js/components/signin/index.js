@@ -128,6 +128,7 @@ class SignInPage extends BasePage {
   }
 
   render() {
+    let allValid = this.checkValidations()
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>
@@ -187,7 +188,6 @@ class SignInPage extends BasePage {
         </View>
       </Container>
     );
-    let allValid = this.checkValidations()
   }
 }
 

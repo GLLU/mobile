@@ -3,8 +3,8 @@
  */
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity } from 'react-native';
-import { Container, Header, Button, Title, Content, Text, View, Icon } from 'native-base';
+import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
+import { Container, Header, Button, Title, Content,  Icon } from 'native-base';
 import BasePage from '../common/BasePage';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
@@ -63,13 +63,14 @@ class SignUpGenderPage extends BasePage {
       <Container>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={0}>
-            {/*<Image source={backgroundShadow} style={styles.bgShadow} />*/}
-            <Header style={styles.header} >
-              <Button transparent onPress={this.handleBackPress.bind(this)}>
-                <Icon style={styles.headerArrow} name="ios-arrow-back" />
-              </Button>
-              <Title style={styles.headerTitle}>Signup for Gllu</Title>
-            </Header>
+            <View style={{height:50}}>
+              <View style={styles.header} >
+                <Button transparent onPress={() => this.popRoute()}>
+                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
+                </Button>
+                <Text style={styles.headerTitle}>Sign up</Text>
+              </View>
+            </View>
             <Content scrollEnabled={false}>
               <View style={styles.genderSelectContainer}>
                 <TouchableOpacity onPress={this.handleGenderPress.bind(this, 'female')}>

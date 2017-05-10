@@ -9,14 +9,16 @@ import FontSizeCalculator from './../../calculators/FontSize';
 module.exports = StyleSheet.create({
   header: {
     backgroundColor: 'transparent',
-    shadowOpacity: 0,
+    flex:1,
+    flexDirection:'row',
+    alignItems: 'center'
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: '300',
     fontFamily: 'Times New Roman',
     color: '#FFFFFF',
-    textAlign: 'center'
+    textAlign: 'left'
   },
   headerArrow: {
     color: '#FFFFFF'
@@ -53,13 +55,14 @@ module.exports = StyleSheet.create({
   uploadImgContainer: {
     marginTop: 15,
     alignSelf: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   uploadImgBtn: {
     borderRadius: 50,
     backgroundColor: '#FFFFFF',
-    height: 100,
-    width: 100
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
   },
   uploadImgIcon: {
     backgroundColor: 'transparent',
