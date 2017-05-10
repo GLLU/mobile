@@ -23,7 +23,7 @@ class MediaBorderPatch extends Component {
     }
     return(
       <View style={{width: media.width, zIndex: 2, height: media.height, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, position: 'absolute', top: 0}}>
-        <View style={{zIndex: 1, bottom: 5}}>
+        <View>
           {this.props.children}
         </View>
         <View style={{width: media.width+1, height: media.height+1, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, borderRadius: 10, overflow: 'hidden', position: 'absolute', top: -4, left: -4}} />
