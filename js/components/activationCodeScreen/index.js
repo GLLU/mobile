@@ -1,11 +1,10 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, TouchableWithoutFeedback, Linking } from 'react-native';
-import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
+import { Image, TouchableWithoutFeedback, Linking, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
-import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
 import { invitationCheckExistance } from '../../actions/user';
 import styles from './styles';
@@ -15,6 +14,7 @@ import {
   PRIVACY_URL,
 } from '../../constants';
 import { emailRule, passwordRule } from '../../validators';
+import SplashButton from "./SplashButton";
 
 const logo = require('../../../images/logo.png');
 const { popRoute, pushRoute } = actions;
@@ -118,19 +118,19 @@ class ActivationCodeScreen extends BasePage {
         <View>
           <Grid>
             <Row style={styles.formItem}>
-              <InputGroup style={styles.formGroup}>
-                <Input style={styles.formInput} placeholder="Enter Invitation Code" placeholderTextColor="white" onChangeText={(code) => this.setInvitationCode(code)}/>
+              <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+                <Input style={StyleSheet.flatten(styles.formInput)} placeholder="Enter Invitation Code" placeholderTextColor="white" onChangeText={(code) => this.setInvitationCode(code)}/>
               </InputGroup>
             </Row>
           </Grid>
-          <Button color='white' style={[styles.formBtn, styles.validationPassed  ]} onPress={this.handleSigninPress.bind(this)}>
-            <Text>Submit</Text>
-          </Button>
+          <SplashButton style={[styles.formBtn ,styles.validationPassed ]} label='Submit' onPress={this.handleSigninPress.bind(this)}/>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Don't have code? <Text style={[styles.alreadyTxt, {fontWeight: '600', opacity: 10}]}>Apply for code</Text></Text>
-            <Button color={'#009688'} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderGetCode.bind(this)}><Text style={{color: '#009688', fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> here</Text></Button>
+            <TouchableOpacity onPress={this.renderGetCode.bind(this)}>
+              <Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>here</Text>
+            </TouchableOpacity>
           </View>
-            {this.props.error ? this.renderError() : null}
+          {this.props.error ? this.renderError() : null}
         </View>
       </View>
     )
@@ -145,32 +145,32 @@ class ActivationCodeScreen extends BasePage {
   }
 
   _renderGetCode() {
+
     return (
       <View style={{  justifyContent: 'center' }}>
         <View>
           <Grid>
             <Row style={[styles.formItem, styles.formItemGetCode]}>
-              <InputGroup style={styles.formGroup}>
-                <Input style={[styles.formInput, styles.formInputGetCode]} placeholder="Name" placeholderTextColor="white" ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
+              <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+                <Input style={StyleSheet.flatten(styles.formInputGetCode)} placeholder="Name" placeholderTextColor="white" ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
               </InputGroup>
             </Row>
             <Row style={[styles.formItem, styles.formItemGetCode]}>
-              <InputGroup style={styles.formGroup}>
-                <Input style={[styles.formInput, styles.formInputGetCode]} placeholder="Email" ref='email' keyboardType={'email-address'} placeholderTextColor="white" onChangeText={(email) => this.validateEmailInput(email)}/>
+              <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+                <Input style={StyleSheet.flatten(styles.formInputGetCode)} placeholder="Email" ref='email' keyboardType={'email-address'} placeholderTextColor="white" onChangeText={(email) => this.validateEmailInput(email)}/>
               </InputGroup>
             </Row>
           </Grid>
-          <Button color='white' style={[styles.formBtn, styles.validationPassed  ]} onPress={this.handleSigninPress.bind(this)}>
-            Ask for Code
-          </Button>
+          <SplashButton style={[styles.formBtn, styles.validationPassed]} label='Ask for Code' onPress={this.handleSigninPress.bind(this)}/>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
-            <Button color={'#009688'} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderEnterCode.bind(this)}><Text style={{color: '#009688', fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> Click here</Text></Button>
+            <TouchableOpacity onPress={this.renderEnterCode.bind(this)}>
+              <Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
-      )
-
+    )
   }
 
   renderError() {
@@ -189,12 +189,14 @@ class ActivationCodeScreen extends BasePage {
       <Container theme={glluTheme}>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow}>
-            <Header style={styles.header} >
-              <Button transparent onPress={() => this.popRoute()}>
-                <Icon style={styles.headerArrow} name="ios-arrow-back" />
-              </Button>
-              <Title style={styles.headerTitle}>Invitation Code</Title>
-            </Header>
+            <View style={{height:50}}>
+              <View style={styles.header} >
+                <Button transparent onPress={() => this.popRoute()}>
+                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
+                </Button>
+                <Text style={styles.headerTitle}>Sign in</Text>
+              </View>
+            </View>
             <Content scrollEnabled={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
               { this.state.renderEnterCode ? this._renderEnterCode() : this._renderGetCode() }
             </Content>
