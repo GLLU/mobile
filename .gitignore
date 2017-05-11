@@ -30,6 +30,9 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/libs
+android/keystores/debug.keystore
+/android/gradle.properties
 
 # node.js
 #
@@ -52,3 +55,6 @@ buck-out/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+
+ios/
+my-release-key.keystore

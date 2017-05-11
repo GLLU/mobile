@@ -62,7 +62,6 @@ public class MainApplication extends Application
                             new CameraReactPackage(),
                             new GoogleAnalyticsBridgePackage(),
                             new FlurryAnalyticsPackage(),
-
                             new RNFetchBlobPackage(),
                             BugsnagReactNative.getPackage(),
                             new KeychainPackage(),
