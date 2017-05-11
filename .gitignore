@@ -45,6 +45,5 @@ buck-out/
 android/app/libs
 android/keystores/debug.keystore
 ios/
-build.gradle
 my-release-key.keystore
 /android/gradle.properties
