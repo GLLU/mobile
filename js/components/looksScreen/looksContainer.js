@@ -105,6 +105,9 @@ class LooksContainer extends BasePage {
     } else {
       _.delay(() => this.props.removeLoader(), 0);
     }
+    if(this.state.currScrollIndex === this.props.flatLooksData.length-1) {
+      this.loadMore()
+    }
   }
 
   _toggleLike(isLiked) {
@@ -157,13 +160,12 @@ class LooksContainer extends BasePage {
     switch (gestureName) {
       case SWIPE_UP: {
         const {meta: {total}} = this.props;
-        if (this.state.currScrollIndex < total - 1) {
+        if (this.state.currScrollIndex !== this.props.flatLooksData.length-1) {
           this._scrollView.scrollTo({x: 0, y: 0, animated: false});
           this._scrollView.scrollTo({x: 0, y: height, animated: true});
           this.setState({currScrollIndex: this.state.currScrollIndex + 1})
         }
         if (this.state.currScrollIndex % 5 === 0 || this.state.currScrollIndex === total - 1){
-          console.log('lolol')
           this.loadMoreAsync();
         }
         break;
@@ -268,25 +270,10 @@ class LooksContainer extends BasePage {
       ]
     }
 
-    if (total === 2) {
-      switch(this.state.currScrollIndex) {
-      case 0:
-        return looksArr = [
-          this.props.flatLooksData[this.state.currScrollIndex],
-          this.props.flatLooksData[this.state.currScrollIndex+1]
-        ];
-      default:
-        return looksArr = [
-          this.props.flatLooksData[this.state.currScrollIndex-1],
-          this.props.flatLooksData[this.state.currScrollIndex],
-        ];
-    }
-    }
-
     switch(this.state.currScrollIndex) {
       case 0:
          return looksArr = [
-          this.props.flatLooksData[this.state.currScrollIndex+2], // fictional
+          this.props.flatLooksData[this.state.currScrollIndex+1], // fictional
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex+1]
         ];
@@ -294,9 +281,7 @@ class LooksContainer extends BasePage {
         looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex-1],
           this.props.flatLooksData[this.state.currScrollIndex],
-          this.props.flatLooksData[this.state.currScrollIndex-2] // fictional
         ];
-        console.log('looksarr',looksArr)
         return looksArr
       default:
         return looksArr = [
