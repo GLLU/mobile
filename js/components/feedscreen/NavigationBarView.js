@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform ,View, Text} from 'react-native'
-import { Button, Icon } from 'native-base';
+import { StyleSheet, Image, Platform ,View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
+import {openCamera} from '../../lib/camera/CameraUtils'
 
 const userIcon = require('../../../images/icons/user.png');
 const emptyNotification = require('../../../images/icons/emptyNotification.png');
 const gotNotification = require('../../../images/icons/hangerGreenCircle.png');
-const bagIcon = require('../../../images/icons/bag.png');
-const rectangleIcon = require('../../../images/icons/rectangle.png')
-const searchIcon = require('../../../images/icons/search.png')
 const cameraIcon = require('../../../images/icons/camera.png')
 
 const styles = StyleSheet.create({
@@ -18,8 +15,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     flexDirection: 'row',
-    paddingLeft: 0,
-    paddingBottom: 5
+    paddingBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5
+
+
   },
   btnImageHanger: {
     height: 25,
@@ -77,9 +78,27 @@ class NavigationBarView extends BaseComponent {
     this.props.navigateTo('notificationsScreen', 'feedscreen');
   }
 
-  openCamera() {
+  async openCamera() {
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
-    this.props.handleOpenPhotoModal();
+    let file = {};
+    file.path = await openCamera();
+    if(file.path.search(".mp4") > -1) {
+      console.log('filepath: ',file.path)
+      file.localPath = file.path
+      file.path = file.path.replace('file://', '')
+      file.type = 'look[video]'
+    } else {
+      file.type = 'look[image]'
+    }
+    this.props.addNewItem(file);
+  }
+
+  handleOpenCamera() {
+    if(Platform.OS !== 'ios') {
+      this.openCamera()
+    } else {
+      this.props.handleOpenPhotoModal();
+    }
   }
 
   render() {
@@ -87,19 +106,19 @@ class NavigationBarView extends BaseComponent {
     return(
       <View style={styles.navigationBar}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <Button transparent onPress={() => this.handleNotificationsPress()}>
+          <TouchableOpacity transparent onPress={() => this.handleNotificationsPress()}>
             <Image source={notificationBtn} style={styles.btnImageHanger} />
-          </Button>
+          </TouchableOpacity>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.openCamera()} style={StyleSheet.flatten(styles.btnCamera)}>
+          <TouchableOpacity transparent onPress={() => this.handleOpenCamera()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
-          </Button>
+          </TouchableOpacity>
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <Button transparent onPress={() => this.goToProfile()} style={StyleSheet.flatten(styles.btnProfile)}>
+          <TouchableOpacity transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
             <Image source={userIcon} style={styles.btnImage} />
-          </Button>
+          </TouchableOpacity>
         </View>
       </View>
     )

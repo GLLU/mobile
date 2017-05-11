@@ -7,7 +7,6 @@ import {
   removeBrandName,
 } from '../../actions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
 import glluTheme from '../../themes/gllu-theme';

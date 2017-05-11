@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform,View } from 'react-native'
-import { Button, Icon } from 'native-base';
+import { StyleSheet, Image, Platform,View , TouchableWithoutFeedback, TouchableOpacity, InteractionManager } from 'react-native'
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
@@ -63,7 +63,8 @@ class SearchBarView extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      hasNotify: false
+      hasNotify: false,
+      searchStatus: false
     };
   }
 
@@ -78,8 +79,9 @@ class SearchBarView extends BaseComponent {
   }
 
   openSearch() {
-    this.logEvent('Feedscreen', { name: 'Search click' });
     this.props.handleSearchStatus();
+    this.setState({searchStatus: !this.state.searchStatus})
+    this.logEvent('Feedscreen', { name: 'Search click' });
   }
 
   render() {
@@ -95,9 +97,9 @@ class SearchBarView extends BaseComponent {
                      clearText={this.props.clearText} />
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <Button transparent onPress={() => this.openSearch()} style={StyleSheet.flatten(styles.btnFilter)}>
-            <Icon name={this.props.searchStatus?"ios-close-circle-outline":"ios-options-outline"} style={StyleSheet.flatten(styles.smallBtn)}/>
-          </Button>
+          <TouchableWithoutFeedback transparent onPress={() => this.openSearch()} style={styles.btnFilter}>
+            <Icon name={this.state.searchStatus ? "ios-close-circle-outline" : "ios-options-outline" } style={StyleSheet.flatten(styles.smallBtn)}/>
+          </TouchableWithoutFeedback>
         </View>
       </View>
     )

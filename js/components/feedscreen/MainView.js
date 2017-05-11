@@ -60,16 +60,16 @@ class MainView extends Component {
 
   getFeed(query) {
     this.setState({reloading: true}, () => {
-      this.props.getFeed(query).then((looks) => {
-        this.preloadLookImages(looks);
+      this.props.getFeed(query).then(() => {
+        this.setState({reloading: false});
       });
     });
   }
 
   resetFeed() {
     this.setState({reloading: true}, () => {
-      this.props.resetFeed().then((looks) => {
-        this.preloadLookImages(looks);
+      this.props.resetFeed().then(() => {
+        this.setState({reloading: false});
       });
     });
   }

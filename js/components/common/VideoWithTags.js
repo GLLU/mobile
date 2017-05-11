@@ -133,31 +133,20 @@ class VideoWithTags extends Component {
   }
 
   componentDidMount() {
-    this._handlePressWithoutPress()  // auto creating an item to continue for further steps, will be refactored when items will be shown on video
-  }
-
-  _render() {
-    return (
-      <View style={{flex: 1, paddingHorizontal: 0, padding: 0}} >
-        <Video source={{uri: this.props.image}}
-               resizeMode="contain"
-               muted={true}
-               style={{width: w, height: h, overflow: 'hidden'}}
-               repeat={true}/>
-      </View>
-    );
-  }
-
-  _renderContent() {
-    return this._render();
+    if(!this.props.itemId) {
+      this._handlePressWithoutPress()  // auto creating an item to continue for further steps, will be refactored when items will be shown on video
+    }
   }
 
   render() {
     const style = [styles.base, this.props.style];
+    console.log('path:', this.props.image)
     return (
-      <View style={style} >
-        {this._renderContent()}
-      </View>
+      <Video source={{uri: this.props.image}}
+             resizeMode="contain"
+             muted={true}
+             style={{width: w - 5, height: h, overflow: 'hidden'}}
+             repeat={true}/>
     );
   }
 }

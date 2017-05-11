@@ -196,6 +196,7 @@ class StepThreePublish extends BaseComponent {
         this.setState({
           url: value
         });
+        break;
       case 'description':
         this.setState({
           description: value
@@ -425,7 +426,7 @@ class StepThreePublish extends BaseComponent {
             />
           </Row>
           <Row style={styles.row}>
-            <Text style={styles.titleLabelInfo}>Url</Text>
+            <Text style={styles.titleLabelInfo}>Link to the webpage of the item</Text>
             <TextInput
               ref={ref => this.urlText = ref}
               underlineColorAndroid='transparent'
@@ -441,7 +442,7 @@ class StepThreePublish extends BaseComponent {
             <Gllu.Button
               disabled={false}
               onPress={() => this.handlePublishPress()}
-              text={ this.props.state == LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
+              text={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
           </Row>
         </Grid>

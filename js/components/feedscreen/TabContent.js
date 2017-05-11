@@ -14,13 +14,11 @@ import {
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
-import Utils from '../../Utils';
 import BaseComponent from '../common/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
-import Video from 'react-native-video';
-import Pusher from 'pusher-js/react-native';
+import MediaBorderPatch from '../common/MediaBorderPatch'
 
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
@@ -57,13 +55,6 @@ class TabContent extends BaseComponent {
     this.currPosition = 0
   }
 
-  onLoad() {
-    Animated.timing(this.state.fadeAnim, {
-      toValue: 1,
-      duration: 1500
-    }).start();
-  }
-
   _onShareClicked() {
     this.logEvent('LookScreen', {name: 'Share click'});
     SocialShare.nativeShare(this.props.shareToken);
@@ -71,7 +62,7 @@ class TabContent extends BaseComponent {
 
   componentDidMount() {
     let that = this
-    setInterval(function(){ that.handleScrollPositionForVideo(); }, 3000);
+    setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,11 +115,9 @@ class TabContent extends BaseComponent {
 
     if (pageSize * pageNumber < total) {
       this.setState({isLoading: true}, () => {
-        this.props.loadMore().then((looks) => {
-          return Utils.preloadLookImages(looks).then(() => {
-            this.setState({isLoading: false});
-          });
-        }).catch(err => {
+        this.props.loadMore().then(() => {
+          this.setState({isLoading: false})}
+        ).catch(err => {
           console.log('error', err);
           this.setState({isLoading: false});
         });
@@ -147,22 +136,11 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
-  toggleLikeAction(item, isLiked) {
-    this.logEvent('Feedscreen', {name: 'Like Image click'});
-    if (isLiked) {
-      let data = {id: item.id, likes: item.likes + 1, liked: true}
-      this.props.likeUpdate(data);
-    } else {
-      let data = {id: item.id, likes: item.likes - 1, liked: false}
-      this.props.unLikeUpdate(data);
-    }
-  }
-
   _renderLooks(looks) {
     return looks.map((look, index) => {
       return (
         <MediaContainer look={look}
-                        key={look.id}
+                        key={index}
                         index={index}
                         currScroll={this.state.currentScrollPosition}
                         likeUpdate={(data) => this.props.likeUpdate(data)}
@@ -239,18 +217,19 @@ class TabContent extends BaseComponent {
             scrollEventThrottle={100}
             onScroll={this.handleScroll.bind(this)}
             refreshControl={this._renderRefreshControl.bind(this)()}>
-            <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', paddingLeft: 5}}>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
+            <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
+              <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
                 <TouchableOpacity onPress={() => this._onShareClicked()}>
-                  <View style={{width: deviceWidth / 2 - 5, height: deviceWidth / 4, paddingLeft: 0, marginTop: 5}}>
+                  <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
                     <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
-                           style={{width: deviceWidth / 2 - 10, height: deviceWidth / 4}}
+                           style={{width: deviceWidth / 2, height: deviceWidth / 4}}
                            resizeMode={'stretch'}/>
+                    <MediaBorderPatch />
                   </View>
                 </TouchableOpacity>
                 {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
               </View>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
+              <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
                 {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
               </View>
             </View>
@@ -273,7 +252,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: LOADER_HEIGHT,
     alignItems: 'center',
-    margin: 5,
     padding: 5,
   },
   spinnerContainer: {
@@ -330,7 +308,7 @@ const mapStateToProps = state => {
 
 const mapImages = (looks) => {
   let images = _.cloneDeep(looks) || [];
-  const colW = (deviceWidth - 10) / 2;
+  const colW = (deviceWidth) / 2;
   images = _.filter(images, x => x.width && x.height).map((look) => {
     const {width, height} = look;
     look.width = colW;

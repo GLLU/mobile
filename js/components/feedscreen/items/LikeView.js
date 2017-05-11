@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, View, Text } from 'react-native';
-import {  Button } from 'native-base';
+import { StyleSheet, Image, Platform, View, Text ,TouchableWithoutFeedback } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 
 const likeIcon = require('../../../../images/icons/like.png');
@@ -22,11 +21,15 @@ const styles = StyleSheet.create({
     width: 60,
     height: 30
   },
+  btnWithImage: {
+    backgroundColor: 'blue'
+  },
   iconWithImage: {
     height: 25,
     width: 25,
     resizeMode: 'contain',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 3
   },
   countLikeLabel: {
     color: '#FFFFFF',
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     alignSelf: 'center',
-    marginTop: (Platform.OS == 'ios' ? 10 : 0)
+    marginTop: (Platform.OS === 'ios' ? 10 : 0)
   },
 });
 
@@ -47,26 +50,38 @@ class LikeView extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isLiked: props.item.liked,
+      likes: props.item.likes
+    }
   }
 
   handleLikePress() {
+    const { likes, isLiked } = this.state
+    this.setState({isLiked: !isLiked, likes: isLiked ? likes+1 : likes-1})
     this.props.onPress(this.props.item, !this.props.item.liked)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.item.likes !== this.state.likes) {
+      this.setState({isLiked: nextProps.item.liked, likes: nextProps.item.likes})
+    }
   }
 
   render() {
     const img = this.props.item;
-    const likeIconView = this.props.item.liked ? likedIcon : likeIcon;
+    const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
     return (
       <View style={[styles.likeContainer, { marginTop: img.height - 35 }]}>
         <Image source={bgShadow} style={styles.bgShadow}/>
-        <Grid>
+        <Grid style={{ marginBottom: 6}}>
           <Col style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Button transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
+            <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
-            </Button>
+            </TouchableWithoutFeedback>
           </Col>
           <Col style={{flexDirection: 'column', justifyContent: 'center'}}>
-            <Text style={styles.countLikeLabel}>{this.props.item.likes}</Text>
+            <Text style={styles.countLikeLabel}>{this.state.likes}</Text>
           </Col>
           <Col style={{width:10}}/>
         </Grid>
