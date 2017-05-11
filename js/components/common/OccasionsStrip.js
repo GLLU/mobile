@@ -51,7 +51,7 @@ class OccasionsStrip extends Component {
     return (
       <View style={[styles.occasionsContainer]}>
         <ScrollView
-            keyboardShouldPersistTap={true}
+            keyboardShouldPersistTaps='always'
             pagingEnabled={false}
             horizontal={false}
             decelerationRate={'fast'}

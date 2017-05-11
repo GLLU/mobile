@@ -4,6 +4,7 @@ import { Button } from 'native-base';
 import BaseComponent from './BaseComponent';
 import FontSizeCalculator from './../../calculators/FontSize';
 import glluTheme from '../../themes/gllu-theme';
+import * as _ from "lodash";
 const screen = Dimensions.get('window');
 
 const ACTIVE_COLOR = '#05d7b2';
@@ -11,13 +12,7 @@ const INACTIVE_COLOR = '#ADADAD';
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: '#1DE9B6',
-    height: 50,
-    width: screen.width / 2 - 28,
-    borderRadius: 0,
-    alignSelf: 'center',
+
   },
   text: {
     fontWeight: '500',
@@ -41,7 +36,17 @@ class GlluButton extends BaseComponent {
 
   render() {
     const bgColorBtn = this.props.disabled ? glluTheme.btnDisabledBg : glluTheme.btnPrimaryBg;
-    const style = [styles.button, this.props.style, { backgroundColor: bgColorBtn }];
+
+    let style ={
+      marginTop: 20,
+      marginBottom: 20,
+      backgroundColor:bgColorBtn,
+      height: 50,
+      width: screen.width / 2 - 28,
+      borderRadius: 0,
+      alignSelf: 'center'
+    }
+    Object.assign(style,this.props.style);
     const textStyle = [styles.text, this.props.textStyle];
     
     return (

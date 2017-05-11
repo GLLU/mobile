@@ -220,7 +220,7 @@ class AddItemPage extends BasePage {
   renderActions() {
     return (
       <View style={{position: 'absolute', height: h, zIndex: 2}}>
-        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70}}>
+        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70, height:h-70}}>
           <StepTwoOccasions  onValid={this.continueAction.bind(this)}/>
           <StepOneCategory onValid={this.continueAction.bind(this)}/>
         </View>

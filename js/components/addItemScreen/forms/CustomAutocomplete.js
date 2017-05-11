@@ -149,7 +149,7 @@ class CustomAutocomplete extends Autocomplete {
     return (<View style={styles.autocompleteResults}>
               <ScrollView
                   style={styles.listStyle}
-                  keyboardShouldPersistTaps={true}
+                  keyboardShouldPersistTaps='always'
                   keyboardDismissMode='on-drag'
               >
                 {this._drawResultItems()}
@@ -165,7 +165,7 @@ class CustomAutocomplete extends Autocomplete {
   _renderButtonCreateNewItem() {
     return (<View style={styles.autocompleteResults}>
               <View style={[styles.btnContainer, {borderTopWidth: 1}]} >
-                <Button transparent onPress={() => this.props.findOrCreateBrand(this.props.query, true)} style={styles.btnCreateNew} >
+                <Button transparent onPress={() => this.props.findOrCreateBrand(this.props.query, true)} style={StyleSheet.flatten(styles.btnCreateNew)} >
                   <Text style={styles.btnCreateNewText}>Add a New Brand "{this.props.query}"</Text>
                 </Button>
               </View>
@@ -174,7 +174,7 @@ class CustomAutocomplete extends Autocomplete {
 
   _renderCompleteTyping() {
     return (<View style={styles.iconCheckCompleteContainer}>
-              <Icon name="md-checkmark-circle" style={styles.iconCheckComplete} />
+              <Icon name="md-checkmark-circle" style={StyleSheet.flatten(styles.iconCheckComplete)} />
             </View>)
   }
 

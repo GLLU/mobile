@@ -47,7 +47,7 @@ class TagInput extends Component {
   render() {
     const { tags } = this.props;
     return (
-      <View style={{flex: 1}}>
+      <View>
         <TextInput
           ref={ref => this.textInput = ref}
           returnKeyType="done"

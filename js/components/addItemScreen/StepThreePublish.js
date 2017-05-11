@@ -447,7 +447,6 @@ class StepThreePublish extends BaseComponent {
         </Grid>
         {this.renderImageOverlay()}
         {this.renderConfirmUrlOverlay()}
-        <View style={{height: 180}}/>
       </ScrollView>
     )
   }

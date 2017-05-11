@@ -66,7 +66,7 @@ class CategoryStrip extends Component {
     return (
       <View style={[styles.categoriesContainer]}>
         <ScrollView
-            keyboardShouldPersistTap={true}
+            keyboardShouldPersistTaps='always'
             pagingEnabled={false}
             horizontal={false}
             decelerationRate={'fast'}
