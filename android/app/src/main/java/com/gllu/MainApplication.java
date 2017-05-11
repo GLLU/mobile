@@ -11,7 +11,6 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.gllu.customPackages.CameraReactPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
 
@@ -74,7 +73,6 @@ public class MainApplication extends Application
                             new LinearGradientPackage(),
                             new ReactVideoPackage(),
                             new ExtraDimensionsPackage(),
-                            new PickerPackage(),
                             new ReactMaterialKitPackage(),
                             new VectorIconsPackage(),
                             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),

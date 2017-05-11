@@ -16,6 +16,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.gllu.Activities.TrimmerActivity;
 import com.gllu.Activities.cameraRecorderActivity;
 import com.gllu.utils.FileUtils;
 import com.theartofdev.edmodo.cropper2.CropImage;
@@ -32,6 +33,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
     private Promise mPromise;
     public static final int RECORD_VIDEO = 1;
     private static final int PICK_GALLERY = 2;
+    private static final int TRIM_VIDEO = 3;
     private String mFileType = "";
     private boolean mImageTaken = false;
     private Uri mOriginalFile;
@@ -47,8 +49,10 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                     if (resultCode == RESULT_OK) {
                         String mFilePath = intent.getStringExtra(cameraRecorderActivity.VIDEO_PATH);
 
-                        if(MimeTypeMap.getFileExtensionFromUrl(mFilePath) == "mp4"){
-                            mPromise.resolve(mFilePath);
+                        if(intent.getType().equals("video/mp4")){
+                            Intent timmerIntent = new Intent(getCurrentActivity(), TrimmerActivity.class);
+                            timmerIntent.putExtra(TrimmerActivity.EXTRA_VIDEO_PATH, mFilePath);
+                            getCurrentActivity().startActivityForResult(timmerIntent, TRIM_VIDEO);
                         }
                         else{
                             mImageTaken = true;
@@ -79,9 +83,22 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                                     .setGuidelines(CropImageView.Guidelines.ON)
                                     .start(getCurrentActivity());
                         } else {
+
+                            Intent timmerIntent = new Intent(getCurrentActivity(), TrimmerActivity.class);
+                            timmerIntent.putExtra(TrimmerActivity.EXTRA_VIDEO_PATH, uri.toString());
+                            getCurrentActivity().startActivityForResult(timmerIntent, TRIM_VIDEO);
+
+
                             String realPath = FileUtils.getPath(getReactApplicationContext(), uri);
                             mPromise.resolve("file://" + realPath);
                         }
+                    }
+                    break;
+
+                case TRIM_VIDEO:
+                    if (resultCode == RESULT_OK){
+                        String realPath = FileUtils.getPath(getReactApplicationContext(), (Uri)intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH));
+                        mPromise.resolve("file://" + realPath);
                     }
                     break;
 

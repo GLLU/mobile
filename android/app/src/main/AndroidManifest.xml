@@ -61,7 +61,10 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper2.CropImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2" /> <!-- optional (needed if default theme has no action bar) -->
+            android:theme="@style/AppTheme2" />
+        <activity
+            android:name="com.gllu.Activities.TrimmerActivity"
+            android:screenOrientation="portrait" /> <!-- optional (needed if default theme has no action bar) -->
 
     </application>
 
