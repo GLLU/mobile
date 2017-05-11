@@ -161,7 +161,6 @@ dependencies {
     compile  'com.facebook.fresco:webpsupport:0.11.0'
     compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-flurry-analytics')
-    compile project(':react-native-share')
     compile project(':react-native-fetch-blob')
     compile project(':bugsnag-react-native')
     compile project(':react-native-keychain')
@@ -169,7 +168,6 @@ dependencies {
     compile project(':react-native-linear-gradient')
     compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-video')
-    compile project(':react-native-material-kit')
     compile project(':react-native-vector-icons')
     compile project(':react-native-code-push')
     compile project(':react-native-fbsdk')

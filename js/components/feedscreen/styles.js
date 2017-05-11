@@ -1,13 +1,8 @@
 const React = require('react-native');
 const { StyleSheet, Dimensions, Platform } = React;
 const deviceHeight = Dimensions.get('window').height;
-const MK = require('react-native-material-kit');
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-
-const {
-  MKColor,
-} = MK;
 
 module.exports = StyleSheet.create({
   container: {

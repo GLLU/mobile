@@ -36,7 +36,6 @@ public class CameraUtils extends ReactContextBaseJavaModule {
     private boolean mImageTaken = false;
     private Uri mOriginalFile;
 
-
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
 
         @Override
@@ -69,9 +68,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                 case PICK_GALLERY:
                     if (resultCode == RESULT_OK) {
                         Uri uri = intent.getData();
-
                         mOriginalFile = uri;
-
                         if (mFileType.equals("image")) {
                             // start cropping activity for pre-acquired image saved on the device
                             CropImage.activity(uri)
@@ -92,7 +89,6 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                     if (mfileToDelete.exists()){
                         mfileToDelete.delete();
                     }
-
                     if (resultCode == RESULT_OK) {
                         Uri resultUri = result.getUri();
                         String realPath = FileUtils.getPath(getReactApplicationContext(), resultUri);
@@ -100,7 +96,6 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         mPromise.resolve("file://" + realPath);
                     }
                     else if (mImageTaken){
-
                         Intent intent2 = new Intent(getCurrentActivity(), cameraRecorderActivity.class);
                         getCurrentActivity().startActivityForResult(intent2, RECORD_VIDEO);
                     }

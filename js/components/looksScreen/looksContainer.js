@@ -13,7 +13,6 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import Spinner from '../loaders/Spinner';
 import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 import { loadMore, replaceAt } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
@@ -70,25 +69,44 @@ class LooksContainer extends BasePage {
   }
 
   componentDidMount() {
+    const {meta: {total}} = this.props;
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
-          this._scrollView.scrollTo({x: 0, y: height, animated: false});
-          _.delay(() => this.props.removeLoader(), 1000); // Looks smoother
-          break;
+          if(total === 2) {
+            this._scrollView.scrollTo({x: 0, y: this.state.currScrollIndex*height, animated: false});
+            _.delay(() => this.props.removeLoader(), 1000); // Looks smoother
+            break;
+          } else {
+            this._scrollView.scrollTo({x: 0, y: height, animated: false});
+            _.delay(() => this.props.removeLoader(), 1000); // Looks smoother
+            break;
+          }
         case 'android':
           InteractionManager.runAfterInteractions(() => {
-            _.delay(() => this._scrollView.scrollTo({
-              x: 0,
-              y: height,
-              animated: false
-            }), 0);
+            if(total === 2) {
+              _.delay(() => this._scrollView.scrollTo({
+                x: 0,
+                y: this.state.currScrollIndex*height,
+                animated: false
+              }), 0);
+            } else {
+              _.delay(() => this._scrollView.scrollTo({
+                x: 0,
+                y: height,
+                animated: false
+              }), 0);
+            }
+
             _.delay(() => this.props.removeLoader(), 0);
           });
           break;
       }
     } else {
       _.delay(() => this.props.removeLoader(), 0);
+    }
+    if(this.state.currScrollIndex === this.props.flatLooksData.length-1) {
+      this.loadMore()
     }
   }
 
@@ -142,12 +160,12 @@ class LooksContainer extends BasePage {
     switch (gestureName) {
       case SWIPE_UP: {
         const {meta: {total}} = this.props;
-        if (this.state.currScrollIndex < total - 1) {
+        if (this.state.currScrollIndex !== this.props.flatLooksData.length-1) {
           this._scrollView.scrollTo({x: 0, y: 0, animated: false});
           this._scrollView.scrollTo({x: 0, y: height, animated: true});
           this.setState({currScrollIndex: this.state.currScrollIndex + 1})
         }
-        if (this.state.currScrollIndex % 5 === 0) {
+        if (this.state.currScrollIndex % 5 === 0 || this.state.currScrollIndex === total - 1){
           this.loadMoreAsync();
         }
         break;
@@ -221,7 +239,7 @@ class LooksContainer extends BasePage {
           backgroundColor: 'transparent',
         }}>
             <Image
-            resizeMode={'contain'}
+            resizeMode={'stretch'}
             style={styles.itemImage}
             source={{uri: look.uri}}>
               <BottomLookContainer
@@ -255,16 +273,16 @@ class LooksContainer extends BasePage {
     switch(this.state.currScrollIndex) {
       case 0:
          return looksArr = [
-          this.props.flatLooksData[this.state.currScrollIndex+2], // fictional
+          this.props.flatLooksData[this.state.currScrollIndex+1], // fictional
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex+1]
         ];
-      case total-1:
-        return looksArr = [
+      case this.props.flatLooksData.length-1:
+        looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex-1],
           this.props.flatLooksData[this.state.currScrollIndex],
-          this.props.flatLooksData[this.state.currScrollIndex-2] // fictional
         ];
+        return looksArr
       default:
         return looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex-1],

@@ -18,11 +18,6 @@ const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/backgrounds/hands.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
-const MK = require('react-native-material-kit');
-
-const {
-  MKColor,
-} = MK;
 
 import {
   TERMS_URL,
@@ -213,7 +208,7 @@ class SignUpPage extends BasePage {
           <Content scrollEnabled={false}>
             <View style={styles.uploadImgContainer}>
               <Button large style={styles.uploadImgBtn} warning onPress={this.handleCameraPress.bind(this)}>
-                <IconB size={30} color={MKColor.Teal} name={this.state.avatarIcon} style={styles.uploadImgIcon}/>
+                <IconB size={30} color={'#009688'} name={this.state.avatarIcon} style={styles.uploadImgIcon}/>
               </Button>
             </View>
             <View>
@@ -225,7 +220,7 @@ class SignUpPage extends BasePage {
                 <InputGroup style={styles.formGroup}>
                   <Input style={styles.formInput} ref="username" onChangeText={(username) => this.validateTextInput(username, 'username')}/>
                 </InputGroup>
-                {this.state.username.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
+                {this.state.username.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
               </Row>
               <Row style={styles.formItem}>
                 <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('name')}>
@@ -234,7 +229,7 @@ class SignUpPage extends BasePage {
                 <InputGroup style={styles.formGroup}>
                   <Input style={styles.formInput} ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
                 </InputGroup>
-                {this.state.name.length !== 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
+                {this.state.name.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
               </Row>
               <Row style={styles.formItem}>
                 <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('email')}>
@@ -243,7 +238,7 @@ class SignUpPage extends BasePage {
                 <InputGroup style={styles.formGroup}>
                   <Input style={styles.formInput} ref='email' onChangeText={(email) => this.validateEmailInput(email)}/>
                 </InputGroup>
-                {this.state.email.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
+                {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
               </Row>
               <Row style={styles.formItem}>
                 <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('password')}>
@@ -252,7 +247,7 @@ class SignUpPage extends BasePage {
                 <InputGroup style={styles.formGroup}>
                   <Input style={styles.formInput} ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
                 </InputGroup>
-                {this.state.password.length > 0 ? <IconB size={20} color={MKColor.Teal} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
+                {this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
               </Row>
             </Grid>
             <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}>
@@ -260,7 +255,7 @@ class SignUpPage extends BasePage {
             </Button>
             <View style={styles.alreadyBox}>
               <Text style={styles.alreadyTxt}>Already a user?</Text>
-              <Button color={MKColor.Teal} style={styles.alreadyBtn} onPress={this.handleLoginPress.bind(this)}>Login Here</Button>
+              <Button color={'#009688'} style={styles.alreadyBtn} onPress={this.handleLoginPress.bind(this)}>Login Here</Button>
             </View>
             </View>
 
