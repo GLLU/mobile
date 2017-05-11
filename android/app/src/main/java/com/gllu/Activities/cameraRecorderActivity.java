@@ -29,6 +29,7 @@ public class cameraRecorderActivity extends Activity {
         int mMaxLength = intent.getIntExtra(MAX_LENGTH, 15);
         new MaterialCamera(this)
                 .defaultToFrontFacing(true)
+                .videoPreferredAspect(16f/9f)
                 .qualityProfile(MaterialCamera.QUALITY_480P)
                 .start(CAMERA_RQ);
         Log.d(msg, "The onCreate() event");
