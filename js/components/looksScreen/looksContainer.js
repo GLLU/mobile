@@ -251,6 +251,21 @@ class LooksContainer extends BasePage {
       ]
     }
 
+    if (this.props.flatLooksData.length === 2) {
+      switch(this.state.currScrollIndex) {
+      case 0:
+        return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex],
+          this.props.flatLooksData[this.state.currScrollIndex+1]
+        ];
+      default:
+        return looksArr = [
+          this.props.flatLooksData[this.state.currScrollIndex-1],
+          this.props.flatLooksData[this.state.currScrollIndex],
+        ];
+    }
+    }
+
     switch(this.state.currScrollIndex) {
       case 0:
          return looksArr = [
