@@ -69,19 +69,35 @@ class LooksContainer extends BasePage {
   }
 
   componentDidMount() {
+    const {meta: {total}} = this.props;
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
-          this._scrollView.scrollTo({x: 0, y: height, animated: false});
-          _.delay(() => this.props.removeLoader(), 1000); // Looks smoother
-          break;
+          if(total === 2) {
+            this._scrollView.scrollTo({x: 0, y: this.state.currScrollIndex*height, animated: false});
+            _.delay(() => this.props.removeLoader(), 1000); // Looks smoother
+            break;
+          } else {
+            this._scrollView.scrollTo({x: 0, y: height, animated: false});
+            _.delay(() => this.props.removeLoader(), 1000); // Looks smoother
+            break;
+          }
         case 'android':
           InteractionManager.runAfterInteractions(() => {
-            _.delay(() => this._scrollView.scrollTo({
-              x: 0,
-              y: height,
-              animated: false
-            }), 0);
+            if(total === 2) {
+              _.delay(() => this._scrollView.scrollTo({
+                x: 0,
+                y: this.state.currScrollIndex*height,
+                animated: false
+              }), 0);
+            } else {
+              _.delay(() => this._scrollView.scrollTo({
+                x: 0,
+                y: height,
+                animated: false
+              }), 0);
+            }
+
             _.delay(() => this.props.removeLoader(), 0);
           });
           break;
@@ -146,7 +162,8 @@ class LooksContainer extends BasePage {
           this._scrollView.scrollTo({x: 0, y: height, animated: true});
           this.setState({currScrollIndex: this.state.currScrollIndex + 1})
         }
-        if (this.state.currScrollIndex % 5 === 0) {
+        if (this.state.currScrollIndex % 5 === 0 || this.state.currScrollIndex === total - 1){
+          console.log('lolol')
           this.loadMoreAsync();
         }
         break;
@@ -251,7 +268,7 @@ class LooksContainer extends BasePage {
       ]
     }
 
-    if (this.props.flatLooksData.length === 2) {
+    if (total === 2) {
       switch(this.state.currScrollIndex) {
       case 0:
         return looksArr = [
@@ -273,12 +290,14 @@ class LooksContainer extends BasePage {
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex+1]
         ];
-      case total-1:
-        return looksArr = [
+      case this.props.flatLooksData.length-1:
+        looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex-1],
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex-2] // fictional
         ];
+        console.log('looksarr',looksArr)
+        return looksArr
       default:
         return looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex-1],
