@@ -39,7 +39,7 @@
     "react-native-swipe-gestures": "^1.0.2",
     "react-native-timeago": "^0.3.0",
     "react-native-vector-icons": "^4.1.1",
-    "react-native-video": "^1.0.0",
+    "react-native-video": "git+https://github.com/gllu/react-native-video.git",
     "react-redux": "^5.0.4",
     "redux": "^3.6.0",
     "redux-api": "^0.10.4",
