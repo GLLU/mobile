@@ -1,23 +1,17 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text,View } from 'react-native';
+import { Dimensions,ListView, Image, StyleSheet, TouchableOpacity, Text,View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate } from '../../../../actions';
-
 import ListViewHeader from './ListViewHeader';
 import FollowRow from './FollowRow';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white'
-  },
   separator: {
-    flex: 1,
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#e6e6e6',
+    height: 1,
+    backgroundColor: '#e6e6e6'
   },
 });
 
@@ -78,7 +72,6 @@ class FollowListView extends Component {
   renderListView() {
     return (
       <ListView
-        style={styles.container}
         dataSource={this.state.dataSource}
         renderRow={(data) => <FollowRow onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
@@ -90,7 +83,7 @@ class FollowListView extends Component {
   }
 
   render() {
-    const count = this.props.headerData.count ? this.props.headerData.count : null
+    const count = this.props.headerData.count ? this.props.headerData.count : 0;
     return (
       <View>
         <ListViewHeader count={count} title={`My ${this.props.headerData.mode}`}/>

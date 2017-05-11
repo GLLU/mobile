@@ -10,10 +10,6 @@ import ListViewHeader from './ListViewHeader';
 import NotificationRow from './NotificationRow';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white'
-  },
   separator: {
     flex: 1,
     height: StyleSheet.hairlineWidth,
@@ -60,7 +56,6 @@ class NotificationListView extends Component {
   }
 
   onUserNavigate(props) {
-    console.log('propskk',props)
     if(props.action_kind === 'Follow') {
       this.props.popRoute(this.props.navigation.key);
       this.props.popRoute(this.props.navigation.key);
@@ -88,7 +83,6 @@ class NotificationListView extends Component {
   renderListView() {
     return (
       <ListView
-        style={styles.container}
         dataSource={this.state.dataSource}
         renderRow={(data) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress.bind(this)} onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}

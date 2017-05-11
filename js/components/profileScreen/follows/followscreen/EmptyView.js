@@ -65,9 +65,6 @@ class EmptyView extends Component {
           </Text>
           {this._renderFindPeopleView(this.props.isMyProfile)}
         </View>
-        <Text style={{flex:1, textAlign:'center'}}>
-
-        </Text>
         <View style={{flex:1}} name="spacer"/>
       </View>
     );
