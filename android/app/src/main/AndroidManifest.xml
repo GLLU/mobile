@@ -52,12 +52,15 @@
         <activity android:name=".Activities.cameraRecorderActivity" />
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MaterialCamera.CaptureActivity" />
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity2"
+            android:screenOrientation="portrait"
             android:theme="@style/MaterialCamera.CaptureActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper2.CropImageActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" /> <!-- optional (needed if default theme has no action bar) -->
 
     </application>

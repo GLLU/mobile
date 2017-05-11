@@ -12,6 +12,7 @@
         android:id="@+id/crop_image_menu_rotate_right"
         android:icon="@drawable/crop_image_menu_rotate_right"
         android:title="@string/crop_image_menu_rotate_right"
+        android:visible="false"
         app:showAsAction="always"/>
     <item
         android:id="@+id/crop_image_menu_flip_horizontally"
