@@ -84,6 +84,7 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
+    this.handleContinue=this.handleContinue.bind(this);
     isVideo = this.props.coverType;
     this.state = {
       isVideo,
