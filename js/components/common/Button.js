@@ -44,14 +44,16 @@ class GlluButton extends BaseComponent {
       height: 50,
       width: screen.width / 2 - 28,
       borderRadius: 0,
-      alignSelf: 'center'
-    }
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
     Object.assign(style,this.props.style);
     const textStyle = [styles.text, this.props.textStyle];
-    
+
     return (
       <Button disabled={this.props.disabled} transparent onPress={this.props.onPress} style={style}>
-        <Text style={textStyle}>{this.props.text}</Text>
+          <Text style={textStyle}>{this.props.text}</Text>
       </Button>
     );
   }

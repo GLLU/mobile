@@ -5,7 +5,7 @@ import BaseComponent from '../common/BaseComponent';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
 
-const myStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   searchBar: {
     position: 'relative',
     backgroundColor: 'white',
@@ -29,15 +29,13 @@ const myStyles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 30 : 40
   },
   btnCloseFilter: {
-    marginLeft: 10,
+    marginHorizontal: 5,
     alignSelf: 'center',
-    marginRight: 5,
     borderWidth: 0.4,
     borderColor: '#757575',
-    borderRadius: 8,
-    paddingHorizontal: 8,
+    borderRadius: 10,
     height: 20,
-    width: 50
+    width: 65
   },
   clearText: {
     color: '#757575',
@@ -92,15 +90,15 @@ class SearchBar extends BaseComponent {
 
   render() {
     return (
-      <View style={myStyles.searchBar}>
+      <View style={styles.searchBar}>
         <TextInput
-          style={myStyles.searchInput}
+          style={styles.searchInput}
           placeholder='( e.g. Yellow Shirt ZARA )'
           underlineColorAndroid='transparent'
           onChangeText={(text) => this.handleTextInput(text)}
           value={this.state.text}/>
-        <Button transparent iconRight onPress={() => this.clearSearch()} style={StyleSheet.flatten(myStyles.btnCloseFilter)}>
-          <Text style={myStyles.clearText}>Clear</Text>
+        <Button transparent onPress={() => this.clearSearch()} style={StyleSheet.flatten(styles.btnCloseFilter)}>
+          <Text style={styles.clearText}>Clear</Text>
         </Button>
       </View>
     )
