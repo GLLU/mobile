@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Text, Dimensions, Platform,View } from 'react-native';
+import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity } from 'react-native';
 import { Grid, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import StepMarker from './StepMarker';
@@ -47,7 +47,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 17,
     alignSelf: 'center'
-  }
+  },
+  nextBtn: {
+    color: 'white',
+    alignSelf: 'center',
+    fontSize:22
+  },
+  nextBtnContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#05d7b2'
+  },
 });
 
 class AddItemPage extends BasePage {
@@ -272,11 +285,11 @@ class AddItemPage extends BasePage {
     return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
   }
 
-  renderNext(fgColor) {
+  renderNext() {
     return (
-      <Button transparent onPress={() => this.handleContinue()} style={{width: 30, height: 30, backgroundColor: '#05d7b2', borderRadius: 15}}>
-        <Icon style={{ color: 'white', marginLeft: 2 }} name="ios-arrow-forward" />
-      </Button>
+      <TouchableOpacity style={styles.nextBtnContainer} onPress={this.handleContinue}>
+        <Icon style={StyleSheet.flatten(styles.nextBtn)} name="ios-arrow-forward"/>
+      </TouchableOpacity>
     )
   }
 
