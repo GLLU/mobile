@@ -187,7 +187,7 @@ class AppNavigator extends Component {
           />
         </Drawer>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
-        {/*{this.props.isProcessing ? <SpinnerClothing /> : null}*/}
+        {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.fatal_error ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}
