@@ -45,7 +45,7 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
             mVideoTrimmer.setMaxDuration(20);
             mVideoTrimmer.setOnTrimVideoListener(this);
             mVideoTrimmer.setOnK4LVideoListener(this);
-            //mVideoTrimmer.setDestinationPath("/storage/emulated/0/DCIM/CameraCustom/");
+            mVideoTrimmer.setDestinationPath("/storage/emulated/0/DCIM/CameraCustom/");
             mVideoTrimmer.setVideoURI(Uri.parse(path));
             mVideoTrimmer.setVideoInformationVisibility(false);
         }

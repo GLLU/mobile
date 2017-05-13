@@ -93,14 +93,15 @@ public class CameraUtils extends ReactContextBaseJavaModule {
 
                 case TRIM_VIDEO:
 
+/*
                     File mVideoToDelete = new File(mOriginalFile.getPath());
                     if (mVideoToDelete.exists()) {
                         mVideoToDelete.delete();
                     }
 
+*/
                     if (resultCode == RESULT_OK) {
-                        String realPath = FileUtils.getPath(getReactApplicationContext(), (Uri) intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH));
-                        mPromise.resolve("file://" + realPath);
+                        mPromise.resolve("file://" + intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH).toString());
                     } else {
                         Intent intent2 = new Intent(getCurrentActivity(), cameraRecorderActivity.class);
                         getCurrentActivity().startActivityForResult(intent2, RECORD_VIDEO);
