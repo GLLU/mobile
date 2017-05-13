@@ -30,6 +30,8 @@ public class cameraRecorderActivity extends Activity {
         new MaterialCamera(this)
                 .defaultToFrontFacing(true)
                 .videoPreferredAspect(16f/9f)
+                .autoSubmit(true)
+                .allowRetry(false)
                 .qualityProfile(MaterialCamera.QUALITY_480P)
                 .start(CAMERA_RQ);
         Log.d(msg, "The onCreate() event");

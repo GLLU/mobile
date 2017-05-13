@@ -36,6 +36,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
     private static final int TRIM_VIDEO = 3;
     private String mFileType = "";
     private boolean mImageTaken = false;
+    private boolean mVideoTaken = false;
     private Uri mOriginalFile;
 
 
@@ -48,22 +49,20 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                 case RECORD_VIDEO:
                     if (resultCode == RESULT_OK) {
                         String mFilePath = intent.getStringExtra(cameraRecorderActivity.VIDEO_PATH);
+                        mOriginalFile = Uri.parse(mFilePath);
 
-                        if(intent.getType().equals("video/mp4")){
+                        if(MimeTypeMap.getFileExtensionFromUrl(mFilePath).equals("mp4")){
                             Intent timmerIntent = new Intent(getCurrentActivity(), TrimmerActivity.class);
                             timmerIntent.putExtra(TrimmerActivity.EXTRA_VIDEO_PATH, mFilePath);
                             getCurrentActivity().startActivityForResult(timmerIntent, TRIM_VIDEO);
-                        }
-                        else{
+                        } else {
                             mImageTaken = true;
-                            mOriginalFile = Uri.parse(mFilePath);
                             CropImage.activity(Uri.parse(mFilePath))
-                                    .setAspectRatio(9,16)
+                                    .setAspectRatio(9, 16)
                                     .setFlipHorizontally(true)
                                     .start(getCurrentActivity());
                         }
-                    }
-                    else if (resultCode == 1001) {
+                    } else if (resultCode == 1001) {
 
                         mFileType = intent.getStringExtra("file_type");
                         openGallery(mFileType);
@@ -79,7 +78,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         if (mFileType.equals("image")) {
                             // start cropping activity for pre-acquired image saved on the device
                             CropImage.activity(uri)
-                                    .setAspectRatio(9,16)
+                                    .setAspectRatio(9, 16)
                                     .setGuidelines(CropImageView.Guidelines.ON)
                                     .start(getCurrentActivity());
                         } else {
@@ -96,9 +95,18 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                     break;
 
                 case TRIM_VIDEO:
-                    if (resultCode == RESULT_OK){
-                        String realPath = FileUtils.getPath(getReactApplicationContext(), (Uri)intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH));
+
+                    File mVideoToDelete = new File(mOriginalFile.getPath());
+                    if (mVideoToDelete.exists()) {
+                        mVideoToDelete.delete();
+                    }
+
+                    if (resultCode == RESULT_OK) {
+                        String realPath = FileUtils.getPath(getReactApplicationContext(), (Uri) intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH));
                         mPromise.resolve("file://" + realPath);
+                    } else {
+                        Intent intent2 = new Intent(getCurrentActivity(), cameraRecorderActivity.class);
+                        getCurrentActivity().startActivityForResult(intent2, RECORD_VIDEO);
                     }
                     break;
 
@@ -106,7 +114,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                     CropImage.ActivityResult result = CropImage.getActivityResult(intent);
 
                     File mfileToDelete = new File(mOriginalFile.getPath());
-                    if (mfileToDelete.exists()){
+                    if (mfileToDelete.exists()) {
                         mfileToDelete.delete();
                     }
 
@@ -115,8 +123,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         String realPath = FileUtils.getPath(getReactApplicationContext(), resultUri);
                         Log.d("martinResult", realPath);
                         mPromise.resolve("file://" + realPath);
-                    }
-                    else if (mImageTaken){
+                    } else if (mImageTaken) {
 
                         Intent intent2 = new Intent(getCurrentActivity(), cameraRecorderActivity.class);
                         getCurrentActivity().startActivityForResult(intent2, RECORD_VIDEO);

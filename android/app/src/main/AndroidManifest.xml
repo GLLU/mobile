@@ -64,7 +64,7 @@
             android:theme="@style/AppTheme2" />
         <activity
             android:name="com.gllu.Activities.TrimmerActivity"
-            android:screenOrientation="portrait" /> <!-- optional (needed if default theme has no action bar) -->
+            android:screenOrientation="portrait" android:theme="@style/AppTheme2"/> <!-- optional (needed if default theme has no action bar) -->
 
     </application>
 

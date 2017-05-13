@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.gllu.MainActivity;
 import com.gllu.R;
 
 import life.knowledge4.videotrimmer.K4LVideoTrimmer;
@@ -45,11 +47,38 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
             mVideoTrimmer.setOnK4LVideoListener(this);
             //mVideoTrimmer.setDestinationPath("/storage/emulated/0/DCIM/CameraCustom/");
             mVideoTrimmer.setVideoURI(Uri.parse(path));
-            mVideoTrimmer.setVideoInformationVisibility(true);
+            mVideoTrimmer.setVideoInformationVisibility(false);
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Trim Video");
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.trim_video_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.trim_video){
+            mVideoTrimmer.onSaveClicked();
+        }
+        if (item.getItemId() == android.R.id.home) {
+            setResult(RESULT_CANCELED);
+            finish();
+            return true;
+        }
+
+        return true;
+    }
+
+        @Override
     public void onTrimStarted() {
         mProgressDialog.show();
     }
@@ -57,7 +86,9 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
     @Override
     public void getResult(final Uri uri) {
         mProgressDialog.cancel();
-
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_VIDEO_PATH, uri);
+        setResult(RESULT_OK, intent);
         finish();
     }
 

@@ -132,6 +132,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
             debuggable false
+            shrinkResources true
             applicationIdSuffix 'release'
         }
         staging {
