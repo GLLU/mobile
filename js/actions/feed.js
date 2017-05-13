@@ -13,7 +13,7 @@ export function getFeed(query):Action {
   return (dispatch) => {
     const newState = Object.assign({}, query, {
       page: {
-        size: 10,
+        size: 14,
         number: 1
       }
     });

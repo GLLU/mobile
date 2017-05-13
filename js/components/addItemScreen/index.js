@@ -172,7 +172,7 @@ class AddItemPage extends BasePage {
   }
 
   handleBackButton() {
-    if (this.state.currentStep > -1) {
+    if (this.state.currentStep > -1 && this.state.isVideo === false) {
       this.setState({currentStep: this.state.currentStep - 1});
     } else {
       this.goBack();
@@ -201,14 +201,14 @@ class AddItemPage extends BasePage {
   }
 
   renderVideoWithTags() {
-    const { image, itemId } = this.props;
+    const { fileLocalPath, itemId } = this.props;
     const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
         itemId={itemId}
         mode={mode}
-        image={image}
+        image={fileLocalPath}
         createLookItemForVideo={this.createLookItemForVideo.bind(this)}
       />
     );
@@ -326,7 +326,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, lookId, image, items} = state.uploadLook;
+  const { itemId, lookId, image, items, localFilePath} = state.uploadLook;
   const item = itemId !== null ? _.find(items, x => x.id === itemId) : null;
   return {
     navigation: state.cardNavigation,
@@ -334,6 +334,7 @@ const mapStateToProps = state => {
     itemId,
     lookId,
     image,
+    fileLocalPath: localFilePath,
     items,
     state: state.uploadLook.state,
   };

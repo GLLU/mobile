@@ -19,12 +19,6 @@ import { emailRule, passwordRule } from '../../validators';
 const logo = require('../../../images/logo.png');
 const { popRoute, pushRoute } = actions;
 const background = require('../../../images/backgrounds/enterCodeBG.png');
-const backgroundShadow = require('../../../images/background-shadow-70p.png');
-const MK = require('react-native-material-kit');
-const {
-  MKColor,
-} = MK;
-
 
 class ActivationCodeScreen extends BasePage {
 
@@ -134,7 +128,7 @@ class ActivationCodeScreen extends BasePage {
           </Button>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Don't have code? <Text style={[styles.alreadyTxt, {fontWeight: '600', opacity: 10}]}>Apply for code</Text></Text>
-            <Button color={MKColor.Teal} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderGetCode.bind(this)}><Text style={{color: MKColor.Teal, fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> here</Text></Button>
+            <Button color={'#009688'} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderGetCode.bind(this)}><Text style={{color: '#009688', fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> here</Text></Button>
           </View>
             {this.props.error ? this.renderError() : null}
         </View>
@@ -171,7 +165,7 @@ class ActivationCodeScreen extends BasePage {
           </Button>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
-            <Button color={MKColor.Teal} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderEnterCode.bind(this)}><Text style={{color: MKColor.Teal, fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> Click here</Text></Button>
+            <Button color={'#009688'} style={[styles.alreadyBtn, {paddingHorizontal: 0}]} onPress={this.renderEnterCode.bind(this)}><Text style={{color: '#009688', fontSize: 13, bottom: 2.5, textDecorationLine: 'underline'}}> Click here</Text></Button>
           </View>
         </View>
       </View>
