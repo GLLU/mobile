@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, Image, UIManager, LayoutAnimation } from 'react-native'
-import { View, Text, Button, Header, Title, Icon } from 'native-base';
+import { View, Text,StyleSheet, Dimensions, Image, UIManager, LayoutAnimation } from 'react-native'
+import {  Button, Header, Title, Icon } from 'native-base';
 import glluTheme from '../../themes/gllu-theme';
 import Container from './Container';
 

@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, TouchableOpacity } from 'react-native';
-import { View, Icon } from 'native-base';
+import { StyleSheet, Image, Platform, TouchableOpacity,View } from 'react-native';
+import { Icon } from 'native-base';
 import { Col, Grid } from "react-native-easy-grid";
 
 import { connect } from 'react-redux';
@@ -64,7 +64,7 @@ class VolumeButton extends Component {
     return (
       <View style={[styles.likeContainer, { marginTop: look.height - 35, backgroundColor: volumeColor}]}>
             <TouchableOpacity transparent onPress={() => this.props.togglePlaySoundAction()}>
-              <Icon name={volumeIcon} style={styles.iconWithImage}/>
+              <Icon name={volumeIcon} style={StyleSheet.flatten(styles.iconWithImage)}/>
             </TouchableOpacity>
       </View>
     )

@@ -9,14 +9,16 @@ import FontSizeCalculator from './../../calculators/FontSize';
 module.exports = StyleSheet.create({
   header: {
     backgroundColor: 'transparent',
-    shadowOpacity: 0,
+    flex:1,
+    flexDirection:'row',
+    alignItems: 'center'
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: '300',
     fontFamily: 'Times New Roman',
     color: '#FFFFFF',
-    textAlign: 'center'
+    textAlign: 'left'
   },
   headerArrow: {
     color: '#FFFFFF'

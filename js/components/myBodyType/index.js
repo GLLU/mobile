@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import BasePage from '../common/BasePage';
 import {Container, Header, Content, Button, Icon, Title } from 'native-base';
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 
@@ -75,7 +75,7 @@ class MyBodyType extends BasePage {
   render() {
     return (
       <Container theme={glluTheme}>
-        <Header style={styles.header}>
+        <Header style={StyleSheet.flatten(styles.header)}>
           <View style={styles.headerTitleContainer}>
             <Title style={{fontFamily: 'PlayfairDisplay-Regular', alignSelf: 'center'}}>My Body Shape</Title>
           </View>
@@ -95,8 +95,10 @@ class MyBodyType extends BasePage {
             </HorizontalCarousel>
             <ArrowTextBox title={this.state.currBodyType} description={this.state.currDescription} />
           </View>
-          <Button block primary style={styles.continueButton}
-            onPress={this.handleContinuePress.bind(this)}>Continue</Button>
+          <Button block primary style={StyleSheet.flatten(styles.continueButton)}
+            onPress={this.handleContinuePress.bind(this)}>
+            <Text style={{color:'white'}}>Continue</Text>
+          </Button>
         </Content>
       </Container>
     )

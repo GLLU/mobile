@@ -4,6 +4,14 @@ import Config from 'react-native-config';
 import _ from 'lodash';
 import Analytics from '../../lib/analytics/Analytics';
 
+const MockBugsnag= ()=>{
+  const bugsnag = Utils.getBugsnagClient()
+  const propNames=Object.getOwnPropertyNames(bugsnag);
+  let mock={};
+  _.each(propNames,propName=>mock[propName]=_.noop)
+  return mock;
+}
+
 /*global __DEV__ */
 const DEV=__DEV__;
 
@@ -11,7 +19,7 @@ class BaseComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.bugsnag = Utils.getBugsnagClient();
+    this.bugsnag = DEV? MockBugsnag() : Utils.getBugsnagClient()
     this.setBugsnagUser(props.user);
     this.setLeaveBreadcrumb(props);
   }

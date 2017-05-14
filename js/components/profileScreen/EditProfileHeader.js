@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, TextInput } from 'react-native';
-import { View } from 'native-base';
+import { Image, TouchableOpacity, TextInput,View } from 'react-native';
 
 import BaseComponent from '../common/BaseComponent';
 

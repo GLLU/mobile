@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
-import { Container, Header, Content, View } from 'native-base';
+import { Platform,View} from 'react-native';
+import { Container } from 'native-base';
 
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-export default class MyContainer extends Container {
+export default class MyContainer extends Component {
 
   render() {
     if (Platform.OS == 'ios') {
       return(
-        <View ref={c => this._root = c} {...this.prepareRootProps()}>
-          {this.renderHeader()}
-
-          {this.renderContent()}
-
-          {this.renderFooter()}
-
-        </View>
+      <Container style={this.props.style} onLayout={this.props.onLayout}>
+        {this.props.children}
+      </Container>
       );
     }
 
     return (
-      <View ref={c => this._root = c} {...this.prepareRootProps()}>
-        <View style={{flexGrow: 1}}>
-          {this.renderHeader()}
-
-          {this.renderContent()}
-
-          {this.renderFooter()}
-        </View>
-        <View style={{height: ExtraDimensions.SOFT_MENU_BAR_HEIGHT}}/>
+      <Container style={this.props.style} onLayout={this.props.onLayout}>
+      <View style={{flexGrow: 1}}>
+      {this.props.children}
       </View>
+    </Container>
     )
   }
 }

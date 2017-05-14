@@ -51,7 +51,7 @@ public class MainApplication extends Application
 
 
                 @Override
-                protected boolean getUseDeveloperSupport() {
+                public boolean getUseDeveloperSupport() {
                     return BuildConfig.DEBUG;
                 }
 

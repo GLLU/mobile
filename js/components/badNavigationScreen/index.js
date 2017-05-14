@@ -1,38 +1,14 @@
 import React, { Component } from 'react';
-import BasePage from '../common/BasePage';
 import { connect } from 'react-redux';
-import { Container, Content} from 'native-base';
+import { View} from 'react-native';
 import { popRoute } from '../../actions';
 
-class BadNavigationScreen extends BasePage {
-
-  static propTypes = {
-    setUser: React.PropTypes.func,
-    replaceAt: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
-  }
-
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillMount() {
-    const {index, routes}=this.props.navigation;
-    this.logEvent('BadNavigationScreen', {name: `Should have reached to '${routes[index].key}'`});
-    this.goBack()
-  }
-
-  render() {
-    return (
-      <Container >
-        <Content >
-        </Content>
-      </Container>
-    );
-  }
-}
+const BadNavigationScreen = props=>{
+  const {index, routes}=props.navigation;
+  this.logEvent('BadNavigationScreen', {name: `Should have reached to '${routes[index].key}'`});
+  props.popRoute(props.navigation.key);
+  return <View/>;
+};
 
 function bindActions(dispatch) {
   return {

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
-import { View } from 'native-base';
+import { View,Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
