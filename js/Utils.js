@@ -127,6 +127,18 @@ export default class Utils {
     });
   }
 
+  static isVideo(path) {
+    const fileTypesArr = ['.jpg','.png']
+    let type;
+    for(let i = 0; i<fileTypesArr.length; i++){
+       type = path.search(fileTypesArr[i]) > -1;
+      if(type) {
+        return false
+      }
+    }
+    return true
+  }
+
   static preloadLookImages(looks) {
     const coverUrls = looks.map(look => look.cover.type === "image" ? _.find(look.cover.list, x => x.version === 'medium').url : _.find(look.cover.list, x => x.version === 'large_720').url);
     return this.preloadImages(coverUrls);
