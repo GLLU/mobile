@@ -5,6 +5,21 @@ let fontSizeDefault = 14;
 let fontColor = '#000';
 
 export default StyleSheet.create({
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#000000',
+    textAlign: 'left'
+  },
+  headerTitleContainer: {
+    borderBottomWidth: 1.5,
+    borderColor: 'lightgrey',
+    paddingTop: 10,
+    paddingBottom: 10,
+    width: 200,
+    paddingLeft: 0
+  },
   selectBodyTypeText: {
     marginTop: 10,
     marginBottom: 25,

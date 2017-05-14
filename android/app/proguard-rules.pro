@@ -50,6 +50,10 @@
 
 -dontwarn com.facebook.react.**
 
+# TextLayoutBuilder uses a non-public Android constructor within StaticLayout.
+# See libs/proxy/src/main/java/com/facebook/fbui/textlayoutbuilder/proxy for details.
+-dontwarn android.text.StaticLayout
+
 # okhttp
 
 -keepattributes Signature
@@ -74,4 +78,9 @@
 -keepattributes *Annotation*,EnclosingMethod,Signature
 -keepclasseswithmembers class * {
     public (android.content.Context, android.util.AttributeSet, int);
+}
+
+# Animations Support
+-keep class com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl {
+  public AnimatedFactoryImpl(com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory, com.facebook.imagepipeline.core.ExecutorSupplier);
 }

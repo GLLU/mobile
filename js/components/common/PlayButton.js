@@ -1,13 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, TouchableOpacity } from 'react-native';
-import { View, Icon } from 'native-base';
-import { Col, Grid } from "react-native-easy-grid";
-
-import { connect } from 'react-redux';
-
-const likeIconView = require('../../../images/icons/like.png');
+import { View,StyleSheet, Image, Platform, TouchableOpacity } from 'react-native';
+import {  Icon } from 'native-base';
 
 const styles = StyleSheet.create({
   likeContainer: {

@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { View } from 'native-base';
+import { View } from 'react-native';
 
 import Tag from './Tag';
 

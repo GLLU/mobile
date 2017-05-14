@@ -44,7 +44,7 @@ class FollowView extends Component {
 
   renderUnfollowButton() {
     return (
-      <TouchableOpacity style={styles.unfollowBtn} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.unfollowBtn,this.props.style]} onPress={this.handleFollowPress}>
         <Text style={styles.unfollowText}>Unfollow</Text>
       </TouchableOpacity>
     )

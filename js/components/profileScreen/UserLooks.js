@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
-import { View, Text, Button, Icon } from 'native-base';
+import { View, Text,Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import {  Button, Icon } from 'native-base';
 import _ from 'lodash';
 import Video from 'react-native-video';
 import {
@@ -118,12 +118,9 @@ class UserLooks extends Component {
             </View>
           </TouchableOpacity>
           { this.state.isMyProfile && (
-              <Button
-                onPress={this._handleEditPress.bind(this, look)}
-                style={{position: 'absolute', top: 5, right: 5, height: 30, width: 30}}>
-                <View style={{position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, backgroundColor: '#000'}}/>
-                <Icon name='ios-create-outline' style={{color: '#000'}} size={28}/>
-              </Button>
+            <TouchableOpacity onPress={this._handleEditPress.bind(this, look)} style={{position: 'absolute',  top: 5, right: 5, height: 30, width: 30, backgroundColor:'#00d7b2',alignItems:'center'}}>
+              <Icon name='ios-create-outline' style={{color: '#000'}} size={28}/>
+            </TouchableOpacity>
             )
           }
           { this.state.isMyProfile ? this.renderLookStatus(look) : null}

@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
-import { View } from 'native-base'
 import { connect } from 'react-redux';
 import { navigateTo, reset, popRoute, getUserFollowsData, initUserFollows } from '../../../../actions';
 import EmptyView from './EmptyView'

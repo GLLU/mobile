@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image } from 'react-native';
-import { View, Text } from 'native-base';
+import { TouchableOpacity, Image,View, Text  } from 'react-native';
 import styles from './styles';
 import { connect } from 'react-redux';
 import { hideError, hideWarning, hideInfo } from '../../actions/errorHandler';

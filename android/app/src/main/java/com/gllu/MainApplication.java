@@ -10,8 +10,8 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.gllu.customPackages.CameraReactPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -51,7 +51,7 @@ public class MainApplication extends Application
 
 
                 @Override
-                protected boolean getUseDeveloperSupport() {
+                public boolean getUseDeveloperSupport() {
                     return BuildConfig.DEBUG;
                 }
 
@@ -69,7 +69,7 @@ public class MainApplication extends Application
                             new LinearGradientPackage(),
                             new ReactVideoPackage(),
                             new ExtraDimensionsPackage(),
-                            new PickerPackage(),
+                            new ReactMaterialKitPackage(),
                             new VectorIconsPackage(),
                             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
                             new FBSDKPackage(mCallbackManager)

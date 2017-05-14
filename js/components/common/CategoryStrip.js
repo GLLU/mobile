@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Dimensions, LayoutAnimation } from 'react-native';
-import { View} from 'native-base';
+import { ScrollView, StyleSheet, Dimensions, LayoutAnimation,View } from 'react-native';
 import CategoryItem from './StripItem';
 
 const ITEM_WIDTH = 80;
@@ -67,7 +66,7 @@ class CategoryStrip extends Component {
     return (
       <View style={[styles.categoriesContainer]}>
         <ScrollView
-            keyboardShouldPersistTap={true}
+            keyboardShouldPersistTaps='always'
             pagingEnabled={false}
             horizontal={false}
             decelerationRate={'fast'}
