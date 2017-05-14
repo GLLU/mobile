@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { View, Button } from 'native-base';
+import { Image, TouchableOpacity, Text, StyleSheet,View} from 'react-native';
 import { connect } from 'react-redux';
 import { logout, navigateTo, followUpdate, unFollowUpdate } from '../../actions';
 import FollowView from './follows/FollowView.js'
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
     color: '#00D7B2',
   },
   followView: {
-    flex: 3
+    width:80
   }
 });
 

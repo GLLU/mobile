@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
-import { View, Text } from 'native-base';
+import { View, Text,StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   addItemType,
@@ -106,7 +105,7 @@ class StepTwoOccasions extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fadeAnimContentOnPress: Platform.OS ==='ios' ? new Animated.Value(0) : new Animated.Value(90),
+      fadeAnimContentOnPress: new Animated.Value(0),
       selectedOccasions: this.props.itemOccasions
     }
   }
@@ -118,11 +117,9 @@ class StepTwoOccasions extends BaseComponent {
   }
 
   componentWillReceiveProps(props) {
-    if(Platform.OS === 'ios') {
       if(this.props.selectedCategory && props.brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
         this.toggleBottomContainer()
       }
-    }
   }
 
   selectOccasion(selectedOccasion) {
@@ -136,10 +133,8 @@ class StepTwoOccasions extends BaseComponent {
       selectedOccasions.push(selectedOccasion)
     }
     this.setState({selectedOccasions})
-    if(Platform.OS === 'ios') {
       let that = this
       setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
-    }
   }
 
   toggleBottomContainer() {

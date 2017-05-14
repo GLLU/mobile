@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Image, Dimensions } from 'react-native'
-import { View, Text, Button } from 'native-base';
+import { ScrollView, StyleSheet, Image, Dimensions,View, Text } from 'react-native'
 import FilterButton from './FilterButton'
 import _ from 'lodash'
 

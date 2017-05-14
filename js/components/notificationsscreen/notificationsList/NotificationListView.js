@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Container, Header, Content, View } from 'native-base';
+import { ListView, Image, StyleSheet, TouchableOpacity, Text,View  } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
@@ -11,10 +10,6 @@ import ListViewHeader from './ListViewHeader';
 import NotificationRow from './NotificationRow';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white'
-  },
   separator: {
     flex: 1,
     height: StyleSheet.hairlineWidth,
@@ -40,7 +35,7 @@ class NotificationListView extends Component {
     this.renderListView = this.renderListView.bind(this);
     const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this.state = {
-      dataSource: ds.cloneWithRows(props.notifications.allNotifications),
+      dataSource: ds.cloneWithRows(props.notifications.allNotifications||[]),
       isTrueEndReached: false
     };
   }
@@ -51,7 +46,7 @@ class NotificationListView extends Component {
     }
     if (nextProps.notifications !== this.props.notifications.allNotifications) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.notifications.allNotifications)
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.notifications.allNotifications||[])
       })
     }
   }
@@ -61,7 +56,6 @@ class NotificationListView extends Component {
   }
 
   onUserNavigate(props) {
-    console.log('propskk',props)
     if(props.action_kind === 'Follow') {
       this.props.popRoute(this.props.navigation.key);
       this.props.popRoute(this.props.navigation.key);
@@ -89,7 +83,6 @@ class NotificationListView extends Component {
   renderListView() {
     return (
       <ListView
-        style={styles.container}
         dataSource={this.state.dataSource}
         renderRow={(data) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress.bind(this)} onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
         renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
@@ -103,9 +96,9 @@ class NotificationListView extends Component {
   render() {
     const count = this.props.headerData.count ? this.props.headerData.count : null
     return (
-      <View>
+      <View style={{flex:1, flexDirection:'column'}}>
         <ListViewHeader count={count} title={`My ${this.props.headerData.mode}`}/>
-        {this.props.headerData.count > 0 ? this.renderListView() : this.renderListView()}
+        {this.props.headerData.count > 0 ? this.renderListView() : this.props.renderEmpty()}
       </View>
     );
   }

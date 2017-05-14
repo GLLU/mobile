@@ -39,6 +39,7 @@ export default StyleSheet.create({
     height: 25,
   },
   reportBtn: {
+    marginTop: 5,
     marginRight: 20,
     color: 'red',
     fontWeight: 'bold',

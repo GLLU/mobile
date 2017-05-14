@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, TextInput, Platform } from 'react-native';
-import { View } from 'native-base';
+import { Image, TouchableOpacity, TextInput, Platform, View } from 'react-native';
 
 import styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';

@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Alert, Linking} from 'react-native';
-import { Container, Header, Content, View, Thumbnail, Icon, Button, List, Title, ListItem, Text } from 'native-base';
+import { StyleSheet, Alert, Linking, Text, View } from 'react-native';
+import { Container, Header, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import { back, logout } from '../../actions';
 import SocialShare from '../../lib/social';
@@ -20,11 +20,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF'
   },
+  header: {
+    backgroundColor: 'transparent',
+    flex:1,
+    flexDirection:'row',
+    alignItems: 'center'
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#000',
+    textAlign: 'left'
+  },
+  headerArrow: {
+    color: '#000'
+  },
   backIcon: {
     color: '#000'
   },
   listItem: {
-    padding: 25,
   },
   listItemThumbnail: {
     marginHorizontal: 10,
@@ -95,46 +110,68 @@ class SettingsScreen extends BasePage {
     this.props.logout();
   }
 
+  _renderList(list){
+    return _.map(list,(item,i)=>{
+      return(
+        <ListItem key={i} style={StyleSheet.flatten(styles.listItem)} onPress={item.onPress}>
+          <Thumbnail style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
+          <Text style={styles.listItemText}>{item.text}</Text>
+        </ListItem>
+      );
+    })
+  }
+
   render() {
+    const settings=[
+      {
+        text:'Invite your Friends',
+        icon:iconShare,
+        onPress:this.handleShare.bind(this)
+      },
+      {
+        text:'Contact Us',
+        icon:iconContact,
+        onPress:this.handleOpenLink.bind(this, EMAIL_URL, 'email')
+      },
+      {
+        text:'Terms of Service',
+        icon:iconTerms,
+        onPress:this.handleOpenLink.bind(this, TERMS_URL)
+      },
+      {
+        text:'Privacy Policy',
+        icon:iconPrivacy,
+        onPress:this.handleOpenLink.bind(this, PRIVACY_URL)
+      },
+      {
+        text:'Copyrights',
+        icon:iconCopyright,
+        onPress:this.handleOpenLink.bind(this, COPYRIGHT_URL)
+      },
+      {
+        text:'Rate Us',
+        icon:iconRateUs,
+        onPress:this.handleOpenLink.bind(this, RATE_US_URL)
+      },
+      {
+        text:'Log Out',
+        icon:iconLogout,
+        onPress:this.handleLogout.bind(this)
+      },
+
+    ];
     return (
       <Container theme={glluTheme}>
-        <Header>
-          <Button transparent onPress={this.handleBack.bind(this)}>
-            <Icon style={styles.backIcon} name="ios-arrow-back" />
-          </Button>
-          <Title style={glluTheme.headerTitleStyle}>Settings</Title>
-        </Header>
+        <View style={{height:50}}>
+          <View style={styles.header} >
+            <Button transparent onPress={() => this.popRoute()}>
+              <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
+            </Button>
+            <Text style={styles.headerTitle}>Settings</Text>
+          </View>
+        </View>
         <Content style={{backgroundColor: '#FFFFFF'}}>
-          <List>
-            <ListItem style={styles.listItem} onPress={this.handleShare.bind(this)}>
-                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconShare} />
-                <Text style={styles.listItemText}>Invite your Friends</Text>
-            </ListItem>
-            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, EMAIL_URL, 'email')}>
-                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconContact} />
-                <Text style={styles.listItemText}>Contact Us</Text>
-            </ListItem>
-            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, TERMS_URL)}>
-                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconTerms} />
-                <Text style={styles.listItemText}>Terms of Service</Text>
-            </ListItem>
-            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, PRIVACY_URL)}>
-                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconPrivacy} />
-                <Text style={styles.listItemText}>Privacy Policy</Text>
-            </ListItem>
-            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, COPYRIGHT_URL)}>
-                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconCopyright} />
-                <Text style={styles.listItemText}>Copyrights</Text>
-            </ListItem>
-            <ListItem style={styles.listItem} onPress={this.handleOpenLink.bind(this, RATE_US_URL)}>
-                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconRateUs} />
-                <Text style={styles.listItemText}>Rate Us</Text>
-            </ListItem>
-            <ListItem style={styles.listItem} onPress={this.handleLogout.bind(this)}>
-                <Thumbnail style={styles.listItemThumbnail} square size={20} source={iconLogout} />
-                <Text style={styles.listItemText}>Log Out</Text>
-            </ListItem>
-        </List>
+          {this._renderList(settings)}
         </Content>
       </Container>
     );

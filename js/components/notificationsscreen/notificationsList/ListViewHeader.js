@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
-import { View, Icon } from 'native-base';
+import { ListView, Image, StyleSheet, TouchableOpacity, View, Text, Platform } from 'react-native';
+import { Icon } from 'native-base';
 import * as _ from 'lodash'
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -67,7 +67,7 @@ class ListViewHeader extends Component {
         <View style={[styles.header,styles.row]}>
           <View style={{flex:0.5}} name="spacer"/>
           <TouchableOpacity style={{flex:1}} onPress={() => this.popRoute()}>
-            <Icon style={styles.backBtn} name="ios-arrow-back"/>
+            <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           <Text style={styles.notificationsTitle}>{_.startCase(this.props.title)}</Text>
           { this.props.count ? <Text style={styles.notificationsCount}>{this.props.count}</Text> : null }

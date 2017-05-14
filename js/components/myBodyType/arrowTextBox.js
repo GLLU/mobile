@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
-import {Icon} from 'native-base';
 import styles from './styles';
 
 export default class ArrowTextBox extends Component {

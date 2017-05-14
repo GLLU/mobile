@@ -1,8 +1,4 @@
 <resources>
-
-
-
-
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
     <string name="app_name">gllu</string>
     <string name="facebook_app_id">221848254918118</string>

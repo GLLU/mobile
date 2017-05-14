@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
-import { View, Icon } from 'native-base';
+import { View,ListView, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
+import {  Icon } from 'native-base';
 import { noop } from 'lodash'
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -71,7 +71,7 @@ class LookHeader extends Component {
           <View style={{flex: 3}}>
           <TouchableOpacity style={styles.backBtnContainer}
                             onPress={this.props.onBackNavigationPress}>
-            <Icon style={styles.backBtn} name="ios-arrow-back"/>
+            <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           </View>
           <View style={{flex: 24}} name="spacer"/>
