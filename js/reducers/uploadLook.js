@@ -56,12 +56,14 @@ const ACTION_HANDLERS = {
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
     const item = action.payload.item;
+    const itemType = action.payload.item.look.cover.type;
     const itemId = item.id
     const items = state.items;
     items.push(itemMapper(item));
     return {
       ...state,
       itemId,
+      itemType,
       items,
     }
   },

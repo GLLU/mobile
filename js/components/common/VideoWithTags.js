@@ -139,8 +139,6 @@ class VideoWithTags extends Component {
   }
 
   render() {
-    const style = [styles.base, this.props.style];
-    console.log('path:', this.props.image)
     return (
       <Video source={{uri: this.props.image}}
              resizeMode="contain"
