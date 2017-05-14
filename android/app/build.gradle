@@ -91,6 +91,11 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
+
+    dexOptions {
+        jumboMode = true
+    }
+
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
@@ -127,6 +132,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
             debuggable false
+            shrinkResources true
             applicationIdSuffix 'release'
         }
         staging {
@@ -156,7 +162,9 @@ android {
 }
 
 dependencies {
+
     compile project(':libs:cropper')
+    compile project(':libs:video-trimmer')
     compile project(':react-native-image-crop-picker')
     compile 'com.facebook.fresco:animated-base-support:0.14.1'
     compile 'com.facebook.fresco:animated-gif:0.14.1'
