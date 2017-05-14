@@ -69,7 +69,7 @@ class FollowerScreen extends Component {
 
   render() {
     return (
-          <View>
+          <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
             <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData}
                             follows={this.props.followers}
                             onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
