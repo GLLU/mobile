@@ -4,7 +4,6 @@ import android.content.Intent;
 import com.facebook.CallbackManager;
 
 import com.facebook.react.ReactActivity;
-import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -31,8 +30,7 @@ public class MainActivity extends ReactActivity {
         mCallbackManager = new CallbackManager.Factory().create();
         ReactPackage packages[] = new ReactPackage[]{
                 new MainReactPackage(),
-            new ReactMaterialKitPackage(),
-            new ExtraDimensionsPackage(),
+                new ExtraDimensionsPackage(),
                 new FBSDKPackage(mCallbackManager),
         };
         return Arrays.<ReactPackage>asList(packages);

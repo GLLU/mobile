@@ -10,7 +10,6 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.gllu.customPackages.CameraReactPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
@@ -69,7 +68,6 @@ public class MainApplication extends Application
                             new LinearGradientPackage(),
                             new ReactVideoPackage(),
                             new ExtraDimensionsPackage(),
-                            new ReactMaterialKitPackage(),
                             new VectorIconsPackage(),
                             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
                             new FBSDKPackage(mCallbackManager)
