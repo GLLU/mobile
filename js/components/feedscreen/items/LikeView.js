@@ -10,10 +10,9 @@ const likedIcon = require('../../../../images/icons/liked.png');
 const styles = StyleSheet.create({
   likeContainer: {
     height: 30,
-    width: 60,
-
+    width: 50,
     backgroundColor: 'transparent',
-  }
+  },
   btnWithImage: {
     backgroundColor: 'blue'
   },
@@ -74,7 +73,6 @@ class LikeView extends Component {
           <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
             <Text style={styles.countLikeLabel}>{this.state.likes}</Text>
           </Col>
-          <Col style={{width:10}}/>
         </Grid>
       </View>
     )
