@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity,View, Text } from 'react-native';
+import { ListView, Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { noop } from 'lodash';
 
 
@@ -26,23 +26,8 @@ class EmptyView extends Component {
 
   render() {
     return (
-      <View>
-        <View style={{flex:1}} name="spacer"/>
-        <View style={{flex:1}}>
-          <Text style={{textAlign:'center'}}>
-            You have no notifications yet
-          </Text>
-          <View>
-            <View style={{flexDirection:'row', paddingTop: 15}}>
-              <View style={{flex:3}} name="spacer"/>
-              <View style={{flex:3}} name="spacer"/>
-            </View>
-          </View>
-        </View>
-        <Text style={{flex:1, textAlign:'center'}}>
-
-        </Text>
-        <View style={{flex:1}} name="spacer"/>
+      <View style={{flex: 1, flexDirection: 'column', justifyContent:'center', alignItems:'center'}}>
+          <Text style={{textAlign: 'center'}}>You have no notifications yet</Text>
       </View>
     );
   }

@@ -57,7 +57,7 @@ class EmptyView extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex:1, flexDirection:'column'}}>
         <View style={{flex:1}} name="spacer"/>
         <View style={{flex:1}}>
           <Text style={{textAlign:'center'}}>

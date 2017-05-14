@@ -85,7 +85,7 @@ class FollowListView extends Component {
   render() {
     const count = this.props.headerData.count ? this.props.headerData.count : 0;
     return (
-      <View>
+      <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}}>
         <ListViewHeader count={count} title={`My ${this.props.headerData.mode}`}/>
         {this.props.headerData.count > 0 ? this.renderListView() : this.props.renderEmpty()}
       </View>

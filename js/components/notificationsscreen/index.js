@@ -49,7 +49,7 @@ class NotificationsScreen extends Component {
       mode: 'Notifications',
     }
     return (
-          <View>
+          <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}}>
             <NotificationListView renderEmpty={this._renderOnEmpty} headerData={headerData}
                             notifications={this.props.notifications}
                             onEndReached={this.getNotificationsData} mode={headerData.mode}/>
