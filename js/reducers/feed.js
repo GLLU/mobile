@@ -27,6 +27,7 @@ const parseLook = function (look, index, flatLooksDataLength) {
   } else {
     cover = _.find(look.cover.list, x => x.version === 'medium');
   }
+  console.log('flatLooksDataLength',flatLooksDataLength, 'index', index)
   return Object.assign({}, {
     liked: look.is_liked,
     type: look.user_size.body_type,

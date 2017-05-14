@@ -269,11 +269,13 @@ class LooksContainer extends BasePage {
         this.props.flatLooksData[this.state.currScrollIndex]
       ]
     }
-
     switch(this.state.currScrollIndex) {
+
       case 0:
+        let fictionalLook = _.cloneDeep(this.props.flatLooksData[this.state.currScrollIndex])
+        fictionalLook.originalIndex = 999
          return looksArr = [
-          this.props.flatLooksData[this.state.currScrollIndex+1], // fictional
+           fictionalLook, // fictional
           this.props.flatLooksData[this.state.currScrollIndex],
           this.props.flatLooksData[this.state.currScrollIndex+1]
         ];
@@ -307,7 +309,6 @@ class LooksContainer extends BasePage {
                   scrollEventThrottle={100}
                   scrollEnabled={false}>
         {looksArr.map((look, index) => {
-          console.log(`looky look`,look);
           return look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index)
         })}
       </ScrollView>
