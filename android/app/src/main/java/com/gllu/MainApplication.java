@@ -11,6 +11,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.gllu.customPackages.CameraReactPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
@@ -59,6 +60,8 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new ReactMaterialKitPackage(),
+            new PickerPackage(),
                             new CameraReactPackage(),
                             new GoogleAnalyticsBridgePackage(),
                             new FlurryAnalyticsPackage(),
@@ -69,7 +72,6 @@ public class MainApplication extends Application
                             new LinearGradientPackage(),
                             new ReactVideoPackage(),
                             new ExtraDimensionsPackage(),
-                            new ReactMaterialKitPackage(),
                             new VectorIconsPackage(),
                             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
                             new FBSDKPackage(mCallbackManager)

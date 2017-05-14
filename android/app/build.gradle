@@ -160,6 +160,7 @@ android {
 
 dependencies {
     compile project(':react-native-material-kit')
+    compile project(':react-native-image-crop-picker')
     compile project(':libs:cropper')
     compile project(':libs:video-trimmer')
     compile 'com.facebook.fresco:animated-base-support:0.11.0'
