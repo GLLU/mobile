@@ -55,7 +55,6 @@ export default class Utils {
                         expiration_time: data["expirationTime"],
                         data: result
                       };
-                      console.log('dataaaa',data)
                       resolve(jsonData)
                     }
                   });
