@@ -195,7 +195,7 @@ class LooksContainer extends BasePage {
   renderVideo(look, index) {
     return (
       <GestureRecognizer
-        key={look.originalIndex ? look.originalIndex : 0}
+        key={look.originalIndex !==undefined ? look.originalIndex : -1}
         onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
         config={config}
         style={{
@@ -231,7 +231,7 @@ class LooksContainer extends BasePage {
   renderImage(look, index) {
     return (
       <GestureRecognizer
-        key={look.originalIndex ? look.originalIndex : 0}
+        key={look.originalIndex!==undefined ? look.originalIndex : -1}
         onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
         config={config}
         style={{
