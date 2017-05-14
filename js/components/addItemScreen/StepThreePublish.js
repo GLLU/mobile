@@ -24,6 +24,7 @@ import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 import VideoWithTags from '../common/VideoWithTags';
+import Utils from '../../Utils';
 
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
@@ -390,33 +391,57 @@ class StepThreePublish extends BaseComponent {
     );
   }
 
+  renderFirstRowWithImage(image) {
+    return (
+      <Row style={[styles.row, { flexDirection: 'row' }]}>
+        <Col size={25} style={{paddingRight: 20}}>
+          <TouchableOpacity onPress={this.handleImagePress.bind(this)}>
+            <Image
+              style={{width: 90, height: 160}}
+              source={{uri: image}}
+              resizeMode={'stretch'}
+            />
+          </TouchableOpacity>
+        </Col>
+        <Col size={75} style={{flexDirection: 'column'}}>
+          <TextInput
+            textAlignVertical='top'
+            multiline={true}
+            style={styles.describe}
+            value={this.state.description}
+            placeholder="Describe what you're wearing..."
+            underlineColorAndroid='transparent'
+            onEndEditing={this.handleDescriptionEndEditing.bind(this)}
+            onChangeText={(text) => this.updateSelectValue('description', text)}/>
+        </Col>
+      </Row>
+    )
+  }
+
+  renderFirstRowWithOutImage() {
+    return (
+      <Row style={[styles.row, { flexDirection: 'row' }]}>
+        <Col size={100} style={{flexDirection: 'column'}}>
+          <TextInput
+            textAlignVertical='top'
+            multiline={true}
+            style={styles.describe}
+            value={this.state.description}
+            placeholder="Describe what you're wearing..."
+            underlineColorAndroid='transparent'
+            onEndEditing={this.handleDescriptionEndEditing.bind(this)}
+            onChangeText={(text) => this.updateSelectValue('description', text)}/>
+        </Col>
+      </Row>
+    )
+  }
+
   render() {
     const { image, tags} = this.props;
     return(
       <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20, marginTop: 50}}>
         <Grid>
-          <Row style={[styles.row, { flexDirection: 'row' }]}>
-            <Col size={25} style={{paddingRight: 20}}>
-              <TouchableOpacity onPress={this.handleImagePress.bind(this)}>
-                  <Image
-                      style={{width: 90, height: 160}}
-                      source={{uri: image}}
-                      resizeMode={'stretch'}
-                      />
-              </TouchableOpacity>
-            </Col>
-            <Col size={75} style={{flexDirection: 'column'}}>
-              <TextInput
-                textAlignVertical='top'
-                multiline={true}
-                style={styles.describe}
-                value={this.state.description}
-                placeholder="Describe what you're wearing..."
-                underlineColorAndroid='transparent'
-                onEndEditing={this.handleDescriptionEndEditing.bind(this)}
-                onChangeText={(text) => this.updateSelectValue('description', text)}/>
-            </Col>
-          </Row>
+          {this.props.isVideo ? this.renderFirstRowWithOutImage() : this.renderFirstRowWithImage(image)}
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Add tags</Text>
             <TagInput
@@ -469,7 +494,9 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, items } = state.uploadLook;
+  const { itemId, items, image } = state.uploadLook;
+  console.log(state.uploadLook)
+
   const item = _.find(items, item => item.id == itemId);
   let url = null;
   if (item) {
@@ -479,6 +506,7 @@ const mapStateToProps = state => {
       url = item.brand ? item.brand.url : null;
     }
   }
+  const isVideo = Utils.isVideo(image)
   return {
     navigation: state.cardNavigation,
     ...state.uploadLook,
@@ -487,6 +515,7 @@ const mapStateToProps = state => {
     photos: item ? item.photos : [],
     brandUrl: item && item.brand ? item.brand.url : null,
     url,
+    isVideo
   }
 };
 
