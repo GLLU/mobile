@@ -8,6 +8,7 @@ import VolumeButton from './VolumeButton';
 import MediaBorderPatch from './MediaBorderPatch'
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Utils from '../../Utils';
+import shdowBg from '../../../images/background-shadow-70p.png';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
 class MediaContainer extends BaseComponent {
@@ -20,7 +21,7 @@ class MediaContainer extends BaseComponent {
     super(props);
     this.state = {
       currLookPosition: -1,
-      shouldPlay: 1,
+      shouldPlay: true,
       isMuted: true
     }
     this.bgColor = Utils.getLoaderImage()
@@ -38,6 +39,7 @@ class MediaContainer extends BaseComponent {
   }
 
   renderVideo(video) {
+    let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
     return (
       <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.bgColor}}>
 
@@ -46,7 +48,7 @@ class MediaContainer extends BaseComponent {
                muted={this.state.isMuted}
                style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden', borderRadius: 10}}
                repeat={true}
-               rate={this.state.shouldPlay}
+               paused={!ShouldShowLookImage}
         />
 
         <MediaBorderPatch media={video}>
@@ -59,12 +61,12 @@ class MediaContainer extends BaseComponent {
   }
 
   renderImage(look, index) {
-     let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
+     let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight*2 && this.props.currScroll > this.state.currLookPosition-deviceHeight*2
       return (
       <View>
         <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} />
         <MediaBorderPatch media={look} >
-          <View style={{bottom: 10}}>
+          <View style={{bottom: 10, zIndex: 1}}>
             <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
           </View>
         </MediaBorderPatch>
@@ -107,7 +109,6 @@ class MediaContainer extends BaseComponent {
       <View style={{ borderRadius: 100}} onLayout={(e) => this.setLookPosition(e)}>
         <TouchableOpacity onPress={(e) => this._handleItemPress(look)} >
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look, index)}
-
         </TouchableOpacity>
       </View>
     )
