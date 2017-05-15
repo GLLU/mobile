@@ -20,6 +20,7 @@ import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
+import { NavigationActions } from "react-navigation";
 
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
@@ -44,6 +45,7 @@ class SplashPage extends BasePage {
 
   constructor(props) {
     super(props);
+    this.pushRoute=this.pushRoute.bind(this);
     this.state = {
       name: '',
       repeat: true
@@ -59,7 +61,7 @@ class SplashPage extends BasePage {
   }
 
   pushRoute(route) {
-      this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
+    this.props.navigation.navigate(route)
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -181,7 +183,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
+  cardNavigation: state.cardNavigation,
   invitation_token: state.user.invitation_token
 });
 

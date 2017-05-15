@@ -1,4 +1,23 @@
 import { StackNavigator } from 'react-navigation'
+import SplashPage from './components/splashscreen/';
+import FeedPage from './components/feedscreen';
+import AddItemPage from './components/addItemScreen';
+import MyBodyType from './components/myBodyType';
+import MyBodyMeasure from './components/myBodyMeasure';
+import SignUpPage from './components/signup';
+import SignInPage from './components/signin';
+import ActivationCodeScreen from './components/activationCodeScreen';
+import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
+import ForgotPassword from './components/forgotPassword';
+import LooksScreen from './components/looksScreen';
+import ProfileScreen from './components/profileScreen';
+import FollowScreen from './components/profileScreen/follows/followscreen';
+import FollowerScreen from './components/profileScreen/follows/followerscreen';
+import NotificationsScreen from './components/notificationsscreen';
+import SettingsScreen from './components/settingsScreen';
+import EditProfile from './components/profileScreen/EditProfile.js';
+import FinishLookScreen from './components/finishLookScreen';
+import BadNavigationScreen from './components/badNavigationScreen'
 
 const stackNavigatorConfig = {
   initialRouteName: 'splashscreen',
@@ -6,70 +25,63 @@ const stackNavigatorConfig = {
   gesturesEnabled: true
 };
 
-const optional = props.scene.route.optional ? props.scene.route.optional: '';
-
 const routes = {
-  Splash: {
-    screen: SplashPage
+  splashscreen: {
+    screen: SplashPage,
   },
-  Activation: {
+  activationcode: {
     screen: ActivationCodeScreen,
-    navigation: {continueTo: props.scene.route}
   },
-  SignUp: {
+  signupemail: {
     screen: SignUpPage,
-    navigation: {gender: props.scene.route.gender}
   },
-  GenderSelect: {
-    screen: SignUpGenderPage
+  genderselect: {
+    screen: SignUpGenderPage,
   },
-  SignIn: {
-    screen: SignInPage
+  signinemail: {
+    screen: SignInPage,
   },
-  ForgotPassword: {
-    screen: ForgotPassword
+  forgotpassword: {
+    screen: ForgotPassword,
   },
-  Feed: {
-    screen: FeedPage
+  feedscreen: {
+    screen: FeedPage,
   },
-  AddItem: {
+  addItemScreen: {
     screen: AddItemPage,
-    navigation: {mode: optional ? optional.mode : 'create'}
   },
-  FinishLook: {
-    screen: FinishLookScreen
+  finishLookScreen: {
+    screen: FinishLookScreen,
   },
-  MyBodyType: {
+  myBodyType: {
     screen: MyBodyType,
   },
-  MyBodyMeasure: {
+  myBodyMeasure: {
     screen: MyBodyMeasure,
   },
-  Looks: {
+  looksScreen: {
     screen: LooksScreen,
-    navigation: {flatLook: props.scene.route.optional}
   },
-  Profile: {
+  profileScreen: {
     screen: ProfileScreen,
-    navigation: {userData: props.scene.route.optional}
   },
-  Follow: {
+  followScreen: {
     screen: FollowScreen,
-    navigation: {userData: props.scene.route.optional}
   },
-  Follower: {
+  followerScreen: {
     screen: FollowerScreen,
-    navigation: {userData: props.scene.route.optional}
   },
-  Notifications: {
+  notificationsScreen: {
     screen: NotificationsScreen
   },
-  Settings: {
+  settingsScreen: {
     screen: SettingsScreen
   },
-  EditProfile: {
+  editProfileScreen: {
     screen: EditProfile,
-    navigation: {userData: props.scene.route.optional}
+  },
+  badNavigation: {
+    screen: BadNavigationScreen
   }
 };
 

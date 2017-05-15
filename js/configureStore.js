@@ -12,7 +12,7 @@ import { createLogger } from 'redux-logger';
 export default function configureStore(onCompletion:()=>void):any {
   const logger = createLogger();
   const enhancer = compose(
-    applyMiddleware(thunk, promise, sequenceAction),
+    applyMiddleware(thunk, promise, sequenceAction,logger),
     devTools({
       name: 'nativestarterkit', realtime: true,
     }),

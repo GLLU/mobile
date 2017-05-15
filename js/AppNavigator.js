@@ -28,16 +28,16 @@ import ErrorHandler from './components/errorHandler';
 import BadNavigationScreen from './components/badNavigationScreen'
 import { StyleSheet } from 'react-native';
 import myTheme, { statusBarColor } from './themes/base-theme';
-
 import Analytics from './lib/analytics/Analytics';
+const { NavigationCardStack } = NavigationExperimental;
+import CardStack from './routes'
+import { addNavigationHelpers } from "react-navigation";
 
 const {
   popRoute,
 } = actions;
 
-const {
-  CardStack: NavigationCardStack,
-} = NavigationExperimental;
+
 
 
 
@@ -148,6 +148,8 @@ class AppNavigator extends Component {
   }
 
   render() {
+    const { navigationState, dispatch } = this.props;
+    console.log(`navigation!`,this.props);
     return (
       <View style={{flex: 1}}>
         <Drawer
@@ -180,11 +182,10 @@ class AppNavigator extends Component {
             backgroundColor={statusBarColor}
             barStyle="default"
           />
-          <NavigationCardStack
-            navigationState={this.props.navigation}
-            renderOverlay={this._renderOverlay}
-            renderScene={this._renderScene}
-          />
+          <CardStack navigation={addNavigationHelpers({
+            dispatch,
+            state: navigationState,
+          })}/>
         </Drawer>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
         {this.props.isProcessing ? <SpinnerClothing /> : null}
@@ -198,6 +199,7 @@ class AppNavigator extends Component {
 
 function bindAction(dispatch) {
   return {
+    dispatch,
     closeDrawer: () => dispatch(closeDrawer()),
     openDrawer: () => dispatch(openDrawer()),
     popRoute: key => dispatch(popRoute(key)),
@@ -212,7 +214,7 @@ const mapStateToProps = state => {
   const isInfo = state.errorHandler.info || false;
   return ({
     drawerState: state.drawer.drawerState,
-    navigation: state.cardNavigation,
+    navigationState: state.cardNavigation,
     user: state.user,
     isLoading: isLoading,
     isProcessing: isProcessing,

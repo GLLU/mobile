@@ -12,27 +12,27 @@ import configureStore from './configureStore';
 function setup():React.Component {
   class Root extends Component {
 
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
+      this.onStoreConfigured=this.onStoreConfigured.bind(this);
       this.state = {
-        isLoading: true,
-        store: configureStore(() => {
-          this.state.store.dispatch(checkLogin());
-          this.setState({ isLoading: false });
-        }),
+        store:configureStore(this.onStoreConfigured),
+        isLoading: true
       };
     }
 
+    onStoreConfigured(){
+      this.state.store.dispatch(checkLogin());
+      this.setState({ isLoading: false });
+    }
+
     render() {
-      const { isLoading } = this.state;
-      
-      if (isLoading) {
+      if (this.state.isLoading) {
         return <SpinnerSwitch/>;
       }
-      
       return (
         <Provider store={this.state.store}>
-          <App />
+          <App/>
         </Provider>
       );
     }
