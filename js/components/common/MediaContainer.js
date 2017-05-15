@@ -94,7 +94,7 @@ class MediaContainer extends BaseComponent {
   renderVideoGrid(look) {
 
     return(
-      <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+      <View style={{flexDirection: 'row', justifyContent:'space-between', zIndex: 1}}>
         <LikeView item={look} onPress={this.toggleLikeAction.bind(this)}/>
         <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()}/>
       </View>
