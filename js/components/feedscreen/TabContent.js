@@ -53,6 +53,7 @@ class TabContent extends BaseComponent {
     this.showBodyModal = _.once(this._showBodyModal);
     this.layoutWidth = 0;
     this.currPosition = 0
+    this.contentHeight = 0
   }
 
   _onShareClicked() {
@@ -88,16 +89,22 @@ class TabContent extends BaseComponent {
     if (!this.props.hasUserSize) {
       this.scrollCallAsync(event);
     } else {
-      const contentSizeHeight = event.nativeEvent.contentSize.height;
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+      const contentSizeHeight = event.nativeEvent.contentSize.height;
       const currentScroll = event.nativeEvent.contentOffset.y
-      const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-      if (compare <= LOADER_HEIGHT) {
-        this.loadMoreAsync();
+      if (currentScroll === contentSizeHeight - layoutMeasurementHeight) {
+        if(this.contentHeight !== contentSizeHeight) {
+          this.contentHeight = contentSizeHeight
+          console.log('load moreeeeeee');
+          this.loadMoreAsync();
+        }
+
+      } else {
       }
     }
     this.currPosition = event.nativeEvent.contentOffset.y;
   }
+
 
   handleScrollPositionForVideo() {
     if(this.state.currentScrollPosition !== this.currPosition) {

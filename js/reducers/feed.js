@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA } from '../actions/feed';
+import { Image } from 'react-native';
+import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUEUE } from '../actions/feed';
 import { SET_LOOK_LIKE_STATE } from '../actions/likes';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
 
@@ -8,6 +9,7 @@ const initialState = {
   meta: {
     total: 0,
   },
+  flatLooksDataQueue: [],
   query: {
     gender: null,
     body_type: null,
@@ -26,7 +28,9 @@ const parseLook = function (look, index, flatLooksDataLength) {
     cover = _.find(look.cover.list, x => x.version === 'large_720');
   } else {
     cover = _.find(look.cover.list, x => x.version === 'medium');
+    Image.prefetch(cover.url)
   }
+
   return Object.assign({}, {
     liked: look.is_liked,
     type: look.user_size.body_type,
@@ -78,15 +82,34 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_FLAT_LOOKS_FEED_DATA]: (state, action) => {
+
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
     const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
-    const newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+    let newData;
+    if(action.payload.loadMore) {
+      newData = action.payload.data.looks;
+    } else {
+      newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+    }
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
       ...state,
       flatLooksData,
+      meta,
+      query,
+    }
+  },
+  [SET_FLAT_LOOKS_FEED_DATA_QUEUE]: (state, action) => {
+
+    const meta = _.merge(state.meta, action.payload.data.meta);
+    const query = action.payload.query;
+    const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
+    const newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+    return {
+      ...state,
+      flatLooksDataQueue: newData,
       meta,
       query,
     }
