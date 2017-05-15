@@ -46,7 +46,9 @@ import { setUser,
   logout,
   setInvitationToken,
   invitationCheckExistance,
-  createInvitationCode } from './user';
+  createInvitationCode,
+  clearTutorial,
+  hideTutorial} from './user';
 import navigateTo from './sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
@@ -125,6 +127,8 @@ export {
   hideWarning,
   showInfo,
   hideInfo,
+  clearTutorial,
+  hideTutorial,
   getUserLooksData,
   getUserLooks,
   likeUpdate,

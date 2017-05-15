@@ -48,6 +48,9 @@ class SplashPage extends BasePage {
       name: '',
       repeat: true
     };
+    if(this.props.showTutorial){
+      this.props.navigateTo('tutorialscreen');
+    }
   }
 
   componentDidMount() {
@@ -182,7 +185,9 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  invitation_token: state.user.invitation_token
+  invitation_token: state.user.invitation_token,
+  showTutorial: state.user.showTutorial
+
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

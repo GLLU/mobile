@@ -26,6 +26,7 @@ import SpinnerClothing from './components/loaders/SpinnerClothing';
 import FinishLookScreen from './components/finishLookScreen';
 import ErrorHandler from './components/errorHandler';
 import BadNavigationScreen from './components/badNavigationScreen'
+import TutorialScreen from './components/tutorialScreen'
 import { StyleSheet } from 'react-native';
 import myTheme, { statusBarColor } from './themes/base-theme';
 
@@ -110,6 +111,8 @@ class AppNavigator extends Component {
         return <SplashPage />;
       case 'activationcode':
         return <ActivationCodeScreen continueTo={props.scene.route} />;
+      case 'tutorialscreen':
+        return <TutorialScreen />;
       case 'signupemail':
         return <SignUpPage gender={props.scene.route.gender}/>;
       case 'genderselect':
