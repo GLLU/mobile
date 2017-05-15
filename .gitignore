@@ -57,4 +57,5 @@ fastlane/Preview.html
 fastlane/screenshots
 
 ios/
+!Podfile
 my-release-key.keystore
