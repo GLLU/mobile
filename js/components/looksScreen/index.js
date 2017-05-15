@@ -30,7 +30,7 @@ class LooksScreen extends BasePage {
 
   renderLoader() {
     return (
-      <Image source={{uri: this.props.flatLook.uri}} resizeMode={'cover'} style={[Platform.OS === 'ios' ? {zIndex: 1} : null ,{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }]}>
+      <Image source={{uri: this.props.flatLook.uri}} resizeMode={'stretch'} style={[Platform.OS === 'ios' ? {zIndex: 1} : null ,{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }]}>
         <Spinner color='#666666'/>
       </Image>
     )

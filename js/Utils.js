@@ -55,7 +55,6 @@ export default class Utils {
                         expiration_time: data["expirationTime"],
                         data: result
                       };
-                      console.log('dataaaa',data)
                       resolve(jsonData)
                     }
                   });
@@ -125,6 +124,18 @@ export default class Utils {
         reject(err);
       });
     });
+  }
+
+  static isVideo(path) {
+    const fileTypesArr = ['.jpg','.png']
+    let type;
+    for(let i = 0; i<fileTypesArr.length; i++){
+       type = path.search(fileTypesArr[i]) > -1;
+      if(type) {
+        return false
+      }
+    }
+    return true
   }
 
   static preloadLookImages(looks) {

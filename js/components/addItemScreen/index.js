@@ -11,6 +11,7 @@ import StepThreePublish from './StepThreePublish';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
+import Utils from '../../Utils';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
@@ -85,9 +86,8 @@ class AddItemPage extends BasePage {
   constructor(props) {
     super(props);
     this.handleContinue=this.handleContinue.bind(this);
-    isVideo = this.props.coverType;
     this.state = {
-      isVideo,
+      isVideo: this.props.isVideo,
       currentStep: -1,
       locationX: 0,
       locationY: 0,
@@ -336,6 +336,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const { itemId, lookId, image, items, localFilePath} = state.uploadLook;
+  const isVideo = Utils.isVideo(image)
   const item = itemId !== null ? _.find(items, x => x.id === itemId) : null;
   return {
     navigation: state.cardNavigation,
@@ -343,6 +344,7 @@ const mapStateToProps = state => {
     itemId,
     lookId,
     image,
+    isVideo,
     fileLocalPath: localFilePath,
     items,
     state: state.uploadLook.state,
