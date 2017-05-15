@@ -56,10 +56,8 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 
-ios/
+ios/build
+ios/gllu.xcodeproj
+ios/gllu.xcworkspace
+ios/Pods/
 my-release-key.keystore
-!/ios/gllu/Info.plist
-!/ios/gllu/AppDelegate.h
-!/ios/gllu/Images.xcassets/AppIcon.appiconset/Contents.json
-!/ios/gllu/AppDelegate.m
-!/ios/gllu/main.m
