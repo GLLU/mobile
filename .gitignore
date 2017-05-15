@@ -58,3 +58,8 @@ fastlane/screenshots
 
 ios/
 my-release-key.keystore
+!/ios/gllu/Info.plist
+!/ios/gllu/AppDelegate.h
+!/ios/gllu/Images.xcassets/AppIcon.appiconset/Contents.json
+!/ios/gllu/AppDelegate.m
+!/ios/gllu/main.m
