@@ -39,7 +39,7 @@ class MediaContainer extends BaseComponent {
   }
 
   renderVideo(video) {
-    let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
+    //let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
     return (
       <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.bgColor}}>
 
@@ -48,7 +48,7 @@ class MediaContainer extends BaseComponent {
                muted={this.state.isMuted}
                style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden', borderRadius: 10}}
                repeat={true}
-               paused={!ShouldShowLookImage}
+               paused={this.state.shouldPlay}
         />
 
         <MediaBorderPatch media={video}>
@@ -61,7 +61,7 @@ class MediaContainer extends BaseComponent {
   }
 
   renderImage(look, index) {
-     let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight*2 && this.props.currScroll > this.state.currLookPosition-deviceHeight*2
+     //let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight*2 && this.props.currScroll > this.state.currLookPosition-deviceHeight*2
       return (
       <View>
         <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} />
