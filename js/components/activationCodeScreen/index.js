@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Image, TouchableWithoutFeedback, Linking, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
 import { invitationCheckExistance } from '../../actions/user';
@@ -15,16 +14,14 @@ import {
 } from '../../constants';
 import { emailRule, passwordRule } from '../../validators';
 import SplashButton from "./SplashButton";
+import {NavigationActions} from "react-navigation";
 
 const logo = require('../../../images/logo.png');
-const { popRoute, pushRoute } = actions;
 const background = require('../../../images/backgrounds/enterCodeBG.png');
 
 class ActivationCodeScreen extends BasePage {
 
   static propTypes = {
-    popRoute: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     })
@@ -32,6 +29,8 @@ class ActivationCodeScreen extends BasePage {
 
   constructor(props) {
     super(props);
+    this.handleSigninPress=this.handleSigninPress.bind(this);
+    this.onInvitationComplete=this.onInvitationComplete.bind(this);
       this.state = {
           renderEnterCode: true,
           email: '',
@@ -41,14 +40,6 @@ class ActivationCodeScreen extends BasePage {
       };
   }
 
-  singinWithEmail() {
-      let { password, email } = this.state;
-      const data = { email, password };
-      if(this.checkValidations()) {
-          this.props.emailSignIn(data);
-      }
-  }
-
   checkValidations() {
     let {
         passwordValid,
@@ -56,13 +47,6 @@ class ActivationCodeScreen extends BasePage {
 
     let validationArray = [ passwordValid, emailValid ];
     return (validationArray.indexOf('times') === -1)
-  }
-
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
-  pushRoute(route) {
-    this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
   }
 
   validateEmailInput(email) {
@@ -99,8 +83,35 @@ class ActivationCodeScreen extends BasePage {
   }
 
   handleSigninPress() {
-    this.logEvent('SignInEmailScreen', { name: 'Lets GLLU click' });
-    this.props.invitationCheckExistance(this.state.code, this.props.navigation.routes[1].optional);
+    this.logEvent('ActivationScreen', { name: 'Submit click' });
+    return this.props.invitationCheckExistance(this.state.code)
+      .then(this.onInvitationComplete)
+      .catch((err)=>console.log(err));
+  }
+
+  onInvitationComplete() {
+    console.log(`moving to`,this.props.navigation.state.params);
+    const nextScreen=this.props.navigation.state.params;
+    switch(nextScreen) {
+      case 'genderselect':{
+        this.props.navigation.dispatch(new NavigationActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'splashscreen' }),
+            NavigationActions.navigate({ routeName: 'genderselect'})
+          ]
+        }));
+        break;
+      }
+      case 'facebook': {
+        Utils.loginWithFacebook()
+          .then((data) => this.props.loginViaFacebook(data))
+          .catch((err) => console.log('facebook login Error', err))
+        break;
+      }
+      default:
+        console.log(`cant navigateTo next screen`);
+    }
   }
 
   validateTextInput(value) {
@@ -123,7 +134,7 @@ class ActivationCodeScreen extends BasePage {
               </InputGroup>
             </Row>
           </Grid>
-          <SplashButton style={[styles.formBtn ,styles.validationPassed ]} label='Submit' onPress={this.handleSigninPress.bind(this)}/>
+          <SplashButton style={[styles.formBtn ,styles.validationPassed ]} label='Submit' onPress={this.handleSigninPress}/>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Don't have code? <Text style={[styles.alreadyTxt, {fontWeight: '600', opacity: 10}]}>Apply for code</Text></Text>
             <TouchableOpacity onPress={this.renderGetCode.bind(this)}>
@@ -161,7 +172,7 @@ class ActivationCodeScreen extends BasePage {
               </InputGroup>
             </Row>
           </Grid>
-          <SplashButton style={[styles.formBtn, styles.validationPassed]} label='Ask for Code' onPress={this.handleSigninPress.bind(this)}/>
+          <SplashButton style={[styles.formBtn, styles.validationPassed]} label='Ask for Code' onPress={()=>console.log(`asking for code (not yet implemented)`)}/>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
             <TouchableOpacity onPress={this.renderEnterCode.bind(this)}>
@@ -191,7 +202,7 @@ class ActivationCodeScreen extends BasePage {
           <Image source={background} style={styles.shadow}>
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={() => this.popRoute()}>
+                <Button transparent onPress={() => this.goBack()}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Sign in</Text>
@@ -216,13 +227,11 @@ class ActivationCodeScreen extends BasePage {
 function bindAction(dispatch) {
   return {
       invitationCheckExistance: (code, continueTo) => dispatch(invitationCheckExistance(code, continueTo)),
-      popRoute: key => dispatch(popRoute(key)),
-      pushRoute: (route, key) => dispatch(pushRoute(route, key))
   };
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
+  cardNavigation: state.cardNavigation,
   error: state.errorHandler.error
 });
 

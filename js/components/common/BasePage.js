@@ -60,13 +60,14 @@ class BasePage extends BaseComponent {
           {
             text: 'OK',
             onPress: () => {
-              this.props.popRoute(this.props.navigation.key);
+              this.goBack(false);
             }
           }
         ]
       );
     } else {
-      this.props.popRoute(this.props.navigation.key);
+      console.log(`let's navigate!`,this.props.navigation)
+      this.props.navigation.goBack();
     }
   }
 }

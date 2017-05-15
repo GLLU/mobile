@@ -26,10 +26,6 @@ const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const logo = require('../../../images/logo.png');
 
-const {
-    pushRoute
-} = actions;
-
 let PERMISSIONS = ["email", "public_profile"];
 
 class SplashPage extends BasePage {
@@ -60,8 +56,8 @@ class SplashPage extends BasePage {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  pushRoute(route) {
-    this.props.navigation.navigate(route)
+  pushRoute(route,params) {
+    this.props.navigation.navigate(route,params)
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -83,9 +79,8 @@ class SplashPage extends BasePage {
       Utils.loginWithFacebook().then((data) => this.props.loginViaFacebook(data))
         .catch((err) => console.log('facebook login Error',err))
     } else {
-      this.props.navigateTo('activationcode', 'splashscreen', 'facebook');
+      this.pushRoute('activationcode','facebook');
     }
-
   }
 
   handleEmailSignupPress() {
@@ -94,8 +89,7 @@ class SplashPage extends BasePage {
     if(this.props.invitation_token !== -1) {
       this.pushRoute('genderselect');
     } else {
-      //this.pushRoute('activationcode');
-      this.props.navigateTo('activationcode', 'splashscreen', 'genderselect');
+      this.pushRoute('activationcode','genderselect');
     }
 
   }
@@ -178,7 +172,6 @@ function bindAction(dispatch) {
     emailSignIn: (data) => dispatch(emailSignIn(data)),
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     navigateTo: (route, homeRoute, continueTo) => dispatch(navigateTo(route, homeRoute, continueTo)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };
 }
 

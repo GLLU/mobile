@@ -147,9 +147,9 @@ class AddItemPage extends BasePage {
     this.logEvent('UploadLookScreen', { name: 'Publish click' });
     this.props.publishLookItem().then(response => {
       if (this.props.state === LOOK_STATES.PUBLISHED) {
-        this.props.popRoute(this.props.navigation.key);  
+        this.props.navigation.goBack()
       } else {
-        this.props.pushRoute({key: 'finishLookScreen'}, this.props.navigation.key);  
+        this.props.navigation.navigate('finishLookScreen')
       }
     });
   }

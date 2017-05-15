@@ -14,9 +14,9 @@ export const SET_INVITATION_IS_USED = 'SET_INVITATION_IS_USED';
 export const SET_INVITATION_SHARE_TOKEN = 'SET_INVITATION_SHARE_TOKEN';
 
 let api_key = ''
-const setRestOptions = function(dispatch, rest, user) {
+const setRestOptions = function (dispatch, rest, user) {
   api_key = user.api_key;
-  rest.use("options", function() {
+  rest.use("options", function () {
     return {
       headers: {
         "Authorization": `Token token=${user.api_key}`,
@@ -39,14 +39,14 @@ const setRestOptions = function(dispatch, rest, user) {
   });
 }
 
-const signInFromRest = function(dispatch, data, invitation_token, invitationTokenIsUsed) {
+const signInFromRest = function (dispatch, data, invitation_token, invitationTokenIsUsed) {
   if (!data || _.isEmpty(data)) {
     return;
   }
   Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
     setRestOptions(dispatch, rest, data.user);
     dispatch(setUser(data.user));
-    if(invitationTokenIsUsed === false) {
+    if (invitationTokenIsUsed === false) {
       dispatch(useInvitationCode(invitation_token))
       dispatch(setInvitationTokenIsUsed())
     }
@@ -68,7 +68,7 @@ export function resetUserNavigation() {
   }
 }
 
-export function setUser(user:string):Action {
+export function setUser(user: string): Action {
 
   return {
     type: SET_USER,
@@ -76,7 +76,7 @@ export function setUser(user:string):Action {
   };
 }
 
-export function setInvitationToken(token):Action {
+export function setInvitationToken(token): Action {
 
   return {
     type: SET_INVITATION_TOKEN,
@@ -84,7 +84,7 @@ export function setInvitationToken(token):Action {
   };
 }
 
-export function setInvitationTokenIsUsed():Action {
+export function setInvitationTokenIsUsed(): Action {
 
   return {
     type: SET_INVITATION_IS_USED,
@@ -92,14 +92,14 @@ export function setInvitationTokenIsUsed():Action {
   };
 }
 
-export function setInvitationInvitationShareToken(shareToken):Action {
+export function setInvitationInvitationShareToken(shareToken): Action {
   return {
     type: SET_INVITATION_SHARE_TOKEN,
     payload: shareToken,
   };
 }
 
-export function loginViaFacebook(data):Action {
+export function loginViaFacebook(data): Action {
   return (dispatch, getState) => {
     const user = getState().user;
     const invitation_is_used = user.invitation_is_used;
@@ -122,11 +122,11 @@ export function loginViaFacebook(data):Action {
   };
 }
 
-export function useInvitationCode(token):Action {
+export function useInvitationCode(token): Action {
   return (dispatch) => {
     return dispatch(rest.actions.invitation.post({}, {body: JSON.stringify({"token": token})}, (err, data) => {
       if (!err && !_.isEmpty(data)) {
-        console.log('invitation token passed and approved: ',data)
+        console.log('invitation token passed and approved: ', data)
       } else {
         alert('Unable to use invitation code');
       }
@@ -134,47 +134,39 @@ export function useInvitationCode(token):Action {
   }
 }
 
-export function createInvitationCode():Action {
+export function createInvitationCode(): Action {
   return (dispatch) => {
     return dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({"limit_by_days": 3})}, (err, data) => {
       if (!err && !_.isEmpty(data)) {
         dispatch(setInvitationInvitationShareToken(data.invitation.token))
       } else {
-        console.log('Unable to create invitation code ',err)
+        console.log('Unable to create invitation code ', err)
       }
     }));
   }
 }
 
-export function invitationCheckExistance(token, continueTo):Action {
+export function invitationCheckExistance(token): Action {
   return (dispatch) => {
-    return dispatch(rest.actions.invitation_check_if_exists.get({"token": token}, (err, data) => {
-      if (!err && !_.isEmpty(data)) {
-        if(data.invitation.is_valid) {
-          dispatch(hideError())
-          dispatch(setInvitationToken(data.invitation.token));
-          switch(continueTo) {
-            case 'genderselect':
-              dispatch(navigateTo('genderselect', 'splashscreen'));
-              break;
-            case 'facebook':
-
-                Utils.loginWithFacebook()
-                  .then((data) => dispatch(loginViaFacebook(data)))
-                  .catch((err) => console.log('facebook login Error',err))
-              break;
-            default:
+    return new Promise((resolve, reject) => {
+      return dispatch(rest.actions.invitation_check_if_exists.get({"token": token}, (err, data) => {
+        if (!err && !_.isEmpty(data)) {
+          if (data.invitation.is_valid) {
+            dispatch(hideError())
+            dispatch(setInvitationToken(data.invitation.token));
+            resolve();
           }
-
+        } else {
+          const error = '*Code is wrong or expired';
+          dispatch(showError(error));
+          reject(error)
         }
-      } else {
-        dispatch(showError('*Code is wrong or expired'))
-      }
-    }));
+      }));
+    })
   }
 }
 
-const signUp = function(dispatch, data) {
+const signUp = function (dispatch, data) {
   return new Promise((resolve, reject) => {
     const avatar = data['avatar']
     if (avatar) {
@@ -184,14 +176,14 @@ const signUp = function(dispatch, data) {
       Object.keys(data).forEach(function (key) {
         formData.push({
           name: `user[${key}]`,
-          data: data[key], 
+          data: data[key],
         });
       });
       Utils.postMultipartForm('', '/users', formData, 'user[avatar]', avatar).then(resolve, reject);
     } else {
       // normal rest
       const body = {user: data};
-      dispatch(rest.actions.users.post({}, { body: JSON.stringify(body) }, (err, data) => {
+      dispatch(rest.actions.users.post({}, {body: JSON.stringify(body)}, (err, data) => {
         if (err) {
           reject(err);
         } else {
@@ -202,10 +194,10 @@ const signUp = function(dispatch, data) {
   });
 }
 
-export function emailSignUp(data):Action {
+export function emailSignUp(data): Action {
   return (dispatch, getState) => {
     dispatch(hideFatalError());
-    if(data) {
+    if (data) {
       signUp(dispatch, data).then(data => {
         const user = getState().user;
         const invitation_is_used = user.invitation_is_used;
@@ -216,15 +208,15 @@ export function emailSignUp(data):Action {
           const pointers = [];
           let errorString = '';
           err.errors.map((error) => {
-            pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+            pointers.push(_.capitalize(_.last(_.split(error.source.pointer, '/'))));
           });
-          if(pointers.length === 1){
-            dispatch(showFatalError(pointers[0]+' has already taken'))
+          if (pointers.length === 1) {
+            dispatch(showFatalError(pointers[0] + ' has already taken'))
           } else {
-            for(let i = 0; i<pointers.length-1; i++) {
-              errorString += pointers[i]+' & ';
+            for (let i = 0; i < pointers.length - 1; i++) {
+              errorString += pointers[i] + ' & ';
             }
-            dispatch(showFatalError(errorString+pointers[pointers.length-1]+' are already taken'))
+            dispatch(showFatalError(errorString + pointers[pointers.length - 1] + ' are already taken'))
           }
         } else {
           dispatch(showFatalError(`Unknown error: ${err}`));
@@ -234,12 +226,13 @@ export function emailSignUp(data):Action {
   };
 }
 
-export function emailSignIn(data):Action {
+export function emailSignIn(data): Action {
   return (dispatch, getState) => {
-    const body = { auth: data };
+    const body = {auth: data};
     const user = getState().user;
     const access_token = data.access_token;
-    const expiration_time = data.expiration_time;    return dispatch(rest.actions.auth.post(body, (err, data) => {
+    const expiration_time = data.expiration_time;
+    return dispatch(rest.actions.auth.post(body, (err, data) => {
       if (!err && data) {
         signInFromRest(dispatch, data, access_token, expiration_time);
       } else {
@@ -249,10 +242,10 @@ export function emailSignIn(data):Action {
   };
 }
 
-export function forgotPassword(email):Action {
-  const data = { email }
+export function forgotPassword(email): Action {
+  const data = {email}
   return (dispatch) => {
-    return dispatch(rest.actions.password_recovery.post({} ,{ body: JSON.stringify(data) } , (err, data) => {
+    return dispatch(rest.actions.password_recovery.post({}, {body: JSON.stringify(data)}, (err, data) => {
       if (!err && data) {
         console.log('PASSWORD RECOVERY:', data)
       } else {
@@ -309,7 +302,7 @@ export function checkLogin() {
 export function changeUserAboutMe(data) {
   return (dispatch) => {
     dispatch(showLoader());
-    dispatch(rest.actions.changeUserAboutMe.put({ id: data.id }, { body: JSON.stringify(data) }, (err, data) => {
+    dispatch(rest.actions.changeUserAboutMe.put({id: data.id}, {body: JSON.stringify(data)}, (err, data) => {
       if (!err) {
         dispatch(setUser(data.user));
         dispatch(hideLoader());

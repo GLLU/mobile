@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Image, Linking, TouchableWithoutFeedback, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
@@ -14,8 +13,6 @@ import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
 import ImagePicker from 'react-native-image-crop-picker';
 import LetsGLLUButton from "./LetsGLLUButton";
-
-const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/backgrounds/hands.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
@@ -29,12 +26,7 @@ class SignUpPage extends BasePage {
 
   static propTypes = {
   gender: React.PropTypes.string,
-  popRoute: React.PropTypes.func,
-  emailSignUp: React.PropTypes.func,
-  pushRoute: React.PropTypes.func,
-  navigation: React.PropTypes.shape({
-    key: React.PropTypes.string,
-  })
+  emailSignUp: React.PropTypes.func
   }
 
   constructor(props) {
@@ -91,11 +83,6 @@ class SignUpPage extends BasePage {
     return (validationArray.indexOf('times') === -1)
   }
 
-
-  popRoute() {
-  this.props.popRoute(this.props.navigation.key);
-  }
-
   validateTextInput(value, type) {
     textInput.validate(value, (err) => {
     if(!err){
@@ -138,7 +125,7 @@ class SignUpPage extends BasePage {
   }
 
   pushRoute(route) {
-    this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
+    this.props.navigation.navigate(route)
   }
 
   handleCameraPress() {
@@ -154,11 +141,6 @@ class SignUpPage extends BasePage {
   handleLoginPress() {
   this.logEvent('SignUpEmailScreen', { name: 'Already user click' });
   this.pushRoute('signinemail');
-  }
-
-  handleEmailSignupPress() {
-    this.logEvent('SignUpEmailScreen', {name: 'Email signup click'});
-    this.pushRoute('genderselect');
   }
 
   handleTermPress() {
@@ -203,7 +185,7 @@ class SignUpPage extends BasePage {
           <Image source={backgroundShadow} style={styles.bgShadow} />
           <View style={{height:50}}>
             <View style={styles.header} >
-              <Button transparent onPress={() => this.popRoute()}>
+              <Button transparent onPress={() => this.goBack()}>
                 <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
               </Button>
               <Text style={styles.headerTitle}>Sign up</Text>
@@ -290,14 +272,12 @@ class SignUpPage extends BasePage {
 function bindAction(dispatch) {
   return {
   emailSignUp: (data) => dispatch(emailSignUp(data)),
-  popRoute: key => dispatch(popRoute(key)),
-  pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   changeUserAvatar: (data) => dispatch(changeUserAvatar(data)),
   };
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
+  cardNavigation: state.cardNavigation,
 });
 
 export default connect(mapStateToProps, bindAction)(SignUpPage);

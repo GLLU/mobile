@@ -53,7 +53,7 @@ class TagItemPage extends BasePage {
   handleContinue() {
     this.logEvent('TagItemScreen', { name: 'Continue click' });
     this.props.updateLookItem().then(response => {
-      this.props.pushRoute({key: 'addItemScreen'}, this.props.navigation.key);
+      this.props.navigation.navigate('addItemScreen');
     });
   }
 
