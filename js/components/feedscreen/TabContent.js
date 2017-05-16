@@ -44,7 +44,6 @@ class TabContent extends BaseComponent {
     this.state = {
       isLoading: false,
       noMoreData: false,
-      //fadeAnim: new Animated.Value(0),
       isRefreshing: false,
       currentScrollPosition: 0
     };
@@ -76,9 +75,7 @@ class TabContent extends BaseComponent {
       // show modal after done loading for 3 seconds
       if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
         if (!this.props.hasUserSize) {
-          setTimeout(() => {
-            this.showBodyModal();
-          }, 3000);
+          setTimeout(() => {this.showBodyModal();}, 3000);
         }
       }
     }

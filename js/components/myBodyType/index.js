@@ -11,7 +11,7 @@ import { changeBodyType } from '../../actions/myBodyType';
 import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
 import CarouselItem from './horizontalCarousel/carouselItem';
 import ArrowTextBox from './arrowTextBox';
-import InformationTextIcon from '../common/informationTextIcon';
+import * as _ from "lodash";
 
 
 class MyBodyType extends BasePage {
@@ -25,17 +25,19 @@ class MyBodyType extends BasePage {
 
   static propTypes = {
     changeBodyType: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
+    navigateTo: React.PropTypes.func,
     bodyTypes: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     currentIndex: React.PropTypes.number,
     gender: React.PropTypes.string
   }
 
+  static defaultProps = {
+    navigateTo: _.noop
+}
+
   _bodyTypeChange(index) {
-    const { gender, bodyTypes } = this.props
+    const { gender, bodyTypes } = this.props;
     const bodyType = bodyTypes[gender][index];
     this.logEvent('ChooseBodyTypeScreen', { name: 'Select bodyType', bodyType: bodyType.name });
     setTimeout(()=> {
@@ -100,7 +102,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
+  cardNavigation: state.cardNavigation,
   bodyTypes: state.myBodyType.bodyTypes,
   currentBodyType: state.myBodyType.currentBodyType,
   currentIndex: state.myBodyType.currentIndex,

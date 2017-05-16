@@ -75,6 +75,7 @@ class UserLooks extends Component {
 
   _handleEditPress(look) {
     this.props.editNewLook(look.id).then(() => {
+
       this.props.pushRoute({key: 'addItemScreen', optional: { mode: 'edit' } }, this.props.navigation.key);
     });
   }

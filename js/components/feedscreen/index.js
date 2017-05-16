@@ -8,7 +8,7 @@ import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
-import MyBodyModal from '../common/myBodyModal';
+import MyBodyType from '../myBodyType';
 import { addNewLook, setUser, pushRoute, navigateTo, getNotifications, createInvitationCode } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
@@ -128,7 +128,7 @@ class FeedPage extends BasePage {
           <MainView searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
-            <MyBodyModal />
+            <MyBodyType navigation = {this.props.navigation}/>
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
         </Content>
@@ -151,7 +151,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  navigation: state.cardNavigation,
+  cardNavigation: state.cardNavigation,
   modalShowing: state.myBodyType.modalShowing
 });
 
