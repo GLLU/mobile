@@ -70,10 +70,8 @@ class ListViewHeader extends Component {
             <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           <Text style={styles.notificationsTitle}>{_.startCase(this.props.title)}</Text>
-          { this.props.count ? <Text style={styles.notificationsCount}>{this.props.count}</Text> : null }
           <View style={{flex:0.5}} name="spacer"/>
         </View>
-        {/*{search will come here}*/}
       </View>
     );
   }
