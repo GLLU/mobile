@@ -5,9 +5,11 @@ import { Dimensions, Platform, Image, TouchableWithoutFeedback, Linking, View, T
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
+import { Icon } from 'native-base';
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const width = Dimensions.get('window').width;
 const logo = require('../../../images/logo.png');
+import styles from './styles';
 const { popRoute, pushRoute } = actions;
 import navigateTo from '../../actions/sideBarNav';
 import { hideTutorial } from '../../actions/user';
@@ -30,24 +32,33 @@ class TutorialScreen extends BasePage {
   constructor(props) {
     super(props);
       this.state = {
-        tutorialScreens: [one, two, three, four, five]
+        tutorialScreens: [one, two, three, four, five],
+        currPage: 0
       };
-    if(this.props.showTutorial === false){
-      this.props.navigateTo('splashscreen');
-    }
-  }
-
-  componentWillMount() {
-
-  }
-
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
   }
 
   doneWithTutorial() {
     this.props.hideTutorial();
-    this.props.navigateTo('splashscreen', 'tutorialscreen');
+    this.props.popRoute(this.props.navigation.key);
+  }
+
+  onPageSelected = (e) => {
+    console.log(e.nativeEvent.position)
+    this.setState({currPage: e.nativeEvent.position})
+  };
+
+  handleBackBtn(index) {
+    this.viewPager.setPage(index - 1)
+    this.setState({currPage: index-1})
+  }
+
+  handleNextBtn(index) {
+    this.viewPager.setPage(index + 1)
+    if(this.state.currPage < 4) {
+      this.setState({currPage: index+1})
+    } else {
+      this.doneWithTutorial()
+    }
   }
 
   render() {
@@ -55,19 +66,22 @@ class TutorialScreen extends BasePage {
           <ViewPagerAndroid
             style={{flex: 1}}
             initialPage={0}
-            ref={viewPager => { this.viewPager = viewPager; }}>
+            ref={viewPager => { this.viewPager = viewPager; }}
+            onPageSelected={this.onPageSelected}>
             {this.state.tutorialScreens.map((screen, index) => {
               return (
               <View key={index}>
-                  <Image resizeMode={'stretch'} style={{width: width, height: height}} source={screen}><Text>First page</Text>
-                    <TouchableOpacity onPress={()=> this.viewPager.setPage(index-1)}>
-                      <Text style={{color: 'blue'}}>back</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=> this.viewPager.setPage(index+1)}>
-                      <Text style={{color: 'blue'}}>Next</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=> this.doneWithTutorial()}>
-                      <Text style={{color: 'blue'}}>done</Text>
+                  <Image resizeMode={'stretch'} style={{width: width, height: height}} source={screen}>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', margin: 10}}>
+                      <TouchableOpacity onPress={()=> this.handleBackBtn(index)} style={styles.backBtn}>
+                        <Icon style={{ color: 'white', marginRight: 3}} name="ios-arrow-back" />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={()=> this.doneWithTutorial()} >
+                        <Text style={{color: 'white'}}>Skip</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity onPress={()=> this.handleNextBtn(index)} style={styles.topBtns}>
+                      <Text style={styles.pagingBtn}>{this.state.currPage === 4 ? "Done" : "Next"}</Text>
                     </TouchableOpacity>
                   </Image>
               </View>
