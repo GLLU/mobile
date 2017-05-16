@@ -40,19 +40,21 @@ const setRestOptions = function (dispatch, rest, user) {
 }
 
 const signInFromRest = function (dispatch, data, invitation_token, invitationTokenIsUsed) {
-  if (!data || _.isEmpty(data)) {
-    return;
-  }
-  Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
-    setRestOptions(dispatch, rest, data.user);
-    dispatch(setUser(data.user));
-    if (invitationTokenIsUsed === false) {
-      dispatch(useInvitationCode(invitation_token))
-      dispatch(setInvitationTokenIsUsed())
+  return new Promise((resolve, reject) => {
+    if (!data || _.isEmpty(data)) {
+      reject();
     }
-    dispatch(createInvitationCode());
-    dispatch(resetUserNavigation());
-  })
+    Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+      setRestOptions(dispatch, rest, data.user);
+      dispatch(setUser(data.user));
+      if (invitationTokenIsUsed === false) {
+        dispatch(useInvitationCode(invitation_token))
+        dispatch(setInvitationTokenIsUsed())
+      }
+      dispatch(createInvitationCode());
+      resolve(data.user);
+    })
+  });
 };
 
 export function resetUserNavigation() {
@@ -101,6 +103,7 @@ export function setInvitationInvitationShareToken(shareToken): Action {
 
 export function loginViaFacebook(data): Action {
   return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
     const user = getState().user;
     const invitation_is_used = user.invitation_is_used;
     const access_token = data.access_token;
@@ -112,14 +115,15 @@ export function loginViaFacebook(data): Action {
       }
     };
 
-    return dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
+    dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
       if (!err && data) {
-        signInFromRest(dispatch, data, user.invitation_token, invitation_is_used);
+        signInFromRest(dispatch, data, user.invitation_token, invitation_is_used).then(resolve).catch(reject);
       } else {
-        alert('Unable to login via Facebook');
+        reject('Unable to login via Facebook')
       }
     }));
-  };
+  });
+  }
 }
 
 export function useInvitationCode(token): Action {
@@ -196,13 +200,14 @@ const signUp = function (dispatch, data) {
 
 export function emailSignUp(data): Action {
   return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
     dispatch(hideFatalError());
     if (data) {
       signUp(dispatch, data).then(data => {
         const user = getState().user;
         const invitation_is_used = user.invitation_is_used;
         const invitation_token = user.invitation_token;
-        signInFromRest(dispatch, data, invitation_token, invitation_is_used);
+        signInFromRest(dispatch, data, invitation_token, invitation_is_used).then(resolve).catch(reject);
       }).catch(err => {
         if (err.errors && err.errors.length > 0) {
           const pointers = [];
@@ -221,24 +226,29 @@ export function emailSignUp(data): Action {
         } else {
           dispatch(showFatalError(`Unknown error: ${err}`));
         }
+        reject(err);
       });
     }
+  })
   };
 }
 
 export function emailSignIn(data): Action {
-  return (dispatch, getState) => {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
     const body = {auth: data};
-    const user = getState().user;
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
     return dispatch(rest.actions.auth.post(body, (err, data) => {
       if (!err && data) {
-        signInFromRest(dispatch, data, access_token, expiration_time);
+        signInFromRest(dispatch, data, access_token, expiration_time).then(resolve).catch(reject);
       } else {
-        dispatch(showFatalError('Email/Password are incorrect'))
+        const error='Email/Password are incorrect';
+        dispatch(showFatalError(error))
+        reject(error);
       }
     }));
+  })
   };
 }
 
@@ -276,9 +286,9 @@ export function getStats(id) {
   };
 }
 
-export function checkLogin() {
-  return (dispatch, getState) => {
-    const user = getState().user;
+export function checkLogin(user) {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
     if (user && user.id != -1) {
       Utils.getKeychainData().then(credentials => {
         if (credentials) {
@@ -288,14 +298,18 @@ export function checkLogin() {
               dispatch(setUser(data.user));
             } else {
               console.log('unable to invalidate user data', err);
+              reject(err);
             }
           }));
-          dispatch(resetUserNavigation());
+          resolve(user);
         }
       })
     } else {
-      console.log('user does not exist');
+      const error='user does not exist';
+      console.log(error);
+      reject(error)
     }
+  })
   }
 }
 

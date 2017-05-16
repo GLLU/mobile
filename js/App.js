@@ -119,7 +119,7 @@ class App extends Component {
       );
     }
 
-    return <AppNavigator />;
+    return <AppNavigator/>;
   }
 }
 

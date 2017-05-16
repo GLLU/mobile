@@ -1,32 +1,13 @@
-/**
- * Created by yonatanitzhaky on 1/9/17.
- */
-
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, StyleProvider, getTheme } from 'native-base';
 import BasePage from '../common/BasePage';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { connect } from 'react-redux';
 import styles from './styles'
-import { emailSignUp } from '../../actions/user';
 import glluTheme from '../../themes/gllu-theme'
 
-const { popRoute, pushRoute } = actions;
-
 const background = require('../../../images/backgrounds/man-female_screen2.png');
-const backgroundShadow = require('../../../images/background-shadow-70p.png');
 
 class SignUpGenderPage extends BasePage {
-
-  static propTypes = {
-    popRoute: React.PropTypes.func,
-    emailSignUp: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    })
-  }
 
   constructor(props) {
     super(props);
@@ -37,13 +18,9 @@ class SignUpGenderPage extends BasePage {
 
   }
 
-  pushRoute(route, gender) {
-    this.props.pushRoute({ key: route, index: 1, gender: gender }, this.props.navigation.key);
-  }
-
   handleGenderPress(gender) {
     this.logEvent(`GenderSelectScreen`, { name: 'Gender click', gender });
-    this.pushRoute('signupemail', gender);
+    this.navigateTo('signupemail', {gender:gender});
   }
 
   render() {
@@ -88,18 +65,6 @@ class SignUpGenderPage extends BasePage {
       </Container>
     );
   }
-
 }
 
-function bindAction(dispatch) {
-  return {
-    emailSignUp: (data) => dispatch(emailSignUp(data)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
-  };
-}
-
-const mapStateToProps = state => ({
-  cardNavigation: state.cardNavigation,
-});
-
-export default connect(mapStateToProps, bindAction)(SignUpGenderPage);
+export default SignUpGenderPage;

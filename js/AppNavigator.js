@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { View, BackAndroid } from 'react-native';
+import { View, BackAndroid, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import ErrorHandler from './components/errorHandler';
@@ -9,10 +8,6 @@ import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'
 import { addNavigationHelpers } from "react-navigation";
-
-const {
-  popRoute,
-} = actions;
 
 
 const styles = StyleSheet.create({
@@ -28,7 +23,6 @@ const styles = StyleSheet.create({
 class AppNavigator extends Component {
 
   static propTypes = {
-    popRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
       routes: React.PropTypes.array,
@@ -42,7 +36,7 @@ class AppNavigator extends Component {
       if (routes[routes.length - 1].key === 'splashscreen' || routes[routes.length - 1].key === 'feedscreen' || routes[routes.length - 1].key === 'home' || routes[routes.length - 1].key === 'login') {
         return false;
       }
-      this.props.popRoute(this.props.navigation.key);
+      this.props.navigation.goBack();
       return true;
     });
 
@@ -54,15 +48,11 @@ class AppNavigator extends Component {
     Analytics.endTrackAppLoaded();
   }
 
-  popRoute() {
-    this.props.popRoute();
-  }
-
   render() {
     const {navigationState, dispatch} = this.props;
-    console.log(`navigation!`, this.props);
     return (
       <View style={{flex: 1}}>
+        <StatusBar barStyle='default'/>
         <CardStack navigation={addNavigationHelpers({
           dispatch,
           state: navigationState,
@@ -79,8 +69,7 @@ class AppNavigator extends Component {
 
 function bindAction(dispatch) {
   return {
-    dispatch,
-    popRoute: key => dispatch(popRoute(key)),
+    dispatch
   };
 }
 

@@ -25,7 +25,6 @@ import {
 class SignUpPage extends BasePage {
 
   static propTypes = {
-  gender: React.PropTypes.string,
   emailSignUp: React.PropTypes.func
   }
 
@@ -40,7 +39,7 @@ class SignUpPage extends BasePage {
       name: '',
       avatar: '',
       avatarIcon: 'camera',
-      gender: this.props.gender,
+      gender: props.navigation.state.params.gender,
       usernameValid: 'times',
       nameValid: 'times',
       passwordValid: 'times',
@@ -53,7 +52,6 @@ class SignUpPage extends BasePage {
     let {
       username,
       password,
-      confirmPassword,
       email,
       name,
       avatar,
@@ -68,7 +66,9 @@ class SignUpPage extends BasePage {
         password,
         confirmPassword: password,
       }
-      this.props.emailSignUp(data);
+      this.props.emailSignUp(data)
+        .then(user=>this.resetTo('feedscreen',user))
+        .catch(err=>console.log(err));
     }
   }
 
@@ -115,15 +115,6 @@ class SignUpPage extends BasePage {
   });
   }
 
-  confirmPasswordInput(confirmPassword) {
-    let pass = this.state.password
-    if(confirmPassword === pass){
-      this.setState({ confirmPasswordValid: 'check' });
-    } else {
-      this.setState({ confirmPassword, confirmPasswordValid: 'times' });
-    }
-  }
-
   pushRoute(route) {
     this.props.navigation.navigate(route)
   }
@@ -140,7 +131,7 @@ class SignUpPage extends BasePage {
 
   handleLoginPress() {
   this.logEvent('SignUpEmailScreen', { name: 'Already user click' });
-  this.pushRoute('signinemail');
+  this.navigateTo('signinemail');
   }
 
   handleTermPress() {

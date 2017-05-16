@@ -51,7 +51,9 @@ class SignInPage extends BasePage {
       let { password, email } = this.state;
       const data = { email, password };
       if(this.checkValidations()) {
-          this.props.emailSignIn(data);
+          this.props.emailSignIn(data)
+            .then(user=>this.resetTo('feedscreen'))
+            .catch(error=>console.log('oh no! could not sign in!',error));
       }
   }
   checkValidations() {
@@ -118,7 +120,7 @@ class SignInPage extends BasePage {
 
   handleForgotPasswordPress() {
     this.logEvent('SignInEmailScreen', { name: 'Forgot password click' });
-    this.pushRoute('forgotpassword');
+    this.navigateTo('forgotpassword');
   }
 
   render() {

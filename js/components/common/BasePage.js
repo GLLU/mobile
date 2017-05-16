@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import Config from 'react-native-config'
 import BaseComponent from './BaseComponent';
 import Analytics from '../../lib/analytics/Analytics';
+import {NavigationActions} from "react-navigation";
 
 class BasePage extends BaseComponent {
   constructor(props) {
@@ -31,17 +32,19 @@ class BasePage extends BaseComponent {
     });
   }
 
-  resetToFeedscreen() {
-    this.resetToHome('feedscreen');
+  resetTo(route) {
+    this.resetWithPayload({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: route })]
+    });
   }
 
-  resetToHome(homeroute) {
-    this.props.reset([
-      {
-        key: homeroute,
-        index: 0,
-      },
-    ], this.props.navigation.key);
+  resetWithPayload(payload){
+    this.props.navigation.dispatch(new NavigationActions.reset(payload))
+  }
+
+  navigateTo(route,params) {
+    this.props.navigation.navigate(route, params)
   }
 
   goBack(withConfirmation = false) {
@@ -66,7 +69,6 @@ class BasePage extends BaseComponent {
         ]
       );
     } else {
-      console.log(`let's navigate!`,this.props.navigation)
       this.props.navigation.goBack();
     }
   }

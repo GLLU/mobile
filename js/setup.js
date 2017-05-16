@@ -1,9 +1,6 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { checkLogin } from './actions';
 
 import App from './App';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
@@ -22,7 +19,6 @@ function setup():React.Component {
     }
 
     onStoreConfigured(){
-      this.state.store.dispatch(checkLogin());
       this.setState({ isLoading: false });
     }
 
@@ -32,7 +28,7 @@ function setup():React.Component {
       }
       return (
         <Provider store={this.state.store}>
-          <App/>
+          <App isStoreConfigured={!this.state.isLoading}/>
         </Provider>
       );
     }

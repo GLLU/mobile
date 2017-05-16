@@ -6,9 +6,7 @@ import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { changeBodyType } from '../../actions/myBodyType';
-const { popRoute, pushRoute } = actions;
 
 import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
 import CarouselItem from './horizontalCarousel/carouselItem';
@@ -26,8 +24,6 @@ class MyBodyType extends BasePage {
   }
 
   static propTypes = {
-    popRoute: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
     changeBodyType: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -36,14 +32,6 @@ class MyBodyType extends BasePage {
     currentBodyType: React.PropTypes.object,
     currentIndex: React.PropTypes.number,
     gender: React.PropTypes.string
-  }
-
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
-
-  pushRoute(route) {
-    this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
   _bodyTypeChange(index) {
@@ -69,7 +57,7 @@ class MyBodyType extends BasePage {
 
   handleContinuePress() {
     this.logEvent('ChooseBodyTypeScreen', { name: 'Continue click' });
-    this.pushRoute('myBodyMeasure');
+    this.navigateTo('myBodyMeasure');
   }
 
   render() {
@@ -107,8 +95,6 @@ class MyBodyType extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     changeBodyType: index => dispatch(changeBodyType(index))
   };
 }

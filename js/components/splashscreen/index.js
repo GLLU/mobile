@@ -8,19 +8,15 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import Utils from '../../Utils.js'
 import { connect } from 'react-redux';
 import styles from './styles';
-import { loginViaFacebook } from '../../actions/user';
+import { checkLogin, loginViaFacebook } from '../../actions';
 import _ from 'lodash';
 import Video from 'react-native-video';
-import { navigateTo } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
-import { emailSignIn } from '../../actions/user';
 import SignUpEmailButton from './SignUpEmailButton'
-
 import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
-import { NavigationActions } from "react-navigation";
 
 const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
@@ -31,7 +27,6 @@ let PERMISSIONS = ["email", "public_profile"];
 class SplashPage extends BasePage {
 
   static propTypes = {
-    pushRoute: React.PropTypes.func,
     isLoading: React.PropTypes.number,
     loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
@@ -41,11 +36,19 @@ class SplashPage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.pushRoute=this.pushRoute.bind(this);
+    this.checkLogin=this.checkLogin.bind(this);
     this.state = {
       name: '',
       repeat: true
     };
+  }
+
+  componentWillMount(){
+    const {user}=this.props;
+    console.log(`user`,user);
+    if(user!==undefined&&user.id!==-1){
+      this.checkLogin(user);
+    }
   }
 
   componentDidMount() {
@@ -56,8 +59,10 @@ class SplashPage extends BasePage {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  pushRoute(route,params) {
-    this.props.navigation.navigate(route,params)
+  checkLogin(user) {
+    this.props.checkLogin(user)
+      .then(() => this.resetTo('feedscreen'))
+      .catch(err => console.log(err));
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -76,20 +81,22 @@ class SplashPage extends BasePage {
     this.logEvent('Splashscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
     if(this.props.invitation_token !== -1) {
-      Utils.loginWithFacebook().then((data) => this.props.loginViaFacebook(data))
+      Utils.loginWithFacebook()
+        .then((data) => this.props.loginViaFacebook(data)
+          .then(user=>this.resetTo('feedscreen',user))
+          .catch((err) => console.log('facebook login Error',err)))
         .catch((err) => console.log('facebook login Error',err))
     } else {
-      this.pushRoute('activationcode','facebook');
+      this.navigateTo('activationcode','facebook');
     }
   }
 
   handleEmailSignupPress() {
     this.logEvent('Splashscreen', {name: 'Email signup click'});
-    console.log('this.props',this.props)
     if(this.props.invitation_token !== -1) {
-      this.pushRoute('genderselect');
+      this.navigateTo('genderselect');
     } else {
-      this.pushRoute('activationcode','genderselect');
+      this.navigateTo('activationcode','genderselect');
     }
 
   }
@@ -129,7 +136,7 @@ class SplashPage extends BasePage {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <TouchableOpacity onPress={() => this.pushRoute('signinemail') }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.navigateTo('signinemail') }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
           </View>
         </View>
     )
@@ -169,14 +176,13 @@ class SplashPage extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    emailSignIn: (data) => dispatch(emailSignIn(data)),
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
-    navigateTo: (route, homeRoute, continueTo) => dispatch(navigateTo(route, homeRoute, continueTo)),
+    checkLogin: (user) => dispatch(checkLogin(user)),
   };
 }
 
 const mapStateToProps = state => ({
-  cardNavigation: state.cardNavigation,
+  user: state.user,
   invitation_token: state.user.invitation_token
 });
 

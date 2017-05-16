@@ -90,17 +90,16 @@ class ActivationCodeScreen extends BasePage {
   }
 
   onInvitationComplete() {
-    console.log(`moving to`,this.props.navigation.state.params);
     const nextScreen=this.props.navigation.state.params;
     switch(nextScreen) {
       case 'genderselect':{
-        this.props.navigation.dispatch(new NavigationActions.reset({
+        this.resetWithPayload({
           index: 1,
           actions: [
             NavigationActions.navigate({ routeName: 'splashscreen' }),
             NavigationActions.navigate({ routeName: 'genderselect'})
           ]
-        }));
+        });
         break;
       }
       case 'facebook': {
@@ -231,7 +230,6 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  cardNavigation: state.cardNavigation,
   error: state.errorHandler.error
 });
 
