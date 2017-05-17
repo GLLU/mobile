@@ -14,9 +14,10 @@ const initialState = {
 
 export default function manageStackReducer(state = initialState, action) {
   switch (action.type) {
-    case REHYDRATE:
+    case REHYDRATE: {
       // do nothing
       return initialState;
+    }
     default:
       return cardStackReducer(initialState)(state, action);
   }

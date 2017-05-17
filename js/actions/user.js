@@ -7,6 +7,7 @@ import rest from '../api/rest';
 import _ from 'lodash';
 
 export const SET_USER = 'SET_USER';
+export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const SET_INVITATION_TOKEN = 'SET_INVITATION_TOKEN';
@@ -360,6 +361,22 @@ export function logout() {
       dispatch({
         type: RESET_STATE
       });
+    });
+  };
+}
+
+
+export function clearTutorial() {
+  console.log('clear action')
+  return (dispatch, getState) => {
+    dispatch(hideTutorial())
+  };
+}
+
+export function hideTutorial() {
+  return (dispatch) => {
+    dispatch({
+      type: HIDE_TUTORIAL,
     });
   };
 }

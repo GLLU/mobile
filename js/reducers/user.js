@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN, SET_INVITATION_IS_USED, SET_INVITATION_SHARE_TOKEN } from '../actions/user';
+import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN, SET_INVITATION_IS_USED, SET_INVITATION_SHARE_TOKEN, HIDE_TUTORIAL } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -19,11 +19,18 @@ const initialState = {
   api_key: null,
   invitation_token: -1,
   invitation_is_used: false,
-  invitation_share_token: -1
+  invitation_share_token: -1,
+  showTutorial: true,
 };
 
 // Action Handlers
 const ACTION_HANDLERS = {
+  [HIDE_TUTORIAL]: (state, action) => {
+    return {
+      ...state,
+      showTutorial: false
+    };
+  },
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
     delete user.api_key
@@ -66,7 +73,8 @@ const ACTION_HANDLERS = {
     return {
       ...initialState,
       invitation_token: state.invitation_token,
-      invitation_is_used: state.invitation_is_used
+      invitation_is_used: state.invitation_is_used,
+      showTutorial: state.showTutorial
     };
   }
 }
