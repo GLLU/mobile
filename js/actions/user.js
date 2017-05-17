@@ -239,8 +239,9 @@ export function emailSignIn(data):Action {
     const body = { auth: data };
     const user = getState().user;
     const access_token = data.access_token;
-    const expiration_time = data.expiration_time;    return dispatch(rest.actions.auth.post(body, (err, data) => {
-      if (!err && data) {
+    const expiration_time = data.expiration_time;
+    return dispatch(rest.actions.auth.post(body, (err, data) => {
+      if (!err && !_.isEmpty(data)) {
         signInFromRest(dispatch, data, access_token, expiration_time);
       } else {
         dispatch(showFatalError('Email/Password are incorrect'))

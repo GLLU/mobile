@@ -10,7 +10,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import styles from './styles'
 import { emailSignUp } from '../../actions/user';
-
+import glluTheme from '../../themes/gllu-theme';
 const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/backgrounds/man-female_screen2.png');
