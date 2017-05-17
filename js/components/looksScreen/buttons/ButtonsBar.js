@@ -127,7 +127,7 @@ export default class ButtonsBar extends BaseComponent {
   renderItemVideoDataLine() {
     return (
       <View style={[styles.leftContainer, styles[this.props.direction]]}>
-        <ItemDataLine isOpen={this.state.itemLineOpen} onPress={() => this._onLikeClicked()}  itemY={this.state.itemY} data={this.props.items[0]}/>
+        <ItemDataLine isOpen={this.state.itemLineOpen} itemY={this.state.itemY} data={this.props.items[0]}/>
       </View>
     )
   }

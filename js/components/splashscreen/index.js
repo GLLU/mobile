@@ -40,6 +40,10 @@ class SplashPage extends BasePage {
       name: '',
       repeat: true
     };
+    console.log('this.props.showTutorial',this.props.showTutorial)
+    if(!this.props.showTutorial && Platform !== 'ios'){
+      this.navigateTo('tutorialscreen');
+    }
   }
 
   componentWillMount(){
@@ -182,7 +186,8 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  invitation_token: state.user.invitation_token
+  invitation_token: state.user.invitation_token,
+  showTutorial: state.user.showTutorial
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

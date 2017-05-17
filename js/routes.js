@@ -17,6 +17,7 @@ import NotificationsScreen from './components/notificationsscreen';
 import SettingsScreen from './components/settingsScreen';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import FinishLookScreen from './components/finishLookScreen';
+import TutorialScreen from './components/tutorialScreen'
 import BadNavigationScreen from './components/badNavigationScreen'
 
 const stackNavigatorConfig = {
@@ -79,6 +80,9 @@ const routes = {
   },
   editProfileScreen: {
     screen: EditProfile,
+  },
+  tutorialscreen: {
+    screen: TutorialScreen
   },
   badNavigation: {
     screen: BadNavigationScreen

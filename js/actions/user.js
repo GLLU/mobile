@@ -6,6 +6,7 @@ import rest from '../api/rest';
 import _ from 'lodash';
 
 export const SET_USER = 'SET_USER';
+export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const SET_INVITATION_TOKEN = 'SET_INVITATION_TOKEN';
@@ -226,8 +227,9 @@ export function emailSignIn(data): Action {
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
     return dispatch(rest.actions.auth.post(body, (err, data) => {
-      if (!err && data) {
+      if (!err && !_.isEmpty(data)) {
         signInFromRest(dispatch, data, access_token, expiration_time).then(resolve).catch(reject);
+        dispatch(hideFatalError())
       } else {
         const error='Email/Password are incorrect';
         dispatch(showFatalError(error))
@@ -343,5 +345,21 @@ export function logout() {
         })
         .catch(reject);
     })
+  };
+}
+
+
+export function clearTutorial() {
+  console.log('clear action')
+  return (dispatch, getState) => {
+    dispatch(hideTutorial())
+  };
+}
+
+export function hideTutorial() {
+  return (dispatch) => {
+    dispatch({
+      type: HIDE_TUTORIAL,
+    });
   };
 }

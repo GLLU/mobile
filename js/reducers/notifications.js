@@ -3,18 +3,18 @@ import { notificationMapper } from '../mappers/notificationsMapper'
 
 const initialState = {
   page: 0,
-  newNotifications: false
+  newNotifications: false,
 };
 
 export default function (state = initialState, action) {
 
   switch (action.type) {
     case actions.SET_USER_NOTIFICATIONS: {
-      let newNotifications;
+      let newNotifications = false;
       let allNotifications = []
       if(state.page === 0){
         allNotifications = action.payload.notificationsData.notifications.map(notificationMapper)
-        newNotifications = !allNotifications[0].is_read
+        newNotifications = action.payload.notificationsData.notifications.length > 0 ? !allNotifications[0].is_read : false
       } else {
         allNotifications = state.allNotifications
         allNotifications = allNotifications.concat(action.payload.notificationsData.notifications.map(notificationMapper))

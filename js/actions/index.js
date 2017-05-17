@@ -45,7 +45,10 @@ import { setUser,
   logout,
   setInvitationToken,
   invitationCheckExistance,
-  createInvitationCode } from './user';
+  createInvitationCode,
+  clearTutorial,
+  hideTutorial
+  } from './user';
 
 export {
   createEntity,
@@ -105,6 +108,8 @@ export {
   hideWarning,
   showInfo,
   hideInfo,
+  clearTutorial,
+  hideTutorial,
   getUserLooksData,
   getUserLooks,
   likeUpdate,
