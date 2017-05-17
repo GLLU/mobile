@@ -1,6 +1,6 @@
 import React from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Alert, Linking, Text, View } from 'react-native';
+import { StyleSheet, Alert, Linking, Text, View, Image } from 'react-native';
 import { Container, Header, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import { back, logout } from '../../actions';
@@ -40,9 +40,12 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   listItem: {
+    borderBottomWidth: 0
   },
   listItemThumbnail: {
     marginHorizontal: 10,
+    width: 25,
+    height: 25,
   },
   listItemText: {
     fontSize: 16,
@@ -114,7 +117,7 @@ class SettingsScreen extends BasePage {
     return _.map(list,(item,i)=>{
       return(
         <ListItem key={i} style={StyleSheet.flatten(styles.listItem)} onPress={item.onPress}>
-          <Thumbnail style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
+          <Image style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
           <Text style={styles.listItemText}>{item.text}</Text>
         </ListItem>
       );
@@ -164,7 +167,7 @@ class SettingsScreen extends BasePage {
       <Container theme={glluTheme}>
         <View style={{height:50}}>
           <View style={styles.header} >
-            <Button transparent onPress={() => this.popRoute()}>
+            <Button transparent onPress={() => this.popRoute()} style={{borderWidth: 0}}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
             </Button>
             <Text style={styles.headerTitle}>Settings</Text>
