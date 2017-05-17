@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BaseComponent from '../common/BaseComponent';
 import { View, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { createLookItem, setTagPosition, pushRoute, updateLookItem } from '../../actions';
+import { createLookItem, setTagPosition, updateLookItem } from '../../actions';
 import ImageWithTags from '../common/ImageWithTags';
 import VideoWithTags from '../common/VideoWithTags';
 const h = Dimensions.get('window').height;
@@ -11,9 +11,6 @@ const w = Dimensions.get('window').width;
 class TagItemPage extends BaseComponent {
 
   static propTypes = {
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
     lookId: React.PropTypes.number,
     image: React.PropTypes.string,
     items: React.PropTypes.array,
@@ -106,7 +103,6 @@ TagItemPage.defaultProps = {
 
 function bindActions(dispatch) {
   return {
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     setTagPosition: (position) => dispatch(setTagPosition(position)),
     updateLookItem: () => dispatch(updateLookItem()),
@@ -116,7 +112,6 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   const { itemId, lookId, image, items } = state.uploadLook;
   return {
-    navigation: state.cardNavigation,
     itemId,
     lookId,
     image,

@@ -84,7 +84,6 @@ function bindAction(dispatch) {
 const mapStateToProps = state => {
   const userSize = state.user.user_size ? state.user.user_size : {};
   return {
-    cardNavigation: state.cardNavigation,
     currentBodyType: state.myBodyType.currentBodyType,
     gender: state.user.gender,
     user_size: userSize

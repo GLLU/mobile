@@ -187,7 +187,6 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     currLookScreenId: state.userLooks.currId,
-    navigation: state.cardNavigation,
     userLooks: state.userLooks.userLooksData,
     myUserId: state.user.id,
     isLoading: state.loader.loading

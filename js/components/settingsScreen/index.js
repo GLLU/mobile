@@ -183,7 +183,6 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    navigation: state.cardNavigation,
     shareToken: state.user.invitation_share_token
   };
 };

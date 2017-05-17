@@ -29,7 +29,8 @@ const setRestOptions = function (dispatch, rest, user) {
       if (err.errors && err.errors.length > 0) {
         const error = _.first(err.errors);
         if (error == "Bad Credentials") {
-          dispatch(navigateTo('splashscreen'));
+          //what do we do with bad credentials here?
+          // dispatch(navigateTo('splashscreen'));
         }
       }
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
@@ -56,19 +57,6 @@ const signInFromRest = function (dispatch, data, invitation_token, invitationTok
     })
   });
 };
-
-export function resetUserNavigation() {
-  return (dispatch, getState) => {
-    const navigation = getState().cardNavigation;
-    dispatch(reset([
-      {
-        key: 'feedscreen',
-        index: 0,
-      },
-    ], navigation.key));
-    dispatch(navigateTo('feedscreen', 'feedscreen'));
-  }
-}
 
 export function setUser(user: string): Action {
 

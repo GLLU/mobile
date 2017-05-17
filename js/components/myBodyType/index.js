@@ -102,7 +102,6 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  cardNavigation: state.cardNavigation,
   bodyTypes: state.myBodyType.bodyTypes,
   currentBodyType: state.myBodyType.currentBodyType,
   currentIndex: state.myBodyType.currentIndex,

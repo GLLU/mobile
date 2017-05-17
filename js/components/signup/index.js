@@ -267,8 +267,6 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  cardNavigation: state.cardNavigation,
-});
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, bindAction)(SignUpPage);
