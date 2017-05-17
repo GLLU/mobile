@@ -59,8 +59,8 @@ class ProfileScreen extends BasePage {
   }
 
   componentWillMount() {
-    const userData = this.props.navigation.state.params;
     const {myUser} = this.props;
+    const userData = this.props.navigation.state.params;
     const user = this.state.isMyProfile ? myUser : userData;
     if (this.state.userId !== this.props.currLookScreenId) {
       const looksCall = {
@@ -197,7 +197,8 @@ class ProfileScreen extends BasePage {
 
   render() {
     const {isMyProfile} = this.state;
-    const {myUser, userData} = this.props;
+    const userData = this.props.navigation.state.params;
+    const {myUser} = this.props;
     const user = isMyProfile ? myUser : userData;
     let about_me = user.about_me;
     let avatar = user.avatar;

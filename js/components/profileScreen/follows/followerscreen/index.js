@@ -30,7 +30,8 @@ class FollowerScreen extends BasePage {
   }
 
   componentWillMount() {
-    if (this.props.userData.count) {
+    const userData = this.props.navigation.state.params;
+    if (userData.count) {
       this.getFollowersData();
     }
   }
@@ -40,7 +41,8 @@ class FollowerScreen extends BasePage {
   }
 
   getFollowersData() {
-    this.props.getUserFollowersData(this.props.userData.user.id, this.currentPageIndex);
+    const userData = this.props.navigation.state.params;
+    this.props.getUserFollowersData(userData.user.id, this.currentPageIndex);
     this.currentPageIndex++;
   }
 
@@ -61,25 +63,25 @@ class FollowerScreen extends BasePage {
   }
 
   _renderOnEmpty() {
+    const userData = this.props.navigation.state.params;
     return (
-      <EmptyView onUploadButtonPress={this._handleOpenPhotoModal} isMyProfile={this.props.userData.isMyProfile}
-                 name={this.props.userData.user.name}/>
+      <EmptyView onUploadButtonPress={this._handleOpenPhotoModal} isMyProfile={userData.isMyProfile}
+                 name={userData.user.name}/>
     );
   }
 
   render() {
-    const userData = props.navigation.state.params;
+    const userData = this.props.navigation.state.params;
     return (
           <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
             <FollowListView
               renderEmpty={this._renderOnEmpty}
-              headerData={this.props.userData}
+              headerData={userData}
               follows={this.props.followers}
               navigateTo={this.navigateTo}
               goBack={this.goBack}
               onEndReached={this.getFollowersData}
               mode={userData.mode}/>
-            );
             <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
                          onRequestClose={this._handleClosePhotoModal}/>
           </View>

@@ -1,7 +1,7 @@
 import rest from '../api/rest';
 import Config from 'react-native-config';
 import Pusher from 'pusher-js/react-native';
-import { showLoader, hideLoader } from './index';
+import { showLoader, hideLoader, navigateTo } from './index';
 
 // Actions
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
@@ -78,7 +78,7 @@ export function goToNotificationSubjectScreen(lookId, notificationId) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       dispatch(showLoader());
-      return dispatch(rest.actions.looks({"id": lookId}, {}, (err, lookData) => {
+      dispatch(rest.actions.looks({"id": lookId}, {}, (err, lookData) => {
         if (!err && lookData) {
           lookData = mapNotificationLookObj(lookData.look)
           lookData.singleItem = true;

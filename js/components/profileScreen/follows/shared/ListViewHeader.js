@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text, Platform,View } from 'react-native';
-import {  Icon } from 'native-base';
+import { ListView, Image, StyleSheet, TouchableOpacity, Text, Platform, View } from 'react-native';
+import { Icon } from 'native-base';
 import * as _ from 'lodash'
 import FontSizeCalculator from './../../../../calculators/FontSize';
 
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 20 : 12,
     paddingBottom: 12,
     backgroundColor: '#f2f2f2',
-    height:60
+    height: 60
   },
   row: {
     flexDirection: 'row'
@@ -55,15 +55,15 @@ class ListViewHeader extends Component {
 
   render() {
     return (
-      <View style={[styles.container,styles.column]}>
-        <View style={[styles.header,styles.row]}>
-          <View style={{flex:0.5}} name="spacer"/>
-          <TouchableOpacity style={{flex:1}} onPress={() => this.props.goBack()}>
+      <View style={[styles.container, styles.column]}>
+        <View style={[styles.header, styles.row]}>
+          <View style={{flex: 0.5}} name="spacer"/>
+          <TouchableOpacity style={{flex: 1}} onPress={() => this.props.goBack()}>
             <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           <Text style={styles.followsTitle}>{_.startCase(this.props.title)}</Text>
           { this.props.count ? <Text style={styles.followsCount}>{this.props.count}</Text> : null }
-          <View style={{flex:0.5}} name="spacer"/>
+          <View style={{flex: 0.5}} name="spacer"/>
         </View>
       </View>
     );

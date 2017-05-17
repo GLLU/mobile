@@ -29,7 +29,6 @@ const setRestOptions = function (dispatch, rest, user) {
         const error = _.first(err.errors);
         if (error == "Bad Credentials") {
           //what do we do with bad credentials here?
-          // dispatch(navigateTo('splashscreen'));
         }
       }
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);

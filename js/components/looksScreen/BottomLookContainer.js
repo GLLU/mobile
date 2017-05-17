@@ -26,7 +26,7 @@ export default class BottomLookContainer extends BaseComponent {
     width: React.PropTypes.number,
     height: React.PropTypes.number,
     isMenuOpen: React.PropTypes.bool,
-    tempPopRoute: React.PropTypes.func,
+    goBack: React.PropTypes.func,
     goToProfile: React.PropTypes.func,
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
@@ -35,7 +35,7 @@ export default class BottomLookContainer extends BaseComponent {
   };
 
   static defaultProps = {
-    tempPopRoute: _.noop,
+    goBack: _.noop,
     goToProfile: _.noop,
     toggleLike: _.noop,
     toggleMenu: _.noop,
@@ -142,7 +142,7 @@ export default class BottomLookContainer extends BaseComponent {
       <View style={{marginTop: 0}}>
         <LookHeader
           avatar={{uri: this.props.look.avatar.url}}
-          onBackNavigationPress={this.props.tempPopRoute}
+          onBackNavigationPress={this.props.goBack}
           onProfileAvatarPress={() => this.props.goToProfile(this.props.look)}/>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>

@@ -38,7 +38,6 @@ class LooksContainer extends BasePage {
     meta: React.PropTypes.object,
     query: React.PropTypes.object,
     navigateTo: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
     unLikeUpdate: React.PropTypes.func,
@@ -118,6 +117,7 @@ class LooksContainer extends BasePage {
   }
 
   _goToProfile(look) {
+
     this.props.navigateTo('profileScreen',look);
   }
 
@@ -208,7 +208,7 @@ class LooksContainer extends BasePage {
           width={width}
           height={height}
           look={look}
-          tempPopRoute={this.props.goBack}
+          goBack={this.props.goBack}
           goToProfile={(look) => this._goToProfile(look)}
           toggleLike={(isLiked) => this._toggleLike(isLiked)}
           toggleMenu={() => this._toggleMenu()}
@@ -239,7 +239,7 @@ class LooksContainer extends BasePage {
                 width={width}
                 height={height}
                 look={look}
-                tempPopRoute={this.props.goBack}
+                goBack={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
                 toggleLike={(isLiked) => this._toggleLike(isLiked)}
                 toggleMenu={() => this._toggleMenu()}

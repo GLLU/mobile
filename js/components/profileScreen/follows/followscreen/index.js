@@ -23,7 +23,8 @@ class FollowScreen extends BasePage {
   }
 
   componentWillMount() {
-    if (this.props.userData.count) {
+    const userData = this.props.navigation.state.params;
+    if (userData.count) {
       this.getFollowsData();
     }
   }
@@ -33,22 +34,24 @@ class FollowScreen extends BasePage {
   }
 
   getFollowsData() {
-    this.props.getUserFollowsData(this.props.userData.user.id, this.currentPageIndex);
+    const userData = this.props.navigation.state.params;
+    this.props.getUserFollowsData(userData.user.id, this.currentPageIndex);
     this.currentPageIndex++;
   }
 
   _renderOnEmpty() {
+    const userData = this.props.navigation.state.params;
     return (
-      <EmptyView onFindInterestingPeopleButtonPress={()=>this.resetTo('feedscreen')} isMyProfile={this.props.userData.isMyProfile} name={this.props.userData.user.name}/>
+      <EmptyView onFindInterestingPeopleButtonPress={()=>this.resetTo('feedscreen')} isMyProfile={userData.isMyProfile} name={userData.user.name}/>
     );
   }
 
   render() {
-    const userData = props.navigation.state.params;
+    const userData = this.props.navigation.state.params;
     return (
       <FollowListView
         renderEmpty={this._renderOnEmpty}
-        headerData={this.props.userData}
+        headerData={userData}
         follows={this.props.follows}
         navigateTo={this.navigateTo}
         goBack={this.goBack}
