@@ -3,7 +3,6 @@ import BasePage from '../common/BasePage';
 import {View, Image, InteractionManager, Platform } from 'react-native';
 import Spinner from '../loaders/Spinner';
 import LooksContainer from './looksContainer';
-import { actions } from 'react-native-navigation-redux-helpers';
 
 
 class LooksScreen extends BasePage {

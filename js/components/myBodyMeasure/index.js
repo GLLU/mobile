@@ -6,7 +6,6 @@ import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { saveUserSize } from '../../actions/myBodyMeasure';
 
 import BodyMeasureView from './bodyMeasureView';

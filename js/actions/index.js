@@ -46,10 +46,6 @@ import { setUser,
   setInvitationToken,
   invitationCheckExistance,
   createInvitationCode } from './user';
-import { actions } from 'react-native-navigation-redux-helpers';
-const {
-  replaceAt,
-} = actions;
 
 export {
   createEntity,
@@ -80,7 +76,6 @@ export {
   checkLogin,
   logout,
   loginViaFacebook,
-  replaceAt,
   addItemType,
   createBrandName,
   addBrandName,

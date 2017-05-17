@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";

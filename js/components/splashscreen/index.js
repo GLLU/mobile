@@ -4,7 +4,6 @@ import BasePage from '../common/BasePage';
 import { View, Image, Linking, Platform, AppState, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Content, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { actions } from 'react-native-navigation-redux-helpers';
 import Utils from '../../Utils.js'
 import { connect } from 'react-redux';
 import styles from './styles';
