@@ -45,6 +45,7 @@ export default function (state = initialState, action) {
         }
         return notification
       })
+
       return {
         ...state,
         allNotifications: newNotificationArr,
