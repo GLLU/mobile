@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, StyleProvider, getTheme } from 'native-base';
 import BasePage from '../common/BasePage';
 import styles from './styles'
-import glluTheme from '../../themes/gllu-theme'
+import glluTheme from '../../themes/gllu-theme';
 
 const background = require('../../../images/backgrounds/man-female_screen2.png');
 
@@ -18,6 +18,7 @@ class SignUpGenderPage extends BasePage {
 
   }
 
+
   handleGenderPress(gender) {
     this.logEvent(`GenderSelectScreen`, { name: 'Gender click', gender });
     this.navigateTo('signupemail', {gender:gender});
@@ -30,7 +31,7 @@ class SignUpGenderPage extends BasePage {
           <Image source={background} style={styles.shadow} blurRadius={0}>
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={() => this.goBack()}>
+                <Button transparent onPress={()=>this.goBack()}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Sign up</Text>
@@ -65,6 +66,7 @@ class SignUpGenderPage extends BasePage {
       </Container>
     );
   }
+
 }
 
 export default SignUpGenderPage;
