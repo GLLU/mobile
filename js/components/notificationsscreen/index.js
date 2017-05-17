@@ -14,7 +14,6 @@ class NotificationsScreen extends BasePage {
   constructor(props) {
     super(props);
     this.getNotificationsData = this.getNotificationsData.bind(this);
-    this._renderOnEmpty = this._renderOnEmpty.bind(this);
   }
 
   componentDidMount() {
@@ -25,24 +24,13 @@ class NotificationsScreen extends BasePage {
     this.props.getNotifications() // need to be moved to notification page
   }
 
-  _handleOpenPhotoModal() {
-    this.setState({photoModal: true});
-  }
-
-  _renderOnEmpty() {
-    return (
-      <EmptyView onUploadButtonPress={this._handleOpenPhotoModal}
-                 name={'yoni'}/>
-    );
-  }
-
   render() {
     let headerData = {
       mode: 'Notifications',
     }
     return (
           <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}}>
-            <NotificationListView renderEmpty={this._renderOnEmpty}
+            <NotificationListView renderEmpty={()=><EmptyView/>}
                                   headerData={headerData}
                                   notifications={this.props.notifications}
                                   navigateTo={this.navigateTo}

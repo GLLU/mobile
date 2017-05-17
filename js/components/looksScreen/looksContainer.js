@@ -116,7 +116,6 @@ class LooksContainer extends BasePage {
   }
 
   _goToProfile(look) {
-
     this.props.navigateTo('profileScreen',look);
   }
 

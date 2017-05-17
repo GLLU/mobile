@@ -57,10 +57,10 @@ class NotificationListView extends Component {
 
   onUserNavigate(props) {
     if(props.action_kind === 'Follow') {
-      this.navigateTo('profileScreen',props);
+      this.props.navigateTo('profileScreen',props);
     } else  {
       this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
-        .then(look=>this.navigateTo('looksScreen', look));
+        .then(look=>this.props.navigateTo('looksScreen', look));
     }
 
   }
