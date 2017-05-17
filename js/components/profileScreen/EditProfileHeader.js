@@ -19,7 +19,8 @@ class ProfileHeader extends BaseComponent {
 
   constructor(props) {
     super(props);
-
+    this.handleCancelPress=this.handleCancelPress.bind(this);
+    this.handleSavePress=this.handleSavePress.bind(this);
     this.state = {
       height: 0
     }
@@ -38,10 +39,10 @@ class ProfileHeader extends BaseComponent {
   render() {
     return (
       <View style={styles.header}>
-        <TouchableOpacity transparent onPress={this.handleCancelPress.bind(this)} style={styles.headerBtn}>
+        <TouchableOpacity transparent onPress={this.handleCancelPress} style={styles.headerBtn}>
           <Image source={cancelEdit} style={styles.cancelEdit} />
         </TouchableOpacity>
-        <TouchableOpacity transparent onPress={this.handleSavePress.bind(this)} style={styles.headerBtn}>
+        <TouchableOpacity transparent onPress={this.handleSavePress} style={styles.headerBtn}>
           <View style={styles.saveChangesContainer}>
             <Icon size={20} color={'white'} name={'check'}/>
           </View>

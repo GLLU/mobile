@@ -35,7 +35,7 @@ class EditProfile extends BasePage {
 
   _saveChanges(){
     const { user, bodyType } = this.props;
-    const data = {
+    const measurements = {
       body_type: bodyType.body_type,
       chest: user.user_size.chest,
       waist: user.user_size.waist,
@@ -44,7 +44,7 @@ class EditProfile extends BasePage {
       measurements_scale: user.user_size.measurements_scale
     };
     this.props.changeUserAboutMe({id: this.props.user.id, about_me: this.state.about_me});
-    this.props.saveUserSize(data);
+    this.props.saveUserSize(measurements).then(this.goBack);
   }
 
   _changeUserAvatar() {
@@ -75,7 +75,7 @@ class EditProfile extends BasePage {
         <View style={{position: 'absolute', top: 0}}>
           <Image source={profileBackground} style={styles.editProfileBg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7, height: 150}]} />
-          <EditProfileHeader cancelEdit={() => this.goBack()} save={() => this._saveChanges()} />
+          <EditProfileHeader cancelEdit={this.goBack} save={() => this._saveChanges()} />
           </Image>
         </View>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
@@ -116,7 +116,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    navigation: state.cardNavigation,
+    cardNavigation: state.cardNavigation,
     myUserId: state.user.id,
     stats: state.stats,
     user: state.user,
