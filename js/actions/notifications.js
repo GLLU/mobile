@@ -1,7 +1,7 @@
 import rest from '../api/rest';
 import Config from 'react-native-config';
 import Pusher from 'pusher-js/react-native';
-import { showLoader, hideLoader, navigateTo } from './index';
+import { showLoader, hideLoader } from './index';
 
 // Actions
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
@@ -75,19 +75,20 @@ export function markAsReadNotifications(notificationId) {
 }
 
 export function goToNotificationSubjectScreen(lookId, notificationId) {
-  return (dispatch, getState) => {
-    dispatch(showLoader())
-    return dispatch(rest.actions.looks({"id": lookId}, {}, (err, lookData) => {
-      if (!err && lookData) {
-        lookData = mapNotificationLookObj(lookData.look)
-        lookData.singleItem = true
-        console.log('notificationId',notificationId)
-        dispatch(markAsReadNotifications(notificationId))
-        dispatch(navigateTo('looksScreen', 'feedscreen', lookData));
-        dispatch(hideLoader())
-
-      }
-    }));
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      dispatch(showLoader());
+      return dispatch(rest.actions.looks({"id": lookId}, {}, (err, lookData) => {
+        if (!err && lookData) {
+          lookData = mapNotificationLookObj(lookData.look)
+          lookData.singleItem = true;
+          console.log('notificationId', notificationId)
+          dispatch(markAsReadNotifications(notificationId))
+          dispatch(hideLoader());
+          resolve(lookData);
+        }
+      }));
+    })
   };
 }
 

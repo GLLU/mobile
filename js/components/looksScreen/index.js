@@ -38,10 +38,11 @@ class LooksScreen extends BasePage {
   }
 
   renderScrollView() {
+    const flatLook=this.props.navigation.state.params
     return (
     <View>
       {this.state.showLoader ? this.renderLoader() : null}
-      <LooksContainer {...this.props} navigateTo={this.navigateTo} goBack={()=>this.goBack()} flatLook={this.props.navigation.state.params} renderScroll={this.state.renderScroll} removeLoader={() => this.removeLoader()}/>
+      <LooksContainer {...this.props} navigateTo={this.navigateTo} goBack={this.goBack} flatLook={flatLook} renderScroll={this.state.renderScroll} removeLoader={() => this.removeLoader()}/>
     </View>
     )
   }

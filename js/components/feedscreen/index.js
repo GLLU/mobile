@@ -9,7 +9,7 @@ import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyType from '../myBodyType';
-import { addNewLook, setUser, navigateTo, getNotifications, createInvitationCode } from '../../actions';
+import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
 import Gllu from '../common';
@@ -24,7 +24,6 @@ class FeedPage extends BasePage {
       key: React.PropTypes.string,
     }),
     setUser: React.PropTypes.func,
-    navigateTo: React.PropTypes.func,
     addNewLook: React.PropTypes.func,
   }
 
@@ -139,7 +138,6 @@ class FeedPage extends BasePage {
 
 function bindActions(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),

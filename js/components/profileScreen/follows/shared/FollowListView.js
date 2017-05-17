@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Dimensions,ListView, Image, StyleSheet, TouchableOpacity, Text,View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate } from '../../../../actions';
+import { followUpdate, unFollowUpdate } from '../../../../actions';
 import ListViewHeader from './ListViewHeader';
 import FollowRow from './FollowRow';
 
@@ -54,9 +54,7 @@ class FollowListView extends Component {
   }
 
   onUserNavigate(user) {
-    this.props.popRoute(this.props.navigation.key);
-    this.props.popRoute(this.props.navigation.key);
-    this.props.navigateTo('profileScreen', `feedscreen`, user);
+    this.props.navigateTo('profileScreen', user);
   }
 
   toggleFollowAction(user, shouldFollow) {
@@ -86,7 +84,7 @@ class FollowListView extends Component {
     const count = this.props.headerData.count ? this.props.headerData.count : 0;
     return (
       <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}}>
-        <ListViewHeader count={count} title={`My ${this.props.headerData.mode}`}/>
+        <ListViewHeader goBack={this.props.goBack} count={count} title={`My ${this.props.headerData.mode}`}/>
         {this.props.headerData.count > 0 ? this.renderListView() : this.props.renderEmpty()}
       </View>
     );
@@ -95,19 +93,12 @@ class FollowListView extends Component {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     followUpdate: (id) => dispatch(followUpdate(id)),
     unFollowUpdate: (id) => dispatch(unFollowUpdate(id))
   };
 }
 
-const mapStateToProps = state => {
-  return {
-    navigation: state.cardNavigation,
-  }
-};
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, bindAction)(FollowListView);
 

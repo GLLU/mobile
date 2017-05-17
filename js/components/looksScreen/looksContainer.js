@@ -13,12 +13,9 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import { likeUpdate, unLikeUpdate } from '../../actions/likes';
-import { loadMore, replaceAt } from '../../actions';
+import { likeUpdate, unLikeUpdate,loadMore } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import navigateTo from '../../actions/sideBarNav';
 import Video from 'react-native-video';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from "lodash";
@@ -29,7 +26,6 @@ const config = {
 };
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const width = Dimensions.get('window').width;
-const {popRoute, pushRoute} = actions;
 
 class LooksContainer extends BasePage {
   static propTypes = {
@@ -52,6 +48,7 @@ class LooksContainer extends BasePage {
 
   constructor(props) {
     super(props);
+    this._goToProfile=this._goToProfile.bind(this);
     this.onToggleDrawer=this.onToggleDrawer.bind(this);
     this.state = {
       fadeAnim: new Animated.Value(0.35),
@@ -314,20 +311,16 @@ class LooksContainer extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     reportAbuse: (lookId) => dispatch(reportAbuse(lookId)),
     loadMore: () => dispatch(loadMore()),
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
 
 const mapStateToProps = state => {
   return {
     isLoading: state.loader.loading,
-    navigation: state.cardNavigation,
     flatLooksData: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,

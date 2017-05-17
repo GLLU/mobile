@@ -135,7 +135,7 @@ class UserLooks extends Component {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen', 'profilescreen');
+        this.props.navigateTo('addItemScreen');
       });
     })
   }

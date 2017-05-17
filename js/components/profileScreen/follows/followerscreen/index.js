@@ -5,11 +5,12 @@ import { ListView, Image, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
 import SelectPhoto from '../../../common/SelectPhoto';
-import { navigateTo, popRoute, addNewLook, getUserFollowersData, initUserFollowers } from '../../../../actions';
+import { addNewLook, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
 import FollowListView from '../shared/FollowListView'
+import BasePage from "../../../common/BasePage";
 
-class FollowerScreen extends Component {
+class FollowerScreen extends BasePage {
 
   static propTypes = {
     mode: React.PropTypes.string,
@@ -54,8 +55,7 @@ class FollowerScreen extends Component {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.popRoute(this.props.navigation.key);
-        this.props.navigateTo('addItemScreen', 'profileScreen');
+        this.navigateTo('addItemScreen');
       });
     })
   }
@@ -68,11 +68,18 @@ class FollowerScreen extends Component {
   }
 
   render() {
+    const userData = props.navigation.state.params;
     return (
           <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
-            <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData}
-                            follows={this.props.followers}
-                            onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>
+            <FollowListView
+              renderEmpty={this._renderOnEmpty}
+              headerData={this.props.userData}
+              follows={this.props.followers}
+              navigateTo={this.navigateTo}
+              goBack={this.goBack}
+              onEndReached={this.getFollowersData}
+              mode={userData.mode}/>
+            );
             <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
                          onRequestClose={this._handleClosePhotoModal}/>
           </View>
@@ -82,8 +89,6 @@ class FollowerScreen extends Component {
 
 function bindAction(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    popRoute: key => dispatch(popRoute(key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserFollowersData: (id, pageNumber, pageSize) => dispatch(getUserFollowersData(id, pageNumber, pageSize)),
     initUserFollowers: () => dispatch(initUserFollowers()),
@@ -93,7 +98,6 @@ function bindAction(dispatch) {
 const mapStateToProps = state => {
   return {
     followers: state.userFollowers.userFollowersData,
-    navigation: state.cardNavigation,
   }
 };
 

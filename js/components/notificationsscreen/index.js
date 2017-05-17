@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity,View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
-import { navigateTo, popRoute, getNotifications, clearNewNotifications } from '../../actions';
+import { getNotifications, clearNewNotifications } from '../../actions';
 
 import NotificationListView from './notificationsList/NotificationListView'
 import BasePage from "../common/BasePage";
@@ -56,8 +56,6 @@ class NotificationsScreen extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    popRoute: key => dispatch(popRoute(key)),
     getNotifications: name => dispatch(getNotifications(name)),
     clearNewNotifications: name => dispatch(clearNewNotifications(name)),
   };

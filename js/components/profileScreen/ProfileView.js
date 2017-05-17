@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, StyleSheet,View} from 'react-native';
 import { connect } from 'react-redux';
-import { logout, navigateTo, followUpdate, unFollowUpdate } from '../../actions';
+import { logout, followUpdate, unFollowUpdate } from '../../actions';
 import FollowView from './follows/FollowView.js'
 import BaseComponent from '../common/BaseComponent';
 
@@ -87,7 +87,7 @@ class ProfileView extends BaseComponent {
 
   handleEditPress(e) {
     this.logEvent('ProfileScreen', { name: 'Edit click' });
-    this.props.navigateTo('editProfileScreen', 'profileScreen', this.props.user);
+    this.props.navigateTo('editProfileScreen', this.props.user);
   }
 
   toggleFollowAction(user, isFollowing) {
@@ -126,7 +126,6 @@ class ProfileView extends BaseComponent {
 
 function bindAction(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     followUpdate: (id) => dispatch(followUpdate(id)),
     unFollowUpdate: (id) => dispatch(unFollowUpdate(id)),
     logout: () => dispatch(logout()),

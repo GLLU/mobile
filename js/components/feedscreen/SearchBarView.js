@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, Platform,View , TouchableWithoutFeedback, TouchableOpacity, InteractionManager } from 'react-native'
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
 import SearchBar from './SearchBar';
 
@@ -57,7 +56,6 @@ class SearchBarView extends BaseComponent {
     user: React.PropTypes.object,
     handleSearchStatus: React.PropTypes.func,
     handleOpenPhotoModal: React.PropTypes.func,
-    navigateTo: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -66,11 +64,6 @@ class SearchBarView extends BaseComponent {
       hasNotify: false,
       searchStatus: false
     };
-  }
-
-  goToProfile() {
-    this.logEvent('Feedscreen', { name: 'Profile click' });
-    this.props.navigateTo('profileScreen', 'feedscreen', this.props.user);
   }
 
   openCamera() {
@@ -106,16 +99,10 @@ class SearchBarView extends BaseComponent {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-  };
-}
-
 const mapStateToProps = state => {
   return {
     user: state.user,
   }
 };
 
-export default connect(mapStateToProps, bindActions)(SearchBarView);
+export default connect(mapStateToProps)(SearchBarView);

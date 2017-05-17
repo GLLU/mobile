@@ -223,6 +223,7 @@ class ProfileScreen extends BasePage {
                                  isMyProfile={this.state.isMyProfile}
                                  isFollowing={this.state.isFollowing}
                                  onFollowPress={this.toggleFollow.bind(this)}
+                                 navigateTo = {this.navigateTo}
                     /> : null }
                   <TouchableOpacity transparent onPress={() => this.goBack()} style={styles.headerBtn}>
                     { this._renderRightBtn() }
