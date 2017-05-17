@@ -3,7 +3,7 @@
   "version": "5.2.1",
   "private": true,
   "scripts": {
-    "postinstall": "rndebugger-open",
+    "postinstall": "rndebugger-open --open --port 8081",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint",
     "test": "jest"
