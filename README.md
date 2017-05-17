@@ -4,6 +4,7 @@
 
 - clone code from github
 - install node packages: `npm install`
+- brew cask install react-native-debugger
 
 ### Run in iOS
 - install `ruby` and `cocoapods` gem:
