@@ -96,6 +96,7 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderCommentsView(isActive) {
     return <CommentsView
+      goToProfile={this.props.goToProfile}
       look_id={this.props.look.id}
       count={this.state.comments}
       isOpen={isActive}

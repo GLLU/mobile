@@ -9,7 +9,7 @@ import CommentsListView from './CommentsListView'
 import BottomDrawerModal from '../common/BottomDrawerModal'
 import Spinner from '../../loaders/Spinner';
 
-import { replaceAt, getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
+import { getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -61,6 +61,7 @@ class CommentsView extends Component {
     count: React.PropTypes.number,
     look_id: React.PropTypes.number,
     onRequestClose: React.PropTypes.func,
+    goToProfile: React.PropTypes.func,
     areCommentsLoaded: React.PropTypes.bool
   };
 
@@ -68,7 +69,8 @@ class CommentsView extends Component {
     style: {},
     isOpen: false,
     comments: [],
-    onRequestClose: noop
+    onRequestClose: noop,
+    goToProfile: noop,
   };
 
   constructor(props) {
@@ -120,7 +122,7 @@ class CommentsView extends Component {
   }
 
   onUserNavigate(user) {
-    this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: user}, this.props.navigation.key);
+    this.props.goToProfile('profileScreen',user);
   }
 
   _renderFooter() {
@@ -153,7 +155,6 @@ class CommentsView extends Component {
 
 function bindAction(dispatch) {
   return {
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
     getLookCommentsData: (id, pageNumber, pageSize) => dispatch(getLookCommentsData(id, pageNumber, pageSize)),
     initLookComments: () => dispatch(initLookComments()),
     addLookComment: (data) => dispatch(addLookComment(data)),
@@ -164,8 +165,7 @@ const mapStateToProps = state => {
   return ({
     myUser: state.user,
     comments: state.lookComments.lookCommentsData,
-    areCommentsLoaded: state.lookComments.currId !== -1,
-    navigation: state.cardNavigation
+    areCommentsLoaded: state.lookComments.currId !== -1
   });
 };
 
