@@ -13,7 +13,6 @@ export default function (state = initialState, action) {
       let newNotifications = false;
       let allNotifications = []
       if(state.page === 0){
-        console.log('payload',action.payload)
         allNotifications = action.payload.notificationsData.notifications.map(notificationMapper)
         newNotifications = action.payload.notificationsData.notifications.length > 0 ? !allNotifications[0].is_read : false
       } else {
