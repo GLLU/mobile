@@ -250,6 +250,7 @@ export function emailSignIn(data):Action {
     return dispatch(rest.actions.auth.post(body, (err, data) => {
       if (!err && !_.isEmpty(data)) {
         signInFromRest(dispatch, data, access_token, expiration_time);
+        dispatch(hideFatalError())
       } else {
         dispatch(showFatalError('Email/Password are incorrect'))
       }
