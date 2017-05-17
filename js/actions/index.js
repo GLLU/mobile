@@ -48,12 +48,7 @@ import { setUser,
   createInvitationCode } from './user';
 import { actions } from 'react-native-navigation-redux-helpers';
 const {
-  reset,
   replaceAt,
-  replaceAtIndex,
-  popRoute,
-  pushRoute,
-  back,
 } = actions;
 
 export {
@@ -85,12 +80,7 @@ export {
   checkLogin,
   logout,
   loginViaFacebook,
-  reset,
   replaceAt,
-  replaceAtIndex,
-  pushRoute,
-  popRoute,
-  back,
   addItemType,
   createBrandName,
   addBrandName,

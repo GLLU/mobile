@@ -38,7 +38,6 @@ class LooksContainer extends BasePage {
     meta: React.PropTypes.object,
     query: React.PropTypes.object,
     navigateTo: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
     unLikeUpdate: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,

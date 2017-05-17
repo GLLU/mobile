@@ -1,6 +1,6 @@
 import type { Action } from './types';
 import { createEntity, setAccessToken } from 'redux-json-api';
-import { showLoader, hideLoader, reset, showError, hideError, showFatalError, hideFatalError } from './index';
+import { showLoader, hideLoader, showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../Utils';
 import rest from '../api/rest';
 import _ from 'lodash';

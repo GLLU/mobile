@@ -115,10 +115,6 @@ class SignUpPage extends BasePage {
   });
   }
 
-  pushRoute(route) {
-    this.props.navigation.navigate(route)
-  }
-
   handleCameraPress() {
   this.logEvent('SignUpEmailScreen', { name: 'Camera click' });
   this.addUserAvatar();

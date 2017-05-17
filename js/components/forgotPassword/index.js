@@ -91,7 +91,7 @@ class forgotPasswordPage extends BasePage {
           </Row>
         </Grid>
         <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.forgotPasswordEmail()}>
-          Reset My Password
+          <Text>Reset My Password</Text>
         </Button>
       </Content>
     );

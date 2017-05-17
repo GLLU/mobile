@@ -65,10 +65,6 @@ class SignInPage extends BasePage {
     return (validationArray.indexOf('times') === -1)
   }
 
-  pushRoute(route) {
-    this.props.navigation.navigate(route)
-  }
-
   validateEmailInput(email) {
     emailRule.validate(email, (err) => {
       if(!err){

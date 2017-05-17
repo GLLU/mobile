@@ -3,7 +3,6 @@ import BasePage from '../common/BasePage';
 import { Image, Animated, InteractionManager, TouchableOpacity,View, Text, TextInput, ScrollView, FormData} from 'react-native';
 import styles from './styles';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import LinearGradient from 'react-native-linear-gradient';
 import ImagePicker from 'react-native-image-crop-picker';
 import BodyMeasureView from '../myBodyMeasure/bodyMeasureView';
@@ -17,14 +16,12 @@ import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
-const { popRoute } = actions;
 
 class EditProfile extends BasePage {
   static propTypes = {
     user: React.PropTypes.object,
     navigation: React.PropTypes.object,
     bodyType: React.PropTypes.object,
-    popRoute: React.PropTypes.func,
     saveUserSize: React.PropTypes.func,
     changeUserAvatar: React.PropTypes.func,
     changeUserAboutMe: React.PropTypes.func,
@@ -34,10 +31,6 @@ class EditProfile extends BasePage {
     this.state = {
       about_me: this.props.user.about_me ? this.props.user.about_me : '',
     }
-  }
-
-  _PopRoute() {
-    this.props.popRoute(this.props.navigation.key);
   }
 
   _saveChanges(){
@@ -82,7 +75,7 @@ class EditProfile extends BasePage {
         <View style={{position: 'absolute', top: 0}}>
           <Image source={profileBackground} style={styles.editProfileBg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7, height: 150}]} />
-          <EditProfileHeader popRoute={() => this._PopRoute()} save={() => this._saveChanges()} />
+          <EditProfileHeader cancelEdit={() => this.goBack()} save={() => this._saveChanges()} />
           </Image>
         </View>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
@@ -114,7 +107,6 @@ class EditProfile extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
     saveUserSize: (measurements) => dispatch(saveUserSize(measurements)),
     changeUserAvatar: (data) => dispatch(changeUserAvatar(data)),
     changeUserAboutMe: (data) => dispatch(changeUserAboutMe(data))

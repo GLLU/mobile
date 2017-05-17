@@ -13,7 +13,7 @@ const cancelEdit = require('../../../images/icons/cancelEdit.png');
 class ProfileHeader extends BaseComponent {
 
   static propTypes = {
-    popRoute: React.PropTypes.func,
+    cancelEdit: React.PropTypes.func,
     save: React.PropTypes.func
   }
 
@@ -27,7 +27,7 @@ class ProfileHeader extends BaseComponent {
 
   handleCancelPress() {
     this.logEvent('EditProfileScreen', { name: 'Cancel click' });
-    this.props.popRoute();
+    this.props.cancelEdit();
   }
 
   handleSavePress() {
