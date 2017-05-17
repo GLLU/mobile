@@ -95,7 +95,6 @@ class TabContent extends BaseComponent {
       if (currentScroll === contentSizeHeight - layoutMeasurementHeight) {
         if(this.contentHeight !== contentSizeHeight) {
           this.contentHeight = contentSizeHeight
-          console.log('load moreeeeeee');
           this.loadMoreAsync();
         }
 
@@ -147,7 +146,7 @@ class TabContent extends BaseComponent {
     return looks.map((look, index) => {
       return (
         <MediaContainer look={look}
-                        key={index}
+                        key={look.id}
                         index={index}
                         currScroll={this.state.currentScrollPosition}
                         likeUpdate={(data) => this.props.likeUpdate(data)}

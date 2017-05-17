@@ -134,7 +134,7 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   editProfileBg: {
-    width: null,
+    width: w,
     height: 150
   },
   cancelEdit: {
@@ -220,7 +220,7 @@ export default StyleSheet.create({
     marginRight: 20,
   },
   scrollView: {
-    marginTop: 60
+    marginTop: 210,
   },
   privateInfoContainer: {
     marginTop: 15,

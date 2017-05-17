@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, Image,View, Text  } from 'react-native';
 import styles from './styles';
 import { connect } from 'react-redux';
-import { hideError, hideWarning, hideInfo } from '../../actions/errorHandler';
+import { hideError, hideWarning, hideInfo, hideFatalError } from '../../actions/errorHandler';
 
 const cancelEdit = require('../../../images/icons/cancelEdit.png');
 
@@ -21,10 +21,14 @@ class ErrorHandler extends Component {
     else {
       if (this.props.warning) {
         this.props.hideWarning();
+      } else {
+        if(this.props.fatalError) {
+          this.props.hideFatalError();
+        } else {
+          this.props.hideInfo();
+        }
       }
-      else {
-        this.props.hideInfo();
-      }
+
     }
   }
 
@@ -33,8 +37,10 @@ class ErrorHandler extends Component {
   }
 
   render() {
-    let text = this.props.error.length > 0 ? `Watch out: ${this.props.error}` : this.props.warning.length > 0 ? `Watch out: ${this.props.warning}` : this.props.info;
-    let color = this.props.error.length > 0 ? '#993333' : this.props.warning.length > 0 ? '#cc9900' : '#3C997E';
+    let text = this.props.error.length > 0 ? `Watch out: ${this.props.error}`
+      :
+      this.props.warning.length > 0 ? `Watch out: ${this.props.warning}` : this.props.fatalError.length > 0 ? `Watch out: ${this.props.fatalError}` : this.props.info;
+    let color = this.props.error.length > 0 ? '#993333' : this.props.fatalError.length > 0 ? '#993333' :  this.props.warning.length > 0 ? '#cc9900' : '#3C997E';
     return (
       <View style={[styles.container, {backgroundColor: color}]}>
         <Text style={styles.textStyle}>{text}</Text>
@@ -50,6 +56,7 @@ class ErrorHandler extends Component {
 function bindActions(dispatch) {
   return {
     hideError: name => dispatch(hideError()),
+    hideFatalError: name => dispatch(hideFatalError()),
     hideWarning: name => dispatch(hideWarning()),
     hideInfo: name => dispatch(hideInfo()),
   };
@@ -58,6 +65,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     error: state.errorHandler.error || '',
+    fatalError: state.errorHandler.fatal_error || '',
     warning: state.errorHandler.warning || '',
     info: state.errorHandler.info || ''
   }

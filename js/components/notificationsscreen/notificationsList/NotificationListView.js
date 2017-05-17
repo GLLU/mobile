@@ -12,7 +12,7 @@ import NotificationRow from './NotificationRow';
 const styles = StyleSheet.create({
   separator: {
     flex: 1,
-    height: StyleSheet.hairlineWidth,
+    height: 1,
     backgroundColor: '#e6e6e6',
   },
 });
@@ -94,11 +94,10 @@ class NotificationListView extends Component {
   }
 
   render() {
-    const count = this.props.headerData.count ? this.props.headerData.count : null
     return (
       <View style={{flex:1, flexDirection:'column'}}>
-        <ListViewHeader count={count} title={`My ${this.props.headerData.mode}`}/>
-        {this.props.headerData.count > 0 ? this.renderListView() : this.props.renderEmpty()}
+        <ListViewHeader title={`My ${this.props.headerData.mode}`}/>
+        {this.props.notifications.allNotifications.length > 0 ? this.renderListView() : this.props.renderEmpty()}
       </View>
     );
   }

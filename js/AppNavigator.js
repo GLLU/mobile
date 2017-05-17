@@ -191,7 +191,7 @@ class AppNavigator extends Component {
         </Drawer>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
         {this.props.isProcessing ? <SpinnerClothing /> : null}
-        {this.props.fatal_error ? <ErrorHandler /> : null}
+        {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}
       </View>
@@ -211,8 +211,10 @@ const mapStateToProps = state => {
   const isLoading = state.loader.loading || false;
   const isProcessing = state.loader.processing || false;
   const isError = state.errorHandler.error || false;
+  const isFatalError = state.errorHandler.fatal_error || false;
   const isWarning = state.errorHandler.warning || false;
   const isInfo = state.errorHandler.info || false;
+  console.log('isError',isFatalError)
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,
@@ -220,6 +222,7 @@ const mapStateToProps = state => {
     isLoading: isLoading,
     isProcessing: isProcessing,
     error: isError,
+    fatalError: isFatalError,
     warning: isWarning,
     info: isInfo,
   });

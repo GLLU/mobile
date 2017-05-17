@@ -3,7 +3,7 @@
   "version": "5.2.1",
   "private": true,
   "scripts": {
-    "postinstall": "remotedev-debugger [options]",
+    "postinstall": "rndebugger-open --open --port 8081",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint",
     "test": "jest"
@@ -43,17 +43,20 @@
     "react-redux": "^5.0.4",
     "redux": "^3.6.0",
     "redux-api": "^0.10.4",
+    "redux-devtools-extension": "^2.13.2",
     "redux-json-api": "^1.7.0",
     "redux-logger": "^3.0.1",
     "redux-persist": "^4.8.0",
     "redux-sequence-action": "^0.2.1",
     "redux-thunk": "^2.2.0",
+    "remote-redux-devtools": "^0.5.10",
     "url": "^0.11.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "babel-jest": "17.0.0",
+    "babel-plugin-transform-react-jsx-source": "^6.22.0",
     "babel-preset-react-native": "1.9.1",
     "chai": "^3.5.0",
     "eslint": "^3.5.0",
@@ -71,8 +74,6 @@
     "jest-react-native": "18.0.0",
     "mocha": "^2.5.3",
     "react-test-renderer": "15.3.2",
-    "remote-redux-devtools": "^0.5.7",
-    "remote-redux-devtools-on-debugger": "^0.7.1",
     "remotedev-server": "^0.2.2",
     "yarn": "^0.19.1"
   },

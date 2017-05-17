@@ -194,8 +194,10 @@ const signUp = function(dispatch, data) {
       const body = {user: data};
       dispatch(rest.actions.users.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (err) {
+          console.log('err',err)
           reject(err);
         } else {
+          console.log('goodsinguo')
           resolve(data);
         }
       }));
@@ -206,31 +208,36 @@ const signUp = function(dispatch, data) {
 export function emailSignUp(data):Action {
   return (dispatch, getState) => {
     dispatch(hideFatalError());
-    if(data) {
+    if(!_.isEmpty(data)) {
+      console.log('blabbb1',data)
       signUp(dispatch, data).then(data => {
         const user = getState().user;
         const invitation_is_used = user.invitation_is_used;
         const invitation_token = user.invitation_token;
         signInFromRest(dispatch, data, invitation_token, invitation_is_used);
       }).catch(err => {
-        if (err.errors && err.errors.length > 0) {
-          const pointers = [];
-          let errorString = '';
-          err.errors.map((error) => {
-            pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
-          });
-          if(pointers.length === 1){
-            dispatch(showFatalError(pointers[0]+' has already taken'))
-          } else {
-            for(let i = 0; i<pointers.length-1; i++) {
-              errorString += pointers[i]+' & ';
-            }
-            dispatch(showFatalError(errorString+pointers[pointers.length-1]+' are already taken'))
-          }
-        } else {
-          dispatch(showFatalError(`Unknown error: ${err}`));
-        }
+        console.log('blabbb')
+
       });
+    } else {
+      console.log('data',data)
+      if (err.errors && err.errors.length > 0) {
+        const pointers = [];
+        let errorString = '';
+        err.errors.map((error) => {
+          pointers.push( _.capitalize(_.last(_.split(error.source.pointer, '/'))));
+        });
+        if(pointers.length === 1){
+          dispatch(showFatalError(pointers[0]+' has already taken'))
+        } else {
+          for(let i = 0; i<pointers.length-1; i++) {
+            errorString += pointers[i]+' & ';
+          }
+          dispatch(showFatalError(errorString+pointers[pointers.length-1]+' are already taken'))
+        }
+      } else {
+        dispatch(showFatalError(`Unknown error: ${err}`));
+      }
     }
   };
 }
@@ -240,9 +247,11 @@ export function emailSignIn(data):Action {
     const body = { auth: data };
     const user = getState().user;
     const access_token = data.access_token;
-    const expiration_time = data.expiration_time;    return dispatch(rest.actions.auth.post(body, (err, data) => {
-      if (!err && data) {
+    const expiration_time = data.expiration_time;
+    return dispatch(rest.actions.auth.post(body, (err, data) => {
+      if (!err && !_.isEmpty(data)) {
         signInFromRest(dispatch, data, access_token, expiration_time);
+        dispatch(hideFatalError())
       } else {
         dispatch(showFatalError('Email/Password are incorrect'))
       }
