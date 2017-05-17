@@ -122,7 +122,7 @@ class CommentsView extends Component {
   }
 
   onUserNavigate(user) {
-    this.props.goToProfile('profileScreen',user);
+    this.props.goToProfile(user);
   }
 
   _renderFooter() {

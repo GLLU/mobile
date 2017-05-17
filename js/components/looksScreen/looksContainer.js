@@ -207,7 +207,7 @@ class LooksContainer extends BasePage {
           height={height}
           look={look}
           goBack={this.props.goBack}
-          goToProfile={(look) => this._goToProfile(look)}
+          goToProfile={(user) => this._goToProfile(user)}
           toggleLike={(isLiked) => this._toggleLike(isLiked)}
           toggleMenu={() => this._toggleMenu()}
           isMenuOpen={this.state.isMenuOpen}

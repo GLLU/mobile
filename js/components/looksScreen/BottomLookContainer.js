@@ -48,6 +48,7 @@ export default class BottomLookContainer extends BaseComponent {
     this._toggleDescription = this._toggleDescription.bind(this);
     this._toggleComments = this._toggleComments.bind(this);
     this._toggleItem = this._toggleItem.bind(this);
+    this.goToProfile=this.goToProfile.bind(this);
     this.state = {
       likes: this.props.look.likes,
       isLiked: this.props.look.liked,
@@ -96,7 +97,7 @@ export default class BottomLookContainer extends BaseComponent {
 
   _renderCommentsView(isActive) {
     return <CommentsView
-      goToProfile={this.props.goToProfile}
+      goToProfile={this.goToProfile}
       look_id={this.props.look.id}
       count={this.state.comments}
       isOpen={isActive}
@@ -109,6 +110,11 @@ export default class BottomLookContainer extends BaseComponent {
   }
   _toggleItem(shouldActive) {
     this.props.onBottomDrawerOpen(shouldActive);
+  }
+
+  goToProfile(user){
+    this.props.goToProfile(user);
+    this.setState({isCommentsActive: false, isDescriptionActive: false})
   }
 
   toggleBottomContainer() {
@@ -144,7 +150,7 @@ export default class BottomLookContainer extends BaseComponent {
         <LookHeader
           avatar={{uri: this.props.look.avatar.url}}
           onBackNavigationPress={this.props.goBack}
-          onProfileAvatarPress={() => this.props.goToProfile(this.props.look)}/>
+          onProfileAvatarPress={() => this.goToProfile(this.props.look)}/>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
             <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
