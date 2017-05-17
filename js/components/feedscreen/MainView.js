@@ -19,7 +19,6 @@ class MainView extends Component {
   static propTypes = {
     searchStatus: React.PropTypes.bool,
     query: React.PropTypes.object,
-    navigation: React.PropTypes.object,
     getFeed: React.PropTypes.func,
     resetFeed: React.PropTypes.func,
   }
@@ -94,6 +93,7 @@ class MainView extends Component {
     const tabLabel = this.props.query.type === 'relevant' ? 'BEST MATCH' : 'RECENT';
     return (
       <TabContent
+        navigateTo={this.props.navigateTo}
         reloading={reloading}
         handleSwipeTab={this.handleSwipeTab.bind(this)}
         tabLabel={tabLabel}/>
@@ -153,7 +153,6 @@ const mapStateToProps = state => {
   }
   return {
     defaultFilters: defaultFilters,
-    navigation: state.cardNavigation,
     query: state.feed.query,
   };
 }

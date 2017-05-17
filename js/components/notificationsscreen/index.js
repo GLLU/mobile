@@ -7,8 +7,9 @@ import EmptyView from './EmptyView'
 import { navigateTo, popRoute, getNotifications, clearNewNotifications } from '../../actions';
 
 import NotificationListView from './notificationsList/NotificationListView'
+import BasePage from "../common/BasePage";
 
-class NotificationsScreen extends Component {
+class NotificationsScreen extends BasePage {
 
   constructor(props) {
     super(props);
@@ -28,15 +29,6 @@ class NotificationsScreen extends Component {
     this.setState({photoModal: true});
   }
 
-  goToAddNewItem(imagePath) {
-    this.setState({photoModal: false}, () => {
-      this.props.addNewLook(imagePath).then(() => {
-        this.props.popRoute(this.props.navigation.key);
-        this.props.navigateTo('addItemScreen', 'profileScreen');
-      });
-    })
-  }
-
   _renderOnEmpty() {
     return (
       <EmptyView onUploadButtonPress={this._handleOpenPhotoModal}
@@ -50,9 +42,13 @@ class NotificationsScreen extends Component {
     }
     return (
           <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}}>
-            <NotificationListView renderEmpty={this._renderOnEmpty} headerData={headerData}
-                            notifications={this.props.notifications}
-                            onEndReached={this.getNotificationsData} mode={headerData.mode}/>
+            <NotificationListView renderEmpty={this._renderOnEmpty}
+                                  headerData={headerData}
+                                  notifications={this.props.notifications}
+                                  navigateTo={this.navigateTo}
+                                  goBack={this.goBack}
+                                  onEndReached={this.getNotificationsData}
+                                  mode={headerData.mode}/>
           </View>
     );
   }
@@ -70,7 +66,6 @@ function bindAction(dispatch) {
 const mapStateToProps = state => {
   return {
     notifications: state.notifications,
-    navigation: state.cardNavigation,
   }
 };
 

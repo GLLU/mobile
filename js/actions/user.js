@@ -346,18 +346,16 @@ export function changeUserAvatar(data) {
 }
 
 export function logout() {
-  return (dispatch, getState) => {
-    const navigation = getState().cardNavigation;
-    dispatch(reset([
-      {
-        key: 'splashscreen',
-        index: 0,
-      },
-    ], navigation.key));
-    Utils.resetKeychainData().then(() => {
-      dispatch({
-        type: RESET_STATE
-      });
-    });
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      Utils.resetKeychainData()
+        .then(() => {
+          dispatch({
+            type: RESET_STATE
+          });
+          resolve();
+        })
+        .catch(reject);
+    })
   };
 }

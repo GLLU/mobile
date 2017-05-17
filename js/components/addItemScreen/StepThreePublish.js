@@ -508,7 +508,6 @@ const mapStateToProps = state => {
   }
   const isVideo = Utils.isVideo(image)
   return {
-    navigation: state.cardNavigation,
     ...state.uploadLook,
     occasions: item ? item.occasions : [],
     tags: item ? item.tags : [],

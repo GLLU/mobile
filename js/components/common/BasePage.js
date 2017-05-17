@@ -8,6 +8,10 @@ import {NavigationActions} from "react-navigation";
 class BasePage extends BaseComponent {
   constructor(props) {
     super(props);
+    this.navigateTo=this.navigateTo.bind(this);
+    this.goBack=this.goBack.bind(this);
+    this.resetTo=this.resetTo.bind(this);
+    this.resetWithPayload=this.resetWithPayload.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +52,7 @@ class BasePage extends BaseComponent {
   }
 
   goBack(withConfirmation = false) {
-    if (withConfirmation) {
+    if (withConfirmation===true) {
       Alert.alert(
         '',
         'Are you sure you want to go back?',

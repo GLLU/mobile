@@ -9,8 +9,6 @@ import Video from 'react-native-video';
 import {
   addNewLook,
   editNewLook,
-  navigateTo,
-  pushRoute,
   getUserLooks,
   replaceAt
 } from '../../actions';
@@ -70,13 +68,13 @@ class UserLooks extends Component {
 
   _handleItemPress(item) {
     item.singleItem = true
-    this.props.navigateTo('looksScreen', 'feedscreen', item);
+    this.props.navigateTo('looksScreen', item);
   }
 
   _handleEditPress(look) {
     this.props.editNewLook(look.id).then(() => {
 
-      this.props.pushRoute({key: 'addItemScreen', optional: { mode: 'edit' } }, this.props.navigation.key);
+      this.props.navigateTo('addItemScreen',{ mode: 'edit' });
     });
   }
 
@@ -179,8 +177,6 @@ const styles = StyleSheet.create({
 
 function bindActions(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     editNewLook: (id) => dispatch(editNewLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),

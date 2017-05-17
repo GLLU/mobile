@@ -120,12 +120,8 @@ class LooksContainer extends BasePage {
     }
   }
 
-  _tempPopRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
-
   _goToProfile(look) {
-    this.props.replaceAt('looksScreen', {key: 'profileScreen', optional: look}, this.props.navigation.key);
+    this.props.navigateTo('profileScreen',look);
   }
 
   onToggleDrawer(shouldOpen){
@@ -215,7 +211,7 @@ class LooksContainer extends BasePage {
           width={width}
           height={height}
           look={look}
-          tempPopRoute={(e) => this._tempPopRoute()}
+          tempPopRoute={this.props.goBack}
           goToProfile={(look) => this._goToProfile(look)}
           toggleLike={(isLiked) => this._toggleLike(isLiked)}
           toggleMenu={() => this._toggleMenu()}
@@ -246,7 +242,7 @@ class LooksContainer extends BasePage {
                 width={width}
                 height={height}
                 look={look}
-                tempPopRoute={(e) => this._tempPopRoute()}
+                tempPopRoute={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
                 toggleLike={(isLiked) => this._toggleLike(isLiked)}
                 toggleMenu={() => this._toggleMenu()}
@@ -318,7 +314,6 @@ class LooksContainer extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),

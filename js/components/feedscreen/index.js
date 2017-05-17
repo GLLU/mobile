@@ -9,7 +9,7 @@ import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import MyBodyType from '../myBodyType';
-import { addNewLook, setUser, pushRoute, navigateTo, getNotifications, createInvitationCode } from '../../actions';
+import { addNewLook, setUser, navigateTo, getNotifications, createInvitationCode } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
 import Gllu from '../common';
@@ -24,7 +24,6 @@ class FeedPage extends BasePage {
       key: React.PropTypes.string,
     }),
     setUser: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     addNewLook: React.PropTypes.func,
   }
@@ -49,7 +48,7 @@ class FeedPage extends BasePage {
   componentWillMount() {
 
     if (!this.props.user || this.props.user.id == -1) {
-      this.props.navigateTo('splashscreen');
+      this.navigateTo('splashscreen');
     }
     BackAndroid.addEventListener('hardwareBackPress', () => {
       if(this.state.photoModal) {
@@ -68,7 +67,7 @@ class FeedPage extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen', 'feedscreen', { mode: 'create' });
+        this.navigateTo('addItemScreen',{ mode: 'create' });
       });
     })
   }
@@ -113,7 +112,7 @@ class FeedPage extends BasePage {
           <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
               <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
               {!this.state.searchStatus ?
-                <NavigationBarView searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+                <NavigationBarView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
                 :
                 null
               }
@@ -125,7 +124,7 @@ class FeedPage extends BasePage {
         <Content
             scrollEnabled={false}
             contentContainerStyle={contentStyle}>
-          <MainView searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
+          <MainView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
             <MyBodyType navigation = {this.props.navigation}/>
@@ -141,7 +140,6 @@ class FeedPage extends BasePage {
 function bindActions(dispatch) {
   return {
     navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    pushRoute: (routeKey, route, key) => dispatch(pushRoute(routeKey, route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
@@ -151,7 +149,6 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  cardNavigation: state.cardNavigation,
   modalShowing: state.myBodyType.modalShowing
 });
 

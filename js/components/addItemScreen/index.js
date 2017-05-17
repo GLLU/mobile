@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity } from 'react-native';
 import { Grid, Row, Button, Icon} from 'native-base';
-import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
+import { setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
@@ -71,13 +71,6 @@ class AddItemPage extends BasePage {
     updateLookItem: React.PropTypes.func,
     mode: React.PropTypes.string,
     setUser: React.PropTypes.func,
-    replaceAt: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
-    navigateTo: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
     look: React.PropTypes.object,
     item: React.PropTypes.object,
     state: React.PropTypes.string,
@@ -127,11 +120,6 @@ class AddItemPage extends BasePage {
     this.props.setUser(name);
   }
 
-  replaceRoute(route) {
-    this.setUser(this.state.name);
-    this.props.replaceAt('addItemScreen', { key: route }, this.props.navigation.key);
-  }
-
   selectTab(step) {
     this.swiper.scrollBy(step);
   }
@@ -147,9 +135,9 @@ class AddItemPage extends BasePage {
     this.logEvent('UploadLookScreen', { name: 'Publish click' });
     this.props.publishLookItem().then(response => {
       if (this.props.state === LOOK_STATES.PUBLISHED) {
-        this.props.navigation.goBack()
+        this.goBack()
       } else {
-        this.props.navigation.navigate('finishLookScreen')
+        this.navigateTo('finishLookScreen');
       }
     });
   }
@@ -322,10 +310,6 @@ import { connect } from 'react-redux';
 
 function bindActions(dispatch) {
   return {
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
-    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
-    popRoute: (key) => dispatch(popRoute(key)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     setUser: name => dispatch(setUser(name)),
     updateLookItem: (look) => dispatch(updateLookItem(look)),
     publishLookItem: (look) => dispatch(publishLookItem(look)),
@@ -339,7 +323,6 @@ const mapStateToProps = state => {
   const isVideo = Utils.isVideo(image)
   const item = itemId !== null ? _.find(items, x => x.id === itemId) : null;
   return {
-    navigation: state.cardNavigation,
     item,
     itemId,
     lookId,

@@ -17,7 +17,7 @@ import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import { showBodyTypeModal, navigateTo, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
+import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 
 const deviceWidth = Dimensions.get('window').width;
@@ -148,7 +148,7 @@ class TabContent extends BaseComponent {
                         currScroll={this.state.currentScrollPosition}
                         likeUpdate={(data) => this.props.likeUpdate(data)}
                         unLikeUpdate={(data) => this.props.likeUpdate(data)}
-                        navigateTo={(route, homeRoute, optional) => this.props.navigateTo(route, homeRoute, optional)}/>
+                        navigateTo={this.props.navigateTo}/>
       );
     });
   }
@@ -284,7 +284,6 @@ const styles = StyleSheet.create({
 function bindActions(dispatch) {
   return {
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     getFeed: (query) => dispatch(getFeed(query)),
