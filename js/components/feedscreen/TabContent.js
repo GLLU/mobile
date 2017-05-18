@@ -19,6 +19,7 @@ import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
+import { formatInvitationMessage } from "../../lib/messages/index";
 
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
@@ -57,7 +58,8 @@ class TabContent extends BaseComponent {
 
   _onShareClicked() {
     this.logEvent('LookScreen', {name: 'Share click'});
-    SocialShare.nativeShare(this.props.shareToken);
+    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.nativeShare(message);
   }
 
   componentDidMount() {

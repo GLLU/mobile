@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'r
 import Modal from 'react-native-modalbox';
 import SocialShare from '../../lib/social';
 import Icon from 'react-native-vector-icons/Entypo';
+import { formatInvitationMessage } from "../../lib/messages/index";
 const deviceWidth = Dimensions.get('window').width;
 const wModal = deviceWidth / 1.5;
 const hModal = wModal / 2;
@@ -65,7 +66,8 @@ class menuModal extends Component {
   }
 
   _onShareClicked() {
-    SocialShare.nativeShare(this.props.shareToken);
+    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.nativeShare(message);
   }
 
   _reportAbuse() {

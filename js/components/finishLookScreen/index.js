@@ -8,6 +8,7 @@ import SocialShare from '../../lib/social';
 import Gllu from '../common';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
+import { formatInvitationMessage } from "../../lib/messages/index";
 
 const styles = StyleSheet.create({
   container: {
@@ -60,12 +61,14 @@ class FinishLookPage extends BasePage {
 
   handleFacebookPress() {
     this.logEvent('CongratsScreen', { name: 'Facebook Share click' });
-    SocialShare.facebookShare(this.props.shareToken);
+    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.facebookShare(message);
   }
 
   handleOthersPress() {
     this.logEvent('CongratsScreen', { name: 'Other Share click' });
-    SocialShare.nativeShare(this.props.shareToken);
+    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.nativeShare(message);
   }
 
   handleGlluAgainPress() {
