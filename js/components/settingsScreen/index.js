@@ -14,6 +14,7 @@ import {
   COPYRIGHT_URL,
   RATE_US_URL
 } from '../../constants';
+import { formatInvitationMessage } from "../../lib/messages/index";
 
 const styles = StyleSheet.create({
   container: {
@@ -75,7 +76,8 @@ class SettingsScreen extends BasePage {
 
   handleShare() {
     this.logEvent('SettingsScreen', { name: 'Share click' });
-    SocialShare.nativeShare(this.props.shareToken);
+    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.nativeShare(message);
   }
 
   handleOpenLink(url, type = 'link') {
