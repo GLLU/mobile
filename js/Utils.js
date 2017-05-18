@@ -3,8 +3,8 @@ import * as Keychain from 'react-native-keychain';
 import Config from 'react-native-config';
 import * as _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
-import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import BugsnagUtils from "./utils/BugsnagUtils";
+import FacebookUtils from "./utils/FacebookUtils";
 
 /*global __DEV__ */
 const DEV=__DEV__;
@@ -32,44 +32,7 @@ export default class Utils {
   static notifyRequestError(err, data, user) { return BugsnagUtils.notifyRequestError(err, data, user) }
 
   static loginWithFacebook() {
-    return new Promise((resolve, reject) => {
-      let PERMISSIONS = ["email", "public_profile"];
-      LoginManager.logInWithReadPermissions(PERMISSIONS).then(
-        (result) => {
-          if (result.isCancelled) {
-            alert('Login cancelled');
-          } else {
-            const diffPermissions = _.difference(PERMISSIONS, result.grantedPermissions);
-            if (diffPermissions.length === 0) {
-              AccessToken.getCurrentAccessToken().then(
-                (data) => {
-                  const infoRequest = new GraphRequest('/me?fields=id,name,email,gender', null, (error, result) => {
-                    if (error) {
-                      alert(`Failed to retrieve user info: ${JSON.stringify(error)}`);
-                    } else {
-                      const jsonData = {
-                        access_token: data["accessToken"],
-                        expiration_time: data["expirationTime"],
-                        data: result
-                      };
-                      resolve(jsonData)
-                    }
-                  });
-                  new GraphRequestManager().addRequest(infoRequest).start();
-                }
-              );
-            } else {
-              alert(`Missing permissions: ${diffPermissions.join(', ')}`);
-              reject(`Missing permissions: ${diffPermissions.join(', ')}`)
-            }
-          }
-        },
-        (error) => {
-          alert('Login fail with error: ' + error);
-          reject('Login fail with error: ' + error)
-        }
-      );
-    })
+    return FacebookUtils.loginWithFacebook();
   }
 
   static getLoaderImage() {
