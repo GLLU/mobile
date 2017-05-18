@@ -52,7 +52,7 @@ class MediaContainer extends BaseComponent {
         />
 
         <MediaBorderPatch media={video}>
-          <View style={{bottom: 10}}>
+          <View style={{bottom: 15}}>
             {video.coverType === 'video' ? this.renderVideoGrid(video) : null}
           </View>
         </MediaBorderPatch>
@@ -66,7 +66,7 @@ class MediaContainer extends BaseComponent {
       <View>
         <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} />
         <MediaBorderPatch media={look} >
-          <View style={{bottom: 10, zIndex: 1}}>
+          <View style={{bottom: 15, zIndex: 1}}>
             <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
           </View>
         </MediaBorderPatch>
