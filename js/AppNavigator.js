@@ -214,7 +214,6 @@ const mapStateToProps = state => {
   const isFatalError = state.errorHandler.fatal_error || false;
   const isWarning = state.errorHandler.warning || false;
   const isInfo = state.errorHandler.info || false;
-  console.log('isError',isFatalError)
   return ({
     drawerState: state.drawer.drawerState,
     navigation: state.cardNavigation,
