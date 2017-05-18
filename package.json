@@ -73,6 +73,7 @@
     "jest": "17.0.0",
     "jest-react-native": "18.0.0",
     "mocha": "^2.5.3",
+    "react-native-debugger-open": "^0.3.10",
     "react-test-renderer": "15.3.2",
     "remotedev-server": "^0.2.2",
     "yarn": "^0.19.1"
