@@ -59,6 +59,10 @@ class FeedPage extends BasePage {
     this.props.getNotifications() // can stay here, still thinking about it
   }
 
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress');
+  }
+
   setUser(name) {
     this.props.setUser(name);
   }

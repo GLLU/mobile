@@ -8,6 +8,7 @@ import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'
 import { addNavigationHelpers } from "react-navigation";
+import * as _ from "lodash";
 
 
 const styles = StyleSheet.create({
@@ -32,12 +33,17 @@ class AppNavigator extends Component {
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       Analytics.logEvent('Android back button click');
-      let routes = this.props.navigation.routes;
-      if (routes[routes.length - 1].key === 'splashscreen' || routes[routes.length - 1].key === 'feedscreen' || routes[routes.length - 1].key === 'home' || routes[routes.length - 1].key === 'login') {
-        return false;
+      const {dispatch,navigationState} = this.props;
+      const navigation = this.generateNaivgationObject(dispatch,navigationState);
+      const {routes} = navigation.state;
+      if(routes.length>1){
+        navigation.goBack();
+        return true;
       }
-      this.props.navigation.goBack();
-      return true;
+      else{
+        Analytics.logEvent('Exiting App');
+        BackAndroid.exitApp();
+      }
     });
 
     Analytics.setUser(this.props.user);
@@ -48,15 +54,19 @@ class AppNavigator extends Component {
     Analytics.endTrackAppLoaded();
   }
 
+  generateNaivgationObject(dispatch,navigationState){
+    return addNavigationHelpers({
+      dispatch,
+      state: navigationState,
+    })
+  }
+
   render() {
-    const {navigationState, dispatch} = this.props;
+    const {dispatch,navigationState} = this.props;
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle='default'/>
-        <CardStack navigation={addNavigationHelpers({
-          dispatch,
-          state: navigationState,
-        })}/>
+        <CardStack navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
         {this.props.isLoading ? <SpinnerSwitch /> : null}
         {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.fatalError ? <ErrorHandler /> : null}
@@ -80,7 +90,7 @@ const mapStateToProps = state => {
   const isFatalError = state.errorHandler.fatal_error || false;
   const isWarning = state.errorHandler.warning || false;
   const isInfo = state.errorHandler.info || false;
-  console.log('isError',isFatalError)
+  console.log('isError', isFatalError)
   return ({
     navigationState: state.cardNavigation,
     user: state.user,
