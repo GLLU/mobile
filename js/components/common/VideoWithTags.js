@@ -142,7 +142,7 @@ class VideoWithTags extends Component {
     return (
       <Video source={{uri: this.props.image}}
              resizeMode="contain"
-             muted={true}
+             muted={false}
              style={{width: w - 5, height: h, overflow: 'hidden'}}
              repeat={true}/>
     );
