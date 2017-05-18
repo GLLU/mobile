@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import { Image, Animated, InteractionManager, TouchableOpacity,View, Text, TextInput, ScrollView, FormData} from 'react-native';
 import styles from './styles';
 import { connect } from 'react-redux';

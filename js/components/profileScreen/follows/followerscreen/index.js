@@ -8,7 +8,7 @@ import SelectPhoto from '../../../common/SelectPhoto';
 import { addNewLook, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
 import FollowListView from '../shared/FollowListView'
-import BasePage from "../../../common/BasePage";
+import BasePage from "../../../common/base/BasePage";
 
 class FollowerScreen extends BasePage {
 

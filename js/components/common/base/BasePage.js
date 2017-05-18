@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import Config from 'react-native-config'
 import BaseComponent from './BaseComponent';
-import Analytics from '../../lib/analytics/Analytics';
+import Analytics from '../../../lib/analytics/Analytics';
 import {NavigationActions} from "react-navigation";
 
 class BasePage extends BaseComponent {

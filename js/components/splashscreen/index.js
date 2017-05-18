@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import listenToAppState from '../common/eventListeners/AppStateListener'
 import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Content, Button } from 'native-base';

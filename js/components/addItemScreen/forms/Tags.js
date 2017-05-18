@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {  Container, Button, Icon} from 'native-base';
-import BaseComponent from '../../common/BaseComponent';
+import BaseComponent from '../../common/base/BaseComponent';
 import FontSizeCalculator from './../../../calculators/FontSize';
 
 const styles = StyleSheet.create({

@@ -15,7 +15,7 @@ import MenuModal from './menuModal';
 import ItemMarker from './markers/ItemMarker';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 import LookHeader from './LookHeader'
 
 

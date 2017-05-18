@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, StyleProvider, getTheme } from 'native-base';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import styles from './styles'
 import glluTheme from '../../themes/gllu-theme';
 

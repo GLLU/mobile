@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import { Dimensions, Platform, Image, TouchableWithoutFeedback, Linking, View, TouchableOpacity, ViewPagerAndroid, Text } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import { connect } from 'react-redux';

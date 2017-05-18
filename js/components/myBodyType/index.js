@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import {Container, Header, Content, Button, Icon, Title } from 'native-base';
 import {Text, View, StyleSheet} from 'react-native';
 import styles from './styles';

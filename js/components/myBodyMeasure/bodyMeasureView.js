@@ -9,7 +9,7 @@ import Utils from '../../Utils';
 import convert from 'convert-units';
 import { completeEdit } from '../../actions/myBodyMeasure';
 import _ from 'lodash';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 
 class BodyMeasureView extends BaseComponent {
   constructor(props) {

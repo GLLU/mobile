@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import { Image, Linking, TouchableWithoutFeedback, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';

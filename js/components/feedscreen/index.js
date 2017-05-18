@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import { Dimensions, BackAndroid, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Content, StyleProvider, getTheme } from 'native-base';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity } from 'react-native';
 import { Grid, Row, Button, Icon} from 'native-base';
 import { setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';

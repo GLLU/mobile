@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet } from 'react-native';
 import FilterGroup from './FilterGroup';
-import BaseComponent from '../../common/BaseComponent';
+import BaseComponent from '../../common/base/BaseComponent';
 import _ from 'lodash'
 import { loadCategories } from '../../../actions/filters';
 

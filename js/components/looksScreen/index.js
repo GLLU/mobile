@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import {View, Image, InteractionManager, Platform } from 'react-native';
 import Spinner from '../loaders/Spinner';
 import LooksContainer from './looksContainer';

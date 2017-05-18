@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from './base/BaseComponent';
 import FontSizeCalculator from './../../calculators/FontSize';
 import Video from 'react-native-video';
 import LikeView from '../feedscreen/items/LikeView';

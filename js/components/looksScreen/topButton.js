@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 import styles from './styles';
 
 const bagItImage = require('../../../images/bagItImage.png');

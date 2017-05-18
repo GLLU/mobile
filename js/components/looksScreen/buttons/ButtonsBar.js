@@ -10,7 +10,7 @@ import ItemButton from './ItemButton'
 import MenuButton from './MenuButton'
 import LikeButton from './LikeButton'
 import ItemDataLine from '../common/ItemDataLine'
-import BaseComponent from '../../common/BaseComponent';
+import BaseComponent from '../../common/base/BaseComponent';
 
 const styles = StyleSheet.create({
   container: {

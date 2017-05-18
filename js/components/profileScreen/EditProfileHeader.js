@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, TextInput,View } from 'react-native';
 
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 
 import styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
