@@ -1,15 +1,13 @@
 import { Image } from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import { Client, Configuration } from 'bugsnag-react-native';
 import Config from 'react-native-config';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
-const green = require('../images/loaders/3.png')
-const rainbow = require('../images/loaders/4.png')
-const hearts = require('../images/loaders/5.png')
-const yellow = require('../images/loaders/6.png')
-const grey = require('../images/loaders/7.png')
+import BugsnagUtils from "./utils/BugsnagUtils";
+
+/*global __DEV__ */
+const DEV=__DEV__;
 
 export default class Utils {
   static format_measurement(value, measurements_scale) {
@@ -28,11 +26,10 @@ export default class Utils {
     return Keychain.getGenericPassword();
   }
 
-  static getBugsnagClient() {
-    const config = new Configuration(Config.BUGSNAG_API_KEY)
-    config.codeBundleId = Config.codeBundleId
-    return new Client(config)
-  }
+  static getBugsnagClient() { return BugsnagUtils.getBugsnagClient() }
+
+
+  static notifyRequestError(err, data, user) { return BugsnagUtils.notifyRequestError(err, data, user) }
 
   static loginWithFacebook() {
     return new Promise((resolve, reject) => {
@@ -83,18 +80,6 @@ export default class Utils {
 
   static resetKeychainData() {
     return Keychain.resetGenericPassword();
-  }
-
-  static notifyRequestError(err, data, user) {
-    const client = this.getBugsnagClient();
-    client.leaveBreadcrumb("REST request", {
-      type: 'request',
-      data: data,
-    });
-    if (!_.isEmpty(user) && user.id && user.username && user.email) {
-      client.setUser(user.id.toString(), user.username, user.email);
-    }
-    client.notify(err);
   }
 
   static postMultipartForm(api_key, path, formData, fileField, file, method = 'POST') {
