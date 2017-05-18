@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { View, Image, Linking, Platform, AppState, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import listenToAppState from '../common/eventListeners/AppStateListener'
+import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Content, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Utils from '../../Utils.js'
@@ -38,7 +39,7 @@ class SplashPage extends BasePage {
     this.checkLogin=this.checkLogin.bind(this);
     this.state = {
       name: '',
-      repeat: true
+      repeat: props.active
     };
     console.log('this.props.showTutorial',this.props.showTutorial)
     if(!this.props.showTutorial && Platform !== 'ios'){
@@ -54,29 +55,18 @@ class SplashPage extends BasePage {
     }
   }
 
-  componentDidMount() {
-    AppState.addEventListener('change', this._handleAppStateChange);
-  }
-
-  componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange);
-  }
-
   checkLogin(user) {
     this.props.checkLogin(user)
       .then(() => this.resetTo('feedscreen'))
       .catch(err => console.log(err));
   }
 
-  _handleAppStateChange = (nextAppState) => {
-    switch(nextAppState) {
-      case 'inactive':
-        this.setState({repeat: false})
-        break;
-      case 'active':
-        this.setState({repeat: true})
-        this._root.seek(1)
-        break;
+  componentWillReceiveProps(nextProps){
+    if(nextProps.active!==this.props.active){
+      if(this.props.active){
+        this._root.seek(0)
+      }
+      this.setState({repeat:nextProps.active})
     }
   }
 
@@ -190,4 +180,4 @@ const mapStateToProps = state => ({
   showTutorial: state.user.showTutorial
 });
 
-export default connect(mapStateToProps, bindAction)(SplashPage);
+export default connect(mapStateToProps, bindAction)(listenToAppState(SplashPage));
