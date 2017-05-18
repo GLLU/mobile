@@ -5,17 +5,18 @@ import * as _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
 import BugsnagUtils from "./utils/BugsnagUtils";
 import FacebookUtils from "./utils/FacebookUtils";
+import FormatUtils from "./utils/FormatUtils";
 
 /*global __DEV__ */
 const DEV=__DEV__;
 
 export default class Utils {
   static format_measurement(value, measurements_scale) {
-    return `${this.format_number(value)} ${measurements_scale}`;
+    return FormatUtils.format_measurement(value,measurements_scale);
   }
 
   static format_number(value) {
-    return Math.round(value * 100)/ 100;  
+    return FormatUtils.format_number(value);
   }
 
   static saveApiKeyToKeychain(email, api_key) {
