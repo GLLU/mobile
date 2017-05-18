@@ -1,11 +1,11 @@
 import { Image } from 'react-native';
-import * as Keychain from 'react-native-keychain';
 import Config from 'react-native-config';
 import * as _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
 import BugsnagUtils from "./utils/BugsnagUtils";
 import FacebookUtils from "./utils/FacebookUtils";
 import FormatUtils from "./utils/FormatUtils";
+import KeychainUtils from "./utils/KeychainUtils";
 
 /*global __DEV__ */
 const DEV=__DEV__;
@@ -20,11 +20,15 @@ export default class Utils {
   }
 
   static saveApiKeyToKeychain(email, api_key) {
-    return Keychain.setGenericPassword(email, api_key);
+    return KeychainUtils.saveApiKeyToKeychain(email, api_key);
   }
 
   static getKeychainData() {
-    return Keychain.getGenericPassword();
+    return KeychainUtils.getKeychainData();
+  }
+
+  static resetKeychainData() {
+    return KeychainUtils.resetKeychainData();
   }
 
   static getBugsnagClient() { return BugsnagUtils.getBugsnagClient() }
@@ -40,10 +44,6 @@ export default class Utils {
     const loadersArr = ['#e1f7d5', '#ffbdbd', '#c9c9ff', '#f1cbff', '#f6dbdb', '#f2e3c6', '#d3ece1', '#c2eec7', '#eed2e8', '#4e4e56', '#da635d', '#dcd0c0', '#b1938b', '#06b8d2', '#98f2e1' ]
     const loaderColor = loadersArr[Math.floor(Math.random()*loadersArr.length)];
     return loaderColor;
-  }
-
-  static resetKeychainData() {
-    return Keychain.resetGenericPassword();
   }
 
   static postMultipartForm(api_key, path, formData, fileField, file, method = 'POST') {
