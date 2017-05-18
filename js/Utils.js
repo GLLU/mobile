@@ -1,44 +1,33 @@
 import { Image } from 'react-native';
-import Config from 'react-native-config';
 import * as _ from 'lodash';
-import RNFetchBlob from 'react-native-fetch-blob';
 import BugsnagUtils from "./utils/BugsnagUtils";
 import FacebookUtils from "./utils/FacebookUtils";
 import FormatUtils from "./utils/FormatUtils";
 import KeychainUtils from "./utils/KeychainUtils";
+import FetchUtils from "./utils/FetchUtils";
 
 /*global __DEV__ */
 const DEV=__DEV__;
 
 export default class Utils {
-  static format_measurement(value, measurements_scale) {
-    return FormatUtils.format_measurement(value,measurements_scale);
-  }
 
-  static format_number(value) {
-    return FormatUtils.format_number(value);
-  }
+  static format_measurement(value, measurements_scale) { return FormatUtils.format_measurement(value,measurements_scale); }
 
-  static saveApiKeyToKeychain(email, api_key) {
-    return KeychainUtils.saveApiKeyToKeychain(email, api_key);
-  }
+  static format_number(value) { return FormatUtils.format_number(value); }
 
-  static getKeychainData() {
-    return KeychainUtils.getKeychainData();
-  }
+  static saveApiKeyToKeychain(email, api_key) { return KeychainUtils.saveApiKeyToKeychain(email, api_key); }
 
-  static resetKeychainData() {
-    return KeychainUtils.resetKeychainData();
-  }
+  static getKeychainData() { return KeychainUtils.getKeychainData(); }
+
+  static resetKeychainData() { return KeychainUtils.resetKeychainData(); }
 
   static getBugsnagClient() { return BugsnagUtils.getBugsnagClient() }
 
-
   static notifyRequestError(err, data, user) { return BugsnagUtils.notifyRequestError(err, data, user) }
 
-  static loginWithFacebook() {
-    return FacebookUtils.loginWithFacebook();
-  }
+  static loginWithFacebook() { return FacebookUtils.loginWithFacebook(); }
+
+  static postMultipartForm(api_key, path, formData, fileField, file, method = 'POST') { return FetchUtils.postMultipartForm(api_key, path, formData, fileField, file, method); }
 
   static getLoaderImage() {
     const loadersArr = ['#e1f7d5', '#ffbdbd', '#c9c9ff', '#f1cbff', '#f6dbdb', '#f2e3c6', '#d3ece1', '#c2eec7', '#eed2e8', '#4e4e56', '#da635d', '#dcd0c0', '#b1938b', '#06b8d2', '#98f2e1' ]
@@ -46,34 +35,7 @@ export default class Utils {
     return loaderColor;
   }
 
-  static postMultipartForm(api_key, path, formData, fileField, file, method = 'POST') {
-    return new Promise((resolve, reject) => {
-      formData.push({
-        name : fileField,
-        filename : _.last(file.path.split('/')),
-        type:'image/*',
-        data: RNFetchBlob.wrap(file.path)
-      });
 
-      return RNFetchBlob.fetch(method, `${Config.API_URL}${path}`, {
-        Authorization : `Token token=${api_key}`,
-        'Content-Type' : 'multipart/form-data',
-      }, formData).then((resp) => {
-        const json = JSON.parse(resp.data);
-        const status = resp.respInfo.status;
-        if (status === 200 || status === 201) {
-          resolve(json);
-        } else if (status === 422) { //validation error
-          reject(json);
-        } else { //generic error
-          reject(json.error);
-        }
-      }).catch((err) => {
-        console.log('File upload error:', err);
-        reject(err);
-      });
-    });
-  }
 
   static isVideo(path) {
     const fileTypesArr = ['.jpg','.png']
