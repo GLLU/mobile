@@ -31,9 +31,9 @@ class MediaContainer extends BaseComponent {
     this.logEvent('Feedscreen', {name: 'Image click'});
     let that = this
     if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to, we let the TouchableOpacity end. and then go to next page.
-      setTimeout(function(){ that.props.navigateTo('looksScreen', 'feedscreen', item); }, 200);
+      setTimeout(()=>that.props.navigateTo('looksScreen', item), 200);
     } else {
-      this.props.navigateTo('looksScreen', 'feedscreen', item);
+      this.props.navigateTo('looksScreen', item);
     }
     this.setState({isMuted: true})
   }

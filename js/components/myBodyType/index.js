@@ -6,14 +6,12 @@ import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { changeBodyType } from '../../actions/myBodyType';
-const { popRoute, pushRoute } = actions;
 
 import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
 import CarouselItem from './horizontalCarousel/carouselItem';
 import ArrowTextBox from './arrowTextBox';
-import InformationTextIcon from '../common/informationTextIcon';
+import * as _ from "lodash";
 
 
 class MyBodyType extends BasePage {
@@ -26,28 +24,20 @@ class MyBodyType extends BasePage {
   }
 
   static propTypes = {
-    popRoute: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
     changeBodyType: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
+    navigateTo: React.PropTypes.func,
     bodyTypes: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     currentIndex: React.PropTypes.number,
     gender: React.PropTypes.string
   }
 
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
-
-  pushRoute(route) {
-    this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
-  }
+  static defaultProps = {
+    navigateTo: _.noop
+}
 
   _bodyTypeChange(index) {
-    const { gender, bodyTypes } = this.props
+    const { gender, bodyTypes } = this.props;
     const bodyType = bodyTypes[gender][index];
     this.logEvent('ChooseBodyTypeScreen', { name: 'Select bodyType', bodyType: bodyType.name });
     setTimeout(()=> {
@@ -69,7 +59,7 @@ class MyBodyType extends BasePage {
 
   handleContinuePress() {
     this.logEvent('ChooseBodyTypeScreen', { name: 'Continue click' });
-    this.pushRoute('myBodyMeasure');
+    this.navigateTo('myBodyMeasure');
   }
 
   render() {
@@ -107,14 +97,11 @@ class MyBodyType extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     changeBodyType: index => dispatch(changeBodyType(index))
   };
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
   bodyTypes: state.myBodyType.bodyTypes,
   currentBodyType: state.myBodyType.currentBodyType,
   currentIndex: state.myBodyType.currentIndex,

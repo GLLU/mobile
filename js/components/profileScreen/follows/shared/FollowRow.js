@@ -82,7 +82,7 @@ class FollowRow extends Component {
 
   renderFollowView() {
     if (this.props.is_me) {
-      return <View name="can't follow me" style={styles.followView}></View>;
+      return <View name="can't follow me" style={styles.followView}/>;
     }
     return <FollowView onPress={this.onFollowPress} style={styles.followView}
                        user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>

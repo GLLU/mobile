@@ -1,4 +1,3 @@
-import { openDrawer, closeDrawer } from './drawer';
 import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
 import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
 import { loadCategories, loadBrands, loadItemSizes, loadOccasionTags } from './filters';
@@ -48,25 +47,14 @@ import { setUser,
   invitationCheckExistance,
   createInvitationCode,
   clearTutorial,
-  hideTutorial} from './user';
-import navigateTo from './sideBarNav';
-import { actions } from 'react-native-navigation-redux-helpers';
-const {
-  reset,
-  replaceAt,
-  replaceAtIndex,
-  popRoute,
-  pushRoute,
-  back,
-} = actions;
+  hideTutorial
+  } from './user';
 
 export {
   createEntity,
   updateEntity,
   readEndpoint,
   deleteEntity,
-  openDrawer,
-  closeDrawer,
   loadCategories,
   loadOccasionTags,
   loadBrands,
@@ -91,13 +79,6 @@ export {
   checkLogin,
   logout,
   loginViaFacebook,
-  navigateTo,
-  reset,
-  replaceAt,
-  replaceAtIndex,
-  pushRoute,
-  popRoute,
-  back,
   addItemType,
   createBrandName,
   addBrandName,

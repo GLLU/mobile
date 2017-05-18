@@ -3,31 +3,20 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Dimensions, Platform, Image, TouchableWithoutFeedback, Linking, View, TouchableOpacity, ViewPagerAndroid, Text } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import { Icon } from 'native-base';
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const width = Dimensions.get('window').width;
 const logo = require('../../../images/logo.png');
 import styles from './styles';
-const { popRoute, pushRoute } = actions;
-import navigateTo from '../../actions/sideBarNav';
 import { hideTutorial } from '../../actions/user';
-const one = require('../../../images/tutorial/1.png')
-const two = require('../../../images/tutorial/2.png')
-const three = require('../../../images/tutorial/3.png')
-const four = require('../../../images/tutorial/4.png')
-const five = require('../../../images/tutorial/5.png')
+const one = require('../../../images/tutorial/1.png');
+const two = require('../../../images/tutorial/2.png');
+const three = require('../../../images/tutorial/3.png');
+const four = require('../../../images/tutorial/4.png');
+const five = require('../../../images/tutorial/5.png');
 
 class TutorialScreen extends BasePage {
-
-  static propTypes = {
-    popRoute: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    })
-  }
 
   constructor(props) {
     super(props);
@@ -39,7 +28,7 @@ class TutorialScreen extends BasePage {
 
   doneWithTutorial() {
     this.props.hideTutorial();
-    this.props.popRoute(this.props.navigation.key);
+    this.goBack();
   }
 
   onPageSelected = (e) => {
@@ -94,14 +83,11 @@ class TutorialScreen extends BasePage {
 
 function bindAction(dispatch) {
   return {
-      popRoute: key => dispatch(popRoute(key)),
-      navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
       hideTutorial: () => dispatch(hideTutorial())
   };
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
   showTutorial: state.user.showTutorial
 });
 

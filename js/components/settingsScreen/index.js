@@ -3,7 +3,7 @@ import BasePage from '../common/BasePage';
 import { StyleSheet, Alert, Linking, Text, View, Image } from 'react-native';
 import { Container, Header, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
 import { connect } from 'react-redux';
-import { back, logout } from '../../actions';
+import { logout } from '../../actions';
 import SocialShare from '../../lib/social';
 import glluTheme from '../../themes/gllu-theme';
 import {
@@ -73,11 +73,6 @@ class SettingsScreen extends BasePage {
     }
   }
 
-  handleBack() {
-    this.logEvent('SettingsScreen', { name: 'Back click' });
-    this.props.back(this.props.navigation.key);
-  }
-
   handleShare() {
     this.logEvent('SettingsScreen', { name: 'Share click' });
     SocialShare.nativeShare(this.props.shareToken);
@@ -110,7 +105,9 @@ class SettingsScreen extends BasePage {
 
   handleLogout() {
     this.logEvent('SettingsScreen', { name: 'Logout click' });
-    this.props.logout();
+    this.props.logout()
+      .then(()=>this.resetTo('splashscreen'))
+      .catch((err)=>console.log(err));
   }
 
   _renderList(list){
@@ -167,7 +164,7 @@ class SettingsScreen extends BasePage {
       <Container theme={glluTheme}>
         <View style={{height:50}}>
           <View style={styles.header} >
-            <Button transparent onPress={() => this.popRoute()} style={{borderWidth: 0}}>
+            <Button transparent onPress={this.goBack} style={{borderWidth: 0}}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
             </Button>
             <Text style={styles.headerTitle}>Settings</Text>
@@ -183,14 +180,12 @@ class SettingsScreen extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    back: key => dispatch(back(key)),
     logout: () => dispatch(logout()),
   };
 }
 
 const mapStateToProps = state => {
   return {
-    navigation: state.cardNavigation,
     shareToken: state.user.invitation_share_token
   };
 };

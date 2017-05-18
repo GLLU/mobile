@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text,View  } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { popRoute, replaceAt, navigateTo, followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
+import { followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
 
 import ListViewHeader from './ListViewHeader';
 import NotificationRow from './NotificationRow';
@@ -57,11 +57,10 @@ class NotificationListView extends Component {
 
   onUserNavigate(props) {
     if(props.action_kind === 'Follow') {
-      this.props.popRoute(this.props.navigation.key);
-      this.props.popRoute(this.props.navigation.key);
-      this.props.navigateTo('profileScreen', `feedscreen`, props);
+      this.props.navigateTo('profileScreen',props);
     } else  {
-      this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id);
+      this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
+        .then(look=>this.props.navigateTo('looksScreen', look));
     }
 
   }
@@ -96,8 +95,8 @@ class NotificationListView extends Component {
   render() {
     return (
       <View style={{flex:1, flexDirection:'column'}}>
-        <ListViewHeader title={`My ${this.props.headerData.mode}`}/>
-        {this.props.notifications.allNotifications.length > 0 ? this.renderListView() : this.props.renderEmpty()}
+        <ListViewHeader goBack={this.props.goBack} title={`My ${this.props.headerData.mode}`}/>
+        {this.props.notifications.allNotifications && this.props.notifications.allNotifications.length > 0 ? this.renderListView() : this.props.renderEmpty()}
       </View>
     );
   }
@@ -105,9 +104,6 @@ class NotificationListView extends Component {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
     followUpdate: (id) => dispatch(followUpdate(id)),
     unFollowUpdate: (id) => dispatch(unFollowUpdate(id)),
     goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
@@ -115,11 +111,7 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => {
-  return {
-    navigation: state.cardNavigation,
-  }
-};
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, bindAction)(NotificationListView);
 

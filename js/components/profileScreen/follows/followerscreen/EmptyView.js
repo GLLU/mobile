@@ -36,9 +36,7 @@ class EmptyView extends Component {
     if (isMyProfile) {
       return (
         <View>
-          <Text style={{textAlign:'center'}}>
-            Upload Your Look & Get Followers
-          </Text>
+          <Text style={{textAlign:'center'}}>Upload Your Look & Get Followers</Text>
           <View style={{flexDirection:'row', paddingTop: 15}}>
             <View style={{flex:3}} name="spacer"/>
             <TouchableOpacity style={[styles.addItemContainer,{justifyContent:'center',flex: 1}]}

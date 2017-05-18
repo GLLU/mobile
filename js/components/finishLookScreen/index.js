@@ -3,13 +3,7 @@ import BasePage from '../common/BasePage';
 import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform, Text } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import {
-  reset,
-  addNewLook,
-  navigateTo,
-  popRoute,
-  replaceAtIndex
-} from '../../actions';
+import { addNewLook } from '../../actions';
 import SocialShare from '../../lib/social';
 import Gllu from '../common';
 import glluTheme from '../../themes/gllu-theme';
@@ -31,13 +25,8 @@ const styles = StyleSheet.create({
 class FinishLookPage extends BasePage {
 
   static propTypes = {
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
     lookId: React.PropTypes.number,
-    items: React.PropTypes.array,
-    pushRoute: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
+    items: React.PropTypes.array
   }
 
   constructor(props) {
@@ -61,8 +50,7 @@ class FinishLookPage extends BasePage {
   }
 
   resetToOriginalPlace() {
-    this.props.popRoute(this.props.navigation.key);
-    this.props.popRoute(this.props.navigation.key);
+    this.resetTo('feedscreen')
   }
 
   handleClose() {
@@ -89,7 +77,7 @@ class FinishLookPage extends BasePage {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
         this.resetToOriginalPlace();
-        this.props.navigateTo('addItemScreen', 'feedscreen');
+        this.navigateTo('addItemScreen');
       }).catch(err => {
         console.log('addNewLook err', err);
       });  
@@ -171,18 +159,13 @@ FinishLookPage.defaultProps = {
 
 function bindActions(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    popRoute: key => dispatch(popRoute(key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
-    reset: (route, key) => dispatch(reset(route, key)),
-    replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
   };
 }
 
 const mapStateToProps = state => {
   const { itemId, lookId, image, items } = state.uploadLook;
   return {
-    navigation: state.cardNavigation,
     itemId,
     lookId,
     image,

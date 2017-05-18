@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class TutorialPage extends Component {
+class SplashButton extends Component {
 
   static propTypes = {
     label: React.PropTypes.string,
@@ -57,4 +57,4 @@ class TutorialPage extends Component {
   }
 }
 
-export default TutorialPage;
+export default SplashButton;

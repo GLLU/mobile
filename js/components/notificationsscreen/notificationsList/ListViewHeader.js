@@ -4,9 +4,6 @@ import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, View, Text, Platform } from 'react-native';
 import { Icon } from 'native-base';
 import * as _ from 'lodash'
-import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-const {popRoute} = actions;
 import FontSizeCalculator from './../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
@@ -50,15 +47,11 @@ class ListViewHeader extends Component {
   static propTypes = {
     title: React.PropTypes.string,
     count: React.PropTypes.number,
+    goBack: React.PropTypes.func
   };
 
   constructor(props) {
     super(props);
-    this.popRoute = this.popRoute.bind(this);
-  }
-
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
   }
 
   render() {
@@ -66,7 +59,7 @@ class ListViewHeader extends Component {
       <View style={[styles.container,styles.column]}>
         <View style={[styles.header,styles.row]}>
           <View style={{flex:0.5}} name="spacer"/>
-          <TouchableOpacity style={{flex:1}} onPress={() => this.popRoute()}>
+          <TouchableOpacity style={{flex:1}} onPress={() => this.props.goBack()}>
             <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           <Text style={styles.notificationsTitle}>{_.startCase(this.props.title)}</Text>
@@ -77,18 +70,6 @@ class ListViewHeader extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    popRoute: key => dispatch(popRoute(key))
-  };
-}
 
-const mapStateToProps = state => {
-  return {
-    navigation: state.cardNavigation
-  };
-};
-
-
-export default connect(mapStateToProps, bindAction)(ListViewHeader);
+export default ListViewHeader;
 

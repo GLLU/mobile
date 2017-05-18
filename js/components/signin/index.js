@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
 import { Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
@@ -19,7 +18,6 @@ import {
 } from '../../constants';
 
 const logo = require('../../../images/logo.png');
-const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/backgrounds/bags.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
@@ -30,8 +28,6 @@ class SignInPage extends BasePage {
 
   static propTypes = {
     emailSignIn: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     })
@@ -54,7 +50,9 @@ class SignInPage extends BasePage {
       let { password, email } = this.state;
       const data = { email, password };
       if(this.checkValidations()) {
-          this.props.emailSignIn(data);
+          this.props.emailSignIn(data)
+            .then(user=>this.resetTo('feedscreen'))
+            .catch(error=>console.log('oh no! could not sign in!',error));
       }
   }
   checkValidations() {
@@ -64,13 +62,6 @@ class SignInPage extends BasePage {
 
     let validationArray = [ passwordValid, emailValid ];
     return (validationArray.indexOf('times') === -1)
-  }
-
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
-  pushRoute(route) {
-    this.props.pushRoute({ key: route, index: 2 }, this.props.navigation.key);
   }
 
   validateEmailInput(email) {
@@ -124,7 +115,7 @@ class SignInPage extends BasePage {
 
   handleForgotPasswordPress() {
     this.logEvent('SignInEmailScreen', { name: 'Forgot password click' });
-    this.pushRoute('forgotpassword');
+    this.navigateTo('forgotpassword');
   }
 
   render() {
@@ -136,7 +127,7 @@ class SignInPage extends BasePage {
             <Image source={backgroundShadow} style={styles.bgShadow} />
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={() => this.popRoute()}>
+                <Button transparent onPress={() => this.goBack()}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Sign in</Text>
@@ -193,14 +184,10 @@ class SignInPage extends BasePage {
 
 function bindAction(dispatch) {
   return {
-      emailSignIn: (data) => dispatch(emailSignIn(data)),
-      popRoute: key => dispatch(popRoute(key)),
-      pushRoute: (route, key) => dispatch(pushRoute(route, key))
+      emailSignIn: (data) => dispatch(emailSignIn(data))
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-});
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, bindAction)(SignInPage);

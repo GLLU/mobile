@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform ,View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux';
-import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
 import {openCamera} from '../../lib/camera/CameraUtils'
+import * as _ from "lodash";
 
 const userIcon = require('../../../images/icons/user.png');
 const emptyNotification = require('../../../images/icons/emptyNotification.png');
@@ -55,6 +55,12 @@ class NavigationBarView extends BaseComponent {
     navigateTo: React.PropTypes.func,
   }
 
+  static defaultProps = {
+    handleSearchStatus: _.noop,
+    handleOpenPhotoModal: _.noop,
+    navigateTo: _.noop,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -70,12 +76,12 @@ class NavigationBarView extends BaseComponent {
 
   goToProfile() {
     this.logEvent('Feedscreen', { name: 'Profile click' });
-    this.props.navigateTo('profileScreen', 'feedscreen', this.props.user);
+    this.props.navigateTo('profileScreen', this.props.user);
   }
 
   handleNotificationsPress() {
     this.logEvent('ProfileScreen', {name: 'Notifications click'});
-    this.props.navigateTo('notificationsScreen', 'feedscreen');
+    this.props.navigateTo('notificationsScreen');
   }
 
   async openCamera() {
@@ -125,12 +131,6 @@ class NavigationBarView extends BaseComponent {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-  };
-}
-
 const mapStateToProps = state => {
   return {
     user: state.user,
@@ -138,4 +138,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindActions)(NavigationBarView);
+export default connect(mapStateToProps)(NavigationBarView);

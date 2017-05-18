@@ -9,10 +9,7 @@ import Video from 'react-native-video';
 import {
   addNewLook,
   editNewLook,
-  navigateTo,
-  pushRoute,
-  getUserLooks,
-  replaceAt
+  getUserLooks
 } from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -70,12 +67,13 @@ class UserLooks extends Component {
 
   _handleItemPress(item) {
     item.singleItem = true
-    this.props.navigateTo('looksScreen', 'feedscreen', item);
+    this.props.navigateTo('looksScreen', item);
   }
 
   _handleEditPress(look) {
     this.props.editNewLook(look.id).then(() => {
-      this.props.pushRoute({key: 'addItemScreen', optional: { mode: 'edit' } }, this.props.navigation.key);
+
+      this.props.navigateTo('addItemScreen',{ mode: 'edit' });
     });
   }
 
@@ -136,7 +134,7 @@ class UserLooks extends Component {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen', 'profilescreen');
+        this.props.navigateTo('addItemScreen');
       });
     })
   }
@@ -178,19 +176,15 @@ const styles = StyleSheet.create({
 
 function bindActions(dispatch) {
   return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     editNewLook: (id) => dispatch(editNewLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
 
 const mapStateToProps = state => {
   return {
     currLookScreenId: state.userLooks.currId,
-    navigation: state.cardNavigation,
     userLooks: state.userLooks.userLooksData,
     myUserId: state.user.id,
     isLoading: state.loader.loading

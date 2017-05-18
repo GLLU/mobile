@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View} from 'react-native';
-import { popRoute } from '../../actions';
+import BasePage from "../common/BasePage";
 
-const BadNavigationScreen = props=>{
-  const {index, routes}=props.navigation;
-  this.logEvent('BadNavigationScreen', {name: `Should have reached to '${routes[index].key}'`});
-  props.popRoute(props.navigation.key);
-  return <View/>;
-};
+class BadNavigationScreen extends BasePage {
 
-function bindActions(dispatch) {
-  return {
-    popRoute: key => dispatch(popRoute(key)),
-  };
+  render() {
+    const {routes,index} = this.props.navigationStack;
+    this.logEvent('BadNavigationScreen', {name: `Should have reached to '${routes[index].routeName}'`});
+    this.goBack();
+    return <View/>;
+  }
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
+  navigationStack: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindActions)(BadNavigationScreen);
+export default connect(mapStateToProps)(BadNavigationScreen);

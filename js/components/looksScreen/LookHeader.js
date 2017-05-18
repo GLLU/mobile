@@ -4,9 +4,6 @@ import React, { Component } from 'react';
 import { View,ListView, Image, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
 import {  Icon } from 'native-base';
 import { noop } from 'lodash'
-import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
-const {popRoute} = actions;
 
 const styles = StyleSheet.create({
   container: {
@@ -86,18 +83,6 @@ class LookHeader extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    popRoute: key => dispatch(popRoute(key))
-  };
-}
 
-const mapStateToProps = state => {
-  return {
-    navigation: state.cardNavigation
-  };
-};
-
-
-export default connect(mapStateToProps, bindAction)(LookHeader);
+export default LookHeader;
 

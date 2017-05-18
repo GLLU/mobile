@@ -6,14 +6,10 @@ import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { saveUserSize } from '../../actions/myBodyMeasure';
 
 import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
-
-
-const {popRoute} = actions
 
 class MyBodyMeasure extends BasePage {
   constructor(props) {
@@ -22,18 +18,10 @@ class MyBodyMeasure extends BasePage {
   }
 
   static propTypes = {
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
     user_size: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     gender: React.PropTypes.string,
-    popRoute: React.PropTypes.func,
     saveUserSize: React.PropTypes.func,
-  }
-
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
   }
 
   _saveUserSize() {
@@ -51,7 +39,7 @@ class MyBodyMeasure extends BasePage {
 
   handleSaveUserSizePress() {
     this.logEvent('MyBodyMeasureScreen', {name: 'Lets GLLU clicks'});
-    this._saveUserSize();
+    this._saveUserSize().then(()=>this.resetTo('feedscreen'));
   }
 
   render() {
@@ -59,7 +47,7 @@ class MyBodyMeasure extends BasePage {
       <Container>
         <View style={{height: 50}}>
           <View style={[styles.header,{flexDirection:'row', flex: 1, alignItems:'center'}]}>
-            <Button transparent onPress={() => this.popRoute()}>
+            <Button transparent onPress={()=>this.goBack()}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back"/>
             </Button>
             <Text style={styles.headerTitle}>My Body Measures</Text>
@@ -88,7 +76,6 @@ class MyBodyMeasure extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
     saveUserSize: (measurements) => dispatch(saveUserSize(measurements))
   };
 }
@@ -96,7 +83,6 @@ function bindAction(dispatch) {
 const mapStateToProps = state => {
   const userSize = state.user.user_size ? state.user.user_size : {};
   return {
-    navigation: state.cardNavigation,
     currentBodyType: state.myBodyType.currentBodyType,
     gender: state.user.gender,
     user_size: userSize

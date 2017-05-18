@@ -4,18 +4,14 @@ import BasePage from '../common/BasePage';
 import { View, Image, Linking, Platform, AppState, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Content, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { actions } from 'react-native-navigation-redux-helpers';
 import Utils from '../../Utils.js'
 import { connect } from 'react-redux';
 import styles from './styles';
-import { loginViaFacebook } from '../../actions/user';
+import { checkLogin, loginViaFacebook } from '../../actions';
 import _ from 'lodash';
 import Video from 'react-native-video';
-import { navigateTo } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
-import { emailSignIn } from '../../actions/user';
 import SignUpEmailButton from './SignUpEmailButton'
-
 import {
   TERMS_URL,
   PRIVACY_URL,
@@ -25,16 +21,11 @@ const background = require('../../../images/background.png');
 const backgroundShadow = require('../../../images/background-shadow-70p.png');
 const logo = require('../../../images/logo.png');
 
-const {
-    pushRoute
-} = actions;
-
 let PERMISSIONS = ["email", "public_profile"];
 
 class SplashPage extends BasePage {
 
   static propTypes = {
-    pushRoute: React.PropTypes.func,
     isLoading: React.PropTypes.number,
     loginViaFacebook: React.PropTypes.func,
     navigation: React.PropTypes.shape({
@@ -44,13 +35,22 @@ class SplashPage extends BasePage {
 
   constructor(props) {
     super(props);
+    this.checkLogin=this.checkLogin.bind(this);
     this.state = {
       name: '',
       repeat: true
     };
     console.log('this.props.showTutorial',this.props.showTutorial)
     if(!this.props.showTutorial && Platform !== 'ios'){
-      this.props.navigateTo('tutorialscreen','splashscreen');
+      this.navigateTo('tutorialscreen');
+    }
+  }
+
+  componentWillMount(){
+    const {user}=this.props;
+    console.log(`user`,user);
+    if(user!==undefined&&user.id!==-1){
+      this.checkLogin(user);
     }
   }
 
@@ -62,8 +62,10 @@ class SplashPage extends BasePage {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  pushRoute(route) {
-      this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
+  checkLogin(user) {
+    this.props.checkLogin(user)
+      .then(() => this.resetTo('feedscreen'))
+      .catch(err => console.log(err));
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -82,22 +84,22 @@ class SplashPage extends BasePage {
     this.logEvent('Splashscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
     if(this.props.invitation_token !== -1) {
-      Utils.loginWithFacebook().then((data) => this.props.loginViaFacebook(data))
+      Utils.loginWithFacebook()
+        .then((data) => this.props.loginViaFacebook(data)
+          .then(user=>this.resetTo('feedscreen',user))
+          .catch((err) => console.log('facebook login Error',err)))
         .catch((err) => console.log('facebook login Error',err))
     } else {
-      this.props.navigateTo('activationcode', 'splashscreen', 'facebook');
+      this.navigateTo('activationcode','facebook');
     }
-
   }
 
   handleEmailSignupPress() {
     this.logEvent('Splashscreen', {name: 'Email signup click'});
-    console.log('this.props',this.props)
     if(this.props.invitation_token !== -1) {
-      this.pushRoute('genderselect');
+      this.navigateTo('genderselect');
     } else {
-      //this.pushRoute('activationcode');
-      this.props.navigateTo('activationcode', 'splashscreen', 'genderselect');
+      this.navigateTo('activationcode','genderselect');
     }
 
   }
@@ -137,7 +139,7 @@ class SplashPage extends BasePage {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <TouchableOpacity onPress={() => this.pushRoute('signinemail') }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.navigateTo('signinemail') }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
           </View>
         </View>
     )
@@ -177,18 +179,15 @@ class SplashPage extends BasePage {
 
 function bindAction(dispatch) {
   return {
-    emailSignIn: (data) => dispatch(emailSignIn(data)),
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
-    navigateTo: (route, homeRoute, continueTo) => dispatch(navigateTo(route, homeRoute, continueTo)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
+    checkLogin: (user) => dispatch(checkLogin(user)),
   };
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
+  user: state.user,
   invitation_token: state.user.invitation_token,
   showTutorial: state.user.showTutorial
-
 });
 
 export default connect(mapStateToProps, bindAction)(SplashPage);

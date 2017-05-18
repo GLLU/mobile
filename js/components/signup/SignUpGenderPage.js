@@ -1,31 +1,13 @@
-/**
- * Created by yonatanitzhaky on 1/9/17.
- */
-
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, StyleProvider, getTheme } from 'native-base';
 import BasePage from '../common/BasePage';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { connect } from 'react-redux';
 import styles from './styles'
-import { emailSignUp } from '../../actions/user';
 import glluTheme from '../../themes/gllu-theme';
-const { popRoute, pushRoute } = actions;
 
 const background = require('../../../images/backgrounds/man-female_screen2.png');
-const backgroundShadow = require('../../../images/background-shadow-70p.png');
 
 class SignUpGenderPage extends BasePage {
-
-  static propTypes = {
-    popRoute: React.PropTypes.func,
-    emailSignUp: React.PropTypes.func,
-    pushRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    })
-  }
 
   constructor(props) {
     super(props);
@@ -36,23 +18,10 @@ class SignUpGenderPage extends BasePage {
 
   }
 
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
-
-
-  pushRoute(route, gender) {
-    this.props.pushRoute({ key: route, index: 1, gender: gender }, this.props.navigation.key);
-  }
 
   handleGenderPress(gender) {
     this.logEvent(`GenderSelectScreen`, { name: 'Gender click', gender });
-    this.pushRoute('signupemail', gender);
-  }
-
-  handleBackPress() {
-    this.logEvent('GenderSelectScreen', { name: 'back to signup clicks' });
-    this.popRoute();
+    this.navigateTo('signupemail', {gender:gender});
   }
 
   render() {
@@ -62,7 +31,7 @@ class SignUpGenderPage extends BasePage {
           <Image source={background} style={styles.shadow} blurRadius={0}>
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={() => this.popRoute()}>
+                <Button transparent onPress={()=>this.goBack()}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Sign up</Text>
@@ -100,16 +69,4 @@ class SignUpGenderPage extends BasePage {
 
 }
 
-function bindAction(dispatch) {
-  return {
-    emailSignUp: (data) => dispatch(emailSignUp(data)),
-    popRoute: key => dispatch(popRoute(key)),
-    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-});
-
-export default connect(mapStateToProps, bindAction)(SignUpGenderPage);
+export default SignUpGenderPage;

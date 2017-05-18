@@ -42,11 +42,6 @@ export default class CommentRow extends Component {
     id: -1,
     created_at: new Date(1970, 1, 1).toUTCString(),
     body: '',
-    user: {
-      id: 681,
-      avatar: {url: "https://cdn1.gllu.com/uploads/user/user-681/avatar/IMG-20170224-WA0020.jpeg"},
-      name: 'itzik kala'
-    },
     //parent_id & children are used for hierarchical comments and therefore currently not relevant
     parent_id: null,
     children: [],
