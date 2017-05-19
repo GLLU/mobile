@@ -24,7 +24,7 @@ import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
 import VideoWithTags from '../common/VideoWithTags';
-import Utils from '../../Utils';
+import Utils from '../../utils';
 
 const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');

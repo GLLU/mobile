@@ -5,7 +5,7 @@ import listenToAppState from '../common/eventListeners/AppStateListener'
 import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Content, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Utils from '../../Utils.js'
+import Utils from '../../utils'
 import { connect } from 'react-redux';
 import styles from './styles';
 import { checkLogin, loginViaFacebook } from '../../actions';

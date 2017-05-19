@@ -5,7 +5,7 @@ import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';
 import myStyles from './styles';
-import Utils from '../../Utils';
+import Utils from '../../utils';
 import convert from 'convert-units';
 import { completeEdit } from '../../actions/myBodyMeasure';
 import _ from 'lodash';

@@ -7,7 +7,7 @@ import LikeView from '../feedscreen/items/LikeView';
 import VolumeButton from './VolumeButton';
 import MediaBorderPatch from './MediaBorderPatch'
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-import Utils from '../../Utils';
+import Utils from '../../utils';
 import shdowBg from '../../../images/background-shadow-70p.png';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 

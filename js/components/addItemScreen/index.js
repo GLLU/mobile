@@ -11,7 +11,7 @@ import StepThreePublish from './StepThreePublish';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
-import Utils from '../../Utils';
+import Utils from '../../utils';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;

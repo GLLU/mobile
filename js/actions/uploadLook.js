@@ -27,7 +27,7 @@ import _ from 'lodash';
 import rest, { API_URL } from '../api/rest';
 import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
 import itemMapper from '../mappers/itemMapper';
-import Utils from '../Utils';
+import Utils from '../utils';
 
 
 let api_key = null;
