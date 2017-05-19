@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-brew cask install react-native-debugger
+#brew cask install react-native-debugger
