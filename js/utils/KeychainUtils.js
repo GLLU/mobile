@@ -1,4 +1,3 @@
-import { Image } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import * as selfRef from './KeychainUtils'
 

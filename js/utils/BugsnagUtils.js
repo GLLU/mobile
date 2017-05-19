@@ -1,4 +1,3 @@
-import { Image } from 'react-native';
 import { Client, Configuration } from 'bugsnag-react-native';
 import Config from 'react-native-config';
 import {isEmpty,noop,each} from 'lodash';

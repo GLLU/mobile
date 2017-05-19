@@ -1,6 +1,5 @@
-import { Image } from 'react-native';
 import Config from 'react-native-config';
-import * as _ from 'lodash';
+import {last} from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
 import * as selfRef from './FetchUtils'
 
@@ -10,7 +9,7 @@ export const postMultipartForm = (api_key, path, formData, fileField, file, meth
   return new Promise((resolve, reject) => {
     formData.push({
       name: fileField,
-      filename: _.last(file.path.split('/')),
+      filename: last(file.path.split('/')),
       type: 'image/*',
       data: RNFetchBlob.wrap(file.path)
     });

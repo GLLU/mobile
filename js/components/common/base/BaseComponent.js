@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
-import Utils from '../../../utils';
+import React,{ Component } from 'react';
+import * as Utils from '../../../utils';
 import Analytics from '../../../lib/analytics/Analytics';
 
 class BaseComponent extends Component {
+
+  static propTypes={
+    user: React.PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
 
