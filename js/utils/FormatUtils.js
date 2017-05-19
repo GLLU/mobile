@@ -1,9 +1,7 @@
-export default class FormatUtils {
-  static format_measurement(value, measurements_scale) {
-    return `${FormatUtils.format_number(value)} ${measurements_scale}`;
-  }
+import * as selfRef from './FormatUtils'
 
-  static format_number(value) {
-    return Math.round(value * 100)/ 100;
-  }
-}
+export default selfRef
+
+export const format_measurement = (value, measurements_scale) => `${format_number(value)} ${measurements_scale}`;
+
+export const format_number = (value) => Math.round(value * 100) / 100;

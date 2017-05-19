@@ -1,18 +1,12 @@
 import { Image } from 'react-native';
 import * as Keychain from 'react-native-keychain';
+import * as selfRef from './KeychainUtils'
 
-export default class KeychainUtils {
+export default selfRef
 
-  static saveApiKeyToKeychain(email, api_key) {
-    return Keychain.setGenericPassword(email, api_key);
-  }
+export const saveApiKeyToKeychain = (email, api_key) => Keychain.setGenericPassword(email, api_key);
 
-  static getKeychainData() {
-    return Keychain.getGenericPassword();
-  }
+export const getKeychainData = () => Keychain.getGenericPassword();
 
 
-  static resetKeychainData() {
-    return Keychain.resetGenericPassword();
-  }
-}
+export const resetKeychainData = () => Keychain.resetGenericPassword();
