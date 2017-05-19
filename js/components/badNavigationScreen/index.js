@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View} from 'react-native';
-import BasePage from "../common/BasePage";
+import BasePage from "../common/base/BasePage";
 
 class BadNavigationScreen extends BasePage {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, Platform,View , TouchableWithoutFeedback, TouchableOpacity, InteractionManager } from 'react-native'
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 import SearchBar from './SearchBar';
 
 const homeIcon = require('../../../images/icons/blackLogo.png');

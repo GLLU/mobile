@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text,StyleSheet, Dimensions, Image, UIManager, LayoutAnimation } from 'react-native'
 import { Button } from 'native-base';
-import BaseComponent from './BaseComponent';
+import BaseComponent from './base/BaseComponent';
 import FontSizeCalculator from './../../calculators/FontSize';
 import glluTheme from '../../themes/gllu-theme';
 import * as _ from "lodash";

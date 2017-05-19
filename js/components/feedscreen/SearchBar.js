@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, Text, Platform,View } from 'react-native';
 import {  Button } from 'native-base';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
 

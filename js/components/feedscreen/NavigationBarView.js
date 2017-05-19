@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform ,View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 import {openCamera} from '../../lib/camera/CameraUtils'
 import * as _ from "lodash";
 

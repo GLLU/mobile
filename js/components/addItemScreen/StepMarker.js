@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 import { View, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { createLookItem, setTagPosition, updateLookItem } from '../../actions';

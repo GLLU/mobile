@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from './base/BaseComponent';
 const deviceWidth = Dimensions.get('window').width;
 
 class MediaBorderPatch extends Component {

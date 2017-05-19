@@ -5,7 +5,7 @@ import { Image, TouchableOpacity, Text, StyleSheet,View} from 'react-native';
 import { connect } from 'react-redux';
 import { logout, followUpdate, unFollowUpdate } from '../../actions';
 import FollowView from './follows/FollowView.js'
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 
 const styles = StyleSheet.create({
   avatar: {

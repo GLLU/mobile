@@ -7,7 +7,7 @@ import EmptyView from './EmptyView'
 import { getNotifications, clearNewNotifications } from '../../actions';
 
 import NotificationListView from './notificationsList/NotificationListView'
-import BasePage from "../common/BasePage";
+import BasePage from "../common/base/BasePage";
 
 class NotificationsScreen extends BasePage {
 

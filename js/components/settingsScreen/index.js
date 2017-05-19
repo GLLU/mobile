@@ -1,5 +1,5 @@
 import React from 'react';
-import BasePage from '../common/BasePage';
+import BasePage from '../common/base/BasePage';
 import { StyleSheet, Alert, Linking, Text, View, Image } from 'react-native';
 import { Container, Header, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
 import { connect } from 'react-redux';

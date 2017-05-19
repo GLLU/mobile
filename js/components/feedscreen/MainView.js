@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getFeed, resetFeed, loadMore } from '../../actions';
 import TabContent from './TabContent';
 import SearchView from './SearchView'
-import Utils from '../../Utils';
+import Utils from '../../utils';
 import _ from 'lodash';
 import VisibilityContainer from "../common/VisibilityContainer";
 

@@ -1,6 +1,6 @@
 import type { Action } from '../actions/types';
 import rest from '../api/rest';
-import Utils from '../Utils';
+import Utils from '../utils';
 import { readEndpoint, setHeaders } from 'redux-json-api';
 
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';

@@ -11,7 +11,7 @@ import CategoryStrip from '../common/CategoryStrip';
 import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import Gllu from '../common';
-import BaseComponent from '../common/BaseComponent';
+import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');

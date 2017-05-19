@@ -7,7 +7,7 @@ import { getUserFollowsData, initUserFollows } from '../../../../actions';
 import EmptyView from './EmptyView'
 
 import FollowListView from '../shared/FollowListView'
-import BasePage from "../../../common/BasePage";
+import BasePage from "../../../common/base/BasePage";
 
 class FollowScreen extends BasePage {
 
