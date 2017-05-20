@@ -11,6 +11,21 @@ import Utils from '../../Utils';
 import shdowBg from '../../../images/background-shadow-70p.png';
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
+const styles = StyleSheet.create({
+  videoGridIos: {
+    bottom: 15,
+    left: 3,
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent:'space-between'
+  },
+  videoGridAndroid: {
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    zIndex: 1
+  },
+});
+
 class MediaContainer extends BaseComponent {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
@@ -21,7 +36,7 @@ class MediaContainer extends BaseComponent {
     super(props);
     this.state = {
       currLookPosition: -1,
-      shouldPlay: true,
+      shouldPlay: false,
       isMuted: true
     }
     this.bgColor = Utils.getLoaderImage()
@@ -38,41 +53,6 @@ class MediaContainer extends BaseComponent {
     this.setState({isMuted: true})
   }
 
-  renderVideo(video) {
-    //let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
-    return (
-      <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.bgColor}}>
-
-        <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
-               resizeMode={'stretch'}
-               muted={this.state.isMuted}
-               style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden', borderRadius: 10}}
-               repeat={true}
-               paused={this.state.shouldPlay}
-        />
-
-        <MediaBorderPatch media={video}>
-          <View style={{bottom: 15}}>
-            {video.coverType === 'video' ? this.renderVideoGrid(video) : null}
-          </View>
-        </MediaBorderPatch>
-      </View>
-    )
-  }
-
-  renderImage(look, index) {
-     //let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight*2 && this.props.currScroll > this.state.currLookPosition-deviceHeight*2
-      return (
-      <View>
-        <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} />
-        <MediaBorderPatch media={look} >
-          <View style={{bottom: 15, zIndex: 1}}>
-            <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
-          </View>
-        </MediaBorderPatch>
-      </View>
-      )
-  }
 
   toggleLikeAction(item, isLiked) {
     this.logEvent('Feedscreen', {name: 'Like Image click'});
@@ -86,17 +66,81 @@ class MediaContainer extends BaseComponent {
   }
 
   setLookPosition(e) {
-      this.setState({currLookPosition: e.nativeEvent.layout.y})
+    this.setState({currLookPosition: e.nativeEvent.layout.y})
   }
 
   _togglePlaySoundAction() {
     this.setState({isMuted: !this.state.isMuted})
   }
 
+  renderVideo(video) {
+    //let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
+    if(Platform.OS === 'ios') {
+      return (
+        <View style={{height: video.height,width: video.width-6,  overflow: 'hidden', borderRadius: 10,  alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
+          <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
+                 resizeMode={'stretch'}
+                 muted={this.state.isMuted}
+                 style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden'}}
+                 repeat={true}
+                 paused={false}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.bgColor}}>
+          <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
+                 resizeMode={'stretch'}
+                 muted={this.state.isMuted}
+                 style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden', borderRadius: 10}}
+                 repeat={true}
+                 paused={false}
+          />
+          <MediaBorderPatch media={video}>
+            <View style={{bottom: 15}}>
+              { this.renderVideoGrid(video) }
+            </View>
+          </MediaBorderPatch>
+        </View>
+      )
+    }
+
+  }
+
+  renderImage(look, index) {
+     //let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight*2 && this.props.currScroll > this.state.currLookPosition-deviceHeight*2
+
+    if(Platform.OS === 'ios') {
+      return (
+        <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
+          <Image source={{uri: look.uri}} style={{width: look.width-6, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} >
+            <View style={{bottom: 15, zIndex: 1}}>
+              <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
+            </View>
+          </Image>
+        </View>
+      )
+    } else {
+      return (
+        <View>
+          <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} />
+          <MediaBorderPatch media={look} >
+            <View style={{bottom: 15, zIndex: 1}}>
+              <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
+            </View>
+          </MediaBorderPatch>
+        </View>
+      )
+    }
+
+  }
+
+
   renderVideoGrid(look) {
 
     return(
-      <View style={{flexDirection: 'row', justifyContent:'space-between', zIndex: 1}}>
+      <View style={Platform.OS === 'ios' ? [styles.videoGridIos, {width: look.width}] : styles.videoGridAndroid}>
         <LikeView item={look} onPress={this.toggleLikeAction.bind(this)}/>
         <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()}/>
       </View>
@@ -106,9 +150,10 @@ class MediaContainer extends BaseComponent {
   render() {
     const { look, index } = this.props
     return(
-      <View style={{ borderRadius: 100}} onLayout={(e) => this.setLookPosition(e)}>
-        <TouchableOpacity onPress={(e) => this._handleItemPress(look)} >
+      <View  onLayout={(e) => this.setLookPosition(e)}>
+        <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look, index)}
+          {look.coverType === 'video' && Platform.OS === 'ios' ? this.renderVideoGrid(look) : null}
         </TouchableOpacity>
       </View>
     )

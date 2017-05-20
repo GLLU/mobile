@@ -62,7 +62,7 @@ class VolumeButton extends Component {
     let volumeIcon = isMuted ? 'ios-volume-off' : 'ios-volume-down'
     let volumeColor = isMuted ? 'rgba(0,0,0,0.6)' : 'rgba(29,233,182,0.6)'
     return (
-      <View style={[styles.likeContainer, { marginTop: look.height - 35, backgroundColor: volumeColor}]}>
+      <View style={[styles.likeContainer, { marginTop: look.height - 30, backgroundColor: volumeColor}]}>
             <TouchableOpacity transparent onPress={() => this.props.togglePlaySoundAction()}>
               <Icon name={volumeIcon} style={StyleSheet.flatten(styles.iconWithImage)}/>
             </TouchableOpacity>

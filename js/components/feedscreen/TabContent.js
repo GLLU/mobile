@@ -212,6 +212,27 @@ class TabContent extends BaseComponent {
       });
   }
 
+  renderInviteFriend() {
+    if(Platform.OS === 'ios') {
+      return (
+        <View style={{width: deviceWidth / 2, height: deviceWidth / 4, marginVertical: 3}}>
+          <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+                 style={{width: deviceWidth / 2-6, height: deviceWidth / 4, borderRadius: 10, alignSelf: 'center'}}
+                 resizeMode={'stretch'}/>
+        </View>
+      )
+    } else {
+      return (
+        <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
+          <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+                 style={{width: deviceWidth / 2, height: deviceWidth / 4}}
+                 resizeMode={'stretch'}/>
+          <MediaBorderPatch />
+        </View>
+      )
+    }
+  }
+
   render() {
       return (
         <View style={styles.tab}>
@@ -223,12 +244,7 @@ class TabContent extends BaseComponent {
             <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
               <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
                 <TouchableOpacity onPress={() => this._onShareClicked()}>
-                  <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
-                    <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
-                           style={{width: deviceWidth / 2, height: deviceWidth / 4}}
-                           resizeMode={'stretch'}/>
-                    <MediaBorderPatch />
-                  </View>
+                  {this.renderInviteFriend()}
                 </TouchableOpacity>
                 {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
               </View>
