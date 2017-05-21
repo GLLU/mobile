@@ -9,7 +9,6 @@ import Video from 'react-native-video';
 import {
   addNewLook,
   editNewLook,
-  getUserLooks
 } from '../../actions';
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -177,8 +176,7 @@ const styles = StyleSheet.create({
 function bindActions(dispatch) {
   return {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
-    editNewLook: (id) => dispatch(editNewLook(id)),
-    getUserLooks: data => dispatch(getUserLooks(data)),
+    editNewLook: (id) => dispatch(editNewLook(id))
   };
 }
 

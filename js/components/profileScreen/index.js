@@ -44,7 +44,7 @@ class ProfileScreen extends BasePage {
       photoModal: false,
 
     }
-    this.loadMoreAsync = _.debounce(this.getUserLooksFunc, 100)
+    this.loadMoreAsync = _.debounce(this.loadMoreAsync, 100)
     this.pagination = 1
   }
 
@@ -171,17 +171,11 @@ class ProfileScreen extends BasePage {
     const currentScroll = event.nativeEvent.contentOffset.y
     const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
     if (compare <= LOADER_HEIGHT && !this.props.isLoading) {
-      this.pagination+=1
-      let data = {
-        id: this.state.userId,
-        page: this.pagination
-      }
       this.loadMoreAsync()
-
     }
   }
 
-  getUserLooksFunc() {
+  loadMoreAsync() {
     this.pagination+=1
     let data = {
       id: this.state.userId,
