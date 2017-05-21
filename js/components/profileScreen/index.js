@@ -44,7 +44,7 @@ class ProfileScreen extends BasePage {
       photoModal: false,
 
     }
-    this.loadMoreAsync = _.debounce(this.loadMoreAsync, 100)
+    this.loadMoreAsync = _.debounce(this.loadMoreAsync, 500)
     this.pagination = 1
   }
 
