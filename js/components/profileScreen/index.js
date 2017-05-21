@@ -66,6 +66,7 @@ class ProfileScreen extends BasePage {
       const looksCall = {
         id: this.state.userId,
         page: 1,
+        all: this.state.isMyProfile
       }
       const looksDataCall = {
         id: this.state.userId,
@@ -179,7 +180,8 @@ class ProfileScreen extends BasePage {
     this.pagination+=1
     let data = {
       id: this.state.userId,
-      page: this.pagination
+      page: this.pagination,
+      all: this.state.isMyProfile
     }
     this.props.getUserLooks(data)
   }
