@@ -33,3 +33,4 @@ project(':react-native-fbsdk').projectDir = new File(rootProject.projectDir, '..
 include ':app'
 include ':libs:cropper'
 include ':libs:video-trimmer'
+include ':libs:material-camera'

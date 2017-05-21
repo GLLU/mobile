@@ -38,6 +38,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
     private boolean mImageTaken = false;
     private boolean mVideoTaken = false;
     private Uri mOriginalFile;
+    private boolean mAllowVideo = true;
 
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
 
@@ -122,6 +123,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         mPromise.resolve("file://" + realPath);
                     } else if (mImageTaken) {
                         Intent intent2 = new Intent(getCurrentActivity(), cameraRecorderActivity.class);
+                        intent2.putExtra("ALLOW_VIDEO", mAllowVideo);
                         getCurrentActivity().startActivityForResult(intent2, RECORD_VIDEO);
                     }
                     mImageTaken = false;
@@ -153,11 +155,13 @@ public class CameraUtils extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void openCamera(Promise promise) {
+    public void openCamera(boolean allowVideo, Promise promise) {
 
         mPromise = promise;
+        mAllowVideo = allowVideo;
 
         Intent intent = new Intent(getCurrentActivity(), cameraRecorderActivity.class);
+        intent.putExtra("ALLOW_VIDEO", mAllowVideo);
         getCurrentActivity().startActivityForResult(intent, RECORD_VIDEO);
     }
 

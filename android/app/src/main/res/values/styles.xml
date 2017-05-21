@@ -12,7 +12,7 @@
         <item name="colorAccent">#b1afaf</item>
 
         <!-- To change the popup menu and app text color  -->
-        <item name="android:textColor">#f2f2f2</item>
+        <item name="android:textColor">#b1afaf</item>
 
         <!-- To change the background of options menu-->
         <item name="android:itemBackground">#b1afaf</item>
