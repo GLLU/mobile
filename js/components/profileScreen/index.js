@@ -44,7 +44,7 @@ class ProfileScreen extends BasePage {
       photoModal: false,
 
     }
-    this.loadMoreAsync = _.debounce(this.getUserLooksFunc, 100)
+    this.loadMoreAsync = _.debounce(this.loadMoreAsync, 500)
     this.pagination = 1
   }
 
@@ -66,6 +66,7 @@ class ProfileScreen extends BasePage {
       const looksCall = {
         id: this.state.userId,
         page: 1,
+        all: this.state.isMyProfile
       }
       const looksDataCall = {
         id: this.state.userId,
@@ -98,10 +99,6 @@ class ProfileScreen extends BasePage {
       </TouchableOpacity>
       :
       <Text style={styles.reportBtn}>REPORT</Text>
-  }
-
-  componentWillUnmount() {
-    console.log('profile unmounted')
   }
 
   goToAddNewItem(imagePath) {
@@ -171,21 +168,16 @@ class ProfileScreen extends BasePage {
     const currentScroll = event.nativeEvent.contentOffset.y
     const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
     if (compare <= LOADER_HEIGHT && !this.props.isLoading) {
-      this.pagination+=1
-      let data = {
-        id: this.state.userId,
-        page: this.pagination
-      }
       this.loadMoreAsync()
-
     }
   }
 
-  getUserLooksFunc() {
+  loadMoreAsync() {
     this.pagination+=1
     let data = {
       id: this.state.userId,
-      page: this.pagination
+      page: this.pagination,
+      all: this.state.isMyProfile
     }
     this.props.getUserLooks(data)
   }
