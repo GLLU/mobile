@@ -39,6 +39,8 @@ android/local.properties
 node_modules/
 npm-debug.log
 
+android/libs/cropper/build.gradle
+
 # BUCK
 buck-out/
 \.buckd/
