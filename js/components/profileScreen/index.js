@@ -101,10 +101,6 @@ class ProfileScreen extends BasePage {
       <Text style={styles.reportBtn}>REPORT</Text>
   }
 
-  componentWillUnmount() {
-    console.log('profile unmounted')
-  }
-
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
