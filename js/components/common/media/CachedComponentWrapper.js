@@ -14,7 +14,7 @@ const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
       }
     }
 
-    componentWillMount() {
+    componentDidMount() {
       const uri=uriProvider(this.props);
       this.cacheOrReturnCachedPath(uri);
     }

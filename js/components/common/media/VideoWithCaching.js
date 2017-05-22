@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import Video from 'react-native-video';
 import cachedWrapper from './CachedComponentWrapper'
 
@@ -25,13 +25,7 @@ class VideoWithCaching extends Component {
   }
 }
 
-const renderLoader = (props) => {
-  return (
-    <View {...props} style={[props.style, {justifyContent: 'center'}]}>
-      <Text style={{textAlign: 'center'}}>Loading</Text>
-    </View>
-  )
-};
+const renderLoader = () => <View/>;
 
 const cache = cachedWrapper(renderLoader)(props => props.source.uri);
 export default cache(VideoWithCaching);
