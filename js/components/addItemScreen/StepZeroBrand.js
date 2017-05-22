@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated, UIManager } from 'react-native';
-import { View, Text, Icon } from 'native-base';
+import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated, UIManager, View, Text } from 'react-native';
+import { Icon } from 'native-base';
 import {
   addBrandName,
   createBrandName,
@@ -71,12 +71,12 @@ class StepZeroBrand extends BaseComponent {
     this.state = {
       modalVisible: false,
       brandName: props.brand ? props.brand.name : null,
-      fadeAnimContentOnPress: Platform.OS === 'ios' ? new Animated.Value(0) : new Animated.Value(100)
+      fadeAnimContentOnPress: new Animated.Value(0)
     }
   }
 
   componentWillReceiveProps(props) {
-    if(Platform.OS === 'ios') {
+    if(true) {
       if(this.props.selectedCategory && !props.brand && this.state.fadeAnimContentOnPress._value === 0) {
         this.toggleBottomContainer()
       }
@@ -161,7 +161,7 @@ class StepZeroBrand extends BaseComponent {
           style={styles.iconCheckCompleteContainer}
           onPress={this.handleClearBrandName.bind(this)}
         >
-          <Icon name="md-close-circle" style={styles.iconCheckComplete} />
+          <Icon name="md-close-circle" style={StyleSheet.flatten(styles.iconCheckComplete)} />
         </TouchableOpacity>
       );
     }

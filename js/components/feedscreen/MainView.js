@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { View } from 'native-base';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { getFeed, resetFeed, loadMore } from '../../actions';
 import TabContent from './TabContent';

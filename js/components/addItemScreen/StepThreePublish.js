@@ -1,15 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { View, Button, Text, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
+import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text } from 'react-native';
+import {  Button, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import TagInput from './forms/TagInput';
-import AddMore from './forms/AddMore';
-import Location from './forms/Location';
-import TrustLevel from './forms/TrustLevel';
-import OccasionsDropdown from './forms/OccasionsDropdown';
 import Gllu from '../common';
 import BaseComponent from '../common/BaseComponent';
 import {
@@ -34,8 +30,6 @@ const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png'
 const dollarBill = require('../../../images/dollar-bill.png')
 const smartphone = require('../../../images/smartphone.png')
 const deviceWidth = Dimensions.get('window').width;
-const wModal = deviceWidth / 1.5;
-const hModal = wModal / 2;
 const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
 
 const styles = StyleSheet.create({
@@ -454,7 +448,6 @@ class StepThreePublish extends BaseComponent {
         </Grid>
         {this.renderImageOverlay()}
         {this.renderConfirmUrlOverlay()}
-        <View style={{height: 180}}/>
       </ScrollView>
     )
   }

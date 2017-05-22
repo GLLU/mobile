@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Dimensions } from 'react-native';
-import { View} from 'native-base';
+import { ScrollView, StyleSheet, Dimensions, View } from 'react-native';
 import CategoryItem from './StripItem';
 import _ from 'lodash';
 
@@ -52,7 +51,7 @@ class OccasionsStrip extends Component {
     return (
       <View style={[styles.occasionsContainer]}>
         <ScrollView
-            keyboardShouldPersistTap={true}
+            keyboardShouldPersistTaps='always'
             pagingEnabled={false}
             horizontal={false}
             decelerationRate={'fast'}

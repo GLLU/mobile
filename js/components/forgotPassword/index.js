@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
+import { Image, TouchableWithoutFeedback,Text, View } from 'react-native';
+import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";

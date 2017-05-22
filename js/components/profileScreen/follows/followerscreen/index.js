@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, TouchableOpacity, Text } from 'react-native';
-import { Container, Content, View } from 'native-base'
+import { ListView, Image, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
 import SelectPhoto from '../../../common/SelectPhoto';
@@ -70,7 +69,7 @@ class FollowerScreen extends Component {
 
   render() {
     return (
-          <View>
+          <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
             <FollowListView renderEmpty={this._renderOnEmpty} headerData={this.props.userData}
                             follows={this.props.followers}
                             onEndReached={this.getFollowersData} mode={this.props.userData.mode}/>

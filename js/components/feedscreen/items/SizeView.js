@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { View } from 'native-base';
+import { Image,View } from 'react-native';
 
 import styles from './styles';
 

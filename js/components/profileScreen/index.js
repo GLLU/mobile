@@ -1,8 +1,8 @@
 import React from 'react';
 import BasePage from '../common/BasePage';
-import { Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { Image, TouchableOpacity, Text, ScrollView,View, StyleSheet } from 'react-native';
 import styles from './styles';
-import { Container, Content, View, Icon } from 'native-base';
+import { Container, Content,  Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import LinearGradient from 'react-native-linear-gradient';
@@ -37,6 +37,7 @@ class ProfileScreen extends BasePage {
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
+    this._PopRoute=this._PopRoute.bind(this);
     this.state = {
       isMyProfile,
       noMoreData: false,
@@ -92,7 +93,7 @@ class ProfileScreen extends BasePage {
     return this.state.isMyProfile ?
       <Image source={toFeedScreen} style={styles.toFeedScreenBtn}/>
       :
-      <Icon style={styles.backBtn} name="ios-arrow-back"/>
+      <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
   }
 
   _renderRightBtn() {

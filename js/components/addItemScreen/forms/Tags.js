@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Container, Button, Icon} from 'native-base';
+import { StyleSheet, Text, View } from 'react-native';
+import {  Container, Button, Icon} from 'native-base';
 import BaseComponent from '../../common/BaseComponent';
 import FontSizeCalculator from './../../../calculators/FontSize';
 
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     margin: 3,
     backgroundColor: 'black',
     borderRadius: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   tagRemove: {
     marginLeft: 5,
@@ -37,12 +37,19 @@ class Tags extends BaseComponent {
   }
 
   _renderTags() {
+    const buttonStyle={
+      backgroundColor: 'black',
+      height: 20,
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
     return this.props.tags.map((tag, index) => {
       return (
-        <View key={index} style={[styles.tagTextContainer]}>
-          <Button iconRight style={{backgroundColor: '#000', height: 20, borderRadius: 5, alignItems: 'center', justifyContent: 'center'}} textStyle={{fontSize: 13}}>
-            {tag.name}
-            <Icon name='ios-close' style={{justifyContent: 'flex-end', backgroundColor: 'transparent', marginTop: 3}} onPress={() => this.props.removeTag(tag)}/>
+        <View key={index} style={[styles.tagTextContainer,{height:25}]}>
+          <Button iconRight style={buttonStyle}>
+            <Text style={{color:'white',fontSize: 13}}>{tag.name}</Text>
+            <Icon name='ios-close' style={{justifyContent: 'flex-end',color: 'white', backgroundColor: 'transparent', marginTop: 3}} onPress={() => this.props.removeTag(tag)}/>
           </Button>
         </View>
       )
@@ -50,9 +57,9 @@ class Tags extends BaseComponent {
   }
 
   render () {
-    return (<Container style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
+    return (<View style={{flex:1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
               {this._renderTags()}
-            </Container>)
+            </View>)
   }
 }
 

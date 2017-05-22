@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated, InteractionManager } from 'react-native';
-import { View, Text } from 'native-base';
+import { View, Text,StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated, InteractionManager } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
@@ -108,12 +107,12 @@ class StepOneCategory extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fadeAnimContentOnPress: Platform.OS ==='ios' ? new Animated.Value(0) : new Animated.Value(90)
+      fadeAnimContentOnPress: new Animated.Value(0)
     }
   }
 
   componentDidMount() {
-    if(!this.props.selectedCategory && Platform.OS === 'ios') {
+    if(!this.props.selectedCategory) {
       let that = this
       setTimeout(function(){ that.toggleBottomContainer(); }, 500);
     }
@@ -129,10 +128,8 @@ class StepOneCategory extends BaseComponent {
     if (item.id !== this.props.selectedCategory) {
       this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
       this.props.addItemType(item);
-      if(Platform.OS === 'ios') {
         let that = this
         setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
-      }
 
     }
   }

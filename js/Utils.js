@@ -29,7 +29,6 @@ export default class Utils {
   }
 
   static getBugsnagClient() {
-
     const config = new Configuration(Config.BUGSNAG_API_KEY)
     config.codeBundleId = Config.codeBundleId
     return new Client(config)

@@ -1,9 +1,9 @@
 apply plugin: "com.android.application"
 
 project.ext.envConfigFiles = [
-    debug: "config/.env.staging",
-    release: "config/.env.production",
-    staging: "config/.env.staging",
+    debug: ".env.staging",
+    release: ".env.production",
+    staging: ".env.staging",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
@@ -141,6 +141,9 @@ android {
             applicationIdSuffix 'staging'
         }
     }
+    dexOptions {
+        jumboMode true
+    }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -159,14 +162,15 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-material-kit')
+
     compile project(':libs:cropper')
     compile project(':libs:video-trimmer')
     compile project(':libs:material-camera')
-    compile 'com.facebook.fresco:animated-base-support:0.11.0'
-    compile 'com.facebook.fresco:animated-gif:0.11.0'
-    compile 'com.facebook.fresco:animated-webp:0.11.0'
-    compile  'com.facebook.fresco:webpsupport:0.11.0'
+    compile project(':react-native-image-crop-picker')
+    compile 'com.facebook.fresco:animated-base-support:0.14.1'
+    compile 'com.facebook.fresco:animated-gif:0.14.1'
+    compile 'com.facebook.fresco:animated-webp:0.14.1'
+    compile  'com.facebook.fresco:webpsupport:0.14.1'
     compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-flurry-analytics')
     compile project(':react-native-fetch-blob')

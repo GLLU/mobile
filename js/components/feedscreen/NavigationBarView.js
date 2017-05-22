@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, TouchableOpacity } from 'react-native'
-import { View } from 'native-base';
+import { StyleSheet, Image, Platform ,View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';

@@ -126,7 +126,7 @@ class CommentsView extends Component {
   _renderFooter() {
     return (
       <View
-        style={{paddingBottom: 10, paddingTop: 10, height: 60, flexDirection: 'column', backgroundColor: '#f2f2f2'}}>
+        style={{ height: 80, flexDirection: 'column',justifyContent:'center', backgroundColor: '#f2f2f2'}}>
         <CommentInput onSendPress={this._pushComment}/>
       </View>
     );
@@ -134,7 +134,7 @@ class CommentsView extends Component {
 
   _renderListView() {
     return (
-      <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count == 0}
+      <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count === 0}
                         comments={this.props.comments}
                         onEndReached={this.getCommentsData}/>
     )

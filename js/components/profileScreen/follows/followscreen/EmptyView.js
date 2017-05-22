@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { View } from 'native-base';
+import { ListView, Image, StyleSheet, TouchableOpacity, Text,View  } from 'react-native';
 import { noop } from 'lodash';
 
 import searchIcon from '../../../../../images/icons/search-white.png';
@@ -58,7 +57,7 @@ class EmptyView extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex:1, flexDirection:'column'}}>
         <View style={{flex:1}} name="spacer"/>
         <View style={{flex:1}}>
           <Text style={{textAlign:'center'}}>
@@ -66,9 +65,6 @@ class EmptyView extends Component {
           </Text>
           {this._renderFindPeopleView(this.props.isMyProfile)}
         </View>
-        <Text style={{flex:1, textAlign:'center'}}>
-
-        </Text>
         <View style={{flex:1}} name="spacer"/>
       </View>
     );

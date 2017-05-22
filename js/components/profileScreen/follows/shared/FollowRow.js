@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor:'white'
   },
   textContainer: {
     flex: 7,

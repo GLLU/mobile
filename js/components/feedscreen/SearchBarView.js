@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, TouchableWithoutFeedback, TouchableOpacity, InteractionManager } from 'react-native'
-import { View, Text, Button, Icon } from 'native-base';
+import { StyleSheet, Image, Platform,View , TouchableWithoutFeedback, TouchableOpacity, InteractionManager } from 'react-native'
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import navigateTo from '../../actions/sideBarNav';
 import BaseComponent from '../common/BaseComponent';
@@ -98,7 +98,7 @@ class SearchBarView extends BaseComponent {
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
           <TouchableWithoutFeedback transparent onPress={() => this.openSearch()} style={styles.btnFilter}>
-            {this.state.searchStatus ? <Icon name="ios-close-circle-outline" style={[styles.smallBtn]}/> : <Icon name="ios-options-outline" style={[styles.smallBtn]}/>}
+            <Icon name={this.state.searchStatus ? "ios-close-circle-outline" : "ios-options-outline" } style={StyleSheet.flatten(styles.smallBtn)}/>
           </TouchableWithoutFeedback>
         </View>
       </View>

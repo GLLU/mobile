@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { Image, Linking, TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Button, Title, Content, Text, View, Icon, InputGroup, Input } from 'native-base';
+import { Image, Linking, TouchableWithoutFeedback, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +13,7 @@ import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
 import ImagePicker from 'react-native-image-crop-picker';
+import LetsGLLUButton from "./LetsGLLUButton";
 
 const { popRoute, pushRoute } = actions;
 
@@ -194,69 +195,82 @@ class SignUpPage extends BasePage {
   }
 
   render() {
+    let allValid = this.checkValidations()
   return (
     <Container theme={glluTheme}>
       <View style={styles.container}>
         <Image source={background} style={styles.shadow} blurRadius={5}>
           <Image source={backgroundShadow} style={styles.bgShadow} />
-          <Header style={styles.header} >
-            <Button transparent onPress={() => this.popRoute()}>
-              <Icon style={styles.headerArrow} name="ios-arrow-back" />
-            </Button>
-            <Title style={styles.headerTitle}>Sign up</Title>
-          </Header>
+          <View style={{height:50}}>
+            <View style={styles.header} >
+              <Button transparent onPress={() => this.popRoute()}>
+                <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
+              </Button>
+              <Text style={styles.headerTitle}>Sign up</Text>
+            </View>
+          </View>
           <Content scrollEnabled={false}>
             <View style={styles.uploadImgContainer}>
-              <Button large style={styles.uploadImgBtn} warning onPress={this.handleCameraPress.bind(this)}>
-                <IconB size={30} color={'#009688'} name={this.state.avatarIcon} style={styles.uploadImgIcon}/>
-              </Button>
+              <View style={{height: 100, width: 100, borderRadius:50}}>
+                <View style={styles.uploadImgBtn}>
+                  <TouchableOpacity onPress={this.handleCameraPress.bind(this)}>
+                    <IconB size={30} color={'#009688'} name={this.state.avatarIcon} style={StyleSheet.flatten(styles.uploadImgIcon)}/>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
             <View>
             <Grid>
               <Row style={styles.formItem}>
-                <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('username')}>
-                 <Text style={[styles.label,  this.state.username.length !== 0 ? styles.addOpacity : null]}>Username</Text>
+                <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('usernamze')}>
+                  <View>
+                    <Text style={[styles.label,  this.state.username.length !== 0 ? styles.addOpacity : null]}>Username</Text>
+                  </View>
                 </TouchableWithoutFeedback>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} ref="username" onChangeText={(username) => this.validateTextInput(username, 'username')}/>
+                <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+                  <Input style={StyleSheet.flatten(styles.formInput)} ref="username" onChangeText={(username) => this.validateTextInput(username, 'username')}/>
                 </InputGroup>
                 {this.state.username.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
               </Row>
               <Row style={styles.formItem}>
                 <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('name')}>
-                <Text style={[styles.label,  this.state.name.length !== 0 ? styles.addOpacity : null]}>Name</Text>
+                  <View>
+                    <Text style={[styles.label,  this.state.name.length !== 0 ? styles.addOpacity : null]}>Name</Text>
+                  </View>
                 </TouchableWithoutFeedback>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
+                <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+                  <Input style={StyleSheet.flatten(styles.formInput)} ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
                 </InputGroup>
                 {this.state.name.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
               </Row>
               <Row style={styles.formItem}>
                 <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('email')}>
-                <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
+                  <View>
+                    <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
+                  </View>
                 </TouchableWithoutFeedback>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} ref='email' onChangeText={(email) => this.validateEmailInput(email)}/>
+                <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+                  <Input style={StyleSheet.flatten(styles.formInput)} ref='email' onChangeText={(email) => this.validateEmailInput(email)}/>
                 </InputGroup>
                 {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
               </Row>
               <Row style={styles.formItem}>
                 <TouchableWithoutFeedback onPress={(e) => this.focusOnInput('password')}>
-                <Text style={[styles.label, this.state.password.length > 0 ? styles.addOpacity : null]}>Password</Text>
+                  <View>
+                    <Text style={[styles.label, this.state.password.length > 0 ? styles.addOpacity : null]}>Password</Text>
+                  </View>
                 </TouchableWithoutFeedback>
-                <InputGroup style={styles.formGroup}>
-                  <Input style={styles.formInput} ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
+                <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+                  <Input style={StyleSheet.flatten(styles.formInput)} ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
                 </InputGroup>
                 {this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
               </Row>
             </Grid>
-            <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}>
-              Let's GLLU
-            </Button>
-            <View style={styles.alreadyBox}>
-              <Text style={styles.alreadyTxt}>Already a user?</Text>
-              <Button color={'#009688'} style={styles.alreadyBtn} onPress={this.handleLoginPress.bind(this)}>Login Here</Button>
-            </View>
+              <LetsGLLUButton style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}/>
+              <View style={styles.alreadyBox}>
+                <Text style={styles.alreadyTxt}>Already a user?</Text>
+                <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text></TouchableOpacity>
+              </View>
             </View>
 
           </Content>

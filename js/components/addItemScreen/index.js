@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BasePage from '../common/BasePage';
-import { StyleSheet, Text, Dimensions, Platform } from 'react-native';
-import { View, Grid, Row, Button, Icon} from 'native-base';
+import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity } from 'react-native';
+import { Grid, Row, Button, Icon} from 'native-base';
 import { setUser, replaceAt, popRoute, pushRoute, navigateTo, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
@@ -47,7 +47,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 17,
     alignSelf: 'center'
-  }
+  },
+  nextBtn: {
+    color: 'white',
+    alignSelf: 'center',
+    fontSize:22
+  },
+  nextBtnContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#05d7b2'
+  },
 });
 
 class AddItemPage extends BasePage {
@@ -71,7 +84,8 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
-    isVideo = this.props.image.search(".mp4") > -1
+    this.handleContinue=this.handleContinue.bind(this);
+    isVideo = this.props.coverType;
     this.state = {
       isVideo,
       currentStep: -1,
@@ -188,12 +202,10 @@ class AddItemPage extends BasePage {
 
   renderImageWithTags() {
     const { items, image, itemId } = this.props;
-    const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags
         itemId={itemId}
-        width={imageWidth}
         mode={mode}
         items={items}
         image={image}/>
@@ -202,7 +214,6 @@ class AddItemPage extends BasePage {
 
   renderVideoWithTags() {
     const { fileLocalPath, itemId } = this.props;
-    const { imageWidth } = this.state;
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
@@ -223,7 +234,7 @@ class AddItemPage extends BasePage {
   renderActions() {
     return (
       <View style={{position: 'absolute', height: h, zIndex: 2}}>
-        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70}}>
+        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70, height:h-70}}>
           <StepTwoOccasions  onValid={this.continueAction.bind(this)}/>
           <StepOneCategory onValid={this.continueAction.bind(this)}/>
         </View>
@@ -266,22 +277,20 @@ class AddItemPage extends BasePage {
 
     if (this.state.currentStep !== 1) {
       return (
-        <Grid >
-          <Row size={70} onLayout={this._handleLayoutImage.bind(this)} style={{flexDirection: 'column', alignItems: 'center'}}>
+        <View>
             {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
             {this.renderActions()}
-          </Row>
-        </Grid>
+        </View>
       );
     }
     return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
   }
 
-  renderNext(fgColor) {
+  renderNext() {
     return (
-      <Button transparent onPress={() => this.handleContinue()} style={{width: 30, height: 30, backgroundColor: '#05d7b2', borderRadius: 15}}>
-        <Icon style={[ { color: 'white', marginLeft: 2 }]} name="ios-arrow-forward" />
-      </Button>
+      <TouchableOpacity style={styles.nextBtnContainer} onPress={this.handleContinue}>
+        <Icon style={StyleSheet.flatten(styles.nextBtn)} name="ios-arrow-forward"/>
+      </TouchableOpacity>
     )
   }
 
@@ -291,10 +300,10 @@ class AddItemPage extends BasePage {
     return (
       <View style={styles.headerContainer}>
         <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
-          <Icon style={[styles.backIcon, { color: fgColor }]} name="ios-arrow-back" />
+          <Icon style={{ color: fgColor }} name="ios-arrow-back" />
         </Button>
         <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
-        {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}></View>}
+        {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
       </View>
     )
   }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput } from 'react-native'
-import { View } from 'native-base';
+import { StyleSheet, TextInput,View } from 'react-native'
 import Tags from './Tags';
 import _ from 'lodash';
 
@@ -48,7 +47,7 @@ class TagInput extends Component {
   render() {
     const { tags } = this.props;
     return (
-      <View style={{flex: 1}}>
+      <View>
         <TextInput
           ref={ref => this.textInput = ref}
           returnKeyType="done"
