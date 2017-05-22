@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Cache from '../../../lib/cache/FSVideoCache'
 
-export default cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
+const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
 
   return class CachedComponentWrapper extends React.Component {
 
@@ -43,4 +43,6 @@ export default cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
       return this.renderWrappedComponent(this.props)
     }
   }
-}
+};
+
+export default cacheComponent;

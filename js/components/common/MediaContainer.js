@@ -1,14 +1,11 @@
 import React from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
 import BaseComponent from './base/BaseComponent';
-import FontSizeCalculator from './../../calculators/FontSize';
-import Video from 'react-native-video';
 import LikeView from '../feedscreen/items/LikeView';
 import VolumeButton from './VolumeButton';
 import MediaBorderPatch from './MediaBorderPatch'
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Utils from '../../utils';
-import shdowBg from '../../../images/background-shadow-70p.png';
 import VideoWithCaching from "./media/VideoWithCaching";
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 

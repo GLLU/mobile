@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, PanResponder, Animated,View } from 'react-native';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
-import Video from 'react-native-video';
 import VideoWithCaching from "./media/VideoWithCaching";
 export const VIEW_MODE = 'view';
 const TAG_WIDTH = 100;

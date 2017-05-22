@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
-import Video from 'react-native-video';
 import styles from './styles';
 import VideoWithCaching from "../../common/media/VideoWithCaching";
 
