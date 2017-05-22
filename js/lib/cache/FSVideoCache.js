@@ -1,12 +1,8 @@
+import {AsyncStorage} from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 import * as selfRef from './FSVideoCache'
-const {fs} = RNFetchBlob;
 
 export default selfRef;
-
-const baseCacheDir = fs.dirs.CacheDir + '/videocache';
-
-const queue={};
 
 const downloadFile = (uri) => {
   return new Promise((resolve, reject) => {
@@ -23,13 +19,12 @@ const downloadFile = (uri) => {
   });
 }
 
-export const get = (uri) => new Promise((resolve, reject) => {
-  resolve(queue[uri]);
-});
+export const get = (uri) => AsyncStorage.getItem(uri);
 
 export const add = (uri) => new Promise((resolve, reject) => {
   downloadFile(uri).then(entry=>{
-    queue[uri]=entry;
-    resolve(entry)
+    AsyncStorage.setItem(uri,entry)
+      .then(resolve)
+      .catch(reject);
   }).catch(reject)
 });
