@@ -4,7 +4,7 @@ import {View, NativeModules} from 'react-native';
 const {CameraUtils} = NativeModules;
 
 
-async function openCamera() {
-    return CameraUtils.openCamera();
+async function openCamera(allowVideo: boolean  = true) {
+    return CameraUtils.openCamera(allowVideo);
 }
 export {openCamera};

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="mcam_color_light">#1bfafafa</color>
+    <color name="mcam_color_dark">#424242</color>
+    <color name="mcam_transparent">#31000000</color>
+
+</resources>
