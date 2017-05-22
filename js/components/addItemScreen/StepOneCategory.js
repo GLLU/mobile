@@ -107,7 +107,7 @@ class StepOneCategory extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fadeAnimContentOnPress: new Animated.Value(0)
+      fadeAnimContentOnPress: new Animated.Value(90)
     }
   }
 
@@ -127,7 +127,7 @@ class StepOneCategory extends BaseComponent {
   selectCategory(item) {
     if (item.id !== this.props.selectedCategory) {
       this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
-      this.props.addItemType(item);
+      this.props.addItemType(item, this.props.currItemId);
         let that = this
         setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
 
@@ -135,8 +135,9 @@ class StepOneCategory extends BaseComponent {
   }
 
   toggleBottomContainer() {
-
+      console.log('1')
       if (this.state.fadeAnimContentOnPress._value === 90) {
+        console.log('2')
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
           {
@@ -145,6 +146,7 @@ class StepOneCategory extends BaseComponent {
           }            // Configuration
         ).start();
       } else {
+        console.log('3')
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
           {
@@ -186,7 +188,7 @@ class StepOneCategory extends BaseComponent {
 
 function bindActions(dispatch) {
   return {
-    addItemType: (type) => dispatch(addItemType(type)),
+    addItemType: (type, itemId) => dispatch(addItemType(type, itemId)),
     loadCategories: () => dispatch(loadCategories()),
   };
 }

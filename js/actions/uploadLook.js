@@ -266,20 +266,22 @@ export function publishLookItem() {
   }
 }
 
-export function addItemType(categoryItem) {
+export function addItemType(categoryItem, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const params = {
       category_id: categoryItem.id,
     }
+    console.log('itemId11',itemId)
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+      const payload = {categoryItem, itemId}
       dispatch({
         type: ADD_ITEM_TYPE,
-        payload: categoryItem
+        payload
       });
       dispatch(loadItemSizes(categoryItem.id));
-      dispatch(addItemTag(categoryItem.name)).catch(err => {
+      dispatch(addItemTag(categoryItem.name, itemId)).catch(err => {
         console.log('do nothing');
       });
     }).catch(err => {
@@ -357,10 +359,10 @@ export function addItemSize(payload) {
   }
 }
 
-export function addItemTag(tag) {
+export function addItemTag(tag, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const body = {
       tag_name: tag
     }
@@ -369,9 +371,10 @@ export function addItemTag(tag) {
         { look_id: lookId, item_id: itemId },
         { body: JSON.stringify(body) }
       ], { showLoader: false }).then(data => {
+        const payload = {data: data.item_tag.tag, itemId}
         dispatch({
           type: ADD_ITEM_TAG,
-          payload: data.item_tag.tag
+          payload
         });
         resolve();
       }).catch(reject);

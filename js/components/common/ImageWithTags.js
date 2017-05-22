@@ -3,7 +3,7 @@ import { View,Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, T
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-
+import Tag from '../common/Tag';
 export const EDIT_MODE = 'edit';
 export const CREATE_MODE = 'create';
 export const VIEW_MODE = 'view';
@@ -52,6 +52,7 @@ class ImageWithTags extends Component {
     showMarker: React.PropTypes.bool,
     onMarkerCreate: React.PropTypes.func,
     onDragEnd: React.PropTypes.func,
+    setCurrentItemId: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -62,23 +63,23 @@ class ImageWithTags extends Component {
     }
   }
 
-  componentWillMount() {
-    this.loadMarkerFromProps(this.props);
-  }
-
-  loadMarkerFromProps(props) {
-    const { mode, itemId, items } = props;
-    if (mode !== VIEW_MODE && itemId) {
-      const item = _.find(items, x => x.id === itemId);
-      const { locationX, locationY } = item;
-      const { width, height } = this.getRenderingDimensions();
-      const absX = this.normalizePosition(locationX) * width;
-      const absY = this.normalizePosition(locationY) * height;
-      this._setupPanResponder(absX, absY);
-    } else {
-      this._setupPanResponder(0, 0);
-    }
-  }
+  // componentWillMount() {
+  //   this.loadMarkerFromProps(this.props);
+  // }
+  //
+  // loadMarkerFromProps(props) {
+  //   const { mode, itemId, items } = props;
+  //   if (mode !== VIEW_MODE && itemId) {
+  //     const item = _.find(items, x => x.id === itemId);
+  //     const { locationX, locationY } = item;
+  //     const { width, height } = this.getRenderingDimensions();
+  //     const absX = this.normalizePosition(locationX) * width;
+  //     const absY = this.normalizePosition(locationY) * height;
+  //     this._setupPanResponder(absX, absY);
+  //   } else {
+  //     this._setupPanResponder(0, 0);
+  //   }
+  // }
 
   _setupPanResponder(locationX, locationY) {
     this._pan = new Animated.ValueXY();
@@ -105,16 +106,12 @@ class ImageWithTags extends Component {
     });
   }
 
-  getTag() {
-    return { locationX: this.state.locationX, locationY: this.state.locationY };
-  }
-
   componentDidMount() {
-    if(this.props.mode !== VIEW_MODE && this.props.items.length === 0) {
+    if(true) {
       const locationX = w/2;
       const locationY = h/2;
       const { width, height } = this.getRenderingDimensions();
-      this._setupPanResponder(locationX, locationY);
+      //this._setupPanResponder(locationX, locationY);
 
       // convert location into relative positions
       const left = locationX / w;
@@ -126,47 +123,25 @@ class ImageWithTags extends Component {
     }
   }
 
-  _handlePress(e) {
-    const {locationX, locationY} = e.nativeEvent;
-    const { width, height } = this.getRenderingDimensions();
-    this._setupPanResponder(locationX, locationY);
-
-    // convert location into relative positions
-    const left = locationX / width;
-    const top = locationY / height;
-    this.setState({locationX: left, locationY: top}, () => {
-      this.props.onMarkerCreate({locationX: left, locationY: top});
-    });
-  }
-
   normalizePosition(value) {
     return Math.min(Math.max(value, 0.1), 0.9);
   }
 
   renderTags() {
-    const { items, itemId, mode } = this.props;
+    const { items, itemId, mode, currStep } = this.props;
 
     const { width, height } = this.getRenderingDimensions();
 
     return items.map((item, i) => {
+      console.log('image itames',item)
       const x = this.normalizePosition(item.locationX);
       const y = this.normalizePosition(item.locationY);
       const left = parseInt(x * width);
       const top = parseInt(y * height);
-
-      if (mode !== VIEW_MODE) {
-        const layout = this._pan.getLayout();
-        return (<Animated.View
-                  key={i}
-                  {...this.panResponder.panHandlers}
-                  style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-                <Image source={tagMarker} style={styles.itemBgImage} />
-              </Animated.View>);
-      }
-
-      return (<View key={i} style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
-          <Image source={tagMarker} style={styles.itemBgImage} />
-        </View>);
+      console.log('imageWi id', itemId)
+        return (
+          <Tag key={i} currItemId={this.props.currItemId} setCurrentItemId={() => this.props.setCurrentItemId(itemId)} dragable={currStep === -1} item={item} onDragEnd={(nextPosition)=> this.props.onDragEnd(nextPosition)}></Tag>
+        );
     });
   }
 
@@ -179,20 +154,16 @@ class ImageWithTags extends Component {
   _render() {
 
     const { width, height } = this.getRenderingDimensions();
-    if (this.props.showMarker) {
+    if (true) {
       return (
         <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
           <View style={[styles.draggableContainer]}>
             {this.renderTags()}
+            {this.props.children}
           </View>
         </Image>
       );
     }
-    return (
-          <Image
-            source={{ uri: this.props.image }}
-            style={[styles.itemsContainer, {width, height}]} resizeMode={'stretch'}/>
-    );
   }
 
   render() {

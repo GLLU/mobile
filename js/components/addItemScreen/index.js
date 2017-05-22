@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2'
   },
   headerContainer: {
-    position: 'absolute',
+
     top: Platform.OS === 'ios' ? 20 : 10,
     height: 30,
     flexDirection: 'row',
@@ -87,7 +87,15 @@ class AddItemPage extends BasePage {
       imageWidth: 90,
       mode: props.mode,
       allowContinue: false,
+      currMode: 'tagging',
+      currItemId: null
     };
+
+  }
+
+  setCurrentItemId(itemId) {
+    console.log('index id', itemId)
+    this.setState({currItemId: itemId})
   }
 
   componentDidMount() {
@@ -188,6 +196,29 @@ class AddItemPage extends BasePage {
     }
   }
 
+  handleAddItem(position) {
+    //this.logEvent('AddItemScreen', { name: 'Marker add' });
+    this.props.createLookItem(position).then(() => {
+
+    });
+  }
+
+  handleNewItem() {
+    const locationX = w/2;
+    const locationY = h/2;
+    const left = locationX / w;
+    const top = locationY / h;
+    const position = {locationX: left, locationY: top};
+    this.props.createLookItem(position).then(() => {
+    });
+  }
+
+  handleOnDragEnd(position) {
+    console.log('handleOnDragEnd')
+    this.props.setTagPosition(position);
+    this.props.updateLookItem();
+  }
+
   renderImageWithTags() {
     const { items, image, itemId } = this.props;
     const mode = this.getCurrentMode();
@@ -196,7 +227,16 @@ class AddItemPage extends BasePage {
         itemId={itemId}
         mode={mode}
         items={items}
-        image={image}/>
+        image={image}
+        setCurrentItemId={(itemId) => this.setCurrentItemId(itemId)}
+        onMarkerCreate={this.handleAddItem.bind(this)}
+        onDragEnd={this.handleOnDragEnd.bind(this)}
+        currStep={this.state.currentStep}
+        currItemId={this.state.currItemId}>
+
+          {this.state.currentStep === -1 ? null : this.renderActions()}
+
+      </ImageWithTags>
     );
   }
 
@@ -220,13 +260,14 @@ class AddItemPage extends BasePage {
   }
 
   renderActions() {
+    const { currItemId } = this.state
     return (
-      <View style={{position: 'absolute', height: h, zIndex: 2}}>
+      <View style={{ height: h}}>
         <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70, height:h-70}}>
-          <StepTwoOccasions  onValid={this.continueAction.bind(this)}/>
-          <StepOneCategory onValid={this.continueAction.bind(this)}/>
+          <StepTwoOccasions currItemId={currItemId}  onValid={this.continueAction.bind(this)}/>
+          <StepOneCategory currItemId={currItemId} onValid={this.continueAction.bind(this)}/>
         </View>
-        <StepZeroBrand onValid={this.handleStepZeroValid.bind(this)}/>
+        <StepZeroBrand currItemId={currItemId} onValid={this.handleStepZeroValid.bind(this)}/>
       </View>
     )
   }
@@ -253,21 +294,11 @@ class AddItemPage extends BasePage {
   }
 
   renderContent() {
-    if (this.state.currentStep === -1) {
-      const { mode, isVideo } = this.state;
-      return (
-        <StepMarker
-          mode={mode}
-          isVideo={isVideo}
-          />
-      );
-    }
 
-    if (this.state.currentStep !== 1) {
+    if (true) {
       return (
         <View>
             {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
-            {this.renderActions()}
         </View>
       );
     }
@@ -282,10 +313,21 @@ class AddItemPage extends BasePage {
     )
   }
 
+  renderAddAnotherItemBtn() {
+    return (
+      <TouchableOpacity onPress={() => this.handleNewItem()} style={{height: 20, width: 100, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+        <View style={{}}>
+          <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>Tag another Item</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
   renderHeader() {
     const allowContinue = this.getAllowContinue();
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
+    <View>
       <View style={styles.headerContainer}>
         <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
           <Icon style={{ color: fgColor }} name="ios-arrow-back" />
@@ -293,10 +335,13 @@ class AddItemPage extends BasePage {
         <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
         {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
       </View>
+      {this.renderAddAnotherItemBtn()}
+    </View>
     )
   }
 
   render() {
+    console.log('currItemId', this.state.currItemId);
     return (
       <View>
         {this.renderContent()}
