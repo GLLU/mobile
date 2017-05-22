@@ -10,10 +10,6 @@ class VideoWithCaching extends Component {
     source:React.PropTypes.object,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   static formatSource = (localUri, source = {}) => Object.assign({}, source, {uri: localUri});
 
   render() {
