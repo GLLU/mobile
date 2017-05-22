@@ -1,0 +1,46 @@
+import * as React from "react";
+import * as Cache from '../../../lib/cache/FSVideoCache'
+
+export default cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
+
+  return class CachedComponentWrapper extends React.Component {
+
+    constructor(props) {
+      super(props);
+
+      this.state={
+        isLoading:true,
+        localUri:''
+      }
+    }
+
+    componentWillMount() {
+      const uri=uriProvider(this.props);
+      Cache.get(uri).then(cachedPath => {
+        if (cachedPath) {
+          this.onCached(cachedPath);
+        }
+        else {
+          Cache.add(uri).then(localPath => {
+            this.onCached(localPath);
+          }).catch(err => console.log(`error with caching file ${err}`));
+        }
+      }).catch(err => console.log(`error with getting file ${err}`));
+    }
+
+    onCached(localUri) {
+      this.setState({isLoading: false, localUri: localUri})
+    }
+
+    renderWrappedComponent=(props)=><WrappedComponent {...props} localUri={this.state.localUri}/>
+
+    renderLoader=(props)=><LoaderComponent {...props}/>
+
+    render() {
+      if (this.state.isLoading) {
+        return this.renderLoader(this.props)
+      }
+      return this.renderWrappedComponent(this.props)
+    }
+  }
+}
