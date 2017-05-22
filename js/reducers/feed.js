@@ -60,7 +60,7 @@ const ACTION_HANDLERS = {
     const {id, likes, liked} = action.payload;
     return {
       ...state,
-      flatLooksData: state.flatLooksData.map((look, index) => {
+      flatLooksData: _.map(state.flatLooksData||[],look => {
         if (look.id == id) {
           look.liked = liked;
           look.likes = likes;
@@ -73,8 +73,8 @@ const ACTION_HANDLERS = {
     const {look_id} = action.payload;
     return {
       ...state,
-      flatLooksData: state.flatLooksData.map((look, index) => {
-        if (look.id == look_id) {
+      flatLooksData: _.map(state.flatLooksData||[],look => {
+        if (look.id === look_id) {
           look.comments += 1;
         }
         return look;
@@ -87,12 +87,9 @@ const ACTION_HANDLERS = {
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
     const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
-    let newData;
-    if(action.payload.loadMore) {
-      newData = action.payload.data.looks;
-    } else {
-      newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
-    }
+    const newData = action.payload.loadMore ?
+      action.payload.data.looks :
+      _.map(action.payload.data.looks || [], (look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
       ...state,
@@ -106,7 +103,7 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
-    const newData = action.payload.data.looks.map((look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+    const newData = _.map(action.payload.data.looks||[],(look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
     return {
       ...state,
       flatLooksDataQueue: newData,
@@ -115,7 +112,7 @@ const ACTION_HANDLERS = {
     }
   },
   [RESET_FEED_DATA]: (state, {payload}) => {
-    const flatLooksData = payload.data.looks.map(look => parseLook(look));
+    const flatLooksData = _.map(payload.data.looks||[],look => parseLook(look));
     return {
       ...state,
       flatLooksData,
