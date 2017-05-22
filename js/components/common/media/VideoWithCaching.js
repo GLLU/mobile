@@ -5,6 +5,11 @@ import cachedWrapper from './CachedComponentWrapper'
 
 class VideoWithCaching extends Component {
 
+  static propTypes={
+    localUri:React.PropTypes.string,
+    source:React.PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
   }
