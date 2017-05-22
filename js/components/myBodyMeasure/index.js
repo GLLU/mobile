@@ -14,7 +14,8 @@ import InformationTextIcon from '../common/informationTextIcon';
 class MyBodyMeasure extends BasePage {
   constructor(props) {
     super(props);
-
+    this.handleSaveUserSizePress=this.handleSaveUserSizePress.bind(this);
+    this._saveUserSize=this._saveUserSize.bind(this);
   }
 
   static propTypes = {
