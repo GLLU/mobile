@@ -9,6 +9,7 @@ import MediaBorderPatch from './MediaBorderPatch'
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Utils from '../../utils';
 import shdowBg from '../../../images/background-shadow-70p.png';
+import VideoWithCaching from "./media/VideoWithCaching";
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 
 const styles = StyleSheet.create({
@@ -78,7 +79,7 @@ class MediaContainer extends BaseComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{height: video.height,width: video.width-6,  overflow: 'hidden', borderRadius: 10,  alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
+          <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                  resizeMode={'stretch'}
                  muted={this.state.isMuted}
                  style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden'}}
@@ -90,7 +91,7 @@ class MediaContainer extends BaseComponent {
     } else {
       return (
         <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.bgColor}}>
-          <Video source={{uri: video.uri, mainVer: 1, patchVer: 0}}
+          <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                  resizeMode={'stretch'}
                  muted={this.state.isMuted}
                  style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden', borderRadius: 10}}

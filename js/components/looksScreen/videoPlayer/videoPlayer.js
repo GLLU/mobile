@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import Video from 'react-native-video';
 import styles from './styles';
+import VideoWithCaching from "../../common/media/VideoWithCaching";
 
 export default class VideoPlayer extends Component {
   constructor(props) {
@@ -83,7 +84,7 @@ export default class VideoPlayer extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.fullScreen} onPress={() => {this.setState({paused: !this.state.paused})}}>
-          <Video source={this.props.source}
+          <VideoWithCaching source={this.props.source}
                  style={styles.fullScreen}
                  rate={this.state.rate}
                  paused={this.state.paused}
