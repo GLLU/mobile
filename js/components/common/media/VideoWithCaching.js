@@ -21,7 +21,7 @@ class VideoWithCaching extends Component {
   }
 }
 
-const renderLoader = (props) => <View style={{}}/>;
+const renderLoader = () => <View style={{}}/>;
 
 const cache = cachedWrapper(renderLoader)(props => props.source.uri);
 export default cache(VideoWithCaching);

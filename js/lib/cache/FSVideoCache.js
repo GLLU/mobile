@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 import * as selfRef from './FSVideoCache'
-import { now } from "lodash";
+import * as _ from "lodash";
 const {fs} = RNFetchBlob
 
 const baseCacherDir = `${fs.dirs.CacheDir}/videos`;
@@ -12,7 +12,7 @@ const downloadFile = (uri) => {
   return new Promise((resolve, reject) => {
     RNFetchBlob
       .config({
-        path: `${baseCacherDir}/gllu-video-${now()}.mp4`,
+        path: `${baseCacherDir}/gllu-video-${_.now()}.mp4`,
         overwrite: true
       }).fetch('GET', uri)
       .then((res => {
@@ -26,22 +26,14 @@ const downloadFile = (uri) => {
   });
 };
 
-const deleteFile = filePath =>{
-  return exists(filePath)
+const deleteFile = filePath => {
+  return fs.stat(filePath)
+    .then(res => res && res.type === 'file')
     .then(exists => exists && fs.unlink(filePath)) //if file exist
     .catch((err) => {
       // swallow error to always resolve
     });
-}
-
-const exists = filePath => new Promise(resolve => {
-    fs.stat(filePath)
-    .then(res => res && res.type === 'file')
-    .then(resolve) //if file exist
-    .catch(resolve(false));
-});
-
-
+};
 
 export const get = (uri) => new Promise((resolve, reject) => {
   AsyncStorage.getItem(uri)
@@ -52,7 +44,7 @@ export const get = (uri) => new Promise((resolve, reject) => {
 export const add = (uri) => new Promise((resolve, reject) => {
   downloadFile(uri).then(entry => {
     AsyncStorage.setItem(uri, entry)
-      .then(result=>{
+      .then(() => {
         resolve(entry);
       })
       .catch(reject);
