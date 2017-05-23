@@ -8,6 +8,7 @@ const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
     constructor(props) {
       super(props);
       this.cacheOrReturnCachedPath=this.cacheOrReturnCachedPath.bind(this);
+      this.onCached=this.onCached.bind(this);
       this.state={
         isLoading:true,
         localUri:''
@@ -45,7 +46,7 @@ const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
       }
     }
 
-    renderWrappedComponent=(props)=><WrappedComponent {...props} localUri={this.state.localUri}/>
+    renderWrappedComponent=(props,state)=><WrappedComponent {...props} localUri={state.localUri}/>
 
     renderLoader=(props)=><LoaderComponent {...props}/>;
 
@@ -53,7 +54,7 @@ const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
       if (this.state.isLoading) {
         return this.renderLoader(this.props)
       }
-      return this.renderWrappedComponent(this.props)
+      return this.renderWrappedComponent(this.props,this.state)
     }
   }
 };

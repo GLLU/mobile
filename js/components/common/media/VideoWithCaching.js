@@ -16,7 +16,7 @@ class VideoWithCaching extends Component {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
     return (
-      <Video {...this.props} source={formattedSource} style={{}}/>
+      <Video {...this.props} source={formattedSource}/>
     )
   }
 }
