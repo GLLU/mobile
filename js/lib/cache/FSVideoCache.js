@@ -38,6 +38,26 @@ const deleteFile = filePath => {
     });
 };
 
+export const expireCache = () => new Promise(resolve => {
+  AsyncStorage.getAllKeys().then(keys => {
+    const promises = _.chain(keys)
+      .filter(key => key.startsWith('http'))
+      .map(key => new Promise(resolve => {
+        get(key)
+          .then(value => {
+            if (value.expiry && value.expiry < _.now()) {
+              AsyncStorage.removeItem(key)
+                .finally(() => deleteFile(value.path).then(resolve))
+            }
+          })
+          .catch(resolve);
+      })).value();
+    Promise.all(promises)
+      .then(resolve)
+      .catch(resolve);
+  }).catch(resolve);
+});
+
 export const get = (uri) => new Promise((resolve, reject) => {
   AsyncStorage.getItem(uri)
     .then(rawItem=>{
