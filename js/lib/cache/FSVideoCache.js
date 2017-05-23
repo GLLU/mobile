@@ -6,6 +6,9 @@ const {fs} = RNFetchBlob
 
 const baseCacherDir = `${fs.dirs.CacheDir}/videos`;
 
+// time to cache in miliseconds(1000*360*24*7 = a week)
+const cacheDuration = 1000*360*24*7;
+
 export default selfRef;
 
 const downloadFile = (uri) => {
@@ -37,15 +40,24 @@ const deleteFile = filePath => {
 
 export const get = (uri) => new Promise((resolve, reject) => {
   AsyncStorage.getItem(uri)
-    .then(resolve)
+    .then(rawItem=>{
+      const metadata=JSON.parse(rawItem);
+      if(metadata){
+        resolve(metadata.path)
+      }
+      else{
+        resolve('')
+      }
+    })
     .catch(reject);
 });
 
 export const add = (uri) => new Promise((resolve, reject) => {
-  downloadFile(uri).then(entry => {
-    AsyncStorage.setItem(uri, entry)
+  downloadFile(uri).then(path => {
+    const metadata= {path, expiry:_.now()+cacheDuration};
+    AsyncStorage.setItem(uri, JSON.stringify(metadata))
       .then(() => {
-        resolve(entry);
+        resolve(path);
       })
       .catch(reject);
   }).catch(reject)
