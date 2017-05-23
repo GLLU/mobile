@@ -492,17 +492,18 @@ export function addPhotosVideo(image) {
   };
 }
 
-export function toggleOccasionTag(tag, selected) {
+export function toggleOccasionTag(tag, selected, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     if (selected) {
       // remove
       dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tag.id}, (err, data) => {
         if (!err) {
+          const payload = {tag, itemId}
           dispatch({
             type: REMOVE_ITEM_OCCASION_TAG,
-            payload: tag
+            payload: payload
           });
         } else {
           throw err;  
@@ -514,9 +515,10 @@ export function toggleOccasionTag(tag, selected) {
       }
       dispatch(rest.actions.item_occasions.post({look_id: lookId, item_id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
+          const payload = {tag: data.item_tag.tag, itemId}
           dispatch({
             type: ADD_ITEM_OCCASION_TAG,
-            payload: data.item_tag.tag
+            payload: payload
           });
         } else {
           throw err;  

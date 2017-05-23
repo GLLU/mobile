@@ -88,13 +88,14 @@ class AddItemPage extends BasePage {
       mode: props.mode,
       allowContinue: false,
       currMode: 'tagging',
-      currItemId: null
+      currItem: {id: -1}
     };
 
   }
 
-  setCurrentItemId(itemId) {
-    this.setState({currItemId: itemId})
+  setCurrentItem(item) {
+    console.log('itemmmm2',item)
+    this.setState({currItem: item})
   }
 
   componentDidMount() {
@@ -114,6 +115,12 @@ class AddItemPage extends BasePage {
     if(nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
         this.handleContinue();
     }
+    if(nextProps.items !== this.props.items){
+      const item = _.find(nextProps.items, item => item.id === this.state.currItem.id);
+      this.setState({currItem: item})
+    }
+
+
   }
 
   handleContinue() {
@@ -198,7 +205,7 @@ class AddItemPage extends BasePage {
   handleAddItem(position) {
     //this.logEvent('AddItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItemId: data.payload.item.id})
+      this.setState({currItem: data.payload.item})
     });
   }
 
@@ -209,7 +216,7 @@ class AddItemPage extends BasePage {
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItemId: data.payload.item.id})
+      this.setState({currItem: data.payload.item})
     });
   }
 
@@ -228,11 +235,11 @@ class AddItemPage extends BasePage {
         mode={mode}
         items={items}
         image={image}
-        setCurrentItemId={(id) => this.setCurrentItemId(id)}
+        setCurrentItem={(item) => this.setCurrentItem(item)}
         onMarkerCreate={this.handleAddItem.bind(this)}
         onDragEnd={this.handleOnDragEnd.bind(this)}
         currStep={this.state.currentStep}
-        currItemId={this.state.currItemId}>
+        currItem={this.state.currItem}>
         {this.state.currentStep === -1 ? null : this.renderActions()}
       </ImageWithTags>
     );
@@ -258,14 +265,14 @@ class AddItemPage extends BasePage {
   }
 
   renderActions() {
-    const { currItemId } = this.state
+    const { currItem } = this.state
     return (
       <View style={{ height: h}}>
         <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70, height:h-70}}>
-          <StepTwoOccasions currItemId={currItemId}  onValid={this.continueAction.bind(this)}/>
-          <StepOneCategory currItemId={currItemId} onValid={this.continueAction.bind(this)}/>
+          <StepTwoOccasions item={currItem}  onValid={this.continueAction.bind(this)}/>
+          <StepOneCategory item={currItem} onValid={this.continueAction.bind(this)}/>
         </View>
-        <StepZeroBrand currItemId={currItemId} onValid={this.handleStepZeroValid.bind(this)}/>
+        <StepZeroBrand item={currItem} onValid={this.handleStepZeroValid.bind(this)}/>
       </View>
     )
   }

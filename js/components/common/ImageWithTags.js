@@ -52,7 +52,7 @@ class ImageWithTags extends Component {
     showMarker: React.PropTypes.bool,
     onMarkerCreate: React.PropTypes.func,
     onDragEnd: React.PropTypes.func,
-    setCurrentItemId: React.PropTypes.func,
+    setCurrentItem: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -123,23 +123,12 @@ class ImageWithTags extends Component {
     }
   }
 
-  normalizePosition(value) {
-    return Math.min(Math.max(value, 0.1), 0.9);
-  }
-
   renderTags() {
-    const { items, currItemId, mode, currStep } = this.props;
-
-    const { width, height } = this.getRenderingDimensions();
+    const { items, currItem, currStep } = this.props;
 
     return items.map((item, i) => {
-      const x = this.normalizePosition(item.locationX);
-      const y = this.normalizePosition(item.locationY);
-      const left = parseInt(x * width);
-      const top = parseInt(y * height);
-      console.log('tag imageW',currItemId)
         return (
-          <Tag key={i} currItemId={currItemId} setCurrentItemId={this.props.setCurrentItemId} dragable={currStep === -1} item={item} onDragEnd={(nextPosition)=> this.props.onDragEnd(nextPosition)}></Tag>
+          <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} dragable={currStep === -1} item={item} onDragEnd={(nextPosition)=> this.props.onDragEnd(nextPosition)}></Tag>
         );
     });
   }
@@ -152,7 +141,6 @@ class ImageWithTags extends Component {
 
   _render() {
 
-    const { width, height } = this.getRenderingDimensions();
     if (true) {
       return (
         <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>

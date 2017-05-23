@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Dimensions, LayoutAnimation,View } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions, LayoutAnimation, View, Platform } from 'react-native';
 import CategoryItem from './StripItem';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const ITEM_WIDTH = 80;
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
 const styles = StyleSheet.create({
   categoriesContainer: {
@@ -72,7 +74,7 @@ class CategoryStrip extends Component {
   render() {
 
     return (
-      <View style={[styles.categoriesContainer]}>
+      <View >
         <ScrollView
             keyboardShouldPersistTaps='always'
             pagingEnabled={false}
@@ -82,7 +84,8 @@ class CategoryStrip extends Component {
             directionalLockEnabled={false}
             alwaysBounceHorizontal={false}
             contentInset={{top: 0, left: 0, bottom: 0, right: 0}}
-            showsHorizontalScrollIndicator={false}>
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{height: h / 1.8}}>
           {this._drawCategoryItems()}
         </ScrollView>
       </View>

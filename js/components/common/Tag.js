@@ -77,13 +77,12 @@ class Tag extends Component {
   componentWillMount() {
     const locationX = w / 2;
     const locationY = h / 2;
-    const {width, height} = this.getRenderingDimensions();
     this._setupPanResponder(locationX, locationY);
   }
 
   render() {
+    const { item, currItemId } = this.props
     const { width, height } = this.getRenderingDimensions();
-    const itemId = this.props.item.id
     const x = this.normalizePosition(this.props.item.locationX);
     const y = this.normalizePosition(this.props.item.locationY);
     const left = parseInt(x * width);
@@ -94,16 +93,17 @@ class Tag extends Component {
         <Animated.View
 
           {...this.panResponder.panHandlers}
-          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, this.props.currItemId === itemId ? {backgroundColor: 'green'} : null]}>
+          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, currItemId === item.id ? {backgroundColor: 'green'} : null]}>
 
           <Image source={tagMarker} style={styles.itemBgImage} />
         </Animated.View>
       );
     } else {
+      console.log('itemmmm1',item)
       return (
 
-        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, this.props.currItemId === itemId ? {backgroundColor: 'green'} : null]}>
-          <TouchableOpacity onPress={() => this.props.setCurrentItemId(itemId)}>
+        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, currItemId === item.id ? {backgroundColor: 'green'} : null]}>
+          <TouchableOpacity onPress={() => this.props.setCurrentItem(item)}>
             <Image source={tagMarker} style={styles.itemBgImage} />
           </TouchableOpacity>
         </View>

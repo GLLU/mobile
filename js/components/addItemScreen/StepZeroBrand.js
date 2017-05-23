@@ -76,8 +76,7 @@ class StepZeroBrand extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { currItemId, items } = nextProps;
-    const item = _.find(items, item => item.id === currItemId);
+    const { item } = nextProps;
     const selectedCategory =  item ? item.category : null
     if(selectedCategory && !item.brand && this.state.fadeAnimContentOnPress._value === 0) {
       this.toggleBottomContainer()
@@ -85,7 +84,7 @@ class StepZeroBrand extends BaseComponent {
     if(this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
       this.toggleBottomContainer()
     }
-    if(nextProps.currItemId !== this.props.currItemId) {
+    if(item.id !== this.props.item.id) {
 
       this.setState({
         brandName: item.brand ? item.brand.name : null,
@@ -97,10 +96,10 @@ class StepZeroBrand extends BaseComponent {
   }
 
   findOrCreateBrand(value, createNew) {
-    const data = typeof value === 'string' ? {value, itemId: this.props.currItemId} : {...value, itemId: this.props.currItemId}
+    const data = typeof value === 'string' ? {value, itemId: this.props.item.id} : {...value, itemId: this.props.item.id}
     const brandName = typeof value === 'string' ? value : value.name;
-    console.log('blabbbb',value,createNew)
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
+    console.log('data',data)
     f(data).then(() => {
       console.log('brand added')
 
@@ -119,7 +118,7 @@ class StepZeroBrand extends BaseComponent {
   handleClearBrandName() {
     this.logEvent('UploadLookScreen', { name: 'Brand cleared' });
     this.setState({brandName: null}, () => {
-      this.props.removeBrandName(this.props.currItemId);
+      this.props.removeBrandName(this.props.item.id);
     });
   }
 
@@ -176,7 +175,7 @@ class StepZeroBrand extends BaseComponent {
     const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-        <View style={{ backgroundColor: btnColor, width: 50, height: 30, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center'}}>
           <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
         </View>
       </TouchableWithoutFeedback>
@@ -184,20 +183,16 @@ class StepZeroBrand extends BaseComponent {
   }
 
   render() {
-    const { brands, currItemId, items} = this.props;
+    const { brands, item, items} = this.props;
     const { modalVisible } = this.state;
-    const item = _.find(items, item => item.id === currItemId);
-    const brand = item ? item.brand : null;
-    const brandName = brand ? brand.name : ''
+    const currItem = _.find(items, listItem => listItem.id === item.id);
+    const brand = currItem ? currItem.brand : null;
     const _brand = brand ? brand : null;
-    console.log('brandName',brandName)
-    console.log('brand',brand)
-    console.log('_brand',_brand)
     return (
-      <View>
-        <View style={{position: 'absolute', bottom: 0 ,justifyContent: 'center', alignItems: 'center', flex: 1, alignSelf: 'center', width: w}}>
+      <View style={{position: 'absolute', height: h}}>
+        <View style={{ width: w, flex: 1, justifyContent: 'flex-end' }}>
           {this.renderOpenButton(brand)}
-          <Animated.View style={{borderRadius: 10, paddingLeft: 25, paddingRight: 25, width: w-100, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
+          <Animated.View style={{borderRadius: 10, alignSelf: 'center', width: w-100, paddingLeft: 25, paddingRight: 25, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
             <Text style={styles.titleLabelInfo}>Brand Name</Text>
             <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
               <Text style={styles.input}>

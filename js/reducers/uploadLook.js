@@ -91,7 +91,7 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
-    console.log('action.payload.itemId',action.payload.itemId)
+    console.log('action.payload.itemId',action.payload)
     return {
       ...state,
       items: mutateItem(state, 'brand', action.payload.name, action.payload.itemId)
@@ -215,21 +215,26 @@ const ACTION_HANDLERS = {
     }
   },
   [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {
-    const item = findItem(state);
-    let occasions = _.filter(item.occasions, t => t.id !== action.payload.id);
+    const item = findItem(state, action.payload.itemId);
+    console.log('action.payload.tag.id',action.payload.tag.id)
+    console.log('item',item)
+    console.log('action.payload',action.payload)
+    let occasions = _.filter(item.occasions, t => t.id !== action.payload.tag.id);
+    console.log('occassion555',occasions)
     return {
       ...state,
-      items: mutateItem(state, 'occasions', occasions)
+      items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
     }
   },
   [ADD_ITEM_OCCASION_TAG]: (state, action) => {
-    const item = findItem(state);
+    const item = findItem(state, action.payload.itemId);
+    console.log('blaby item',item)
     let occasions = item.occasions;
-    occasions.push(action.payload);
+    occasions.push(action.payload.tag);
     occasions = _.uniqBy(occasions, 'id');
     return {
       ...state,
-      items: mutateItem(state, 'occasions', occasions)
+      items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
     }
   },
 }

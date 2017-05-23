@@ -118,16 +118,25 @@ class StepOneCategory extends BaseComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.item.id !== this.props.item.id) {
+      const selectedCategory =  nextProps.item ? nextProps.item.category : false
+      if(!selectedCategory) {
+        this.toggleBottomContainer();
+      }
+    }
+  }
+
   componentWillMount() {
     this.props.loadCategories().catch(err => {
       console.log('unable to load categories');
     });
   }
 
-  selectCategory(item) {
-    if (item.id !== this.props.selectedCategory) {
-      this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
-      this.props.addItemType(item, this.props.currItemId);
+  selectCategory(category) {
+    if (category.id !== this.props.selectedCategory) {
+      this.logEvent('UploadLookScreen', { name: 'Category select', category: category.name });
+      this.props.addItemType(category, this.props.item.id);
         let that = this
         setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
 
@@ -155,8 +164,8 @@ class StepOneCategory extends BaseComponent {
 
   }
 
-  renderOpenButton() {
-    const btnColor = !this.props.selectedCategory ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)';
+  renderOpenButton(selectedCategory) {
+    const btnColor = selectedCategory ? 'rgba(0, 255, 128, 0.6)' : 'rgba(32, 32, 32, 0.4)';
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
         <View style={{width: 20, height: 50, backgroundColor: btnColor, alignSelf: 'center'}}>
@@ -167,20 +176,19 @@ class StepOneCategory extends BaseComponent {
   }
 
   render() { //
-    const { categories, items } = this.props;
+    const { categories, items, item } = this.props;
 
-    const item = _.find(items, item => item.id === this.props.currItemId);
     const selectedCategory = item.category ? item.category : false;
     return(
-      <View style={{ flexDirection: 'row', height: h / 1.8,}}>
-        {this.renderOpenButton()}
+      <View style={{ flexDirection: 'row', height: h / 1.8, overflow: 'hidden'}}>
+        {this.renderOpenButton(selectedCategory)}
         <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
           <Text numberOfLines={1} style={styles.titleLabelInfo}>Item Type</Text>
           <CategoryStrip
             categories={categories}
             selectedCategory={selectedCategory}
             onCategorySelected={(cat) => this.selectCategory(cat)}
-            currItemId={this.props.currItemId}/>
+            currItemId={this.props.item.id}/>
         </Animated.View>
       </View>
     )
@@ -198,7 +206,7 @@ const mapStateToProps = state => {
   const { items } = state.uploadLook;
   return {
     categories: state.filters.categories,
-    items
+    items,
   };
 };
 

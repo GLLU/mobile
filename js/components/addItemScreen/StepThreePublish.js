@@ -494,7 +494,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, items, image } = state.uploadLook;
+  const { items, image } = state.uploadLook;
   console.log(state.uploadLook)
 
   const item = _.find(items, item => item.id == itemId);

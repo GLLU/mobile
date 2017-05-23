@@ -49,9 +49,11 @@ class CategoryItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.item.kind === 'category' || this.state.currItemId !== this.props.currItemId) {
+    if(nextProps.item.kind === 'category' || this.state.currItemId !== nextProps.currItemId) {
+      console.log('12',nextProps.selected)
       this.setState({
-        selected: nextProps.selected
+        selected: nextProps.selected,
+        currItemId: nextProps.currItemId
       })
     }
 
@@ -83,7 +85,7 @@ class CategoryItem extends Component {
     const iconWidth = itemWidth * 5 / 8;
     const iconHeight = iconWidth * 150 / 170;
     return (
-      <View style={styles.categoryItem}>
+      <View >
               <Text style={styles.categoryItemTitle}>{item.name}</Text>
               <Button
                 transparent
