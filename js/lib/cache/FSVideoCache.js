@@ -12,7 +12,7 @@ const downloadFile = (uri) => {
   return new Promise((resolve, reject) => {
     RNFetchBlob
       .config({
-        path: `${baseCacherDir}/$gllu-video-${now()}.mp4`,
+        path: `${baseCacherDir}/gllu-video-${now()}.mp4`,
         overwrite: true
       }).fetch('GET', uri)
       .then((res => {
@@ -20,7 +20,6 @@ const downloadFile = (uri) => {
           throw new Error('Failed to successfully download video');
         }
         const localPath = res.path();
-        res.flush();
         resolve(localPath)
       }))
       .catch(reject);
@@ -53,7 +52,9 @@ export const get = (uri) => new Promise((resolve, reject) => {
 export const add = (uri) => new Promise((resolve, reject) => {
   downloadFile(uri).then(entry => {
     AsyncStorage.setItem(uri, entry)
-      .then(resolve)
+      .then(result=>{
+        resolve(entry);
+      })
       .catch(reject);
   }).catch(reject)
 });
