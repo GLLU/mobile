@@ -91,15 +91,17 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
+    console.log('action.payload.itemId',action.payload.itemId)
     return {
       ...state,
-      items: mutateItem(state, 'brand', action.payload, action.payload.id)
+      items: mutateItem(state, 'brand', action.payload.name, action.payload.itemId)
     }
   },
   [REMOVE_BRAND_NAME]: (state, action) => {
+    console.log('action.payload2',action.payload)
     return {
       ...state,
-      items: mutateItem(state, 'brand', null, action.payload.id)
+      items: mutateItem(state, 'brand', null, action.payload)
     }
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {

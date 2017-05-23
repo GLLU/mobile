@@ -40,7 +40,6 @@ class Tag extends Component {
 
   _setupPanResponder(locationX, locationY) {
     const itemId = this.props.item.id
-    console.log('itemid',this.props.item)
     this._pan = new Animated.ValueXY();
     this._pan.addListener((value) => this._value = value);
     this._pan.setOffset({x: locationX, y: locationY})
@@ -101,11 +100,10 @@ class Tag extends Component {
         </Animated.View>
       );
     } else {
-      console.log('tag id', itemId)
       return (
 
         <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, this.props.currItemId === itemId ? {backgroundColor: 'green'} : null]}>
-          <TouchableOpacity onPress={(itemId) => this.props.setCurrentItemId(itemId)}>
+          <TouchableOpacity onPress={() => this.props.setCurrentItemId(itemId)}>
             <Image source={tagMarker} style={styles.itemBgImage} />
           </TouchableOpacity>
         </View>

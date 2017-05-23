@@ -135,9 +135,7 @@ class StepOneCategory extends BaseComponent {
   }
 
   toggleBottomContainer() {
-      console.log('1')
       if (this.state.fadeAnimContentOnPress._value === 90) {
-        console.log('2')
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
           {
@@ -146,7 +144,6 @@ class StepOneCategory extends BaseComponent {
           }            // Configuration
         ).start();
       } else {
-        console.log('3')
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
           {
@@ -170,7 +167,10 @@ class StepOneCategory extends BaseComponent {
   }
 
   render() { //
-    const { categories, selectedCategory } = this.props;
+    const { categories, items } = this.props;
+
+    const item = _.find(items, item => item.id === this.props.currItemId);
+    const selectedCategory = item.category ? item.category : false;
     return(
       <View style={{ flexDirection: 'row', height: h / 1.8,}}>
         {this.renderOpenButton()}
@@ -179,7 +179,8 @@ class StepOneCategory extends BaseComponent {
           <CategoryStrip
             categories={categories}
             selectedCategory={selectedCategory}
-            onCategorySelected={(cat) => this.selectCategory(cat)}/>
+            onCategorySelected={(cat) => this.selectCategory(cat)}
+            currItemId={this.props.currItemId}/>
         </Animated.View>
       </View>
     )
@@ -194,11 +195,10 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id === itemId);
+  const { items } = state.uploadLook;
   return {
     categories: state.filters.categories,
-    selectedCategory: item.category ? item.category : false,
+    items
   };
 };
 

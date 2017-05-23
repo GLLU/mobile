@@ -41,14 +41,15 @@ class CategoryItem extends Component {
     super(props);
 
     this.state = {
-      selected: props.selected
+      selected: props.selected,
+      currItemId: this.props.currItemId
     }
 
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.item.kind === 'category') {
+    if(nextProps.item.kind === 'category' || this.state.currItemId !== this.props.currItemId) {
       this.setState({
         selected: nextProps.selected
       })

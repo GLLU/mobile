@@ -94,7 +94,6 @@ class AddItemPage extends BasePage {
   }
 
   setCurrentItemId(itemId) {
-    console.log('index id', itemId)
     this.setState({currItemId: itemId})
   }
 
@@ -198,8 +197,8 @@ class AddItemPage extends BasePage {
 
   handleAddItem(position) {
     //this.logEvent('AddItemScreen', { name: 'Marker add' });
-    this.props.createLookItem(position).then(() => {
-
+    this.props.createLookItem(position).then((data) => {
+      this.setState({currItemId: data.payload.item.id})
     });
   }
 
@@ -209,7 +208,8 @@ class AddItemPage extends BasePage {
     const left = locationX / w;
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
-    this.props.createLookItem(position).then(() => {
+    this.props.createLookItem(position).then((data) => {
+      this.setState({currItemId: data.payload.item.id})
     });
   }
 
@@ -228,14 +228,12 @@ class AddItemPage extends BasePage {
         mode={mode}
         items={items}
         image={image}
-        setCurrentItemId={(itemId) => this.setCurrentItemId(itemId)}
+        setCurrentItemId={(id) => this.setCurrentItemId(id)}
         onMarkerCreate={this.handleAddItem.bind(this)}
         onDragEnd={this.handleOnDragEnd.bind(this)}
         currStep={this.state.currentStep}
         currItemId={this.state.currItemId}>
-
-          {this.state.currentStep === -1 ? null : this.renderActions()}
-
+        {this.state.currentStep === -1 ? null : this.renderActions()}
       </ImageWithTags>
     );
   }
@@ -341,7 +339,6 @@ class AddItemPage extends BasePage {
   }
 
   render() {
-    console.log('currItemId', this.state.currItemId);
     return (
       <View>
         {this.renderContent()}

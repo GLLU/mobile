@@ -128,19 +128,18 @@ class ImageWithTags extends Component {
   }
 
   renderTags() {
-    const { items, itemId, mode, currStep } = this.props;
+    const { items, currItemId, mode, currStep } = this.props;
 
     const { width, height } = this.getRenderingDimensions();
 
     return items.map((item, i) => {
-      console.log('image itames',item)
       const x = this.normalizePosition(item.locationX);
       const y = this.normalizePosition(item.locationY);
       const left = parseInt(x * width);
       const top = parseInt(y * height);
-      console.log('imageWi id', itemId)
+      console.log('tag imageW',currItemId)
         return (
-          <Tag key={i} currItemId={this.props.currItemId} setCurrentItemId={() => this.props.setCurrentItemId(itemId)} dragable={currStep === -1} item={item} onDragEnd={(nextPosition)=> this.props.onDragEnd(nextPosition)}></Tag>
+          <Tag key={i} currItemId={currItemId} setCurrentItemId={this.props.setCurrentItemId} dragable={currStep === -1} item={item} onDragEnd={(nextPosition)=> this.props.onDragEnd(nextPosition)}></Tag>
         );
     });
   }

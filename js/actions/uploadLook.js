@@ -292,9 +292,12 @@ export function addItemType(categoryItem, itemId) {
 }
 
 export function addBrandName(payload) {
+  console.log('vffvfvfv')
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
+    const itemId = payload.itemId
+    console.log('payload',payload)
     const params = {
       brand_id: payload.id,
     }
@@ -304,25 +307,27 @@ export function addBrandName(payload) {
           type: ADD_BRAND_NAME,
           payload: payload
         });
-        dispatch(addItemTag(payload.name)).catch(reject);
+        dispatch(addItemTag(payload.name, itemId)).catch(reject);
         resolve();
       }).catch(reject);
     });
   };
 }
 
-export function createBrandName(name) {
+export function createBrandName(newBrand) {
+  console.log('value',newBrand)
   return (dispatch) => {
     const body = {
       brand: {
-        name: name
+        name: newBrand.value
       }
     }
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
+          console.log('value2222',newBrand, 'blab', data)
           dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name })).then(resolve, reject);
+          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name, itemId: newBrand.itemId })).then(resolve, reject);
         } else {
           reject(err);
         }
@@ -331,9 +336,11 @@ export function createBrandName(name) {
   };
 }
 
-export function removeBrandName() {
+export function removeBrandName(itemId) {
+  console.log('itemId3',itemId)
   return {
     type: REMOVE_BRAND_NAME,
+    payload: itemId
   };
 }
 

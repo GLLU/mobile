@@ -24,7 +24,8 @@ class CategoryStrip extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: this.props.selectedCategory ? this.props.selectedCategory : null
+      selected: this.props.selectedCategory ? this.props.selectedCategory : null,
+      currItemId: this.props.currItemId
     }
   }
 
@@ -43,19 +44,26 @@ class CategoryStrip extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.currItemId !== this.state.currItemId) {
+      this.setState({currItemId: nextProps.currItemId, selected: nextProps.selectedCategory})
+    }
+  }
+
   _drawCategoryItems() {
     const { categories } = this.props;
     let selected;
-    return categories.map((item, index) => {
-       selected = this.state.selected && this.state.selected.id === item.id ? true : false;
+    return categories.map((category, index) => {
+
+       selected = this.state.selected && this.state.selected.id === category.id ? true : false;
       return (
         <CategoryItem
                 key={index}
-                item={item}
+                item={category}
                 itemWidth={ITEM_WIDTH}
                 selected={selected}
                 onPress={this._handleSelectCategory.bind(this)}
-                handleCategorySelected={(item) => this._handleCategorySelected(item)}
+                handleCategorySelected={(category) => this._handleCategorySelected(category)}
         />
       );
     });
