@@ -61,3 +61,7 @@ ios/gllu.xcodeproj
 ios/gllu.xcworkspace
 ios/Pods/
 my-release-key.keystore
+
+# Webstorm/intelliJ
+.tmp/
+

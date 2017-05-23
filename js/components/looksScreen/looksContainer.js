@@ -16,9 +16,9 @@ import BottomLookContainer from './BottomLookContainer';
 import { likeUpdate, unLikeUpdate,loadMore } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
-import Video from 'react-native-video';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from "lodash";
+import VideoWithCaching from "../common/media/VideoWithCaching";
 
 const config = {
   velocityThreshold: 0.3,
@@ -195,7 +195,7 @@ class LooksContainer extends BasePage {
           position: 'relative',
           height: height
         }}>
-        <Video
+        <VideoWithCaching
           source={{uri: look.uri, mainVer: 1, patchVer: 0}}
           resizeMode={'contain'}
           muted={this.state.currScrollIndex !== look.originalIndex}

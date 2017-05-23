@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import { View, Text,Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import {  Button, Icon } from 'native-base';
 import _ from 'lodash';
-import Video from 'react-native-video';
 import {
   addNewLook,
   editNewLook,
 } from '../../actions';
+import VideoWithCaching from "../common/media/VideoWithCaching";
 const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -88,7 +88,7 @@ class UserLooks extends Component {
   renderVideo(img) {
     return (
       <View style={{flex: 1}}>
-        <Video source={{uri: img.uri, mainVer: 1, patchVer: 0}}
+        <VideoWithCaching source={{uri: img.uri, mainVer: 1, patchVer: 0}}
                resizeMode={'contain'}
                muted={true}
                style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}

@@ -6,7 +6,10 @@
     "postinstall": "rndebugger-open --open --port 8081",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint",
-    "test": "jest"
+    "test": "jest",
+    "bundle-android":"react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/com/gllu/gllu/src/main/res/",
+    "gradle-build":"cd android && ./gradlew assembleRelease && cd ../",
+    "pack-android":"npm run bundle-android && npm run gradle-build"
   },
   "dependencies": {
     "bugsnag-react-native": "^2.2.3",
