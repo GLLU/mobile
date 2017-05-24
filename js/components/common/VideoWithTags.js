@@ -140,7 +140,7 @@ class VideoWithTags extends Component {
 
   render() {
     return (
-      <VideoWithCaching source={{uri: this.props.image}}
+      <Video source={{uri: this.props.image}}
              resizeMode="contain"
              muted={false}
              style={{width: w - 5, height: h, overflow: 'hidden'}}
