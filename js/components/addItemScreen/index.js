@@ -215,7 +215,7 @@ class AddItemPage extends BasePage {
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item, currentStep: -1})
+      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1})
     });
   }
 
@@ -245,6 +245,7 @@ class AddItemPage extends BasePage {
 
   renderVideoWithTags() {
     const { fileLocalPath } = this.props;
+    console.log('fileLocalPath',fileLocalPath)
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
