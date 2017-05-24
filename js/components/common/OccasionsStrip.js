@@ -52,7 +52,7 @@ class OccasionsStrip extends Component {
   render() {
 
     return (
-      <View>
+      <View style={{flex: 1}}>
         <ScrollView
             keyboardShouldPersistTaps='always'
             pagingEnabled={false}
@@ -62,8 +62,7 @@ class OccasionsStrip extends Component {
             directionalLockEnabled={false}
             alwaysBounceHorizontal={false}
             contentInset={{top: 0, left: 0, bottom: 0, right: 0}}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{height: h / 1.8}}>
+            showsHorizontalScrollIndicator={false}>
           {this._drawOccasionItems()}
         </ScrollView>
       </View>

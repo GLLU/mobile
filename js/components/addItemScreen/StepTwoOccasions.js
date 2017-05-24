@@ -175,7 +175,7 @@ class StepTwoOccasions extends BaseComponent {
     const { occasionTags } = this.props;
     const selectedOccasions = this.state.selectedOccasions;
     return(
-      <View style={{ flexDirection: 'row', height: h / 1.8, overflow: 'hidden'}}>
+      <View style={{ flexDirection: 'row', height: h / 1.8}}>
         <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
           <Text numberOfLines={1} style={styles.titleLabelInfo}>Occasions</Text>
           <OccasionsStrip

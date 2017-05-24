@@ -330,9 +330,7 @@ class AddItemPage extends BasePage {
   renderAddAnotherItemBtn() {
     return (
       <TouchableOpacity onPress={() => this.handleNewItem()} style={{height: 20, width: 100,marginTop: 8, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
-        <View style={{}}>
           <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>Tag another Item</Text>
-        </View>
       </TouchableOpacity>
     )
   }
