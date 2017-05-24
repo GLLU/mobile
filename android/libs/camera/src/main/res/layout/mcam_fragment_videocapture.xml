@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    >
+
+    <TextView
+        android:id="@+id/delayStartCountdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#80000000"
+        android:fontFamily="sans-serif-medium"
+        android:padding="@dimen/mcam_content_inset_double"
+        android:text="5"
+        android:textColor="#fff"
+        android:textSize="@dimen/mcam_regular_header_fontsize"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+
+    <include
+        layout="@layout/mcam_include_camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/controlsFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#31000000"
+        android:elevation="@dimen/mcam_toolbar_elevation"
+        android:paddingBottom="@dimen/mcam_content_inset_less"
+        android:paddingLeft="@dimen/mcam_content_inset"
+        android:paddingRight="@dimen/mcam_content_inset"
+        android:paddingTop="@dimen/mcam_content_inset_less"
+        tools:ignore="UnusedAttribute">
+
+        <ImageButton
+            android:id="@+id/gallery"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/gallery" />
+
+        <ImageButton
+            android:id="@+id/flash"
+            android:layout_width="@dimen/mcam_action_icon_size_smaller"
+            android:layout_height="@dimen/mcam_action_icon_size_smaller"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/facing"
+            android:layout_toRightOf="@+id/facing"
+            android:background="@drawable/mcam_circle_selector"
+            android:padding="@dimen/mcam_content_inset_less"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/green_circle" />
+
+        <ImageButton
+            android:id="@+id/video"
+            android:layout_width="@dimen/mcam_action_icon_size"
+            android:layout_height="@dimen/mcam_action_icon_size"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@drawable/mcam_circle_selector"
+            android:padding="@dimen/mcam_content_inset_less"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="8dp"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/white_circle_empty" />
+
+        <ImageButton
+            android:id="@+id/stillshot"
+            android:layout_width="@dimen/mcam_action_icon_size"
+            android:layout_height="@dimen/mcam_action_icon_size"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:padding="@dimen/mcam_content_inset_less"
+            android:scaleType="fitXY"
+            android:background="?selectableItemBackgroundBorderless"
+            android:visibility="gone"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/gallery" />
+
+        <ImageButton
+            android:id="@+id/facing"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/flip_camera" />
+
+        <TextView
+            android:id="@+id/recordExplanation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-medium"
+            android:paddingTop="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/mcam_explanation"
+            android:textColor="#ffffff"
+            android:layout_below="@id/video"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="8dp"
+            android:textSize="14dp" />
+
+
+
+    </RelativeLayout>
+
+
+
+    <include
+        layout="@layout/mcam_include_camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/recordIndicator"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/recordIconIndicator"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/mcam_circle_selector"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/red_circle" />
+
+
+
+        <TextView
+            android:id="@+id/recordDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/mcam_defaultDuration"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="8dp"
+            android:textSize="18dp" />
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
