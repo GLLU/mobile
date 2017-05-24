@@ -14,12 +14,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textInput: {
+    flex: 1,
     height: 40,
     backgroundColor: '#FFFFFF',
     padding: 10,
     marginTop: 10,
     marginBottom: 10,
-    textAlign: 'left'
+    textAlign: 'left',
+    borderRightWidth: 1,
+    borderColor: 'lightgrey'
   },
 });
 
@@ -48,7 +51,7 @@ class TagInput extends Component {
   render() {
     const { tags } = this.props;
     return (
-      <View>
+      <View style={{flex: 1}}>
         <TextInput
           ref={ref => this.textInput = ref}
           returnKeyType="done"

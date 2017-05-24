@@ -66,6 +66,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     marginBottom: 10,
+    borderRightWidth: 1,
+    borderColor: 'lightgrey'
   },
   confirmText: {
     flex: 1,
@@ -421,8 +423,9 @@ class StepThreePublish extends BaseComponent {
         url = item.brand ? item.brand.url : null;
       }
       return (
+      <View key={index} style={{flexDirection: 'row'}}>
           <TextInput
-            key={index}
+
             ref={ref => this.urlText = ref}
             underlineColorAndroid='transparent'
             autoCapitalize='none'
@@ -432,6 +435,12 @@ class StepThreePublish extends BaseComponent {
             onChangeText={text => this.updateSelectValue('url', text)}
             onEndEditing={(event) => this.handleUrlEndEditing(event, item.id)}
             value={url}/>
+        <View style={{height: 50, padding: 2, backgroundColor: 'white', marginTop: 10, marginBottom: 10}}>
+          <Image source={{uri: item.category.icon.url}} style={[{height: 46, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
+            resizeMode: 'contain',
+            alignSelf: 'center',}]} />
+        </View>
+      </View>
 
       );
     });
@@ -441,14 +450,20 @@ class StepThreePublish extends BaseComponent {
     const { items } = this.props
     return items.map((item, index) => {
       return (
+      <View key={index} style={{flexDirection: 'row'}}>
         <TagInput
-          key={index}
+          categoryIcon={item.category.icon.url}
           itemId={item.id}
           tags={item.tags}
           addItemTag={this.props.addItemTag}
           removeItemTag={this.props.removeItemTag}
         />
-
+        <View style={{height: 40, padding: 2, backgroundColor: 'white', marginTop: 10, marginBottom: 10}}>
+          <Image source={{uri: item.category.icon.url}} style={[{height: 36, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
+            resizeMode: 'contain',
+            alignSelf: 'center',}]} />
+        </View>
+      </View>
       );
     });
   }
