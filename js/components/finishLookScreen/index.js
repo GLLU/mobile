@@ -9,6 +9,7 @@ import Gllu from '../common';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
 import { formatInvitationMessage } from "../../lib/messages/index";
+import {openCamera} from '../../lib/camera/CameraUtils'
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +74,27 @@ class FinishLookPage extends BasePage {
 
   handleGlluAgainPress() {
     this.logEvent('CongratsScreen', { name: 'Lets GLLU Again click' });
-    this.setState({photoModal: true});
+    this.openCamera()
+  }
+
+  goToAddNewItem(imagePath) {
+    this.props.addNewLook(imagePath).then(() => {
+      this.navigateTo('addItemScreen',{ mode: 'create' });
+    });
+  }
+
+  async openCamera() {
+    this.logEvent('Feedscreen', { name: 'Open Camera click' });
+    let file = {};
+    file.path = await openCamera(true);
+    if(file.path.search(".mp4") > -1) {
+      file.localPath = file.path
+      file.path = file.path.replace('file://', '')
+      file.type = 'look[video]'
+    } else {
+      file.type = 'look[image]'
+    }
+    this.goToAddNewItem(file);
   }
 
   goToAddNewItem(imagePath) {
@@ -83,7 +104,7 @@ class FinishLookPage extends BasePage {
         this.navigateTo('addItemScreen');
       }).catch(err => {
         console.log('addNewLook err', err);
-      });  
+      });
     })
   }
 
@@ -112,14 +133,14 @@ class FinishLookPage extends BasePage {
             </H2>
           </View>
           <View style={{flex: 2, flexDirection: 'column', justifyContent: 'space-around', paddingTop: 20}}>
-              <Button transparent iconLeft onPress={this.handleFacebookPress.bind(this)}>
-                <Icon size={30} name='logo-facebook'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
-                <Text>Share on Facebook</Text>
-              </Button>
-              <Button transparent iconLeft onPress={this.handleOthersPress.bind(this)}>
-                <Icon size={30} name='md-share'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
-                <Text>Share on other channels</Text>
-              </Button>
+            <Button transparent iconLeft onPress={this.handleFacebookPress.bind(this)}>
+              <Icon size={30} name='logo-facebook'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
+              <Text>Share on Facebook</Text>
+            </Button>
+            <Button transparent iconLeft onPress={this.handleOthersPress.bind(this)}>
+              <Icon size={30} name='md-share'  style={{fontSize: 20, color: 'black', alignSelf: 'center'}}/>
+              <Text>Share on other channels</Text>
+            </Button>
           </View>
           <View style={{flex: 2}}>
             <Gllu.Button
