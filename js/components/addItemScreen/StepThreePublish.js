@@ -279,10 +279,13 @@ class StepThreePublish extends BaseComponent {
   }
 
   handleUrlEndEditing(event, itemId) {
-    const text = event.nativeEvent.text
-    this.logEvent('UploadLookScreen', { name: 'Url', url: text });
-    console.log('end edit uri',text)
-    this.props.addUrl(text, itemId);
+    if(event) {
+      const text = event.nativeEvent.text
+      this.logEvent('UploadLookScreen', { name: 'Url', url: text });
+      console.log('end edit uri',text)
+      this.props.addUrl(text, itemId);
+    }
+
   }
 
   renderImageOverlay() {
