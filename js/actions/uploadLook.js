@@ -389,10 +389,10 @@ export function addItemTag(tag, itemId) {
   };
 }
 
-export function removeItemTag(tag) {
+export function removeItemTag(tag, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const body = {
       tag_name: tag
     }
@@ -401,9 +401,10 @@ export function removeItemTag(tag) {
         { look_id: lookId, item_id: itemId },
         { body: JSON.stringify(body) }
       ]).then(data => {
+        const payload = {data: tag, itemId}
         dispatch({
           type: REMOVE_ITEM_TAG,
-          payload: tag
+          payload
         });
         resolve();
       }).catch(reject);
@@ -453,17 +454,21 @@ export function addDescription(description) {
   };
 }
 
-export function addUrl(url) {
+export function addUrl(url, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const params = {
       url,
     }
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+      const payload = {
+        url,
+        itemId
+      }
       dispatch({
         type: ADD_ITEM_URL,
-        payload: url
+        payload
       })
     }).catch(err => {
       console.log('error', err);

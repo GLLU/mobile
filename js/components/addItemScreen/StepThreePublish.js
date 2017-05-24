@@ -207,18 +207,14 @@ class StepThreePublish extends BaseComponent {
   }
 
   checkUrlOk() {
-    const { brandUrl } = this.props;
+    const { items } = this.props;
+    let missingItemUrl = _.findIndex(items, function(item) { return !!item.url });
+    console.log('missingItemUrl',missingItemUrl)
     // it is ok if it is not empty and not the same as item brand url (means no change made)
-    if (!this.state.url) {
+    if (missingItemUrl) {
       return false;
-    }
-    if (!brandUrl) {
-      return true;
     }
 
-    if (this.state.url.toLowerCase() == brandUrl.toLowerCase()) {
-      return false;
-    }
 
     return true;
   }
@@ -226,7 +222,7 @@ class StepThreePublish extends BaseComponent {
   handlePublishPress() {
     // we don't show the dialog during editing look
     // we only show it one time
-    if (!this.urlDialogShown && !this.checkUrlOk() && this.props.state == LOOK_STATES.DRAFT) {
+    if (!this.urlDialogShown && !this.checkUrlOk() && this.props.state === LOOK_STATES.DRAFT) {
       this.setState({urlOverlayVisible: true}, () => {
         this.urlDialogShown = true;
       });
@@ -282,9 +278,11 @@ class StepThreePublish extends BaseComponent {
     this.props.addDescription(this.state.description);
   }
 
-  handleUrlEndEditing() {
-    this.logEvent('UploadLookScreen', { name: 'Url', url: this.state.url });
-    this.props.addUrl(this.state.url);
+  handleUrlEndEditing(event, itemId) {
+    const text = event.nativeEvent.text
+    this.logEvent('UploadLookScreen', { name: 'Url', url: text });
+    console.log('end edit uri',text)
+    this.props.addUrl(text, itemId);
   }
 
   renderImageOverlay() {
@@ -365,32 +363,6 @@ class StepThreePublish extends BaseComponent {
     });
   }
 
-  renderImageWithTags() {
-    const { items, image, itemId } = this.props;
-    const { imageWidth } = this.state;
-    const mode = this.getCurrentMode();
-    return (
-      <ImageWithTags
-        items={items}
-        image={image}
-        width={80}
-        showMarker={false}
-        createLookItem={createLookItem}/>
-    );
-  }
-
-  renderVideoWithTags() {
-    const { image, itemId } = this.props;
-    return (
-      <VideoWithTags
-        itemId={itemId}
-        width={80}
-        image={image}
-        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
-      />
-    );
-  }
-
   renderFirstRowWithImage(image) {
     return (
       <Row style={[styles.row, { flexDirection: 'row' }]}>
@@ -436,32 +408,62 @@ class StepThreePublish extends BaseComponent {
     )
   }
 
+  renderBrandsUrl() {
+    const { items } = this.props
+    return items.map((item, index) => {
+      let url;
+      if (item.url) {
+        url = item.url;
+      } else {
+        url = item.brand ? item.brand.url : null;
+      }
+      return (
+          <TextInput
+            key={index}
+            ref={ref => this.urlText = ref}
+            underlineColorAndroid='transparent'
+            autoCapitalize='none'
+            keyboardType='url'
+            style={styles.textInput}
+            placeholder='http://www.gllu.com'
+            onChangeText={text => this.updateSelectValue('url', text)}
+            onEndEditing={(event) => this.handleUrlEndEditing(event, item.id)}
+            value={url}/>
+
+      );
+    });
+  }
+
+  renderItemTags() {
+    const { items } = this.props
+    return items.map((item, index) => {
+      return (
+        <TagInput
+          key={index}
+          itemId={item.id}
+          tags={item.tags}
+          addItemTag={this.props.addItemTag}
+          removeItemTag={this.props.removeItemTag}
+        />
+
+      );
+    });
+  }
+
   render() {
-    const { image, tags} = this.props;
+    const { image, tags } = this.props;
     return(
       <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20, marginTop: 50}}>
         <Grid>
           {this.props.isVideo ? this.renderFirstRowWithOutImage() : this.renderFirstRowWithImage(image)}
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Add tags</Text>
-            <TagInput
-              tags={tags}
-              addItemTag={this.props.addItemTag}
-              removeItemTag={this.props.removeItemTag}
-            />
+            {this.renderItemTags()}
           </Row>
+
           <Row style={styles.row}>
             <Text style={styles.titleLabelInfo}>Link to the webpage of the item</Text>
-            <TextInput
-              ref={ref => this.urlText = ref}
-              underlineColorAndroid='transparent'
-              autoCapitalize='none'
-              keyboardType='url'
-              style={styles.textInput}
-              placeholder='http://www.gllu.com'
-              onChangeText={text => this.updateSelectValue('url', text)}
-              onEndEditing={this.handleUrlEndEditing.bind(this)}
-              value={this.state.url}/>
+            {this.renderBrandsUrl()}
           </Row>
           <Row style={[styles.row, {height: 100}]}>
             <Gllu.Button
@@ -483,20 +485,19 @@ function bindActions(dispatch) {
   return {
     createLookItem: (tag) => dispatch(createLookItem(tag)),
     addDescription: (description) => dispatch(addDescription(description)),
-    addUrl: (url) => dispatch(addUrl(url)),
+    addUrl: (url, itemId) => dispatch(addUrl(url, itemId)),
     addLocation: (location) => dispatch(addLocation(location)),
     addTrustLevel: (number) => dispatch(addTrustLevel(number)),
     addPhotosVideo: (photos, video) => dispatch(addPhotosVideo(photos, video)),
-    toggleOccasionTag: (tag, selected) => dispatch(toggleOccasionTag(tag, selected)),
-    addItemTag: (name) => dispatch(addItemTag(name)),
-    removeItemTag: (name) => dispatch(removeItemTag(name)),
+    addItemTag: (name, itemId) => dispatch(addItemTag(name, itemId)),
+    removeItemTag: (name, itemId) => dispatch(removeItemTag(name, itemId)),
   };
 }
 
 const mapStateToProps = state => {
-  const { items, image } = state.uploadLook;
+  const {itemId, items, image } = state.uploadLook;
   console.log(state.uploadLook)
-
+  let brands = []
   const item = _.find(items, item => item.id == itemId);
   let url = null;
   if (item) {
@@ -509,9 +510,7 @@ const mapStateToProps = state => {
   const isVideo = Utils.isVideo(image)
   return {
     ...state.uploadLook,
-    occasions: item ? item.occasions : [],
     tags: item ? item.tags : [],
-    photos: item ? item.photos : [],
     brandUrl: item && item.brand ? item.brand.url : null,
     url,
     isVideo

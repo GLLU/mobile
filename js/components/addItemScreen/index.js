@@ -215,7 +215,7 @@ class AddItemPage extends BasePage {
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item})
+      this.setState({currItem: data.payload.item, currentStep: -1})
     });
   }
 
@@ -280,7 +280,7 @@ class AddItemPage extends BasePage {
       case -1:
         return currItem !== null;
       case 0:
-        return currItem && currItem.brand && currItem.category !== null ;
+        return this.getAllowAddAnotherItem() ;
       case 1:
         return false;
       default:
@@ -290,8 +290,13 @@ class AddItemPage extends BasePage {
 
   getAllowAddAnotherItem() {
     const { items } = this.props;
-    let lol = _.filter(items, item => !(item.brand && item.category !== null));
-    return lol.length === 0
+    const { currItem } = this.state;
+    let verifiedItems = '';
+    if(currItem && currItem.brand && currItem.category !== null) {
+      verifiedItems = _.filter(items, item => item.brand && item.category !== null);
+      return verifiedItems.length === items.length
+    }
+    return false;
   }
 
   createLookItemForVideo(position) {
@@ -303,7 +308,7 @@ class AddItemPage extends BasePage {
 
   renderContent() {
 
-    if (true) {
+    if (this.state.currentStep !== 1) {
       return (
         <View>
             {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
@@ -323,7 +328,7 @@ class AddItemPage extends BasePage {
 
   renderAddAnotherItemBtn() {
     return (
-      <TouchableOpacity onPress={() => this.handleNewItem()} style={{height: 20, width: 100, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+      <TouchableOpacity onPress={() => this.handleNewItem()} style={{height: 20, width: 100,marginTop: 8, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
         <View style={{}}>
           <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>Tag another Item</Text>
         </View>
@@ -333,6 +338,8 @@ class AddItemPage extends BasePage {
 
   renderHeader() {
     const allowContinue = this.getAllowContinue();
+    const AllowAddAnotherItem = this.getAllowAddAnotherItem();
+    console.log('allow',AllowAddAnotherItem)
     const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
     <View>
@@ -343,7 +350,7 @@ class AddItemPage extends BasePage {
         <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
         {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
       </View>
-      {this.state.currentStep === 0 && _.filter(this.props.items, item => !(item.brand && item.category !== null)).length === 0 ? this.renderAddAnotherItemBtn() : null}
+      {this.renderAddAnotherItemBtn()}
     </View>
     )
   }

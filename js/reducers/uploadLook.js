@@ -152,7 +152,7 @@ const ACTION_HANDLERS = {
   [ADD_ITEM_URL]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'url', action.payload, action.payload.id)
+      items: mutateItem(state, 'url', action.payload.url, action.payload.itemId)
     }
   },
   [ADD_SHARING_INFO]: (state, action) => {

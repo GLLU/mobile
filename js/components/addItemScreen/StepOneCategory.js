@@ -107,7 +107,7 @@ class StepOneCategory extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fadeAnimContentOnPress: new Animated.Value(90)
+      fadeAnimContentOnPress: new Animated.Value(0)
     }
   }
 

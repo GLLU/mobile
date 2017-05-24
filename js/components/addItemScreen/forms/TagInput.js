@@ -31,17 +31,18 @@ class TagInput extends Component {
   }
 
   addTag(name) {
-    const tags = this.props.tags;
+    const {tags, itemId} = this.props;
     const existing = _.find(tags, t => t.name.toLowerCase() == name.toLowerCase());
     if (!existing) {
-      this.props.addItemTag(name).then(() => {
+      this.props.addItemTag(name, itemId).then(() => {
         this.textInput.clear();
       })
     }
   }
 
   removeTag(tag) {
-    this.props.removeItemTag(tag.name);
+    const { itemId } = this.props
+    this.props.removeItemTag(tag.name, itemId);
   }
 
   render() {

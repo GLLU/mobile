@@ -71,7 +71,7 @@ class StepZeroBrand extends BaseComponent {
     this.state = {
       modalVisible: false,
       brandName: props.brand ? props.brand.name : null,
-      fadeAnimContentOnPress: new Animated.Value(100)
+      fadeAnimContentOnPress: new Animated.Value(0)
     }
   }
 
