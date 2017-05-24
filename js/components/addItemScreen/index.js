@@ -157,7 +157,6 @@ class AddItemPage extends BasePage {
   }
 
   getHeadingTitle() {
-    const { item } = this.props;
     let title = '';
     switch (this.state.currentStep) {
       case 0:
@@ -173,15 +172,15 @@ class AddItemPage extends BasePage {
   }
 
   getStepsTitle() {
-    const { item } = this.props;
+    const { currItem } = this.state;
     let title = 'Choose a Category'
-    if(item.category !== null) {
+    if(currItem.category !== null) {
       title = 'Now Pick the brand';
     }
-    if(item.brand) {
+    if(currItem.brand) {
       title = 'For which Occasion?';
     }
-    if(item.occasions.length > 0) {
+    if(currItem.occasions.length > 0) {
       title = 'Edit or Continue';
     }
     return title;
@@ -227,11 +226,10 @@ class AddItemPage extends BasePage {
   }
 
   renderImageWithTags() {
-    const { items, image, itemId } = this.props;
+    const { items, image } = this.props;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags
-        itemId={itemId}
         mode={mode}
         items={items}
         image={image}
@@ -246,11 +244,10 @@ class AddItemPage extends BasePage {
   }
 
   renderVideoWithTags() {
-    const { fileLocalPath, itemId } = this.props;
+    const { fileLocalPath } = this.props;
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
-        itemId={itemId}
         mode={mode}
         image={fileLocalPath}
         createLookItemForVideo={this.createLookItemForVideo.bind(this)}
@@ -278,17 +275,23 @@ class AddItemPage extends BasePage {
   }
 
   getAllowContinue() {
-    const { item } = this.props;
+    const { currItem } = this.state;
     switch(this.state.currentStep) {
       case -1:
-        return item !== null;
+        return currItem !== null;
       case 0:
-        return item && item.brand && item.category !== null ;
+        return currItem && currItem.brand && currItem.category !== null ;
       case 1:
         return false;
       default:
         return true;
     }
+  }
+
+  getAllowAddAnotherItem() {
+    const { items } = this.props;
+    let lol = _.filter(items, item => !(item.brand && item.category !== null));
+    return lol.length === 0
   }
 
   createLookItemForVideo(position) {
@@ -340,7 +343,7 @@ class AddItemPage extends BasePage {
         <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
         {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
       </View>
-      {this.renderAddAnotherItemBtn()}
+      {this.state.currentStep === 0 && _.filter(this.props.items, item => !(item.brand && item.category !== null)).length === 0 ? this.renderAddAnotherItemBtn() : null}
     </View>
     )
   }
@@ -368,12 +371,9 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, lookId, image, items, localFilePath} = state.uploadLook;
+  const { lookId, image, items, localFilePath} = state.uploadLook;
   const isVideo = Utils.isVideo(image)
-  const item = itemId !== null ? _.find(items, x => x.id === itemId) : null;
   return {
-    item,
-    itemId,
     lookId,
     image,
     isVideo,
