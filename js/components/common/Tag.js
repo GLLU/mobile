@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Text,StyleSheet, Dimensions, TouchableOpacity, Image, UIManager, LayoutAnimation, Platform, Animated, View, PanResponder } from 'react-native'
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-const tagMarker = require('../../../images/markers/marker-top-right.png');
+const whiteMarker = require('../../../images/markers/marker-top-right.png');
+const greenMarker = require('../../../images/markers/marker-green-1.png');
 
 const TAG_WIDTH = 30;
 const BORDER_WIDTH = 5;
@@ -88,23 +89,24 @@ class Tag extends Component {
     const left = parseInt(x * width);
     const top = parseInt(y * height);
     const layout = this._pan.getLayout();
+    const markerImage = currItemId === item.id ? greenMarker : whiteMarker
     if(this.props.dragable) {
       return (
         <Animated.View
 
           {...this.panResponder.panHandlers}
-          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, currItemId === item.id ? {backgroundColor: 'green'} : null]}>
+          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
 
-          <Image source={tagMarker} style={styles.itemBgImage} />
+          <Image source={markerImage} style={styles.itemBgImage} />
         </Animated.View>
       );
     } else {
       console.log('itemmmm1',item)
       return (
 
-        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, currItemId === item.id ? {backgroundColor: 'green'} : null]}>
+        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
           <TouchableOpacity onPress={() => this.props.setCurrentItem(item)}>
-            <Image source={tagMarker} style={styles.itemBgImage} />
+            <Image source={markerImage} style={styles.itemBgImage} />
           </TouchableOpacity>
         </View>
 
