@@ -30,6 +30,7 @@ const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png'
 const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 const dollarBill = require('../../../images/dollar-bill.png')
 const smartphone = require('../../../images/smartphone.png')
+import WantMoreMony from '../../../images/upload/want-more-money.png';
 const deviceWidth = Dimensions.get('window').width;
 const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
 
@@ -328,8 +329,9 @@ class StepThreePublish extends BaseComponent {
                       Want to make more money?
                     </Text>
                     <View style={{width: 100, flexDirection: 'row', paddingVertical: 15}}>
-                      <Image resizeMode={'contain'} source={smartphone} style={{width: 100, height: 100}}/>
-                      <Image resizeMode={'contain'} source={dollarBill} style={{width: 100, height: 100}}/>
+
+                      <Image resizeMode={'contain'} source={WantMoreMony} style={{width: 100, height: 100}}/>
+                      {/*<Image resizeMode={'contain'} source={dollarBill} style={{width: 100, height: 100}}/>*/}
                     </View>
                     <Text
                       style={[styles.text, {fontSize: 14}]}
