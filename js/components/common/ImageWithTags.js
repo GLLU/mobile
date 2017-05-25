@@ -63,64 +63,14 @@ class ImageWithTags extends Component {
     }
   }
 
-  // componentWillMount() {
-  //   this.loadMarkerFromProps(this.props);
-  // }
-  //
-  // loadMarkerFromProps(props) {
-  //   const { mode, itemId, items } = props;
-  //   if (mode !== VIEW_MODE && itemId) {
-  //     const item = _.find(items, x => x.id === itemId);
-  //     const { locationX, locationY } = item;
-  //     const { width, height } = this.getRenderingDimensions();
-  //     const absX = this.normalizePosition(locationX) * width;
-  //     const absY = this.normalizePosition(locationY) * height;
-  //     this._setupPanResponder(absX, absY);
-  //   } else {
-  //     this._setupPanResponder(0, 0);
-  //   }
-  // }
-
-  _setupPanResponder(locationX, locationY) {
-    this._pan = new Animated.ValueXY();
-    this._pan.addListener((value) => this._value = value);
-    this._pan.setOffset({x: locationX, y: locationY})
-    this.panResponder = PanResponder.create({
-        onStartShouldSetPanResponder : () => true,
-        onPanResponderMove           : Animated.event([null,{
-            dx : this._pan.x,
-            dy : this._pan.y
-        }]),
-        onPanResponderGrant: () => { },
-        onPanResponderRelease: (e, gesture) => {
-          this._pan.setOffset(this._value);
-          this._setupPanResponder(this._value.x, this._value.y);
-          const { width, height } = this.getRenderingDimensions();
-          const left = this._value.x / width;
-          const top = this._value.y / height;
-          const nextPosition = {locationX: left, locationY: top};
-          this.setState(nextPosition, () => {
-            this.props.onDragEnd(nextPosition);
-          })
-        }
-    });
-  }
-
   componentDidMount() {
-    if(true) {
       const locationX = w/2;
       const locationY = h/2;
-      const { width, height } = this.getRenderingDimensions();
-      //this._setupPanResponder(locationX, locationY);
-
-      // convert location into relative positions
       const left = locationX / w;
       const top = locationY / h;
       this.setState({locationX: left, locationY: top}, () => {
         this.props.onMarkerCreate({locationX: left, locationY: top});
-        //this.props.createLookItemForVideo({locationX: left, locationY: top});
       });
-    }
   }
 
   renderTags() {
@@ -128,7 +78,7 @@ class ImageWithTags extends Component {
 
     return items.map((item, i) => {
         return (
-          <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} dragable={currStep === -1} item={item} onDragEnd={(nextPosition)=> this.props.onDragEnd(nextPosition)}></Tag>
+          <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} dragable={currStep === -1} item={item} onDragEnd={this.props.onDragEnd}/>
         );
     });
   }

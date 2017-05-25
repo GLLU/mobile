@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, PanResponder, Animated,View } from 'react-native';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
-import VideoWithCaching from "./media/VideoWithCaching";
+import Video from "react-native-video";
 export const VIEW_MODE = 'view';
 const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
@@ -140,11 +140,17 @@ class VideoWithTags extends Component {
 
   render() {
     return (
-      <VideoWithCaching source={{uri: this.props.image}}
+    <View style={{ flex: 1}}>
+
+      <Video source={{uri: this.props.image}}
              resizeMode="contain"
              muted={false}
-             style={{width: w - 5, height: h, overflow: 'hidden'}}
+             style={{position: 'absolute', height: h, width: w}}
              repeat={true}/>
+
+      {this.props.children}
+    </View>
+
     );
   }
 }

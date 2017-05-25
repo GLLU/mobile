@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import BasePage from '../common/base/BasePage';
-import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity } from 'react-native';
-import { Grid, Row, Button, Icon} from 'native-base';
+import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity, Image } from 'react-native';
 import { setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
 import StepTwoOccasions from './StepTwoOccasions';
 import StepThreePublish from './StepThreePublish';
+import UploadLookHeader from './UploadLookHeader';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
@@ -19,50 +19,7 @@ import VideoWithTags from '../common/VideoWithTags';
 
 const IMAGE_VIEW_PADDING = 80;
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#F2F2F2'
-  },
-  backIcon: {
-    color: 'blue'
-  },
-  wrapper: {
-    backgroundColor: 'red',
-    width: w,
-  },
-  mainView: {
-    flex: 1,
-    backgroundColor: '#F2F2F2'
-  },
-  headerContainer: {
 
-    top: Platform.OS === 'ios' ? 20 : 10,
-    height: 30,
-    flexDirection: 'row',
-    zIndex: 2,
-    width: w,
-    justifyContent: 'space-around'
-  },
-  headerTitle: {
-    backgroundColor: 'transparent',
-    fontWeight: '600',
-    fontSize: 17,
-    alignSelf: 'center'
-  },
-  nextBtn: {
-    color: 'white',
-    alignSelf: 'center',
-    fontSize:22
-  },
-  nextBtnContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: '#05d7b2'
-  },
-});
 
 class AddItemPage extends BasePage {
 
@@ -156,36 +113,6 @@ class AddItemPage extends BasePage {
     });
   }
 
-  getHeadingTitle() {
-    let title = '';
-    switch (this.state.currentStep) {
-      case 0:
-        title = this.getStepsTitle();
-        break;
-      case 1:
-        title = 'Additional Info';
-        break;
-      default:
-        title = 'Place marker to tag an item';
-    }
-    return title;
-  }
-
-  getStepsTitle() {
-    const { currItem } = this.state;
-    let title = 'Choose a Category'
-    if(currItem.category !== null) {
-      title = 'Now Pick the brand';
-    }
-    if(currItem.brand) {
-      title = 'For which Occasion?';
-    }
-    if(currItem.occasions.length > 0) {
-      title = 'Edit or Continue';
-    }
-    return title;
-  }
-
   handleBackButton() {
     if (this.state.currentStep > -1 && this.state.isVideo === false) {
       this.setState({currentStep: this.state.currentStep - 1});
@@ -201,10 +128,17 @@ class AddItemPage extends BasePage {
     }
   }
 
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
   handleAddItem(position) {
-    //this.logEvent('AddItemScreen', { name: 'Marker add' });
+    this.logEvent('AddItemScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item})
+      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep})
     });
   }
 
@@ -220,7 +154,6 @@ class AddItemPage extends BasePage {
   }
 
   handleOnDragEnd(position) {
-    console.log('handleOnDragEnd')
     this.props.setTagPosition(position);
     this.props.updateLookItem();
   }
@@ -235,10 +168,10 @@ class AddItemPage extends BasePage {
         image={image}
         setCurrentItem={(item) => this.setCurrentItem(item)}
         onMarkerCreate={this.handleAddItem.bind(this)}
-        onDragEnd={this.handleOnDragEnd.bind(this)}
+        onDragEnd={(position) => this.handleOnDragEnd(position)}
         currStep={this.state.currentStep}
         currItem={this.state.currItem}>
-        {this.state.currentStep === -1 ? null : this.renderActions()}
+        {this.renderActions()}
       </ImageWithTags>
     );
   }
@@ -251,8 +184,9 @@ class AddItemPage extends BasePage {
       <VideoWithTags
         mode={mode}
         image={fileLocalPath}
-        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
-      />
+        createLookItemForVideo={this.handleAddItem.bind(this)}>
+        {this.renderActions()}
+      </VideoWithTags>
     );
   }
 
@@ -263,10 +197,19 @@ class AddItemPage extends BasePage {
   }
 
   renderActions() {
+    return(
+      <View>
+        {this.renderHeader()}
+        {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
+      </View>
+    )
+  }
+
+  renderThreeSteps() {
     const { currItem } = this.state
     return (
       <View style={{ height: h}}>
-        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70, height:h-70}}>
+        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 20, height:h-70}}>
           <StepTwoOccasions item={currItem}  onValid={this.continueAction.bind(this)}/>
           <StepOneCategory item={currItem} onValid={this.continueAction.bind(this)}/>
         </View>
@@ -275,40 +218,7 @@ class AddItemPage extends BasePage {
     )
   }
 
-  getAllowContinue() {
-    const { currItem } = this.state;
-    switch(this.state.currentStep) {
-      case -1:
-        return currItem !== null;
-      case 0:
-        return this.getAllowAddAnotherItem() ;
-      case 1:
-        return false;
-      default:
-        return true;
-    }
-  }
-
-  getAllowAddAnotherItem() {
-    const { items } = this.props;
-    const { currItem } = this.state;
-    let verifiedItems = '';
-    if(currItem && currItem.brand && currItem.category !== null) {
-      verifiedItems = _.filter(items, item => item.brand && item.category !== null);
-      return verifiedItems.length === items.length
-    }
-    return false;
-  }
-
-  createLookItemForVideo(position) {
-    this.logEvent('AddItemScreen', { name: 'Marker add video' });
-    this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'view'})
-    });
-  }
-
   renderContent() {
-
     if (this.state.currentStep !== 1) {
       return (
         <View>
@@ -319,38 +229,19 @@ class AddItemPage extends BasePage {
     return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
   }
 
-  renderNext() {
-    return (
-      <TouchableOpacity style={styles.nextBtnContainer} onPress={this.handleContinue}>
-        <Icon style={StyleSheet.flatten(styles.nextBtn)} name="ios-arrow-forward"/>
-      </TouchableOpacity>
-    )
-  }
 
-  renderAddAnotherItemBtn() {
-    return (
-      <TouchableOpacity onPress={() => this.handleNewItem()} style={{height: 20, width: 100,marginTop: 8, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
-          <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>Tag another Item</Text>
-      </TouchableOpacity>
-    )
-  }
+
 
   renderHeader() {
-    const allowContinue = this.getAllowContinue();
-    const AllowAddAnotherItem = this.getAllowAddAnotherItem();
-    console.log('allow',AllowAddAnotherItem)
-    const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
-    <View>
-      <View style={styles.headerContainer}>
-        <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
-          <Icon style={{ color: fgColor }} name="ios-arrow-back" />
-        </Button>
-        <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
-        {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
-      </View>
-      {this.renderAddAnotherItemBtn()}
-    </View>
+        <UploadLookHeader
+          isVideo={this.state.isVideo}
+          currItem={this.state.currItem}
+          currentStep={this.state.currentStep}
+          items={this.props.items}
+          handleBackButton={this.handleBackButton.bind(this)}
+          handleContinue={this.handleContinue.bind(this)}
+          handleNewItem={this.handleNewItem.bind(this)}/>
     )
   }
 
@@ -358,7 +249,6 @@ class AddItemPage extends BasePage {
     return (
       <View>
         {this.renderContent()}
-        {this.renderHeader()}
       </View>
     );
   }

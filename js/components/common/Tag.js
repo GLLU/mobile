@@ -89,7 +89,8 @@ class Tag extends Component {
     const left = parseInt(x * width);
     const top = parseInt(y * height);
     const layout = this._pan.getLayout();
-    const markerImage = currItemId === item.id ? greenMarker : whiteMarker
+    const markerImage = currItemId === item.id ? greenMarker : whiteMarker;
+    const isDone = item.brand && item.category !== null
     if(this.props.dragable) {
       return (
         <Animated.View
@@ -106,7 +107,7 @@ class Tag extends Component {
 
         <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
           <TouchableOpacity onPress={() => this.props.setCurrentItem(item)}>
-            <Image source={markerImage} style={styles.itemBgImage} />
+            <Image source={markerImage} style={[styles.itemBgImage]} />
           </TouchableOpacity>
         </View>
 
