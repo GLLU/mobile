@@ -328,10 +328,8 @@ class StepThreePublish extends BaseComponent {
                     >
                       Want to make more money?
                     </Text>
-                    <View style={{width: 100, flexDirection: 'row', paddingVertical: 15}}>
-
+                    <View style={{justifyContent:'center', flexDirection: 'row', paddingVertical: 15}}>
                       <Image resizeMode={'contain'} source={WantMoreMony} style={{width: 100, height: 100}}/>
-                      {/*<Image resizeMode={'contain'} source={dollarBill} style={{width: 100, height: 100}}/>*/}
                     </View>
                     <Text
                       style={[styles.text, {fontSize: 14}]}
