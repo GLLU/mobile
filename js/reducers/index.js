@@ -16,6 +16,7 @@ import userFollows from './userFollows';
 import userFollowers from './userFollowers';
 import stats from './stats';
 import notifications from './notifications';
+import paris from './paris';
 
 import { reducer as api } from 'redux-json-api';
 
@@ -37,5 +38,6 @@ export default combineReducers({
   api,
   userFollows,
   userFollowers,
-  notifications
+  notifications,
+  paris
 });
