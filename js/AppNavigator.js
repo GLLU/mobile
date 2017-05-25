@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import ErrorHandler from './components/errorHandler';
+import ParisMessages from './components/parisMessages';
 import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'
@@ -75,6 +76,7 @@ class AppNavigator extends Component {
         {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}
+        {this.props.parisBottomMessage ? <ParisMessages /> : null}
       </View>
     );
   }
@@ -93,6 +95,7 @@ const mapStateToProps = state => {
   const isFatalError = state.errorHandler.fatal_error || false;
   const isWarning = state.errorHandler.warning || false;
   const isInfo = state.errorHandler.info || false;
+  const isParisBottomMessage = state.paris.messageBottom || false;
   return ({
     navigationState: state.cardNavigation,
     user: state.user,
@@ -102,6 +105,7 @@ const mapStateToProps = state => {
     fatalError: isFatalError,
     warning: isWarning,
     info: isInfo,
+    parisBottomMessage: isParisBottomMessage,
   });
 };
 

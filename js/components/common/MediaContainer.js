@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const likeSentences = ["Wow, it will look amazing on you!", 'Nice Look, she looks poppy!', 'I liked it also, pretty nice!', 'That girl is on fire!', 'Very nice! can look perfect on you!']
+
 class MediaContainer extends BaseComponent {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
@@ -56,11 +58,14 @@ class MediaContainer extends BaseComponent {
     this.logEvent('Feedscreen', {name: 'Like Image click'});
     if (isLiked) {
       let data = {id: item.id, likes: item.likes + 1, liked: true}
+      let msg = likeSentences[Math.floor(Math.random()*likeSentences.length)];
+      this.props.sendParisMessage(msg);
       this.props.likeUpdate(data);
     } else {
       let data = {id: item.id, likes: item.likes - 1, liked: false}
       this.props.unLikeUpdate(data);
     }
+
   }
 
   setLookPosition(e) {

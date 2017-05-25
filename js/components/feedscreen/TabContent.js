@@ -17,7 +17,7 @@ import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore } from '../../actions';
+import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMesasage } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
 
@@ -65,6 +65,7 @@ class TabContent extends BaseComponent {
   componentDidMount() {
     let that = this
     setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
+    this.props.showParisBottomMesasage(`Hey ${this.props.userName}, you look amazing today!`);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -150,7 +151,8 @@ class TabContent extends BaseComponent {
                         currScroll={this.state.currentScrollPosition}
                         likeUpdate={(data) => this.props.likeUpdate(data)}
                         unLikeUpdate={(data) => this.props.likeUpdate(data)}
-                        navigateTo={this.props.navigateTo}/>
+                        navigateTo={this.props.navigateTo}
+                        sendParisMessage={(message) => this.props.showParisBottomMesasage(message)}/>
       );
     });
   }
@@ -306,6 +308,7 @@ function bindActions(dispatch) {
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     getFeed: (query) => dispatch(getFeed(query)),
     loadMore: () => dispatch(loadMore()),
+    showParisBottomMesasage: (message) => dispatch(showParisBottomMesasage(message)),
   };
 }
 
@@ -322,7 +325,8 @@ const mapStateToProps = state => {
     user_size: user_size,
     user_gender: state.user.gender,
     cardNavigationStack: state.cardNavigation.routes,
-    shareToken: state.user.invitation_share_token
+    shareToken: state.user.invitation_share_token,
+    userName: state.user.name
   }
 };
 
