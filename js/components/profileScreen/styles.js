@@ -94,7 +94,7 @@ export default StyleSheet.create({
     width: 75,
   },
   number: {
-    fontSize: 30
+    fontSize: 22
   },
   itemsRow: {
     backgroundColor: 'white',

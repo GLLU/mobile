@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage } from '../../actions';
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
@@ -134,6 +134,7 @@ class ProfileScreen extends BasePage {
             likes={this.props.stats.likes_count}
             onFollowersPress={this.handleFollowersPress.bind(this)}
             onFollowingPress={this.handleFollowingPress.bind(this)}
+            handleBalancePress = {this.handleBalancePress.bind(this)}
           />
         </View>
       )
@@ -185,6 +186,10 @@ class ProfileScreen extends BasePage {
   handleBackToFeedPress() {
     this.logEvent('ProfileScreen', {name: 'Back to Feed click'});
     this.goBack();
+  }
+
+  handleBalancePress() {
+    this.props.showParisBottomMessage(`Hey, you can withdraw the reward once you reach at least US$50.00`);
   }
 
   render() {
@@ -245,6 +250,7 @@ function bindAction(dispatch) {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
     getUserLooks: data => dispatch(getUserLooks(data)),
+    showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),
   };
 }
 
