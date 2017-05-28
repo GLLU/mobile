@@ -46,7 +46,7 @@ class MyBodyType extends BasePage {
         gender
       }
       this.props.changeBodyType(data);
-    }, 200);
+    }, 0);
   }
 
   _changeTitleAndDescription(type) {
@@ -54,7 +54,7 @@ class MyBodyType extends BasePage {
       if(this.state.currBodyType !== type.name){
         this.setState({currBodyType: type.name, currDescription: type.description})
       }
-    }, 200);
+    }, 0);
   }
 
   handleContinuePress() {

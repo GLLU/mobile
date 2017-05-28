@@ -130,13 +130,11 @@ class BodyMeasureView extends BaseComponent {
       <Grid>
         <Col style={{flex: 0.8}}>
           <View style={myStyles.bodyType}>
-            <Image source={this.props.bodyType.shapeActive} style={myStyles.bodyTypeShapeImage}/>
             <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
           </View>
           <View style={myStyles.bodyTypeImageContainer}>
             <Image style={myStyles.bodyTypeImage}
-               source={this.state.isEdit ? this.props.bodyType.imageEditUrl
-                                         : this.props.bodyType.imageOriUrl} resizeMode={'contain'}/>
+               source={this.props.bodyType.imageUrl} resizeMode={'contain'}/>
           </View>
         </Col>
         <Col style={myStyles.sizeListContainer}>
