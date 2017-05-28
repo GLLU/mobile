@@ -106,6 +106,7 @@ class UserLooks extends Component {
   }
 
   _renderImages(looks) {
+    console.log('looks',looks)
     return looks.map((look, index) => {
       return  (
         <View key={index} style={{width: look.width, height: look.height, paddingLeft: 0 }}>
