@@ -50,7 +50,7 @@ const bodyTypeList = {
       name: 'Trapezoid',
       body_type: 'trapezoid',
       description: 'Your chest and shoulders are relatively broad with a taper down to the waist. The legs are commonly lean or defined.',
-      imageUrl: require('../../images/maleBodyTypes/bodies/trapezoid.png'),
+      imageUrl: require('../../images/bodytypes/male/trapezoid.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-trapezoid-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-trapezoid.png')
     },
@@ -58,7 +58,7 @@ const bodyTypeList = {
       name: 'Inverted Triangle',
       body_type: 'invertedTriangle',
       description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
-      imageUrl: require('../../images/maleBodyTypes/bodies/Invert.png'),
+      imageUrl: require('../../images/bodytypes/male/invert.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-inverted-triangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-inverted-triangle.png')
     },
@@ -66,7 +66,7 @@ const bodyTypeList = {
       name: 'Rectangle',
       body_type: 'rectangle',
       description: 'Your shoulders are roughly the same width as your waist and hips. Chances are that you’re also tall and thin.',
-      imageUrl: require('../../images/maleBodyTypes/bodies/rectangle.png'),
+      imageUrl: require('../../images/bodytypes/male/rectangle.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-rectangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-rectangle.png')
     },
@@ -74,7 +74,7 @@ const bodyTypeList = {
       name: 'Triangle',
       body_type: 'triangle',
       description: 'Your midsection is more pronounced with a narrower top and larger waist and hips.',
-      imageUrl: require('../../images/maleBodyTypes/bodies/triangle.png'),
+      imageUrl: require('../../images/bodytypes/male/triangle.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-triangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-triangle.png')
     },
@@ -82,7 +82,7 @@ const bodyTypeList = {
       name: 'Oval',
       body_type: 'oval',
       description: 'Your shoulders and lower legs look slimmer compared to your more rounded center of the body.',
-      imageUrl: require('../../images/maleBodyTypes/bodies/oval.png'),
+      imageUrl: require('../../images/bodytypes/male/oval.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-oval-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-oval.png')
     }
