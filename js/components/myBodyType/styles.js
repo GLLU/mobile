@@ -17,7 +17,6 @@ export default StyleSheet.create({
     color: fontColor
   },
   container: {
-    marginTop: 50,
     height: h - h/2.5  ,
     paddingTop: 5,
     paddingHorizontal: 10,
@@ -57,7 +56,7 @@ export default StyleSheet.create({
   },
   imagePlaceHolder: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   arrowBorder: {
     alignSelf:'center',
