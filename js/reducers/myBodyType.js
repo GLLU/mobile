@@ -9,10 +9,6 @@ const bodyTypeList = {
       body_type: 'invertedTriangle',
       description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/bodytypes/female/inverted-triangle.png'),
-      imageOriUrl: require('../../images/INVERTED_TRIANGLE.png'),
-      imageEditUrl: require('../../images/INVERTED_TRIANGLE_Edit.png'),
-      shapeActive: require('../../images/INVERTED_TRIANGLE_green.png'),
-      shapeDeactive: require('../../images/INVERTED_TRIANGLE_gray.png'),
       filterImageUrlActive: require('../../images/filters/body-types/female-inverted-triangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/female-inverted-triangle.png')
     },
@@ -21,10 +17,6 @@ const bodyTypeList = {
       body_type: 'rectangle',
       description: 'Also known as H or straight body shape due to the similar width of the shoulders, hips and waistline.',
       imageUrl: require('../../images/bodytypes/female/rectangle.png'),
-      imageOriUrl: require('../../images/FULL_HOURGLASS_blank.png'),
-      imageEditUrl: require('../../images/FULL_HOURGLASS.png'),
-      shapeActive: require('../../images/RECTANGLE_Shape_green.png'),
-      shapeDeactive: require('../../images/RECTANGLE_Shape_gray.png'),
       filterImageUrlActive: require('../../images/filters/body-types/female-rectangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/female-rectangle.png')
     },
@@ -33,10 +25,6 @@ const bodyTypeList = {
       body_type: 'apple',
       description: 'Your shoulders and hip line are about the same, and your waistline is the same or wider than your shoulders and hips.',
       imageUrl: require('../../images/bodytypes/female/apple.png'),
-      imageOriUrl: require('../../images/APPLE.png'),
-      imageEditUrl: require('../../images/APPLE_Edit.png'),
-      shapeActive: require('../../images/APPLE_Shape_green.png'),
-      shapeDeactive: require('../../images/APPLE_Shape_gray.png'),
       filterImageUrlActive: require('../../images/filters/body-types/female-apple-active.png'),
       filterImageUrl: require('../../images/filters/body-types/female-apple.png')
     },
@@ -45,10 +33,6 @@ const bodyTypeList = {
       body_type: 'pear',
       description: 'Your body is defined by hips that are wider than shoulders, relatively defined waist, full hips or thighs, and bust and small upper body.',
       imageUrl: require('../../images/bodytypes/female/pear.png'),
-      imageOriUrl: require('../../images/PEAR.png'),
-      imageEditUrl: require('../../images/PEAR_Edit.png'),
-      shapeActive: require('../../images/PEAR_Shape_green.png'),
-      shapeDeactive: require('../../images/PEAR_Shape_gray.png'),
       filterImageUrlActive: require('../../images/filters/body-types/female-pear-active.png'),
       filterImageUrl: require('../../images/filters/body-types/female-pear.png')
     },
@@ -57,10 +41,6 @@ const bodyTypeList = {
       body_type: 'יhourglass',
       description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
       imageUrl: require('../../images/bodytypes/female/hourglass.png'),
-      imageOriUrl: require('../../images/FULL_HOURGLASS.png'),
-      imageEditUrl: require('../../images/FULL_HOURGLASS_Edit.png'),
-      shapeActive: require('../../images/FULL_HOURGLASS_Shape_green.png'),
-      shapeDeactive: require('../../images/FULL_HOURGLASS_Shape_gray.png'),
       filterImageUrlActive: require('../../images/filters/body-types/female-full-hourglass-active.png'),
       filterImageUrl: require('../../images/filters/body-types/female-full-hourglass.png')
     }
@@ -71,10 +51,6 @@ const bodyTypeList = {
       body_type: 'trapezoid',
       description: 'Your chest and shoulders are relatively broad with a taper down to the waist. The legs are commonly lean or defined.',
       imageUrl: require('../../images/maleBodyTypes/bodies/trapezoid.png'),
-      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_trapezoid.png'),
-      imageEditUrl: require('../../images/maleBodyTypes/bodies/trapezoid_e.png'),
-      shapeActive: require('../../images/maleBodyTypes/shapes/trapezoid_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/trapezoid_gry.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-trapezoid-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-trapezoid.png')
     },
@@ -83,10 +59,6 @@ const bodyTypeList = {
       body_type: 'invertedTriangle',
       description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
       imageUrl: require('../../images/maleBodyTypes/bodies/Invert.png'),
-      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_Invert.png'),
-      imageEditUrl: require('../../images/maleBodyTypes/bodies/Invert_e.png'),
-      shapeActive: require('../../images/maleBodyTypes/shapes/rev_triangle_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/rev_triangle_gry.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-inverted-triangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-inverted-triangle.png')
     },
@@ -95,10 +67,6 @@ const bodyTypeList = {
       body_type: 'rectangle',
       description: 'Your shoulders are roughly the same width as your waist and hips. Chances are that you’re also tall and thin.',
       imageUrl: require('../../images/maleBodyTypes/bodies/rectangle.png'),
-      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_rectangle.png'),
-      imageEditUrl: require('../../images/maleBodyTypes/bodies/rectangle_e.png'),
-      shapeActive: require('../../images/maleBodyTypes/shapes/rec_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/rec_gry.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-rectangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-rectangle.png')
     },
@@ -107,10 +75,6 @@ const bodyTypeList = {
       body_type: 'triangle',
       description: 'Your midsection is more pronounced with a narrower top and larger waist and hips.',
       imageUrl: require('../../images/maleBodyTypes/bodies/triangle.png'),
-      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_triangle.png'),
-      imageEditUrl: require('../../images/maleBodyTypes/bodies/triangle_e.png'),
-      shapeActive: require('../../images/maleBodyTypes/shapes/triangle_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/triangle_gry.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-triangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-triangle.png')
     },
@@ -119,10 +83,6 @@ const bodyTypeList = {
       body_type: 'oval',
       description: 'Your shoulders and lower legs look slimmer compared to your more rounded center of the body.',
       imageUrl: require('../../images/maleBodyTypes/bodies/oval.png'),
-      imageOriUrl: require('../../images/maleBodyTypes/bodies/dressed_oval.png'),
-      imageEditUrl: require('../../images/maleBodyTypes/bodies/oval_e.png'),
-      shapeActive: require('../../images/maleBodyTypes/shapes/oval_grn.png'),
-      shapeDeactive: require('../../images/maleBodyTypes/shapes/oval_gry.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-oval-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-oval.png')
     }
