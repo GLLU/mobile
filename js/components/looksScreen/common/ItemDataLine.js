@@ -8,8 +8,8 @@ import { connect } from 'react-redux'
 const buyItImage = require('../../../../images/buttonsbar/buyItButton-noprice.png');
 const bagItImage = require('../../../../images/buttonsbar/bagItImage.png');
 
-const likeImage = require('../../../../buttonsbar/like.png');
-const likeClickedImage = require('../../../../buttonsbar/likeClicked.png');
+const likeImage = require('../../../../images/buttonsbar/like.png');
+const likeClickedImage = require('../../../../images/buttonsbar/likeClicked.png');
 
 class ItemDataLine extends Component {
   constructor(props) {
