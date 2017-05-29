@@ -18,9 +18,9 @@ import {
   PRIVACY_URL,
 } from '../../constants';
 
-const background = require('../../../images/background.png');
-const backgroundShadow = require('../../../images/background-shadow-70p.png');
-const logo = require('../../../images/logo.png');
+const background = require('../../../images/backgrounds/forgot-password-background.png');
+const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
+const logo = require('../../../images/logo/logo.png');
 
 let PERMISSIONS = ["email", "public_profile"];
 

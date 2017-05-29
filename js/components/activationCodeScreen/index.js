@@ -16,7 +16,7 @@ import { emailRule, passwordRule } from '../../validators';
 import SplashButton from "./SplashButton";
 import {NavigationActions} from "react-navigation";
 
-const logo = require('../../../images/logo.png');
+const logo = require('../../../images/logo/logo.png');
 const background = require('../../../images/backgrounds/enterCodeBG.png');
 
 class ActivationCodeScreen extends BasePage {

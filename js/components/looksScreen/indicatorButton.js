@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, Image, Dimensions} from 'react-native';
 
-const circleImage = require('../../../images/indicatorCircle.png');
-const circleActiveImage = require('../../../images/indicatorCircleActive.png');
-const circleVideo = require('../../../images/indicatorVideo.png');
-const circleActiveVIdeo = require('../../../images/indicatorVideoActive.png');
+const circleImage = require('../../../images/indicators/indicatorCircle.png');
+const circleActiveImage = require('../../../images/indicators/indicatorCircleActive.png');
+const circleVideo = require('../../../images/indicators/indicatorVideo.png');
+const circleActiveVIdeo = require('../../../images/indicators/indicatorVideoActive.png');
 
 const h = Dimensions.get('window').height;
 

@@ -10,7 +10,6 @@ import {
   editNewLook,
 } from '../../actions';
 import VideoWithCaching from "../common/media/VideoWithCaching";
-const addItemIcon = require('../../../images/addItemSquare.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 

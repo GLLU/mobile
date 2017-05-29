@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'native-base';
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const width = Dimensions.get('window').width;
-const logo = require('../../../images/logo.png');
+const logo = require('../../../images/logo/logo.png');
 import styles from './styles';
 import { hideTutorial } from '../../actions/user';
 const one = require('../../../images/tutorial/1.png');

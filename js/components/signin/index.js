@@ -17,10 +17,10 @@ import {
   PRIVACY_URL,
 } from '../../constants';
 
-const logo = require('../../../images/logo.png');
+const logo = require('../../../images/logo/logo.png');
 
 const background = require('../../../images/backgrounds/bags.png');
-const backgroundShadow = require('../../../images/background-shadow-70p.png');
+const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
 
 import { emailRule, passwordRule } from '../../validators';
 

@@ -11,7 +11,7 @@ import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks }
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
-const profileBackground = require('../../../images/psbg.png');
+const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
 const toSettings = require('../../../images/icons/um.png');
 const LOADER_HEIGHT = 30;
