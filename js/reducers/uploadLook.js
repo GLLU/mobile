@@ -26,17 +26,17 @@ import {
 import { SET_ITEM_SIZES, SET_CATEGORIES } from '../actions/filters';
 import { lookMapper, itemMapper } from '../mappers/';
 
-const mutateItem = function(state, key, value) {
+const mutateItem = function(state, key, value, id) {
   return state.items.map(item => {
-    if (item.id == state.itemId) {
+    if (item.id === id) {
       item[key] = value;
     }
     return item;
   })
 }
 
-const findItem = function(state) {
-  return _.find(state.items, x => x.id == state.itemId);
+const findItem = function(state, itemId) {
+  return _.find(state.items, x => x.id === itemId);
 }
 
 // Action Handlers
@@ -74,38 +74,40 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_TAG_POSITION]: (state, action) => {
-    state.items = mutateItem(state, 'locationX', action.payload.locationX);
-    state.items = mutateItem(state, 'locationY', action.payload.locationY);
+    state.items = mutateItem(state, 'locationX', action.payload.locationX, action.payload.id);
+    state.items = mutateItem(state, 'locationY', action.payload.locationY, action.payload.id);
     return {
       ...state,
       items: state.items,
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {
-    const category = action.payload;
-    let items = mutateItem(state, 'category', category);
-    items = mutateItem(state, 'category_id', category.id);
+    const category = action.payload.categoryItem;
+    let items = mutateItem(state, 'category', category, action.payload.itemId);
+    items = mutateItem(state, 'category_id', category.id, action.payload.itemId);
     return {
       ...state,
       items: items,
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
+    console.log('action.payload.itemId',action.payload)
     return {
       ...state,
-      items: mutateItem(state, 'brand', action.payload)
+      items: mutateItem(state, 'brand', action.payload.name, action.payload.itemId)
     }
   },
   [REMOVE_BRAND_NAME]: (state, action) => {
+    console.log('action.payload2',action.payload)
     return {
       ...state,
-      items: mutateItem(state, 'brand', null)
+      items: mutateItem(state, 'brand', null, action.payload)
     }
   },
   [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
     const { itemSizeRegion, itemSizeValue } = action.payload;
-    state.items = mutateItem(state, 'itemSizeRegion', itemSizeRegion)
-    state.items = mutateItem(state, 'itemSizeValue', itemSizeValue)
+    state.items = mutateItem(state, 'itemSizeRegion', itemSizeRegion, action.payload.id)
+    state.items = mutateItem(state, 'itemSizeValue', itemSizeValue, action.payload.id)
     return {
       ...state,
       items: state.items,
@@ -114,43 +116,43 @@ const ACTION_HANDLERS = {
   [ADD_ITEM_SIZE]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'itemSizeValue', action.payload)
+      items: mutateItem(state, 'itemSizeValue', action.payload, action.payload.id)
     }
   },
   [ADD_ITEM_TAG]: (state, action) => {
-    const item = findItem(state);
+    const item = findItem(state, action.payload.itemId);
     let tags = item.tags;
-    tags.push(action.payload);
+    tags.push(action.payload.data);
     tags = _.uniqBy(tags, 'id');
     return {
       ...state,
-      items: mutateItem(state, 'tags', tags)
+      items: mutateItem(state, 'tags', tags, action.payload.itemId)
     }
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
-    const item = findItem(state);
-    let tags = _.filter(item.tags, t => t.name.toLowerCase() != action.payload.toLowerCase());
+    const item = findItem(state, action.payload.itemId);
+    let tags = _.filter(item.tags, t => t.name.toLowerCase() != action.payload.data.toLowerCase());
     return {
       ...state,
-      items: mutateItem(state, 'tags', tags)
+      items: mutateItem(state, 'tags', tags, action.payload.itemId)
     }
   },
   [ADD_ITEM_CURRENCY]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'currency', action.payload)
+      items: mutateItem(state, 'currency', action.payload, action.payload.id)
     }
   },
   [ADD_ITEM_PRICE]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'price', action.payload)
+      items: mutateItem(state, 'price', action.payload, action.payload.id)
     }
   },
   [ADD_ITEM_URL]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'url', action.payload)
+      items: mutateItem(state, 'url', action.payload.url, action.payload.itemId)
     }
   },
   [ADD_SHARING_INFO]: (state, action) => {
@@ -213,21 +215,26 @@ const ACTION_HANDLERS = {
     }
   },
   [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {
-    const item = findItem(state);
-    let occasions = _.filter(item.occasions, t => t.id !== action.payload.id);
+    const item = findItem(state, action.payload.itemId);
+    console.log('action.payload.tag.id',action.payload.tag.id)
+    console.log('item',item)
+    console.log('action.payload',action.payload)
+    let occasions = _.filter(item.occasions, t => t.id !== action.payload.tag.id);
+    console.log('occassion555',occasions)
     return {
       ...state,
-      items: mutateItem(state, 'occasions', occasions)
+      items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
     }
   },
   [ADD_ITEM_OCCASION_TAG]: (state, action) => {
-    const item = findItem(state);
+    const item = findItem(state, action.payload.itemId);
+    console.log('blaby item',item)
     let occasions = item.occasions;
-    occasions.push(action.payload);
+    occasions.push(action.payload.tag);
     occasions = _.uniqBy(occasions, 'id');
     return {
       ...state,
-      items: mutateItem(state, 'occasions', occasions)
+      items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
     }
   },
 }

@@ -118,16 +118,25 @@ class StepOneCategory extends BaseComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.item.id !== this.props.item.id) {
+      const selectedCategory =  nextProps.item ? nextProps.item.category : false
+      if(!selectedCategory) {
+        this.toggleBottomContainer();
+      }
+    }
+  }
+
   componentWillMount() {
     this.props.loadCategories().catch(err => {
       console.log('unable to load categories');
     });
   }
 
-  selectCategory(item) {
-    if (item.id !== this.props.selectedCategory) {
-      this.logEvent('UploadLookScreen', { name: 'Category select', category: item.name });
-      this.props.addItemType(item);
+  selectCategory(category) {
+    if (category.id !== this.props.selectedCategory) {
+      this.logEvent('UploadLookScreen', { name: 'Category select', category: category.name });
+      this.props.addItemType(category, this.props.item.id);
         let that = this
         setTimeout(function(){ that.toggleBottomContainer(); }, 1500);
 
@@ -135,7 +144,6 @@ class StepOneCategory extends BaseComponent {
   }
 
   toggleBottomContainer() {
-
       if (this.state.fadeAnimContentOnPress._value === 90) {
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
@@ -156,8 +164,8 @@ class StepOneCategory extends BaseComponent {
 
   }
 
-  renderOpenButton() {
-    const btnColor = !this.props.selectedCategory ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)';
+  renderOpenButton(selectedCategory) {
+    const btnColor = selectedCategory ? 'rgba(0, 255, 128, 0.6)' : 'rgba(32, 32, 32, 0.4)';
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
         <View style={{width: 20, height: 50, backgroundColor: btnColor, alignSelf: 'center'}}>
@@ -168,16 +176,19 @@ class StepOneCategory extends BaseComponent {
   }
 
   render() { //
-    const { categories, selectedCategory } = this.props;
+    const { categories, items, item } = this.props;
+
+    const selectedCategory = item.category ? item.category : false;
     return(
-      <View style={{ flexDirection: 'row', height: h / 1.8,}}>
-        {this.renderOpenButton()}
+      <View style={{ flexDirection: 'row', height: h / 1.8, overflow: 'hidden'}}>
+        {this.renderOpenButton(selectedCategory)}
         <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
           <Text numberOfLines={1} style={styles.titleLabelInfo}>Item Type</Text>
           <CategoryStrip
             categories={categories}
             selectedCategory={selectedCategory}
-            onCategorySelected={(cat) => this.selectCategory(cat)}/>
+            onCategorySelected={(cat) => this.selectCategory(cat)}
+            currItemId={this.props.item.id}/>
         </Animated.View>
       </View>
     )
@@ -186,17 +197,16 @@ class StepOneCategory extends BaseComponent {
 
 function bindActions(dispatch) {
   return {
-    addItemType: (type) => dispatch(addItemType(type)),
+    addItemType: (type, itemId) => dispatch(addItemType(type, itemId)),
     loadCategories: () => dispatch(loadCategories()),
   };
 }
 
 const mapStateToProps = state => {
-  const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id === itemId);
+  const { items } = state.uploadLook;
   return {
     categories: state.filters.categories,
-    selectedCategory: item.category ? item.category : false,
+    items,
   };
 };
 

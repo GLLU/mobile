@@ -266,20 +266,22 @@ export function publishLookItem() {
   }
 }
 
-export function addItemType(categoryItem) {
+export function addItemType(categoryItem, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const params = {
       category_id: categoryItem.id,
     }
+    console.log('itemId11',itemId)
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+      const payload = {categoryItem, itemId}
       dispatch({
         type: ADD_ITEM_TYPE,
-        payload: categoryItem
+        payload
       });
       dispatch(loadItemSizes(categoryItem.id));
-      dispatch(addItemTag(categoryItem.name)).catch(err => {
+      dispatch(addItemTag(categoryItem.name, itemId)).catch(err => {
         console.log('do nothing');
       });
     }).catch(err => {
@@ -290,9 +292,12 @@ export function addItemType(categoryItem) {
 }
 
 export function addBrandName(payload) {
+  console.log('vffvfvfv')
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
+    const itemId = payload.itemId
+    console.log('payload',payload)
     const params = {
       brand_id: payload.id,
     }
@@ -302,25 +307,27 @@ export function addBrandName(payload) {
           type: ADD_BRAND_NAME,
           payload: payload
         });
-        dispatch(addItemTag(payload.name)).catch(reject);
+        dispatch(addItemTag(payload.name, itemId)).catch(reject);
         resolve();
       }).catch(reject);
     });
   };
 }
 
-export function createBrandName(name) {
+export function createBrandName(newBrand) {
+  console.log('value',newBrand)
   return (dispatch) => {
     const body = {
       brand: {
-        name: name
+        name: newBrand.value
       }
     }
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
+          console.log('value2222',newBrand, 'blab', data)
           dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name })).then(resolve, reject);
+          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name, itemId: newBrand.itemId })).then(resolve, reject);
         } else {
           reject(err);
         }
@@ -329,9 +336,11 @@ export function createBrandName(name) {
   };
 }
 
-export function removeBrandName() {
+export function removeBrandName(itemId) {
+  console.log('itemId3',itemId)
   return {
     type: REMOVE_BRAND_NAME,
+    payload: itemId
   };
 }
 
@@ -357,10 +366,10 @@ export function addItemSize(payload) {
   }
 }
 
-export function addItemTag(tag) {
+export function addItemTag(tag, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const body = {
       tag_name: tag
     }
@@ -369,9 +378,10 @@ export function addItemTag(tag) {
         { look_id: lookId, item_id: itemId },
         { body: JSON.stringify(body) }
       ], { showLoader: false }).then(data => {
+        const payload = {data: data.item_tag.tag, itemId}
         dispatch({
           type: ADD_ITEM_TAG,
-          payload: data.item_tag.tag
+          payload
         });
         resolve();
       }).catch(reject);
@@ -379,10 +389,10 @@ export function addItemTag(tag) {
   };
 }
 
-export function removeItemTag(tag) {
+export function removeItemTag(tag, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const body = {
       tag_name: tag
     }
@@ -391,9 +401,10 @@ export function removeItemTag(tag) {
         { look_id: lookId, item_id: itemId },
         { body: JSON.stringify(body) }
       ]).then(data => {
+        const payload = {data: tag, itemId}
         dispatch({
           type: REMOVE_ITEM_TAG,
-          payload: tag
+          payload
         });
         resolve();
       }).catch(reject);
@@ -443,17 +454,21 @@ export function addDescription(description) {
   };
 }
 
-export function addUrl(url) {
+export function addUrl(url, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     const params = {
       url,
     }
     return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+      const payload = {
+        url,
+        itemId
+      }
       dispatch({
         type: ADD_ITEM_URL,
-        payload: url
+        payload
       })
     }).catch(err => {
       console.log('error', err);
@@ -482,17 +497,18 @@ export function addPhotosVideo(image) {
   };
 }
 
-export function toggleOccasionTag(tag, selected) {
+export function toggleOccasionTag(tag, selected, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId } = state.uploadLook;
+    const { lookId } = state.uploadLook;
     if (selected) {
       // remove
       dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tag.id}, (err, data) => {
         if (!err) {
+          const payload = {tag, itemId}
           dispatch({
             type: REMOVE_ITEM_OCCASION_TAG,
-            payload: tag
+            payload: payload
           });
         } else {
           throw err;  
@@ -504,9 +520,10 @@ export function toggleOccasionTag(tag, selected) {
       }
       dispatch(rest.actions.item_occasions.post({look_id: lookId, item_id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
+          const payload = {tag: data.item_tag.tag, itemId}
           dispatch({
             type: ADD_ITEM_OCCASION_TAG,
-            payload: data.item_tag.tag
+            payload: payload
           });
         } else {
           throw err;  

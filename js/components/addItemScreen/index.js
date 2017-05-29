@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import BasePage from '../common/base/BasePage';
-import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity } from 'react-native';
-import { Grid, Row, Button, Icon} from 'native-base';
-import { setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
+import {StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
+import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition} from '../../actions';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
 import StepTwoOccasions from './StepTwoOccasions';
 import StepThreePublish from './StepThreePublish';
-import { LOOK_STATES } from '../../constants';
+import UploadLookHeader from './UploadLookHeader';
+import {LOOK_STATES} from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
 import Utils from '../../utils';
@@ -19,50 +19,6 @@ import VideoWithTags from '../common/VideoWithTags';
 
 const IMAGE_VIEW_PADDING = 80;
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#F2F2F2'
-  },
-  backIcon: {
-    color: 'blue'
-  },
-  wrapper: {
-    backgroundColor: 'red',
-    width: w,
-  },
-  mainView: {
-    flex: 1,
-    backgroundColor: '#F2F2F2'
-  },
-  headerContainer: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 20 : 10,
-    height: 30,
-    flexDirection: 'row',
-    zIndex: 2,
-    width: w,
-    justifyContent: 'space-around'
-  },
-  headerTitle: {
-    backgroundColor: 'transparent',
-    fontWeight: '600',
-    fontSize: 17,
-    alignSelf: 'center'
-  },
-  nextBtn: {
-    color: 'white',
-    alignSelf: 'center',
-    fontSize:22
-  },
-  nextBtnContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: '#05d7b2'
-  },
-});
 
 class AddItemPage extends BasePage {
 
@@ -78,7 +34,7 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.handleContinue=this.handleContinue.bind(this);
+    this.handleContinue = this.handleContinue.bind(this);
     this.state = {
       isVideo: this.props.isVideo,
       currentStep: -1,
@@ -87,16 +43,24 @@ class AddItemPage extends BasePage {
       imageWidth: 90,
       mode: props.mode,
       allowContinue: false,
+      currMode: 'tagging',
+      currItem: {id: -1}
     };
+
+  }
+
+  setCurrentItem(item) {
+    console.log('setting curreny item: ', item)
+    this.setState({currItem: item})
   }
 
   componentDidMount() {
-    console.log('image from redux',this.props.image)
+    console.log('image from redux', this.props.image)
   }
 
 
   _handleLayoutImage(e) {
-    const { width } = e.nativeEvent.layout;
+    const {width} = e.nativeEvent.layout;
     const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
     this.setState({
       imageWidth: w
@@ -104,15 +68,21 @@ class AddItemPage extends BasePage {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
-        this.handleContinue();
+    if (nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
+      this.handleContinue();
     }
+    if (nextProps.items !== this.props.items) {
+      const item = _.find(nextProps.items, item => item.id === this.state.currItem.id);
+      this.setState({currItem: item})
+    }
+
+
   }
 
   handleContinue() {
-    const { currentStep } = this.state;
+    const {currentStep} = this.state;
     if (currentStep < 1) {
-      this.setState({currentStep: this.state.currentStep + 1});  
+      this.setState({currentStep: this.state.currentStep + 1});
     }
   }
 
@@ -132,7 +102,7 @@ class AddItemPage extends BasePage {
   }
 
   publishAction() {
-    this.logEvent('UploadLookScreen', { name: 'Publish click' });
+    this.logEvent('UploadLookScreen', {name: 'Publish click'});
     this.props.publishLookItem().then(response => {
       if (this.props.state === LOOK_STATES.PUBLISHED) {
         this.goBack()
@@ -142,39 +112,11 @@ class AddItemPage extends BasePage {
     });
   }
 
-  getHeadingTitle() {
-    const { item } = this.props;
-    let title = '';
-    switch (this.state.currentStep) {
-      case 0:
-        title = this.getStepsTitle();
-        break;
-      case 1:
-        title = 'Additional Info';
-        break;
-      default:
-        title = 'Place marker to tag an item';
-    }
-    return title;
-  }
-
-  getStepsTitle() {
-    const { item } = this.props;
-    let title = 'Choose a Category'
-    if(item.category !== null) {
-      title = 'Now Pick the brand';
-    }
-    if(item.brand) {
-      title = 'For which Occasion?';
-    }
-    if(item.occasions.length > 0) {
-      title = 'Edit or Continue';
-    }
-    return title;
-  }
-
   handleBackButton() {
-    if (this.state.currentStep > -1 && this.state.isVideo === false) {
+    if (this.state.currentStep === 0 && this.state.isVideo === true) {
+      this.goBack();
+    }
+    if (this.state.currentStep > -1) {
       this.setState({currentStep: this.state.currentStep - 1});
     } else {
       this.goBack();
@@ -182,34 +124,73 @@ class AddItemPage extends BasePage {
   }
 
   getCurrentMode() {
-    switch(this.state.currentStep) {
+    switch (this.state.currentStep) {
       default:
         return 'view';
     }
   }
 
+  createLookItemForVideo(position) {
+    this.logEvent('AddItemScreen', {name: 'Marker add video'});
+    this.props.createLookItem(position).then(() => {
+      this.setState({mode: 'view'})
+    });
+  }
+
+  handleAddItem(position) {
+    this.logEvent('AddItemScreen', {name: 'Marker add'});
+    this.props.createLookItem(position).then((data) => {
+      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep})
+    });
+  }
+
+  handleNewItem() {
+    const locationX = w / 2;
+    const locationY = h / 2;
+    const left = locationX / w;
+    const top = locationY / h;
+    const position = {locationX: left, locationY: top};
+    this.props.createLookItem(position).then((data) => {
+      console.log('set New current item: ', data.payload.item)
+      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1})
+    });
+  }
+
+  handleOnDragEnd(position) {
+    this.props.setTagPosition(position);
+    this.props.updateLookItem();
+  }
+
   renderImageWithTags() {
-    const { items, image, itemId } = this.props;
+    const {items, image} = this.props;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags
-        itemId={itemId}
         mode={mode}
         items={items}
-        image={image}/>
+        image={image}
+        setCurrentItem={(item) => this.setCurrentItem(item)}
+        onMarkerCreate={this.handleAddItem.bind(this)}
+        onDragEnd={(position) => this.handleOnDragEnd(position)}
+        currStep={this.state.currentStep}
+        currItem={this.state.currItem}>
+        {this.renderActions()}
+      </ImageWithTags>
     );
   }
 
   renderVideoWithTags() {
-    const { fileLocalPath, itemId } = this.props;
+    const {fileLocalPath} = this.props;
+    console.log('fileLocalPath', fileLocalPath)
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
-        itemId={itemId}
+        items={this.props.items}
         mode={mode}
         image={fileLocalPath}
-        createLookItemForVideo={this.createLookItemForVideo.bind(this)}
-      />
+        createLookItemForVideo={this.handleAddItem.bind(this)}>
+        {this.renderActions()}
+      </VideoWithTags>
     );
   }
 
@@ -221,78 +202,52 @@ class AddItemPage extends BasePage {
 
   renderActions() {
     return (
-      <View style={{position: 'absolute', height: h, zIndex: 2}}>
-        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 70, height:h-70}}>
-          <StepTwoOccasions  onValid={this.continueAction.bind(this)}/>
-          <StepOneCategory onValid={this.continueAction.bind(this)}/>
-        </View>
-        <StepZeroBrand onValid={this.handleStepZeroValid.bind(this)}/>
+      <View>
+        {this.renderHeader()}
+        {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
       </View>
     )
   }
 
-  getAllowContinue() {
-    const { item } = this.props;
-    switch(this.state.currentStep) {
-      case -1:
-        return item !== null;
-      case 0:
-        return item && item.brand && item.category !== null ;
-      case 1:
-        return false;
-      default:
-        return true;
-    }
-  }
-
-  createLookItemForVideo(position) {
-    this.logEvent('AddItemScreen', { name: 'Marker add video' });
-    this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'view'})
-    });
+  renderThreeSteps() {
+    const {currItem} = this.state
+    return (
+      <View style={{height: h}}>
+        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 20, height: h - 70}}>
+          <StepTwoOccasions item={currItem} onValid={this.continueAction.bind(this)}/>
+          <StepOneCategory item={currItem} onValid={this.continueAction.bind(this)}/>
+        </View>
+        <StepZeroBrand item={currItem} onValid={this.handleStepZeroValid.bind(this)}/>
+      </View>
+    )
   }
 
   renderContent() {
-    if (this.state.currentStep === -1) {
-      const { mode, isVideo } = this.state;
-      return (
-        <StepMarker
-          mode={mode}
-          isVideo={isVideo}
-          />
-      );
-    }
-
     if (this.state.currentStep !== 1) {
       return (
         <View>
-            {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
-            {this.renderActions()}
+          {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
         </View>
       );
     }
-    return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
-  }
-
-  renderNext() {
     return (
-      <TouchableOpacity style={styles.nextBtnContainer} onPress={this.handleContinue}>
-        <Icon style={StyleSheet.flatten(styles.nextBtn)} name="ios-arrow-forward"/>
-      </TouchableOpacity>
-    )
+      <View>
+        {this.renderHeader()}
+        <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)}></StepThreePublish>
+      </View>);
   }
 
   renderHeader() {
-    const allowContinue = this.getAllowContinue();
-    const fgColor = (this.state.currentStep !== 2 ? '#F2F2F2' : '#000000');
     return (
-      <View style={styles.headerContainer}>
-        <Button transparent onPress={() => this.handleBackButton()} style={{width: 30, height: 30}}>
-          <Icon style={{ color: fgColor }} name="ios-arrow-back" />
-        </Button>
-        <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
-        {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
-      </View>
+      <UploadLookHeader
+        isVideo={this.state.isVideo}
+        currItem={this.state.currItem}
+        currentStep={this.state.currentStep}
+        items={this.props.items}
+        handleBackButton={this.handleBackButton.bind(this)}
+        handleContinue={this.handleContinue}
+        handleNewItem={this.handleNewItem.bind(this)}
+        setCurrentItem={(item) => this.setCurrentItem(item)}/>
     )
   }
 
@@ -300,13 +255,12 @@ class AddItemPage extends BasePage {
     return (
       <View>
         {this.renderContent()}
-        {this.renderHeader()}
       </View>
     );
   }
 }
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 function bindActions(dispatch) {
   return {
@@ -319,12 +273,9 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { itemId, lookId, image, items, localFilePath} = state.uploadLook;
+  const {lookId, image, items, localFilePath} = state.uploadLook;
   const isVideo = Utils.isVideo(image)
-  const item = itemId !== null ? _.find(items, x => x.id === itemId) : null;
   return {
-    item,
-    itemId,
     lookId,
     image,
     isVideo,

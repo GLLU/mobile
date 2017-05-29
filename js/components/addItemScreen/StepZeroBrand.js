@@ -75,30 +75,32 @@ class StepZeroBrand extends BaseComponent {
     }
   }
 
-  componentWillReceiveProps(props) {
-    if(true) {
-      if(this.props.selectedCategory && !props.brand && this.state.fadeAnimContentOnPress._value === 0) {
-        this.toggleBottomContainer()
-      }
+  componentWillReceiveProps(nextProps) {
+    const { item } = nextProps;
+    const selectedCategory =  item ? item.category : null
+    if(selectedCategory && !item.brand && this.state.fadeAnimContentOnPress._value === 0) {
+      this.toggleBottomContainer()
+    }
+    if(this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
+      this.toggleBottomContainer()
+    }
+    if(item.id !== this.props.item.id) {
+
       this.setState({
-        brandName: props.brand ? props.brand.name : null,
+        brandName: item.brand ? item.brand.name : null,
       });
 
-      if(this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
-        this.toggleBottomContainer()
-      }
-    } else {
-      this.setState({
-        brandName: props.brand ? props.brand.name : null,
-      });
+
     }
 
   }
 
   findOrCreateBrand(value, createNew) {
+    const data = typeof value === 'string' ? {value, itemId: this.props.item.id} : {...value, itemId: this.props.item.id}
     const brandName = typeof value === 'string' ? value : value.name;
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
-    f(value).then(() => {
+    console.log('data',data)
+    f(data).then(() => {
       console.log('brand added')
 
     }).catch(err => {
@@ -116,7 +118,7 @@ class StepZeroBrand extends BaseComponent {
   handleClearBrandName() {
     this.logEvent('UploadLookScreen', { name: 'Brand cleared' });
     this.setState({brandName: null}, () => {
-      this.props.removeBrandName();
+      this.props.removeBrandName(this.props.item.id);
     });
   }
 
@@ -154,8 +156,8 @@ class StepZeroBrand extends BaseComponent {
     }
   }
 
-  renderClearIcon() {
-    if (this.state.brandName) {
+  renderClearIcon(brand) {
+    if (brand) {
       return (
         <TouchableOpacity
           style={styles.iconCheckCompleteContainer}
@@ -169,11 +171,11 @@ class StepZeroBrand extends BaseComponent {
     return null;
   }
 
-  renderOpenButton() {
-    const btnColor = !this.props.brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+  renderOpenButton(brand) {
+    const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-        <View style={{ backgroundColor: btnColor, width: 50, height: 30, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center'}}>
           <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
         </View>
       </TouchableWithoutFeedback>
@@ -181,21 +183,22 @@ class StepZeroBrand extends BaseComponent {
   }
 
   render() {
-    const { brands, brand} = this.props;
-    const { brandName, modalVisible } = this.state;
-    const _brand = brandName ? brand : null;
-
+    const { brands, item, items} = this.props;
+    const { modalVisible } = this.state;
+    const currItem = _.find(items, listItem => listItem.id === item.id);
+    const brand = currItem ? currItem.brand : null;
+    const _brand = brand ? brand : null;
     return (
-      <View>
-        <View style={{position: 'absolute', bottom: 0 ,justifyContent: 'center', alignItems: 'center', flex: 1, alignSelf: 'center', width: w}}>
-          {this.renderOpenButton()}
-          <Animated.View style={{borderRadius: 10, paddingLeft: 25, paddingRight: 25, width: w-100, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
+      <View style={{position: 'absolute', height: h, bottom: 60}}>
+        <View style={{ width: w, flex: 1, justifyContent: 'flex-end' }}>
+          {this.renderOpenButton(brand)}
+          <Animated.View style={{borderRadius: 10, alignSelf: 'center', width: w-100, paddingLeft: 25, paddingRight: 25, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
             <Text style={styles.titleLabelInfo}>Brand Name</Text>
             <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
               <Text style={styles.input}>
-                {brandName}
+                {brand}
               </Text>
-              {this.renderClearIcon()}
+              {this.renderClearIcon(brand)}
             </TouchableOpacity>
           </Animated.View>
         </View>
@@ -220,16 +223,16 @@ function bindActions(dispatch) {
   return {
     createBrandName: (name) => dispatch(createBrandName(name)),
     addBrandName: (brand) => dispatch(addBrandName(brand)),
-    removeBrandName: () => dispatch(removeBrandName()),
+    removeBrandName: (itemId) => dispatch(removeBrandName(itemId)),
   };
 }
 
 const mapStateToProps = state => {
-  const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id === itemId);
+  const { items } = state.uploadLook;
+
   return {
-    brand: item ? item.brand : null,
-    selectedCategory: item ? item.category : null,
+    items
+
   };
 };
 

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Dimensions, View } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions, View, Platform } from 'react-native';
 import CategoryItem from './StripItem';
 import _ from 'lodash';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const ITEM_WIDTH = 80;
 
 const styles = StyleSheet.create({
@@ -41,7 +43,8 @@ class OccasionsStrip extends Component {
                 item={item}
                 itemWidth={ITEM_WIDTH}
                 selected={selected}
-                onPress={this._handleSelectOccasion.bind(this)}/>
+                onPress={this._handleSelectOccasion.bind(this)}
+                currItemId={this.props.currItemId}/>
       );
     });
   }
@@ -49,7 +52,7 @@ class OccasionsStrip extends Component {
   render() {
 
     return (
-      <View style={[styles.occasionsContainer]}>
+      <View style={{flex: 1}}>
         <ScrollView
             keyboardShouldPersistTaps='always'
             pagingEnabled={false}
