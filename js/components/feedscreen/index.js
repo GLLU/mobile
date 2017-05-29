@@ -8,7 +8,7 @@ import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
-import MyBodyType from '../myBodyType';
+import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
@@ -130,7 +130,7 @@ class FeedPage extends BasePage {
           <MainView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
-            <MyBodyType navigation = {this.props.navigation}/>
+            <BodyTypePicker navigateTo={this.navigateTo}/>
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
         </Content>
