@@ -246,7 +246,8 @@ class AddItemPage extends BasePage {
           items={this.props.items}
           handleBackButton={this.handleBackButton.bind(this)}
           handleContinue={this.handleContinue.bind(this)}
-          handleNewItem={this.handleNewItem.bind(this)}/>
+          handleNewItem={this.handleNewItem.bind(this)}
+          setCurrentItem={(item) => this.setCurrentItem(item)}/>
     )
   }
 

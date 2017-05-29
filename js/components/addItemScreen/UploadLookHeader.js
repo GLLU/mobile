@@ -119,7 +119,8 @@ class UploadLookHeader extends BaseComponent {
     if(currItem.brand) {
       title = 'For which Occasion?';
     }
-    if(currItem.occasions.length > 0) {
+    if(currItem.occasions && currItem.occasions.length > 0) {
+
       title = 'Edit or Continue';
     }
     return title;
@@ -171,7 +172,7 @@ class UploadLookHeader extends BaseComponent {
   renderItemCategorySmallIcon(item, isSelected) {
     const categoryIcon = isSelected ? item.category.icon.url_hover : item.category.icon.url;
     return(
-      <View style={{ flex: 1, padding: 2, selfAlign: 'center'}}>
+      <View style={{ flex: 1, padding: 2}}>
         <Image source={{uri: categoryIcon}} style={[{flex:1, width: 20, backgroundColor: 'transparent',
           resizeMode: 'contain',
           alignSelf: 'center',}]} />

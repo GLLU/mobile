@@ -52,7 +52,7 @@ class ItemDataLine extends Component {
             {/*<View style={{padding: 5, borderLeftWidth: 2, borderRightWidth: 2, borderColor: 'gray'}}>*/}
               {/*<Text style={styles.footerButtonText}>250$</Text>*/}
             {/*</View>*/}
-            <View style={{ padding: 5, borderColor: 'gray', marginLeft: 5,borderLeftWidth: 2, borderColor: 'gray'}}>
+            <View style={{ padding: 5, marginLeft: 5,borderLeftWidth: 2, borderColor: 'gray'}}>
               <TouchableOpacity onPress={() => this.handleOpenLink()}>
                 <Image source={bagItImage}
                        style={[styles.footerButtonIcon,{width: 25, height: 25}]}/>
