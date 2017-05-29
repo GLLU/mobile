@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { View, Text,StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
-  addItemType,
   loadOccasionTags,
   toggleOccasionTag
 } from '../../actions';
@@ -99,14 +98,13 @@ class StepTwoOccasions extends BaseComponent {
       React.PropTypes.object,
       React.PropTypes.bool,
     ]),
-    addItemType: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       fadeAnimContentOnPress: new Animated.Value(0),
-      selectedOccasions: this.props.itemOccasions
+      selectedOccasions: props.item.occasions ? props.item.occasions : []
     }
   }
 
@@ -116,9 +114,14 @@ class StepTwoOccasions extends BaseComponent {
     });
   }
 
-  componentWillReceiveProps(props) {
-      if(this.props.selectedCategory && props.brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
+  componentWillReceiveProps(nextProps) {
+    const selectedCategory = nextProps.item.category ? nextProps.item.category : false
+    const brand = nextProps.item ? nextProps.item.brand : null
+      if(selectedCategory && brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
         this.toggleBottomContainer()
+      }
+      if(nextProps.item.id !== this.props.item.id) {
+        this.setState({selectedOccasions: nextProps.item.occasions})
       }
   }
 
@@ -126,7 +129,7 @@ class StepTwoOccasions extends BaseComponent {
     this.logEvent('UploadLookScreen', { name: 'Category select', category: selectedOccasion.name });
     let { selectedOccasions } = this.state;
     let isSelected = _.find(selectedOccasions, Occasion => Occasion.id === selectedOccasion.id) ? true : false;
-    this.props.toggleOccasionTag(selectedOccasion, isSelected)
+    this.props.toggleOccasionTag(selectedOccasion, isSelected, this.props.item.id)
     if(isSelected) {
       selectedOccasions =  _.filter(selectedOccasions, function(occasion) { return occasion.id !== selectedOccasion.id; })
     } else {
@@ -172,13 +175,14 @@ class StepTwoOccasions extends BaseComponent {
     const { occasionTags } = this.props;
     const selectedOccasions = this.state.selectedOccasions;
     return(
-      <View style={{ flexDirection: 'row', height: h / 1.8,}}>
+      <View style={{ flexDirection: 'row', height: h / 1.8}}>
         <Animated.View style={{backgroundColor: 'rgba(32, 32, 32, 0.8)',  width: this.state.fadeAnimContentOnPress, borderRadius: 10}}>
           <Text numberOfLines={1} style={styles.titleLabelInfo}>Occasions</Text>
           <OccasionsStrip
             occasions={occasionTags}
             selectedOccasions={selectedOccasions}
-            onOccasionSelected={(cat) => this.selectOccasion(cat)}/>
+            onOccasionSelected={(cat) => this.selectOccasion(cat)}
+            currItemId={this.props.item.id}/>
         </Animated.View>
         {this.renderOpenButton()}
       </View>
@@ -188,21 +192,16 @@ class StepTwoOccasions extends BaseComponent {
 
 function bindActions(dispatch) {
   return {
-    addItemType: (type) => dispatch(addItemType(type)),
     loadOccasionTags: () => dispatch(loadOccasionTags()),
-    toggleOccasionTag: (tag, selected) => dispatch(toggleOccasionTag(tag, selected)),
+    toggleOccasionTag: (tag, selected, itemId) => dispatch(toggleOccasionTag(tag, selected, itemId)),
   };
 }
 
 const mapStateToProps = state => {
-  const { itemId, items } = state.uploadLook;
-  const item = _.find(items, item => item.id === itemId);
   return {
-    brand: item ? item.brand : null,
     categories: state.filters.categories,
-    selectedCategory: item.category ? item.category : false,
     occasionTags: state.filters.occasion_tags,
-    itemOccasions: item.occasions ? item.occasions : []
+
   };
 };
 

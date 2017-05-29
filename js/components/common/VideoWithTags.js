@@ -102,17 +102,20 @@ class VideoWithTags extends Component {
   }
 
   _handlePressWithoutPress () {
-    const locationX = 1;
-    const locationY = 1;
-    const { width, height } = this.getRenderingDimensions();
-    this._setupPanResponder(locationX, locationY);
+    if(this.props.items.length < 1) {
+      const locationX = 1;
+      const locationY = 1;
+      const { width, height } = this.getRenderingDimensions();
+      this._setupPanResponder(locationX, locationY);
 
-    // convert location into relative positions
-    const left = locationX / width;
-    const top = locationY / height;
-    this.setState({locationX: left, locationY: top}, () => {
-      this.props.createLookItemForVideo({locationX: left, locationY: top});
-    });
+      // convert location into relative positions
+      const left = locationX / width;
+      const top = locationY / height;
+      this.setState({locationX: left, locationY: top}, () => {
+        this.props.createLookItemForVideo({locationX: left, locationY: top});
+      });
+    }
+
   }
 
   normalizePosition(value) {
@@ -140,11 +143,16 @@ class VideoWithTags extends Component {
 
   render() {
     return (
+    <View style={{ flex: 1}}>
       <Video source={{uri: this.props.image}}
              resizeMode="contain"
              muted={false}
-             style={{width: w - 5, height: h, overflow: 'hidden'}}
+             style={{position: 'absolute', height: h, width: w}}
              repeat={true}/>
+
+      {this.props.children}
+    </View>
+
     );
   }
 }

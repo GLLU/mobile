@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import BaseComponent from '../common/base/BaseComponent';
 import SearchBar from './SearchBar';
 
-const homeIcon = require('../../../images/icons/blackLogo.png');
+const homeIcon = require('../../../images/logo/logo-tiny-black.png');
 
 const styles = StyleSheet.create({
   navigationBar: {

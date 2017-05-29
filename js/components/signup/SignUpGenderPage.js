@@ -43,7 +43,7 @@ class SignUpGenderPage extends BasePage {
                 <TouchableOpacity onPress={this.handleGenderPress.bind(this, 'female')}>
                   <View style={styles.genderBtnContainer}>
                     <Image
-                      source={require('../../../images/female1.png')}
+                      source={require('../../../images/genders/female.png')}
                       style={styles.genderImage}
                     />
                     <Text style={styles.genderLabel}>Female</Text>
@@ -52,7 +52,7 @@ class SignUpGenderPage extends BasePage {
                 <TouchableOpacity onPress={this.handleGenderPress.bind(this, 'male')}>
                   <View style={styles.genderBtnContainer}>
                     <Image
-                      source={require('../../../images/male1.png')}
+                      source={require('../../../images/genders/male.png')}
                       style={styles.genderImage}
                     />
                     <Text style={styles.genderLabel}>Male</Text>

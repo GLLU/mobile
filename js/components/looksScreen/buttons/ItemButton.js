@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import FooterButton from './FooterButton'
 import { connect } from 'react-redux';
 
-const bubbleIcon = require('../../../../images/bubble.png');
+const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
 //get the category icon
 class ItemButton extends Component {
   constructor(props) {

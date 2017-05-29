@@ -34,7 +34,7 @@ export default class HorizontalCarousel extends Component {
         pageWidth: width*.45,
         sneak: 10,
         noItemsText: "Sorry, there are currently \n no items available",
-        transitionDelay: 100
+        transitionDelay: 50
     };
 
     componentWillMount() {
@@ -62,23 +62,23 @@ export default class HorizontalCarousel extends Component {
         this.calculateGap(props);
     }
 
+    /*
+     ------------
+     |            |
+     |-   ----   -|
+     | | |    | | |
+     | | |    | | |
+     | | |    | | |
+     |-   ----   -|
+     |^-- sneak   |
+     |         ^--- gap
+     ------------
+     */
     calculateGap(props) {
         let { sneak, pageWidth } = props;
         if (pageWidth > width) {
             throw new Error("invalid pageWith");
         }
-        /*
-         ------------
-        |            |
-        |-   ----   -|
-        | | |    | | |
-        | | |    | | |
-        | | |    | | |
-        |-   ----   -|
-        |^-- sneak   |
-        |         ^--- gap
-         ------------
-        */
         let gap = (width - (2 * sneak) - pageWidth) / 2;
         this.setState({gap: gap});
     }

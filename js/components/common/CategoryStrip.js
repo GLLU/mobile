@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Dimensions, LayoutAnimation,View } from 'react-native';
+import { ScrollView, StyleSheet, Dimensions, LayoutAnimation, View, Platform } from 'react-native';
 import CategoryItem from './StripItem';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const ITEM_WIDTH = 80;
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
 const styles = StyleSheet.create({
   categoriesContainer: {
@@ -24,7 +26,8 @@ class CategoryStrip extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: this.props.selectedCategory ? this.props.selectedCategory : null
+      selected: this.props.selectedCategory ? this.props.selectedCategory : null,
+      currItemId: this.props.currItemId
     }
   }
 
@@ -43,19 +46,26 @@ class CategoryStrip extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.currItemId !== this.state.currItemId) {
+      this.setState({currItemId: nextProps.currItemId, selected: nextProps.selectedCategory})
+    }
+  }
+
   _drawCategoryItems() {
     const { categories } = this.props;
     let selected;
-    return categories.map((item, index) => {
-       selected = this.state.selected && this.state.selected.id === item.id ? true : false;
+    return categories.map((category, index) => {
+
+       selected = this.state.selected && this.state.selected.id === category.id ? true : false;
       return (
         <CategoryItem
                 key={index}
-                item={item}
+                item={category}
                 itemWidth={ITEM_WIDTH}
                 selected={selected}
                 onPress={this._handleSelectCategory.bind(this)}
-                handleCategorySelected={(item) => this._handleCategorySelected(item)}
+                handleCategorySelected={(category) => this._handleCategorySelected(category)}
         />
       );
     });
@@ -64,7 +74,7 @@ class CategoryStrip extends Component {
   render() {
 
     return (
-      <View style={[styles.categoriesContainer]}>
+      <View style={{flex: 1}}>
         <ScrollView
             keyboardShouldPersistTaps='always'
             pagingEnabled={false}

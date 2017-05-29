@@ -44,7 +44,10 @@ class BrandNameInput extends Component {
   }
 
   handleFindOrCreateBrand(value, createNew) {
+    console.log('vlue111',value)
+    console.log('createNew',createNew)
     const query = createNew ? value : value.name;
+    console.log('query',query);
     this.setState({query}, () => {
       this.props.findOrCreateBrand(value, createNew);
     });
@@ -75,7 +78,7 @@ class BrandNameInput extends Component {
   render() {
     const { query, data } = this.state;
     const { brand } = this.props;
-    const selected = !!(brand && query && query.toLowerCase() === brand.name.toLowerCase());
+    const selected = !!(brand && query && query.toLowerCase() === brand.toLowerCase());
     return (
       <View style={{paddingBottom: 20, paddingTop: 20, flex: 1}}>
         <Autocomplete

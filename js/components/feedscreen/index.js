@@ -8,7 +8,7 @@ import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import Modal from 'react-native-modalbox';
-import MyBodyType from '../myBodyType';
+import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
 import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
@@ -104,33 +104,28 @@ class FeedPage extends BasePage {
 
   render() {
 
-    const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};
     let contentStyle = { flex: 1 };
     if (this.state.contentHeight) {
       _.merge(contentStyle, { height: this.state.contentHeight });
     }
     return (
       <Gllu.Container style={StyleSheet.flatten(styles.container)} onLayout={e => this._handleLayout(e)}>
-        {!this.props.modalShowing ?
-          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
-              <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
-              {!this.state.searchStatus ?
-                <NavigationBarView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
-                :
-                null
-              }
-          </View>
-        :
-          null
-        }
         <StyleProvider style={getTheme(glluTheme)}>
         <Content
             scrollEnabled={false}
             contentContainerStyle={contentStyle}>
+          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
+            <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+            {!this.state.searchStatus ?
+              <NavigationBarView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+              :
+              null
+            }
+          </View>
           <MainView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
-          <Modal isOpen={this.props.modalShowing} style={modalStyle}
+          <Modal isOpen={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
             position={"top"}>
-            <MyBodyType navigation = {this.props.navigation}/>
+            <BodyTypePicker onPick={()=>this.navigateTo('myBodyMeasure')}/>
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
         </Content>

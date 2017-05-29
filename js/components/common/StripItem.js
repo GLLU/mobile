@@ -41,16 +41,17 @@ class CategoryItem extends Component {
     super(props);
 
     this.state = {
-      selected: props.selected
+      selected: props.selected,
+      currItemId: this.props.currItemId
     }
 
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.item.kind === 'category') {
+    if(nextProps.item.kind === 'category' || this.state.currItemId !== nextProps.currItemId) {
       this.setState({
-        selected: nextProps.selected
+        selected: nextProps.selected,
+        currItemId: nextProps.currItemId
       })
     }
 
@@ -82,7 +83,7 @@ class CategoryItem extends Component {
     const iconWidth = itemWidth * 5 / 8;
     const iconHeight = iconWidth * 150 / 170;
     return (
-      <View style={styles.categoryItem}>
+      <View >
               <Text style={styles.categoryItemTitle}>{item.name}</Text>
               <Button
                 transparent

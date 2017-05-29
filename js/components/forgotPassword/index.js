@@ -2,7 +2,10 @@
 import React, { Component } from 'react';
 import BasePage from '../common/base/BasePage';
 import { Image, TouchableWithoutFeedback,Text, View, StyleSheet } from 'react-native';
-import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
+import {
+  Container, Header, Button, Title, Content, Icon, InputGroup, Input, StyleProvider,
+  getTheme
+} from 'native-base';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
 
@@ -11,9 +14,9 @@ import { emailRule } from '../../validators';
 import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
+import ResetMyPasswordButton from "./ResetMyPasswordButton";
 
-const background = require('../../../images/background.png');
-const backgroundShadow = require('../../../images/background-shadow.png');
+const background = require('../../../images/backgrounds/forgot-password-background.png');
 
 
 class forgotPasswordPage extends BasePage {
@@ -82,26 +85,25 @@ class forgotPasswordPage extends BasePage {
         <Grid>
           <Row style={styles.formItem}>
             <TouchableWithoutFeedback onPress={() => this.focusOnInput('email')}>
+              <View>
               <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
+              </View>
             </TouchableWithoutFeedback>
-            <InputGroup style={styles.formGroup}>
-              <Input ref='email'  style={styles.formInput} onChangeText={(email) => this.validateEmailInput(email)}/>
+            <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+              <Input ref='email'  style={StyleSheet.flatten(styles.formInput)} onChangeText={(email) => this.validateEmailInput(email)}/>
             </InputGroup>
           </Row>
         </Grid>
-        <Button color='lightgrey' style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.forgotPasswordEmail()}>
-          <Text>Reset My Password</Text>
-        </Button>
+        <ResetMyPasswordButton style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.forgotPasswordEmail()}/>
       </Content>
     );
   }
 
   render() {
     return (
-      <Container theme={glluTheme}>
+      <Container>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
-          <Image source={backgroundShadow} style={styles.bgShadow} />
             <View style={{height:50}}>
               <View style={styles.header} >
                 <Button transparent onPress={this.goBack}>
@@ -110,7 +112,9 @@ class forgotPasswordPage extends BasePage {
                 <Text style={styles.headerTitle}>Forgot Password</Text>
               </View>
             </View>
+            <StyleProvider style={getTheme(glluTheme)}>
             {this.state.emailWasSent?this.renderEmailSent():this.renderBeforeEmailSent()}
+            </StyleProvider>
           </Image>
         </View>
       </Container>

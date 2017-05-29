@@ -15,7 +15,7 @@ class MyBodyMeasure extends BasePage {
   constructor(props) {
     super(props);
     this.handleSaveUserSizePress=this.handleSaveUserSizePress.bind(this);
-    this._saveUserSize=this._saveUserSize.bind(this);
+    this.saveUserSize=this.saveUserSize.bind(this);
   }
 
   static propTypes = {
@@ -25,7 +25,7 @@ class MyBodyMeasure extends BasePage {
     saveUserSize: React.PropTypes.func,
   }
 
-  _saveUserSize() {
+  saveUserSize() {
     const {user_size, currentBodyType} = this.props;
     const data = {
       body_type: currentBodyType.body_type,
@@ -35,12 +35,14 @@ class MyBodyMeasure extends BasePage {
       height: user_size.height,
       measurements_scale: user_size.measurements_scale
     };
-    this.props.saveUserSize(data);
+    return this.props.saveUserSize(data);
   }
 
   handleSaveUserSizePress() {
     this.logEvent('MyBodyMeasureScreen', {name: 'Lets GLLU clicks'});
-    this._saveUserSize().then(()=>this.resetTo('feedscreen'));
+    this.saveUserSize()
+      .then(()=>this.resetTo('feedscreen'))
+      .catch(err=>console.log(err));
   }
 
   render() {
