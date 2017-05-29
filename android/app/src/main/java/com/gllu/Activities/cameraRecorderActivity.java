@@ -18,6 +18,8 @@ public class cameraRecorderActivity extends Activity {
     public final static String MAX_LENGTH = "MAX_LENGTH";
     public final static String VIDEO_PATH = "VIDEO_PATH";
 
+    private boolean mAllowVideo;
+
     /**
      * Called when the activity is first created.
      */
@@ -27,9 +29,12 @@ public class cameraRecorderActivity extends Activity {
 
         Intent intent = getIntent();
         int mMaxLength = intent.getIntExtra(MAX_LENGTH, 15);
-        new MaterialCamera(this)
+
+        mAllowVideo = intent.getBooleanExtra("ALLOW_VIDEO", true);
+
+        new MaterialCamera(this, mAllowVideo)
                 .defaultToFrontFacing(true)
-                .videoPreferredAspect(16f/9f)
+                .videoPreferredAspect(16f / 9f)
                 .autoSubmit(true)
                 .allowRetry(false)
                 .qualityProfile(MaterialCamera.QUALITY_480P)
@@ -96,16 +101,13 @@ public class cameraRecorderActivity extends Activity {
                 setResult(RESULT_OK, intent);
                 finish();
 
-            }
-            else if(resultCode == 1234){
+            } else if (resultCode == 1234) {
                 setResult(resultCode, data);
                 finish();
-            }
-            else if(resultCode == 1001){
+            } else if (resultCode == 1001) {
                 setResult(resultCode, data);
                 finish();
-            }
-            else if(resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 finish();
             }
         }

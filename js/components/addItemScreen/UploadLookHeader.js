@@ -4,6 +4,7 @@ import { Button, Icon} from 'native-base';
 import {
   createBrandName,
 } from '../../actions';
+import IconPlus from 'react-native-vector-icons/EvilIcons';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'ios' ? 20 : 10,
     height: 30,
     flexDirection: 'row',
-    zIndex: 2,
     width: w,
     justifyContent: 'space-around'
   },
@@ -53,6 +53,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#05d7b2'
   },
+  plusIcon: {
+    fontSize: 14,
+    color: 'green'
+  }
 });
 
 
@@ -133,8 +137,8 @@ class UploadLookHeader extends BaseComponent {
     if(this.props.isVideo) {
       return (
         <View style={{flexDirection: 'row', marginTop: 10, flex: 1, alignSelf: 'center'}}>
-          <TouchableOpacity onPress={this.props.handleNewItem} style={{height: 30, width: 30,marginTop: 18, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center', borderRadius: 3, marginRight: 3 }}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>T</Text>
+          <TouchableOpacity onPress={this.props.handleNewItem} style={{height: 30, width: 30,marginTop: 18, backgroundColor: 'rgba(32, 32, 32, 0.8)', alignItems: 'center', alignSelf: 'center', borderRadius: 3, marginRight: 3 }}>
+            <Icon style={{ color: '#F2F2F2'}} name="ios-add" />
           </TouchableOpacity>
           {this.renderVideoItemsBtns()}
         </View>
@@ -167,7 +171,7 @@ class UploadLookHeader extends BaseComponent {
   renderItemCategorySmallIcon(item, isSelected) {
     const categoryIcon = isSelected ? item.category.icon.url_hover : item.category.icon.url;
     return(
-      <View style={{ flex: 1, padding: 2}}>
+      <View style={{ flex: 1, padding: 2, selfAlign: 'center'}}>
         <Image source={{uri: categoryIcon}} style={[{flex:1, width: 20, backgroundColor: 'transparent',
           resizeMode: 'contain',
           alignSelf: 'center',}]} />
@@ -179,7 +183,7 @@ class UploadLookHeader extends BaseComponent {
     const allowContinue = this.getAllowContinue();
     const fgColor = '#F2F2F2';
     return (
-      <View style={{height: 60}}>
+      <View style={{height: 60, width: w}}>
         <View style={styles.headerContainer}>
           <TouchableOpacity transparent onPress={() => this.props.handleBackButton()} style={{width: 30, height: 30}}>
             <Icon style={{ color: '#F2F2F2' }} name="ios-arrow-back" />

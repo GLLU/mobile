@@ -11,6 +11,7 @@ import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
 import CircleProfileImage from './CircleProfileImage';
 import InformationTextIcon from '../common/informationTextIcon';
+import {openCamera} from '../../lib/camera/CameraUtils'
 
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
@@ -49,16 +50,23 @@ class EditProfile extends BasePage {
 
   _changeUserAvatar() {
     this.logEvent('EditProfileScreen', { name: 'Change avatar click' });
-    ImagePicker.openPicker({
-      includeBase64: true,
-      cropping: false,
-    }).then(image => {
-      const data = {
-        image,
-        id: this.props.user.id
-      }
-      this.props.changeUserAvatar(data);
-    });
+    this.openCamera()
+  }
+
+  async openCamera() {
+    this.logEvent('Signup', { name: 'Open Camera click' });
+    let image = {};
+    image.path = await openCamera(false);
+    image.type = 'multipart/form-data'
+    const data = {
+      image,
+      id: this.props.user.id
+    }
+    this.props.changeUserAvatar(data);
+  }
+
+  focusOnInput(refAttr) {
+    this.refs[refAttr]._textInput.focus();
   }
 
   _handleAboutMeTextInput(text) {
@@ -75,7 +83,7 @@ class EditProfile extends BasePage {
         <View style={{position: 'absolute', top: 0}}>
           <Image source={profileBackground} style={styles.editProfileBg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7, height: 150}]} />
-          <EditProfileHeader cancelEdit={this.goBack} save={() => this._saveChanges()} />
+            <EditProfileHeader cancelEdit={this.goBack} save={() => this._saveChanges()} />
           </Image>
         </View>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>

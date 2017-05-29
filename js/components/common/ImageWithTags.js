@@ -64,6 +64,8 @@ class ImageWithTags extends Component {
   }
 
   componentDidMount() {
+    console.log('this.props.items.length ',this.props.items.length)
+    if(this.props.items.length < 1) {
       const locationX = w/2;
       const locationY = h/2;
       const left = locationX / w;
@@ -71,6 +73,8 @@ class ImageWithTags extends Component {
       this.setState({locationX: left, locationY: top}, () => {
         this.props.onMarkerCreate({locationX: left, locationY: top});
       });
+    }
+
   }
 
   renderTags() {

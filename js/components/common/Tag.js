@@ -3,6 +3,8 @@ import { Text,StyleSheet, Dimensions, TouchableOpacity, Image, UIManager, Layout
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const whiteMarker = require('../../../images/markers/marker-top-right.png');
+const whiteMarkerWithBorder = require('../../../images/markers/marker-red.png');
+const greenMarkerWithBorder = require('../../../images/markers/marker-green-red.png');
 const greenMarker = require('../../../images/markers/marker-green-1.png');
 
 const TAG_WIDTH = 30;
@@ -81,6 +83,14 @@ class Tag extends Component {
     this._setupPanResponder(locationX, locationY);
   }
 
+  getCurrentItemStatus(item) {
+    return item.brand && item.category !== null ? greenMarker : greenMarkerWithBorder
+  }
+
+  otherItemStatus(item) {
+    return item.brand && item.category !== null ? whiteMarker : whiteMarkerWithBorder
+  }
+
   render() {
     const { item, currItemId } = this.props
     const { width, height } = this.getRenderingDimensions();
@@ -89,7 +99,7 @@ class Tag extends Component {
     const left = parseInt(x * width);
     const top = parseInt(y * height);
     const layout = this._pan.getLayout();
-    const markerImage = currItemId === item.id ? greenMarker : whiteMarker;
+    const markerImage = currItemId === item.id ? this.getCurrentItemStatus(item) : this.otherItemStatus(item);
     const isDone = item.brand && item.category !== null
     if(this.props.dragable) {
       return (
@@ -102,7 +112,6 @@ class Tag extends Component {
         </Animated.View>
       );
     } else {
-      console.log('itemmmm1',item)
       return (
 
         <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>

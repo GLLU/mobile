@@ -51,7 +51,7 @@ class AddItemPage extends BasePage {
   }
 
   setCurrentItem(item) {
-    console.log('itemmmm2',item)
+    console.log('setting curreny item: ',item)
     this.setState({currItem: item})
   }
 
@@ -114,7 +114,10 @@ class AddItemPage extends BasePage {
   }
 
   handleBackButton() {
-    if (this.state.currentStep > -1 && this.state.isVideo === false) {
+    if(this.state.currentStep === 0 && this.state.isVideo === true) {
+      this.goBack();
+    }
+    if (this.state.currentStep > -1) {
       this.setState({currentStep: this.state.currentStep - 1});
     } else {
       this.goBack();
@@ -149,6 +152,7 @@ class AddItemPage extends BasePage {
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
+      console.log('set New current item: ',data.payload.item)
       this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1})
     });
   }
@@ -182,6 +186,7 @@ class AddItemPage extends BasePage {
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
+        items={this.props.items}
         mode={mode}
         image={fileLocalPath}
         createLookItemForVideo={this.handleAddItem.bind(this)}>
@@ -226,7 +231,7 @@ class AddItemPage extends BasePage {
         </View>
       );
     }
-    return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}/>;
+    return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}>{this.renderHeader()}</StepThreePublish>;
   }
 
 
