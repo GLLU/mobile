@@ -15,15 +15,19 @@ export function completeEdit(sizeInfo) {
 }
 export function saveUserSize(data) {
   return (dispatch, getState) => {
-    return new Promise((resolve)=>{
+    return new Promise((resolve,reject)=>{
     const user_id = getState().user.id;
     dispatch(rest.actions.size.post({user_id}, { body: JSON.stringify(data)}, (err, data) => {
       if (!err && data) {
         dispatch(completeEdit(data.user_size));
+        dispatch(hideBodyTypeModal());
+        resolve();
+      }
+      else{
+        reject(err)
       }
     }));
-    dispatch(hideBodyTypeModal());
-    resolve();
+
     })
   };
 }

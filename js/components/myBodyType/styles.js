@@ -17,7 +17,6 @@ export default StyleSheet.create({
     color: fontColor
   },
   container: {
-    marginTop: 50,
     height: h - h/2.5  ,
     paddingTop: 5,
     paddingHorizontal: 10,
@@ -41,15 +40,20 @@ export default StyleSheet.create({
     height: 120,
   },
   header: {
-    justifyContent: 'center',
-    paddingLeft: (Platform.OS === 'ios' ? 30 : 0)
+    backgroundColor: 'transparent',
+    flex:1,
+    flexDirection:'row',
+    alignItems: 'center'
   },
-  headerTitleContainer: {
-    borderBottomWidth: 1.5,
-    borderColor: 'lightgrey',
-    paddingBottom: 10,
-    width: 200,
-    paddingLeft: 0
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#000',
+    textAlign: 'left'
+  },
+  headerArrow: {
+    color: '#000'
   },
   continueButton: {
     marginTop: 30,
@@ -57,7 +61,7 @@ export default StyleSheet.create({
   },
   imagePlaceHolder: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   arrowBorder: {
     alignSelf:'center',
