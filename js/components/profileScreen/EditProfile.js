@@ -31,6 +31,7 @@ class EditProfile extends BasePage {
   }
   constructor(props) {
     super(props);
+    this.closeModal=this.closeModal.bind(this);
     this.state = {
       about_me: this.props.user.about_me ? this.props.user.about_me : '',
       modalShowing:false
@@ -80,6 +81,8 @@ class EditProfile extends BasePage {
     this.logEvent('EditProfileScreen', { name: 'Tell us about you' });
   }
 
+  closeModal=()=>this.setState({modalShowing:false});
+
   render() {
     return (
       <View style={{backgroundColor: '#E9E9EF'}}>
@@ -112,7 +115,7 @@ class EditProfile extends BasePage {
         </ScrollView>
         <Modal isOpen={this.state.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
                position={"top"}>
-          <BodyTypePicker onPick={()=>this.setState({modalShowing:false})}/>
+          <BodyTypePicker goBack={this.closeModal} onPick={this.closeModal}/>
         </Modal>
       </View>
     )

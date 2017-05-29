@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import BasePage from '../common/base/BasePage';
-import {Container, Header, Content, Button, Icon, Title } from 'native-base';
+import {Container, Header, Content, Button, Icon, Title,StyleProvider, getTheme } from 'native-base';
 import {Text, View, StyleSheet} from 'react-native';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
@@ -17,6 +17,7 @@ import * as _ from "lodash";
 class BodyTypePicker extends BasePage {
   constructor(props) {
     super(props);
+    this.renderBackButton=this.renderBackButton.bind(this);
     this.state = {
       currBodyType: '',
       currDescription: ''
@@ -30,7 +31,8 @@ class BodyTypePicker extends BasePage {
     bodyTypes: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     currentIndex: React.PropTypes.number,
-    gender: React.PropTypes.string
+    gender: React.PropTypes.string,
+    goBack: React.PropTypes.func
   }
 
   static defaultProps = {
@@ -64,14 +66,25 @@ class BodyTypePicker extends BasePage {
     this.props.onPick();
   }
 
+  renderBackButton(){
+    return(
+      <Button transparent onPress={this.props.goBack} style={{borderWidth: 0,flex:1, alignSelf:'center'}}>
+        <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
+      </Button>
+    );
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>
-        <Header style={StyleSheet.flatten(styles.header)}>
-          <View style={styles.headerTitleContainer}>
-            <Title style={{fontFamily: 'PlayfairDisplay-Regular', alignSelf: 'center'}}>My Body Shape</Title>
+        <View style={{height:60,backgroundColor:'#f0f0f0'}}>
+          <View style={styles.header} >
+            {this.props.goBack!==undefined? this.renderBackButton():<View name='spacer' style={{flex:1}}/>}
+            <Text style={[styles.headerTitle,{flex:2,textAlign:'center'}]}>My Body Shape</Text>
+            <View name='spacer' style={{flex:1}}/>
           </View>
-        </Header>
+        </View>
+        <StyleProvider style={getTheme(glluTheme)}>
         <Content>
           <View style={styles.container}>
             <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
@@ -92,6 +105,7 @@ class BodyTypePicker extends BasePage {
             <Text style={{color:'white'}}>Continue</Text>
           </Button>
         </Content>
+        </StyleProvider>
       </Container>
     )
   }
