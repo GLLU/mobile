@@ -5,11 +5,7 @@ import styles from '../styles'
 import { showInfo } from '../../../actions'
 import { connect } from 'react-redux'
 
-const buyItImage = require('../../../../images/buttonsbar/buyItButton-noprice.png');
-const bagItImage = require('../../../../images/buttonsbar/bagItImage.png');
-
-const likeImage = require('../../../../images/buttonsbar/like.png');
-const likeClickedImage = require('../../../../images/buttonsbar/likeClicked.png');
+const bagItImage = require('../../../../images/icons/bag-white.png');
 
 class ItemDataLine extends Component {
   constructor(props) {

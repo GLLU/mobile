@@ -17,7 +17,6 @@ import { forgotPassword } from '../../actions/user';
 import ResetMyPasswordButton from "./ResetMyPasswordButton";
 
 const background = require('../../../images/backgrounds/forgot-password-background.png');
-const backgroundShadow = require('../../../images/shadows/background-shadow.png');
 
 
 class forgotPasswordPage extends BasePage {
@@ -105,7 +104,6 @@ class forgotPasswordPage extends BasePage {
       <Container>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
-          <Image source={backgroundShadow} style={styles.bgShadow} />
             <View style={{height:50}}>
               <View style={styles.header} >
                 <Button transparent onPress={this.goBack}>

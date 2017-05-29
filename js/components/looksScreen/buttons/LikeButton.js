@@ -3,8 +3,8 @@ import { View, Image, TouchableHighlight, StyleSheet, Text } from 'react-native'
 import * as _ from 'lodash'
 import styles from '../styles'
 
-const likeImage = require('../../../../images/buttonsbar/like.png');
-const likeClickedImage = require('../../../../images/buttonsbar/likeClicked.png');
+const likeImage = require('../../../../images/icons/like.png');
+const likeClickedImage = require('../../../../images/icons/liked.png');
 
 export default class LikeButton extends Component {
   constructor(props) {

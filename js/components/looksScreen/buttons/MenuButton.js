@@ -3,7 +3,7 @@ import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import * as _ from 'lodash'
 import FooterButton from './FooterButton'
 
-const menuIcon = require('../../../../images/buttonsbar/dots-three-horizontal.png');
+const menuIcon = require('../../../../images/icons/three-dots.horizontal-white.png');
 
 export default class MenuButton extends Component {
   constructor(props) {

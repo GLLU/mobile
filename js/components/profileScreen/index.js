@@ -12,8 +12,8 @@ import _ from 'lodash';
 import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
-const toFeedScreen = require('../../../images/icons/toFeedScreen.png');
-const toSettings = require('../../../images/icons/um.png');
+const toFeedScreen = require('../../../images/icons/feed.png');
+const toSettings = require('../../../images/icons/settings.png');
 const LOADER_HEIGHT = 30;
 
 class ProfileScreen extends BasePage {

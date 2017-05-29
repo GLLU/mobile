@@ -4,8 +4,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
 import BaseComponent from './base/BaseComponent';
 import { noop } from 'lodash'
-const galleryIcon = require('../../../images/icons/original-gallery.png')
-const cameraIcon = require('../../../images/icons/original-photo-camera.png')
+const galleryIcon = require('../../../images/icons/gallery.png')
+const cameraIcon = require('../../../images/icons/camera.png')
 const deviceWidth = Dimensions.get('window').width;
 const wModal = deviceWidth / 1.5;
 const hModal = wModal / 2;

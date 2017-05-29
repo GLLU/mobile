@@ -17,7 +17,7 @@ import {
   PRIVACY_URL,
 } from '../../constants';
 
-const logo = require('../../../images/logo/logo.png');
+const logo = require('../../../images/logo/logo-big-full.png');
 
 const background = require('../../../images/backgrounds/bags.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');

@@ -3,7 +3,7 @@ import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import * as _ from 'lodash'
 import FooterButton from './FooterButton'
 
-const infoIcon = require('../../../../images/buttonsbar/infoIcon.png');
+const infoIcon = require('../../../../images/icons/info-i-white.png');
 
 export default class InformationButton extends Component {
   constructor(props) {
