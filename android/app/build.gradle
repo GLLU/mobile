@@ -1,12 +1,11 @@
 apply plugin: "com.android.application"
 
-/*
 project.ext.envConfigFiles = [
     debug: ".env.staging",
     release: ".env.production",
     staging: ".env.staging",
 ]
-*/
+
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
@@ -122,6 +121,9 @@ android {
             keyAlias MYAPP_RELEASE_KEY_ALIAS
             keyPassword MYAPP_RELEASE_KEY_PASSWORD
         }
+    }
+    lintOptions {
+        disable 'MissingTranslation'
     }
     buildTypes {
         release {
