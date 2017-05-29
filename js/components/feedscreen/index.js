@@ -111,26 +111,22 @@ class FeedPage extends BasePage {
     }
     return (
       <Gllu.Container style={StyleSheet.flatten(styles.container)} onLayout={e => this._handleLayout(e)}>
-        {!this.props.modalShowing ?
-          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
-              <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
-              {!this.state.searchStatus ?
-                <NavigationBarView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
-                :
-                null
-              }
-          </View>
-        :
-          null
-        }
         <StyleProvider style={getTheme(glluTheme)}>
         <Content
             scrollEnabled={false}
             contentContainerStyle={contentStyle}>
+          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
+            <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+            {!this.state.searchStatus ?
+              <NavigationBarView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+              :
+              null
+            }
+          </View>
           <MainView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal isOpen={this.props.modalShowing} style={modalStyle}
             position={"top"}>
-            <BodyTypePicker navigateTo={this.navigateTo}/>
+            <BodyTypePicker onPick={()=>this.navigateTo('myBodyMeasure')}/>
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
         </Content>
