@@ -197,17 +197,5 @@ class UploadLookHeader extends BaseComponent {
     )
   }
 }
-import { connect } from 'react-redux';
-function bindActions(dispatch) {
-  return {
-    createBrandName: (name) => dispatch(createBrandName(name)),
 
-  };
-}
-
-const mapStateToProps = state => {
-  return {
-  };
-};
-
-export default connect(mapStateToProps, bindActions)(UploadLookHeader);
+export default UploadLookHeader;

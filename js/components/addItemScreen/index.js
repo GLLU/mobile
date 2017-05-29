@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import BasePage from '../common/base/BasePage';
-import { StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity, Image } from 'react-native';
-import { setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition } from '../../actions';
+import {StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
+import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition} from '../../actions';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
 import StepTwoOccasions from './StepTwoOccasions';
 import StepThreePublish from './StepThreePublish';
 import UploadLookHeader from './UploadLookHeader';
-import { LOOK_STATES } from '../../constants';
+import {LOOK_STATES} from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
 import Utils from '../../utils';
@@ -18,7 +18,6 @@ const w = Dimensions.get('window').width;
 import VideoWithTags from '../common/VideoWithTags';
 
 const IMAGE_VIEW_PADDING = 80;
-
 
 
 class AddItemPage extends BasePage {
@@ -35,7 +34,7 @@ class AddItemPage extends BasePage {
 
   constructor(props) {
     super(props);
-    this.handleContinue=this.handleContinue.bind(this);
+    this.handleContinue = this.handleContinue.bind(this);
     this.state = {
       isVideo: this.props.isVideo,
       currentStep: -1,
@@ -51,17 +50,17 @@ class AddItemPage extends BasePage {
   }
 
   setCurrentItem(item) {
-    console.log('setting curreny item: ',item)
+    console.log('setting curreny item: ', item)
     this.setState({currItem: item})
   }
 
   componentDidMount() {
-    console.log('image from redux',this.props.image)
+    console.log('image from redux', this.props.image)
   }
 
 
   _handleLayoutImage(e) {
-    const { width } = e.nativeEvent.layout;
+    const {width} = e.nativeEvent.layout;
     const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
     this.setState({
       imageWidth: w
@@ -69,10 +68,10 @@ class AddItemPage extends BasePage {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
-        this.handleContinue();
+    if (nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
+      this.handleContinue();
     }
-    if(nextProps.items !== this.props.items){
+    if (nextProps.items !== this.props.items) {
       const item = _.find(nextProps.items, item => item.id === this.state.currItem.id);
       this.setState({currItem: item})
     }
@@ -81,9 +80,9 @@ class AddItemPage extends BasePage {
   }
 
   handleContinue() {
-    const { currentStep } = this.state;
+    const {currentStep} = this.state;
     if (currentStep < 1) {
-      this.setState({currentStep: this.state.currentStep + 1});  
+      this.setState({currentStep: this.state.currentStep + 1});
     }
   }
 
@@ -103,7 +102,7 @@ class AddItemPage extends BasePage {
   }
 
   publishAction() {
-    this.logEvent('UploadLookScreen', { name: 'Publish click' });
+    this.logEvent('UploadLookScreen', {name: 'Publish click'});
     this.props.publishLookItem().then(response => {
       if (this.props.state === LOOK_STATES.PUBLISHED) {
         this.goBack()
@@ -114,7 +113,7 @@ class AddItemPage extends BasePage {
   }
 
   handleBackButton() {
-    if(this.state.currentStep === 0 && this.state.isVideo === true) {
+    if (this.state.currentStep === 0 && this.state.isVideo === true) {
       this.goBack();
     }
     if (this.state.currentStep > -1) {
@@ -125,34 +124,34 @@ class AddItemPage extends BasePage {
   }
 
   getCurrentMode() {
-    switch(this.state.currentStep) {
+    switch (this.state.currentStep) {
       default:
         return 'view';
     }
   }
 
   createLookItemForVideo(position) {
-    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.logEvent('AddItemScreen', {name: 'Marker add video'});
     this.props.createLookItem(position).then(() => {
       this.setState({mode: 'view'})
     });
   }
 
   handleAddItem(position) {
-    this.logEvent('AddItemScreen', { name: 'Marker add' });
+    this.logEvent('AddItemScreen', {name: 'Marker add'});
     this.props.createLookItem(position).then((data) => {
       this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep})
     });
   }
 
   handleNewItem() {
-    const locationX = w/2;
-    const locationY = h/2;
+    const locationX = w / 2;
+    const locationY = h / 2;
     const left = locationX / w;
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
-      console.log('set New current item: ',data.payload.item)
+      console.log('set New current item: ', data.payload.item)
       this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1})
     });
   }
@@ -163,7 +162,7 @@ class AddItemPage extends BasePage {
   }
 
   renderImageWithTags() {
-    const { items, image } = this.props;
+    const {items, image} = this.props;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags
@@ -181,8 +180,8 @@ class AddItemPage extends BasePage {
   }
 
   renderVideoWithTags() {
-    const { fileLocalPath } = this.props;
-    console.log('fileLocalPath',fileLocalPath)
+    const {fileLocalPath} = this.props;
+    console.log('fileLocalPath', fileLocalPath)
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
@@ -202,7 +201,7 @@ class AddItemPage extends BasePage {
   }
 
   renderActions() {
-    return(
+    return (
       <View>
         {this.renderHeader()}
         {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
@@ -211,11 +210,11 @@ class AddItemPage extends BasePage {
   }
 
   renderThreeSteps() {
-    const { currItem } = this.state
+    const {currItem} = this.state
     return (
-      <View style={{ height: h}}>
-        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 20, height:h-70}}>
-          <StepTwoOccasions item={currItem}  onValid={this.continueAction.bind(this)}/>
+      <View style={{height: h}}>
+        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 20, height: h - 70}}>
+          <StepTwoOccasions item={currItem} onValid={this.continueAction.bind(this)}/>
           <StepOneCategory item={currItem} onValid={this.continueAction.bind(this)}/>
         </View>
         <StepZeroBrand item={currItem} onValid={this.handleStepZeroValid.bind(this)}/>
@@ -227,27 +226,28 @@ class AddItemPage extends BasePage {
     if (this.state.currentStep !== 1) {
       return (
         <View>
-            {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
+          {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
         </View>
       );
     }
-    return <StepThreePublish key={2} publishItem={this.publishAction.bind(this)}>{this.renderHeader()}</StepThreePublish>;
+    return (
+      <View>
+        {this.renderHeader()}
+        <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)}></StepThreePublish>
+      </View>);
   }
-
-
-
 
   renderHeader() {
     return (
-        <UploadLookHeader
-          isVideo={this.state.isVideo}
-          currItem={this.state.currItem}
-          currentStep={this.state.currentStep}
-          items={this.props.items}
-          handleBackButton={this.handleBackButton.bind(this)}
-          handleContinue={this.handleContinue.bind(this)}
-          handleNewItem={this.handleNewItem.bind(this)}
-          setCurrentItem={(item) => this.setCurrentItem(item)}/>
+      <UploadLookHeader
+        isVideo={this.state.isVideo}
+        currItem={this.state.currItem}
+        currentStep={this.state.currentStep}
+        items={this.props.items}
+        handleBackButton={this.handleBackButton.bind(this)}
+        handleContinue={this.handleContinue}
+        handleNewItem={this.handleNewItem.bind(this)}
+        setCurrentItem={(item) => this.setCurrentItem(item)}/>
     )
   }
 
@@ -260,7 +260,7 @@ class AddItemPage extends BasePage {
   }
 }
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 function bindActions(dispatch) {
   return {
@@ -273,7 +273,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { lookId, image, items, localFilePath} = state.uploadLook;
+  const {lookId, image, items, localFilePath} = state.uploadLook;
   const isVideo = Utils.isVideo(image)
   return {
     lookId,

@@ -143,12 +143,10 @@ class StepThreePublish extends BaseComponent {
 
   constructor(props) {
     super(props);
-    const isVideo = this.props.image.search(".mp4") > -1
     this.state = {
       images:['', '', ''],
       video: '',
       videoUrl: '',
-      isVideo,
       location: 'us',
       trustLevel: '0',
       confirm: false,
@@ -159,33 +157,6 @@ class StepThreePublish extends BaseComponent {
     }
 
     this.urlDialogShown = false;
-  }
-
-  addPhoto(number) {
-    ImagePicker.openPicker({
-      includeBase64: true,
-      cropping: false
-    }).then(image => {
-      var path = image.path;
-      var Extension = path.substring(path.lastIndexOf('.')+1).toLowerCase();
-      if (Extension == "gif" || Extension == "png" || Extension == "bmp" || Extension == "jpeg" || Extension == "jpg") {
-        this.props.addPhotosVideo(image);
-      }
-    });
-  }
-
-  addVideo() {
-    ImagePicker.openPicker({
-      cropping: false
-    }).then(video => {
-      var path = video.path;
-      var Extension = path.substring(path.lastIndexOf('.')+1).toLowerCase();
-      if (Extension == "mp4" || Extension == "avi" || Extension == "flv" || Extension == "mov" || Extension == "webm") {
-        console.log(`${path} will upload and get thumbnail via api`);
-        this.setState({videoUrl: path, video: ''});
-        this.props.addPhotosVideo(this.state.images, path);
-      }
-    });
   }
 
   updateSelectValue(key, value) {
@@ -245,31 +216,6 @@ class StepThreePublish extends BaseComponent {
     this.setState({urlOverlayVisible: false}, () => {
       this.props.publishItem();
     });
-  }
-
-  _renderSelections(){
-    const checkBoxIcon = this.state.confirm ? checkboxCheckedIcon : checkboxUncheckIcon;
-    return (
-        <View style={{height: 150, margin: 5}}>
-            {/*
-            <Text style={[styles.titleLabelInfo, {color: '#333333'}]}>Improve your sales experience</Text>
-            <Location location={this.state.location} updateSelectValue={this.updateSelectValue.bind(this)} />
-            <TrustLevel trustLevel={this.state.trustLevel} updateSelectValue={this.updateSelectValue.bind(this)} />
-          */}
-            <Grid>
-              <Col size={15}>
-                <Button transparent onPress={() => this.setState({confirm: !this.state.confirm})} style={styles.fakeCheckbox}>
-                  <Image source={checkBoxIcon} style={[styles.normalIconImage, {width: 25, height: 25}]} />
-                </Button>
-              </Col>
-              <Col size={85}>
-                <Text adjustsFontSizeToFit={true} numberOfLines={8} style={styles.confirmText}>
-                  {'You will now become a "Glluer Presenter" while your exact measurements will still be hiddden. People that will view this item. Will see a % value of matching between their measurements and yours.'}
-                </Text>
-              </Col>
-            </Grid>
-        </View>
-    )
   }
 
   handleImagePress() {
@@ -361,13 +307,6 @@ class StepThreePublish extends BaseComponent {
     return null;
   }
 
-  createLookItemForVideo(position) {
-    this.logEvent('AddItemScreen', { name: 'Marker add video' });
-    this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'view'})
-    });
-  }
-
   renderFirstRowWithImage(image) {
     return (
       <Row style={[styles.row, { flexDirection: 'row' }]}>
@@ -414,8 +353,9 @@ class StepThreePublish extends BaseComponent {
   }
 
   renderBrandsUrl() {
+
     const { items } = this.props
-    return items.map((item, index) => {
+    return _.map(items, (item, index) => {
       let url;
       if (item.url) {
         url = item.url;
@@ -425,7 +365,6 @@ class StepThreePublish extends BaseComponent {
       return (
       <View key={index} style={{flexDirection: 'row'}}>
           <TextInput
-
             ref={ref => this.urlText = ref}
             underlineColorAndroid='transparent'
             autoCapitalize='none'
@@ -448,7 +387,7 @@ class StepThreePublish extends BaseComponent {
 
   renderItemTags() {
     const { items } = this.props
-    return items.map((item, index) => {
+    return _.map(items, (item, index) => {
       return (
       <View key={index} style={{flexDirection: 'row'}}>
         <TagInput
@@ -469,10 +408,9 @@ class StepThreePublish extends BaseComponent {
   }
 
   render() {
-    const { image, tags } = this.props;
+    const { image } = this.props;
     return(
     <View>
-      {this.props.children}
       <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
         <Grid>
           {this.props.isVideo ? this.renderFirstRowWithOutImage() : this.renderFirstRowWithImage(image)}
@@ -509,32 +447,17 @@ function bindActions(dispatch) {
     addUrl: (url, itemId) => dispatch(addUrl(url, itemId)),
     addLocation: (location) => dispatch(addLocation(location)),
     addTrustLevel: (number) => dispatch(addTrustLevel(number)),
-    addPhotosVideo: (photos, video) => dispatch(addPhotosVideo(photos, video)),
     addItemTag: (name, itemId) => dispatch(addItemTag(name, itemId)),
     removeItemTag: (name, itemId) => dispatch(removeItemTag(name, itemId)),
   };
 }
 
 const mapStateToProps = state => {
-  const {itemId, items, image } = state.uploadLook;
-  console.log(state.uploadLook)
-  let brands = []
-  const item = _.find(items, item => item.id == itemId);
-  let url = null;
-  if (item) {
-    if (item.url) {
-      url = item.url;
-    } else {
-      url = item.brand ? item.brand.url : null;
-    }
-  }
+  const { image } = state.uploadLook;
   const isVideo = Utils.isVideo(image)
   return {
-    ...state.uploadLook,
-    tags: item ? item.tags : [],
-    brandUrl: item && item.brand ? item.brand.url : null,
-    url,
-    isVideo
+    isVideo,
+    image
   }
 };
 
