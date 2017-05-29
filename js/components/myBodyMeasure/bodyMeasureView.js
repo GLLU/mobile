@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import { View, Text, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
@@ -32,12 +32,17 @@ class BodyMeasureView extends BaseComponent {
   static propTypes = {
     gender: React.PropTypes.string,
     bodyType: React.PropTypes.object,
+    onBodyTypePress:React.PropTypes.func,
     // redux
     sizeList: React.PropTypes.object,
     sizeTypes: React.PropTypes.array,
     sliderMinValue: React.PropTypes.number,
     sliderMaxValue: React.PropTypes.number,
     completeEdit: React.PropTypes.func,
+  }
+
+  static defaultProps = {
+    onBodyTypePress:_.noop
   }
 
   componentDidMount() {
@@ -133,8 +138,10 @@ class BodyMeasureView extends BaseComponent {
             <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
           </View>
           <View style={myStyles.bodyTypeImageContainer}>
+            <TouchableWithoutFeedback onPress={this.props.onBodyTypePress}>
             <Image style={myStyles.bodyTypeImage}
                source={this.props.bodyType.imageUrl} resizeMode={'contain'}/>
+            </TouchableWithoutFeedback>
           </View>
         </Col>
         <Col style={myStyles.sizeListContainer}>

@@ -104,7 +104,6 @@ class FeedPage extends BasePage {
 
   render() {
 
-    const modalStyle = {justifyContent: 'flex-start', alignItems: 'center'};
     let contentStyle = { flex: 1 };
     if (this.state.contentHeight) {
       _.merge(contentStyle, { height: this.state.contentHeight });
@@ -124,7 +123,7 @@ class FeedPage extends BasePage {
             }
           </View>
           <MainView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
-          <Modal isOpen={this.props.modalShowing} style={modalStyle}
+          <Modal isOpen={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
             position={"top"}>
             <BodyTypePicker onPick={()=>this.navigateTo('myBodyMeasure')}/>
           </Modal>

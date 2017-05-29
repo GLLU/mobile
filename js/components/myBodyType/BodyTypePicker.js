@@ -26,6 +26,7 @@ class BodyTypePicker extends BasePage {
   static propTypes = {
     changeBodyType: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
+    onPick: React.PropTypes.func,
     bodyTypes: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
     currentIndex: React.PropTypes.number,
@@ -33,7 +34,8 @@ class BodyTypePicker extends BasePage {
   }
 
   static defaultProps = {
-    navigateTo: _.noop
+    navigateTo: _.noop,
+    onPick: _.noop,
   }
 
   _bodyTypeChange(index) {
@@ -59,7 +61,7 @@ class BodyTypePicker extends BasePage {
 
   handleContinuePress() {
     this.logEvent('ChooseBodyTypeScreen', { name: 'Continue click' });
-    this.props.navigateTo('myBodyMeasure');
+    this.props.onPick();
   }
 
   render() {

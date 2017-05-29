@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import BasePage from '../common/base/BasePage';
-import { Image, Animated, InteractionManager, TouchableOpacity,View, Text, TextInput, ScrollView, FormData} from 'react-native';
+import {
+  Image, Animated, InteractionManager, TouchableOpacity, View, Text, TextInput, ScrollView, FormData } from 'react-native';
 import styles from './styles';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,9 +13,10 @@ import EditProfileName from './EditProfileName';
 import CircleProfileImage from './CircleProfileImage';
 import InformationTextIcon from '../common/informationTextIcon';
 import {openCamera} from '../../lib/camera/CameraUtils'
-
+import Modal from 'react-native-modalbox';
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
+import BodyTypePicker from "../myBodyType/BodyTypePicker";
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 
@@ -31,6 +33,7 @@ class EditProfile extends BasePage {
     super(props);
     this.state = {
       about_me: this.props.user.about_me ? this.props.user.about_me : '',
+      modalShowing:false
     }
   }
 
@@ -101,13 +104,16 @@ class EditProfile extends BasePage {
             <Text style={styles.editBodyTypeTitle}>EDIT BODY SHAPE</Text>
           </View>
           <View style={styles.bodyMeasureContainer}>
-            <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size}/>
+            <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size} onBodyTypePress={()=>this.setState({modalShowing:true})}/>
           </View>
           <View style={styles.privateInfoContainer}>
             <InformationTextIcon text={'This information is private to you only'} />
           </View>
         </ScrollView>
-
+        <Modal isOpen={this.state.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
+               position={"top"}>
+          <BodyTypePicker onPick={()=>this.setState({modalShowing:false})}/>
+        </Modal>
       </View>
     )
   }
