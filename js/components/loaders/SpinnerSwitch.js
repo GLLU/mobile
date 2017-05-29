@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { View,Image, StyleSheet } from 'react-native';
 import Spinner from './Spinner';
 import styles from './styles';
-const backgroundShadow = require('../../../images/background-shadow.png');
+const backgroundShadow = require('../../../images/shadows/background-shadow.png');
 
 export default class SpinnerSwitch extends Component {
 

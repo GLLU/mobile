@@ -3,7 +3,7 @@ import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import * as _ from 'lodash'
 import FooterButton from './FooterButton'
 
-const bubbleIcon = require('../../../../images/bubble.png');
+const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
 //get the category icon
 export default class CommentsButton extends Component {
   constructor(props) {

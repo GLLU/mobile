@@ -125,7 +125,7 @@ class FinishLookPage extends BasePage {
             </H2>
             <Thumbnail
               size={150}
-              source={require('../../../images/badge.png')} />
+              source={require('../../../images/upload/badge.png')} />
             <H2
               style={StyleSheet.flatten(styles.text)}
             >

@@ -15,7 +15,7 @@ import LetsGLLUButton from "./LetsGLLUButton";
 import {openCamera} from '../../lib/camera/CameraUtils'
 
 const background = require('../../../images/backgrounds/hands.png');
-const backgroundShadow = require('../../../images/background-shadow-70p.png');
+const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
 
 import {
   TERMS_URL,

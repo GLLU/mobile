@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Image, StyleSheet} from 'react-native';
-const iconInfomation = require('../../../images/icons/information.png');
+const iconInfomation = require('../../../images/icons/info-circle-black.png');
 
 export default class InformationTextIcon extends Component {
   static propTypes = {
