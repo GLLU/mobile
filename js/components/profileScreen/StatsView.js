@@ -35,13 +35,19 @@ class StatsView extends Component {
     this.props.onFollowersPress({type: 'followers', count: this.props.followers});
   }
 
+  renderBalance() {
+    return (
+      <TouchableOpacity style={styles.statsTotal} onPress={() => this.props.handleBalancePress()}>
+        <Text style={[styles.text, styles.number]}>$0</Text>
+        <Text style={styles.text}>Balance</Text>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     return (
       <View style={styles.statsContainer}>
-        <TouchableOpacity style={styles.statsTotal} onPress={() => this.props.handleBalancePress()}>
-          <Text style={[styles.text, styles.number]}>$0</Text>
-          <Text style={styles.text}>Balance</Text>
-        </TouchableOpacity>
+        {this.props.isMyProfile ? this.renderBalance() : null}
         <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowingPress.bind(this)}>
           <Text style={[styles.text, styles.number]}>{this.props.following}</Text>
           <Text style={styles.text}>Following</Text>

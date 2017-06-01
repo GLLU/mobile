@@ -135,6 +135,7 @@ class ProfileScreen extends BasePage {
             onFollowersPress={this.handleFollowersPress.bind(this)}
             onFollowingPress={this.handleFollowingPress.bind(this)}
             handleBalancePress = {this.handleBalancePress.bind(this)}
+            isMyProfile={this.state.isMyProfile}
           />
         </View>
       )
