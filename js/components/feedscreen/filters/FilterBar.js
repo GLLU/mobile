@@ -77,8 +77,8 @@ const filters = [
     id: 'body_type',
     name: 'Body',
     icon: {
-      url: require('../../../../images/filters/filter-body.png'),
-      url_hover: require('../../../../images/filters/filter-body-active.png')
+      url: require('../../../../images/filters/new-filter-body.png'),
+      url_hover: require('../../../../images/filters/new-filter-body-active.png')
     },
     renderType: 'radio-multi'
   },
