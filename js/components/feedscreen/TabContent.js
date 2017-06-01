@@ -167,6 +167,10 @@ class TabContent extends BaseComponent {
           if (this.state.isLoading) {
             return <Spinner color='rgb(230,230,230)'/>;
           }
+          if(this.props.flatLooks.length > 2) {
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+
+          }
           return null;
         })()}
       </View>);
