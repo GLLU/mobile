@@ -47,14 +47,6 @@ const bodyTypeList = {
   ],
   male: [
     {
-      name: 'Trapezoid',
-      body_type: 'trapezoid',
-      description: 'Your chest and shoulders are relatively broad with a taper down to the waist. The legs are commonly lean or defined.',
-      imageUrl: require('../../images/bodytypes/male/trapezoid.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/male-trapezoid-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/male-trapezoid.png')
-    },
-    {
       name: 'Inverted Triangle',
       body_type: 'invertedTriangle',
       description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
