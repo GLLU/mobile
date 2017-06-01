@@ -93,7 +93,7 @@ class SearchBar extends BaseComponent {
       <View style={styles.searchBar}>
         <TextInput
           style={styles.searchInput}
-          placeholder='( e.g. Yellow Shirt ZARA )'
+          placeholder='Search'
           underlineColorAndroid='transparent'
           onChangeText={(text) => this.handleTextInput(text)}
           value={this.state.text}/>
