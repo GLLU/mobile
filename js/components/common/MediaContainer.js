@@ -37,9 +37,9 @@ class MediaContainer extends BaseComponent {
     this.state = {
       currLookPosition: -1,
       shouldPlay: false,
-      isMuted: true
+      isMuted: true,
+      backgroundColor:Utils.getLoaderImage()
     }
-    this.bgColor = Utils.getLoaderImage()
   }
 
   _handleItemPress(item) {
@@ -84,7 +84,7 @@ class MediaContainer extends BaseComponent {
           <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                  resizeMode={'stretch'}
                  muted={this.state.isMuted}
-                 style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden'}}
+                 style={{width: video.width, height: video.height, overflow:'hidden'}}
                  repeat={true}
                  paused={false}
           />
@@ -92,11 +92,11 @@ class MediaContainer extends BaseComponent {
       )
     } else {
       return (
-        <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.bgColor}}>
+        <View style={{height: video.height,width: video.width, overflow: 'hidden', borderRadius: 10, backgroundColor: this.state.backgroundColor}}>
           <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                  resizeMode={'stretch'}
                  muted={this.state.isMuted}
-                 style={{width: video.width, height: video.height, backgroundColor: this.bgColor, overflow:'hidden', borderRadius: 10}}
+                 style={{width: video.width, height: video.height, overflow:'hidden', borderRadius: 10}}
                  repeat={true}
                  paused={false}
           />
@@ -117,7 +117,7 @@ class MediaContainer extends BaseComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <Image source={{uri: look.uri}} style={{width: look.width-6, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} >
+          <Image source={{uri: look.uri}} style={{width: look.width-6, height: look.height, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} >
             <View style={{bottom: 15, zIndex: 1}}>
               <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
             </View>
@@ -127,7 +127,7 @@ class MediaContainer extends BaseComponent {
     } else {
       return (
         <View>
-          <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.bgColor, borderRadius: 10}} />
+          <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} />
           <MediaBorderPatch media={look} >
             <View style={{bottom: 15, zIndex: 1}}>
               <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
