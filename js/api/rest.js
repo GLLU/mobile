@@ -28,6 +28,10 @@ export default reduxApi({
     url: "/invitations_finder?token=:token",
     crud: true,
   },
+  invitation_request: {
+    url: "/invitation_requests",
+    crud: true,
+  },
   password_recovery: {
     url: "/password_recovery",
     crud: true,

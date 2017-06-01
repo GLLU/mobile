@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BasePage from '../common/base/BasePage';
-import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform, Text, Image } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { addNewLook } from '../../actions';
@@ -10,6 +10,7 @@ import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import {openCamera} from '../../lib/camera/CameraUtils'
+import finishPhoto from '../../../images/upload/finish-upload-look.png'
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +74,7 @@ class FinishLookPage extends BasePage {
   }
 
   handleGlluAgainPress() {
-    this.logEvent('CongratsScreen', { name: 'Lets GLLU Again click' });
+    this.logEvent('CongratsScreen', { name: 'Lets inFash Again click' });
     this.openCamera()
   }
 
@@ -113,22 +114,14 @@ class FinishLookPage extends BasePage {
       <Container theme={glluTheme}>
         <Content scrollEnabled={false} style={{backgroundColor: '#F2F2F2'}} contentContainerStyle={{justifyContent: 'space-between', alignItems: 'center', flex: 1, paddingVertical: 20}}>
           <View style={{flex: 6, justifyContent: 'space-between', alignItems: 'center', padding: 20}}>
-            <H2
-              style={StyleSheet.flatten(styles.text)}
-            >
+            <H2 style={StyleSheet.flatten(styles.text)}>
               YEAHHH!
             </H2>
-            <H2
-              style={StyleSheet.flatten(styles.text)}
-            >
+            <H2 style={StyleSheet.flatten(styles.text)}>
               YOUR POST IS LIVE
             </H2>
-            <Thumbnail
-              size={150}
-              source={require('../../../images/upload/badge.png')} />
-            <H2
-              style={StyleSheet.flatten(styles.text)}
-            >
+            <Image source={finishPhoto} resizeMode='contain' style={{height:200}}/>
+            <H2 style={StyleSheet.flatten(styles.text)}>
               SHARE YOUR STYLE WITH OTHER FRIENDS
             </H2>
           </View>

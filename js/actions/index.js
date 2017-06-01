@@ -1,6 +1,6 @@
 import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
 import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
-import { showParisBottomMesasage, hideParisBottomMessage } from './paris';
+import { showParisBottomMessage, hideParisBottomMessage } from './paris';
 import { loadCategories, loadBrands, loadItemSizes, loadOccasionTags } from './filters';
 import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
@@ -48,7 +48,8 @@ import { setUser,
   invitationCheckExistance,
   createInvitationCode,
   clearTutorial,
-  hideTutorial
+  hideTutorial,
+  requestInvitation
   } from './user';
 
 export {
@@ -56,11 +57,12 @@ export {
   updateEntity,
   readEndpoint,
   deleteEntity,
+  requestInvitation,
   loadCategories,
   loadOccasionTags,
   loadBrands,
   loadItemSizes,
-  showParisBottomMesasage,
+  showParisBottomMessage,
   hideParisBottomMessage,
   setMinMax,
   completeEdit,

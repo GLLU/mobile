@@ -39,7 +39,7 @@ class MyBodyMeasure extends BasePage {
   }
 
   handleSaveUserSizePress() {
-    this.logEvent('MyBodyMeasureScreen', {name: 'Lets GLLU clicks'});
+    this.logEvent('MyBodyMeasureScreen', {name: 'Lets inFash clicks'});
     this.saveUserSize()
       .then(()=>this.resetTo('feedscreen'))
       .catch(err=>console.log(err));
@@ -68,7 +68,7 @@ class MyBodyMeasure extends BasePage {
             </View>
             <Button block style={StyleSheet.flatten(styles.continueButton)}
                     onPress={this.handleSaveUserSizePress.bind(this)}>
-              <Text style={{color:'white'}}>All Set. Let's GLLU!</Text>
+              <Text style={{color:'white'}}>All Set. Let's inFash!</Text>
             </Button>
           </Content>
         </StyleProvider>

@@ -5,7 +5,7 @@ import { Image, TouchableWithoutFeedback, Linking, StyleSheet, View, Text, Touch
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
-import { invitationCheckExistance } from '../../actions/user';
+import { invitationCheckExistance, requestInvitation } from '../../actions/user';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 import {
@@ -16,7 +16,7 @@ import { emailRule, passwordRule } from '../../validators';
 import SplashButton from "./SplashButton";
 import {NavigationActions} from "react-navigation";
 
-const logo = require('../../../images/logo/logo-big-full.png');
+const logo = require('../../../images/logo/inFashLogo.png');
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 
 class ActivationCodeScreen extends BasePage {
@@ -31,12 +31,16 @@ class ActivationCodeScreen extends BasePage {
     super(props);
     this.handleSigninPress=this.handleSigninPress.bind(this);
     this.onInvitationComplete=this.onInvitationComplete.bind(this);
+    this.onInvitationRequestComplete=this.onInvitationRequestComplete.bind(this);
       this.state = {
           renderEnterCode: true,
           email: '',
           code: '',
           emailValid: 'times',
-          allValid: false
+          name: '',
+          allValid: false,
+          correctEmail: false,
+          renderThanksYou: false
       };
   }
 
@@ -87,6 +91,25 @@ class ActivationCodeScreen extends BasePage {
     return this.props.invitationCheckExistance(this.state.code)
       .then(this.onInvitationComplete)
       .catch((err)=>console.log(err));
+  }
+
+  handleRequestCodePress() {
+
+    const { name, email, emailValid } = this.state
+    if(emailValid === 'check') {
+      this.logEvent('ActivationScreen', { name: 'Request Code click' });
+      const data = {name, email}
+      return this.props.requestInvitation(data)
+        .then(this.onInvitationRequestComplete)
+        .catch((err)=>console.log(err));
+    } else {
+      this.setState({correctEmail: true})
+    }
+
+  }
+
+  onInvitationRequestComplete() {
+    this.setState({renderThanksYou: true})
   }
 
   onInvitationComplete() {
@@ -154,33 +177,51 @@ class ActivationCodeScreen extends BasePage {
     this.setState({renderEnterCode: false})
   }
 
-  _renderGetCode() {
-
+  renderThanksYou() {
     return (
-      <View style={{  justifyContent: 'center' }}>
-        <View>
-          <Grid>
-            <Row style={[styles.formItem, styles.formItemGetCode]}>
-              <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
-                <Input style={StyleSheet.flatten(styles.formInputGetCode)} placeholder="Name" placeholderTextColor="white" ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
-              </InputGroup>
-            </Row>
-            <Row style={[styles.formItem, styles.formItemGetCode]}>
-              <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
-                <Input style={StyleSheet.flatten(styles.formInputGetCode)} placeholder="Email" ref='email' keyboardType={'email-address'} placeholderTextColor="white" onChangeText={(email) => this.validateEmailInput(email)}/>
-              </InputGroup>
-            </Row>
-          </Grid>
-          <SplashButton style={[styles.formBtn, styles.validationPassed]} label='Ask for Code' onPress={()=>console.log(`asking for code (not yet implemented)`)}/>
-          <View style={styles.centerBox}>
-            <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
-            <TouchableOpacity onPress={this.renderEnterCode.bind(this)}>
-              <Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text>
-            </TouchableOpacity>
-          </View>
+    <View style={{position: 'absolute', top: 0}}>
+      <View style={styles.logoContainer}>
+        <Image source={logo} style={styles.logo} />
+      </View>
+      <View style={{marginHorizontal: 50, marginTop: 10}}>
+        <Text style={{textAlign: 'center', color: 'white'}}>Thanks for applying, we'll process the request and keep in touch soon</Text>
+      </View>
+    </View>
+
+    )
+  }
+
+  _renderGetCode() {
+if(this.state.renderThanksYou) {
+  return this.renderThanksYou()
+} else {
+  return (
+    <View style={{  justifyContent: 'center' }}>
+      <View>
+        <Grid>
+          <Row style={[styles.formItem, styles.formItemGetCode]}>
+            <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+              <Input style={StyleSheet.flatten(styles.formInputGetCode)} placeholder="Name" placeholderTextColor="white" ref='name'  onChangeText={(name) => this.validateTextInput(name, 'name')}/>
+            </InputGroup>
+          </Row>
+          <Row style={[styles.formItem, this.state.correctEmail ? StyleSheet.flatten(styles.formItemGetCodeCorrect) : styles.formItemGetCode]}>
+            <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
+              <Input style={StyleSheet.flatten(styles.formInputGetCode)} placeholder="Email" ref='email' keyboardType={'email-address'} placeholderTextColor="white" onChangeText={(email) => this.validateEmailInput(email)}/>
+            </InputGroup>
+          </Row>
+        </Grid>
+        <SplashButton style={[styles.formBtn, styles.validationPassed]} label='Ask for Code' onPress={()=> this.handleRequestCodePress()}/>
+        <View style={styles.centerBox}>
+          <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
+          <TouchableOpacity onPress={this.renderEnterCode.bind(this)}>
+            <Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    )
+    </View>
+  )
+}
+
   }
 
   renderError() {
@@ -211,7 +252,7 @@ class ActivationCodeScreen extends BasePage {
               { this.state.renderEnterCode ? this._renderEnterCode() : this._renderGetCode() }
             </Content>
             <View style={styles.bottomContainerContent}>
-              <Text style={styles.text}>By signing-up I agree to gllu's </Text>
+              <Text style={styles.text}>By signing-up I agree to inFash </Text>
               <Text style={styles.link} onPress={this.handleTermPress.bind(this)}>Terms</Text>
               <Text style={styles.text}> and </Text>
               <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
@@ -226,6 +267,7 @@ class ActivationCodeScreen extends BasePage {
 function bindAction(dispatch) {
   return {
       invitationCheckExistance: (code, continueTo) => dispatch(invitationCheckExistance(code, continueTo)),
+      requestInvitation: (data) => dispatch(requestInvitation(data)),
   };
 }
 
