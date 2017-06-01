@@ -44,7 +44,7 @@ class AddItemPage extends BasePage {
       mode: props.mode,
       allowContinue: false,
       currMode: 'tagging',
-      currItem: {id: -1}
+      currItem: props.navigation.state.params.mode === "edit" ? { ...props.items[0]} : {id: -1}
     };
 
   }
@@ -151,7 +151,6 @@ class AddItemPage extends BasePage {
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
-      console.log('set New current item: ', data.payload.item)
       this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1})
     });
   }
