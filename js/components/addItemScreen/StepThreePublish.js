@@ -362,7 +362,7 @@ class StepThreePublish extends BaseComponent {
             autoCapitalize='none'
             keyboardType='url'
             style={styles.textInput}
-            placeholder='http://www.gllu.com'
+            placeholder='http://www.infash.com'
             onChangeText={text => this.updateSelectValue('url', text)}
             onEndEditing={(event) => this.handleUrlEndEditing(event, item.id)}
             value={url}/>
