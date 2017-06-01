@@ -1,4 +1,4 @@
-package com.gllu.Activities;
+package com.infash.Activities;
 
 import android.app.Activity;
 import android.content.Intent;

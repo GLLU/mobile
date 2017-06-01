@@ -1,4 +1,4 @@
-package com.gllu;
+package com.infash;
 
 import android.content.Intent;
 import com.facebook.CallbackManager;

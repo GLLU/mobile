@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gllu"
+    package="com.infash"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -59,7 +59,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" />
         <activity
-            android:name="com.gllu.Activities.TrimmerActivity"
+            android:name="com.infash.Activities.TrimmerActivity"
             android:screenOrientation="portrait" android:theme="@style/AppTheme2"/> <!-- optional (needed if default theme has no action bar) -->
             android:theme="@style/AppTheme2" /> <!-- optional (needed if default theme has no action bar) -->
 

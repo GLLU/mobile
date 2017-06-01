@@ -1,4 +1,4 @@
-package com.gllu.utils;
+package com.infash.utils;
 
 /**
  * Created by martin on 25/04/2017.

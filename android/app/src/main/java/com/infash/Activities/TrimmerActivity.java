@@ -1,4 +1,4 @@
-package com.gllu.Activities;
+package com.infash.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.gllu.R;
+import com.infash.R;
 
 import life.knowledge4.videotrimmer.K4LVideoTrimmer;
 import life.knowledge4.videotrimmer.interfaces.OnK4LVideoListener;

@@ -1,4 +1,4 @@
-package com.gllu;
+package com.infash;
 
 
 import com.facebook.CallbackManager;
@@ -10,7 +10,7 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.gllu.customPackages.CameraReactPackage;
+import com.infash.customPackages.CameraReactPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;

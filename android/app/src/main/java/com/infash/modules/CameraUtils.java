@@ -1,4 +1,4 @@
-package com.gllu.modules;
+package com.infash.modules;
 
 /**
  * Created by martin on 25/04/2017.
@@ -16,9 +16,9 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.gllu.Activities.TrimmerActivity;
-import com.gllu.Activities.cameraRecorderActivity;
-import com.gllu.utils.FileUtils;
+import com.infash.Activities.TrimmerActivity;
+import com.infash.Activities.cameraRecorderActivity;
+import com.infash.utils.FileUtils;
 import com.theartofdev.edmodo.cropper2.CropImage;
 import com.theartofdev.edmodo.cropper2.CropImageView;
 

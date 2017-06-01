@@ -1,4 +1,4 @@
-package com.gllu.customPackages;
+package com.infash.customPackages;
 
 /**
  * Created by martin on 25/04/2017.
@@ -8,7 +8,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.gllu.modules.CameraUtils;
+import com.infash.modules.CameraUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
