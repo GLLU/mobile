@@ -211,7 +211,7 @@ class ActivationCodeScreen extends BasePage {
               { this.state.renderEnterCode ? this._renderEnterCode() : this._renderGetCode() }
             </Content>
             <View style={styles.bottomContainerContent}>
-              <Text style={styles.text}>By signing-up I agree to gllu's </Text>
+              <Text style={styles.text}>By signing-up I agree to inFash's </Text>
               <Text style={styles.link} onPress={this.handleTermPress.bind(this)}>Terms</Text>
               <Text style={styles.text}> and </Text>
               <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>

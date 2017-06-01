@@ -4,9 +4,9 @@ function _shareTextNative(shareData) {
     Share.share({
         message: `${ shareData.text } ${ shareData.url }`,
         url: shareData.url,
-        title: 'GLLU'
+        title: 'inFash'
     }, {
-        dialogTitle: 'Share GLLU',
+        dialogTitle: 'Share inFash',
         excludedActivityTypes: [ /*here we can exclude sharing options on ios*/ ]
     })
         .then(this._logResult)
