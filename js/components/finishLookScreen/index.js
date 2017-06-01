@@ -120,7 +120,7 @@ class FinishLookPage extends BasePage {
             <H2 style={StyleSheet.flatten(styles.text)}>
               YOUR POST IS LIVE
             </H2>
-            <Image source={finishPhoto} resizeMode='contain' style={{height:200}}/>
+            <Image source={finishPhoto} resizeMode='contain' style={{height:150}}/>
             <H2 style={StyleSheet.flatten(styles.text)}>
               SHARE YOUR STYLE WITH OTHER FRIENDS
             </H2>
