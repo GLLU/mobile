@@ -48,7 +48,8 @@ import { setUser,
   invitationCheckExistance,
   createInvitationCode,
   clearTutorial,
-  hideTutorial
+  hideTutorial,
+  requestInvitation
   } from './user';
 
 export {
@@ -56,6 +57,7 @@ export {
   updateEntity,
   readEndpoint,
   deleteEntity,
+  requestInvitation,
   loadCategories,
   loadOccasionTags,
   loadBrands,

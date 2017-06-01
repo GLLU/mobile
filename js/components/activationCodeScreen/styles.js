@@ -86,8 +86,12 @@ module.exports = StyleSheet.create({
     alignItems: 'flex-end'
   },
   formItemGetCode: {
-    borderBottomWidth: 3,
+
     borderColor: 'rgba(192,192,192, .3)',
+  },
+  formItemGetCodeCorrect: {
+    borderBottomWidth: 4,
+    borderColor: 'rgba(255,61,61, .3)',
   },
   formGroup: {
     borderColor: 'transparent',
@@ -163,10 +167,18 @@ module.exports = StyleSheet.create({
   },
   logoContainer: {
     marginTop: 0,
+    paddingTop: 80,
     paddingLeft: 10,
     paddingRight: 10,
-    bottom: 0,
-    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  logo: {
+    width: 175,
+    height: 175,
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   invitationText: {
     color: 'white'
