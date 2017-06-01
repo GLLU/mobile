@@ -111,7 +111,7 @@ class menuModal extends Component {
   renderReportThankYou() {
     return (
       <View style={styles.thankYouContainer}>
-        <Text style={styles.thankYouText}>Thank you for making GLLU better! we'll examine your report and will be in touch with you over email.</Text>
+        <Text style={styles.thankYouText}>Thank you for making inFash better! we'll examine your report and will be in touch with you over email.</Text>
       </View>
     )
   }

@@ -73,7 +73,7 @@ class FinishLookPage extends BasePage {
   }
 
   handleGlluAgainPress() {
-    this.logEvent('CongratsScreen', { name: 'Lets GLLU Again click' });
+    this.logEvent('CongratsScreen', { name: 'Lets inFash Again click' });
     this.openCamera()
   }
 

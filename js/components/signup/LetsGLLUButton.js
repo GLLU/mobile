@@ -46,7 +46,7 @@ class LetsGLLUButton extends Component {
     return (
       <View style={[styles.center, this.props.style]}>
         <TouchableHighlight onPress={this.props.onPress}>
-          <Text style={styles.text}>Let's GLLU</Text>
+          <Text style={styles.text}>Let's inFash</Text>
         </TouchableHighlight>
       </View>
     );
