@@ -70,7 +70,7 @@
 -dontwarn okio.**
 
 # react-native-config
--keep class com.gllu.BuildConfig { *; }
+-keep class com.infash.BuildConfig { *; }
 
 # flurry analytics
 -keep class com.flurry.** { *; }
