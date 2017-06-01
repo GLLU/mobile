@@ -78,8 +78,15 @@ class Tag extends Component {
   }
 
   componentWillMount() {
-    const locationX = w / 2;
-    const locationY = h / 2;
+    let locationX;
+    let locationY;
+    if(this.props.item.locationY === 0.5 && this.props.item.locationX === 0.5) {
+       locationX = w / 2;
+       locationY = h / 2;
+    } else {
+       locationX = this.props.item.locationX * w;
+       locationY = this.props.item.locationY * h;
+    }
     this._setupPanResponder(locationX, locationY);
   }
 
@@ -100,7 +107,6 @@ class Tag extends Component {
     const top = parseInt(y * height);
     const layout = this._pan.getLayout();
     const markerImage = currItemId === item.id ? this.getCurrentItemStatus(item) : this.otherItemStatus(item);
-    const isDone = item.brand && item.category !== null
     if(this.props.dragable) {
       return (
         <Animated.View
