@@ -20,7 +20,7 @@ import {
 
 const background = require('../../../images/backgrounds/bags.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
-const logo = require('../../../images/logo/logo-big-full.png');
+const logo = require('../../../images/logo/inFashLogo.png');
 
 let PERMISSIONS = ["email", "public_profile"];
 
