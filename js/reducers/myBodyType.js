@@ -41,8 +41,8 @@ const bodyTypeList = {
       body_type: 'יhourglass',
       description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
       imageUrl: require('../../images/bodytypes/female/hourglass.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/female-full-hourglass-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/female-full-hourglass.png')
+      filterImageUrlActive: require('../../images/filters/body-types/female-hourglass-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-hourglass.png')
     }
   ],
   male: [
