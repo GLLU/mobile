@@ -125,6 +125,19 @@ export function useInvitationCode(token): Action {
   }
 }
 
+export function requestInvitation(data): Action {
+  return (dispatch) => {
+    console.log('data',data)
+    return dispatch(rest.actions.invitation_request.post({}, {body: JSON.stringify({"name": data.name, "email": data.email})}, (err, data) => {
+      if (!err && !_.isEmpty(data)) {
+        console.log('invitation request has been created: ', data)
+      } else {
+        alert('Unable to create an invitation request');
+      }
+    }));
+  }
+}
+
 export function createInvitationCode(): Action {
   return (dispatch) => {
     return dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({"limit_by_days": 3})}, (err, data) => {
