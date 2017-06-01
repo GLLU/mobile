@@ -232,7 +232,9 @@ class AddItemPage extends BasePage {
     }
     return (
       <View>
-        {this.renderHeader()}
+        <View style={{position: 'absolute'}}>
+          {this.renderHeader()}
+        </View>
         <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)}></StepThreePublish>
       </View>);
   }

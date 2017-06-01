@@ -124,17 +124,11 @@ class StepThreePublish extends BaseComponent {
   static propTypes = {
     image: React.PropTypes.string,
     state: React.PropTypes.string,
-    brandUrl: React.PropTypes.string,
     publishItem: React.PropTypes.func,
-    createLookItem: React.PropTypes.func,
     description: React.PropTypes.string,
-    photos: React.PropTypes.array,
     items: React.PropTypes.array,
     occasions: React.PropTypes.array,
     addDescription: React.PropTypes.func,
-    addLocation: React.PropTypes.func,
-    addTrustLevel: React.PropTypes.func,
-    addPhotosVideo: React.PropTypes.func,
     addItemTag: React.PropTypes.func,
     removeItemTag: React.PropTypes.func,
   }
@@ -194,7 +188,7 @@ class StepThreePublish extends BaseComponent {
   handlePublishPress() {
     // we don't show the dialog during editing look
     // we only show it one time
-    if (!this.urlDialogShown && !this.checkUrlOk() && this.props.state === LOOK_STATES.DRAFT) {
+    if (!this.urlDialogShown && !this.checkUrlOk()) {
       this.setState({urlOverlayVisible: true}, () => {
         this.urlDialogShown = true;
       });
@@ -408,8 +402,8 @@ class StepThreePublish extends BaseComponent {
   render() {
     const { image } = this.props;
     return(
-    <View>
-      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
+
+      <ScrollView scrollEnabled={true} style={{paddingTop: 10,marginTop: 50, paddingHorizontal: 20}}>
         <Grid>
           {this.props.isVideo ? this.renderFirstRowWithOutImage() : this.renderFirstRowWithImage(image)}
           <Row style={styles.row}>
@@ -432,7 +426,6 @@ class StepThreePublish extends BaseComponent {
         {this.renderImageOverlay()}
         {this.renderConfirmUrlOverlay()}
       </ScrollView>
-    </View>
     )
   }
 }
