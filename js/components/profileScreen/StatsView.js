@@ -38,6 +38,10 @@ class StatsView extends Component {
   render() {
     return (
       <View style={styles.statsContainer}>
+        <TouchableOpacity style={styles.statsTotal} onPress={() => this.props.handleBalancePress()}>
+          <Text style={[styles.text, styles.number]}>$0</Text>
+          <Text style={styles.text}>Balance</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowingPress.bind(this)}>
           <Text style={[styles.text, styles.number]}>{this.props.following}</Text>
           <Text style={styles.text}>Following</Text>
