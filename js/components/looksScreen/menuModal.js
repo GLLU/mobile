@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   },
   thankYouContainer: {
     flex: 1,
+    justifyContent:'center',
     padding: 20
   },
   thankYouText: {
     textAlign: 'center',
-    alignSelf: 'center',
     fontSize: 14,
     fontWeight: '500'
   },
