@@ -47,7 +47,7 @@ class LikesScreen extends BasePage {
         onEndReached={this.getLookLikesData}/>
     )
   }
-
+  
   render() {
     const likesCount = this.props.navigation.state.params.count;
     return (
