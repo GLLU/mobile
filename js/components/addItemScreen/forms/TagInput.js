@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TextInput,View } from 'react-native'
 import Tags from './Tags';
 import _ from 'lodash';
+import BaseComponent from "../../common/base/BaseComponent";
 
 const styles = StyleSheet.create({
   inputContainerStyle: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class TagInput extends Component {
+class TagInput extends BaseComponent {
   static propTypes = {
     tags: React.PropTypes.array,
     addItemTag: React.PropTypes.func,
@@ -34,6 +35,7 @@ class TagInput extends Component {
   }
 
   addTag(name) {
+    this.logEvent('UploadLookScreen', { name: 'new tag manually added!', tagName: `name` });
     const {tags, itemId} = this.props;
     const existing = _.find(tags, t => t.name.toLowerCase() == name.toLowerCase());
     if (!existing) {
