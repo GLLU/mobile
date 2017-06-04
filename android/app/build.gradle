@@ -92,12 +92,12 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.infash"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
        vectorDrawables.useSupportLibrary = true
@@ -206,6 +206,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.facebook.react:react-native:+'
+    compile 'com.facebook.android:facebook-android-sdk:[4.22.1)'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
       transitive = true;
     }
