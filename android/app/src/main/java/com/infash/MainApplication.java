@@ -1,6 +1,7 @@
 package com.infash;
 
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -28,6 +29,7 @@ import com.facebook.react.shell.MainReactPackage;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,6 +82,7 @@ public class MainApplication extends Application
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         // FORCE LTR
