@@ -41,7 +41,7 @@ platform :android do
       project_dir: "android/"
     )
 
-    # upload to Beta by Crashlytics
+    # upload to Google Play
     crashlytics(
       api_token: "073fbe796531c6ef71a3c78ed34e237691bf78bf",
       build_secret: "5ba957e3155c3e2486b6761741131b6891d868551cdeb44bcce84ce3a42f2624"

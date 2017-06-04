@@ -53,6 +53,7 @@ buck-out/
 # https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md
 
 fastlane/report.xml
+fastlane/README.md
 fastlane/Preview.html
 fastlane/screenshots
 
