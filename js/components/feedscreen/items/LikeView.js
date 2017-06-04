@@ -5,7 +5,7 @@ import { StyleSheet, Image, Platform, View, Text ,TouchableWithoutFeedback } fro
 import { Col, Grid } from "react-native-easy-grid";
 
 const likeIcon = require('../../../../images/icons/like.png');
-const likedIcon = require('../../../../images/icons/liked.png');
+const likedIcon = require('../../../../images/icons/likedGreen.png');
 
 const styles = StyleSheet.create({
   likeContainer: {

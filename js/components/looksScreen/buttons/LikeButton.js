@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight, StyleSheet, Text } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import * as _ from 'lodash'
 import styles from '../styles'
 
 const likeImage = require('../../../../images/icons/like.png');
-const likeClickedImage = require('../../../../images/icons/liked.png');
+const likeClickedImage = require('../../../../images/icons/likedGreen.png');
 
 export default class LikeButton extends Component {
   constructor(props) {
@@ -31,13 +31,18 @@ export default class LikeButton extends Component {
 
   render() {
     return (
-      <TouchableHighlight style={{margin:5}} onPress={this._onPress}>
+    <View>
+
         <View style={[styles.footerButton, {flexDirection: 'column'}]}>
-          <Image source={this.props.isLiked ? likeClickedImage : likeImage}
-                 style={[styles.footerButtonIcon,{width: 35, height: 35}]}/>
+          <TouchableOpacity style={{margin:5}} onPress={this._onPress}>
+            <Image source={this.props.isLiked ? likeClickedImage : likeImage}
+                   style={[styles.footerButtonIcon,{width: 35, height: 35}]}/>
+          </TouchableOpacity>
           <Text style={styles.footerButtonText}>{this.props.likes}</Text>
         </View>
-      </TouchableHighlight>
+
+    </View>
+
     );
   }
 }
