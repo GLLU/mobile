@@ -31,7 +31,7 @@ class EditProfile extends BasePage {
   }
   constructor(props) {
     super(props);
-    this.closeModal=this.closeModal.bind(this);
+    this.toggleBodyTypeModal=this.toggleBodyTypeModal.bind(this);
     this.state = {
       about_me: this.props.user.about_me ? this.props.user.about_me : '',
       modalShowing:false
@@ -69,10 +69,6 @@ class EditProfile extends BasePage {
     this.props.changeUserAvatar(data);
   }
 
-  focusOnInput(refAttr) {
-    this.refs[refAttr]._textInput.focus();
-  }
-
   _handleAboutMeTextInput(text) {
     this.setState({about_me: text})
   }
@@ -81,7 +77,10 @@ class EditProfile extends BasePage {
     this.logEvent('EditProfileScreen', { name: 'Tell us about you' });
   }
 
-  closeModal=()=>this.setState({modalShowing:false});
+  toggleBodyTypeModal=(shouldActive)=>{
+    this.logEvent('EditProfileScreen', { name: `body type modal is ${shouldActive? 'visible':'hidden'}` });
+    this.setState({modalShowing:shouldActive});
+  };
 
   render() {
     return (
@@ -107,7 +106,7 @@ class EditProfile extends BasePage {
             <Text style={styles.editBodyTypeTitle}>EDIT BODY SHAPE</Text>
           </View>
           <View style={styles.bodyMeasureContainer}>
-            <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size} onBodyTypePress={()=>this.setState({modalShowing:true})}/>
+            <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size} onBodyTypePress={()=>this.toggleBodyTypeModal(true)}/>
           </View>
           <View style={styles.privateInfoContainer}>
             <InformationTextIcon text={'This information is private to you only'} />
@@ -115,7 +114,7 @@ class EditProfile extends BasePage {
         </ScrollView>
         <Modal isOpen={this.state.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
                position={"top"}>
-          <BodyTypePicker goBack={this.closeModal} onPick={this.closeModal}/>
+          <BodyTypePicker goBack={()=>this.toggleBodyTypeModal(false)} onPick={()=>this.toggleBodyTypeModal(false)}/>
         </Modal>
       </View>
     )
