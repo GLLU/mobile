@@ -168,6 +168,7 @@ export default class BottomLookContainer extends BaseComponent {
                 items={this.props.look.items}
                 activeItem={this.state.activeItem}
                 lookType={this.props.lookType}
+                onNumberPress={this.props.onLikesNumberPress}
               />
             </View>
           </TouchableWithoutFeedback>

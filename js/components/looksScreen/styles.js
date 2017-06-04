@@ -49,14 +49,14 @@ export default StyleSheet.create({
     right: 10
   },
   footerButton: {
-    flexWrap: 'wrap',
+
     flexDirection: 'column',
     padding: 5,
     alignItems: 'center',
     justifyContent:'center',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    minHeight: 45,
-
+    minHeight: 35,
+    minWidth: 45,
     borderRadius: 10,
   },
   footerButtonActive: {
@@ -66,8 +66,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent:'center',
     backgroundColor: 'rgba(0,215,178, 0.75)',
-    minHeight: 45,
-    minWidth: 45,
+    minHeight: 35,
+    minWidth: 35,
     borderRadius: 10,
   },
   footerButtonIcon: {
@@ -80,7 +80,10 @@ export default StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     backgroundColor: 'transparent',
-    textAlign: 'center'
+    textAlign: 'center',
+    maxWidth: 35,
+    alignSelf: 'center',
+    paddingBottom: 3
   },
   horizontalContainer: {
     flexWrap: 'wrap',
