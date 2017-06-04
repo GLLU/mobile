@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import { ActivityIndicator } from 'react-native';
-import computeProps from 'native-base/src/Utils/computeProps';
 
 
 export default class Spinner extends Component {
