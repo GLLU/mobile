@@ -1,6 +1,7 @@
 package com.infash;
 
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -10,6 +11,7 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.smixx.fabric.FabricPackage;
 import com.infash.customPackages.CameraReactPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
@@ -27,6 +29,7 @@ import com.facebook.react.shell.MainReactPackage;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,6 +61,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new FabricPackage(),
                             new CameraReactPackage(),
                             new GoogleAnalyticsBridgePackage(),
                             new FlurryAnalyticsPackage(),
@@ -78,6 +82,7 @@ public class MainApplication extends Application
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         // FORCE LTR

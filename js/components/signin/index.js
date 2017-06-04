@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/base/BasePage';
-import { Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
@@ -84,10 +84,6 @@ class SignInPage extends BasePage {
     });
   }
 
-  focusOnInput(refAttr) {
-    this.refs[refAttr]._textInput.focus();
-  }
-
   handleTermPress() {
     this.handleOpenLink(TERMS_URL);
   }
@@ -140,26 +136,23 @@ class SignInPage extends BasePage {
               <View>
                 <Grid>
                   <Row style={styles.formItem} >
-                    <TouchableWithoutFeedback onPress={() => this.focusOnInput('email')}>
-                      <View>
-                        <Text style={[StyleSheet.flatten(styles.label),  this.state.email.length !== 0 ? StyleSheet.flatten(styles.addOpacity) : null]}>Email</Text>
-                      </View>
-                    </TouchableWithoutFeedback>
-                    <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
-                      <Input style={StyleSheet.flatten(styles.formInput)} focus={true} ref='email' keyboardType={'email-address'} onChangeText={(email) => this.validateEmailInput(email)}/>
-                    </InputGroup>
+                    <TextInput
+                      placeholder='Email'
+                      keyboardType='email-address'
+                      placeholderTextColor='lightgrey'
+                      autoFocus={true}
+                      style={[styles.formInput]}
+                      onChangeText={(email) => this.validateEmailInput(email)}/>
                     { this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={StyleSheet.flatten(styles.uploadImgIcon)}/>  : null}
                   </Row>
                   <Row style={styles.formItem}>
-                    <TouchableWithoutFeedback onPress={() => this.focusOnInput('password')} >
-                      <View>
-                        <Text style={[StyleSheet.flatten(styles.label),  this.state.password.length !== 0 ? styles.addOpacity : null]}>Password</Text>
-                      </View>
-                    </TouchableWithoutFeedback>
-                    <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
-                      <Input style={StyleSheet.flatten(styles.formInput)} ref='password' secureTextEntry onChangeText={(password) => this.validatePasswordInput(password)}/>
+                    <TextInput
+                      placeholder='Password'
+                      placeholderTextColor='lightgrey'
+                      secureTextEntry={true}
+                      style={[styles.formInput]}
+                      onChangeText={(password) => this.validatePasswordInput(password)}/>
                     { this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid} style={StyleSheet.flatten(styles.uploadImgIcon)}/>  : null}
-                    </InputGroup>
                   </Row>
                 </Grid>
                 <LetsGLLUButton style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}/>
