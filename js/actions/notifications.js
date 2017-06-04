@@ -49,15 +49,21 @@ export function gotNewNotifications() {
   };
 }
 
-export function getNotifications() {
-
+export function getNotifications(retryCount = 0) {
   return (dispatch, getState) => {
     let page = getState().notifications.page+1
     return dispatch(rest.actions.getNotifications({"page[size]" : 20, "page[number]" : page,}, {}, (err, notificationsData) => {
-      if (!err && notificationsData) {
+
+      if (!err && !_.isEmpty(notificationsData)) {
         const userId = getState().user.id;
         _.isEmpty(getState().notifications.allNotifications) ? getPusherClient(dispatch, userId) : null
         dispatch(setUserNotifications(notificationsData, page++));
+      } else {
+        if(retryCount < 5) {
+          console.log('222')
+          dispatch(getNotifications(retryCount+1))
+        }
+
       }
     }));
   };

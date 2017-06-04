@@ -10,7 +10,7 @@ const parseQueryFromState = function(state) {
   return Object.assign({}, state, { category: state.category ? state.category.name : null })
 }
 
-export function getFeed(query):Action {
+export function getFeed(query, retryCount = 0):Action {
   return (dispatch) => {
     const newState = Object.assign({}, query, {
       page: {
@@ -20,12 +20,18 @@ export function getFeed(query):Action {
     });
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.feeds(newState, (err, data) => {
-        if (!err && data) {
+        if (!err && !_.isEmpty(data)) {
           dispatch(setFeedData({data, query: newState}));
           dispatch(loadMore())
           resolve(data.looks);
         } else {
-          reject();
+          if(retryCount < 5) {
+            console.log('ret',retryCount)
+            dispatch(getFeed(query, retryCount+1))
+          } else {
+            reject();
+          }
+
         }
       }));
     });
