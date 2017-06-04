@@ -37,6 +37,7 @@ class SplashPage extends BasePage {
   constructor(props) {
     super(props);
     this.checkLogin=this.checkLogin.bind(this);
+    this.handleEmailSigninPress=this.handleEmailSigninPress.bind(this);
     this.state = {
       name: '',
       repeat: props.active
@@ -94,6 +95,11 @@ class SplashPage extends BasePage {
 
   }
 
+  handleEmailSigninPress() {
+    this.logEvent('Splashscreen', {name: 'Email signin click'});
+    this.navigateTo('signinemail');
+  }
+
   handleTermPress() {
     this.handleOpenLink(TERMS_URL);
   }
@@ -129,7 +135,7 @@ class SplashPage extends BasePage {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <TouchableOpacity onPress={() => this.navigateTo('signinemail') }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
+            <TouchableOpacity onPress={this.handleEmailSigninPress }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
           </View>
         </View>
     )
