@@ -62,10 +62,6 @@ class forgotPasswordPage extends BasePage {
     });
   }
 
-  focusOnInput(refAttr) {
-    this.refs[refAttr]._textInput.focus();
-  }
-
   renderEmailSent() {
     return (
       <Content scrollEnabled={false}>
@@ -84,14 +80,13 @@ class forgotPasswordPage extends BasePage {
         </View>
         <Grid>
           <Row style={styles.formItem}>
-            <TouchableWithoutFeedback onPress={() => this.focusOnInput('email')}>
-              <View>
-              <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
-              </View>
-            </TouchableWithoutFeedback>
-            <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
-              <Input ref='email'  style={StyleSheet.flatten(styles.formInput)} onChangeText={(email) => this.validateEmailInput(email)}/>
-            </InputGroup>
+            <TextInput
+              placeholder='Email'
+              keyboardType='email-address'
+              placeholderTextColor='lightgrey'
+              autoFocus={true}
+              style={[styles.formInput]}
+              onChangeText={(email) => this.validateEmailInput(email)}/>
           </Row>
         </Grid>
         <ResetMyPasswordButton style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.forgotPasswordEmail()}/>
