@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react';
 import BasePage from '../common/base/BasePage';
-import { Image, TouchableWithoutFeedback,Text, View, StyleSheet } from 'react-native';
+import { Image, TouchableWithoutFeedback, Text, View, StyleSheet, TextInput } from 'react-native';
 import {
-  Container, Header, Button, Title, Content, Icon, InputGroup, Input, StyleProvider,
-  getTheme
+  Container,  Button, Content, Icon, StyleProvider, getTheme
 } from 'native-base';
+import IconB from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
 
@@ -62,10 +62,6 @@ class forgotPasswordPage extends BasePage {
     });
   }
 
-  focusOnInput(refAttr) {
-    this.refs[refAttr]._textInput.focus();
-  }
-
   renderEmailSent() {
     return (
       <Content scrollEnabled={false}>
@@ -84,14 +80,14 @@ class forgotPasswordPage extends BasePage {
         </View>
         <Grid>
           <Row style={styles.formItem}>
-            <TouchableWithoutFeedback onPress={() => this.focusOnInput('email')}>
-              <View>
-              <Text style={[styles.label, this.state.email.length > 0 ? styles.addOpacity : null]}>Email</Text>
-              </View>
-            </TouchableWithoutFeedback>
-            <InputGroup style={StyleSheet.flatten(styles.formGroup)}>
-              <Input ref='email'  style={StyleSheet.flatten(styles.formInput)} onChangeText={(email) => this.validateEmailInput(email)}/>
-            </InputGroup>
+            <TextInput
+              placeholder='Email'
+              keyboardType='email-address'
+              placeholderTextColor='lightgrey'
+              autoFocus={true}
+              style={[styles.formInput]}
+              onChangeText={(email) => this.validateEmailInput(email)}/>
+            {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
           </Row>
         </Grid>
         <ResetMyPasswordButton style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.forgotPasswordEmail()}/>

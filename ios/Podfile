@@ -7,7 +7,9 @@ target 'gllu' do
 
 # Pods for gllu
 
-  pod 'FBSDKCoreKit', '4.17'
+pod 'Fabric'
+pod 'Crashlytics'
+pod 'FBSDKCoreKit', '4.17'
 pod 'FBSDKLoginKit', '4.17'
 pod 'FBSDKShareKit', '4.17'
 pod 'QBImagePickerController'

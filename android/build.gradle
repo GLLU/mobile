@@ -5,15 +5,28 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+project(':react-native-fbsdk') {
+    configurations.all {
+        resolutionStrategy {
+            force 'com.facebook.android:facebook-android-sdk:4.22.1'
+        }
+    }
+}
+
 allprojects {
     repositories {
+        configurations.all {
+            resolutionStrategy {
+                force 'com.facebook.android:facebook-android-sdk:4.22.1'
+            }
+        }
         mavenLocal()
         jcenter()
         maven {
