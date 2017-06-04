@@ -76,6 +76,10 @@ class MediaContainer extends BaseComponent {
     this.setState({isMuted: !this.state.isMuted})
   }
 
+  _onLikesNumberPress() {
+    this.props.navigateTo('likesscreen', {lookId: this.props.look.id, count: this.props.look.likes});
+  }
+
   renderVideo(video) {
     //let  ShouldShowLookImage = this.props.currScroll < this.state.currLookPosition+deviceHeight && this.props.currScroll > this.state.currLookPosition-deviceHeight
     if(Platform.OS === 'ios') {
@@ -119,7 +123,7 @@ class MediaContainer extends BaseComponent {
         <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
           <Image source={{uri: look.uri}} style={{width: look.width-6, height: look.height, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} >
             <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
+              <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)} onLikesNumberPress={this._onLikesNumberPress.bind(this)}/>
             </View>
           </Image>
         </View>
@@ -130,7 +134,7 @@ class MediaContainer extends BaseComponent {
           <Image source={{uri: look.uri}} style={{width: look.width, height: look.height, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} />
           <MediaBorderPatch media={look} >
             <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)}/>
+              <LikeView index={index} item={look} onPress={this.toggleLikeAction.bind(this)} onLikesNumberPress={this._onLikesNumberPress.bind(this)}/>
             </View>
           </MediaBorderPatch>
         </View>
@@ -144,7 +148,7 @@ class MediaContainer extends BaseComponent {
 
     return(
       <View style={Platform.OS === 'ios' ? [styles.videoGridIos, {width: look.width}] : styles.videoGridAndroid}>
-        <LikeView item={look} onPress={this.toggleLikeAction.bind(this)}/>
+        <LikeView item={look} onPress={this.toggleLikeAction.bind(this)} onLikesNumberPress={this._onLikesNumberPress.bind(this)}/>
         <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()}/>
       </View>
     )

@@ -147,6 +147,7 @@ class LooksContainer extends BasePage {
   }
 
   onSwipe(gestureName) {
+    this.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}`});
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
@@ -214,6 +215,7 @@ class LooksContainer extends BasePage {
           onBottomDrawerOpen={this.onToggleDrawer}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           lookType={"video"}
+          onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
         />
       </GestureRecognizer>
     )
@@ -245,6 +247,7 @@ class LooksContainer extends BasePage {
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+                onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
             </Image>
       </GestureRecognizer>
@@ -311,6 +314,7 @@ function bindAction(dispatch) {
   return {
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    getLookLikes: (id) => dispatch(getLookLikes(id)),
     reportAbuse: (lookId) => dispatch(reportAbuse(lookId)),
     loadMore: () => dispatch(loadMore()),
   };

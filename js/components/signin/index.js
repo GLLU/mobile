@@ -51,8 +51,11 @@ class SignInPage extends BasePage {
       const data = { email, password };
       if(this.checkValidations()) {
           this.props.emailSignIn(data)
-            .then(user=>this.resetTo('feedscreen'))
-            .catch(error=>console.log('oh no! could not sign in!',error));
+            .then(user=>{
+              this.logEvent('SignIn', { name: 'Sign in successful!'});
+              this.resetTo('feedscreen')
+            })
+            .catch(error=>this.logEvent('SignIn', { name: 'Sign in failed!'}));
       }
   }
   checkValidations() {

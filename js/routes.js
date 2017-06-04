@@ -19,6 +19,7 @@ import EditProfile from './components/profileScreen/EditProfile.js';
 import FinishLookScreen from './components/finishLookScreen';
 import TutorialScreen from './components/tutorialScreen'
 import BadNavigationScreen from './components/badNavigationScreen'
+import likesScreen from './components/likesScreen'
 
 const stackNavigatorConfig = {
   initialRouteName: 'splashscreen',
@@ -68,6 +69,9 @@ const routes = {
   },
   followScreen: {
     screen: FollowScreen,
+  },
+  likesscreen: {
+    screen: likesScreen,
   },
   followerScreen: {
     screen: FollowerScreen,

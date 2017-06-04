@@ -84,7 +84,9 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _toggleMenu() {
-    this.setState({isMenuOpen: !this.state.isMenuOpen})
+    const shouldActive = !this.state.isMenuOpen;
+    this.logEvent('LookScreen', {name: `Report & Share Menu ${shouldActive?'visible':'hidden'}`});
+    this.setState({isMenuOpen: shouldActive})
   }
 
   _renderDescriptionView(isActive) {
@@ -105,6 +107,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _toggleComments(shouldActive) {
+    this.logEvent('LookScreen', {name: `Comments View ${shouldActive?'visible':'hidden'}`});
     this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
   }
@@ -168,6 +171,7 @@ export default class BottomLookContainer extends BaseComponent {
                 items={this.props.look.items}
                 activeItem={this.state.activeItem}
                 lookType={this.props.lookType}
+                onNumberPress={this.props.onLikesNumberPress}
               />
             </View>
           </TouchableWithoutFeedback>
