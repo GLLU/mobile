@@ -71,7 +71,7 @@ class SignUpPage extends BasePage {
       }
       this.props.emailSignUp(data)
         .then(user=>{
-          this.logEvent('SignupPage', {name: `user signed up`, invitation_token:this.props.invitation_token});
+          this.logEvent('SignupPage', {name: `user signed up with email ${email}`, invitation_token: this.props.invitation_token});
           this.resetTo('feedscreen',user)
         })
         .catch(err=>console.log(err));
