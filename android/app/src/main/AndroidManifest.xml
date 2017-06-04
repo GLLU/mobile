@@ -29,7 +29,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="073fbe796531c6ef71a3c78ed34e237691bf78bf"
+        />
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -65,5 +68,5 @@
 
 
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
