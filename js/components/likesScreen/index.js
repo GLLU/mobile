@@ -36,16 +36,23 @@ class LikesScreen extends BasePage {
     this.props.getLookLikes(userData);
   }
 
+  renderListView(likesCount) {
+
+    return(
+      <FollowListView
+        headerData={likesCount}
+        likes={this.props.likes}
+        navigateTo={this.navigateTo}
+        goBack={this.goBack}
+        onEndReached={this.getLookLikesData}/>
+    )
+  }
+
   render() {
     const likesCount = this.props.navigation.state.params.count;
     return (
           <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
-            <FollowListView
-              headerData={likesCount}
-              likes={this.props.likes}
-              navigateTo={this.navigateTo}
-              goBack={this.goBack}
-              onEndReached={this.getLookLikesData}/>
+            {this.props.likes.length > 0 ? this.renderListView(likesCount) : null }
           </View>
     );
   }

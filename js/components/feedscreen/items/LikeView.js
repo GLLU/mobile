@@ -36,7 +36,8 @@ class LikeView extends Component {
 
   static propTypes = {
     item: React.PropTypes.object,
-    onPress: React.PropTypes.func
+    onPress: React.PropTypes.func,
+    onLikesNumberPress: React.PropTypes.func
   }
 
   constructor(props) {
@@ -59,6 +60,12 @@ class LikeView extends Component {
     }
   }
 
+  handleLikesNumberPress() {
+    if(this.state.likes > 0) {
+      this.props.onLikesNumberPress();
+    }
+  }
+
   render() {
     const img = this.props.item;
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
@@ -71,7 +78,11 @@ class LikeView extends Component {
             </TouchableWithoutFeedback>
           </Col>
           <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
-            <Text style={styles.countLikeLabel}>{this.state.likes}</Text>
+            <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()}>
+              <View>
+                <Text style={styles.countLikeLabel}>{this.state.likes}</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </Col>
         </Grid>
       </View>
