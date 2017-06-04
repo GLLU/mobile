@@ -26,13 +26,15 @@ class TutorialScreen extends BasePage {
       };
   }
 
-  doneWithTutorial() {
+  doneWithTutorial(skip=true) {
+    const action=skip?`user skipped tutorial @ page ${this.state.currPage}`:`user finishedTutorial`;
+    this.logEvent('TutorialScreen', {name: action});
     this.props.hideTutorial();
     this.goBack();
   }
 
   onPageSelected = (e) => {
-    console.log(e.nativeEvent.position)
+    this.logEvent('TutorialScreen', {name: `user reached page ${this.state.currPage}`});
     this.setState({currPage: e.nativeEvent.position})
   };
 
@@ -46,7 +48,7 @@ class TutorialScreen extends BasePage {
     if(this.state.currPage < 4) {
       this.setState({currPage: index+1})
     } else {
-      this.doneWithTutorial()
+      this.doneWithTutorial(false)
     }
   }
 

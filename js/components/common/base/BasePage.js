@@ -49,6 +49,7 @@ class BasePage extends BaseComponent {
   }
 
   goBack(withConfirmation = false) {
+    this.logEvent(this.constructor.name, { name: `user pressed back`});
     if (withConfirmation===true) {
       Alert.alert(
         '',

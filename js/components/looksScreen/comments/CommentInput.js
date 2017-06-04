@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput } from 'react-native';
 import { noop } from 'lodash'
+import BaseComponent from "../../common/base/BaseComponent";
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class CommentInput extends Component {
+export default class CommentInput extends BaseComponent {
 
   constructor(props) {
     super(props);
@@ -66,7 +67,9 @@ export default class CommentInput extends Component {
   }
 
   onSendPress() {
-    if (this.state.value) {
+    const commentValue=this.state.value
+    if (commentValue) {
+      this.logEvent('LookScreen', {name: `new comment added!`, content: commentValue});
       this.props.onSendPress(this.state.value);
     }
   }

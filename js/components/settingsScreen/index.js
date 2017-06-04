@@ -74,8 +74,8 @@ class SettingsScreen extends BasePage {
     }
   }
 
-  handleShare() {
-    this.logEvent('SettingsScreen', { name: 'Share click' });
+  _onInviteFriendsClick() {
+    this.logEvent('SettingsScreen', {name: 'Invite your friends click'});
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.nativeShare(message);
   }
@@ -128,7 +128,7 @@ class SettingsScreen extends BasePage {
       {
         text:'Invite your Friends',
         icon:iconShare,
-        onPress:this.handleShare.bind(this)
+        onPress:this._onInviteFriendsClick.bind(this)
       },
       {
         text:'Contact Us',

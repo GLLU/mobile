@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image,View } from 'react-native'
 import {  Button } from 'native-base';
 import * as _ from 'lodash';
+import BaseComponent from "../../common/base/BaseComponent";
 
 const styles = StyleSheet.create({
   categoryItem: {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class FilterButton extends Component {
+class FilterButton extends BaseComponent {
   static propTypes = {
     activeStyle: React.PropTypes.object,
     filter: React.PropTypes.object,
@@ -78,6 +79,7 @@ class FilterButton extends Component {
 
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
+    this.logEvent('FeedScreen', {name: `filter ${this.props.filter.name} was clicked!`,selected:shouldSelect});
     this.props.filter.selected = shouldSelect;
     this.props.onPress(filter);
     this.setState({selected: shouldSelect});

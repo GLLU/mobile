@@ -56,6 +56,7 @@ class AddItemPage extends BasePage {
 
   componentDidMount() {
     console.log('image from redux', this.props.image)
+    this.logEvent('UploadLookScreen', { name: `User started uploading a look`, mediaType: this.state.isVideo? 'Video':'Image' });
   }
 
 
