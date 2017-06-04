@@ -70,7 +70,10 @@ class SignUpPage extends BasePage {
         confirmPassword: password,
       }
       this.props.emailSignUp(data)
-        .then(user=>this.resetTo('feedscreen',user))
+        .then(user=>{
+          this.logEvent('SignupPage', {name: `user signed up`, invitation_token:this.props.invitation_token});
+          this.resetTo('feedscreen',user)
+        })
         .catch(err=>console.log(err));
     }
   }
@@ -259,5 +262,7 @@ function bindAction(dispatch) {
     changeUserAvatar: (data) => dispatch(changeUserAvatar(data)),
   };
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  invitation_token:state.user.invitation_token
+});
 export default connect(mapStateToProps, bindAction)(SignUpPage);

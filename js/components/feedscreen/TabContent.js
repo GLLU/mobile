@@ -57,7 +57,7 @@ class TabContent extends BaseComponent {
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('feedscreen', {name: 'Invite your friends click'});
+    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.nativeShare(message);
   }
