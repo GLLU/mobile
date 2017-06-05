@@ -82,6 +82,7 @@ class TabContent extends BaseComponent {
       this.contentHeight = 0
       this.contentHeight = 0
       this.currPosition = 0
+      this.setState({noMoreData: false})
     }
 
   }
