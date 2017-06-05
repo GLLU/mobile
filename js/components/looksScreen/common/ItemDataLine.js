@@ -43,7 +43,7 @@ class ItemDataLine extends Component {
     if(this.props.isOpen){
       return (
         <TouchableHighlight>
-          <Animated.View style={[styles.footerButton, {flex: 1, flexDirection: 'row', flexGrow: 10, marginTop: this.props.itemY-5}]}>
+          <Animated.View style={[styles.footerButton, { flexDirection: 'row', marginTop: this.props.itemY-5}]}>
             <Text style={[styles.footerButtonText, {marginLeft: 10, marginRight: 10}]}>{this.props.data.brand.name}</Text>
             {/*<View style={{padding: 5, borderLeftWidth: 2, borderRightWidth: 2, borderColor: 'gray'}}>*/}
               {/*<Text style={styles.footerButtonText}>250$</Text>*/}

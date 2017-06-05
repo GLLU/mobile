@@ -81,7 +81,6 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     backgroundColor: 'transparent',
     textAlign: 'center',
-    maxWidth: 35,
     alignSelf: 'center',
     paddingBottom: 3
   },
