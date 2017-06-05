@@ -56,8 +56,8 @@ class TabContent extends BaseComponent {
     this.contentHeight = 0
   }
 
-  _onShareClicked() {
-    this.logEvent('LookScreen', {name: 'Share click'});
+  _onInviteFriendsClick() {
+    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.nativeShare(message);
   }
@@ -251,7 +251,7 @@ class TabContent extends BaseComponent {
             refreshControl={this._renderRefreshControl.bind(this)()}>
             <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
               <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-                <TouchableOpacity onPress={() => this._onShareClicked()}>
+                <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
                   {this.renderInviteFriend()}
                 </TouchableOpacity>
                 {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}

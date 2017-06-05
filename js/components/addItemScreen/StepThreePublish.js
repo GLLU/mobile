@@ -188,6 +188,7 @@ class StepThreePublish extends BaseComponent {
   handlePublishPress() {
     // we don't show the dialog during editing look
     // we only show it one time
+    this.logEvent('UploadLookScreen', { name: 'user pressed continue'});
     if (!this.urlDialogShown && !this.checkUrlOk()) {
       this.setState({urlOverlayVisible: true}, () => {
         this.urlDialogShown = true;
@@ -198,12 +199,14 @@ class StepThreePublish extends BaseComponent {
   }
 
   handleOkPress() {
+    this.logEvent('UploadLookScreen', { name: 'user came back to edit url'});
     this.setState({urlOverlayVisible: false}, () => {
       this.urlText.focus();
     });
   }
 
   handleContinuePress() {
+    this.logEvent('UploadLookScreen', { name: 'user pressed continue anyway'});
     this.handleUrlEndEditing();
     this.setState({urlOverlayVisible: false}, () => {
       this.props.publishItem();

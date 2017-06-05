@@ -190,6 +190,7 @@ class ProfileScreen extends BasePage {
   }
 
   handleBalancePress() {
+    this.logEvent('ProfileScreen', {name: 'Wallet Pressed'});
     this.props.showParisBottomMessage(`Hey, you can withdraw the reward once you reach at least US$50.00`);
   }
 

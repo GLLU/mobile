@@ -147,6 +147,7 @@ class LooksContainer extends BasePage {
   }
 
   onSwipe(gestureName) {
+    this.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}`});
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {

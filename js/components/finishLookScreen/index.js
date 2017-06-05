@@ -41,6 +41,7 @@ class FinishLookPage extends BasePage {
 
   componentWillMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
+      this.logEvent('FinishLookScreen', { name: 'Back click' });
       if(this.state.photoModal) {
         this.setState({photoModal: false})
         return true;
@@ -57,24 +58,24 @@ class FinishLookPage extends BasePage {
   }
 
   handleClose() {
-    this.logEvent('CongratsScreen', { name: 'Close click' });
+    this.logEvent('FinishLookScreen', { name: 'Close click' });
     this.resetToOriginalPlace();
   }
 
   handleFacebookPress() {
-    this.logEvent('CongratsScreen', { name: 'Facebook Share click' });
+    this.logEvent('FinishLookScreen', { name: 'Facebook Share click' });
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.facebookShare(message);
   }
 
   handleOthersPress() {
-    this.logEvent('CongratsScreen', { name: 'Other Share click' });
+    this.logEvent('FinishLookScreen', { name: 'Other Share click' });
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.nativeShare(message);
   }
 
   handleGlluAgainPress() {
-    this.logEvent('CongratsScreen', { name: 'Lets inFash Again click' });
+    this.logEvent('FinishLookScreen', { name: 'Lets inFash Again click' });
     this.openCamera()
   }
 

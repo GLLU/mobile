@@ -8,6 +8,7 @@ import { followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsRead
 
 import ListViewHeader from './ListViewHeader';
 import NotificationRow from './NotificationRow';
+import BaseComponent from "../../common/base/BaseComponent";
 
 const styles = StyleSheet.create({
   separator: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class NotificationListView extends Component {
+class NotificationListView extends BaseComponent {
 
   static propTypes = {
     notifications: React.PropTypes.object,
@@ -56,6 +57,7 @@ class NotificationListView extends Component {
   }
 
   onUserNavigate(props) {
+    this.logEvent('NotificationsScreen', {name: 'user clicked notification'});
     if(props.action_kind === 'Follow') {
       this.props.navigateTo('profileScreen',props);
     } else  {
@@ -66,6 +68,7 @@ class NotificationListView extends Component {
   }
 
   onMarkAsReadPress(props) {
+    this.logEvent('NotificationsScreen', {name: 'user clicked mark is read'});
     this.props.markAsReadNotifications(props.id)
   }
 
