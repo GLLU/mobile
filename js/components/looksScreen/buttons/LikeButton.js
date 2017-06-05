@@ -43,10 +43,10 @@ export default class LikeButton extends Component {
             <Image source={this.props.isLiked ? likeClickedImage : likeImage}
                    style={[styles.footerButtonIcon,{width: 35, height: 35}]}/>
           </TouchableOpacity>
-          <View></View>
+          <View style={{height:1}}/>
           <TouchableWithoutFeedback  onPress={this._onNumberPress}>
             <View>
-              <Text style={styles.footerButtonText}>{this.props.likes}</Text>
+              <Text style={styles.footerButtonText}>{`${this.props.likes}`}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>

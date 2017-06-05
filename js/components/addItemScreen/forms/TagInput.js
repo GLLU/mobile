@@ -35,7 +35,7 @@ class TagInput extends BaseComponent {
   }
 
   addTag(name) {
-    this.logEvent('UploadLookScreen', { name: 'new tag manually added!', tagName: `name` });
+    this.logEvent('UploadLookScreen', { name: 'new tag manually added!', tagName: name });
     const {tags, itemId} = this.props;
     const existing = _.find(tags, t => t.name.toLowerCase() == name.toLowerCase());
     if (!existing) {
