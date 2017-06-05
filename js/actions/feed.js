@@ -5,6 +5,7 @@ import rest from '../api/rest';
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_FEED_DATA_QUEUE = 'SET_FLAT_LOOKS_FEED_DATA_QUEUE';
 export const RESET_FEED_DATA = 'RESET_FEED_DATA';
+export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
 
 const parseQueryFromState = function(state) {
   return Object.assign({}, state, { category: state.category ? state.category.name : null })
@@ -26,7 +27,6 @@ export function getFeed(query, retryCount = 0):Action {
           resolve(data.looks);
         } else {
           if(retryCount < 5) {
-            console.log('ret',retryCount)
             dispatch(getFeed(query, retryCount+1))
           } else {
             reject();
@@ -65,6 +65,17 @@ export function resetFeed():Action {
           reject();
         }
       }));
+    });
+  };
+}
+
+export function clearFeed():Action {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch({
+        type: CLEAR_FEED_DATA
+      });
+      resolve();
     });
   };
 }

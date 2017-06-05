@@ -8,6 +8,7 @@ import { Row, Grid } from "react-native-easy-grid";
 import { invitationCheckExistance, requestInvitation } from '../../actions/user';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
+import Utils from '../../utils'
 import {
   TERMS_URL,
   PRIVACY_URL,
