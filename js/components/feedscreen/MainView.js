@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { getFeed, resetFeed, loadMore } from '../../actions';
+import { getFeed, resetFeed, loadMore, clearFeed } from '../../actions';
 import TabContent from './TabContent';
 import SearchView from './SearchView'
 import Utils from '../../utils';
@@ -29,6 +29,7 @@ class MainView extends Component {
       locked: false,
       isOpen: false,
       reloading: false,
+      clearedField: false
     };
   }
 
@@ -59,8 +60,11 @@ class MainView extends Component {
 
   getFeed(query) {
     this.setState({reloading: true}, () => {
-      this.props.getFeed(query).then(() => {
-        this.setState({reloading: false});
+      this.props.clearFeed().then(() => {
+        this.setState({reloading: false, clearedField: true});
+        this.props.getFeed(query).then(() => {
+          this.setState({reloading: false, clearedField: false});
+        });
       });
     });
   }
@@ -89,14 +93,15 @@ class MainView extends Component {
   }
 
   _renderFeed() {
-    const {reloading} = this.state;
+    const {reloading, clearedField} = this.state;
     const tabLabel = this.props.query.type === 'relevant' ? 'BEST MATCH' : 'RECENT';
     return (
       <TabContent
         navigateTo={this.props.navigateTo}
         reloading={reloading}
         handleSwipeTab={this.handleSwipeTab.bind(this)}
-        tabLabel={tabLabel}/>
+        tabLabel={tabLabel}
+        clearedField={clearedField}/>
     );
   }
 
@@ -134,6 +139,7 @@ function bindActions(dispatch) {
   return {
     getFeed: (query) => dispatch(getFeed(query)),
     resetFeed: () => dispatch(resetFeed()),
+    clearFeed: () => dispatch(clearFeed()),
     loadMore: () => dispatch(loadMore()),
   };
 }
