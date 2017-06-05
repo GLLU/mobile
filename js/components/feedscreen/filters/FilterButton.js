@@ -79,7 +79,7 @@ class FilterButton extends BaseComponent {
 
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
-    this.logEvent('FeedScreen', {name: `filter ${this.props.filter.name} was clicked!`,selected:shouldSelect});
+    this.logEvent('FeedScreen', {name: `filter ${this.props.filter.name} was clicked!`,selected:`${shouldSelect}`});
     this.props.filter.selected = shouldSelect;
     this.props.onPress(filter);
     this.setState({selected: shouldSelect});
