@@ -146,16 +146,17 @@ class TabContent extends BaseComponent {
   }
 
   _renderLooks(looks) {
-    return looks.map((look, index) => {
+    return looks.map((look) => {
       return (
+        <View key={look.id}>
         <MediaContainer look={look}
-                        key={look.id}
-                        index={index}
                         currScroll={this.state.currentScrollPosition}
-                        likeUpdate={(data) => this.props.likeUpdate(data)}
-                        unLikeUpdate={(data) => this.props.likeUpdate(data)}
+                        likeUpdate={this.props.likeUpdate}
+                        unLikeUpdate={this.props.likeUpdate}
                         navigateTo={this.props.navigateTo}
-                        sendParisMessage={(message) => this.props.showParisBottomMessage(message)}/>
+                        sendParisMessage={this.props.showParisBottomMessage}
+                        navigation={this.props.cardNavigationStack}/>
+        </View>
       );
     });
   }
