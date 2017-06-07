@@ -50,13 +50,11 @@ const styles = StyleSheet.create({
 class NavigationBarView extends BaseComponent {
   static propTypes = {
     user: React.PropTypes.object,
-    handleSearchStatus: React.PropTypes.func,
     handleOpenPhotoModal: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
   }
 
   static defaultProps = {
-    handleSearchStatus: _.noop,
     handleOpenPhotoModal: _.noop,
     navigateTo: _.noop,
   }

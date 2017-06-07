@@ -83,11 +83,13 @@ export function clearFeed():Action {
 export function loadMore():Action {
   return (dispatch, getState) => {
     const state = getState().feed;
-    const nextPageNumber = state.query.page.number + 1;
+    const currPage = state.query.page.number
+    const nextPageNumber = currPage + 1;
     const newState = _.merge(state.query, {page: { number: nextPageNumber }});
     const params = parseQueryFromState(newState);
     return new Promise((resolve, reject) => {
-      if(state.flatLooksDataQueue.length > 0) {
+      console.log('currPage',currPage)
+      if(state.flatLooksDataQueue.length > 0 && currPage > 1) {
         const data = {looks: state.flatLooksDataQueue, meta: state.meta}
         dispatch(setFeedData({data, query: newState, loadMore: true}));
       }
