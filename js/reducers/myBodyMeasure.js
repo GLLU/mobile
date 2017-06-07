@@ -1,5 +1,3 @@
-import { COMPLETE_EDIT_BODY_MEASURE, SET_MIN_MAX_BODY_MEASURE } from '../actions/myBodyMeasure';
-
 // Data sample
 const sizeList = {
   female: {
@@ -93,27 +91,14 @@ const sizeList = {
   }
 };
 
-var commonSizeTypes = ['chest','waist','hips', 'height'];
-
-// Action Handlers
-const ACTION_HANDLERS = {
-
-  [SET_MIN_MAX_BODY_MEASURE]: (state, action) => {
-    return ({ ...state, sliderMinValue: action.payload.min,
-                        sliderMaxValue: action.payload.max})
-  }
-
-}
+const commonSizeTypes = ['chest','waist','hips', 'height'];
 
 // Reducer
 const initialState = {
   sizeList: sizeList,
   sizeTypes: commonSizeTypes,
-  sliderMinValue: 0,
-  sliderMaxValue: 400
 }
 
-export default function myBodyMeasureReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
-  return handler ? handler(state, action) : state
-}
+const myBodyMeasureReducer=()=>initialState;
+
+export default myBodyMeasureReducer
