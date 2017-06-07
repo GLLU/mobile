@@ -157,7 +157,7 @@ class MediaContainer extends BaseComponent {
   render() {
     const { look, index } = this.props
     return(
-      <View  onLayout={(e) => this.setLookPosition(e)}>
+      <View  >
         <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look, index)}
           {look.coverType === 'video' && Platform.OS === 'ios' ? this.renderVideoGrid(look) : null}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image,View } from 'react-native'
-import {  Button } from 'native-base';
+import { StyleSheet, Image, View, TouchableWithoutFeedback } from 'react-native'
 import * as _ from 'lodash';
 import BaseComponent from "../../common/base/BaseComponent";
 
@@ -64,9 +63,12 @@ class FilterButton extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      selected: nextProps.filter.selected
-    })
+    if(nextProps.filter.selected !== this.state.selected){
+      this.setState({
+        selected: nextProps.filter.selected
+      })
+    }
+
   }
 
   _renderIcon(icon, selected) {
@@ -80,9 +82,11 @@ class FilterButton extends BaseComponent {
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
     this.logEvent('FeedScreen', {name: `filter ${this.props.filter.name} was clicked!`,selected:`${shouldSelect}`});
-    this.props.filter.selected = shouldSelect;
-    this.props.onPress(filter);
-    this.setState({selected: shouldSelect});
+
+    this.setState({selected: shouldSelect}, () => {
+      this.props.filter.selected = shouldSelect;
+      this.props.onPress(filter);
+    });
   }
 
   getHiglight(shouldHighlight) {
@@ -92,20 +96,22 @@ class FilterButton extends BaseComponent {
         borderBottomWidth: 3
       }
     }
-    return {}
+    return null
   }
+
 
   render() {
     const {filter} = this.props;
     const {selected} = this.state;
+
     return (
       <View style={[styles.categoryItem, this.getHiglight(selected && this.props.activeStyle.underline)]}>
-        <Button
+        <TouchableWithoutFeedback
           transparent
           onPress={() => this.handlePressItem(filter)}
           style={StyleSheet.flatten(styles.btnCategoryItem)}>
           {this._renderIcon(filter.icon, selected)}
-        </Button>
+        </TouchableWithoutFeedback>
       </View>
     );
   }

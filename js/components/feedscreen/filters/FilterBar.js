@@ -106,7 +106,7 @@ class FilterBar extends BaseComponent {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadCategories();
   }
 

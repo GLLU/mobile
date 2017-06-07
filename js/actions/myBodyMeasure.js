@@ -1,7 +1,6 @@
 import rest from '../api/rest';
 //  Constants
-export const COMPLETE_EDIT_BODY_MEASURE = 'COMPLETE_EDIT_BODY_MEASURE'
-export const SAVE_USER_SIZE = 'SAVE_USER_SIZE'
+export const COMPLETE_EDIT_BODY_MEASURE = 'COMPLETE_EDIT_BODY_MEASURE';
 
 import { hideBodyTypeModal } from './myBodyType';
 
