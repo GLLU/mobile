@@ -1,12 +1,6 @@
-
-import type { Action } from '../actions/types';
 import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN, SET_INVITATION_IS_USED, SET_INVITATION_SHARE_TOKEN, HIDE_TUTORIAL } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants';
-
-export type State = {
-    name: string
-}
 
 const initialState = {
   id: -1,

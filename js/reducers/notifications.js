@@ -1,5 +1,6 @@
 import * as actions from '../actions/notifications';
 import { notificationMapper } from '../mappers/notificationsMapper'
+import * as _ from "lodash";
 
 const initialState = {
   page: 0,

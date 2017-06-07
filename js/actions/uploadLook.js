@@ -1,4 +1,3 @@
-export const ADD_NEW_LOOK = 'ADD_NEW_LOOK';
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
@@ -86,6 +85,7 @@ export function addNewLook(image) {
     });
   }
 }
+
 export function editNewLook(lookId) {
   return (dispatch, getState) => {
     dispatch(showProcessing());

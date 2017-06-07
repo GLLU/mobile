@@ -1,4 +1,5 @@
 import { SET_USER_LOOKS_DATA, SET_USER_LOOKS } from '../actions/looks';
+import * as _ from "lodash";
 
 const initialState = {
   userLooksData: [],
