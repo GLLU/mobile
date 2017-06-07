@@ -227,7 +227,7 @@ class TabContent extends BaseComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{width: deviceWidth / 2, height: deviceWidth / 4, marginVertical: 3}}>
-          <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
                  style={{width: deviceWidth / 2-6, height: deviceWidth / 4, borderRadius: 10, alignSelf: 'center'}}
                  resizeMode={'stretch'}/>
         </View>
@@ -235,7 +235,7 @@ class TabContent extends BaseComponent {
     } else {
       return (
         <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
-          <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
                  style={{width: deviceWidth / 2, height: deviceWidth / 4}}
                  resizeMode={'stretch'}/>
           <MediaBorderPatch />
