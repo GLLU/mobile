@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform,View , TouchableWithoutFeedback, TouchableOpacity, InteractionManager } from 'react-native'
 import { Icon } from 'native-base';
-import { connect } from 'react-redux';
 import BaseComponent from '../common/base/BaseComponent';
 import SearchBar from './SearchBar';
 
@@ -55,26 +54,35 @@ class SearchBarView extends BaseComponent {
   static propTypes = {
     user: React.PropTypes.object,
     handleSearchStatus: React.PropTypes.func,
-    handleOpenPhotoModal: React.PropTypes.func,
+    searchStatus: React.PropTypes.bool,
+
   }
 
   constructor(props) {
     super(props);
+    this.openSearch = this.openSearch.bind(this)
     this.state = {
       hasNotify: false,
       searchStatus: false
     };
   }
 
-  openCamera() {
-    this.logEvent('Feedscreen', { name: 'Open Camera click' });
-    this.props.handleOpenPhotoModal();
+  openSearch() {
+    this.logEvent('Feedscreen', { name: 'Search click' });
+    //this.setState({searchStatus: !this.state.searchStatus})
+    this.props.handleSearchStatus();
   }
 
-  openSearch() {
+  trytry() {
+    console.log('112222')
     this.props.handleSearchStatus();
-    this.setState({searchStatus: !this.state.searchStatus})
-    this.logEvent('Feedscreen', { name: 'Search click' });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.searchStatus !== prevState.searchStatus ) {
+      console.log('12')
+      //this.trytry()
+    }
   }
 
   render() {
@@ -90,8 +98,8 @@ class SearchBarView extends BaseComponent {
                      clearText={this.props.clearText} />
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <TouchableWithoutFeedback transparent onPress={() => this.openSearch()} style={styles.btnFilter}>
-            <Icon name={this.state.searchStatus ? "ios-close-circle-outline" : "ios-options-outline" } style={StyleSheet.flatten(styles.smallBtn)}/>
+          <TouchableWithoutFeedback transparent onPress={this.openSearch} style={styles.btnFilter}>
+            <Icon name={this.props.searchStatus ? "ios-close-circle-outline" : "ios-options-outline" } style={StyleSheet.flatten(styles.smallBtn)}/>
           </TouchableWithoutFeedback>
         </View>
       </View>
@@ -99,10 +107,4 @@ class SearchBarView extends BaseComponent {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.user,
-  }
-};
-
-export default connect(mapStateToProps)(SearchBarView);
+export default SearchBarView;

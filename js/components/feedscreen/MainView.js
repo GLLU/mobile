@@ -25,6 +25,7 @@ class MainView extends Component {
 
   constructor(props) {
     super(props);
+    this.handleSwipeTab = this.handleSwipeTab.bind(this)
     this.state = {
       locked: false,
       isOpen: false,
@@ -49,24 +50,13 @@ class MainView extends Component {
     })
   }
 
-  preloadLookImages(looks) {
-    Utils.preloadLookImages(looks).then(() => {
-      this.setState({reloading: false});
-    }).catch(err => {
-      console.log('something wrong with preload image', err);
-      this.setState({reloading: false});
-    });
-  }
-
   getFeed(query) {
-    this.setState({reloading: true}, () => {
       this.props.clearFeed().then(() => {
-        this.setState({reloading: false, clearedField: true});
+        this.setState({ clearedField: true});
         this.props.getFeed(query).then(() => {
-          this.setState({reloading: false, clearedField: false});
+          this.setState({ clearedField: false});
         });
       });
-    });
   }
 
   resetFeed() {
@@ -99,7 +89,7 @@ class MainView extends Component {
       <TabContent
         navigateTo={this.props.navigateTo}
         reloading={reloading}
-        handleSwipeTab={this.handleSwipeTab.bind(this)}
+        handleSwipeTab={this.handleSwipeTab}
         tabLabel={tabLabel}
         clearedField={clearedField}/>
     );
