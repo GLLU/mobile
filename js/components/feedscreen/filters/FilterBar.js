@@ -88,8 +88,6 @@ class FilterBar extends BaseComponent {
   static propTypes = {
     loadCategories: React.PropTypes.func,
     categories: React.PropTypes.array,
-    minPrice: React.PropTypes.number,
-    maxPrice: React.PropTypes.number,
     type: React.PropTypes.string,
     filterFeed: React.PropTypes.func,
     clearFilter: React.PropTypes.func,
@@ -254,9 +252,7 @@ const mapStateToProps = state => {
   return {
     categories: categories,
     bodyTypes: bodyTypes,
-    query: state.feed.query,
-    minPrice: state.filters.minPrice,
-    maxPrice: state.filters.maxPrice
+    query: state.feed.query
   }
 };
 

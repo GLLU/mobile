@@ -13,9 +13,6 @@ import {
     addDescription,
     addUrl,
     addLocation,
-    addTrustLevel,
-    addPhotosVideo,
-    toggleOccasionTag,
     addItemTag,
     removeItemTag,
 } from '../../actions';
@@ -140,7 +137,6 @@ class StepThreePublish extends BaseComponent {
       video: '',
       videoUrl: '',
       location: 'us',
-      trustLevel: '0',
       confirm: false,
       imageOverlayVisible: false,
       urlOverlayVisible: false,
@@ -155,9 +151,6 @@ class StepThreePublish extends BaseComponent {
     switch (key) {
       case 'location':
         this.props.addLocation(value);
-        break;
-      case 'trustLevel':
-        this.props.addTrustLevel(value);
         break;
       case 'url':
         this.setState({
@@ -440,7 +433,6 @@ function bindActions(dispatch) {
     addDescription: (description) => dispatch(addDescription(description)),
     addUrl: (url, itemId) => dispatch(addUrl(url, itemId)),
     addLocation: (location) => dispatch(addLocation(location)),
-    addTrustLevel: (number) => dispatch(addTrustLevel(number)),
     addItemTag: (name, itemId) => dispatch(addItemTag(name, itemId)),
     removeItemTag: (name, itemId) => dispatch(removeItemTag(name, itemId)),
   };

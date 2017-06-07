@@ -1,5 +1,3 @@
-
-import type { Action } from '../actions/types';
 import { SHOW_PARIS_BOTTOM_MESSAGE, HIDE_PARIS_BOTTOM_MESSAGE } from '../actions/paris';
 
 const initialState = {

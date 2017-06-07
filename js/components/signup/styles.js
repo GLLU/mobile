@@ -127,16 +127,6 @@ module.exports = StyleSheet.create({
   validationPassed: {
     backgroundColor: '#009688'
   },
-  countrySelectView: {
-    flex:1,
-  },
-  countrySelectInput: {
-    padding:10,
-    height:40,
-    color: '#FFFFFF',
-    paddingLeft: 20,
-    marginLeft: 10
-  },
   alreadyBox: {
     alignSelf: 'center',
     flexDirection:'row',
