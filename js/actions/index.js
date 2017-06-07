@@ -11,7 +11,7 @@ import { getNotifications, goToNotificationSubjectScreen, markAsReadNotification
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData, getUserLooks } from './looks';
-import { getFeed, resetFeed, loadMore } from './feed';
+import { getFeed, resetFeed, loadMore, clearFeed } from './feed';
 import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import {
   addNewLook,
@@ -84,6 +84,7 @@ export {
   getStats,
   checkLogin,
   logout,
+  clearFeed,
   loginViaFacebook,
   addItemType,
   createBrandName,

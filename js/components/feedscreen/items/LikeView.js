@@ -80,7 +80,7 @@ class LikeView extends Component {
           <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
             <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()}>
               <View>
-                <Text style={styles.countLikeLabel}>{this.state.likes}</Text>
+                <Text style={styles.countLikeLabel}>{`${this.state.likes}`}</Text>
               </View>
             </TouchableWithoutFeedback>
           </Col>

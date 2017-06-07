@@ -65,15 +65,11 @@ class TabContent extends BaseComponent {
   componentDidMount() {
     let that = this
     setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
-    this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
+    //this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.cardNavigationStack.length < 2) {
-      const total = nextProps.meta.total;
-      this.setState({
-        total,
-      });
 
       // show modal after done loading for 3 seconds
       if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
@@ -81,6 +77,12 @@ class TabContent extends BaseComponent {
           setTimeout(() => {this.showBodyModal();}, 3000);
         }
       }
+    }
+    if(nextProps.clearedField){
+      this.contentHeight = 0
+      this.contentHeight = 0
+      this.currPosition = 0
+      this.setState({noMoreData: false})
     }
 
   }
@@ -113,6 +115,7 @@ class TabContent extends BaseComponent {
 
   loadMore() {
     if (this.state.isLoading) {
+      console.log('already isLoading')
       return;
     }
     const {meta: {total}, query} = this.props;

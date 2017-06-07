@@ -5,9 +5,10 @@ import { Image, TouchableWithoutFeedback, Linking, StyleSheet, View, Text, Touch
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
-import { invitationCheckExistance, requestInvitation } from '../../actions/user';
+import { invitationCheckExistance, requestInvitation, loginViaFacebook } from '../../actions/user';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
+import Utils from '../../utils'
 import {
   TERMS_URL,
   PRIVACY_URL,
@@ -127,8 +128,10 @@ class ActivationCodeScreen extends BasePage {
       }
       case 'facebook': {
         Utils.loginWithFacebook()
-          .then((data) => this.props.loginViaFacebook(data))
-          .catch((err) => console.log('facebook login Error', err))
+          .then((data) => this.props.loginViaFacebook(data)
+            .then(user=>this.resetTo('feedscreen',user))
+            .catch((err) => console.log('facebook login Error',err)))
+          .catch((err) => console.log('facebook login Error',err))
         break;
       }
       default:
@@ -268,6 +271,7 @@ function bindAction(dispatch) {
   return {
       invitationCheckExistance: (code, continueTo) => dispatch(invitationCheckExistance(code, continueTo)),
       requestInvitation: (data) => dispatch(requestInvitation(data)),
+      loginViaFacebook: data => dispatch(loginViaFacebook(data)),
   };
 }
 
