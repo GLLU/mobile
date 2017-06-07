@@ -7,7 +7,6 @@ import {
   SET_TAG_POSITION,
   ADD_ITEM_TYPE,
   ADD_BRAND_NAME,
-  ADD_ITEM_SIZE_COUNTRY,
   ADD_ITEM_SIZE,
   ADD_ITEM_TAG,
   REMOVE_ITEM_TAG,
@@ -102,15 +101,6 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       items: mutateItem(state, 'brand', null, action.payload)
-    }
-  },
-  [ADD_ITEM_SIZE_COUNTRY]: (state, action) => {
-    const { itemSizeRegion, itemSizeValue } = action.payload;
-    state.items = mutateItem(state, 'itemSizeRegion', itemSizeRegion, action.payload.id)
-    state.items = mutateItem(state, 'itemSizeValue', itemSizeValue, action.payload.id)
-    return {
-      ...state,
-      items: state.items,
     }
   },
   [ADD_ITEM_SIZE]: (state, action) => {

@@ -7,7 +7,6 @@ export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
 export const REMOVE_BRAND_NAME = 'REMOVE_BRAND_NAME';
-export const ADD_ITEM_SIZE_COUNTRY = 'ADD_ITEM_SIZE_COUNTRY';
 export const ADD_ITEM_SIZE = 'ADD_ITEM_SIZE';
 export const ADD_ITEM_TAG = 'ADD_ITEM_TAG';
 export const ADD_ITEM_OCCASION_TAG = 'ADD_ITEM_OCCASION_TAG';
@@ -342,21 +341,6 @@ export function removeBrandName(itemId) {
     type: REMOVE_BRAND_NAME,
     payload: itemId
   };
-}
-
-export function addItemSizeCountry(region) {
-  return (dispatch, getState) => {
-    const itemSizes = getState().filters.itemSizes;
-    const sizesByCountry = _.filter(itemSizes, x => x.region == region);
-    const itemSizeValue = sizesByCountry.length > 0 ? _.first(sizesByCountry.map(x => x.value)) : null;
-    return dispatch({
-      type: ADD_ITEM_SIZE_COUNTRY,
-      payload: {
-        itemSizeRegion: region,
-        itemSizeValue,
-      }
-    });
-  }
 }
 
 export function addItemSize(payload) {

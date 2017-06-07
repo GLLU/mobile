@@ -20,11 +20,6 @@ const initialState = {
   occasion_tags: [],
   categories: [],
   brands: [],
-  countries: [
-    {name: 'us', text: 'US', icon: require('../../images/flags/us.png')},
-    {name: 'uk', text: 'UK', icon: require('../../images/flags/uk.png')},
-    {name: 'eu', text: 'EU', icon: require('../../images/flags/eu.png')},
-  ],
   itemSizes: [],
   currencies: [
     {name: '£ GBP', value: 'LGP'},
