@@ -65,7 +65,7 @@ class TabContent extends BaseComponent {
   componentDidMount() {
     let that = this
     setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
-    //this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
+    this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
   }
 
   componentWillReceiveProps(nextProps) {
