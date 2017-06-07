@@ -10,19 +10,15 @@ import {
   ADD_ITEM_SIZE,
   ADD_ITEM_TAG,
   REMOVE_ITEM_TAG,
-  ADD_ITEM_CURRENCY,
-  ADD_ITEM_PRICE,
   ADD_SHARING_INFO,
   ADD_DESCRIPTION,
   ADD_ITEM_URL,
   ADD_LOCATION,
-  ADD_TRUST_LEVEL,
   ADD_PHOTOS_VIDEO,
   ADD_ITEM_OCCASION_TAG,
   REMOVE_ITEM_OCCASION_TAG,
   REMOVE_BRAND_NAME,
 } from '../actions/uploadLook';
-import { SET_ITEM_SIZES, SET_CATEGORIES } from '../actions/filters';
 import { lookMapper, itemMapper } from '../mappers/';
 
 const mutateItem = function(state, key, value, id) {
@@ -127,18 +123,6 @@ const ACTION_HANDLERS = {
       items: mutateItem(state, 'tags', tags, action.payload.itemId)
     }
   },
-  [ADD_ITEM_CURRENCY]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'currency', action.payload, action.payload.id)
-    }
-  },
-  [ADD_ITEM_PRICE]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'price', action.payload, action.payload.id)
-    }
-  },
   [ADD_ITEM_URL]: (state, action) => {
     return {
       ...state,
@@ -165,43 +149,12 @@ const ACTION_HANDLERS = {
       description: action.payload
     }
   },
-  [ADD_TRUST_LEVEL]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'trustLevel', action.payload)
-    }
-  },
   [ADD_PHOTOS_VIDEO]: (state, action) => {
     const photos = state.photos;
     photos.push({path: action.payload.path, data: action.payload.data});
     return {
       ...state,
       items: mutateItem(state, 'photos', photos),
-    }
-  },
-  // [SET_CATEGORIES]: (state, action) => {
-  //   const categories = _.filter(action.payload.tags, (item) => item.parent_id == null);
-  //   const category = categories[parseInt(categories.length / 2)].id;
-  //   return {
-  //     ...state,
-  //     items: mutateItem(state, 'category', category)
-  //   }
-  // },
-  [SET_ITEM_SIZES]: (state, action) => {
-    const sizes = action.payload.sizes;
-    if (sizes.length > 0 && !state.itemSizeRegion && !state.itemSizeValue) {
-      const item = _.first(sizes);
-      const itemSizeRegion = item.region;
-      const itemSizeValue = item.value;
-      state.items = mutateItem(state, 'itemSizeRegion', itemSizeRegion)
-      state.items = mutateItem(state, 'itemSizeValue', itemSizeValue)
-      return {
-        ...state,
-        items: state.items
-      }
-    }
-    return {
-      ...state,
     }
   },
   [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {

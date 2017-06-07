@@ -1,8 +1,8 @@
 import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
 import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
 import { showParisBottomMessage, hideParisBottomMessage } from './paris';
-import { loadCategories, loadBrands, loadItemSizes, loadOccasionTags } from './filters';
-import { setMinMax, completeEdit, saveUserSize } from './myBodyMeasure';
+import { loadCategories, loadBrands, loadOccasionTags } from './filters';
+import { completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
 import { getLookLikes, initLookLikes } from './lookLikes';
@@ -29,13 +29,10 @@ import {
   addItemSize,
   addItemTag,
   removeItemTag,
-  addItemCurrency,
-  addItemPrice,
   addSharingInfo,
   addDescription,
   addUrl,
   addLocation,
-  addTrustLevel,
   addPhotosVideo,
   toggleOccasionTag,
 } from './uploadLook';
@@ -61,10 +58,8 @@ export {
   loadCategories,
   loadOccasionTags,
   loadBrands,
-  loadItemSizes,
   showParisBottomMessage,
   hideParisBottomMessage,
-  setMinMax,
   completeEdit,
   saveUserSize,
   getUserBodyType,
@@ -92,13 +87,10 @@ export {
   addItemSize,
   addItemTag,
   removeItemTag,
-  addItemCurrency,
-  addItemPrice,
   addSharingInfo,
   addDescription,
   addUrl,
   addLocation,
-  addTrustLevel,
   toggleOccasionTag,
   addPhotosVideo,
   showLoader,

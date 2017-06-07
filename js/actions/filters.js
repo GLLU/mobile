@@ -1,13 +1,9 @@
 import type { Action } from '../actions/types';
 import rest from '../api/rest';
 import Utils from '../utils';
-import { readEndpoint, setHeaders } from 'redux-json-api';
 
-export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
-export const LOAD_BRANDS = 'LOAD_BRANDS';
 export const SET_BRANDS = 'SET_BRANDS';
-export const SET_ITEM_SIZES = 'SET_ITEM_SIZES';
 export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
 
 export function loadCategories():Action {
@@ -50,27 +46,6 @@ export function loadBrands(term):Action {
             payload: data
           });
           resolve(data.brands);
-        } else {
-          reject(err);
-        }
-      }));
-    });
-  };
-}
-
-export function loadItemSizes(categoryId):Action {
-  return (dispatch) => {
-    const params = {
-      tag_id: categoryId
-    };
-
-    return new Promise((resolve, reject) => {
-      return dispatch(rest.actions.sizes(params, (err, data) => {
-        if (!err && data) {
-          resolve(dispatch({
-            type: SET_ITEM_SIZES,
-            payload: data
-          }));
         } else {
           reject(err);
         }

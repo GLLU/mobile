@@ -12,19 +12,16 @@ export const ADD_ITEM_TAG = 'ADD_ITEM_TAG';
 export const ADD_ITEM_OCCASION_TAG = 'ADD_ITEM_OCCASION_TAG';
 export const REMOVE_ITEM_OCCASION_TAG = 'REMOVE_ITEM_OCCASION_TAG';
 export const REMOVE_ITEM_TAG = 'REMOVE_ITEM_TAG';
-export const ADD_ITEM_CURRENCY = 'ADD_ITEM_CURRENCY';
-export const ADD_ITEM_PRICE = 'ADD_ITEM_PRICE';
 export const ADD_SHARING_INFO = 'ADD_SHARING_INFO';
 export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
-export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 
 import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
-import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
+import { showLoader, hideLoader, loadBrands, showProcessing, hideProcessing } from './index';
 import itemMapper from '../mappers/itemMapper';
 import Utils from '../utils';
 
@@ -229,11 +226,10 @@ export function updateLookItem() {
     const state = getState();
     const { lookId, itemId, items } = state.uploadLook;
     const item = itemId ? _.find(items, item => item.id === itemId) : null;
-    const { currency, price, brand, category, locationX, locationY } = item;
+    const { price, brand, category, locationX, locationY } = item;
     const brand_id = brand ? brand.id : undefined;
     const category_id = category ? category.id : undefined;
     const params = {
-      currency,
       price,
       brand_id,
       category_id,
@@ -279,7 +275,6 @@ export function addItemType(categoryItem, itemId) {
         type: ADD_ITEM_TYPE,
         payload
       });
-      dispatch(loadItemSizes(categoryItem.id));
       dispatch(addItemTag(categoryItem.name, itemId)).catch(err => {
         console.log('do nothing');
       });
@@ -396,20 +391,6 @@ export function removeItemTag(tag, itemId) {
   };
 }
 
-export function addItemCurrency(payload) {
-  return {
-    type: ADD_ITEM_CURRENCY,
-    payload: payload
-  }
-}
-
-export function addItemPrice(payload) {
-  return {
-    type: ADD_ITEM_PRICE,
-    payload: payload
-  }
-}
-
 export function addSharingInfo(type, url) {
   return {
     type: ADD_SHARING_INFO,
@@ -463,13 +444,6 @@ export function addUrl(url, itemId) {
 export function addLocation(payload) {
   return {
     type: ADD_LOCATION,
-    payload: payload
-  }
-}
-
-export function addTrustLevel(payload) {
-  return {
-    type: ADD_TRUST_LEVEL,
     payload: payload
   }
 }
