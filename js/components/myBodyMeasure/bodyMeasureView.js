@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import { View, Text, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
-import Icon from 'react-native-vector-icons/EvilIcons';
 import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';
 import myStyles from './styles';
-import Utils from '../../utils';
 import convert from 'convert-units';
 import { completeEdit } from '../../actions/myBodyMeasure';
 import _ from 'lodash';
@@ -17,16 +15,9 @@ class BodyMeasureView extends BaseComponent {
     super(props);
     this.onSizeChange=this.onSizeChange.bind(this);
     this.state = {
-      isEdit: false,
-      typeEdit: null, // 'chest','hip','height'
       isInchSelect: false,
       currentSize: Object.assign({} , this.props.userSize && !_.isEmpty(this.props.userSize) ? this.props.userSize : this.props.sizeList[this.props.gender][this.props.bodyType.body_type]),
       sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.body_type],
-      // edit
-      sizeInitValue: 0,
-      sizeValue: 0,
-      sliderMaxValue: 0,
-      sliderMinValue: 0,
     }
   }
 
@@ -37,8 +28,6 @@ class BodyMeasureView extends BaseComponent {
     // redux
     sizeList: React.PropTypes.object,
     sizeTypes: React.PropTypes.array,
-    sliderMinValue: React.PropTypes.number,
-    sliderMaxValue: React.PropTypes.number,
     completeEdit: React.PropTypes.func,
   }
 
@@ -51,7 +40,7 @@ class BodyMeasureView extends BaseComponent {
     this.props.completeEdit(currentSize);
   }
 
-  __convertCmAndInc(obj, fromScale, toScale) {
+  convertCmAndInch(obj, fromScale, toScale) {
     this.props.sizeTypes.map((sizeType) => {
       let value = obj[sizeType];
       obj[sizeType] = Math.round(convert(value).from(fromScale).to(toScale));
@@ -67,10 +56,8 @@ class BodyMeasureView extends BaseComponent {
     let toScale = inchSelected ? 'cm' :'in';
     let currentSizeConverted = this.state.currentSize;
     if(toScale !== currentSizeConverted.measurements_scale) {
-        currentSizeConverted = this.__convertCmAndInc(this.state.currentSize, fromScale, toScale);
-        let sizeValue = convert(this.state.sizeValue).from(fromScale).to(toScale);
-        this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted,
-            sizeValue: sizeValue, sizeInitValue: sizeValue});
+        currentSizeConverted = this.convertCmAndInch(this.state.currentSize, fromScale, toScale);
+        this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted});
     }
   }
 
@@ -113,7 +100,7 @@ class BodyMeasureView extends BaseComponent {
           </View>
         </Col>
         <Col style={myStyles.sizeListContainer}>
-            {this.state.isEdit ?  this._renderEditView() : this._renderMainView() }
+          {this._renderMainView()}
         </Col>
       </Grid>
     )
@@ -129,8 +116,6 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   sizeList: state.myBodyMeasure.sizeList,
   sizeTypes: state.myBodyMeasure.sizeTypes,
-  sliderMinValue: state.myBodyMeasure.sliderMinValue,
-  sliderMaxValue: state.myBodyMeasure.sliderMaxValue
 });
 
 export default connect(mapStateToProps, bindAction)(BodyMeasureView);
