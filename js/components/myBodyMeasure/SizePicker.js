@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { View, Text, TouchableOpacity, Image, TouchableWithoutFeedback, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';

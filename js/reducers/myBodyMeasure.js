@@ -97,10 +97,8 @@ const commonSizeTypes = ['chest','waist','hips', 'height'];
 const initialState = {
   sizeList: sizeList,
   sizeTypes: commonSizeTypes,
-  sliderMinValue: 0,
-  sliderMaxValue: 400
 }
 
-export default function myBodyMeasureReducer (state = initialState, action) {
-  return state
-}
+const myBodyMeasureReducer=()=>initialState;
+
+export default myBodyMeasureReducer
