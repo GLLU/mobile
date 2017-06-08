@@ -1,6 +1,5 @@
 import type { Action } from './types';
-import { createEntity, setAccessToken } from 'redux-json-api';
-import { showLoader, hideLoader, showError, hideError, showFatalError, hideFatalError } from './index';
+import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
@@ -314,13 +313,17 @@ export function checkLogin(user) {
 
 export function changeUserAboutMe(data) {
   return (dispatch) => {
-    dispatch(showLoader());
-    dispatch(rest.actions.changeUserAboutMe.put({id: data.id}, {body: JSON.stringify(data)}, (err, data) => {
-      if (!err) {
-        dispatch(setUser(data.user));
-        dispatch(hideLoader());
-      }
-    }))
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.changeUserAboutMe.put({id: data.id}, {body: JSON.stringify(data)}, (err, data) => {
+        if (!err && data) {
+          dispatch(setUser(data.user));
+          resolve(data.user);
+        }
+        else {
+          reject(err)
+        }
+      }))
+    })
   }
 }
 
@@ -328,13 +331,11 @@ export function changeUserAvatar(data) {
   const image = data.image;
   const id = data.id;
   return (dispatch, getState) => {
-    dispatch(showLoader());
     return new Promise((resolve, reject) => {
       const user = getState().user;
       if (user && user.id != -1) {
         Utils.postMultipartForm(api_key, `/users/${id}`, [], 'user[avatar]', image, 'PUT').then(data => {
           resolve(dispatch(setUser(data.user)));
-          dispatch(hideLoader());
         }).catch(reject);
       } else {
         reject('Authorization error')

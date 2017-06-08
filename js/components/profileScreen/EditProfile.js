@@ -17,6 +17,7 @@ import Modal from 'react-native-modalbox';
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 import BodyTypePicker from "../myBodyType/BodyTypePicker";
+import SpinnerSwitch from "../loaders/SpinnerSwitch";
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 
@@ -32,9 +33,11 @@ class EditProfile extends BasePage {
   constructor(props) {
     super(props);
     this.toggleBodyTypeModal=this.toggleBodyTypeModal.bind(this);
+    this._saveChanges=this._saveChanges.bind(this);
     this.state = {
       about_me: this.props.user.about_me ? this.props.user.about_me : '',
-      modalShowing:false
+      modalShowing:false,
+      isUpdating: false
     }
   }
 
@@ -48,8 +51,14 @@ class EditProfile extends BasePage {
       height: user.user_size.height,
       measurements_scale: user.user_size.measurements_scale
     };
-    this.props.changeUserAboutMe({id: this.props.user.id, about_me: this.state.about_me});
-    this.props.saveUserSize(measurements).then(this.goBack);
+    this.setState({isUpdating:true},()=>{
+      Promise.all([
+        this.props.changeUserAboutMe({id: this.props.user.id, about_me: this.state.about_me}),
+        this.props.saveUserSize(measurements)
+      ]).then(this.goBack)
+        .catch((err)=>console.log(err));
+    })
+
   }
 
   _changeUserAvatar() {
@@ -65,8 +74,9 @@ class EditProfile extends BasePage {
     const data = {
       image,
       id: this.props.user.id
-    }
-    this.props.changeUserAvatar(data);
+    };
+    this.props.changeUserAvatar(data)
+
   }
 
   _handleAboutMeTextInput(text) {
@@ -116,6 +126,7 @@ class EditProfile extends BasePage {
                position={"top"}>
           <BodyTypePicker goBack={()=>this.toggleBodyTypeModal(false)} onPick={()=>this.toggleBodyTypeModal(false)}/>
         </Modal>
+        {this.state.isUpdating?<SpinnerSwitch/>:null}
       </View>
     )
   }
