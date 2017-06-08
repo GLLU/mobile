@@ -1,4 +1,4 @@
-import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
+import { showProcessing, hideProcessing } from './loader';
 import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
 import { showParisBottomMessage, hideParisBottomMessage } from './paris';
 import { loadCategories, loadBrands, loadOccasionTags } from './filters';
@@ -93,8 +93,6 @@ export {
   addLocation,
   toggleOccasionTag,
   addPhotosVideo,
-  showLoader,
-  hideLoader,
   showProcessing,
   hideProcessing,
   showError,
