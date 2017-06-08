@@ -41,16 +41,10 @@ class ItemButton extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    navigateTo: (route, homeRoute, optional) => dispatch(navigateTo(route, homeRoute, optional)),
-  };
-}
-
 const mapStateToProps = state => {
   return {
     categories: state.filters.categories,
   };
 };
 
-export default connect(mapStateToProps, bindAction)(ItemButton);
+export default connect(mapStateToProps)(ItemButton);

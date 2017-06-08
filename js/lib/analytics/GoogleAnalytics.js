@@ -20,7 +20,6 @@ class GoogleAnalytics extends BaseAnalytic {
   }
 
   setUser(user) {
-    console.log('GoogleAnalytics.setUser', user);
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
         this.tracker.setUser(this.encryptUserId(user.id));
@@ -29,16 +28,13 @@ class GoogleAnalytics extends BaseAnalytic {
   }
 
   trackScreen(name, params = {}) {
-    console.log('GoogleAnalytics.trackScreen', name, params, params.page);
     this.tracker.trackScreenView(params.page);
   }
 
   endTrackScreen(name, params = {}) {
-    console.log("GoogleAnalytics no tracking for this method", name, params);
   }
 
   logEvent(name, params = {}, timed = false) {
-    console.log('GoogleAnalytics.logEvent', name, params, timed);
     const action = params.name || name;
     delete params['name']
     if (!_.isEmpty(params)) {
