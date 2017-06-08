@@ -11,6 +11,10 @@ export default class LikeButton extends Component {
     super(props);
     this._onNumberPress = this._onNumberPress.bind(this);
     this._onIconPress = this._onIconPress.bind(this);
+    this.state = {
+      isLiked: props.isLiked,
+      likes: props.likes
+    }
   }
 
   static propTypes = {
@@ -24,8 +28,12 @@ export default class LikeButton extends Component {
   };
 
   _onIconPress() {
-    const shouldActive = !this.props.isActive;
-    this.props.onIconPress(shouldActive);
+    const { likes, isLiked } = this.state
+    this.setState({isLiked: !isLiked, likes: isLiked ? likes-1 : likes+1})
+    const shouldActive = !this.state.isLiked;
+    let that = this;
+    setTimeout(() => {that.props.onIconPress(shouldActive);}, 1000);
+
   }
 
   _onNumberPress() {
@@ -35,18 +43,24 @@ export default class LikeButton extends Component {
 
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if(nextProps.isLiked !== this.state.isLiked) {
+  //     this.setState({isLiked: nextProps.isLiked, likes: nextProps.likes})
+  //   }
+  // }
+
   render() {
     return (
     <View style={[styles.footerButton,{padding: 0, width: 35, alignSelf: 'center'}]}>
         <View style={[ {flexDirection: 'column', padding: 0}]}>
           <TouchableOpacity  onPress={this._onIconPress}>
-            <Image source={this.props.isLiked ? likeClickedImage : likeImage}
+            <Image source={this.state.isLiked ? likeClickedImage : likeImage}
                    style={[styles.footerButtonIcon,{width: 35, height: 35}]}/>
           </TouchableOpacity>
           <View style={{height:1}}/>
           <TouchableWithoutFeedback  onPress={this._onNumberPress}>
             <View>
-              <Text style={styles.footerButtonText}>{`${this.props.likes}`}</Text>
+              <Text style={styles.footerButtonText}>{`${this.state.likes}`}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>

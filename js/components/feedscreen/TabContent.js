@@ -69,7 +69,7 @@ class TabContent extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.cardNavigationStack.length < 2) {
+    if(this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
 
       // show modal after done loading for 3 seconds
       if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
@@ -145,8 +145,17 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
+  getLookDimensions(look) {
+    const colW = (deviceWidth) / 2;
+    const {width, height} = look;
+    const lookWidth = colW;
+    const lookHeight = height / width * colW;
+    return {lookWidth, lookHeight}
+  }
+
   _renderLooks(looks) {
     return looks.map((look) => {
+      const dimensions = this.getLookDimensions(look)
       return (
         <View key={look.id}>
         <MediaContainer look={look}
@@ -155,7 +164,8 @@ class TabContent extends BaseComponent {
                         unLikeUpdate={this.props.likeUpdate}
                         navigateTo={this.props.navigateTo}
                         sendParisMessage={this.props.showParisBottomMessage}
-                        navigation={this.props.cardNavigationStack}/>
+                        navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
+                        dimensions={dimensions}/>
         </View>
       );
     });
@@ -322,32 +332,19 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const flatLooks = mapImages(state.feed.flatLooksData);
   const user_size = hasUserSize ? state.user.user_size : '';
   return {
     modalShowing: state.myBodyType.modalShowing,
-    flatLooks: flatLooks,
+    flatLooks: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
     hasUserSize,
     user_size: user_size,
     user_gender: state.user.gender,
-    cardNavigationStack: state.cardNavigation.routes,
+    cardNavigationStack: state.cardNavigation,
     shareToken: state.user.invitation_share_token,
     userName: state.user.name
   }
 };
-
-const mapImages = (looks) => {
-  let images = _.cloneDeep(looks) || [];
-  const colW = (deviceWidth) / 2;
-  images = _.filter(images, x => x.width && x.height).map((look) => {
-    const {width, height} = look;
-    look.width = colW;
-    look.height = height / width * colW;
-    return look;
-  });
-  return images;
-}
 
 export default connect(mapStateToProps, bindActions)(TabContent);
