@@ -12,7 +12,6 @@ import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData, getUserLooks } from './looks';
 import { getFeed, resetFeed, loadMore, clearFeed } from './feed';
-import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import {
   addNewLook,
   editNewLook,
@@ -50,10 +49,6 @@ import { setUser,
   } from './user';
 
 export {
-  createEntity,
-  updateEntity,
-  readEndpoint,
-  deleteEntity,
   requestInvitation,
   loadCategories,
   loadOccasionTags,

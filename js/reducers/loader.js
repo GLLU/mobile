@@ -3,7 +3,6 @@ import type { Action } from '../actions/types';
 import { SHOW_PROCESSING, HIDE_PROCESSING } from '../actions/loader';
 
 const initialState = {
-  loading: false,
   processing: false,
 };
 
