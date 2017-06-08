@@ -108,7 +108,7 @@ class MediaContainer extends BaseComponent {
                  repeat={true}
                  paused={false}
           />
-          <MediaBorderPatch media={video}>
+          <MediaBorderPatch media={video} lookWidth={lookWidth} lookHeight={lookHeight}>
             <View style={{bottom: 15}}>
               { this.renderVideoGrid(video) }
             </View>
@@ -136,7 +136,7 @@ class MediaContainer extends BaseComponent {
       return (
         <View>
           <Image source={{uri: look.uri}} style={{width: lookWidth, height: lookHeight, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} />
-          <MediaBorderPatch media={look} >
+          <MediaBorderPatch media={look} lookWidth={lookWidth} lookHeight={lookHeight}>
             <View style={{bottom: 15, zIndex: 1}}>
               <LikeView index={index} item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
             </View>
