@@ -20,7 +20,7 @@ export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
-import { showLoader, hideLoader, loadBrands, showProcessing, hideProcessing } from './index';
+import { loadBrands, showProcessing, hideProcessing } from './index';
 import itemMapper from '../mappers/itemMapper';
 import Utils from '../utils';
 
@@ -147,7 +147,6 @@ export function setTagPosition(payload) {
 
 export function createLookItem(position) {
   return (dispatch, getState) => {
-    //dispatch(showLoader());
     const state = getState();
     const lookId = state.uploadLook.lookId;
     const body = {
@@ -158,7 +157,6 @@ export function createLookItem(position) {
     };
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.items.post({look_id: lookId}, { body: JSON.stringify(body) } , (err, data) => {
-        //dispatch(hideLoader());
         if (!err) {
           resolve(dispatch({
               type: CREATE_LOOK_ITEM_BY_POSITION,
@@ -191,7 +189,7 @@ function _updateLook(lookId, params, dispatch, options = {}) {
   ], options);
 }
 
-function _updateItem(lookId, itemId, params, dispatch, options = {}) {
+function _updateItem(lookId, itemId, params, dispatch) {
   const body = {
     item: Object.assign({}, params),
   }
@@ -201,17 +199,9 @@ function _updateItem(lookId, itemId, params, dispatch, options = {}) {
   ]);
 }
 
-function makeRequest(dispatch, endPoint, endPointParams, options = {}) {
-  const _options = Object.assign({showLoader: true}, options);
+function makeRequest(dispatch, endPoint, endPointParams) {
   return new Promise((resolve, reject) => {
-    if (options.showLoader) {
-      dispatch(showLoader());  
-    }
-
     dispatch(endPoint(...endPointParams, (err, data) => {
-      if (options.showLoader) {
-        dispatch(hideLoader());  
-      }
       if (!err) {
         resolve(data);
       } else {
@@ -248,9 +238,7 @@ export function publishLookItem() {
     const { lookId, itemId } = state.uploadLook;
 
     return new Promise((resolve, reject) => {
-      dispatch(showLoader());
       dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
-        dispatch(hideLoader());
         if (!err) {
           resolve();
         } else {
@@ -269,7 +257,7 @@ export function addItemType(categoryItem, itemId) {
       category_id: categoryItem.id,
     }
     console.log('itemId11',itemId)
-    return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+    return _updateItem(lookId, itemId, params, dispatch).then(data => {
       const payload = {categoryItem, itemId}
       dispatch({
         type: ADD_ITEM_TYPE,
@@ -356,7 +344,7 @@ export function addItemTag(tag, itemId) {
       return makeRequest(dispatch, rest.actions.item_tags.post, [
         { look_id: lookId, item_id: itemId },
         { body: JSON.stringify(body) }
-      ], { showLoader: false }).then(data => {
+      ]).then(data => {
         const payload = {data: data.item_tag.tag, itemId}
         dispatch({
           type: ADD_ITEM_TAG,
@@ -426,7 +414,7 @@ export function addUrl(url, itemId) {
     const params = {
       url,
     }
-    return _updateItem(lookId, itemId, params, dispatch, { showLoader: false }).then(data => {
+    return _updateItem(lookId, itemId, params, dispatch).then(data => {
       const payload = {
         url,
         itemId

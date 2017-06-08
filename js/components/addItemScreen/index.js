@@ -44,7 +44,8 @@ class AddItemPage extends BasePage {
       mode: props.mode,
       allowContinue: false,
       currMode: 'tagging',
-      currItem: props.navigation.state.params.mode === "edit" ? { ...props.items[0]} : {id: -1}
+      currItem: props.navigation.state.params.mode === "edit" ? { ...props.items[0]} : {id: -1},
+      isPublishing:false
     };
 
   }
@@ -104,13 +105,18 @@ class AddItemPage extends BasePage {
 
   publishAction() {
     this.logEvent('UploadLookScreen', {name: 'Publish click'});
-    this.props.publishLookItem().then(response => {
-      if (this.props.state === LOOK_STATES.PUBLISHED) {
-        this.goBack()
-      } else {
-        this.navigateTo('finishLookScreen');
-      }
-    });
+    this.setState({isPublishing:true},()=>{
+      this.props.publishLookItem().then(() => {
+        this.setState({isPublishing:false},()=> {
+          if (this.props.state === LOOK_STATES.PUBLISHED) {
+            this.goBack()
+          } else {
+            this.navigateTo('finishLookScreen');
+          }
+        });
+      });
+    })
+
   }
 
   handleBackButton() {
@@ -257,12 +263,14 @@ class AddItemPage extends BasePage {
     return (
       <View>
         {this.renderContent()}
+        {this.state.isPublishing?<SpinnerSwitch/>:null}
       </View>
     );
   }
 }
 
 import {connect} from 'react-redux';
+import SpinnerSwitch from "../loaders/SpinnerSwitch";
 
 function bindActions(dispatch) {
   return {
