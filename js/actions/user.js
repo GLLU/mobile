@@ -277,11 +277,9 @@ export function statsUpdate(data) {
 
 export function getStats(id) {
   return (dispatch) => {
-    dispatch(showLoader());
     dispatch(rest.actions.stats({id}, (err, data) => {
       if (!err) {
         dispatch(statsUpdate(data));
-        dispatch(hideLoader());
       }
     }));
   };

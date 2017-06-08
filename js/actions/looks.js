@@ -1,15 +1,10 @@
 import type { Action } from '../actions/types';
 import rest from '../api/rest';
-import { showLoader, hideLoader } from './index';
-
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
 
 export function getUserLooks(data):Action {
   return (dispatch) => {
-    if(data.page === 1) {
-      dispatch(showLoader());
-    }
     return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 8, "page[number]" : data.page, 'all': data.all}, {}, (err, userLooksData) => {
       if (!err && userLooksData) {
         let looksData = {
@@ -17,7 +12,6 @@ export function getUserLooks(data):Action {
           currId: data.id,
         }
         dispatch(setUserLooks(looksData));
-        dispatch(hideLoader());
       }
     }));
   };
