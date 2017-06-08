@@ -36,6 +36,9 @@ class ProfileScreen extends BasePage {
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
+    this.handleFollowersPress = this.handleFollowersPress.bind(this);
+    this.handleFollowingPress = this.handleFollowingPress.bind(this);
+    this.handleBalancePress = this.handleBalancePress.bind(this);
     this.state = {
       isMyProfile,
       noMoreData: false,
@@ -124,18 +127,20 @@ class ProfileScreen extends BasePage {
   }
 
   _renderStats() {
+    const { following, followers, likes_count} = this.props.stats
+    const { isMyProfile } = this.state
 
-    if (this.props.stats.latest_looks && this.props.stats.user_id === this.state.userId) {
+    if (this.props.stats.user_id === this.state.userId) {
       return (
         <View>
           <StatsView
-            following={this.props.stats.following}
-            followers={this.props.stats.followers}
-            likes={this.props.stats.likes_count}
-            onFollowersPress={this.handleFollowersPress.bind(this)}
-            onFollowingPress={this.handleFollowingPress.bind(this)}
-            handleBalancePress = {this.handleBalancePress.bind(this)}
-            isMyProfile={this.state.isMyProfile}
+            following={ following }
+            followers={ followers }
+            likes={ likes_count }
+            isMyProfile={ isMyProfile }
+            onFollowersPress={this.handleFollowersPress}
+            onFollowingPress={this.handleFollowingPress}
+            handleBalancePress = {this.handleBalancePress}
           />
         </View>
       )

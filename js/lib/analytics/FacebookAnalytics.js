@@ -9,20 +9,16 @@ class FacebookAnalytics extends BaseAnalytic {
   }
 
   setUser(user) {
-    console.log('FacebookAnalytics.setUser Do nothing', user);
   }
 
   trackScreen(name, params = {}) {
-    console.log('FacebookAnalytics.trackScreen', name, params, params.page);
     AppEventsLogger.logEvent(name, params);
   }
 
   endTrackScreen(name, params = {}) {
-    console.log("FacebookAnalytics no tracking for this method", name, params);
   }
 
   logEvent(name, params = {}, timed = false) {
-    console.log('FacebookAnalytics.logEvent', name, params, timed);
     const action = params.name || name;
     delete params['name']
     AppEventsLogger.logEvent(action, params);

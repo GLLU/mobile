@@ -77,8 +77,6 @@ class LooksScreen extends BasePage {
             break;
           }
         case 'android':
-          console.log('1234',total)
-
             if(total === 2) {
               _.delay(() => this._scrollView.scrollTo({
                 x: 0,
@@ -86,7 +84,6 @@ class LooksScreen extends BasePage {
                 animated: false
               }), 0);
             } else {
-              console.log('12')
               _.delay(() => this._scrollView.scrollTo({
                 x: 0,
                 y: height,

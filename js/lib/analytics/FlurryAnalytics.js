@@ -21,13 +21,11 @@ class FlurryAnalytics extends BaseAnalytic {
       RNFlurryAnalytics.setCrashReportingEnabled(true);
       RNFlurryAnalytics.setDebugLogEnabled(false);
     }
-    console.log('flurykeyyyy',Config);
     const key = Platform.OS === 'ios' ? Config.FLURRY_API_KEY_IOS : Config.FLURRY_API_KEY_ANDROID
     RNFlurryAnalytics.startSession(key);
   }
 
   setUser(user) {
-    console.log('FlurryAnalytics.setUser', user);
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
         RNFlurryAnalytics.setUserId(this.encryptUserId(user.id));
@@ -37,23 +35,19 @@ class FlurryAnalytics extends BaseAnalytic {
   }
 
   trackScreen(name, params = {}) {
-    console.log('FlurryAnalytics.trackScreen', name, params);
     this.logEvent(name, params, true);
   }
 
   endTrackScreen(name, params = {}) {
-    console.log('FlurryAnalytics.endTrackScreen', name, params);
     this.endTimedEvent(name, params);
   }
 
   logEvent(name, params = {}, timed = false) {
-    console.log('FlurryAnalytics.logEvent', name, params, timed);
     delete params['name']
     RNFlurryAnalytics.logEvent(name, params, timed);
   }
 
   endTimedEvent(name, params = {}) {
-    console.log('FlurryAnalytics.endTimedEvent', name, params);
     delete params['name']
     RNFlurryAnalytics.endTimedEvent(name, params);
   }

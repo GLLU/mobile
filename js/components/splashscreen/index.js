@@ -42,7 +42,6 @@ class SplashPage extends BasePage {
       name: '',
       repeat: props.active
     };
-    console.log('this.props.showTutorial',this.props.showTutorial)
     if(this.props.showTutorial && Platform !== 'ios'){
       this.navigateTo('tutorialscreen');
     }
