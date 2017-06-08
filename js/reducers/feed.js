@@ -91,10 +91,10 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
-    const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
+    const flatLooksDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
     const newData = action.payload.loadMore ?
       action.payload.data.looks :
-      _.map(action.payload.data.looks || [], (look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+      _.map(action.payload.data.looks || [], (look, index) => parseLook(look, index, flatLooksDataLength));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
       ...state,
@@ -107,8 +107,8 @@ const ACTION_HANDLERS = {
 
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
-    const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
-    const newData = _.map(action.payload.data.looks||[],(look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+    const flatLooksDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
+    const newData = _.map(action.payload.data.looks||[],(look, index) => parseLook(look, index, flatLooksDataLength));
     return {
       ...state,
       flatLooksDataQueue: newData,
