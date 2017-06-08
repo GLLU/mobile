@@ -48,7 +48,6 @@ class ItemPopup extends Component {
   static propTypes = {
     brand: React.PropTypes.object,
     price: React.PropTypes.number,
-    currency: React.PropTypes.string,
     url: React.PropTypes.string,
     onLayout: React.PropTypes.func,
     dimensions: React.PropTypes.object,
@@ -58,7 +57,6 @@ class ItemPopup extends Component {
   static defaultProps = {
     price: 0,
     brand: {name: 'N/A'},
-    currency: '£',
     url: '',
     onLayout: noop
   }

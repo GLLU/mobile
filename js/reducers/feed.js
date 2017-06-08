@@ -61,11 +61,16 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       flatLooksData: _.map(state.flatLooksData||[],look => {
-        if (look.id == id) {
-          look.liked = liked;
-          look.likes = likes;
+
+        if (look.id !== id) {
+          return look;
         }
-        return look;
+        else {
+          const copy = _.cloneDeep(look);
+          copy.liked = liked;
+          copy.likes = likes;
+          return copy
+        }
       })
     }
   },

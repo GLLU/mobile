@@ -2,19 +2,8 @@ import type { Action } from '../actions/types';
 import rest from '../api/rest';
 import { showLoader, hideLoader } from './index';
 
-export const SET_LOOK_DATA = 'SET_LOOK_DATA';
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
-
-export function getLook(lookId):Action {
-  return (dispatch) => {
-    return dispatch(rest.actions.look({id: lookId},{}, (err, screenLookData) => {
-      if (!err && screenLookData) {
-        dispatch(setLookData(screenLookData));
-      }
-    }));
-  };
-}
 
 export function getUserLooks(data):Action {
   return (dispatch) => {
@@ -56,14 +45,6 @@ export function reportAbuse(look_id):Action {
         console.log('abuse Reported Failed', err)
       }
     }));
-  };
-}
-
-
-export function setLookData(data):Action {
-  return {
-    type: SET_LOOK_DATA,
-    payload: data
   };
 }
 

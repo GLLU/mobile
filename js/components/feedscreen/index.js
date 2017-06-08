@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import BasePage from '../common/base/BasePage';
 import { Dimensions, BackAndroid, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { Header, Content, StyleProvider, getTheme } from 'native-base';
 import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
@@ -31,6 +30,9 @@ class FeedPage extends BasePage {
     super(props);
     this._handleClosePhotoModal=this._handleClosePhotoModal.bind(this);
     this._handleOpenPhotoModal=this._handleOpenPhotoModal.bind(this);
+    this._handleSearchStatus=this._handleSearchStatus.bind(this);
+    this._clearFilter=this._clearFilter.bind(this);
+    this.goToAddNewItem=this.goToAddNewItem.bind(this);
     this.state = {
       name: '',
       searchTerm: '',
@@ -46,7 +48,7 @@ class FeedPage extends BasePage {
 
   componentWillMount() {
 
-    if (!this.props.user || this.props.user.id == -1) {
+    if (!this.props.user || this.props.user.id === -1) {
       this.navigateTo('splashscreen');
     }
     BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -76,7 +78,7 @@ class FeedPage extends BasePage {
   }
 
   _handleSearchStatus(newStatus) {
-    const searchStatus = newStatus === 'close' ? false : !this.state.searchStatus;
+    const searchStatus = !this.state.searchStatus;
     this.setState({searchStatus})
   }
 
@@ -87,12 +89,6 @@ class FeedPage extends BasePage {
   _handleClosePhotoModal() {
     this.setState({photoModal: false});
   }
-
-  _handleLayout(e) {
-    const height = e.nativeEvent.layout.height;
-    this.setState({contentHeight: height - glluTheme.toolbarHeight});
-  }
-
   _clearFilter() {
     this.setState({searchTerm: ''})
   }
@@ -103,21 +99,12 @@ class FeedPage extends BasePage {
   }
 
   render() {
-
-    let contentStyle = { flex: 1 };
-    if (this.state.contentHeight) {
-      _.merge(contentStyle, { height: this.state.contentHeight });
-    }
     return (
-      <Gllu.Container style={StyleSheet.flatten(styles.container)} onLayout={e => this._handleLayout(e)}>
-        <StyleProvider style={getTheme(glluTheme)}>
-        <Content
-            scrollEnabled={false}
-            contentContainerStyle={contentStyle}>
+      <View style={styles.container}>
           <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
-            <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={() => this._handleSearchStatus(false)} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={() => this._clearFilter()} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+            <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={this._handleSearchStatus} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
             {!this.state.searchStatus ?
-              <NavigationBarView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} addNewItem={this.goToAddNewItem.bind(this)} handleSearchStatus={() => this._handleSearchStatus(false)} handleOpenPhotoModal={this._handleOpenPhotoModal.bind(this)}/>
+              <NavigationBarView navigateTo={this.navigateTo} addNewItem={this.goToAddNewItem} handleOpenPhotoModal={this._handleOpenPhotoModal}/>
               :
               null
             }
@@ -127,10 +114,8 @@ class FeedPage extends BasePage {
             position={"top"}>
             <BodyTypePicker onPick={()=>this.navigateTo('myBodyMeasure')}/>
           </Modal>
-          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)} onRequestClose={this._handleClosePhotoModal}/>
-        </Content>
-        </StyleProvider>
-      </Gllu.Container>
+          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
+      </View>
     );
   }
 }

@@ -25,6 +25,9 @@ class StatsView extends Component {
 
   constructor(props) {
     super(props);
+    this.onFollowingPress = this.onFollowingPress.bind(this);
+    this.onFollowersPress = this.onFollowersPress.bind(this);
+
   }
 
   onFollowingPress() {
@@ -37,7 +40,7 @@ class StatsView extends Component {
 
   renderBalance() {
     return (
-      <TouchableOpacity style={styles.statsTotal} onPress={() => this.props.handleBalancePress()}>
+      <TouchableOpacity style={styles.statsTotal} onPress={this.props.handleBalancePress}>
         <Text style={[styles.text, styles.number]}>$0</Text>
         <Text style={styles.text}>Balance</Text>
       </TouchableOpacity>
@@ -45,19 +48,20 @@ class StatsView extends Component {
   }
 
   render() {
+    const { following, followers, likes, isMyProfile } = this.props
     return (
       <View style={styles.statsContainer}>
-        {this.props.isMyProfile ? this.renderBalance() : null}
-        <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowingPress.bind(this)}>
-          <Text style={[styles.text, styles.number]}>{this.props.following}</Text>
+        { isMyProfile ? this.renderBalance() : null }
+        <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowingPress}>
+          <Text style={[styles.text, styles.number]}>{following}</Text>
           <Text style={styles.text}>Following</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowersPress.bind(this)}>
-          <Text style={[styles.text, styles.number]}>{this.props.followers}</Text>
+        <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowersPress}>
+          <Text style={[styles.text, styles.number]}>{followers}</Text>
           <Text style={styles.text}>Followers</Text>
         </TouchableOpacity>
         <View style={styles.statsTotal}>
-          <Text style={[styles.text, styles.number]}>{this.props.likes}</Text>
+          <Text style={[styles.text, styles.number]}>{likes}</Text>
           <Text style={styles.text}>Likes</Text>
         </View>
       </View>

@@ -1,4 +1,3 @@
-export const ADD_NEW_LOOK = 'ADD_NEW_LOOK';
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
@@ -7,25 +6,21 @@ export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
 export const REMOVE_BRAND_NAME = 'REMOVE_BRAND_NAME';
-export const ADD_ITEM_SIZE_COUNTRY = 'ADD_ITEM_SIZE_COUNTRY';
 export const ADD_ITEM_SIZE = 'ADD_ITEM_SIZE';
 export const ADD_ITEM_TAG = 'ADD_ITEM_TAG';
 export const ADD_ITEM_OCCASION_TAG = 'ADD_ITEM_OCCASION_TAG';
 export const REMOVE_ITEM_OCCASION_TAG = 'REMOVE_ITEM_OCCASION_TAG';
 export const REMOVE_ITEM_TAG = 'REMOVE_ITEM_TAG';
-export const ADD_ITEM_CURRENCY = 'ADD_ITEM_CURRENCY';
-export const ADD_ITEM_PRICE = 'ADD_ITEM_PRICE';
 export const ADD_SHARING_INFO = 'ADD_SHARING_INFO';
 export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
-export const ADD_TRUST_LEVEL = 'ADD_TRUST_LEVEL';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 
 import _ from 'lodash';
 
 import rest, { API_URL } from '../api/rest';
-import { showLoader, hideLoader, loadBrands, loadItemSizes, showProcessing, hideProcessing } from './index';
+import { showLoader, hideLoader, loadBrands, showProcessing, hideProcessing } from './index';
 import itemMapper from '../mappers/itemMapper';
 import Utils from '../utils';
 
@@ -90,6 +85,7 @@ export function addNewLook(image) {
     });
   }
 }
+
 export function editNewLook(lookId) {
   return (dispatch, getState) => {
     dispatch(showProcessing());
@@ -230,11 +226,10 @@ export function updateLookItem() {
     const state = getState();
     const { lookId, itemId, items } = state.uploadLook;
     const item = itemId ? _.find(items, item => item.id === itemId) : null;
-    const { currency, price, brand, category, locationX, locationY } = item;
+    const { price, brand, category, locationX, locationY } = item;
     const brand_id = brand ? brand.id : undefined;
     const category_id = category ? category.id : undefined;
     const params = {
-      currency,
       price,
       brand_id,
       category_id,
@@ -280,7 +275,6 @@ export function addItemType(categoryItem, itemId) {
         type: ADD_ITEM_TYPE,
         payload
       });
-      dispatch(loadItemSizes(categoryItem.id));
       dispatch(addItemTag(categoryItem.name, itemId)).catch(err => {
         console.log('do nothing');
       });
@@ -344,21 +338,6 @@ export function removeBrandName(itemId) {
   };
 }
 
-export function addItemSizeCountry(region) {
-  return (dispatch, getState) => {
-    const itemSizes = getState().filters.itemSizes;
-    const sizesByCountry = _.filter(itemSizes, x => x.region == region);
-    const itemSizeValue = sizesByCountry.length > 0 ? _.first(sizesByCountry.map(x => x.value)) : null;
-    return dispatch({
-      type: ADD_ITEM_SIZE_COUNTRY,
-      payload: {
-        itemSizeRegion: region,
-        itemSizeValue,
-      }
-    });
-  }
-}
-
 export function addItemSize(payload) {
   return {
     type: ADD_ITEM_SIZE,
@@ -410,20 +389,6 @@ export function removeItemTag(tag, itemId) {
       }).catch(reject);
     });
   };
-}
-
-export function addItemCurrency(payload) {
-  return {
-    type: ADD_ITEM_CURRENCY,
-    payload: payload
-  }
-}
-
-export function addItemPrice(payload) {
-  return {
-    type: ADD_ITEM_PRICE,
-    payload: payload
-  }
 }
 
 export function addSharingInfo(type, url) {
@@ -479,13 +444,6 @@ export function addUrl(url, itemId) {
 export function addLocation(payload) {
   return {
     type: ADD_LOCATION,
-    payload: payload
-  }
-}
-
-export function addTrustLevel(payload) {
-  return {
-    type: ADD_TRUST_LEVEL,
     payload: payload
   }
 }

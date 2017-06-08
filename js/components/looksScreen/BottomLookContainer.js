@@ -78,11 +78,6 @@ export default class BottomLookContainer extends BaseComponent {
     this.setState({isDescriptionActive: shouldActive, isCommentsActive: false})
   }
 
-  handleLikePress(isLiked) {
-    this.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
-    this.props.toggleLike(isLiked)
-  }
-
   _toggleMenu() {
     const shouldActive = !this.state.isMenuOpen;
     this.logEvent('LookScreen', {name: `Report & Share Menu ${shouldActive?'visible':'hidden'}`});
@@ -166,7 +161,7 @@ export default class BottomLookContainer extends BaseComponent {
                 toggleDescription={this._toggleDescription}
                 isLiked={this.state.isLiked}
                 likes={this.state.likes}
-                toggleLike={this.handleLikePress.bind(this)}
+                toggleLike={this.props.toggleLike}
                 toggleMenu={() => this._toggleMenu()}
                 items={this.props.look.items}
                 activeItem={this.state.activeItem}

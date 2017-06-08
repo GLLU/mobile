@@ -14,19 +14,22 @@ class MediaBorderPatch extends Component {
   }
 
   render() {
-    let media = {};
-    if(this.props.media) {
-       media = this.props.media
+    const { lookWidth, lookHeight } = this.props
+    let height = 0;
+    let width = 0;
+    if(lookWidth && lookHeight) {
+      height = lookHeight
+      width = lookWidth
     } else {
-      media.width = deviceWidth / 2 ;
-      media.height = deviceWidth / 4;
+      width = deviceWidth / 2 ;
+      height = deviceWidth / 4;
     }
     return(
-      <View style={{width: media.width, zIndex: 2, height: media.height, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, position: 'absolute', top: 0}}>
+      <View style={{width: width, zIndex: 2, height: height, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, position: 'absolute', top: 0}}>
         <View>
           {this.props.children}
         </View>
-        <View style={{width: media.width+1, height: media.height+1, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, borderRadius: 10, overflow: 'hidden', position: 'absolute', top: -4, left: -4}} />
+        <View style={{width: width+1, height: height+1, backgroundColor: 'transparent', borderColor: 'white', borderWidth: 4, borderRadius: 10, overflow: 'hidden', position: 'absolute', top: -4, left: -4}} />
       </View>
     )
   }

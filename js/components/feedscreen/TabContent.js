@@ -65,11 +65,11 @@ class TabContent extends BaseComponent {
   componentDidMount() {
     let that = this
     setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
-    //this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
+    this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.cardNavigationStack.length < 2) {
+    if(this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
 
       // show modal after done loading for 3 seconds
       if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
@@ -145,17 +145,28 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
+  getLookDimensions(look) {
+    const colW = (deviceWidth) / 2;
+    const {width, height} = look;
+    const lookWidth = colW;
+    const lookHeight = height / width * colW;
+    return {lookWidth, lookHeight}
+  }
+
   _renderLooks(looks) {
-    return looks.map((look, index) => {
+    return looks.map((look) => {
+      const dimensions = this.getLookDimensions(look)
       return (
+        <View key={look.id}>
         <MediaContainer look={look}
-                        key={look.id}
-                        index={index}
                         currScroll={this.state.currentScrollPosition}
-                        likeUpdate={(data) => this.props.likeUpdate(data)}
-                        unLikeUpdate={(data) => this.props.likeUpdate(data)}
+                        likeUpdate={this.props.likeUpdate}
+                        unLikeUpdate={this.props.likeUpdate}
                         navigateTo={this.props.navigateTo}
-                        sendParisMessage={(message) => this.props.showParisBottomMessage(message)}/>
+                        sendParisMessage={this.props.showParisBottomMessage}
+                        navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
+                        dimensions={dimensions}/>
+        </View>
       );
     });
   }
@@ -227,7 +238,7 @@ class TabContent extends BaseComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{width: deviceWidth / 2, height: deviceWidth / 4, marginVertical: 3}}>
-          <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
                  style={{width: deviceWidth / 2-6, height: deviceWidth / 4, borderRadius: 10, alignSelf: 'center'}}
                  resizeMode={'stretch'}/>
         </View>
@@ -235,7 +246,7 @@ class TabContent extends BaseComponent {
     } else {
       return (
         <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
-          <Image source={{uri: 'https://cdn1.gllu.com/assets/buttons/feed_invite_1.png'}}
+          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
                  style={{width: deviceWidth / 2, height: deviceWidth / 4}}
                  resizeMode={'stretch'}/>
           <MediaBorderPatch />
@@ -321,32 +332,19 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const flatLooks = mapImages(state.feed.flatLooksData);
   const user_size = hasUserSize ? state.user.user_size : '';
   return {
     modalShowing: state.myBodyType.modalShowing,
-    flatLooks: flatLooks,
+    flatLooks: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
     hasUserSize,
     user_size: user_size,
     user_gender: state.user.gender,
-    cardNavigationStack: state.cardNavigation.routes,
+    cardNavigationStack: state.cardNavigation,
     shareToken: state.user.invitation_share_token,
     userName: state.user.name
   }
 };
-
-const mapImages = (looks) => {
-  let images = _.cloneDeep(looks) || [];
-  const colW = (deviceWidth) / 2;
-  images = _.filter(images, x => x.width && x.height).map((look) => {
-    const {width, height} = look;
-    look.width = colW;
-    look.height = height / width * colW;
-    return look;
-  });
-  return images;
-}
 
 export default connect(mapStateToProps, bindActions)(TabContent);

@@ -1,31 +1,23 @@
 import React, {Component} from 'react';
-import { View, Text, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
-import Icon from 'react-native-vector-icons/EvilIcons';
+import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import {Grid, Col} from 'native-base';
 import { connect } from 'react-redux';
 import CMInchRangeView from './edit/cmInchRangeView';
 import myStyles from './styles';
-import Utils from '../../utils';
 import convert from 'convert-units';
 import { completeEdit } from '../../actions/myBodyMeasure';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
+import SizePicker from "./SizePicker";
 
 class BodyMeasureView extends BaseComponent {
   constructor(props) {
     super(props);
+    this.onSizeChange=this.onSizeChange.bind(this);
     this.state = {
-      isEdit: false,
-      typeEdit: null, // 'chest','hip','height'
       isInchSelect: false,
       currentSize: Object.assign({} , this.props.userSize && !_.isEmpty(this.props.userSize) ? this.props.userSize : this.props.sizeList[this.props.gender][this.props.bodyType.body_type]),
       sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.body_type],
-      updateTextColor: 'black',
-      // edit
-      sizeInitValue: 0,
-      sizeValue: 0,
-      sliderMaxValue: 0,
-      sliderMinValue: 0,
     }
   }
 
@@ -36,8 +28,6 @@ class BodyMeasureView extends BaseComponent {
     // redux
     sizeList: React.PropTypes.object,
     sizeTypes: React.PropTypes.array,
-    sliderMinValue: React.PropTypes.number,
-    sliderMaxValue: React.PropTypes.number,
     completeEdit: React.PropTypes.func,
   }
 
@@ -50,7 +40,7 @@ class BodyMeasureView extends BaseComponent {
     this.props.completeEdit(currentSize);
   }
 
-  __convertCmAndInc(obj, fromScale, toScale) {
+  convertCmAndInch(obj, fromScale, toScale) {
     this.props.sizeTypes.map((sizeType) => {
       let value = obj[sizeType];
       obj[sizeType] = Math.round(convert(value).from(fromScale).to(toScale));
@@ -66,65 +56,30 @@ class BodyMeasureView extends BaseComponent {
     let toScale = inchSelected ? 'cm' :'in';
     let currentSizeConverted = this.state.currentSize;
     if(toScale !== currentSizeConverted.measurements_scale) {
-        currentSizeConverted = this.__convertCmAndInc(this.state.currentSize, fromScale, toScale);
-        let sizeValue = convert(this.state.sizeValue).from(fromScale).to(toScale);
-        this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted,
-            sizeValue: sizeValue, sizeInitValue: sizeValue});
+        currentSizeConverted = this.convertCmAndInch(this.state.currentSize, fromScale, toScale);
+        this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted});
     }
   }
 
-  increasSize(item) {
-    this.logEvent('BodyMeasureScreen', { name: `Increase Size click`, measurement: item  });
-    let currentSizeItem = this.state.currentSize[item];
-    if(this.state.currentSize[item] < 300) {
-      this.setState({[currentSizeItem]: Number(this.state.currentSize[item]++), updateTextColor: 'green', updateTextColorFor: item});
-    }
-  }
-
-  decreasSize(item) {
-    this.logEvent('BodyMeasureScreen', { name: `Decrease Size click`, measurement: item  });
-    let currentSizeItem = this.state.currentSize[item];
-    if(this.state.currentSize[item] > 0){
-      this.setState({[currentSizeItem]: Number(this.state.currentSize[item]--), updateTextColor: 'green', updateTextColorFor: item});
-    }
-  }
-
-  componentDidUpdate() {
-    if(this.state.updateTextColor === 'green'){
-      setTimeout(function() {
-        this.setState({
-          updateTextColor: 'black',
-          updateTextColorFor: ''
-        });
-      }.bind(this), 200);
+  onSizeChange(sizeType,value,unit){
+    this.logEvent('BodyMeasureScreen', { name: `Increase Size click`, measurement: sizeType, value:`${value}`, unit:unit });
+    let {currentSize} = this.state;
+    if(this.state.currentSize[sizeType] < 300&&this.state.currentSize[sizeType] > 0) {
+      currentSize[sizeType]=value;
+      this.setState({currentSize});
     }
   }
 
   _renderMainView() {
-    let {sizeTypes} = this.props;
     return (
       <View>
         <View style={myStyles.scaleRadioContainer}>
           <CMInchRangeView toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
         </View>
-        {sizeTypes.map((item, i) => {
-          return (<View key={i} style={myStyles.infoContainer}>
-            <Text style={myStyles.infoText}>{item}</Text>
-            <View style={myStyles.infoDetailTouch}>
-
-              <View style={myStyles.sizeLineContainer}>
-                <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.decreasSize(item) }>
-                  <Icon name='minus' style={myStyles.sizeLineIcons}/>
-                </TouchableOpacity>
-                <Text style={[myStyles.infoDetailText, this.state.updateTextColorFor === item ? myStyles.infoDetailTextColorChange : null]}>{this.state.currentSize
-                    ? Utils.format_measurement(this.state.currentSize[item], this.state.currentSize['measurements_scale'])
-                    : null}</Text>
-                <TouchableOpacity style={myStyles.sizeLineBtns} onPress={() => this.increasSize(item) }>
-                  <Icon name='plus' style={myStyles.sizeLineIcons}/>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>)
+        {this.props.sizeTypes.map((sizeType, i) => {
+          const value=this.state.currentSize[sizeType];
+          const unit =this.state.currentSize['measurements_scale'];
+          return <SizePicker key={i} sizeType={sizeType} value={value} unit={unit} onValueChange={this.onSizeChange}/>
         })}
       </View>
     )
@@ -145,7 +100,7 @@ class BodyMeasureView extends BaseComponent {
           </View>
         </Col>
         <Col style={myStyles.sizeListContainer}>
-            {this.state.isEdit ?  this._renderEditView() : this._renderMainView() }
+          {this._renderMainView()}
         </Col>
       </Grid>
     )
@@ -161,8 +116,6 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   sizeList: state.myBodyMeasure.sizeList,
   sizeTypes: state.myBodyMeasure.sizeTypes,
-  sliderMinValue: state.myBodyMeasure.sliderMinValue,
-  sliderMaxValue: state.myBodyMeasure.sliderMaxValue
 });
 
 export default connect(mapStateToProps, bindAction)(BodyMeasureView);

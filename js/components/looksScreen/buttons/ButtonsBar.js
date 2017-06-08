@@ -52,6 +52,7 @@ export default class ButtonsBar extends BaseComponent {
     isDescriptionActive: React.PropTypes.bool,
     toggleDescription: React.PropTypes.func,
     isCommentsActive: React.PropTypes.bool,
+    lookType: React.PropTypes.string,
     toggleComments: React.PropTypes.func,
     toggleItem: React.PropTypes.func,
     direction: React.PropTypes.oneOf(['row', 'column'])
@@ -86,12 +87,8 @@ export default class ButtonsBar extends BaseComponent {
   }
 
 
-  _onLikeClicked() {
-    const likes = !this.state.isLiked ? this.state.likes + 1 : this.state.likes - 1;
-    this.setState({
-      likes: likes, isLiked: !this.state.isLiked,
-    });
-    this.props.toggleLike(!this.state.isLiked)
+  _onLikeClicked(isLiked) {
+    this.props.toggleLike(isLiked)
   }
 
   _onInformationClicked() {
@@ -133,11 +130,17 @@ export default class ButtonsBar extends BaseComponent {
   }
 
   renderItemButton() {
-    return (
-      <View onLayout={this.handleTextLayout}>
-        <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={this.props.items[0].category.name}/>
-      </View>
-    )
+   return _.map(this.props.items, item => {
+      if(item.category && item.brand) {
+        return (
+          <View key={item.id} onLayout={this.handleTextLayout}>
+            <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={this.props.items[0].category.name}/>
+          </View>
+        )
+      }
+    });
+
+
   }
 
   render() {
@@ -146,7 +149,7 @@ export default class ButtonsBar extends BaseComponent {
       { this.props.lookType === 'video' ? this.renderItemVideoDataLine() : null }
       <View style={[styles.rightContainer, styles[this.props.direction]]} >
         { this.props.lookType === 'video' ? this.renderItemButton() : null }
-        <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onIconPress={() => this._onLikeClicked()} onNumberPress={this.props.onNumberPress} />
+        <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />
         { this._renderInformationButton(this.props.hasDescription) }
         <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
         <MenuButton onPress={() => this._onMenuClicked()}/>
