@@ -46,16 +46,19 @@ class LikeView extends Component {
       isLiked: props.item.liked,
       likes: props.item.likes
     }
+
   }
 
   handleLikePress() {
     const { likes, isLiked } = this.state
-    this.setState({isLiked: !isLiked, likes: isLiked ? likes+1 : likes-1})
-    this.props.onPress(this.props.item, !this.props.item.liked)
+    this.setState({isLiked: !isLiked, likes: isLiked ? likes-1 : likes+1})
+    const shouldActive = !this.state.isLiked;
+    let that = this;
+    setTimeout(() => {that.props.onPress(shouldActive);}, 1000);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.item.likes !== this.state.likes) {
+    if(this.props.routeName !== 'feedscreen' && nextProps.item.likes !== this.state.likes) {
       this.setState({isLiked: nextProps.item.liked, likes: nextProps.item.likes})
     }
   }
@@ -67,10 +70,10 @@ class LikeView extends Component {
   }
 
   render() {
-    const img = this.props.item;
+    const {lookHeight} = this.props;
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
     return (
-      <View style={[styles.likeContainer, { marginTop: img.height - 30 }]}>
+      <View style={[styles.likeContainer, { marginTop: lookHeight - 30 }]}>
         <Grid style={{ backgroundColor: 'rgba(0,0,0,0.5)'}}>
           <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
             <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>

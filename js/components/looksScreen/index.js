@@ -53,8 +53,6 @@ class LooksScreen extends BasePage {
       flatLook: this.props.navigation.state.params,
       fadeAnim: new Animated.Value(0.35),
       fadeAnimContent: new Animated.Value(0),
-      likes: flatLook.likes,
-      liked: flatLook.liked,
       showAsFeed: !flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
       isBottomDrawerOpen: false,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
@@ -99,12 +97,13 @@ class LooksScreen extends BasePage {
   }
 
   _toggleLike(isLiked) {
+    this.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
     const { flatLook } = this.state
     if (isLiked) {
-      let data = {id: flatLook.id, likes: this.state.likes + 1, liked: true}
+      let data = {id: flatLook.id, likes: flatLook.likes + 1, liked: true}
       this.props.likeUpdate(data);
     } else {
-      let data = {id: flatLook.id, likes: this.state.likes - 1, liked: false}
+      let data = {id: flatLook.id, likes: flatLook.likes - 1, liked: false}
       this.props.unLikeUpdate(data);
     }
   }
