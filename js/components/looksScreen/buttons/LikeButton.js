@@ -51,15 +51,15 @@ export default class LikeButton extends Component {
 
   render() {
     return (
-    <View style={[styles.footerButton,{padding: 0, width: 35, alignSelf: 'center'}]}>
-        <View style={[ {flexDirection: 'column', padding: 0}]}>
-          <TouchableOpacity  onPress={this._onIconPress}>
+    <View style={[styles.footerButton,{padding: 0, width: 25, maxWidth: 55, alignSelf: 'flex-end', margin: 5, alignItems: 'center', justifyContent: 'center'}]}>
+        <View style={[ {flexDirection: 'column', padding: 0, alignSelf: 'flex-end'}]}>
+          <TouchableOpacity style={{alignSelf: 'center'}} onPress={this._onIconPress}>
             <Image source={this.state.isLiked ? likeClickedImage : likeImage}
-                   style={[styles.footerButtonIcon,{width: 35, height: 35}]}/>
+                   style={[styles.footerButtonIcon,{width: 25, height: 25}]}/>
           </TouchableOpacity>
           <View style={{height:1}}/>
           <TouchableWithoutFeedback  onPress={this._onNumberPress}>
-            <View>
+            <View style={{width: 25}}>
               <Text style={styles.footerButtonText}>{`${this.state.likes}`}</Text>
             </View>
           </TouchableWithoutFeedback>

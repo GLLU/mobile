@@ -82,7 +82,8 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
     textAlign: 'center',
     alignSelf: 'center',
-    paddingBottom: 3
+    paddingBottom: 3,
+    fontSize: 12
   },
   horizontalContainer: {
     flexWrap: 'wrap',

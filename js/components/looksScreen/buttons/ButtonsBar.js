@@ -10,6 +10,7 @@ import ItemButton from './ItemButton'
 import MenuButton from './MenuButton'
 import LikeButton from './LikeButton'
 import ItemDataLine from '../common/ItemDataLine'
+import VideoItemLine from '../common/VideoItemLine'
 import BaseComponent from '../../common/base/BaseComponent';
 
 const styles = StyleSheet.create({
@@ -70,7 +71,6 @@ export default class ButtonsBar extends BaseComponent {
     this._renderInformationButton = this._renderInformationButton.bind(this);
     this._onInformationClicked = this._onInformationClicked.bind(this);
     this._onBubbleClicked = this._onBubbleClicked.bind(this);
-    this._onItemClick = this._onItemClick.bind(this);
     this.handleTextLayout = this.handleTextLayout.bind(this);
     this.state = {
       likes: this.props.likes,
@@ -101,11 +101,6 @@ export default class ButtonsBar extends BaseComponent {
     this.props.toggleComments(...arguments);
   }
 
-  _onItemClick() {
-    this.props.toggleItem(...arguments);
-    this.setState({itemLineOpen: !this.state.itemLineOpen})
-  }
-
   _onMenuClicked() {
     this.logEvent('LookScreen', {name: 'Menu click'});
     this.props.toggleMenu();
@@ -121,34 +116,22 @@ export default class ButtonsBar extends BaseComponent {
     this.setState({itemY: evt.nativeEvent.layout.y})
   }
 
-  renderItemVideoDataLine() {
-    return (
-      <View style={[styles.leftContainer, styles[this.props.direction]]}>
-        <ItemDataLine isOpen={this.state.itemLineOpen} itemY={this.state.itemY} data={this.props.items[0]}/>
-      </View>
-    )
-  }
-
-  renderItemButton() {
-   return _.map(this.props.items, item => {
+  renderVideoItems() {
+    return _.map(this.props.items, item => {
       if(item.category && item.brand) {
         return (
-          <View key={item.id} onLayout={this.handleTextLayout}>
-            <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={this.props.items[0].category.name}/>
-          </View>
+            <VideoItemLine key={item.id} item={item} toggleItem={this.props.toggleItem}/>
         )
       }
     });
-
-
   }
 
   render() {
     return (
     <View style={[styles.container, styles['row']]}>
-      { this.props.lookType === 'video' ? this.renderItemVideoDataLine() : null }
+
       <View style={[styles.rightContainer, styles[this.props.direction]]} >
-        { this.props.lookType === 'video' ? this.renderItemButton() : null }
+        { this.props.lookType === 'video' ? this.renderVideoItems() : null }
         <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />
         { this._renderInformationButton(this.props.hasDescription) }
         <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
