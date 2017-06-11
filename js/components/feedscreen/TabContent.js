@@ -103,7 +103,7 @@ class TabContent extends BaseComponent {
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const contentSizeHeight = event.nativeEvent.contentSize.height;
       const currentScroll = event.nativeEvent.contentOffset.y
-      if (currentScroll === contentSizeHeight - layoutMeasurementHeight) {
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight-1) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if(this.contentHeight !== contentSizeHeight) {
           this.contentHeight = contentSizeHeight
           this.loadMoreAsync();
@@ -132,8 +132,11 @@ class TabContent extends BaseComponent {
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
+      console.log('1')
       this.setState({isLoading: true}, () => {
+        console.log('2')
         this.props.loadMore().then(() => {
+          console.log('3')
           this.setState({isLoading: false})}
         ).catch(err => {
           console.log('error', err);
