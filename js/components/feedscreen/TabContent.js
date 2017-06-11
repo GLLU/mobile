@@ -42,11 +42,16 @@ class TabContent extends BaseComponent {
 
   constructor(props) {
     super(props);
+    this._renderRefreshControl = this._renderRefreshControl.bind(this)
+    this.onRefresh = this.onRefresh.bind(this)
+    this.handleScroll = this.handleScroll.bind(this)
     this.state = {
       isLoading: false,
       noMoreData: false,
       isRefreshing: false,
-      currentScrollPosition: 0
+      currentScrollPosition: 0,
+      flatLooksLeft: _.filter(props.flatLooks,(look,index)=>index%2===0),
+      flatLooksRight: _.filter(props.flatLooks,(look,index)=>index%2===1)
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
@@ -69,6 +74,10 @@ class TabContent extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
+    if(nextProps.flatLooks !== this.props.flatLooks){
+      this.setState({flatLooksLeft: _.filter(nextProps.flatLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.flatLooks,(look,index)=>index%2===1)})
+    }
+
     if(this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
 
       // show modal after done loading for 3 seconds
@@ -154,19 +163,18 @@ class TabContent extends BaseComponent {
   }
 
   _renderLooks(looks) {
-    return looks.map((look) => {
+    return _.map(looks, (look) => {
       const dimensions = this.getLookDimensions(look)
       return (
-        <View key={look.id}>
-        <MediaContainer look={look}
-                        currScroll={this.state.currentScrollPosition}
-                        likeUpdate={this.props.likeUpdate}
-                        unLikeUpdate={this.props.likeUpdate}
-                        navigateTo={this.props.navigateTo}
-                        sendParisMessage={this.props.showParisBottomMessage}
-                        navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
-                        dimensions={dimensions}/>
-        </View>
+          <MediaContainer look={look}
+                          currScroll={this.state.currentScrollPosition}
+                          likeUpdate={this.props.likeUpdate}
+                          unLikeUpdate={this.props.likeUpdate}
+                          navigateTo={this.props.navigateTo}
+                          sendParisMessage={this.props.showParisBottomMessage}
+                          navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
+                          dimensions={dimensions}
+          key={look.id}/>
       );
     });
   }
@@ -211,7 +219,7 @@ class TabContent extends BaseComponent {
     return (
       <RefreshControl
         refreshing={this.state.isRefreshing}
-        onRefresh={this.onRefresh.bind(this)}
+        onRefresh={this.onRefresh}
         tintColor="#666666"
         colors={['#666666']}
         progressBackgroundColor="#fff"
@@ -261,17 +269,17 @@ class TabContent extends BaseComponent {
           <ScrollView
             style={{flex: 1}}
             scrollEventThrottle={100}
-            onScroll={this.handleScroll.bind(this)}
-            refreshControl={this._renderRefreshControl.bind(this)()}>
+            onScroll={this.handleScroll}
+            refreshControl={this._renderRefreshControl()}>
             <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
               <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
                 <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
                   {this.renderInviteFriend()}
                 </TouchableOpacity>
-                {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
+                {this._renderLooks(this.state.flatLooksLeft)}
               </View>
               <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-                {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
+                {this._renderLooks(this.state.flatLooksRight)}
               </View>
             </View>
             {this._renderLoadMore()}

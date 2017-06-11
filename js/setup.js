@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-
+import {whyDidYouUpdate} from 'why-did-you-update'
 import App from './App';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import configureStore from './configureStore';
+//whyDidYouUpdate(React)
 
 function setup():React.Component {
   class Root extends Component {
