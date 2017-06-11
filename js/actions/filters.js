@@ -13,8 +13,10 @@ export function loadCategories() {
           // load in another thread
           setTimeout(() => {
             const tags = data.tags || [];
-            Utils.preloadImages(tags.map(x => x.icon.url)).catch()
-            Utils.preloadImages(tags.map(x => x.icon.url_hover)).catch();
+            Promise.all([
+              Utils.preloadImages(tags.map(x => x.icon.url)),
+              Utils.preloadImages(tags.map(x => x.icon.url_hover))
+            ]).finally();
           }, 1);
 
           resolve(dispatch({

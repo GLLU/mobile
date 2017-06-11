@@ -1,21 +1,21 @@
 export function mapFollower(follow) {
-  return map(follow, 'user')
+  return map(follow, follow.user)
 }
 
 export function mapFollow(follow) {
-  return map(follow, 'followee')
+  return map(follow, follow.followee)
 }
 
-function map(follow, index) {
+function map(follow, user) {
   return {
     id: follow.id,
-    user_id: follow[index].id,
-    avatar: follow[index].avatar,
-    name: follow[index].name,
-    username: follow[index].username,
-    about_me: follow[index].about_me,
-    is_me: follow[index].is_me,
-    is_following: follow[index].is_following,
-    is_follower: follow[index].is_follower
+    user_id: user.id,
+    avatar: user.avatar,
+    name: user.name,
+    username: user.username,
+    about_me: user.about_me,
+    is_me: user.is_me,
+    is_following: user.is_following,
+    is_follower: user.is_follower
   };
 }

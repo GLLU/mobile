@@ -81,38 +81,6 @@ const bodyTypeList = {
   ]
 };
 
-// Action Handlers
-const ACTION_HANDLERS = {
-  [BODY_TYPE_CHANGE_SLIDING]: (state, action) => {
-    const currentItem = Object.assign({},bodyTypeList[action.payload.gender][action.payload.index]);
-    return { ...state
-      , currentBodyType: currentItem
-      , currentIndex: action.payload.index
-    }
-  },
-  [GET_CURRENT_USER_BODY_TYPE]: (state, action) => {
-    const usersBodyType = _.find(bodyTypeList[action.payload.gender], {body_type: action.payload.bodyType});
-    const currentItem = Object.assign({},usersBodyType);
-    return { ...state
-      , currentBodyType: currentItem
-      , currentIndex: action.payload.selectedIndex
-    }
-  },
-  [BODY_TYPE_SHOW_MODAL]: (state, action) => {
-    return {
-      ...state,
-      modalShowing: true
-    }
-  },
-  [BODY_TYPE_HIDE_MODAL]: (state, action) => {
-    return {
-      ...state,
-      modalShowing: false
-    }
-  }
-}
-
-// Reducer
 const initialState = {
   gender: 'female',
   modalShowing: false,
@@ -121,7 +89,39 @@ const initialState = {
   currentIndex: 2
 }
 
+// Action Handlers
+const ACTION_HANDLERS = {
+  [BODY_TYPE_CHANGE_SLIDING]: (state, action) => {
+    const bodyTypesOfMyGender=bodyTypeList[action.payload.gender];
+    const pickedBodyType=bodyTypesOfMyGender[action.payload.index];
+    return { ...state
+      , currentBodyType: pickedBodyType
+      , currentIndex: action.payload.index
+    }
+  },
+  [GET_CURRENT_USER_BODY_TYPE]: (state, action) => {
+    const bodyTypesOfMyGender=bodyTypeList[action.payload.gender];
+    const userBodyType=_.find(bodyTypesOfMyGender, {body_type: action.payload.bodyType});
+    return { ...state
+      , currentBodyType: userBodyType
+      , currentIndex: action.payload.selectedIndex
+    }
+  },
+  [BODY_TYPE_SHOW_MODAL]: (state) => {
+    return {
+      ...state,
+      modalShowing: true
+    }
+  },
+  [BODY_TYPE_HIDE_MODAL]: (state) => {
+    return {
+      ...state,
+      modalShowing: false
+    }
+  }
+}
+
 export default function mybodyTypeReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
+  const handler = ACTION_HANDLERS[action.type];
   return handler ? handler(state, action) : state
 }
