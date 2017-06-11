@@ -1,4 +1,3 @@
-import type { Action } from './types';
 import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
@@ -56,7 +55,7 @@ const signInFromRest = function (dispatch, data, invitation_token, invitationTok
   });
 };
 
-export function setUser(user: string): Action {
+export function setUser(user: string) {
 
   return {
     type: SET_USER,
@@ -64,7 +63,7 @@ export function setUser(user: string): Action {
   };
 }
 
-export function setInvitationToken(token): Action {
+export function setInvitationToken(token) {
 
   return {
     type: SET_INVITATION_TOKEN,
@@ -72,7 +71,7 @@ export function setInvitationToken(token): Action {
   };
 }
 
-export function setInvitationTokenIsUsed(): Action {
+export function setInvitationTokenIsUsed() {
 
   return {
     type: SET_INVITATION_IS_USED,
@@ -80,14 +79,14 @@ export function setInvitationTokenIsUsed(): Action {
   };
 }
 
-export function setInvitationInvitationShareToken(shareToken): Action {
+export function setInvitationInvitationShareToken(shareToken) {
   return {
     type: SET_INVITATION_SHARE_TOKEN,
     payload: shareToken,
   };
 }
 
-export function loginViaFacebook(data): Action {
+export function loginViaFacebook(data) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
     const user = getState().user;
@@ -112,7 +111,7 @@ export function loginViaFacebook(data): Action {
   }
 }
 
-export function useInvitationCode(token): Action {
+export function useInvitationCode(token) {
   return (dispatch) => {
     return dispatch(rest.actions.invitation.post({}, {body: JSON.stringify({"token": token})}, (err, data) => {
       if (!err && !_.isEmpty(data)) {
@@ -124,7 +123,7 @@ export function useInvitationCode(token): Action {
   }
 }
 
-export function requestInvitation(data): Action {
+export function requestInvitation(data) {
   return (dispatch) => {
     console.log('data',data)
     return dispatch(rest.actions.invitation_request.post({}, {body: JSON.stringify({"name": data.name, "email": data.email})}, (err, data) => {
@@ -137,7 +136,7 @@ export function requestInvitation(data): Action {
   }
 }
 
-export function createInvitationCode(): Action {
+export function createInvitationCode() {
   return (dispatch) => {
     return dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({"limit_by_days": 3})}, (err, data) => {
       if (!err && !_.isEmpty(data)) {
@@ -149,7 +148,7 @@ export function createInvitationCode(): Action {
   }
 }
 
-export function invitationCheckExistance(token): Action {
+export function invitationCheckExistance(token) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.invitation_check_if_exists.get({"token": token}, (err, data) => {
@@ -197,7 +196,7 @@ const signUp = function (dispatch, data) {
   });
 }
 
-export function emailSignUp(data): Action {
+export function emailSignUp(data) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
     dispatch(hideFatalError());
@@ -232,7 +231,7 @@ export function emailSignUp(data): Action {
   };
 }
 
-export function emailSignIn(data): Action {
+export function emailSignIn(data) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
     const body = {auth: data};
@@ -252,7 +251,7 @@ export function emailSignIn(data): Action {
   };
 }
 
-export function forgotPassword(email): Action {
+export function forgotPassword(email) {
   const data = {email}
   return (dispatch) => {
     return dispatch(rest.actions.password_recovery.post({}, {body: JSON.stringify(data)}, (err, data) => {
