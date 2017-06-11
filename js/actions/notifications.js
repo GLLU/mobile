@@ -59,7 +59,6 @@ export function getNotifications(retryCount = 0) {
         dispatch(setUserNotifications(notificationsData, page++));
       } else {
         if(retryCount < 5) {
-          console.log('222')
           dispatch(getNotifications(retryCount+1))
         }
 

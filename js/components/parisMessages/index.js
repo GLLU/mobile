@@ -55,7 +55,7 @@ class ParisMessages extends Component {
 
   componentDidMount(){
     let that = this
-    setTimeout(function(){ that.hide(); }, 9000);
+    setTimeout(function(){ that.hide(); }, 6500);
   }
 
   render() {

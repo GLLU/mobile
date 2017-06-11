@@ -207,7 +207,7 @@ class FilterBar extends BaseComponent {
   }
 
   _setSubFilters(openFilter, subFilters) {
-    const filters = _.cloneDeep(this.state.filters);
+    const filters = this.state.filters;
     filters.forEach(filter => {
       if (filter.id === openFilter.id) {
         filter.filters = subFilters;

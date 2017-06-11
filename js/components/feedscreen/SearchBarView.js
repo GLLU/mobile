@@ -73,15 +73,8 @@ class SearchBarView extends BaseComponent {
     this.props.handleSearchStatus();
   }
 
-  trytry() {
-    console.log('112222')
-    this.props.handleSearchStatus();
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if(this.state.searchStatus !== prevState.searchStatus ) {
-      console.log('12')
-      //this.trytry()
     }
   }
 

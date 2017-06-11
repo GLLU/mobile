@@ -53,6 +53,7 @@
     "redux-sequence-action": "^0.2.1",
     "redux-thunk": "^2.2.0",
     "remote-redux-devtools": "^0.5.10",
+    "rn-why-did-you-update": "0.0.8",
     "url": "^0.11.0",
     "whatwg-fetch": "^2.0.3"
   },
@@ -79,6 +80,7 @@
     "react-native-debugger-open": "^0.3.10",
     "react-test-renderer": "15.3.2",
     "remotedev-server": "^0.2.2",
+    "why-did-you-update": "0.0.8",
     "yarn": "^0.19.1"
   },
   "keywords": [

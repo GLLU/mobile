@@ -43,15 +43,12 @@ class ItemDataLine extends Component {
     if(this.props.isOpen){
       return (
         <TouchableHighlight>
-          <Animated.View style={[styles.footerButton, { flexDirection: 'row', marginTop: this.props.itemY-5}]}>
-            <Text style={[styles.footerButtonText, {marginLeft: 10, marginRight: 10}]}>{this.props.data.brand.name}</Text>
-            {/*<View style={{padding: 5, borderLeftWidth: 2, borderRightWidth: 2, borderColor: 'gray'}}>*/}
-              {/*<Text style={styles.footerButtonText}>250$</Text>*/}
-            {/*</View>*/}
-            <View style={{ padding: 5, marginLeft: 5,borderLeftWidth: 2, borderColor: 'gray'}}>
+          <Animated.View style={[styles.footerButton, { flexDirection: 'row', padding: 0, margin: 5}]}>
+            <Text style={[styles.footerButtonText, {marginHorizontal: 10}]}>{this.props.data.brand.name}</Text>
+            <View style={{ margin: 5,borderLeftWidth: 2, borderColor: 'gray'}}>
               <TouchableOpacity onPress={() => this.handleOpenLink()}>
                 <Image source={bagItImage}
-                       style={[styles.footerButtonIcon,{width: 25, height: 25}]}/>
+                       style={[styles.footerButtonIcon,{width: 20, height: 20, margin: 2.5, marginLeft: 10}]}/>
               </TouchableOpacity>
             </View>
           </Animated.View>

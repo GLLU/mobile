@@ -66,6 +66,7 @@ class UserLooks extends Component {
 
   _handleItemPress(item) {
     item.singleItem = true
+    console.log('item press')
     this.props.navigateTo('looksScreen', item);
   }
 

@@ -87,7 +87,6 @@ export function loadMore() {
     const newState = _.merge(state.query, {page: { number: nextPageNumber }});
     const params = parseQueryFromState(newState);
     return new Promise((resolve, reject) => {
-      console.log('currPage',currPage)
       if(state.flatLooksDataQueue.length > 0 && currPage > 1) {
         const data = {looks: state.flatLooksDataQueue, meta: state.meta}
         dispatch(setFeedData({data, query: newState, loadMore: true}));

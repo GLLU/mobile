@@ -270,6 +270,8 @@ public class K4LVideoTrimmer extends FrameLayout {
             mediaMetadataRetriever.setDataSource(getContext(), mSrc);
             long METADATA_KEY_DURATION = Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
 
+            Log.d("file path trimmer", mSrc.getPath());
+
             final File file = new File(mSrc.getPath());
 
             if (mTimeVideo < MIN_TIME_FRAME) {

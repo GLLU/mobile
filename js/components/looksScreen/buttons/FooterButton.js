@@ -32,7 +32,7 @@ export default class FooterButton extends Component {
 
   render() {
     return (
-      <TouchableHighlight style={{margin:5}} onPress={this._onPress}>
+      <TouchableHighlight style={{margin:5, width: 45, maxWidth: 55, alignSelf: 'flex-end'}} onPress={this._onPress}>
         <View style={this._getStyle(this.props.isActive)}>
           <Image source={this.props.icon ? this.props.icon : { uri: this.props.iconUrl } } style={styles.footerButtonIcon}/>
         </View>

@@ -42,11 +42,16 @@ class TabContent extends BaseComponent {
 
   constructor(props) {
     super(props);
+    this._renderRefreshControl = this._renderRefreshControl.bind(this)
+    this.onRefresh = this.onRefresh.bind(this)
+    this.handleScroll = this.handleScroll.bind(this)
     this.state = {
       isLoading: false,
       noMoreData: false,
       isRefreshing: false,
-      currentScrollPosition: 0
+      currentScrollPosition: 0,
+      flatLooksLeft: _.filter(props.flatLooks,(look,index)=>index%2===0),
+      flatLooksRight: _.filter(props.flatLooks,(look,index)=>index%2===1)
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
@@ -69,7 +74,11 @@ class TabContent extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.cardNavigationStack.length < 2) {
+    if(nextProps.flatLooks !== this.props.flatLooks){
+      this.setState({flatLooksLeft: _.filter(nextProps.flatLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.flatLooks,(look,index)=>index%2===1)})
+    }
+
+    if(this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
 
       // show modal after done loading for 3 seconds
       if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
@@ -145,18 +154,27 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
+  getLookDimensions(look) {
+    const colW = (deviceWidth) / 2;
+    const {width, height} = look;
+    const lookWidth = colW;
+    const lookHeight = height / width * colW;
+    return {lookWidth, lookHeight}
+  }
+
   _renderLooks(looks) {
-    return looks.map((look) => {
+    return _.map(looks, (look) => {
+      const dimensions = this.getLookDimensions(look)
       return (
-        <View key={look.id}>
-        <MediaContainer look={look}
-                        currScroll={this.state.currentScrollPosition}
-                        likeUpdate={this.props.likeUpdate}
-                        unLikeUpdate={this.props.likeUpdate}
-                        navigateTo={this.props.navigateTo}
-                        sendParisMessage={this.props.showParisBottomMessage}
-                        navigation={this.props.cardNavigationStack}/>
-        </View>
+          <MediaContainer look={look}
+                          currScroll={this.state.currentScrollPosition}
+                          likeUpdate={this.props.likeUpdate}
+                          unLikeUpdate={this.props.likeUpdate}
+                          navigateTo={this.props.navigateTo}
+                          sendParisMessage={this.props.showParisBottomMessage}
+                          navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
+                          dimensions={dimensions}
+          key={look.id}/>
       );
     });
   }
@@ -201,7 +219,7 @@ class TabContent extends BaseComponent {
     return (
       <RefreshControl
         refreshing={this.state.isRefreshing}
-        onRefresh={this.onRefresh.bind(this)}
+        onRefresh={this.onRefresh}
         tintColor="#666666"
         colors={['#666666']}
         progressBackgroundColor="#fff"
@@ -251,17 +269,17 @@ class TabContent extends BaseComponent {
           <ScrollView
             style={{flex: 1}}
             scrollEventThrottle={100}
-            onScroll={this.handleScroll.bind(this)}
-            refreshControl={this._renderRefreshControl.bind(this)()}>
+            onScroll={this.handleScroll}
+            refreshControl={this._renderRefreshControl()}>
             <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
               <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
                 <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
                   {this.renderInviteFriend()}
                 </TouchableOpacity>
-                {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===0))}
+                {this._renderLooks(this.state.flatLooksLeft)}
               </View>
               <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-                {this._renderLooks(_.filter(this.props.flatLooks,(look,index)=>index%2===1))}
+                {this._renderLooks(this.state.flatLooksRight)}
               </View>
             </View>
             {this._renderLoadMore()}
@@ -322,32 +340,19 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const flatLooks = mapImages(state.feed.flatLooksData);
   const user_size = hasUserSize ? state.user.user_size : '';
   return {
     modalShowing: state.myBodyType.modalShowing,
-    flatLooks: flatLooks,
+    flatLooks: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
     hasUserSize,
     user_size: user_size,
     user_gender: state.user.gender,
-    cardNavigationStack: state.cardNavigation.routes,
+    cardNavigationStack: state.cardNavigation,
     shareToken: state.user.invitation_share_token,
     userName: state.user.name
   }
 };
-
-const mapImages = (looks) => {
-  let images = _.cloneDeep(looks) || [];
-  const colW = (deviceWidth) / 2;
-  images = _.filter(images, x => x.width && x.height).map((look) => {
-    const {width, height} = look;
-    look.width = colW;
-    look.height = height / width * colW;
-    return look;
-  });
-  return images;
-}
 
 export default connect(mapStateToProps, bindActions)(TabContent);

@@ -43,7 +43,7 @@ class FeedPage extends BasePage {
   }
 
   componentDidMount() {
-    this.props.createInvitationCode() // Will be removed in the future
+    //this.props.createInvitationCode() // Will be removed in the future
   }
 
   componentWillMount() {

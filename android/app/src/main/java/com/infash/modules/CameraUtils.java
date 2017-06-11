@@ -81,7 +81,7 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         } else {
 
                             Intent timmerIntent = new Intent(getCurrentActivity(), TrimmerActivity.class);
-                            timmerIntent.putExtra(TrimmerActivity.EXTRA_VIDEO_PATH, uri.toString());
+                            timmerIntent.putExtra(TrimmerActivity.EXTRA_VIDEO_PATH, FileUtils.getPath(getReactApplicationContext(), uri));
                             getCurrentActivity().startActivityForResult(timmerIntent, TRIM_VIDEO);
 
 
@@ -92,7 +92,17 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                 case TRIM_VIDEO:
 
                     if (resultCode == RESULT_OK) {
-                        String realPath = FileUtils.getPath(getReactApplicationContext(), (Uri)intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH));
+
+                        String receivedPath = intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH).toString();
+
+                        String realPath;
+
+                        if (receivedPath.startsWith("/storage")) {
+                            realPath = receivedPath;
+                        } else {
+                            realPath = FileUtils.getPath(getReactApplicationContext(), (Uri) intent.getParcelableExtra(TrimmerActivity.EXTRA_VIDEO_PATH));
+                        }
+
                         Log.d("martin", realPath);
                         mPromise.resolve("file://" + realPath);
                     } else {
