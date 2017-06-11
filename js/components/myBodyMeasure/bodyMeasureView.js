@@ -79,7 +79,7 @@ class BodyMeasureView extends BaseComponent {
         {this.props.sizeTypes.map((sizeType, i) => {
           const value=this.state.currentSize[sizeType];
           const unit =this.state.currentSize['measurements_scale'];
-          return <SizePicker key={i} sizeType={sizeType} value={value} unit={unit} onValueChange={this.onSizeChange}/>
+          return <SizePicker key={i} sizeType={sizeType} value={Number(value)} unit={unit} onValueChange={this.onSizeChange}/>
         })}
       </View>
     )
