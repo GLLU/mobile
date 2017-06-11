@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -85,6 +86,7 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
 
     @Override
     public void getResult(final Uri uri) {
+        Log.d("trimmer martin", uri.toString());
         mProgressDialog.cancel();
         Intent intent = new Intent();
         intent.putExtra(EXTRA_VIDEO_PATH, uri);
