@@ -5,6 +5,14 @@ import { Provider } from 'react-redux';
 import App from './App';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import configureStore from './configureStore';
+import { disableConsole } from "./utils/DevUtils";
+
+/*global __DEV__ */
+const DEV=__DEV__;
+
+if(!DEV){
+  disableConsole()
+}
 
 function setup():React.Component {
   class Root extends Component {
