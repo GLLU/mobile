@@ -1,15 +1,8 @@
 // Data sample
 const sizeList = {
   female: {
-    triangle: {
+    invertedTriangle: {
         chest: '94', waist: '74', hips: '99', height: '170',
-        minValue: '0',
-        maxValue: '300',
-        measurements_scale: 'cm',
-        select: true
-    },
-    leanColumn: {
-        chest: '90', waist: '75', hips: '98', height: '170',
         minValue: '0',
         maxValue: '300',
         measurements_scale: 'cm',
@@ -36,15 +29,7 @@ const sizeList = {
         measurements_scale: 'cm',
         select: true
     },
-    neatHourGlass: {
-        chest: '94', waist: '73', hips: '102', height: '170',
-        minValue: '0',
-        maxValue: '300',
-        measurements_scale: 'cm',
-        select: true
-    },
-
-    fullHourGlass: {
+    hourglass: {
         chest: '94', waist: '73', hips: '102', height: '170',
         minValue: '0',
         maxValue: '300',
@@ -53,13 +38,6 @@ const sizeList = {
     }
   },
   male: {
-    trapezoid: {
-      chest: '101', waist: '84', hips: '94', height: '170',
-      minValue: '0',
-      maxValue: '300',
-      measurements_scale: 'cm',
-      select: false
-    },
     invertedTriangle: {
       chest: '102', waist: '83', hips: '94', height: '170',
       minValue: '0',
