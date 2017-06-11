@@ -1,18 +1,18 @@
 import _ from 'lodash';
 
 export function notificationMapper(notification) {
-  let cover;
-  cover = notification.go_to_object.data.cover ? notification.go_to_object.data.cover : null
+  const cover = notification.go_to_object.data.cover ? notification.go_to_object.data.cover : null
+  const {initiator} = notification;
   return {
     id: notification.id,
     created_at: notification.created_at,
-    user_id: notification.initiator.id,
-    avatar: notification.initiator.avatar,
-    name: notification.initiator.name,
-    username: notification.initiator.username,
     is_read: notification.is_read,
     go_to_object: notification.go_to_object,
     coverImage: cover ? _.find(cover.list, x => x.version === 'medium') : null,
+    user_id: initiator.id,
+    avatar: initiator.avatar,
+    name: initiator.name,
+    username: initiator.username,
     action_kind: notification.action_kind,
     actionText: getTextByAction(notification.action_kind)
   };
@@ -20,21 +20,13 @@ export function notificationMapper(notification) {
 
 function getTextByAction(actionKind) {
   switch (actionKind) {
-    case 'Like': {
+    case 'Like':
       return 'liked your look';
-      break;
-    }
-    case 'Follow': {
+    case 'Follow':
       return 'started following you';
-      break;
-    }
-    case 'Comment': {
+    case 'Comment':
       return 'commented on your look';
-      break;
-    }
     default:
-      return 'unrecognized action kind'
-      break;
-
+      return 'unrecognized action kind';
   }
 }

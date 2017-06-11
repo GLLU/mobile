@@ -1,5 +1,4 @@
 
-import type { Action } from '../actions/types';
 import { SHOW_ERROR, HIDE_ERROR, SHOW_WARNING, HIDE_WARNING, SHOW_INFO, HIDE_INFO, SHOW_FATAL_ERROR, HIDE_FATAL_ERROR } from '../actions/errorHandler';
 
 const initialState = {

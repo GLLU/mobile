@@ -11,6 +11,8 @@ import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, 
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
+import { editNewLook } from "../../actions/uploadLook";
+import Spinner from "../loaders/Spinner";
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toFeedScreen = require('../../../images/icons/feed.png');
 const toSettings = require('../../../images/icons/settings.png');
@@ -45,6 +47,7 @@ class ProfileScreen extends BasePage {
       isFollowing: userData.is_following,
       userId: isMyProfile ? props.myUser.id : userData.user_id,
       photoModal: false,
+      isLoadingLooks: true
 
     }
     this.loadMoreAsync = _.debounce(this.loadMoreAsync, 500)
@@ -239,7 +242,16 @@ class ProfileScreen extends BasePage {
                 </View>
                 { this._renderStats() }
               </Image>
-              {this.props.userLooks.length > 0 && this.props.userLooksUserId === this.state.userId ? <UserLooks navigateTo={this.navigateTo} isMyProfile={this.state.isMyProfile} /> : null}
+              {this.props.userLooks.length > 0 && this.props.userLooksUserId === this.state.userId ?
+                <UserLooks
+                  myUserId={this.props.myUser.id}
+                  currLookScreenId={this.props.userLooksUserId}
+                  userLooks={this.props.userLooks}
+                  navigateTo={this.navigateTo}
+                  isMyProfile={this.state.isMyProfile}
+                  editNewLook = {this.props.editNewLook}
+                  addNewLook = {this.props.addNewLook}
+                /> : <Spinner/>}
             </ScrollView>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
@@ -255,6 +267,7 @@ function bindAction(dispatch) {
     getStats: (id) => dispatch(getStats(id)),
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
+    editNewLook: (id) => dispatch(editNewLook(id)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
     getUserLooks: data => dispatch(getUserLooks(data)),
     showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),

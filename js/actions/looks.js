@@ -1,15 +1,9 @@
-import type { Action } from '../actions/types';
 import rest from '../api/rest';
-import { showLoader, hideLoader } from './index';
-
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
 
-export function getUserLooks(data):Action {
+export function getUserLooks(data) {
   return (dispatch) => {
-    if(data.page === 1) {
-      dispatch(showLoader());
-    }
     return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 8, "page[number]" : data.page, 'all': data.all}, {}, (err, userLooksData) => {
       if (!err && userLooksData) {
         let looksData = {
@@ -17,13 +11,12 @@ export function getUserLooks(data):Action {
           currId: data.id,
         }
         dispatch(setUserLooks(looksData));
-        dispatch(hideLoader());
       }
     }));
   };
 }
 
-export function getUserLooksData(data):Action {
+export function getUserLooksData(data) {
   return (dispatch) => {
     let looksData = {
       currId: data.id,
@@ -35,7 +28,7 @@ export function getUserLooksData(data):Action {
   };
 }
 
-export function reportAbuse(look_id):Action {
+export function reportAbuse(look_id) {
   const data = { look_id }
   return (dispatch) => {
     return dispatch(rest.actions.report_abuse.post({} ,{ body: JSON.stringify(data) } , (err, data) => {
@@ -48,14 +41,14 @@ export function reportAbuse(look_id):Action {
   };
 }
 
-export function setUserLooksData(data):Action {
+export function setUserLooksData(data) {
   return {
     type: SET_USER_LOOKS_DATA,
     payload: data
   };
 }
 
-export function setUserLooks(data):Action {
+export function setUserLooks(data) {
   return {
     type: SET_USER_LOOKS,
     payload: data

@@ -9,7 +9,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_LOOK_LIKES: {
-      let lookLikesData = action.payload.likes.map(lookLikes.mapLike);
+      let lookLikesData = action.payload.likes.map(lookLikes.map);
       if (action.payload.currId === state.currId) {
         lookLikesData.unshift(...state.userFollowsData)
       }

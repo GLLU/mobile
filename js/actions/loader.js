@@ -1,29 +1,13 @@
-import type { Action } from './types';
-
-export const SHOW_LOADER = 'SHOW_LOADER';
-export const HIDE_LOADER = 'HIDE_LOADER';
 export const SHOW_PROCESSING = 'SHOW_PROCESSING';
 export const HIDE_PROCESSING = 'HIDE_PROCESSING';
 
-export function showLoader():Action {
-  return {
-    type: SHOW_LOADER,
-  };
-}
-
-export function hideLoader():Action {
-  return {
-    type: HIDE_LOADER,
-  };
-}
-
-export function showProcessing():Action {
+export function showProcessing() {
   return {
     type: SHOW_PROCESSING,
   };
 }
 
-export function hideProcessing():Action {
+export function hideProcessing() {
   return {
     type: HIDE_PROCESSING,
   };

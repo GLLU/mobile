@@ -3,6 +3,7 @@ import { Image } from 'react-native';
 import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUEUE, CLEAR_FEED_DATA } from '../actions/feed';
 import { SET_LOOK_LIKE_STATE } from '../actions/likes';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
+import * as feedLookMapper from "../mappers/feedLookMapper";
 
 const initialState = {
   flatLooksData: [],
@@ -21,38 +22,6 @@ const initialState = {
     }
   },
 };
-
-const parseLook = function (look, index, flatLooksDataLength) {
-  let cover;
-  if (look.cover.type === 'video') {
-    cover = _.find(look.cover.list, x => x.version === 'large_720');
-  } else {
-    cover = _.find(look.cover.list, x => x.version === 'medium');
-    Image.prefetch(cover.url)
-  }
-
-  return Object.assign({}, {
-    liked: look.is_liked,
-    type: look.user_size.body_type,
-    description: look.description,
-    id: look.id,
-    likes: look.likes,
-    comments: look.comments,
-    user_id: look.user_id,
-    uri: cover.url ? cover.url : null,
-    width: cover.width ? cover.width : 405,
-    height: cover.height ? cover.height : 720,
-    coverType: look.cover.type,
-    avatar: look.user.avatar,
-    name: look.user.name,
-    username: look.user.username,
-    about_me: look.user.about_me,
-    is_following: look.user.is_following,
-    is_follower: look.user.is_follower,
-    items: look.items,
-    originalIndex: flatLooksDataLength + index
-  });
-}
 
 // Action Handlers
 const ACTION_HANDLERS = {
@@ -91,10 +60,10 @@ const ACTION_HANDLERS = {
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
     const currentLooksData = state.flatLooksData;
-    const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
+    const flatLooksDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
     const newData = action.payload.loadMore ?
       action.payload.data.looks :
-      _.map(action.payload.data.looks || [], (look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+      _.map(action.payload.data.looks || [], (look, index) => feedLookMapper.map(look, index, flatLooksDataLength));
     const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
     return {
       ...state,
@@ -107,8 +76,8 @@ const ACTION_HANDLERS = {
 
     const meta = _.merge(state.meta, action.payload.data.meta);
     const query = action.payload.query;
-    const flatLooksdDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
-    const newData = _.map(action.payload.data.looks||[],(look, index, flatLooksDataLength) => parseLook(look, index, flatLooksdDataLength));
+    const flatLooksDataLength = action.payload.loadMore ? state.flatLooksData.length : 0;
+    const newData = _.map(action.payload.data.looks||[],(look, index) => feedLookMapper.map(look, index, flatLooksDataLength));
     return {
       ...state,
       flatLooksDataQueue: newData,
@@ -117,7 +86,7 @@ const ACTION_HANDLERS = {
     }
   },
   [RESET_FEED_DATA]: (state, {payload}) => {
-    const flatLooksData = _.map(payload.data.looks||[],look => parseLook(look));
+    const flatLooksData = _.map(payload.data.looks||[],look => feedLookMapper.map(look));
     return {
       ...state,
       flatLooksData,
@@ -125,7 +94,7 @@ const ACTION_HANDLERS = {
       query: payload.query
     }
   },
-  [CLEAR_FEED_DATA]: (state, {payload}) => {
+  [CLEAR_FEED_DATA]: () => {
     return {
       ...initialState,
     }

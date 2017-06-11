@@ -17,8 +17,6 @@ import notifications from './notifications';
 import paris from './paris';
 import lookLikes from './lookLikes';
 
-import { reducer as api } from 'redux-json-api';
-
 export default combineReducers({
   loader,
   errorHandler,
@@ -32,7 +30,6 @@ export default combineReducers({
   feed,
   userLooks,
   stats,
-  api,
   userFollows,
   userFollowers,
   notifications,

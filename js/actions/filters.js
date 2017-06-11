@@ -1,4 +1,3 @@
-import type { Action } from '../actions/types';
 import rest from '../api/rest';
 import Utils from '../utils';
 
@@ -6,7 +5,7 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_BRANDS = 'SET_BRANDS';
 export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
 
-export function loadCategories():Action {
+export function loadCategories() {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.category_tags({}, (err, data) => {
@@ -14,8 +13,10 @@ export function loadCategories():Action {
           // load in another thread
           setTimeout(() => {
             const tags = data.tags || [];
-            Utils.preloadImages(tags.map(x => x.icon.url)).catch()
-            Utils.preloadImages(tags.map(x => x.icon.url_hover)).catch();
+            Promise.all([
+              Utils.preloadImages(tags.map(x => x.icon.url)),
+              Utils.preloadImages(tags.map(x => x.icon.url_hover))
+            ]).finally();
           }, 1);
 
           resolve(dispatch({
@@ -30,7 +31,7 @@ export function loadCategories():Action {
   };
 }
 
-export function loadBrands(term):Action {
+export function loadBrands(term) {
   return (dispatch) => {
     const params = {
       brand: {
@@ -54,7 +55,7 @@ export function loadBrands(term):Action {
   };
 }
 
-export function loadOccasionTags(data):Action {
+export function loadOccasionTags(data) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.occasion_tags({}, (err, data) => {

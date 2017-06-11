@@ -10,6 +10,7 @@ import {
   editNewLook,
 } from '../../actions';
 import VideoWithCaching from "../common/media/VideoWithCaching";
+import Spinner from "../loaders/Spinner";
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -126,41 +127,22 @@ class UserLooks extends Component {
     });
   }
 
-  _handleOpenPhotoModal() {
-    this.setState({photoModal: true});
-  }
-
-  goToAddNewItem(imagePath) {
-    this.setState({photoModal: false}, () => {
-      this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen');
-      });
-    })
-  }
-
-  renderUserLooks() {
+  render() {
     const paddingBottom = 150;
     return (
       <View style={styles.tab}>
         <View style={[styles.mainGrid]}>
-            <View style={[{flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderImages(this.state.imagesColumn1)}
-              </View>
-              <View style={{flex: 0.5, flexDirection: 'column'}}>
-                {this._renderImages(this.state.imagesColumn2)}
-              </View>
+          <View style={[{flexDirection: 'row', paddingLeft: 7, paddingTop: 14, paddingBottom: this.state.filterHeight + paddingBottom}]}>
+            <View style={{flex: 0.5, flexDirection: 'column'}}>
+              {this._renderImages(this.state.imagesColumn1)}
             </View>
+            <View style={{flex: 0.5, flexDirection: 'column'}}>
+              {this._renderImages(this.state.imagesColumn2)}
+            </View>
+          </View>
         </View>
       </View>
-    )
-  }
-
-  render() {
-    return(
-      this.props.isLoading ? <View></View> : this.renderUserLooks()
-    )
-  }
+    )}
 }
 
 const styles = StyleSheet.create({
@@ -173,20 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function bindActions(dispatch) {
-  return {
-    addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
-    editNewLook: (id) => dispatch(editNewLook(id))
-  };
-}
-
-const mapStateToProps = state => {
-  return {
-    currLookScreenId: state.userLooks.currId,
-    userLooks: state.userLooks.userLooksData,
-    myUserId: state.user.id,
-    isLoading: state.loader.loading
-  }
-};
-
-export default connect(mapStateToProps, bindActions)(UserLooks);
+export default UserLooks;

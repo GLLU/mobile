@@ -1,4 +1,3 @@
-import type { Action } from '../actions/types';
 import _ from 'lodash';
 import rest from '../api/rest';
 
@@ -11,7 +10,7 @@ const parseQueryFromState = function(state) {
   return Object.assign({}, state, { category: state.category ? state.category.name : null })
 }
 
-export function getFeed(query, retryCount = 0):Action {
+export function getFeed(query, retryCount = 0) {
   return (dispatch) => {
     const newState = Object.assign({}, query, {
       page: {
@@ -38,8 +37,8 @@ export function getFeed(query, retryCount = 0):Action {
   };
 }
 
-export function resetFeed():Action {
-  return (dispatch, getState) => {
+export function resetFeed() {
+  return (dispatch) => {
     const params = {
       gender: null,
       body_type: null,
@@ -69,9 +68,9 @@ export function resetFeed():Action {
   };
 }
 
-export function clearFeed():Action {
-  return (dispatch, getState) => {
-    return new Promise((resolve, reject) => {
+export function clearFeed() {
+  return (dispatch) => {
+    return new Promise((resolve) => {
       dispatch({
         type: CLEAR_FEED_DATA
       });
@@ -80,7 +79,7 @@ export function clearFeed():Action {
   };
 }
 
-export function loadMore():Action {
+export function loadMore() {
   return (dispatch, getState) => {
     const state = getState().feed;
     const currPage = state.query.page.number
@@ -104,14 +103,14 @@ export function loadMore():Action {
   };
 }
 
-export function setFeedData(data):Action {
+export function setFeedData(data) {
   return {
     type: SET_FLAT_LOOKS_FEED_DATA,
     payload: data
   };
 }
 
-export function setFeedDataQueue(data):Action {
+export function setFeedDataQueue(data) {
   return {
     type: SET_FLAT_LOOKS_FEED_DATA_QUEUE,
     payload: data

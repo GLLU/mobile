@@ -13,8 +13,7 @@ export default function (state = initialState, action) {
       };
     case HIDE_PARIS_BOTTOM_MESSAGE:
       return {
-        ...state,
-        messageBottom: null,
+        ...initialState
       };
     default:
       return state;
