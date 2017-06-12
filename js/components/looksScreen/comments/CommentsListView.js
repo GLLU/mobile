@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
-import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet, FlatList } from 'react-native';
 import CommentRow from './CommentRow'
 
 const styles = StyleSheet.create({
@@ -18,9 +18,7 @@ export default class CommentsListView extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
     this.state = {
-      dataSource: ds.cloneWithRows(props.comments),
       isTrueEndReached: false
     };
   }
@@ -40,29 +38,19 @@ export default class CommentsListView extends Component {
 
   };
 
-  rowHasChanged(r1, r2) {
-    return r1 !== r2;
-  }
-
   componentWillReceiveProps(nextProps) {
     if (_.isEmpty(nextProps.comments)) {
       this.setState({isTrueEndReached: true});
-    }
-    if (nextProps.comments !== this.props.comments) {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.comments)
-      })
     }
   }
 
   _renderListView() {
     return (
-      <ListView
+      <FlatList
         style={styles.container}
-        dataSource={this.state.dataSource}
-        renderRow={(data) => <CommentRow onUserPress={this.props.onUserPress} {...data}/>}
-        renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
-        enableEmptySections={true}
+        data={this.props.comments}
+        keyExtractor={(comment,index)=>comment.id!==-1?comment.id:index}
+        renderItem={({item}) => <CommentRow onUserPress={this.props.onUserPress} {...item}/>}
         onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
         onEndReachedThreshold={100}
       />
@@ -71,9 +59,11 @@ export default class CommentsListView extends Component {
 
   _renderEmptyView() {
     return (
-      <Text style={{textAlign:'center', padding:10}}>
-        Be the first to comment on this look
-      </Text>
+      <View style={{flex: 1, justifyContent: 'center', padding: 10}}>
+        <Text style={{textAlign: 'center'}}>
+          Be the first to comment on this look
+        </Text>
+      </View>
     );
   }
 
