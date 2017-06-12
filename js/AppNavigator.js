@@ -9,6 +9,7 @@ import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'
 import { addNavigationHelpers } from "react-navigation";
 import {expireCache} from './lib/cache/FSVideoCache'
+import { trackScreenByNavigationState } from "./utils/TrackingUtils";
 
 
 const styles = StyleSheet.create({
@@ -61,6 +62,12 @@ class AppNavigator extends Component {
       dispatch,
       state: navigationState,
     })
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.navigationState!==this.props.navigationState){
+      trackScreenByNavigationState(nextProps.navigationState,this.props.navigationState)
+    }
   }
 
   render() {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import BaseComponent from './BaseComponent';
-import Analytics from '../../../lib/analytics/Analytics';
 import {NavigationActions} from "react-navigation";
 
 class BasePage extends BaseComponent {
@@ -11,18 +10,6 @@ class BasePage extends BaseComponent {
     this.goBack=this.goBack.bind(this);
     this.resetTo=this.resetTo.bind(this);
     this.resetWithPayload=this.resetWithPayload.bind(this);
-  }
-
-  componentDidMount() {
-    Analytics.trackScreen({
-      page: this.constructor.name,
-    }, true);
-  }
-
-  componentWillUnmount() {
-    Analytics.endTrackScreen({
-      page: this.constructor.name,
-    });
   }
 
   setLeaveBreadcrumb(props) {

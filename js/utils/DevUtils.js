@@ -1,5 +1,5 @@
 import {noop} from 'lodash'
-import * as selfRef from './KeychainUtils'
+import * as selfRef from './DevUtils'
 
 export default selfRef
 
