@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import ErrorHandler from './components/errorHandler';
-import ParisMessages from './components/parisMessages';
+import ParisMessages from './components/paris/ParisMessages';
 import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'

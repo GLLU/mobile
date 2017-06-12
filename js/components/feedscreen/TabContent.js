@@ -16,12 +16,17 @@ import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+import ParisAdjustableMessage from '../paris/ParisAdjustableMessage'
 import _ from 'lodash';
 import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
+const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
+import LinearGradient from 'react-native-linear-gradient';
 
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const LOADER_HEIGHT = 30;
 
 class TabContent extends BaseComponent {
@@ -46,7 +51,7 @@ class TabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
     this.state = {
-      isLoading: false,
+      isLoading: true,
       noMoreData: false,
       isRefreshing: false,
       currentScrollPosition: 0,
@@ -263,6 +268,37 @@ class TabContent extends BaseComponent {
     }
   }
 
+  renderColumns() {
+    return (
+      <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+          <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
+            {this.renderInviteFriend()}
+          </TouchableOpacity>
+          {this._renderLooks(this.state.flatLooksLeft)}
+        </View>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+          {this._renderLooks(this.state.flatLooksRight)}
+        </View>
+      </View>
+    )
+  }
+
+  renderEmptyContent() {
+    return (
+      <View style={{flex: 1, flexDirection: 'column'}}>
+        <Image source={profileBackground} style={{resizeMode: 'contain', width: deviceWidth, height: deviceHeight-80, alignSelf: 'flex-start'}} >
+          <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
+                          style={[styles.linearGradient, {opacity: 0.7}]}/>
+          <View style={{marginTop: 100}}>
+            <ParisAdjustableMessage/>
+          </View>
+        </Image>
+
+      </View>
+    )
+  }
+
   render() {
       return (
         <View style={styles.tab}>
@@ -271,17 +307,7 @@ class TabContent extends BaseComponent {
             scrollEventThrottle={100}
             onScroll={this.handleScroll}
             refreshControl={this._renderRefreshControl()}>
-            <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
-              <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-                <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
-                  {this.renderInviteFriend()}
-                </TouchableOpacity>
-                {this._renderLooks(this.state.flatLooksLeft)}
-              </View>
-              <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-                {this._renderLooks(this.state.flatLooksRight)}
-              </View>
-            </View>
+            {this.state.flatLooksLeft.length > 0 ? this.renderColumns() : this.renderEmptyContent()}
             {this._renderLoadMore()}
             {this._renderRefreshingCover()}
           </ScrollView>
@@ -324,7 +350,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff'
-  }
+  },
+  linearGradient: {
+    width: deviceWidth,
+    position: 'absolute',
+    top: 0
+  },
 });
 
 function bindActions(dispatch) {
