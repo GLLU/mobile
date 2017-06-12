@@ -13,6 +13,7 @@ import _ from 'lodash';
 import Video from 'react-native-video';
 import glluTheme from '../../themes/gllu-theme';
 import SignUpEmailButton from './SignUpEmailButton'
+import withBugsnag from '../common/bugsnag/WithBugsnag'
 import {
   TERMS_URL,
   PRIVACY_URL,
@@ -57,7 +58,9 @@ class SplashPage extends BasePage {
 
   checkLogin(user) {
     this.props.checkLogin(user)
-      .then(() => this.resetTo('feedscreen'))
+      .then(() => {
+      this.resetTo('feedscreen')
+      })
       .catch(err => console.log(err));
   }
 
@@ -185,4 +188,4 @@ const mapStateToProps = state => ({
   showTutorial: state.user.showTutorial
 });
 
-export default connect(mapStateToProps, bindAction)(listenToAppState(SplashPage));
+export default connect(mapStateToProps, bindAction)(listenToAppState(withBugsnag(SplashPage)));
