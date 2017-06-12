@@ -4,6 +4,10 @@ import withBreadcrumbs from '../bugsnag/WithBreadcrumbs';
 
 class BaseComponent extends Component {
 
+  static propTypes={
+    logEvent:React.PropTypes.func
+  };
+
   logEvent=this.props.logEvent
 }
 

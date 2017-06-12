@@ -1,9 +1,9 @@
-import * as React from "react";
+import React,{Component} from "react";
 import { AppState } from "react-native";
 
 export default function listenToAppState(WrappedComponent) {
 
-  return class AppStateListener extends React.Component {
+  return class AppStateListener extends Component {
 
     constructor(props) {
       super(props);

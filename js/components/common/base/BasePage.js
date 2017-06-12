@@ -3,13 +3,13 @@ import BaseComponent from './BaseComponent';
 import withNavigation from '../navigation/WithNavigation'
 
 class BasePage extends BaseComponent {
-  constructor(props) {
-    super(props);
-    this.navigateTo=this.navigateTo.bind(this);
-    this.goBack=this.goBack.bind(this);
-    this.resetTo=this.resetTo.bind(this);
-    this.resetWithPayload=this.resetWithPayload.bind(this);
-  }
+
+  static propTypes={
+    resetTo:React.PropTypes.func,
+    resetWithPayload:React.PropTypes.func,
+    navigateTo:React.PropTypes.func,
+    goBack:React.PropTypes.func
+  };
 
   resetTo=this.props.resetTo;
 
