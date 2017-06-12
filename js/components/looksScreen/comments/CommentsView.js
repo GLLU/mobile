@@ -106,7 +106,7 @@ class CommentsView extends Component {
     return (
       <BottomHalfScrenModal {...this.props}>
         <CommentsViewHeader count={this.state.count}/>
-        {this.props.areCommentsLoaded ? this._renderListView() : <Spinner/>}
+        {this.props.areCommentsLoaded ? this._renderListView() : <Spinner style={{flex: 1, justifyContent: 'center', padding: 10}}/>}
         {this._renderFooter()}
         <View style={{height:statusBarHeight}}/>
       </BottomHalfScrenModal>

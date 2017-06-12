@@ -59,9 +59,11 @@ export default class CommentsListView extends Component {
 
   _renderEmptyView() {
     return (
-      <Text style={{textAlign:'center', padding:10}}>
-        Be the first to comment on this look
-      </Text>
+      <View style={{flex: 1, justifyContent: 'center', padding: 10}}>
+        <Text style={{textAlign: 'center'}}>
+          Be the first to comment on this look
+        </Text>
+      </View>
     );
   }
 
