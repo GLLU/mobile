@@ -125,7 +125,6 @@ function bindActions(dispatch) {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
-    createInvitationCode: name => dispatch(createInvitationCode(name)),
   };
 }
 
