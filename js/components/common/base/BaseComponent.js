@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import * as Utils from '../../../utils';
-import Analytics from '../../../lib/analytics/Analytics';
+import withAnalytics from '../analytics/WithAnalytics';
 
 class BaseComponent extends Component {
 
@@ -10,7 +10,6 @@ class BaseComponent extends Component {
 
   constructor(props) {
     super(props);
-
     this.bugsnag = Utils.getBugsnagClient();
     this.setBugsnagUser(props.user);
     this.setLeaveBreadcrumb(props);
@@ -36,12 +35,7 @@ class BaseComponent extends Component {
     }
   }
 
-  logEvent(name, params = {}) {
-    // set it async to not affect main thread
-    setTimeout(() => {
-      Analytics.logEvent(name, params);
-    }, 10);
-  }
+  logEvent=this.props.logEvent
 }
 
-export default BaseComponent;
+export default withAnalytics(BaseComponent);
