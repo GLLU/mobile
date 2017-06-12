@@ -69,7 +69,7 @@ class TabContent extends BaseComponent {
 
   componentDidMount() {
     let that = this
-    setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
+    setInterval(function(){ that.handleScrollPositionForVideo(); }, 1000);
     this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
   }
 
@@ -132,11 +132,8 @@ class TabContent extends BaseComponent {
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      console.log('1')
       this.setState({isLoading: true}, () => {
-        console.log('2')
         this.props.loadMore().then(() => {
-          console.log('3')
           this.setState({isLoading: false})}
         ).catch(err => {
           console.log('error', err);
@@ -177,7 +174,8 @@ class TabContent extends BaseComponent {
                           sendParisMessage={this.props.showParisBottomMessage}
                           navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
                           dimensions={dimensions}
-          key={look.id}/>
+                          key={look.id}
+                          shouldOptimize={this.state.flatLooksLeft.length>20}/>
       );
     });
   }

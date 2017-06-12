@@ -9,7 +9,7 @@ export default function listenToAppState(WrappedComponent) {
       super(props);
       this.handleAppStateChange=this.handleAppStateChange.bind(this);
       this.state={
-        active:true
+        currAppState:'active'
       }
     }
 
@@ -21,10 +21,11 @@ export default function listenToAppState(WrappedComponent) {
       AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
-    handleAppStateChange = nextAppState => this.setState({isActive:nextAppState===this.state.active});
+    //handleAppStateChange = nextAppState => console.log('nextAppState',nextAppState);
+    handleAppStateChange = nextAppState => this.setState({currAppState: nextAppState});
 
     render() {
-      return <WrappedComponent {...this.props} active={this.state.active}/>
+      return <WrappedComponent {...this.props} currentAppState={this.state.currAppState}/>
     }
   }
 }

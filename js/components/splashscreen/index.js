@@ -40,7 +40,7 @@ class SplashPage extends BasePage {
     this.handleEmailSigninPress=this.handleEmailSigninPress.bind(this);
     this.state = {
       name: '',
-      repeat: props.active
+      repeat: props.currentAppState==='active'
     };
     if(this.props.showTutorial && Platform !== 'ios'){
       this.navigateTo('tutorialscreen');
@@ -62,11 +62,11 @@ class SplashPage extends BasePage {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.active!==this.props.active){
-      if(this.props.active){
+    if(nextProps.currentAppState!==this.props.currentAppState){
+      if(this.props.currentAppState==='active'){
         this._root.seek(0)
       }
-      this.setState({repeat:nextProps.active})
+      this.setState({repeat:nextProps.currentAppState==='active'})
     }
   }
 
@@ -141,6 +141,7 @@ class SplashPage extends BasePage {
   }
 
   render() {
+
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>
