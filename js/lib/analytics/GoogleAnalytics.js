@@ -1,16 +1,15 @@
 import React from 'react';
 import Config from 'react-native-config';
-import BaseAnalytic from './BaseAnalytic';
 import _ from 'lodash';
 import {
   GoogleAnalyticsTracker,
   GoogleAnalyticsSettings,
 } from 'react-native-google-analytics-bridge';
+import { encrypt } from "../../utils/MD5Utils";
 
 
-class GoogleAnalytics extends BaseAnalytic {
+class GoogleAnalytics {
   constructor() {
-    super();
     this.tracker = new GoogleAnalyticsTracker(Config.GOOGLE_ANALYTICS_TRACKER_ID);
     GoogleAnalyticsSettings.setDispatchInterval(30);
     // later we can enable it to reduce debug noice
@@ -22,7 +21,7 @@ class GoogleAnalytics extends BaseAnalytic {
   setUser(user) {
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
-        this.tracker.setUser(this.encryptUserId(user.id));
+        this.tracker.setUser(encrypt(user.id));
       }
     }
   }
