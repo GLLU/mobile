@@ -52,10 +52,10 @@ class SignInPage extends BasePage {
       if(this.checkValidations()) {
           this.props.emailSignIn(data)
             .then(user=>{
-              this.logEvent('SignIn', { name: 'Sign in successful!'});
+              this.logEvent('SignInScreen', { name: 'Sign in successful!'});
               this.resetTo('feedscreen')
             })
-            .catch(error=>this.logEvent('SignIn', { name: 'Sign in failed!'}));
+            .catch(error=>this.logEvent('SignInScreen', { name: 'Sign in failed!'}));
       }
   }
   checkValidations() {
@@ -96,7 +96,7 @@ class SignInPage extends BasePage {
   }
 
   handleOpenLink(url) {
-    this.logEvent('SignIn', { name: 'Link click', url });
+    this.logEvent('SignInScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -107,13 +107,13 @@ class SignInPage extends BasePage {
   }
 
   handleSigninPress() {
-    this.logEvent('SignInEmailScreen', { name: 'Lets inFash click' });
+    this.logEvent('SignInScreen', { name: 'Lets inFash click' });
 
    this.singinWithEmail();
   }
 
   handleForgotPasswordPress() {
-    this.logEvent('SignInEmailScreen', { name: 'Forgot password click' });
+    this.logEvent('SignInScreen', { name: 'Forgot password click' });
     this.navigateTo('forgotpassword');
   }
 

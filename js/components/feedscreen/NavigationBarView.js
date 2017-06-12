@@ -78,7 +78,7 @@ class NavigationBarView extends BaseComponent {
   }
 
   handleNotificationsPress() {
-    this.logEvent('ProfileScreen', {name: 'Notifications click'});
+    this.logEvent('Feedscreen', {name: 'Notifications click'});
     this.props.navigateTo('notificationsScreen');
   }
 

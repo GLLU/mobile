@@ -71,7 +71,7 @@ class SignUpPage extends BasePage {
       }
       this.props.emailSignUp(data)
         .then(user=>{
-          this.logEvent('SignupPage', {name: `user signed up with email ${email}`, invitation_token: this.props.invitation_token});
+          this.logEvent('SignUpScreen', {name: `user signed up with email ${email}`, invitation_token: this.props.invitation_token});
           this.resetTo('feedscreen',user)
         })
         .catch(err=>console.log(err));
@@ -122,17 +122,17 @@ class SignUpPage extends BasePage {
   }
 
   handleCameraPress() {
-    this.logEvent('SignUpEmailScreen', { name: 'Camera click' });
+    this.logEvent('SignUpScreen', { name: 'Camera click' });
     this.openCamera();
   }
 
   handleSignupPress() {
-    this.logEvent('SignUpEmailScreen', { name: 'Lets inFash click' });
+    this.logEvent('SignUpScreen', { name: 'Lets inFash click' });
     this.singupWithEmail();
   }
 
   handleLoginPress() {
-    this.logEvent('SignUpEmailScreen', { name: 'Already user click' });
+    this.logEvent('SignUpScreen', { name: 'Already user click' });
     this.navigateTo('signinemail');
   }
 
@@ -145,7 +145,7 @@ class SignUpPage extends BasePage {
   }
 
   handleOpenLink(url) {
-    this.logEvent('SignUpEmailScreen', { name: 'Link click', url });
+    this.logEvent('SignUpScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -166,7 +166,7 @@ class SignUpPage extends BasePage {
   }
 
   async openCamera() {
-    this.logEvent('Signup', { name: 'Open Camera click' });
+    this.logEvent('SignUpScreen', { name: 'Open Camera click' });
     let image = {};
     image.path = await openCamera(false);
     image.type = 'multipart/form-data'
