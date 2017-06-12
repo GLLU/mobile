@@ -1,56 +1,16 @@
 import React, { Component } from 'react';
-import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet,Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { noop } from 'lodash'
-import * as _ from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentsListView from './CommentsListView'
-import BottomDrawerModal from '../common/BottomDrawerModal'
+import BottomHalfScrenModal from '../common/BottomHalfScreenModal'
 import Spinner from '../../loaders/Spinner';
-
 import { getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white"
-  },
-  headerContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#f2f2f2'
-  },
-  commentsCountContainer: {
-    justifyContent: 'center',
-    flex: 1,
-    backgroundColor: '#00D7B2',
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  commentsCountText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  showAllContainer: {
-    paddingLeft: 12,
-    flex: 3,
-  },
-  viewTitle: {
-    paddingLeft: 12,
-    flex: 12,
-    fontWeight: 'bold',
-    textAlign: 'left'
-
-  },
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e6e6e6',
-  },
-});
+const statusBarHeight = Platform.os === 'ios' ? 0 : ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
 class CommentsView extends Component {
 
@@ -144,11 +104,12 @@ class CommentsView extends Component {
 
   render() {
     return (
-      <BottomDrawerModal {...this.props}>
+      <BottomHalfScrenModal {...this.props}>
         <CommentsViewHeader count={this.state.count}/>
         {this.props.areCommentsLoaded ? this._renderListView() : <Spinner/>}
         {this._renderFooter()}
-      </BottomDrawerModal>
+        <View style={{height:statusBarHeight}}/>
+      </BottomHalfScrenModal>
     );
   }
 }
