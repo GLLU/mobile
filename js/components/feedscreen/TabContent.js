@@ -69,7 +69,7 @@ class TabContent extends BaseComponent {
 
   componentDidMount() {
     let that = this
-    setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
+    setInterval(function(){ that.handleScrollPositionForVideo(); }, 1000);
     this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
   }
 
@@ -103,7 +103,7 @@ class TabContent extends BaseComponent {
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const contentSizeHeight = event.nativeEvent.contentSize.height;
       const currentScroll = event.nativeEvent.contentOffset.y
-      if (currentScroll === contentSizeHeight - layoutMeasurementHeight) {
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight-1) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if(this.contentHeight !== contentSizeHeight) {
           this.contentHeight = contentSizeHeight
           this.loadMoreAsync();
@@ -174,7 +174,8 @@ class TabContent extends BaseComponent {
                           sendParisMessage={this.props.showParisBottomMessage}
                           navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
                           dimensions={dimensions}
-          key={look.id}/>
+                          key={look.id}
+                          shouldOptimize={this.state.flatLooksLeft.length>20}/>
       );
     });
   }

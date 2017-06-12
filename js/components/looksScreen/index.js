@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from "lodash";
 import VideoWithCaching from "../common/media/VideoWithCaching";
+import SpinnerClothing from '../loaders/SpinnerClothing';
 
 const config = {
   velocityThreshold: 0.3,
@@ -57,7 +58,8 @@ class LooksScreen extends BasePage {
       isBottomDrawerOpen: false,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
       startAnimte: false,
-      currScrollIndex: flatLook.originalIndex
+      currScrollIndex: flatLook.originalIndex,
+      loader: Platform.OS !== 'ios'
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
@@ -78,16 +80,20 @@ class LooksScreen extends BasePage {
             if(total === 2) {
               _.delay(() => this._scrollView.scrollTo({
                 x: 0,
-                y: this.state.currScrollIndex*height,
+                y: this.state.currScrollIndex * height,
                 animated: false
               }), 0);
+              _.delay(() => this.setState({loader: false}), 0);
+              this.setState({loader: false})
             } else {
-              _.delay(() => this._scrollView.scrollTo({
-                x: 0,
-                y: height,
-                animated: false
-              }), 0);
-            }
+                _.delay(() => this._scrollView.scrollTo({
+                  x: 0,
+                  y: height,
+                  animated: false
+                }), 0);
+                _.delay(() => this.setState({loader: false}), 0);
+              }
+
           break;
       }
     }
@@ -281,6 +287,28 @@ class LooksScreen extends BasePage {
     }
   }
 
+  renderLoader() {
+    const lookType = this.props.navigation.state.params.coverType
+    if(lookType === 'video') {
+      const avatarUri = this.props.navigation.state.params.avatar.url
+      return (
+        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
+          <Image resizeMode={'stretch'} source={{uri: avatarUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}>
+            <SpinnerClothing />
+          </Image>
+        </View>
+      )
+    } else {
+      const lookUri = this.props.navigation.state.params.uri
+      return (
+        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
+          <Image resizeMode={'stretch'} source={{uri: lookUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}/>
+        </View>
+      )
+    }
+
+  }
+
   render() {
     let looksArr = '';
     if(this.state.showAsFeed) {
@@ -289,6 +317,8 @@ class LooksScreen extends BasePage {
       looksArr = [this.state.flatLook]
     }
     return (
+    <View style={{flex: 1}}>
+
       <ScrollView pagingEnabled={false}
                   ref={(c) => {
                     this._scrollView = c;
@@ -299,6 +329,8 @@ class LooksScreen extends BasePage {
           return look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index)
         })}
       </ScrollView>
+      {this.state.loader ? this.renderLoader() : null}
+    </View>
     )
   }
 }
