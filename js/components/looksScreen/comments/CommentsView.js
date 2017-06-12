@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     flex: 1,
-    height: StyleSheet.hairlineWidth,
+    height: 1,
     backgroundColor: '#e6e6e6',
   },
 });
