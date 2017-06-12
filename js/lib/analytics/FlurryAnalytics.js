@@ -20,6 +20,10 @@ class FlurryAnalytics {
       RNFlurryAnalytics.setCrashReportingEnabled(true);
       RNFlurryAnalytics.setDebugLogEnabled(false);
     }
+    this.startSession();
+  }
+
+  startSession() {
     const key = Platform.OS === 'ios' ? Config.FLURRY_API_KEY_IOS : Config.FLURRY_API_KEY_ANDROID
     RNFlurryAnalytics.startSession(key);
   }
