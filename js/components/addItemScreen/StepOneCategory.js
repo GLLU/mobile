@@ -128,9 +128,7 @@ class StepOneCategory extends BaseComponent {
   }
 
   componentWillMount() {
-    this.props.loadCategories().catch(err => {
-      console.log('unable to load categories');
-    });
+    this.props.loadCategories().catch(()=> {});
   }
 
   selectCategory(category) {

@@ -86,7 +86,7 @@ class FinishLookPage extends BasePage {
   }
 
   async openCamera() {
-    this.logEvent('Feedscreen', { name: 'Open Camera click' });
+    this.logEvent('FinishLookScreen', { name: 'Open Camera click' });
     let file = {};
     file.path = await openCamera(true);
     if(file.path.search(".mp4") > -1) {

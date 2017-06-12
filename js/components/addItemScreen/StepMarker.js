@@ -35,19 +35,18 @@ class TagItemPage extends BaseComponent {
   }
 
   handleAddTag(position) {
-    this.logEvent('AddItemScreen', { name: 'Marker add' });
+    this.logEvent('UploadLookScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then(() => {
     });
   }
 
   handleOnDragEnd(position) {
-    console.log('handleOnDragEnd')
     this.props.setTagPosition(position);
     this.props.updateLookItem();
   }
 
   createLookItemForVideo(position) {
-    this.logEvent('AddItemScreen', { name: 'Marker add video' });
+    this.logEvent('UploadLookScreen', { name: 'Marker add video' });
     this.props.createLookItem(position).then(() => {
     });
   }

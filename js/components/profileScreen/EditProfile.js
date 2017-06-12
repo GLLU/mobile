@@ -67,7 +67,7 @@ class EditProfile extends BasePage {
   }
 
   async openCamera() {
-    this.logEvent('Signup', { name: 'Open Camera click' });
+    this.logEvent('EditProfileScreen', { name: 'Open Camera click' });
     let image = {};
     image.path = await openCamera(false);
     image.type = 'multipart/form-data'

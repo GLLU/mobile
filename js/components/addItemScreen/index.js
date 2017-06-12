@@ -138,14 +138,14 @@ class AddItemPage extends BasePage {
   }
 
   createLookItemForVideo(position) {
-    this.logEvent('AddItemScreen', {name: 'Marker add video'});
+    this.logEvent('UploadLookScreen', {name: 'Marker add video'});
     this.props.createLookItem(position).then(() => {
       this.setState({mode: 'view'})
     });
   }
 
   handleAddItem(position) {
-    this.logEvent('AddItemScreen', {name: 'Marker add'});
+    this.logEvent('UploadLookScreen', {name: 'Marker add'});
     this.props.createLookItem(position).then((data) => {
       this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep})
     });

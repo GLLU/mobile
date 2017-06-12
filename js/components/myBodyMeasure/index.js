@@ -39,7 +39,7 @@ class MyBodyMeasure extends BasePage {
   }
 
   handleSaveUserSizePress() {
-    this.logEvent('MyBodyMeasureScreen', {name: 'Lets inFash clicks'});
+    this.logEvent('BodyMeasureScreen', {name: 'Lets inFash clicks'});
     this.saveUserSize()
       .then(()=>this.resetTo('feedscreen'))
       .catch(err=>console.log(err));
