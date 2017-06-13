@@ -16,6 +16,7 @@ import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 import VideoWithTags from '../common/VideoWithTags';
+import asScreen from "../common/containers/Screen"
 
 const IMAGE_VIEW_PADDING = 80;
 
@@ -57,7 +58,7 @@ class AddItemPage extends BasePage {
 
   componentDidMount() {
     console.log('image from redux', this.props.image)
-    this.logEvent('UploadLookScreen', { name: `User started uploading a look`, mediaType: this.state.isVideo? 'Video':'Image' });
+    this.props.logEvent('UploadLookScreen', { name: `User started uploading a look`, mediaType: this.state.isVideo? 'Video':'Image' });
   }
 
 
@@ -104,14 +105,14 @@ class AddItemPage extends BasePage {
   }
 
   publishAction() {
-    this.logEvent('UploadLookScreen', {name: 'Publish click'});
+    this.props.logEvent('UploadLookScreen', {name: 'Publish click'});
     this.setState({isPublishing:true},()=>{
       this.props.publishLookItem().then(() => {
         this.setState({isPublishing:false},()=> {
           if (this.props.state === LOOK_STATES.PUBLISHED) {
-            this.goBack()
+            this.props.goBack()
           } else {
-            this.navigateTo('finishLookScreen');
+            this.props.navigateTo('finishLookScreen');
           }
         });
       });
@@ -121,12 +122,12 @@ class AddItemPage extends BasePage {
 
   handleBackButton() {
     if (this.state.currentStep === 0 && this.state.isVideo === true) {
-      this.goBack();
+      this.props.goBack();
     }
     if (this.state.currentStep > -1) {
       this.setState({currentStep: this.state.currentStep - 1});
     } else {
-      this.goBack();
+      this.props.goBack();
     }
   }
 
@@ -138,14 +139,14 @@ class AddItemPage extends BasePage {
   }
 
   createLookItemForVideo(position) {
-    this.logEvent('UploadLookScreen', {name: 'Marker add video'});
+    this.props.logEvent('UploadLookScreen', {name: 'Marker add video'});
     this.props.createLookItem(position).then(() => {
       this.setState({mode: 'view'})
     });
   }
 
   handleAddItem(position) {
-    this.logEvent('UploadLookScreen', {name: 'Marker add'});
+    this.props.logEvent('UploadLookScreen', {name: 'Marker add'});
     this.props.createLookItem(position).then((data) => {
       this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep})
     });
@@ -295,4 +296,4 @@ const mapStateToProps = state => {
   };
 }
 
-export default connect(mapStateToProps, bindActions)(AddItemPage);
+export default connect(mapStateToProps, bindActions)(asScreen(AddItemPage));
