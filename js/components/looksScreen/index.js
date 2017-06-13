@@ -59,7 +59,7 @@ class LooksScreen extends BasePage {
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
       startAnimte: false,
       currScrollIndex: flatLook.originalIndex,
-      loader: Platform.OS !== 'ios'
+      loader: Platform.OS !== 'ios' && !flatLook.singleItem
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }

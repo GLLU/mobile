@@ -12,7 +12,7 @@ import promise from './promise';
 
 export default function configureStore(onCompletion:()=>void):any {
   const enhancer = composeWithDevTools(
-    applyMiddleware(thunk, promise, sequenceAction),
+    applyMiddleware(thunk, promise),
   );
 
   const store = createStore(reducer, enhancer);

@@ -10,14 +10,15 @@ import {
   Platform,
   Animated,
   RefreshControl,
-  View
+  View,
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage } from '../../actions';
+import { showBodyTypeModal, getFeed, loadMore, showParisBottomMessage } from '../../actions';
+import { likeUpdate, unLikeUpdate } from '../../actions/likes';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
 
@@ -154,17 +155,10 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
-  getLookDimensions(look) {
-    const colW = (deviceWidth) / 2;
-    const {width, height} = look;
-    const lookWidth = colW;
-    const lookHeight = height / width * colW;
-    return {lookWidth, lookHeight}
-  }
+
 
   _renderLooks(looks) {
     return _.map(looks, (look) => {
-      const dimensions = this.getLookDimensions(look)
       return (
           <MediaContainer look={look}
                           currScroll={this.state.currentScrollPosition}
@@ -173,7 +167,6 @@ class TabContent extends BaseComponent {
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
                           navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
-                          dimensions={dimensions}
                           key={look.id}
                           shouldOptimize={this.state.flatLooksLeft.length>20}/>
       );
@@ -198,6 +191,10 @@ class TabContent extends BaseComponent {
         })()}
       </View>);
   }
+
+  // shouldComponentUpdate() {
+  //   return true
+  // }
 
   _renderLoading() {
     if (this.props.reloading) {

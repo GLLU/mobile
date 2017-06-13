@@ -53,8 +53,7 @@ class LikeView extends Component {
     const { likes, isLiked } = this.state
     this.setState({isLiked: !isLiked, likes: isLiked ? likes-1 : likes+1})
     const shouldActive = !this.state.isLiked;
-    let that = this;
-    setTimeout(() => {that.props.onPress(shouldActive);}, 1000);
+    this.props.onPress(shouldActive);
   }
 
   componentWillReceiveProps(nextProps) {

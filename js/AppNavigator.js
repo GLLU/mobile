@@ -58,6 +58,7 @@ class AppNavigator extends Component {
   }
 
   generateNaivgationObject(dispatch,navigationState){
+    console.log('123123123')
     return addNavigationHelpers({
       dispatch,
       state: navigationState,
@@ -71,6 +72,7 @@ class AppNavigator extends Component {
   }
 
   render() {
+    console.log('123')
     const {dispatch,navigationState} = this.props;
     return (
       <View style={{flex: 1}}>
