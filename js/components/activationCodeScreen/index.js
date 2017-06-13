@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import { Image, TouchableWithoutFeedback, Linking, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
@@ -21,7 +20,7 @@ import asScreen from "../common/containers/Screen"
 const logo = require('../../../images/logo/inFashLogo.png');
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 
-class ActivationCodeScreen extends BasePage {
+class ActivationCodeScreen extends Component {
 
   static propTypes = {
     navigation: React.PropTypes.shape({

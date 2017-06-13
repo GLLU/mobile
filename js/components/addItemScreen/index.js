@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import BasePage from '../common/base/BasePage';
 import {StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
 import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition} from '../../actions';
 import StepMarker from './StepMarker';
@@ -21,7 +20,7 @@ import asScreen from "../common/containers/Screen"
 const IMAGE_VIEW_PADDING = 80;
 
 
-class AddItemPage extends BasePage {
+class AddItemPage extends Component {
 
   static propTypes = {
     publishLookItem: React.PropTypes.func,
