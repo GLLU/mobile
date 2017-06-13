@@ -154,17 +154,10 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
-  getLookDimensions(look) {
-    const colW = (deviceWidth) / 2;
-    const {width, height} = look;
-    const lookWidth = colW;
-    const lookHeight = height / width * colW;
-    return {lookWidth, lookHeight}
-  }
+
 
   _renderLooks(looks) {
     return _.map(looks, (look) => {
-      const dimensions = this.getLookDimensions(look)
       return (
           <MediaContainer look={look}
                           currScroll={this.state.currentScrollPosition}
@@ -173,7 +166,6 @@ class TabContent extends BaseComponent {
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
                           navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
-                          dimensions={dimensions}
                           key={look.id}
                           shouldOptimize={this.state.flatLooksLeft.length>20}/>
       );

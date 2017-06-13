@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{PureComponent} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
 import BaseComponent from './base/BaseComponent';
 import LikeView from '../feedscreen/items/LikeView';
@@ -7,7 +7,10 @@ import MediaBorderPatch from './MediaBorderPatch'
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Utils from '../../utils';
 import VideoWithCaching from "./media/VideoWithCaching";
+import withAnalytics from "../common/analytics/WithAnalytics";
+import * as _ from "lodash";
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   videoGridIos: {
@@ -26,7 +29,7 @@ const styles = StyleSheet.create({
 
 const likeSentences = ["Wow, it will look amazing on you!", 'Nice Look, she looks poppy!', 'I liked it also, pretty nice!', 'That girl is on fire!', 'Very nice! can look perfect on you!']
 
-class MediaContainer extends BaseComponent {
+class MediaContainer extends PureComponent {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
     clearText: React.PropTypes.string
@@ -35,16 +38,27 @@ class MediaContainer extends BaseComponent {
   constructor(props) {
     super(props);
     this.toggleLikeAction = this.toggleLikeAction.bind(this)
+    this._handleItemPress = this._handleItemPress.bind(this)
     this.state = {
       currLookPosition: -1,
       shouldPlay: false,
       isMuted: true,
-      backgroundColor:Utils.getLoaderImage()
+      backgroundColor:Utils.getLoaderImage(),
+      dimensions: this.getLookDimensions(props.look)
     }
   }
 
-  _handleItemPress(item) {
-    this.logEvent('Feedscreen', {name: 'Image click'});
+  getLookDimensions(look) {
+    const colW = (deviceWidth) / 2;
+    const {width, height} = look;
+    const lookWidth = colW;
+    const lookHeight = height / width * colW;
+    return {lookWidth, lookHeight}
+  }
+
+  _handleItemPress() {
+    const item = this.props.look
+    this.props.logEvent('Feedscreen', {name: 'Image click'});
     let that = this
     if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to, we let the TouchableOpacity end. and then go to next page.
       setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
@@ -56,7 +70,7 @@ class MediaContainer extends BaseComponent {
 
 
   toggleLikeAction(isLiked) {
-    this.logEvent('Feedscreen', {name: 'Like Image click'});
+    this.props.logEvent('Feedscreen', {name: 'Like Image click'});
     const { look } = this.props
     if (isLiked) {
       let data = {id: look.id, likes: look.likes + 1, liked: true}
@@ -83,8 +97,8 @@ class MediaContainer extends BaseComponent {
   }
 
   renderVideo(video) {
-    const {lookWidth, lookHeight} = this.props.dimensions
-    let  ShouldShowLookImage;
+    const {lookWidth, lookHeight} = this.state.dimensions
+    let  ShouldShowLookImage = true;
     if(this.props.shouldOptimize){
       ShouldShowLookImage = this.props.currScroll + lookHeight > this.state.currLookPosition - lookHeight*2 && this.props.currScroll - lookHeight < this.state.currLookPosition+lookHeight*2
     } else {
@@ -101,6 +115,7 @@ class MediaContainer extends BaseComponent {
         </View>
       )
     } else {
+      console.log('ShouldShowLookImage',ShouldShowLookImage)
       return (
         <View style={{height: lookHeight, width: lookWidth, overflow: 'hidden', borderRadius: 10, backgroundColor: this.state.backgroundColor}}>
           {ShouldShowLookImage ?
@@ -109,6 +124,7 @@ class MediaContainer extends BaseComponent {
                               muted={this.state.isMuted}
                               style={{width: lookWidth, height: lookHeight, overflow:'hidden', borderRadius: 10}}
                               paused={!ShouldShowLookImage}
+                              repeat={true}
             />
           :
             <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>
@@ -126,8 +142,8 @@ class MediaContainer extends BaseComponent {
 
   }
 
-  renderImage(look, index) {
-    const {lookWidth, lookHeight} = this.props.dimensions;
+  renderImage(look) {
+    const {lookWidth, lookHeight} = this.state.dimensions;
     let  ShouldShowLookImage;
     if(this.props.shouldOptimize){
       ShouldShowLookImage = this.props.currScroll + lookHeight > this.state.currLookPosition - lookHeight*5 && this.props.currScroll - lookHeight < this.state.currLookPosition+lookHeight*5
@@ -140,7 +156,7 @@ class MediaContainer extends BaseComponent {
         <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
           <Image source={{uri: look.uri, cache: true}} cache={true} style={{width: lookWidth-6, height: lookHeight, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} >
             <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView index={index} item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
+              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
             </View>
           </Image>
         </View>
@@ -151,7 +167,7 @@ class MediaContainer extends BaseComponent {
           {ShouldShowLookImage ? <Image source={{uri: look.uri}} style={{width: lookWidth, height: lookHeight, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} /> : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>}
           <MediaBorderPatch media={look} lookWidth={lookWidth} lookHeight={lookHeight}>
             <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView index={index} item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
+              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight} lookId={look.id}/>
             </View>
           </MediaBorderPatch>
         </View>
@@ -161,7 +177,7 @@ class MediaContainer extends BaseComponent {
   }
 
   renderVideoGrid(look) {
-    const { lookHeight } = this.props.dimensions
+    const { lookHeight } = this.state.dimensions
     return(
       <View style={Platform.OS === 'ios' ? [styles.videoGridIos, {width: look.width}] : styles.videoGridAndroid}>
         <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
@@ -171,11 +187,11 @@ class MediaContainer extends BaseComponent {
   }
 
   render() {
-    const { look, index } = this.props
+    const { look } = this.props
     return(
       <View onLayout={(e) => this.setLookPosition(e)}>
-        <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
-          {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look, index)}
+        <TouchableOpacity onPress={this._handleItemPress}>
+          {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look)}
           {look.coverType === 'video' && Platform.OS === 'ios' ? this.renderVideoGrid(look) : null}
         </TouchableOpacity>
       </View>
@@ -183,4 +199,4 @@ class MediaContainer extends BaseComponent {
   }
 }
 
-export default MediaContainer;
+export default withAnalytics(MediaContainer);

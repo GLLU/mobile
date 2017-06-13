@@ -15,7 +15,7 @@ class VideoWithCaching extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      repeat: props.currentAppState==='active'
+      repeat: true
     }
   }
 
