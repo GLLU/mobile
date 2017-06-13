@@ -98,7 +98,7 @@ class MediaContainer extends PureComponent {
 
   renderVideo(video) {
     const {lookWidth, lookHeight} = this.state.dimensions
-    let  ShouldShowLookImage;
+    let  ShouldShowLookImage = true;
     if(this.props.shouldOptimize){
       ShouldShowLookImage = this.props.currScroll + lookHeight > this.state.currLookPosition - lookHeight*2 && this.props.currScroll - lookHeight < this.state.currLookPosition+lookHeight*2
     } else {
@@ -115,6 +115,7 @@ class MediaContainer extends PureComponent {
         </View>
       )
     } else {
+      console.log('ShouldShowLookImage',ShouldShowLookImage)
       return (
         <View style={{height: lookHeight, width: lookWidth, overflow: 'hidden', borderRadius: 10, backgroundColor: this.state.backgroundColor}}>
           {ShouldShowLookImage ?
@@ -123,6 +124,7 @@ class MediaContainer extends PureComponent {
                               muted={this.state.isMuted}
                               style={{width: lookWidth, height: lookHeight, overflow:'hidden', borderRadius: 10}}
                               paused={!ShouldShowLookImage}
+                              repeat={true}
             />
           :
             <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>

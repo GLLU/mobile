@@ -10,15 +10,14 @@ import {
   Platform,
   Animated,
   RefreshControl,
-  View,
+  View
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import { showBodyTypeModal, getFeed, loadMore, showParisBottomMessage } from '../../actions';
-import { likeUpdate, unLikeUpdate } from '../../actions/likes';
+import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
 
@@ -191,10 +190,6 @@ class TabContent extends BaseComponent {
         })()}
       </View>);
   }
-
-  // shouldComponentUpdate() {
-  //   return true
-  // }
 
   _renderLoading() {
     if (this.props.reloading) {
