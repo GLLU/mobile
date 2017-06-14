@@ -5,12 +5,11 @@ import {
 import styles from './styles';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-import ImagePicker from 'react-native-image-crop-picker';
 import BodyMeasureView from '../myBodyMeasure/bodyMeasureView';
 import ExpandableTextArea from './ExpandableTextArea';
 import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
-import CircleProfileImage from './CircleProfileImage';
+import CircleProfileImage from '../common/avatars/CircleProfileImage';
 import InformationTextIcon from '../common/informationTextIcon';
 import {openCamera} from '../../lib/camera/CameraUtils'
 import Modal from 'react-native-modalbox';
