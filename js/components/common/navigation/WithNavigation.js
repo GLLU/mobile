@@ -16,7 +16,7 @@ export default function withNavigation(WrappedComponent) {
     }
 
     resetTo(route) {
-      this.props.resetWithPayload({
+      this.resetWithPayload({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: route })]
       });
