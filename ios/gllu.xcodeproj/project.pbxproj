@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -28,6 +29,30 @@
 		14C6C2CE5918487CA602B224 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BA68A6CACBA4316BBA3F65B /* Zocial.ttf */; };
 		1737D333132E43D688CFF506 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D1B9999768496FBFB2D230 /* Entypo.ttf */; };
 		1866995F8EB34FC1930BD50E /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9EAE8D736B84131A0BE302D /* libCodePush.a */; };
+		18B1E3D31EF1876500517193 /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3AA1EF1876500517193 /* CGGeometry+RSKImageCropper.m */; };
+		18B1E3D41EF1876500517193 /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3AE1EF1876500517193 /* RSKImageCropViewController.m */; };
+		18B1E3D51EF1876500517193 /* RSKImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3B01EF1876500517193 /* RSKImageScrollView.m */; };
+		18B1E3D61EF1876500517193 /* RSKInternalUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3B21EF1876500517193 /* RSKInternalUtility.m */; };
+		18B1E3D71EF1876500517193 /* RSKTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3B41EF1876500517193 /* RSKTouchView.m */; };
+		18B1E3D81EF1876500517193 /* UIApplication+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3B61EF1876500517193 /* UIApplication+RSKImageCropper.m */; };
+		18B1E3D91EF1876500517193 /* UIImage+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3B81EF1876500517193 /* UIImage+RSKImageCropper.m */; };
+		18B1E3DA1EF1876500517193 /* AVSessionRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3BA1EF1876500517193 /* AVSessionRecorderViewController.swift */; };
+		18B1E3DB1EF1876500517193 /* AVSessionRecorderViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3BB1EF1876500517193 /* AVSessionRecorderViewControllerDelegate.swift */; };
+		18B1E3DC1EF1876500517193 /* MediaFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3BD1EF1876500517193 /* MediaFileWriter.m */; };
+		18B1E3DD1EF1876500517193 /* MediaRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3BE1EF1876500517193 /* MediaRecorderViewController.swift */; };
+		18B1E3DE1EF1876500517193 /* MediaRecordingActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3BF1EF1876500517193 /* MediaRecordingActionsView.swift */; };
+		18B1E3DF1EF1876500517193 /* MediaRecordingActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18B1E3C01EF1876500517193 /* MediaRecordingActionsView.xib */; };
+		18B1E3E01EF1876500517193 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3C11EF1876500517193 /* PreviewView.swift */; };
+		18B1E3E11EF1876500517193 /* RecordButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3C21EF1876500517193 /* RecordButtonDelegate.swift */; };
+		18B1E3E21EF1876500517193 /* RoundedRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3C31EF1876500517193 /* RoundedRecordButton.swift */; };
+		18B1E3E31EF1876500517193 /* TempMediaFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3C41EF1876500517193 /* TempMediaFileWriter.swift */; };
+		18B1E3E41EF1876500517193 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3C51EF1876500517193 /* TimerView.swift */; };
+		18B1E3E51EF1876500517193 /* MediaRecorderModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3C71EF1876500517193 /* MediaRecorderModule.m */; };
+		18B1E3E61EF1876500517193 /* ICGRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3CA1EF1876500517193 /* ICGRulerView.m */; };
+		18B1E3E71EF1876500517193 /* ICGThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3CC1EF1876500517193 /* ICGThumbView.m */; };
+		18B1E3E81EF1876500517193 /* ICGVideoTrimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3CF1EF1876500517193 /* ICGVideoTrimmerView.m */; };
+		18B1E3E91EF1876500517193 /* VideoTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B1E3D11EF1876500517193 /* VideoTrimmerViewController.m */; };
+		18B1E3EA1EF1876500517193 /* VideoTrimmerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18B1E3D21EF1876500517193 /* VideoTrimmerViewController.xib */; };
 		18C5D0E135E347739853C96E /* libSMXCrashlytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C4AFF8204A4F63827BA223 /* libSMXCrashlytics.a */; };
 		1E4CD2BDB90C459E9261F52D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 055048ECC9C34D7B984AA527 /* Octicons.ttf */; };
 		1FA1E659D055463B945A72D8 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C088D1238D1B457992234ACE /* Arial Black.ttf */; };
@@ -407,6 +432,47 @@
 		1407E961A4DD43838E1FB8D2 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		17D3F07812774530A43EC6D4 /* Microsoft Sans Serif.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Microsoft Sans Serif.ttf"; path = "../node_modules/native-base/Fonts/Microsoft Sans Serif.ttf"; sourceTree = "<group>"; };
+		18B1E3A61EF1876500517193 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "gllu/Bridging-Header.h"; sourceTree = "<group>"; };
+		18B1E3A91EF1876500517193 /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18B1E3AA1EF1876500517193 /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18B1E3AB1EF1876500517193 /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
+		18B1E3AC1EF1876500517193 /* RSKImageCropViewController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSKImageCropViewController+Protected.h"; sourceTree = "<group>"; };
+		18B1E3AD1EF1876500517193 /* RSKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropViewController.h; sourceTree = "<group>"; };
+		18B1E3AE1EF1876500517193 /* RSKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageCropViewController.m; sourceTree = "<group>"; };
+		18B1E3AF1EF1876500517193 /* RSKImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageScrollView.h; sourceTree = "<group>"; };
+		18B1E3B01EF1876500517193 /* RSKImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageScrollView.m; sourceTree = "<group>"; };
+		18B1E3B11EF1876500517193 /* RSKInternalUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKInternalUtility.h; sourceTree = "<group>"; };
+		18B1E3B21EF1876500517193 /* RSKInternalUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKInternalUtility.m; sourceTree = "<group>"; };
+		18B1E3B31EF1876500517193 /* RSKTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKTouchView.h; sourceTree = "<group>"; };
+		18B1E3B41EF1876500517193 /* RSKTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKTouchView.m; sourceTree = "<group>"; };
+		18B1E3B51EF1876500517193 /* UIApplication+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18B1E3B61EF1876500517193 /* UIApplication+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18B1E3B71EF1876500517193 /* UIImage+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18B1E3B81EF1876500517193 /* UIImage+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18B1E3BA1EF1876500517193 /* AVSessionRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSessionRecorderViewController.swift; sourceTree = "<group>"; };
+		18B1E3BB1EF1876500517193 /* AVSessionRecorderViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSessionRecorderViewControllerDelegate.swift; sourceTree = "<group>"; };
+		18B1E3BC1EF1876500517193 /* MediaFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaFileWriter.h; sourceTree = "<group>"; };
+		18B1E3BD1EF1876500517193 /* MediaFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaFileWriter.m; sourceTree = "<group>"; };
+		18B1E3BE1EF1876500517193 /* MediaRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRecorderViewController.swift; sourceTree = "<group>"; };
+		18B1E3BF1EF1876500517193 /* MediaRecordingActionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRecordingActionsView.swift; sourceTree = "<group>"; };
+		18B1E3C01EF1876500517193 /* MediaRecordingActionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaRecordingActionsView.xib; sourceTree = "<group>"; };
+		18B1E3C11EF1876500517193 /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		18B1E3C21EF1876500517193 /* RecordButtonDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordButtonDelegate.swift; sourceTree = "<group>"; };
+		18B1E3C31EF1876500517193 /* RoundedRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRecordButton.swift; sourceTree = "<group>"; };
+		18B1E3C41EF1876500517193 /* TempMediaFileWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempMediaFileWriter.swift; sourceTree = "<group>"; };
+		18B1E3C51EF1876500517193 /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		18B1E3C61EF1876500517193 /* MediaRecorderModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaRecorderModule.h; sourceTree = "<group>"; };
+		18B1E3C71EF1876500517193 /* MediaRecorderModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaRecorderModule.m; sourceTree = "<group>"; };
+		18B1E3C91EF1876500517193 /* ICGRulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGRulerView.h; sourceTree = "<group>"; };
+		18B1E3CA1EF1876500517193 /* ICGRulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGRulerView.m; sourceTree = "<group>"; };
+		18B1E3CB1EF1876500517193 /* ICGThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGThumbView.h; sourceTree = "<group>"; };
+		18B1E3CC1EF1876500517193 /* ICGThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGThumbView.m; sourceTree = "<group>"; };
+		18B1E3CD1EF1876500517193 /* ICGVideoTrimmer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmer.h; sourceTree = "<group>"; };
+		18B1E3CE1EF1876500517193 /* ICGVideoTrimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmerView.h; sourceTree = "<group>"; };
+		18B1E3CF1EF1876500517193 /* ICGVideoTrimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGVideoTrimmerView.m; sourceTree = "<group>"; };
+		18B1E3D01EF1876500517193 /* VideoTrimmerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoTrimmerViewController.h; sourceTree = "<group>"; };
+		18B1E3D11EF1876500517193 /* VideoTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTrimmerViewController.m; sourceTree = "<group>"; };
+		18B1E3D21EF1876500517193 /* VideoTrimmerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoTrimmerViewController.xib; sourceTree = "<group>"; };
 		1A8E89A7117A4B63A93E7C4F /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		20F5BB5C64064F20A659883B /* SanFrancisco.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SanFrancisco.ttf; path = "../node_modules/native-base/Fonts/SanFrancisco.ttf"; sourceTree = "<group>"; };
 		270A5312FCF34EAD8C6CC8ED /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
@@ -631,6 +697,7 @@
 		13B07FAE1A68108700A75B9A /* gllu */ = {
 			isa = PBXGroup;
 			children = (
+				18B1E3A61EF1876500517193 /* Bridging-Header.h */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -638,6 +705,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				18B1E37F1EF1874600517193 /* MediaRecorder */,
 			);
 			name = gllu;
 			sourceTree = "<group>";
@@ -655,6 +723,86 @@
 				29F795DE1EC84C39002E98C8 /* libjschelpers.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		18B1E37F1EF1874600517193 /* MediaRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				18B1E3A71EF1876500517193 /* Source */,
+			);
+			name = MediaRecorder;
+			path = gllu/MediaRecorder;
+			sourceTree = "<group>";
+		};
+		18B1E3A71EF1876500517193 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				18B1E3A81EF1876500517193 /* ImageCropper */,
+				18B1E3B91EF1876500517193 /* MediaRecorder */,
+				18B1E3C61EF1876500517193 /* MediaRecorderModule.h */,
+				18B1E3C71EF1876500517193 /* MediaRecorderModule.m */,
+				18B1E3C81EF1876500517193 /* VideoTrimmer */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		18B1E3A81EF1876500517193 /* ImageCropper */ = {
+			isa = PBXGroup;
+			children = (
+				18B1E3A91EF1876500517193 /* CGGeometry+RSKImageCropper.h */,
+				18B1E3AA1EF1876500517193 /* CGGeometry+RSKImageCropper.m */,
+				18B1E3AB1EF1876500517193 /* RSKImageCropper.h */,
+				18B1E3AC1EF1876500517193 /* RSKImageCropViewController+Protected.h */,
+				18B1E3AD1EF1876500517193 /* RSKImageCropViewController.h */,
+				18B1E3AE1EF1876500517193 /* RSKImageCropViewController.m */,
+				18B1E3AF1EF1876500517193 /* RSKImageScrollView.h */,
+				18B1E3B01EF1876500517193 /* RSKImageScrollView.m */,
+				18B1E3B11EF1876500517193 /* RSKInternalUtility.h */,
+				18B1E3B21EF1876500517193 /* RSKInternalUtility.m */,
+				18B1E3B31EF1876500517193 /* RSKTouchView.h */,
+				18B1E3B41EF1876500517193 /* RSKTouchView.m */,
+				18B1E3B51EF1876500517193 /* UIApplication+RSKImageCropper.h */,
+				18B1E3B61EF1876500517193 /* UIApplication+RSKImageCropper.m */,
+				18B1E3B71EF1876500517193 /* UIImage+RSKImageCropper.h */,
+				18B1E3B81EF1876500517193 /* UIImage+RSKImageCropper.m */,
+			);
+			path = ImageCropper;
+			sourceTree = "<group>";
+		};
+		18B1E3B91EF1876500517193 /* MediaRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				18B1E3BA1EF1876500517193 /* AVSessionRecorderViewController.swift */,
+				18B1E3BB1EF1876500517193 /* AVSessionRecorderViewControllerDelegate.swift */,
+				18B1E3BC1EF1876500517193 /* MediaFileWriter.h */,
+				18B1E3BD1EF1876500517193 /* MediaFileWriter.m */,
+				18B1E3BE1EF1876500517193 /* MediaRecorderViewController.swift */,
+				18B1E3BF1EF1876500517193 /* MediaRecordingActionsView.swift */,
+				18B1E3C01EF1876500517193 /* MediaRecordingActionsView.xib */,
+				18B1E3C11EF1876500517193 /* PreviewView.swift */,
+				18B1E3C21EF1876500517193 /* RecordButtonDelegate.swift */,
+				18B1E3C31EF1876500517193 /* RoundedRecordButton.swift */,
+				18B1E3C41EF1876500517193 /* TempMediaFileWriter.swift */,
+				18B1E3C51EF1876500517193 /* TimerView.swift */,
+			);
+			path = MediaRecorder;
+			sourceTree = "<group>";
+		};
+		18B1E3C81EF1876500517193 /* VideoTrimmer */ = {
+			isa = PBXGroup;
+			children = (
+				18B1E3C91EF1876500517193 /* ICGRulerView.h */,
+				18B1E3CA1EF1876500517193 /* ICGRulerView.m */,
+				18B1E3CB1EF1876500517193 /* ICGThumbView.h */,
+				18B1E3CC1EF1876500517193 /* ICGThumbView.m */,
+				18B1E3CD1EF1876500517193 /* ICGVideoTrimmer.h */,
+				18B1E3CE1EF1876500517193 /* ICGVideoTrimmerView.h */,
+				18B1E3CF1EF1876500517193 /* ICGVideoTrimmerView.m */,
+				18B1E3D01EF1876500517193 /* VideoTrimmerViewController.h */,
+				18B1E3D11EF1876500517193 /* VideoTrimmerViewController.m */,
+				18B1E3D21EF1876500517193 /* VideoTrimmerViewController.xib */,
+			);
+			path = VideoTrimmer;
 			sourceTree = "<group>";
 		};
 		297B484A1ECDA17F003A8E58 /* Products */ = {
@@ -972,6 +1120,7 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = R3FGALCQ4U;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1397,6 +1546,7 @@
 				C54905B8E76E49A49BCA76CC /* Octicons.ttf in Resources */,
 				5B26F3762A9E4C5B8DF166DA /* Zocial.ttf in Resources */,
 				1161F1713C15460EB8699F21 /* Entypo.ttf in Resources */,
+				18B1E3DF1EF1876500517193 /* MediaRecordingActionsView.xib in Resources */,
 				912CABBFA280458584350030 /* EvilIcons.ttf in Resources */,
 				137555E02CA74F4FBDFBFFB2 /* FontAwesome.ttf in Resources */,
 				F579DE2F94D44CDCB20C37BC /* Foundation.ttf in Resources */,
@@ -1412,6 +1562,7 @@
 				4E0065C7EA0E46A1A1A79527 /* Rubik-Light.ttf in Resources */,
 				118A3B1FB77340138FF37D0F /* Rubik-LightItalic.ttf in Resources */,
 				AAB261D21B094C8F9381B4AC /* Rubik-Medium.ttf in Resources */,
+				18B1E3EA1EF1876500517193 /* VideoTrimmerViewController.xib in Resources */,
 				6D2AC0A7EE61433E9C850A88 /* Rubik-MediumItalic.ttf in Resources */,
 				C9D2AEF522B1473AA10C946D /* Rubik-Regular.ttf in Resources */,
 				334694C9799148C88B9D67E4 /* SanFrancisco.ttf in Resources */,
@@ -1493,8 +1644,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18B1E3D51EF1876500517193 /* RSKImageScrollView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				18B1E3D41EF1876500517193 /* RSKImageCropViewController.m in Sources */,
+				18B1E3DE1EF1876500517193 /* MediaRecordingActionsView.swift in Sources */,
+				18B1E3E21EF1876500517193 /* RoundedRecordButton.swift in Sources */,
+				18B1E3E71EF1876500517193 /* ICGThumbView.m in Sources */,
+				18B1E3D71EF1876500517193 /* RSKTouchView.m in Sources */,
+				18B1E3E01EF1876500517193 /* PreviewView.swift in Sources */,
+				18B1E3D91EF1876500517193 /* UIImage+RSKImageCropper.m in Sources */,
+				18B1E3DC1EF1876500517193 /* MediaFileWriter.m in Sources */,
+				18B1E3D31EF1876500517193 /* CGGeometry+RSKImageCropper.m in Sources */,
+				18B1E3E41EF1876500517193 /* TimerView.swift in Sources */,
+				18B1E3DA1EF1876500517193 /* AVSessionRecorderViewController.swift in Sources */,
+				18B1E3E91EF1876500517193 /* VideoTrimmerViewController.m in Sources */,
+				18B1E3E51EF1876500517193 /* MediaRecorderModule.m in Sources */,
+				18B1E3E31EF1876500517193 /* TempMediaFileWriter.swift in Sources */,
+				18B1E3D81EF1876500517193 /* UIApplication+RSKImageCropper.m in Sources */,
+				18B1E3E11EF1876500517193 /* RecordButtonDelegate.swift in Sources */,
+				18B1E3D61EF1876500517193 /* RSKInternalUtility.m in Sources */,
+				18B1E3E61EF1876500517193 /* ICGRulerView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				18B1E3DB1EF1876500517193 /* AVSessionRecorderViewControllerDelegate.swift in Sources */,
+				18B1E3DD1EF1876500517193 /* MediaRecorderViewController.swift in Sources */,
+				18B1E3E81EF1876500517193 /* ICGVideoTrimmerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1582,6 +1755,8 @@
 				PRODUCT_NAME = gllu;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "gllu/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1653,6 +1828,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.com.gllu1;
 				PRODUCT_NAME = gllu;
+				SWIFT_OBJC_BRIDGING_HEADER = "gllu/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

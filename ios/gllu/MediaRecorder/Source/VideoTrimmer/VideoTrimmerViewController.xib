@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12120"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoTrimmerViewController">
+            <connections>
+                <outlet property="trimmerView" destination="Hfx-TA-e0d" id="t8b-2B-cjx"/>
+                <outlet property="videoLayer" destination="SYj-Pp-NaU" id="jON-tc-D1N"/>
+                <outlet property="videoPlayer" destination="CEX-dz-f32" id="dt2-3b-jPf"/>
+                <outlet property="view" destination="Gvs-FY-OV4" id="AS6-Ic-Nrz"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Gvs-FY-OV4">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEX-dz-f32" userLabel="View - Player">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SYj-Pp-NaU" userLabel="View - Video Layer">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="SYj-Pp-NaU" firstAttribute="leading" secondItem="CEX-dz-f32" secondAttribute="leading" id="73P-gK-XhI"/>
+                        <constraint firstAttribute="trailing" secondItem="SYj-Pp-NaU" secondAttribute="trailing" id="ECs-JX-9jz"/>
+                        <constraint firstItem="SYj-Pp-NaU" firstAttribute="top" secondItem="CEX-dz-f32" secondAttribute="top" id="Tsw-eD-Hts"/>
+                        <constraint firstAttribute="bottom" secondItem="SYj-Pp-NaU" secondAttribute="bottom" id="sLI-ha-STL"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hfx-TA-e0d" customClass="ICGVideoTrimmerView">
+                    <rect key="frame" x="0.0" y="54" width="375" height="50"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Jlf-oY-CvO"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Hfx-TA-e0d" firstAttribute="top" secondItem="Gvs-FY-OV4" secondAttribute="top" constant="54" id="0Mh-T4-Y4N"/>
+                <constraint firstItem="Hfx-TA-e0d" firstAttribute="leading" secondItem="Gvs-FY-OV4" secondAttribute="leading" id="EK0-fT-rPJ"/>
+                <constraint firstAttribute="bottom" secondItem="CEX-dz-f32" secondAttribute="bottom" id="N16-B3-3x5"/>
+                <constraint firstItem="CEX-dz-f32" firstAttribute="leading" secondItem="Gvs-FY-OV4" secondAttribute="leading" id="OTp-qy-gCK"/>
+                <constraint firstAttribute="trailing" secondItem="CEX-dz-f32" secondAttribute="trailing" id="aM2-Uc-799"/>
+                <constraint firstItem="CEX-dz-f32" firstAttribute="top" secondItem="Gvs-FY-OV4" secondAttribute="top" id="wU8-cZ-NQs"/>
+                <constraint firstAttribute="trailing" secondItem="Hfx-TA-e0d" secondAttribute="trailing" id="y5f-RE-QLy"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+        </view>
+    </objects>
+</document>
