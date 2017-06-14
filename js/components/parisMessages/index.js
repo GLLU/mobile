@@ -47,6 +47,7 @@ class ParisMessages extends Component {
 
   constructor(props) {
     super(props);
+    this.hide=this.hide.bind(this)
   }
 
   hide() {
@@ -54,8 +55,7 @@ class ParisMessages extends Component {
   }
 
   componentDidMount(){
-    let that = this
-    setTimeout(function(){ that.hide(); }, 6500);
+    setTimeout(this.hide, 6500)
   }
 
   render() {

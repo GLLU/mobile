@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import BasePage from '../common/base/BasePage';
+import withAnalytics from '../common/analytics/WithAnalytics'
+import withNavigation from '../common/navigation/WithNavigation'
 import {Container, Header, Content, Button, Icon, Title,StyleProvider, getTheme } from 'native-base';
 import {Text, View, StyleSheet} from 'react-native';
 import styles from './styles';
@@ -14,7 +15,7 @@ import ArrowTextBox from './arrowTextBox';
 import * as _ from "lodash";
 
 
-class BodyTypePicker extends BasePage {
+class BodyTypePicker extends Component {
   constructor(props) {
     super(props);
     this.renderBackButton=this.renderBackButton.bind(this);
@@ -43,7 +44,7 @@ class BodyTypePicker extends BasePage {
   _bodyTypeChange(index) {
     const { gender, bodyTypes } = this.props;
     const bodyType = bodyTypes[gender][index];
-    this.logEvent('ChooseBodyTypeScreen', { name: 'Select bodyType', bodyType: bodyType.name });
+    this.props.logEvent('ChooseBodyTypeScreen', { name: 'Select bodyType', bodyType: bodyType.name });
     setTimeout(()=> {
       let data = {
         index,
@@ -62,7 +63,7 @@ class BodyTypePicker extends BasePage {
   }
 
   handleContinuePress() {
-    this.logEvent('ChooseBodyTypeScreen', { name: 'Continue click' });
+    this.props.logEvent('ChooseBodyTypeScreen', { name: 'Continue click' });
     this.props.onPick();
   }
 
@@ -124,4 +125,4 @@ const mapStateToProps = state => ({
   gender: state.user.gender
 });
 
-export default connect(mapStateToProps, bindAction)(BodyTypePicker);
+export default connect(mapStateToProps, bindAction)(withNavigation(withAnalytics(BodyTypePicker)));

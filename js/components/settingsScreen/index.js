@@ -1,5 +1,4 @@
 import React from 'react';
-import BasePage from '../common/base/BasePage';
 import { StyleSheet, Alert, Linking, Text, View, Image } from 'react-native';
 import { Container, Header, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
 import { connect } from 'react-redux';
@@ -15,6 +14,7 @@ import {
   RATE_US_URL
 } from '../../constants';
 import { formatInvitationMessage } from "../../lib/messages/index";
+import asScreen from "../common/containers/Screen"
 
 const styles = StyleSheet.create({
   container: {
@@ -63,7 +63,7 @@ const iconCopyright = require('../../../images/icons/copyright.png');
 const iconLogout = require('../../../images/icons/logout.png');
 const iconRateUs = require('../../../images/icons/rate_us.png');
 
-class SettingsScreen extends BasePage {
+class SettingsScreen extends Component {
   static propTypes = {
     navigation: React.PropTypes.object,
     back: React.PropTypes.func,
@@ -75,13 +75,13 @@ class SettingsScreen extends BasePage {
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('SettingsScreen', {name: 'Invite your friends click'});
+    this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.nativeShare(message);
   }
 
   handleOpenLink(url, type = 'link') {
-    this.logEvent('SettingsScreen', { name: 'Link click', url });
+    this.props.logEvent('SettingsScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -106,9 +106,9 @@ class SettingsScreen extends BasePage {
   }
 
   handleLogout() {
-    this.logEvent('SettingsScreen', { name: 'Logout click' });
+    this.props.logEvent('SettingsScreen', { name: 'Logout click' });
     this.props.logout()
-      .then(()=>this.resetTo('splashscreen'))
+      .then(()=>this.props.resetTo('splashscreen'))
       .catch((err)=>console.log(err));
   }
 
@@ -166,7 +166,7 @@ class SettingsScreen extends BasePage {
       <Container theme={glluTheme}>
         <View style={{height:50}}>
           <View style={styles.header} >
-            <Button transparent onPress={this.goBack} style={{borderWidth: 0}}>
+            <Button transparent onPress={this.props.goBack} style={{borderWidth: 0}}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
             </Button>
             <Text style={styles.headerTitle}>Settings</Text>
@@ -192,4 +192,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindAction)(SettingsScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(SettingsScreen));
