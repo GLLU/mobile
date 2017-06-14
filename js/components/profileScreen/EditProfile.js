@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import BasePage from '../common/base/BasePage';
+import asScreen from "../common/containers/Screen"
 import {
   Image, Animated, InteractionManager, TouchableOpacity, View, Text, TextInput, ScrollView, FormData } from 'react-native';
 import styles from './styles';
@@ -21,7 +21,7 @@ import SpinnerSwitch from "../loaders/SpinnerSwitch";
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 
-class EditProfile extends BasePage {
+class EditProfile extends Component {
   static propTypes = {
     user: React.PropTypes.object,
     navigation: React.PropTypes.object,
@@ -55,19 +55,19 @@ class EditProfile extends BasePage {
       Promise.all([
         this.props.changeUserAboutMe({id: this.props.user.id, about_me: this.state.about_me}),
         this.props.saveUserSize(measurements)
-      ]).then(this.goBack)
+      ]).then(this.props.goBack)
         .catch((err)=>console.log(err));
     })
 
   }
 
   _changeUserAvatar() {
-    this.logEvent('EditProfileScreen', { name: 'Change avatar click' });
+    this.props.logEvent('EditProfileScreen', { name: 'Change avatar click' });
     this.openCamera()
   }
 
   async openCamera() {
-    this.logEvent('EditProfileScreen', { name: 'Open Camera click' });
+    this.props.logEvent('EditProfileScreen', { name: 'Open Camera click' });
     let image = {};
     image.path = await openCamera(false);
     image.type = 'multipart/form-data'
@@ -84,11 +84,11 @@ class EditProfile extends BasePage {
   }
 
   _handleAboutMeEndEding() {
-    this.logEvent('EditProfileScreen', { name: 'Tell us about you' });
+    this.props.logEvent('EditProfileScreen', { name: 'Tell us about you' });
   }
 
   toggleBodyTypeModal=(shouldActive)=>{
-    this.logEvent('EditProfileScreen', { name: `body type modal is ${shouldActive? 'visible':'hidden'}` });
+    this.props.logEvent('EditProfileScreen', { name: `body type modal is ${shouldActive? 'visible':'hidden'}` });
     this.setState({modalShowing:shouldActive});
   };
 
@@ -98,7 +98,7 @@ class EditProfile extends BasePage {
         <View style={{position: 'absolute', top: 0}}>
           <Image source={profileBackground} style={styles.editProfileBg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7, height: 150}]} />
-            <EditProfileHeader cancelEdit={this.goBack} save={() => this._saveChanges()} />
+            <EditProfileHeader cancelEdit={this.props.goBack} save={() => this._saveChanges()} />
           </Image>
         </View>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
@@ -151,4 +151,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindAction)(EditProfile);
+export default connect(mapStateToProps, bindAction)(asScreen(EditProfile));

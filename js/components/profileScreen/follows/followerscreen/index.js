@@ -8,9 +8,9 @@ import SelectPhoto from '../../../common/SelectPhoto';
 import { addNewLook, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
 import FollowListView from '../shared/FollowListView'
-import BasePage from "../../../common/base/BasePage";
+import asScreen from "../../../common/containers/Screen"
 
-class FollowerScreen extends BasePage {
+class FollowerScreen extends Component {
 
   static propTypes = {
     mode: React.PropTypes.string,
@@ -57,7 +57,7 @@ class FollowerScreen extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.navigateTo('addItemScreen');
+        this.props.navigateTo('addItemScreen');
       });
     })
   }
@@ -78,8 +78,8 @@ class FollowerScreen extends BasePage {
               renderEmpty={this._renderOnEmpty}
               headerData={userData}
               follows={this.props.followers}
-              navigateTo={this.navigateTo}
-              goBack={this.goBack}
+              navigateTo={this.props.navigateTo}
+              goBack={this.props.goBack}
               onEndReached={this.getFollowersData}
               mode={userData.mode}/>
             <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
@@ -103,4 +103,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindAction)(FollowerScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(FollowerScreen));

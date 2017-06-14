@@ -1,9 +1,9 @@
-import * as React from "react";
+import React,{Component} from "react";
 import * as Cache from '../../../lib/cache/FSVideoCache'
 
 const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
 
-  return class CachedComponentWrapper extends React.Component {
+  return class CachedComponentWrapper extends Component {
 
     constructor(props) {
       super(props);

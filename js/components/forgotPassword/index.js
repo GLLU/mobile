@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import { Image, TouchableWithoutFeedback, Text, View, StyleSheet, TextInput } from 'react-native';
 import {
   Container,  Button, Content, Icon, StyleProvider, getTheme
@@ -15,11 +14,11 @@ import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
 import ResetMyPasswordButton from "./ResetMyPasswordButton";
-
 const background = require('../../../images/backgrounds/forgot-password-background.png');
+import asScreen from "../common/containers/Screen"
 
 
-class forgotPasswordPage extends BasePage {
+class forgotPasswordPage extends Component {
 
   static propTypes = {
     forgotPassword: React.PropTypes.func,
@@ -102,7 +101,7 @@ class forgotPasswordPage extends BasePage {
           <Image source={background} style={styles.shadow} blurRadius={5}>
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={this.goBack}>
+                <Button transparent onPress={this.props.goBack}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Forgot Password</Text>
@@ -129,4 +128,4 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps, bindAction)(forgotPasswordPage);
+export default connect(mapStateToProps, bindAction)(asScreen(forgotPasswordPage));
