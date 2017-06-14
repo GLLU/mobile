@@ -1,14 +1,35 @@
-import {noop} from 'lodash'
+import { each, noop } from 'lodash'
 import * as selfRef from './DevUtils'
 
 export default selfRef
 
 export const disableConsole=()=>{
-  console.log =
-    console.group =
-      console.info =
-        console.error =
-          console.warn =
-            console.debug =
-              console.trace = noop
+  const consoleMethods=[
+    'assert',
+    'clear',
+    'count',
+    'debug',
+    'dir',
+    'dirxml',
+    'error',
+    'exception',
+    'group',
+    'groupCollapsed',
+    'groupEnd',
+    'info',
+    'log',
+    'profile',
+    'profileEnd',
+    'table',
+    'time',
+    'timeEnd',
+    'timeStamp',
+    'trace',
+    'warn',
+  ];
+  each(consoleMethods, setConsolePropertyAsNoop)
+}
+
+const setConsolePropertyAsNoop=propertyName=>{
+  console[propertyName]=noop
 }
