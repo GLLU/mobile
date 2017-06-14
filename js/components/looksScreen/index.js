@@ -12,7 +12,7 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import { likeUpdate, unLikeUpdate,loadMore } from '../../actions';
+import { likeUpdate, unLikeUpdate,loadMore,getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';

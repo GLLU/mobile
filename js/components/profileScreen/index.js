@@ -46,7 +46,7 @@ class ProfileScreen extends Component {
       isMyProfile,
       noMoreData: false,
       isFollowing: userData.is_following,
-      userId: isMyProfile ? props.myUser.id : userData.user_id,
+      userId: isMyProfile ? props.myUser.id : userData.user_id||userData.id,
       photoModal: false,
       isLoadingLooks: true
 
