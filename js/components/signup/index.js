@@ -13,7 +13,7 @@ import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
-import ImagePicker from 'react-native-image-crop-picker';
+import CircleProfileImage from '../common/avatars/CircleProfileImage'
 import LetsGLLUButton from "./LetsGLLUButton";
 import {openCamera} from '../../lib/camera/CameraUtils'
 
@@ -180,13 +180,10 @@ class SignUpPage extends Component {
               </View>
             </View>
             <Content scrollEnabled={false}>
+
               <View style={styles.uploadImgContainer}>
                 <View style={{height: 100, width: 100, borderRadius:50}}>
-                  <View style={styles.uploadImgBtn}>
-                    <TouchableOpacity onPress={this.handleCameraPress.bind(this)}>
-                      <IconB size={30} color={'#009688'} name={this.state.avatarIcon} style={StyleSheet.flatten(styles.uploadImgIcon)}/>
-                    </TouchableOpacity>
-                  </View>
+                    <CircleProfileImage style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
                 </View>
               </View>
               <View>
