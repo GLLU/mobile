@@ -1,12 +1,12 @@
-import * as React from "react";
-import BaseComponent from "../base/BaseComponent";
+import React,{Component} from "react";
+import WithAnalytics from '../analytics/WithAnalytics'
 import {NavigationActions} from "react-navigation";
 import {Alert} from "react-native";
 
 
 export default function withNavigation(WrappedComponent) {
 
-  return class WithNavigation extends BaseComponent {
+  class WithNavigation extends Component {
     constructor(props) {
       super(props);
       this.navigateTo=this.navigateTo.bind(this);
@@ -16,7 +16,7 @@ export default function withNavigation(WrappedComponent) {
     }
 
     resetTo(route) {
-      this.resetWithPayload({
+      this.props.resetWithPayload({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: route })]
       });
@@ -31,7 +31,7 @@ export default function withNavigation(WrappedComponent) {
     }
 
     goBack(withConfirmation = false) {
-      this.logEvent(this.constructor.name, { name: `user pressed back`});
+      this.props.logEvent(this.constructor.name, { name: `user pressed back`});
       if (withConfirmation===true) {
         Alert.alert(
           '',
@@ -47,7 +47,7 @@ export default function withNavigation(WrappedComponent) {
             {
               text: 'OK',
               onPress: () => {
-                this.goBack(false);
+                this.props.navigation.goBack();
               }
             }
           ]
@@ -67,4 +67,5 @@ export default function withNavigation(WrappedComponent) {
       />
     }
   }
+  return WithAnalytics(WithNavigation)
 }
