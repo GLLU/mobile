@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import asScreen from "../common/containers/Screen"
 import { Image, TouchableOpacity, Text, ScrollView,View, StyleSheet } from 'react-native';
 import styles from './styles';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import * as _ from "lodash";
 import BodyTypePicker from "./BodyTypePicker";
