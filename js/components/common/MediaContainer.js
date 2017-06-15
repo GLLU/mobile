@@ -139,6 +139,18 @@ class MediaContainer extends PureComponent {
 
   }
 
+  shouldComponentUpdate(nextProps) {
+    if(nextProps !== this.props) {
+      _.each(Object.keys(this.props),thisPropsKey=>{
+      if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
+        console.log(`UserLooks, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
+        return true
+      }
+    })
+  }
+    return false
+  }
+
   renderImage(look) {
     const {lookWidth, lookHeight} = this.state.dimensions;
     let  ShouldShowLookImage;

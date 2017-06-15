@@ -39,6 +39,18 @@ class UserLooks extends Component {
     };
   }
 
+  shouldComponentUpdate(nextProps) {
+    if(nextProps !== this.props) {
+      _.each(Object.keys(this.props),thisPropsKey=>{
+        if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
+          console.log(`MediaContainer, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
+          return true
+        }
+      })
+    }
+    return false
+  }
+
   componentWillReceiveProps(nextProps) {
     const { imagesColumn1, imagesColumn2 } = this.distributeImages(nextProps.userLooks);
     this.setState({
