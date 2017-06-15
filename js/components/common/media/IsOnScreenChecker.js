@@ -1,9 +1,10 @@
 import * as React from "react";
 import * as Cache from '../../../lib/cache/FSVideoCache'
+import { connect } from 'react-redux';
 
 const isOnScreenCheck=WrappedComponent=>{
 
-  return class IsOnScreenChecker extends React.Component {
+  class IsOnScreenChecker extends React.Component {
 
     static propTypes={
       navigation:React.PropTypes.object.isRequired,
@@ -33,6 +34,13 @@ const isOnScreenCheck=WrappedComponent=>{
       return <WrappedComponent {...this.props} isOnScreen={this.state.isOnScreen}/>
     }
   }
+  const mapStateToProps = state => {
+    return {
+      navigation: state.cardNavigation,
+    };
+  };
+
+  return connect(mapStateToProps)(IsOnScreenChecker)
 };
 
 export default isOnScreenCheck;

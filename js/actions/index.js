@@ -10,7 +10,7 @@ import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  fr
 import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications, clearNewNotifications }  from './notifications';
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
-import { getUserLooksData, getUserLooks } from './looks';
+import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
 import { getFeed, resetFeed, loadMore, clearFeed } from './feed';
 import {
   addNewLook,
@@ -104,6 +104,7 @@ export {
   getUserLooks,
   likeUpdate,
   unLikeUpdate,
+  loadMoreUserLooks,
   followUpdate,
   getLookLikes,
   initLookLikes,

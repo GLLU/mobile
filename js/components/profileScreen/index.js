@@ -7,16 +7,16 @@ import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks } from '../../actions';
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
 import { editNewLook } from "../../actions/uploadLook";
-import Spinner from "../loaders/Spinner";
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toFeedScreen = require('../../../images/icons/feed.png');
 const toSettings = require('../../../images/icons/settings.png');
 const LOADER_HEIGHT = 30;
+import Spinner from '../loaders/Spinner';
 
 
 class ProfileScreen extends Component {
@@ -43,6 +43,8 @@ class ProfileScreen extends Component {
     this.handleFollowersPress = this.handleFollowersPress.bind(this);
     this.handleFollowingPress = this.handleFollowingPress.bind(this);
     this.handleBalancePress = this.handleBalancePress.bind(this);
+    this.handleScrollUserLooks = this.handleScrollUserLooks.bind(this)
+    this.loadMoreUserLooks = this.loadMoreUserLooks.bind(this)
     this.state = {
       isMyProfile,
       userId: currUserId,
@@ -54,8 +56,15 @@ class ProfileScreen extends Component {
       userLooks: currUserId === props.currLookScreenId ? props.userLooks : []
 
     }
-    this.loadMoreAsync = _.debounce(this.loadMoreAsync, 500)
-    this.pagination = 1
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.stats.user_id === this.state.userId && nextProps.stats !== this.state.stats){
+      this.setState({stats: nextProps.stats})
+    }
+    if(nextProps.currLookScreenId === this.state.userId && nextProps.userLooks !== this.state.userLooks){
+      this.setState({userLooks: nextProps.userLooks})
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,13 +93,10 @@ class ProfileScreen extends Component {
     if (this.state.userId !== this.props.currLookScreenId) {
       const looksCall = {
         id: this.state.userId,
-        page: 1,
         all: this.state.isMyProfile
       }
       const looksDataCall = {
         id: this.state.userId,
-        name: user.name,
-        looksCount: this.state.stats.looks_count,
         isMyProfile: this.state.isMyProfile
       }
       this.props.getUserLooks(looksCall);
@@ -186,24 +192,49 @@ class ProfileScreen extends Component {
     });
   }
 
-  handleUserLooksScroll(event) {
-    const contentSizeHeight = event.nativeEvent.contentSize.height;
-    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-    const currentScroll = event.nativeEvent.contentOffset.y
-    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-    if (compare <= LOADER_HEIGHT && !this.props.isLoading) {
-      this.loadMoreAsync()
-    }
+  handleScrollUserLooks(event) {
+      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+      const contentSizeHeight = event.nativeEvent.contentSize.height;
+      const currentScroll = event.nativeEvent.contentOffset.y
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight-250) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+        if(this.contentHeight !== contentSizeHeight) {
+          this.contentHeight = contentSizeHeight
+          if(!this.state.loadingMore) {
+            this.setState({loadingMore: true}, () => this.loadMoreUserLooks())
+          }
+
+        }
+      }
+
+    this.currPosition = event.nativeEvent.contentOffset.y;
   }
 
-  loadMoreAsync() {
-    this.pagination+=1
+  loadMoreUserLooks() {
+    if (this.state.isLoading) {
+      console.log('already isLoading')
+      return;
+    }
     let data = {
       id: this.state.userId,
-      page: this.pagination,
       all: this.state.isMyProfile
     }
-    this.props.getUserLooks(data)
+    const {meta: {total_count}, query} = this.props;
+    const pageSize = query.page.size;
+    const pageNumber = query.page.number;
+    if (pageSize * pageNumber < total_count) {
+    // if (pageSize * pageNumber < total_count) {
+      this.setState({isLoading: true}, () => {
+        this.props.loadMoreUserLooks(data).then(() => {
+          this.setState({isLoading: false})}
+        ).catch(err => {
+          console.log('error', err);
+          this.setState({isLoading: false});
+        });
+      });
+    } else {
+      this.setState({noMoreData: true})
+      console.log('end of LooksScreen');
+    }
   }
 
   handleBackToFeedPress() {
@@ -214,6 +245,43 @@ class ProfileScreen extends Component {
   handleBalancePress() {
     this.props.logEvent('ProfileScreen', {name: 'Wallet Pressed'});
     this.props.showParisBottomMessage(`Hey, you can withdraw the reward once you reach at least US$50.00`);
+  }
+
+  _renderLoadMore() {
+    return (
+      <View style={styles.loader}>
+        {(() => {
+          if (this.state.noMoreData) {
+            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
+          }
+          if (this.state.isLoading) {
+            return <Spinner color='rgb(230,230,230)'/>;
+          }
+          if(this.props.userLooks.length > 2) {
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+
+          }
+          return null;
+        })()}
+      </View>);
+  }
+
+
+  _renderRefreshingCover() {
+    return (
+      this.state.isRefreshing &&
+      <View style={styles.refreshingCover}/>
+    )
+  }
+
+  _renderLoading() {
+    if (this.props.reloading) {
+      return (
+        <View style={styles.spinnerContainer}>
+          <Spinner color='#666666'/>
+        </View>
+      );
+    }
   }
 
   render() {
@@ -228,7 +296,7 @@ class ProfileScreen extends Component {
       return (
         <Container>
             <ScrollView scrollEventThrottle={100}
-                        onScroll={this.handleUserLooksScroll.bind(this)}
+                        onScroll={this.handleScrollUserLooks}
                         pagingEnabled={false}>
               <Image source={profileBackground} style={styles.bg}>
                 <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
@@ -258,15 +326,18 @@ class ProfileScreen extends Component {
               </Image>
               <UserLooks
                 myUserId={this.props.myUser.id}
-                currLookScreenId={this.state.userLooksUserId}
                 userLooks={this.state.userLooks}
                 navigateTo={this.navigateTo}
                 isMyProfile={this.state.isMyProfile}
                 editNewLook = {this.props.editNewLook}
                 addNewLook = {this.props.addNewLook}
-                navigation={this.props.cardNavigation}
+                likeUpdate = {this.props.likeUpdate}
+                unLikeUpdate = {this.props.unLikeUpdate}
               />
+              {this._renderLoadMore()}
+              {this._renderRefreshingCover()}
             </ScrollView>
+          {this._renderLoading()}
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
       )
@@ -284,7 +355,10 @@ function bindAction(dispatch) {
     editNewLook: (id) => dispatch(editNewLook(id)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
     getUserLooks: data => dispatch(getUserLooks(data)),
+    loadMoreUserLooks: (looksCall) => dispatch(loadMoreUserLooks(looksCall)),
     showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),
+    likeUpdate: (id) => dispatch(likeUpdate(id)),
+    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
   };
 }
 
@@ -299,9 +373,9 @@ const mapStateToProps = state => {
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
     userLooks: state.userLooks.userLooksData,
-    userLooksUserId: state.userLooks.currId,
     cardNavigation: state.cardNavigation,
-
+    meta: state.userLooks.meta,
+    query: state.userLooks.query,
   };
 };
 
