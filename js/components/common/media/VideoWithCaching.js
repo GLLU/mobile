@@ -33,14 +33,21 @@ class VideoWithCaching extends Component {
 
   render() {
     const {source, localUri} = this.props;
-    if(!this.props.isCaching && this.state.repeat && this.props.isOnScreen){
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
-      return (
-        <Video {...this.props} source={formattedSource} ref={component => this._root = component}/>
-      )
-    }
-    return <View style={this.props.style}/>
-
+    return (
+      <View>
+        {
+          !this.props.isCaching && this.state.repeat && this.props.isOnScreen?
+          <Video {...this.props} source={formattedSource} ref={component => this._root = component}/>:
+          null
+        }
+        {
+          !this.props.isOnScreen ?
+            <View style={this.props.style}/>:
+            null
+        }
+      </View>
+    )
   }
 }
 
