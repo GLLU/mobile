@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform, Text, Image } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
@@ -11,6 +10,7 @@ import SelectPhoto from '../common/SelectPhoto';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import {openCamera} from '../../lib/camera/CameraUtils'
 import finishPhoto from '../../../images/upload/finish-upload-look.png'
+import asScreen from "../common/containers/Screen"
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class FinishLookPage extends BasePage {
+class FinishLookPage extends Component {
 
   static propTypes = {
     lookId: React.PropTypes.number,
@@ -41,7 +41,7 @@ class FinishLookPage extends BasePage {
 
   componentWillMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      this.logEvent('FinishLookScreen', { name: 'Back click' });
+      this.props.logEvent('FinishLookScreen', { name: 'Back click' });
       if(this.state.photoModal) {
         this.setState({photoModal: false})
         return true;
@@ -54,39 +54,39 @@ class FinishLookPage extends BasePage {
   }
 
   resetToOriginalPlace() {
-    this.resetTo('feedscreen')
+    this.props.resetTo('feedscreen')
   }
 
   handleClose() {
-    this.logEvent('FinishLookScreen', { name: 'Close click' });
+    this.props.logEvent('FinishLookScreen', { name: 'Close click' });
     this.resetToOriginalPlace();
   }
 
   handleFacebookPress() {
-    this.logEvent('FinishLookScreen', { name: 'Facebook Share click' });
+    this.props.logEvent('FinishLookScreen', { name: 'Facebook Share click' });
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.facebookShare(message);
   }
 
   handleOthersPress() {
-    this.logEvent('FinishLookScreen', { name: 'Other Share click' });
+    this.props.logEvent('FinishLookScreen', { name: 'Other Share click' });
     const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.nativeShare(message);
   }
 
   handleGlluAgainPress() {
-    this.logEvent('FinishLookScreen', { name: 'Lets inFash Again click' });
+    this.props.logEvent('FinishLookScreen', { name: 'Lets inFash Again click' });
     this.openCamera()
   }
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath).then(() => {
-      this.navigateTo('addItemScreen',{ mode: 'create' });
+      this.props.navigateTo('addItemScreen',{ mode: 'create' });
     });
   }
 
   async openCamera() {
-    this.logEvent('FinishLookScreen', { name: 'Open Camera click' });
+    this.props.logEvent('FinishLookScreen', { name: 'Open Camera click' });
     let file = {};
     file.path = await openCamera(true);
     if(file.path.search(".mp4") > -1) {
@@ -103,7 +103,7 @@ class FinishLookPage extends BasePage {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
         this.resetToOriginalPlace();
-        this.navigateTo('addItemScreen');
+        this.props.navigateTo('addItemScreen');
       }).catch(err => {
         console.log('addNewLook err', err);
       });
@@ -192,4 +192,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindActions)(FinishLookPage);
+export default connect(mapStateToProps, bindActions)(asScreen(FinishLookPage));

@@ -1,5 +1,5 @@
-import React from 'react';
-import BasePage from '../common/base/BasePage';
+import React,{Component} from 'react';
+import asScreen from "../common/containers/Screen"
 import { Image, TouchableOpacity, Text, ScrollView,View, StyleSheet } from 'react-native';
 import styles from './styles';
 import { Container, Content,  Icon } from 'native-base';
@@ -18,7 +18,8 @@ const toFeedScreen = require('../../../images/icons/feed.png');
 const toSettings = require('../../../images/icons/settings.png');
 const LOADER_HEIGHT = 30;
 
-class ProfileScreen extends BasePage {
+
+class ProfileScreen extends Component {
   static propTypes = {
     userData: React.PropTypes.object,
     navigation: React.PropTypes.object,
@@ -35,7 +36,7 @@ class ProfileScreen extends BasePage {
     super(props);
     const userData = props.navigation.state.params;
     const isMyProfile = userData.id === this.props.myUser.id || userData.user_id === this.props.myUser.id;
-    const currUserId = isMyProfile ? props.myUser.id : userData.user_id
+    const currUserId = isMyProfile ? props.myUser.id : userData.user_id||userData.id;
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
@@ -99,8 +100,8 @@ class ProfileScreen extends BasePage {
   }
 
   handleSettingsPress() {
-    this.logEvent('ProfileScreen', {name: 'Settings click'});
-    this.navigateTo('settingsScreen');
+    this.props.logEvent('ProfileScreen', {name: 'Settings click'});
+    this.props.navigateTo('settingsScreen');
   }
 
   _renderleftBtn() {
@@ -122,7 +123,7 @@ class ProfileScreen extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.navigateTo('addItemScreen');
+        this.props.navigateTo('addItemScreen');
       });
     })
   }
@@ -136,7 +137,7 @@ class ProfileScreen extends BasePage {
   }
 
   toggleFollow(isFollowing) {
-    this.logEvent('ProfileScreen', {name: 'Follow click', isFollowing:`${isFollowing}`});
+    this.props.logEvent('ProfileScreen', {name: 'Follow click', isFollowing:`${isFollowing}`});
     this.setState({isFollowing: isFollowing});
     this.props.getStats(this.state.userId);
   }
@@ -164,9 +165,9 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowingPress(stat) {
-    this.logEvent('ProfileScreen', {name: 'Following click'});
+    this.props.logEvent('ProfileScreen', {name: 'Following click'});
     const userData = this.props.navigation.state.params;
-    this.navigateTo('followScreen', {
+    this.props.navigateTo('followScreen', {
       user: {id: this.state.userId, name:userData.name},
       isMyProfile: this.state.isMyProfile,
       mode: stat.type,
@@ -175,9 +176,9 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowersPress(stat) {
-    this.logEvent('ProfileScreen', {name: 'Followers click'});
+    this.props.logEvent('ProfileScreen', {name: 'Followers click'});
     const userData = this.props.navigation.state.params;
-    this.navigateTo('followerScreen', {
+    this.props.navigateTo('followerScreen', {
       user: {id: this.state.userId, name:userData.name},
       isMyProfile: this.state.isMyProfile,
       mode: stat.type,
@@ -206,12 +207,12 @@ class ProfileScreen extends BasePage {
   }
 
   handleBackToFeedPress() {
-    this.logEvent('ProfileScreen', {name: 'Back to Feed click'});
-    this.goBack();
+    this.props.logEvent('ProfileScreen', {name: 'Back to Feed click'});
+    this.props.goBack();
   }
 
   handleBalancePress() {
-    this.logEvent('ProfileScreen', {name: 'Wallet Pressed'});
+    this.props.logEvent('ProfileScreen', {name: 'Wallet Pressed'});
     this.props.showParisBottomMessage(`Hey, you can withdraw the reward once you reach at least US$50.00`);
   }
 
@@ -244,9 +245,9 @@ class ProfileScreen extends BasePage {
                                  isMyProfile={this.state.isMyProfile}
                                  isFollowing={this.state.isFollowing}
                                  onFollowPress={this.toggleFollow.bind(this)}
-                                 navigateTo = {this.navigateTo}
+                                 navigateTo = {this.props.navigateTo}
                     /> : null }
-                  <TouchableOpacity transparent onPress={() => this.goBack()} style={styles.headerBtn}>
+                  <TouchableOpacity transparent onPress={this.props.goBack} style={styles.headerBtn}>
                     { this._renderRightBtn() }
                   </TouchableOpacity>
                 </View>
@@ -304,4 +305,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindAction)(ProfileScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(ProfileScreen));

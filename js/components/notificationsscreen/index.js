@@ -7,9 +7,9 @@ import EmptyView from './EmptyView'
 import { getNotifications, clearNewNotifications } from '../../actions';
 
 import NotificationListView from './notificationsList/NotificationListView'
-import BasePage from "../common/base/BasePage";
+import asScreen from "../common/containers/Screen"
 
-class NotificationsScreen extends BasePage {
+class NotificationsScreen extends Component {
 
   constructor(props) {
     super(props);
@@ -33,8 +33,8 @@ class NotificationsScreen extends BasePage {
             <NotificationListView renderEmpty={()=><EmptyView/>}
                                   headerData={headerData}
                                   notifications={this.props.notifications}
-                                  navigateTo={this.navigateTo}
-                                  goBack={this.goBack}
+                                  navigateTo={this.props.navigateTo}
+                                  goBack={this.props.goBack}
                                   onEndReached={this.getNotificationsData}
                                   mode={headerData.mode}/>
           </View>
@@ -55,4 +55,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindAction)(NotificationsScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(NotificationsScreen));
