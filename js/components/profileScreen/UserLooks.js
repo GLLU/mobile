@@ -10,6 +10,7 @@ import {
   editNewLook,
 } from '../../actions';
 import VideoWithCaching from "../common/media/VideoWithCaching";
+import ImageWrapper from '../common/media/ImageWrapper'
 import Spinner from "../loaders/Spinner";
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -95,6 +96,7 @@ class UserLooks extends Component {
                style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
                repeat={true}
                rate={1}
+               navigation={this.props.navigation}
         />
       </View>
     )
@@ -102,7 +104,7 @@ class UserLooks extends Component {
 
   renderImage(img) {
     return (
-      <Image source={{uri: img.uri}} style={{width: img.width - 5, height: img.height, resizeMode: 'contain' }} />
+      <ImageWrapper source={{uri: img.uri}} resizeMode="contain" style={{width: img.width - 5, height: img.height }} navigation={this.props.navigation}/>
     )
   }
 
