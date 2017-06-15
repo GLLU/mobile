@@ -152,6 +152,14 @@ export default StyleSheet.create({
     left: w / 2 - 50,
 
   },
+  loader: {
+    backgroundColor: 'white',
+    flex: 1,
+    justifyContent: 'center',
+    height: 30,
+    alignItems: 'center',
+    padding: 5,
+  },
   editAvatarImage: {
     borderWidth: 2,
     borderColor: 'white'

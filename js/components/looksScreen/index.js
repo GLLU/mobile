@@ -83,7 +83,7 @@ class LooksScreen extends BasePage {
                 x: 0,
                 y: this.state.currScrollIndex * height,
                 animated: false
-              }), 1000);
+              }), 0);
               _.delay(() => this.setState({loader: false}), 0);
               this.setState({loader: false})
             } else {
@@ -91,7 +91,7 @@ class LooksScreen extends BasePage {
                   x: 0,
                   y: height,
                   animated: false
-                }), 1000);
+                }), 0);
                 _.delay(() => this.setState({loader: false}), 0);
               }
 
@@ -202,7 +202,6 @@ class LooksScreen extends BasePage {
           muted={this.state.currScrollIndex !== look.originalIndex}
           style={styles.videoBackground}
           repeat={true}
-          navigation={this.props.cardNavigation}
         />
         <BottomLookContainer
           width={width}

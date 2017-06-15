@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight, TouchableOpacity, StyleSheet, Text, Animated } from 'react-native';
+import { View, Image, TouchableHighlight, TouchableOpacity, StyleSheet, Text, Animated, Linking } from 'react-native';
 import * as _ from 'lodash'
 import styles from '../styles'
 import { showInfo } from '../../../actions'
