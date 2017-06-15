@@ -57,7 +57,7 @@ class LikeView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.routeName !== 'feedscreen' && nextProps.item.likes !== this.state.likes) {
+    if(nextProps.item.likes !== this.state.likes) {
       this.setState({isLiked: nextProps.item.liked, likes: nextProps.item.likes})
     }
   }

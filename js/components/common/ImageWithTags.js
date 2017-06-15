@@ -64,7 +64,6 @@ class ImageWithTags extends Component {
   }
 
   componentDidMount() {
-    console.log('this.props.items.length ',this.props.items.length)
     if(this.props.items.length < 1) {
       const locationX = w/2;
       const locationY = h/2;
