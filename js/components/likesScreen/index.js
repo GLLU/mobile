@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import { getLookLikes, initLookLikes } from '../../actions';
 
 import FollowListView from './shared/LookLikeListView'
-import BasePage from "../common/base/BasePage";
+import asScreen from "../common/containers/Screen"
 
-class LikesScreen extends BasePage {
+class LikesScreen extends Component {
 
   static propTypes = {
     mode: React.PropTypes.string,
@@ -42,8 +42,8 @@ class LikesScreen extends BasePage {
       <FollowListView
         headerData={likesCount}
         likes={this.props.likes}
-        navigateTo={this.navigateTo}
-        goBack={this.goBack}
+        navigateTo={this.props.navigateTo}
+        goBack={this.props.goBack}
         onEndReached={this.getLookLikesData}/>
     )
   }
@@ -71,4 +71,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindAction)(LikesScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(LikesScreen));

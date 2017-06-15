@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import { Image, TouchableWithoutFeedback, Linking, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
@@ -16,11 +15,12 @@ import {
 import { emailRule, passwordRule } from '../../validators';
 import SplashButton from "./SplashButton";
 import {NavigationActions} from "react-navigation";
+import asScreen from "../common/containers/Screen"
 
 const logo = require('../../../images/logo/inFashLogo.png');
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 
-class ActivationCodeScreen extends BasePage {
+class ActivationCodeScreen extends Component {
 
   static propTypes = {
     navigation: React.PropTypes.shape({
@@ -77,7 +77,7 @@ class ActivationCodeScreen extends BasePage {
   }
 
   handleOpenLink(url) {
-    this.logEvent('SignIn', { name: 'Link click', url });
+    this.props.logEvent('SignIn', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -88,7 +88,7 @@ class ActivationCodeScreen extends BasePage {
   }
 
   handleSigninPress() {
-    this.logEvent('ActivationScreen', { name: 'Submit click' });
+    this.props.logEvent('ActivationScreen', { name: 'Submit click' });
     return this.props.invitationCheckExistance(this.state.code)
       .then(this.onInvitationComplete)
       .catch((err)=>console.log(err));
@@ -98,7 +98,7 @@ class ActivationCodeScreen extends BasePage {
 
     const { name, email, emailValid } = this.state
     if(emailValid === 'check') {
-      this.logEvent('ActivationScreen', { name: 'Request Code click' });
+      this.props.logEvent('ActivationScreen', { name: 'Request Code click' });
       const data = {name, email}
       return this.props.requestInvitation(data)
         .then(this.onInvitationRequestComplete)
@@ -117,7 +117,7 @@ class ActivationCodeScreen extends BasePage {
     const nextScreen=this.props.navigation.state.params;
     switch(nextScreen) {
       case 'genderselect':{
-        this.resetWithPayload({
+        this.props.resetWithPayload({
           index: 1,
           actions: [
             NavigationActions.navigate({ routeName: 'splashscreen' }),
@@ -129,7 +129,7 @@ class ActivationCodeScreen extends BasePage {
       case 'facebook': {
         Utils.loginWithFacebook()
           .then((data) => this.props.loginViaFacebook(data)
-            .then(user=>this.resetTo('feedscreen',user))
+            .then(user=>this.props.resetTo('feedscreen',user))
             .catch((err) => console.log('facebook login Error',err)))
           .catch((err) => console.log('facebook login Error',err))
         break;
@@ -245,7 +245,7 @@ if(this.state.renderThanksYou) {
           <Image source={background} style={styles.shadow}>
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={() => this.goBack()}>
+                <Button transparent onPress={this.props.goBack}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Sign in</Text>
@@ -279,4 +279,4 @@ const mapStateToProps = state => ({
   error: state.errorHandler.error
 });
 
-export default connect(mapStateToProps, bindAction)(ActivationCodeScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(ActivationCodeScreen));
