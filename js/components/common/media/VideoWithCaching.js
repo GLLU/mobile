@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import Video from 'react-native-video';
 import cachedWrapper from './CachedComponentWrapper'
 import listenToAppState from '../eventListeners/AppStateListener'
+import IsOnScreenChecker from './IsOnScreenChecker'
 
 class VideoWithCaching extends Component {
 
@@ -31,7 +32,7 @@ class VideoWithCaching extends Component {
   render() {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
-    if(this.state.repeat){
+    if(this.state.repeat && this.props.isOnScreen){
       return (
         <Video {...this.props} source={formattedSource} ref={component => this._root = component}/>
       )
@@ -44,5 +45,6 @@ class VideoWithCaching extends Component {
 const renderLoader = () => <View style={{}}/>;
 
 const cache = cachedWrapper(renderLoader)(props => props.source.uri);
-export default cache(listenToAppState(VideoWithCaching));
+/*const isOnScreen = screenChecker(props => props.isOnScreen);*/
+export default cache(IsOnScreenChecker(listenToAppState(VideoWithCaching)));
 

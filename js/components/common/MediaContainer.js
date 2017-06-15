@@ -1,15 +1,12 @@
 import React,{PureComponent} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
-import BaseComponent from './base/BaseComponent';
 import LikeView from '../feedscreen/items/LikeView';
 import VolumeButton from './VolumeButton';
 import MediaBorderPatch from './MediaBorderPatch'
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Utils from '../../utils';
 import VideoWithCaching from "./media/VideoWithCaching";
+import ImageWrapper from "./media/ImageWrapper";
 import withAnalytics from "../common/analytics/WithAnalytics";
-import * as _ from "lodash";
-const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -68,7 +65,6 @@ class MediaContainer extends PureComponent {
     this.setState({isMuted: true})
   }
 
-
   toggleLikeAction(isLiked) {
     this.props.logEvent('Feedscreen', {name: 'Like Image click'});
     const { look } = this.props
@@ -111,11 +107,11 @@ class MediaContainer extends PureComponent {
                  muted={this.state.isMuted}
                  style={{width: lookWidth, height: lookHeight, overflow:'hidden'}}
                  paused={!ShouldShowLookImage}
+                 navigation={this.props.navigation}
           />
         </View>
       )
     } else {
-      console.log('ShouldShowLookImage',ShouldShowLookImage)
       return (
         <View style={{height: lookHeight, width: lookWidth, overflow: 'hidden', borderRadius: 10, backgroundColor: this.state.backgroundColor}}>
           {ShouldShowLookImage ?
@@ -125,6 +121,7 @@ class MediaContainer extends PureComponent {
                               style={{width: lookWidth, height: lookHeight, overflow:'hidden', borderRadius: 10}}
                               paused={!ShouldShowLookImage}
                               repeat={true}
+                              navigation={this.props.navigation}
             />
           :
             <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>
@@ -154,20 +151,20 @@ class MediaContainer extends PureComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <Image source={{uri: look.uri, cache: true}} cache={true} style={{width: lookWidth-6, height: lookHeight, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} >
+          <ImageWrapper source={{uri: look.uri, cache: true}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} navigation={this.props.navigation}>
             <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
+              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookHeight={lookHeight}/>
             </View>
-          </Image>
+          </ImageWrapper>
         </View>
       )
     } else {
       return (
         <View>
-          {ShouldShowLookImage ? <Image source={{uri: look.uri}} style={{width: lookWidth, height: lookHeight, resizeMode: 'stretch', backgroundColor: this.state.backgroundColor, borderRadius: 10}} /> : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>}
+          {ShouldShowLookImage ? <ImageWrapper source={{uri: look.uri, cache: true}} resizeMode={'stretch'} style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} navigation={this.props.navigation}/> : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} />}
           <MediaBorderPatch media={look} lookWidth={lookWidth} lookHeight={lookHeight}>
             <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight} lookId={look.id}/>
+              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookHeight={lookHeight} lookId={look.id}/>
             </View>
           </MediaBorderPatch>
         </View>

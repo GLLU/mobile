@@ -165,7 +165,7 @@ class TabContent extends BaseComponent {
                           unLikeUpdate={this.props.likeUpdate}
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
-                          navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
+                          navigation={this.props.cardNavigationStack}
                           key={look.id}
                           shouldOptimize={this.state.flatLooksLeft.length>20}/>
       );
