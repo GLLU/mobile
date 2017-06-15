@@ -53,15 +53,15 @@ class StatsView extends Component {
       <View style={styles.statsContainer}>
         { isMyProfile ? this.renderBalance() : null }
         <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowingPress}>
-          <Text style={[styles.text, styles.number]}>{following}</Text>
+          <Text style={[styles.text, styles.number]}>{`${following}`}</Text>
           <Text style={styles.text}>Following</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowersPress}>
-          <Text style={[styles.text, styles.number]}>{followers}</Text>
+          <Text style={[styles.text, styles.number]}>{`${followers}`}</Text>
           <Text style={styles.text}>Followers</Text>
         </TouchableOpacity>
         <View style={styles.statsTotal}>
-          <Text style={[styles.text, styles.number]}>{likes}</Text>
+          <Text style={[styles.text, styles.number]}>{`${likes}`}{likes}</Text>
           <Text style={styles.text}>Likes</Text>
         </View>
       </View>
