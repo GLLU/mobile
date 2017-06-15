@@ -19,6 +19,7 @@ import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import * as _ from "lodash";
 import VideoWithCaching from "../common/media/VideoWithCaching";
 import SpinnerClothing from '../loaders/SpinnerClothing';
+import ImageWrapper from "../common/media/ImageWrapper";
 import asScreen from "../common/containers/Screen"
 
 const config = {
@@ -82,7 +83,7 @@ class LooksScreen extends Component {
                 x: 0,
                 y: this.state.currScrollIndex * height,
                 animated: false
-              }), 0);
+              }), 1000);
               _.delay(() => this.setState({loader: false}), 0);
               this.setState({loader: false})
             } else {
@@ -90,7 +91,7 @@ class LooksScreen extends Component {
                   x: 0,
                   y: height,
                   animated: false
-                }), 0);
+                }), 1000);
                 _.delay(() => this.setState({loader: false}), 0);
               }
 
@@ -201,6 +202,7 @@ class LooksScreen extends Component {
           muted={this.state.currScrollIndex !== look.originalIndex}
           style={styles.videoBackground}
           repeat={true}
+          navigation={this.props.cardNavigation}
         />
         <BottomLookContainer
           width={width}
@@ -230,10 +232,11 @@ class LooksScreen extends Component {
           flex: 1,
           backgroundColor: 'transparent',
         }}>
-            <Image
+            <ImageWrapper
             resizeMode={'stretch'}
             style={styles.itemImage}
-            source={{uri: look.uri}}>
+            source={{uri: look.uri}}
+            navigation={this.props.cardNavigation}>
               <BottomLookContainer
                 width={width}
                 height={height}
@@ -248,7 +251,7 @@ class LooksScreen extends Component {
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                 onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
-            </Image>
+            </ImageWrapper>
       </GestureRecognizer>
     )
   }
@@ -352,7 +355,8 @@ const mapStateToProps = state => {
     meta: state.feed.meta,
     query: state.feed.query,
     userLooks: state.userLooks.userLooksData,
-    shareToken: state.user.invitation_share_token
+    shareToken: state.user.invitation_share_token,
+    cardNavigation: state.cardNavigation
   };
 };
 

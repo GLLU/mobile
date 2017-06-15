@@ -41,8 +41,9 @@ const cacheComponent=uriProvider=>WrappedComponent=>{
       const nextUri=uriProvider(nextProps);
       const currentUri=uriProvider(this.props);
       if(nextUri!==currentUri){
-        this.setState({isCaching: true, localUri: ''});
-        this.cacheOrReturnCachedPath(nextUri);
+        this.setState({isCaching: true, localUri: ''},() => {
+          this.cacheOrReturnCachedPath(nextUri);
+        });
       }
     }
 
