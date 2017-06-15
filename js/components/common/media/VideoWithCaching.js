@@ -7,11 +7,11 @@ import listenToAppState from '../eventListeners/AppStateListener'
 class VideoWithCaching extends Component {
 
   static propTypes={
+    isCaching:React.PropTypes.bool,
     localUri:React.PropTypes.string,
     source:React.PropTypes.object,
   }
 
-  static formatSource = (localUri, source = {}) => Object.assign({}, source, {uri: localUri});
   constructor(props) {
     super(props);
     this.state = {
@@ -28,10 +28,12 @@ class VideoWithCaching extends Component {
     }
   }
 
+  static formatSource = (localUri, source = {}) => Object.assign({}, source, {uri: localUri});
+
   render() {
     const {source, localUri} = this.props;
-    const formattedSource = VideoWithCaching.formatSource(localUri, source);
-    if(this.state.repeat){
+    if(!this.props.isCaching&&this.state.repeat){
+      const formattedSource = VideoWithCaching.formatSource(localUri, source);
       return (
         <Video {...this.props} source={formattedSource} ref={component => this._root = component}/>
       )
@@ -41,8 +43,6 @@ class VideoWithCaching extends Component {
   }
 }
 
-const renderLoader = () => <View style={{}}/>;
-
-const cache = cachedWrapper(renderLoader)(props => props.source.uri);
-export default cache(listenToAppState(VideoWithCaching));
+const cache = cachedWrapper(props => props.source.uri);
+export default listenToAppState(cache(VideoWithCaching));
 

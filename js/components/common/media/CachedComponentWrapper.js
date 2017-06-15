@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import * as Cache from '../../../lib/cache/FSVideoCache'
 
-const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
+const cacheComponent=uriProvider=>WrappedComponent=>{
 
   return class CachedComponentWrapper extends Component {
 
@@ -10,7 +10,7 @@ const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
       this.cacheOrReturnCachedPath=this.cacheOrReturnCachedPath.bind(this);
       this.onCached=this.onCached.bind(this);
       this.state={
-        isLoading:true,
+        isCaching:true,
         localUri:''
       }
     }
@@ -34,27 +34,20 @@ const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
     }
 
     onCached(localUri) {
-      this.setState({isLoading: false, localUri: localUri})
+      this.setState({isCaching: false, localUri: localUri})
     }
 
     componentWillReceiveProps(nextProps){
       const nextUri=uriProvider(nextProps);
       const currentUri=uriProvider(this.props);
       if(nextUri!==currentUri){
-        this.setState({isLoading: true, localUri: ''});
+        this.setState({isCaching: true, localUri: ''});
         this.cacheOrReturnCachedPath(nextUri);
       }
     }
 
-    renderWrappedComponent=(props,state)=><WrappedComponent {...props} localUri={state.localUri}/>
-
-    renderLoader=(props)=><LoaderComponent {...props}/>;
-
     render() {
-      if (this.state.isLoading) {
-        return this.renderLoader(this.props)
-      }
-      return this.renderWrappedComponent(this.props,this.state)
+      return <WrappedComponent {...this.props} isCaching={this.state.isCaching} localUri={this.state.localUri}/>
     }
   }
 };
