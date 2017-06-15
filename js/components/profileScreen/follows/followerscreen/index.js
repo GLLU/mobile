@@ -25,7 +25,15 @@ class FollowerScreen extends BasePage {
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.currentPageIndex = 1;
     this.state = {
-      photoModal: false
+      photoModal: false,
+      followers: []
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const userData = this.props.navigation.state.params;
+    if(nextProps.currId === userData.user.id){
+      this.setState({followers: nextProps.followers})
     }
   }
 
@@ -34,10 +42,6 @@ class FollowerScreen extends BasePage {
     if (userData.count) {
       this.getFollowersData();
     }
-  }
-
-  componentWillUnmount() {
-    this.props.initUserFollowers();
   }
 
   getFollowersData() {
@@ -72,12 +76,13 @@ class FollowerScreen extends BasePage {
 
   render() {
     const userData = this.props.navigation.state.params;
+    const currentUserData = this.state.followers;
     return (
           <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
             <FollowListView
               renderEmpty={this._renderOnEmpty}
               headerData={userData}
-              follows={this.props.followers}
+              follows={currentUserData}
               navigateTo={this.navigateTo}
               goBack={this.goBack}
               onEndReached={this.getFollowersData}
@@ -93,13 +98,13 @@ function bindAction(dispatch) {
   return {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserFollowersData: (id, pageNumber, pageSize) => dispatch(getUserFollowersData(id, pageNumber, pageSize)),
-    initUserFollowers: () => dispatch(initUserFollowers()),
   };
 }
 
 const mapStateToProps = state => {
   return {
     followers: state.userFollowers.userFollowersData,
+    currId: state.userFollowers.currId,
   }
 };
 

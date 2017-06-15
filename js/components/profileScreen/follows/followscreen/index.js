@@ -20,6 +20,9 @@ class FollowScreen extends BasePage {
     this.getFollowsData = this.getFollowsData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
     this.currentPageIndex = 1;
+    this.state = {
+      follows: []
+    }
   }
 
   componentWillMount() {
@@ -29,14 +32,17 @@ class FollowScreen extends BasePage {
     }
   }
 
-  componentWillUnmount() {
-    this.props.initUserFollows();
-  }
-
   getFollowsData() {
     const userData = this.props.navigation.state.params;
     this.props.getUserFollowsData(userData.user.id, this.currentPageIndex);
     this.currentPageIndex++;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const userData = this.props.navigation.state.params;
+    if(nextProps.currId === userData.user.id){
+      this.setState({follows: nextProps.follows})
+    }
   }
 
   _renderOnEmpty() {
@@ -48,11 +54,12 @@ class FollowScreen extends BasePage {
 
   render() {
     const userData = this.props.navigation.state.params;
+    const currentUserData = this.state.follows
     return (
       <FollowListView
         renderEmpty={this._renderOnEmpty}
         headerData={userData}
-        follows={this.props.follows}
+        follows={currentUserData}
         navigateTo={this.navigateTo}
         goBack={this.goBack}
         onEndReached={this.getFollowsData}
@@ -64,13 +71,13 @@ class FollowScreen extends BasePage {
 function bindAction(dispatch) {
   return {
     getUserFollowsData: (id, pageNumber, pageSize) => dispatch(getUserFollowsData(id, pageNumber, pageSize)),
-    initUserFollows: () => dispatch(initUserFollows()),
   };
 }
 
 const mapStateToProps = state => {
   return {
     follows: state.userFollows.userFollowsData,
+    currId: state.userFollows.currId,
   }
 };
 

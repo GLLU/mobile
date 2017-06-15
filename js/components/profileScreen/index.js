@@ -35,6 +35,7 @@ class ProfileScreen extends BasePage {
     super(props);
     const userData = props.navigation.state.params;
     const isMyProfile = userData.id === this.props.myUser.id || userData.user_id === this.props.myUser.id;
+    const currUserId = isMyProfile ? props.myUser.id : userData.user_id
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
@@ -43,15 +44,26 @@ class ProfileScreen extends BasePage {
     this.handleBalancePress = this.handleBalancePress.bind(this);
     this.state = {
       isMyProfile,
+      userId: currUserId,
       noMoreData: false,
       isFollowing: userData.is_following,
-      userId: isMyProfile ? props.myUser.id : userData.user_id,
       photoModal: false,
-      isLoadingLooks: true
+      isLoadingLooks: true,
+      stats: currUserId === props.stats.user_id ? props.stats : {},
+      userLooks: currUserId === props.currLookScreenId ? props.userLooks : []
 
     }
     this.loadMoreAsync = _.debounce(this.loadMoreAsync, 500)
     this.pagination = 1
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.stats.user_id === this.state.userId && nextProps.stats !== this.state.stats){
+      this.setState({stats: nextProps.stats})
+    }
+    if(nextProps.currLookScreenId === this.state.userId && nextProps.userLooks !== this.state.userLooks){
+      this.setState({userLooks: nextProps.userLooks})
+    }
   }
 
   componentDidMount() {
@@ -77,7 +89,7 @@ class ProfileScreen extends BasePage {
       const looksDataCall = {
         id: this.state.userId,
         name: user.name,
-        looksCount: this.props.stats.looks_count,
+        looksCount: this.state.stats.looks_count,
         isMyProfile: this.state.isMyProfile
       }
       this.props.getUserLooks(looksCall);
@@ -130,10 +142,9 @@ class ProfileScreen extends BasePage {
   }
 
   _renderStats() {
-    const { following, followers, likes_count} = this.props.stats
+    const { following, followers, likes_count} = this.state.stats
     const { isMyProfile } = this.state
-
-    if (this.props.stats.user_id === this.state.userId) {
+    if(!_.isEmpty(this.state.stats)) {
       return (
         <View>
           <StatsView
@@ -148,6 +159,8 @@ class ProfileScreen extends BasePage {
         </View>
       )
     }
+
+
   }
 
   handleFollowingPress(stat) {
@@ -242,16 +255,16 @@ class ProfileScreen extends BasePage {
                 </View>
                 { this._renderStats() }
               </Image>
-              {this.props.userLooks.length > 0 && this.props.userLooksUserId === this.state.userId ?
-                <UserLooks
-                  myUserId={this.props.myUser.id}
-                  currLookScreenId={this.props.userLooksUserId}
-                  userLooks={this.props.userLooks}
-                  navigateTo={this.navigateTo}
-                  isMyProfile={this.state.isMyProfile}
-                  editNewLook = {this.props.editNewLook}
-                  addNewLook = {this.props.addNewLook}
-                /> : <Spinner/>}
+              <UserLooks
+                myUserId={this.props.myUser.id}
+                currLookScreenId={this.state.userLooksUserId}
+                userLooks={this.state.userLooks}
+                navigateTo={this.navigateTo}
+                isMyProfile={this.state.isMyProfile}
+                editNewLook = {this.props.editNewLook}
+                addNewLook = {this.props.addNewLook}
+                navigation={this.props.cardNavigation}
+              />
             </ScrollView>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
@@ -286,6 +299,7 @@ const mapStateToProps = state => {
     isLoading: state.loader.loading,
     userLooks: state.userLooks.userLooksData,
     userLooksUserId: state.userLooks.currId,
+    cardNavigation: state.cardNavigation,
 
   };
 };

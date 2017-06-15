@@ -24,12 +24,7 @@ const setRestOptions = function (dispatch, rest, user) {
     };
   }).use("responseHandler", (err, data) => {
     if (err) {
-      if (err.errors && err.errors.length > 0) {
-        const error = _.first(err.errors);
-        if (error == "Bad Credentials") {
-          //what do we do with bad credentials here?
-        }
-      }
+      console.log("ERROR", err,data);
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
       console.log("SUCCESS", data)
