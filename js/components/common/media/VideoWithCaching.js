@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import Video from 'react-native-video';
 import cachedWrapper from './CachedComponentWrapper'
 import listenToAppState from '../eventListeners/AppStateListener'
 import IsOnScreenChecker from './IsOnScreenChecker'
+import { debounce } from "lodash";
 
 class VideoWithCaching extends Component {
 
@@ -15,8 +16,10 @@ class VideoWithCaching extends Component {
 
   constructor(props) {
     super(props);
+    this.onVideoStartsPlaying=this.onVideoStartsPlaying.bind(this);
     this.state = {
-      repeat: true
+      repeat: true,
+      isPlaying:false
     }
   }
 
@@ -29,21 +32,33 @@ class VideoWithCaching extends Component {
     }
   }
 
-  static formatSource = (localUri, source = {}) => Object.assign({}, source, {uri: localUri});
+  static formatSource = (localUri, source = {}) => ({...source, uri: localUri});
+
+  onVideoStartsPlaying = ()=>{
+    debounce(()=>{
+      console.log('lets debounce')
+      if(this.state.isPlaying!==true){
+        console.log('setting state')
+        this.setState({isPlaying:true})
+      }
+    },500)
+  };
 
   render() {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
+    console.log( `video playing?`,this.state.isPlaying);
+    console.log( `is on screen?`,this.props.isOnScreen);
     return (
       <View>
         {
-          !this.props.isCaching && this.state.repeat && this.props.isOnScreen?
-          <Video {...this.props} source={formattedSource} ref={component => this._root = component}/>:
-          null
+          !this.state.isPlaying ?
+            <Image source={{uri:'https://bollyspice.com/wp-content/uploads/2011/12/11dec_don2-comic.jpg'}} style={[this.props.style,{position:'absolute', top:0}]}/>:
+            null
         }
         {
-          !this.props.isOnScreen ?
-            <View style={this.props.style}/>:
+          !this.props.isCaching && this.state.repeat && this.props.isOnScreen?
+            <Video {...this.props} source={formattedSource} onprogress={this.onVideoStartsPlaying} ref={component => this._root = component}/>:
             null
         }
       </View>
