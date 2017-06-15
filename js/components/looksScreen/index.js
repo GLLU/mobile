@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import {
   View,
   Image,
@@ -13,7 +12,7 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import { likeUpdate, unLikeUpdate,loadMore } from '../../actions';
+import { likeUpdate, unLikeUpdate,loadMore,getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
@@ -21,6 +20,7 @@ import * as _ from "lodash";
 import VideoWithCaching from "../common/media/VideoWithCaching";
 import SpinnerClothing from '../loaders/SpinnerClothing';
 import ImageWrapper from "../common/media/ImageWrapper";
+import asScreen from "../common/containers/Screen"
 
 const config = {
   velocityThreshold: 0.3,
@@ -29,7 +29,7 @@ const config = {
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const width = Dimensions.get('window').width;
 
-class LooksScreen extends BasePage {
+class LooksScreen extends Component {
   static propTypes = {
     flatLook: React.PropTypes.oneOfType([
       React.PropTypes.object,
@@ -83,7 +83,7 @@ class LooksScreen extends BasePage {
                 x: 0,
                 y: this.state.currScrollIndex * height,
                 animated: false
-              }), 0);
+              }), 1000);
               _.delay(() => this.setState({loader: false}), 0);
               this.setState({loader: false})
             } else {
@@ -91,7 +91,7 @@ class LooksScreen extends BasePage {
                   x: 0,
                   y: height,
                   animated: false
-                }), 0);
+                }), 1000);
                 _.delay(() => this.setState({loader: false}), 0);
               }
 
@@ -116,7 +116,7 @@ class LooksScreen extends BasePage {
   }
 
   _goToProfile(look) {
-    this.navigateTo('profileScreen',look);
+    this.props.navigateTo('profileScreen',look);
   }
 
   onToggleDrawer(shouldOpen){
@@ -147,7 +147,7 @@ class LooksScreen extends BasePage {
   }
 
   onSwipe(gestureName) {
-    this.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}`});
+    this.props.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}`});
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
@@ -202,12 +202,13 @@ class LooksScreen extends BasePage {
           muted={this.state.currScrollIndex !== look.originalIndex}
           style={styles.videoBackground}
           repeat={true}
+          navigation={this.props.cardNavigation}
         />
         <BottomLookContainer
           width={width}
           height={height}
           look={look}
-          goBack={this.goBack}
+          goBack={this.props.goBack}
           goToProfile={(user) => this._goToProfile(user)}
           toggleLike={(isLiked) => this._toggleLike(isLiked)}
           toggleMenu={() => this._toggleMenu()}
@@ -215,7 +216,7 @@ class LooksScreen extends BasePage {
           onBottomDrawerOpen={this.onToggleDrawer}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           lookType={"video"}
-          onLikesNumberPress={() => this.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
+          onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
         />
       </GestureRecognizer>
     )
@@ -240,7 +241,7 @@ class LooksScreen extends BasePage {
                 width={width}
                 height={height}
                 look={look}
-                goBack={this.goBack}
+                goBack={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
                 toggleLike={(isLiked) => this._toggleLike(isLiked)}
                 toggleMenu={() => this._toggleMenu()}
@@ -248,7 +249,7 @@ class LooksScreen extends BasePage {
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-                onLikesNumberPress={() => this.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
+                onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
             </ImageWrapper>
       </GestureRecognizer>
@@ -359,4 +360,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindAction)(LooksScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(LooksScreen));

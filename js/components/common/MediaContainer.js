@@ -107,6 +107,7 @@ class MediaContainer extends PureComponent {
                  muted={this.state.isMuted}
                  style={{width: lookWidth, height: lookHeight, overflow:'hidden'}}
                  paused={!ShouldShowLookImage}
+                 navigation={this.props.navigation}
           />
         </View>
       )
@@ -120,6 +121,7 @@ class MediaContainer extends PureComponent {
                               style={{width: lookWidth, height: lookHeight, overflow:'hidden', borderRadius: 10}}
                               paused={!ShouldShowLookImage}
                               repeat={true}
+                              navigation={this.props.navigation}
             />
           :
             <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>

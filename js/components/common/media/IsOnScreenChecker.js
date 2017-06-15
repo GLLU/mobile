@@ -34,7 +34,6 @@ const isOnScreenCheck=WrappedComponent=>{
       return <WrappedComponent {...this.props} isOnScreen={this.state.isOnScreen}/>
     }
   }
-
   const mapStateToProps = state => {
     return {
       navigation: state.cardNavigation,
@@ -42,7 +41,6 @@ const isOnScreenCheck=WrappedComponent=>{
   };
 
   return connect(mapStateToProps)(IsOnScreenChecker)
-
 };
 
 export default isOnScreenCheck;

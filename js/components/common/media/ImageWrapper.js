@@ -1,7 +1,6 @@
 import React,{PureComponent} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
 import IsOnScreenChecker from './IsOnScreenChecker'
-
 class ImageWrapper extends PureComponent {
 
   constructor(props) {

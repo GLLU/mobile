@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
+import asScreen from '../common/containers/Screen'
 import { Dimensions, Platform, Image, TouchableWithoutFeedback, Linking, View, TouchableOpacity, ViewPagerAndroid, Text } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import { connect } from 'react-redux';
@@ -16,7 +16,7 @@ const three = require('../../../images/tutorial/3.png');
 const four = require('../../../images/tutorial/4.png');
 const five = require('../../../images/tutorial/5.png');
 
-class TutorialScreen extends BasePage {
+class TutorialScreen extends Component {
 
   constructor(props) {
     super(props);
@@ -28,13 +28,13 @@ class TutorialScreen extends BasePage {
 
   doneWithTutorial(skip=true) {
     const action=skip?`user skipped tutorial @ page ${this.state.currPage}`:`user finishedTutorial`;
-    this.logEvent('TutorialScreen', {name: action});
+    this.props.logEvent('TutorialScreen', {name: action});
     this.props.hideTutorial();
-    this.goBack();
+    this.props.goBack();
   }
 
   onPageSelected = (e) => {
-    this.logEvent('TutorialScreen', {name: `user reached page ${this.state.currPage}`});
+    this.props.logEvent('TutorialScreen', {name: `user reached page ${this.state.currPage}`});
     this.setState({currPage: e.nativeEvent.position})
   };
 
@@ -93,4 +93,4 @@ const mapStateToProps = state => ({
   showTutorial: state.user.showTutorial
 });
 
-export default connect(mapStateToProps, bindAction)(TutorialScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(TutorialScreen));

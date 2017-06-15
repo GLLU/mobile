@@ -7,7 +7,6 @@ import _ from 'lodash';
 import VideoWithCaching from "../common/media/VideoWithCaching";
 import ImageWrapper from '../common/media/ImageWrapper'
 import MediaContainer from '../common/MediaContainer';
-
 const deviceWidth = Dimensions.get('window').width;
 
 class UserLooks extends Component {
