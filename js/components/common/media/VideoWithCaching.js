@@ -22,7 +22,7 @@ class VideoWithCaching extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.currentAppState!==this.props.currentAppState){
-      if(this.props.currentAppState==='active'){
+      if(this.props.currentAppState==='active'&&this._root){
         this._root.seek(0)
       }
       this.setState({repeat:nextProps.currentAppState==='active'})
@@ -45,6 +45,5 @@ class VideoWithCaching extends Component {
 const renderLoader = () => <View style={{}}/>;
 
 const cache = cachedWrapper(renderLoader)(props => props.source.uri);
-/*const isOnScreen = screenChecker(props => props.isOnScreen);*/
 export default cache(IsOnScreenChecker(listenToAppState(VideoWithCaching)));
 
