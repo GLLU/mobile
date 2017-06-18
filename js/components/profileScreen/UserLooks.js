@@ -157,7 +157,8 @@ class UserLooks extends Component {
                         sendParisMessage={this.props.showParisBottomMessage}
                         key={look.id}
                         shouldOptimize={this.state.flatLooksLeft.length>20}
-                        showMediaGrid={false}>
+                        showMediaGrid={false}
+                        fromScreen={'profileScreen'}>
           { this.state.isMyProfile ? this.renderEditLookBtn(look) : null}
           { this.state.isMyProfile ? this.renderLookStatus(look) : null}
         </MediaContainer>

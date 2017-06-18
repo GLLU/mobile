@@ -37,14 +37,12 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
-
               if (data) {
                 const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
                 if(data.look.cover.type !== "image") {
                   const payload = _.merge(data.look, {
                     image: url,
                     items: [],
-                    itemId: null,
                     localFilePath: image.localPath
                   });
 
@@ -59,7 +57,6 @@ export function addNewLook(image) {
                     const payload = _.merge(data.look, {
                       image: url,
                       items: [],
-                      itemId: null,
                     });
                     dispatch({
                       type: EDIT_NEW_LOOK,
@@ -93,34 +90,18 @@ export function editNewLook(lookId) {
       dispatch(rest.actions.looks.get({ id: lookId}, (err, data) => {
         console.log('editNewLook', err, data);
         dispatch(hideProcessing());
-        if (!err) {
-          const look = data.look;
-          const url = _.find(look.cover.list, x => x.version == 'small').url;
-          Utils.preloadImages([url]).then(() => {
+        if (!err) {;
+          const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
             let payload = {
               image: url,
+              items: data.look.items,
+              ...data.look
             };
-            const firstItem = _.first(look.items);
-            if (firstItem) {
-              const item = itemMapper(firstItem);
-              const itemId = item.id;
-              payload = _.merge(payload, look, {
-                items: [item],
-                itemId,
-              });
-            } else {
-              payload = _.merge(payload, look, {
-                items: [],
-                itemId: null,
-              });
-            }
-            
             dispatch({
               type: EDIT_NEW_LOOK,
               payload,
             });
             resolve(payload);
-          }).catch(reject);
         } else {
           throw err;  
         }
@@ -211,16 +192,16 @@ function makeRequest(dispatch, endPoint, endPointParams) {
   });
 }
 
-export function updateLookItem() {
+export function updateLookItem(currItemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId, items } = state.uploadLook;
+    const itemId = currItemId
+    const { lookId, items } = state.uploadLook;
     const item = itemId ? _.find(items, item => item.id === itemId) : null;
-    const { price, brand, category, locationX, locationY } = item;
+    const { brand, category, locationX, locationY } = item;
     const brand_id = brand ? brand.id : undefined;
     const category_id = category ? category.id : undefined;
     const params = {
-      price,
       brand_id,
       category_id,
       cover_x_pos: locationX,
@@ -256,7 +237,6 @@ export function addItemType(categoryItem, itemId) {
     const params = {
       category_id: categoryItem.id,
     }
-    console.log('itemId11',itemId)
     return _updateItem(lookId, itemId, params, dispatch).then(data => {
       const payload = {categoryItem, itemId}
       dispatch({
@@ -274,12 +254,10 @@ export function addItemType(categoryItem, itemId) {
 }
 
 export function addBrandName(payload) {
-  console.log('vffvfvfv')
   return (dispatch, getState) => {
     const state = getState();
     const { lookId } = state.uploadLook;
     const itemId = payload.itemId
-    console.log('payload',payload)
     const params = {
       brand_id: payload.id,
     }
@@ -297,7 +275,6 @@ export function addBrandName(payload) {
 }
 
 export function createBrandName(newBrand) {
-  console.log('value',newBrand)
   return (dispatch) => {
     const body = {
       brand: {
@@ -307,7 +284,6 @@ export function createBrandName(newBrand) {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
-          console.log('value2222',newBrand, 'blab', data)
           dispatch(loadBrands());
           dispatch(addBrandName({ id: data.brand.id, name: data.brand.name, itemId: newBrand.itemId })).then(resolve, reject);
         } else {
@@ -319,7 +295,6 @@ export function createBrandName(newBrand) {
 }
 
 export function removeBrandName(itemId) {
-  console.log('itemId3',itemId)
   return {
     type: REMOVE_BRAND_NAME,
     payload: itemId

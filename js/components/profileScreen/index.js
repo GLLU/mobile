@@ -15,7 +15,6 @@ import { editNewLook } from "../../actions/uploadLook";
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toFeedScreen = require('../../../images/icons/feed.png');
 const toSettings = require('../../../images/icons/settings.png');
-const LOADER_HEIGHT = 30;
 import Spinner from '../loaders/Spinner';
 
 
@@ -63,16 +62,7 @@ class ProfileScreen extends Component {
       this.setState({stats: nextProps.stats})
     }
     if(nextProps.currLookScreenId === this.state.userId && nextProps.userLooks !== this.state.userLooks){
-      this.setState({userLooks: nextProps.userLooks})
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.stats.user_id === this.state.userId && nextProps.stats !== this.state.stats){
-      this.setState({stats: nextProps.stats})
-    }
-    if(nextProps.currLookScreenId === this.state.userId && nextProps.userLooks !== this.state.userLooks){
-      this.setState({userLooks: nextProps.userLooks})
+      this.setState({userLooks: nextProps.userLooks, loadingMore: false})
     }
   }
 
@@ -327,7 +317,7 @@ class ProfileScreen extends Component {
               <UserLooks
                 myUserId={this.props.myUser.id}
                 userLooks={this.state.userLooks}
-                navigateTo={this.navigateTo}
+                navigateTo={this.props.navigateTo}
                 isMyProfile={this.state.isMyProfile}
                 editNewLook = {this.props.editNewLook}
                 addNewLook = {this.props.addNewLook}

@@ -154,6 +154,11 @@ class UploadLookHeader extends BaseComponent {
 
   }
 
+  getItemIconUrl(item) { //Temp function until we will receive it from the server
+    console.log('itemmm',item)
+    return _.find(this.props.categories, category => category.name === item.name);
+  }
+
   renderVideoItemsBtns() {
     const { items } = this.props
 
@@ -161,16 +166,25 @@ class UploadLookHeader extends BaseComponent {
       const isSelected = this.props.currItem.id === item.id;
       const isDone = item.brand && item.category !== null
       return (
-        <TouchableOpacity key={index} onPress={() => this.setCurrentItem(item)} style={{height: 30, width: 30,marginTop: 18, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderRadius: 3, marginLeft: 3, marginRight: 3 }}>
+        <TouchableOpacity key={index} onPress={() => this.props.setCurrentItem(item)} style={{height: 30, width: 30,marginTop: 18, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderRadius: 3, marginLeft: 3, marginRight: 3 }}>
           {isDone ? null : <View style={{width: 5, height: 5, borderRadius: 5, backgroundColor: 'red', position: 'absolute', top: 3, right: 3}} />}
-          {item.category ? this.renderItemCategorySmallIcon(item, isSelected) : <Text style={{color: isSelected ? '#009688' : 'white', textAlign: 'center', fontSize: 13}}>{index}</Text>}
+          {item.category ? this.renderItemCategorySmallIcon(item, isSelected) : <Text style={{color: isSelected ? '#009688' : 'white', textAlign: 'center', fontSize: 13}}>{`${index}`}</Text>}
         </TouchableOpacity>
       );
     });
   }
 
   renderItemCategorySmallIcon(item, isSelected) {
-    const categoryIcon = isSelected ? item.category.icon.url_hover : item.category.icon.url;
+    let categoryIcon;
+    if(item.category.icon) {
+      categoryIcon = isSelected ? item.category.icon.url_hover : item.category.icon.url;
+    } else {
+      const iconUrl =  this.getItemIconUrl(item.category);
+      console.log(iconUrl)
+      categoryIcon = isSelected ? iconUrl.icon.url_hover : iconUrl.icon.url;
+
+    }
+
     return(
       <View style={{ flex: 1, padding: 2}}>
         <Image source={{uri: categoryIcon}} style={[{flex:1, width: 20, backgroundColor: 'transparent',

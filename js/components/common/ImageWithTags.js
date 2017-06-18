@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
 class ImageWithTags extends Component {
 
   static propTypes = {
-    itemId: React.PropTypes.number,
     image: React.PropTypes.string.isRequired,
     items: React.PropTypes.array.isRequired,
     width: React.PropTypes.number,
