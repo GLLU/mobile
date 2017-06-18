@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import withAnalytics from '../common/analytics/WithAnalytics'
-import withNavigation from '../common/navigation/WithNavigation'
 import {Container, Header, Content, Button, Icon, Title,StyleProvider, getTheme } from 'native-base';
 import {Text, View, StyleSheet} from 'react-native';
 import styles from './styles';
@@ -27,7 +26,6 @@ class BodyTypePicker extends Component {
 
   static propTypes = {
     changeBodyType: React.PropTypes.func,
-    navigateTo: React.PropTypes.func,
     onPick: React.PropTypes.func,
     bodyTypes: React.PropTypes.object,
     currentBodyType: React.PropTypes.object,
@@ -37,7 +35,6 @@ class BodyTypePicker extends Component {
   }
 
   static defaultProps = {
-    navigateTo: _.noop,
     onPick: _.noop,
   }
 
@@ -125,4 +122,4 @@ const mapStateToProps = state => ({
   gender: state.user.gender
 });
 
-export default connect(mapStateToProps, bindAction)(withNavigation(withAnalytics(BodyTypePicker)));
+export default connect(mapStateToProps, bindAction)(withAnalytics(BodyTypePicker));

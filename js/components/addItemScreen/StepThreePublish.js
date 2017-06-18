@@ -344,6 +344,7 @@ class StepThreePublish extends BaseComponent {
 
     const { items } = this.props
     return _.map(items, (item, index) => {
+      const iconUrl =  item.category.icon ? item.category.icon.url : this.getItemIconUrl(item);
       let url;
       if (item.url) {
         url = item.url;
@@ -363,7 +364,7 @@ class StepThreePublish extends BaseComponent {
             onEndEditing={(event) => this.handleUrlEndEditing(event, item.id)}
             value={url}/>
         <View style={{height: 50, padding: 2, backgroundColor: 'white', marginTop: 10, marginBottom: 10}}>
-          <Image source={{uri: item.category.icon.url}} style={[{height: 46, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
+          <Image source={{uri: iconUrl}} style={[{height: 46, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
             resizeMode: 'contain',
             alignSelf: 'center',}]} />
         </View>
@@ -373,20 +374,25 @@ class StepThreePublish extends BaseComponent {
     });
   }
 
+  getItemIconUrl(item) { //Temp function until we will receive it from the server
+   return _.find(this.props.categories, category => category.name === item.name);
+  }
+
   renderItemTags() {
     const { items } = this.props
     return _.map(items, (item, index) => {
+      const iconUrl =  item.category.icon ? item.category.icon.url : this.getItemIconUrl(item);
       return (
       <View key={index} style={{flexDirection: 'row'}}>
         <TagInput
-          categoryIcon={item.category.icon.url}
+          categoryIcon={iconUrl}
           itemId={item.id}
           tags={item.tags}
           addItemTag={this.props.addItemTag}
           removeItemTag={this.props.removeItemTag}
         />
         <View style={{height: 40, padding: 2, backgroundColor: 'white', marginTop: 10, marginBottom: 10}}>
-          <Image source={{uri: item.category.icon.url}} style={[{height: 36, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
+          <Image source={{uri: iconUrl}} style={[{height: 36, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
             resizeMode: 'contain',
             alignSelf: 'center',}]} />
         </View>
@@ -443,7 +449,8 @@ const mapStateToProps = state => {
   const isVideo = Utils.isVideo(image)
   return {
     isVideo,
-    image
+    image,
+    categories: state.filters.categories,
   }
 };
 
