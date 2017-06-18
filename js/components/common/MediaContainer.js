@@ -216,7 +216,7 @@ class MediaContainer extends PureComponent {
     const { look } = this.props
     return(
       <View onLayout={(e) => this.setLookPosition(e)}>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={this._handleItemPress}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look)}
           {look.coverType === 'video' && Platform.OS === 'ios' ? this.renderVideoGrid(look) : null}
         </TouchableOpacity>

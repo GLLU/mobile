@@ -2,6 +2,8 @@ import React,{Component} from "react";
 import WithAnalytics from '../analytics/WithAnalytics'
 import {NavigationActions} from "react-navigation";
 import {Alert} from "react-native";
+import * as _ from "lodash";
+import { connect } from "react-redux";
 
 
 export default function withNavigation(WrappedComponent) {
@@ -27,7 +29,11 @@ export default function withNavigation(WrappedComponent) {
     }
 
     navigateTo(route,params) {
-      this.props.navigation.navigate(route, params)
+      const {routes,index}=this.props.cardNavigation;
+      const currentRoute= routes[index].routeName;
+      if(currentRoute!==route){
+        this.props.navigation.navigate(route, params)
+      }
     }
 
     goBack(withConfirmation = false) {
@@ -67,5 +73,12 @@ export default function withNavigation(WrappedComponent) {
       />
     }
   }
-  return WithAnalytics(WithNavigation)
+
+  const mapStateToProps = state => {
+    return {
+      cardNavigation: state.cardNavigation,
+    };
+  };
+
+  return connect(mapStateToProps)(WithAnalytics(WithNavigation))
 }
