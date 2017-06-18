@@ -97,7 +97,7 @@ class EditProfile extends Component {
         <View style={{position: 'absolute', top: 0}}>
           <Image source={profileBackground} style={styles.editProfileBg}>
             <LinearGradient colors={['#0C0C0C', '#4C4C4C']} style={[styles.linearGradient, {opacity: 0.7, height: 150}]} />
-            <EditProfileHeader cancelEdit={this.props.goBack} save={() => this._saveChanges()} />
+            <EditProfileHeader cancelEdit={this.props.goBack} save={this._saveChanges} />
           </Image>
         </View>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
