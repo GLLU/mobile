@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
 import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition} from '../../actions';
 import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
@@ -92,17 +92,6 @@ class AddItemPage extends Component {
     this.props.setUser(name);
   }
 
-  selectTab(step) {
-    this.swiper.scrollBy(step);
-  }
-
-
-  continueAction() {
-    this.props.updateLookItem().then(response => {
-      this.selectTab(this.state.currentStep + 1);
-    });
-  }
-
   publishAction() {
     this.props.logEvent('UploadLookScreen', {name: 'Publish click'});
     this.setState({isPublishing:true},()=>{
@@ -163,8 +152,9 @@ class AddItemPage extends Component {
   }
 
   handleOnDragEnd(position) {
+    console.log('position',position)
     this.props.setTagPosition(position);
-    this.props.updateLookItem();
+    this.props.updateLookItem(position.id);
   }
 
   renderImageWithTags() {
@@ -187,7 +177,6 @@ class AddItemPage extends Component {
 
   renderVideoWithTags() {
     const {fileLocalPath} = this.props;
-    console.log('fileLocalPath', fileLocalPath)
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
@@ -198,12 +187,6 @@ class AddItemPage extends Component {
         {this.renderActions()}
       </VideoWithTags>
     );
-  }
-
-  handleStepZeroValid() {
-    this.setState({
-      allowContinue: true
-    })
   }
 
   renderActions() {
@@ -220,10 +203,10 @@ class AddItemPage extends Component {
     return (
       <View style={{height: h}}>
         <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 20, height: h - 70}}>
-          <StepTwoOccasions item={currItem} onValid={this.continueAction.bind(this)}/>
-          <StepOneCategory item={currItem} onValid={this.continueAction.bind(this)}/>
+          <StepTwoOccasions item={currItem} />
+          <StepOneCategory item={currItem} />
         </View>
-        <StepZeroBrand item={currItem} onValid={this.handleStepZeroValid.bind(this)}/>
+        <StepZeroBrand item={currItem}/>
       </View>
     )
   }
@@ -241,7 +224,7 @@ class AddItemPage extends Component {
         <View style={{position: 'absolute'}}>
           {this.renderHeader()}
         </View>
-        <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)}></StepThreePublish>
+        <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)} />
       </View>);
   }
 

@@ -37,14 +37,13 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
-
+              console.log('add new look', data);
               if (data) {
                 const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
                 if(data.look.cover.type !== "image") {
                   const payload = _.merge(data.look, {
                     image: url,
                     items: [],
-                    itemId: null,
                     localFilePath: image.localPath
                   });
 
@@ -59,7 +58,6 @@ export function addNewLook(image) {
                     const payload = _.merge(data.look, {
                       image: url,
                       items: [],
-                      itemId: null,
                     });
                     dispatch({
                       type: EDIT_NEW_LOOK,
@@ -93,34 +91,18 @@ export function editNewLook(lookId) {
       dispatch(rest.actions.looks.get({ id: lookId}, (err, data) => {
         console.log('editNewLook', err, data);
         dispatch(hideProcessing());
-        if (!err) {
-          const look = data.look;
-          const url = _.find(look.cover.list, x => x.version === 'small').url;
-          Utils.preloadImages([url]).then(() => {
+        if (!err) {;
+          const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
             let payload = {
               image: url,
+              items: data.look.items,
+              ...data.look
             };
-            const firstItem = _.first(look.items);
-            if (firstItem) {
-              const item = itemMapper(firstItem);
-              const itemId = item.id;
-              payload = _.merge(payload, look, {
-                items: [item],
-                itemId,
-              });
-            } else {
-              payload = _.merge(payload, look, {
-                items: [],
-                itemId: null,
-              });
-            }
-            
             dispatch({
               type: EDIT_NEW_LOOK,
               payload,
             });
             resolve(payload);
-          }).catch(reject);
         } else {
           throw err;  
         }
@@ -211,16 +193,16 @@ function makeRequest(dispatch, endPoint, endPointParams) {
   });
 }
 
-export function updateLookItem() {
+export function updateLookItem(currItem) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId, itemId, items } = state.uploadLook;
+    const itemId = currItem.id
+    const { lookId, items } = state.uploadLook;
     const item = itemId ? _.find(items, item => item.id === itemId) : null;
-    const { price, brand, category, locationX, locationY } = item;
+    const { brand, category, locationX, locationY } = item;
     const brand_id = brand ? brand.id : undefined;
     const category_id = category ? category.id : undefined;
     const params = {
-      price,
       brand_id,
       category_id,
       cover_x_pos: locationX,
