@@ -89,8 +89,12 @@ class ProfileScreen extends Component {
         id: this.state.userId,
         isMyProfile: this.state.isMyProfile
       }
-      this.props.getUserLooks(looksCall);
-      this.props.getUserLooksData(looksDataCall);
+      this.setState({isLoading: true}, () => {
+        this.props.getUserLooks(looksCall).then(() => {
+          this.props.getUserLooksData(looksDataCall);
+          this.setState({ isLoading: false});
+        });
+      })
     }
     this.props.getStats(this.state.userId);
   }
@@ -287,7 +291,8 @@ class ProfileScreen extends Component {
         <Container>
             <ScrollView scrollEventThrottle={100}
                         onScroll={this.handleScrollUserLooks}
-                        pagingEnabled={false}>
+                        pagingEnabled={false}
+            style={{backgroundColor: 'white'}}>
               <Image source={profileBackground} style={styles.bg}>
                 <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                                 style={[styles.linearGradient, {opacity: 0.7}]}/>
@@ -323,6 +328,8 @@ class ProfileScreen extends Component {
                 addNewLook = {this.props.addNewLook}
                 likeUpdate = {this.props.likeUpdate}
                 unLikeUpdate = {this.props.unLikeUpdate}
+                meta={this.props.meta}
+                isLoading={this.state.isLoading}
               />
               {this._renderLoadMore()}
               {this._renderRefreshingCover()}

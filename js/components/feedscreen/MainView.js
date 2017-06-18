@@ -130,7 +130,7 @@ class MainView extends Component {
           <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                           style={[myStyles.linearGradient, {opacity: 0.7}]}/>
           <View style={{marginTop: 100}}>
-            <ParisAdjustableMessage text={'Sorry, no looks available yet, you should upload one!'}/>
+            <ParisAdjustableMessage text={'Sorry, we could not find any relevant results'}/>
           </View>
         </Image>
 

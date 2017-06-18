@@ -7,7 +7,7 @@ const initialState = {
   userLooksDataQueue: [],
   currId: -1,
   meta: {
-    total: 0,
+    total_count: 0,
   },
   query: {
     page: {
