@@ -48,17 +48,8 @@ class ParisAdjustableMessage extends Component {
     super(props);
   }
 
-  hide() {
-    this.props.hideParisBottomMessage();
-  }
-
-  componentDidMount(){
-    let that = this
-    setTimeout(function(){ that.hide(); }, 6500);
-  }
-
   render() {
-    let text = this.props.message.length > 0 ? `${this.props.message}` : ''
+    let { text } = this.props
     return (
       <View style={[styles.container, {backgroundColor: 'white'}]}>
         <View style={styles.headerBtn}>
@@ -80,9 +71,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    message: state.paris.messageAdjustable || 'No Data Yet blab lba lba blab lba lba blab lba lba blab lba lba blab lba lba blab lba lba blab lba lba ',
     userName: state.user.name
-
   }
 };
 
