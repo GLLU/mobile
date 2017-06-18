@@ -36,7 +36,7 @@ class AddItemPage extends Component {
     this.handleContinue = this.handleContinue.bind(this);
     this.state = {
       isVideo: this.props.isVideo,
-      currentStep: -1,
+      currentStep: this.props.isVideo && props.items.length > 0 ? 0 : -1,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
@@ -50,26 +50,15 @@ class AddItemPage extends Component {
   }
 
   setCurrentItem(item) {
-    console.log('setting curreny item: ', item)
     this.setState({currItem: item})
   }
 
   componentDidMount() {
-    console.log('image from redux', this.props.image)
     this.props.logEvent('UploadLookScreen', { name: `User started uploading a look`, mediaType: this.state.isVideo? 'Video':'Image' });
   }
 
-
-  _handleLayoutImage(e) {
-    const {width} = e.nativeEvent.layout;
-    const w = parseInt(width - IMAGE_VIEW_PADDING * 2, 10);
-    this.setState({
-      imageWidth: w
-    })
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.item && this.state.currentStep === -1 && this.state.isVideo) {
+    if (nextProps.items && this.state.currentStep === -1 && this.state.isVideo) {
       this.handleContinue();
     }
     if (nextProps.items !== this.props.items) {
@@ -151,7 +140,6 @@ class AddItemPage extends Component {
   }
 
   handleOnDragEnd(position) {
-    console.log('position',position)
     this.props.setTagPosition(position);
     this.props.updateLookItem(position.id);
   }
@@ -175,7 +163,7 @@ class AddItemPage extends Component {
   }
 
   renderVideoWithTags() {
-    const {fileLocalPath} = this.props;
+    const fileLocalPath = this.props.fileLocalPath ? this.props.fileLocalPath : this.props.image;
     const mode = this.getCurrentMode();
     return (
       <VideoWithTags
@@ -237,7 +225,8 @@ class AddItemPage extends Component {
         handleBackButton={this.handleBackButton.bind(this)}
         handleContinue={this.handleContinue}
         handleNewItem={this.handleNewItem.bind(this)}
-        setCurrentItem={(item) => this.setCurrentItem(item)}/>
+        setCurrentItem={(item) => this.setCurrentItem(item)}
+        categories={this.props.categories}/>
     )
   }
 
@@ -274,6 +263,7 @@ const mapStateToProps = state => {
     fileLocalPath: localFilePath,
     items,
     state: state.uploadLook.state,
+    categories: state.filters.categories,
   };
 }
 

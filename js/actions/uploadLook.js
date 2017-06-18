@@ -37,7 +37,6 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
-              console.log('add new look', data);
               if (data) {
                 const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
                 if(data.look.cover.type !== "image") {
@@ -238,7 +237,6 @@ export function addItemType(categoryItem, itemId) {
     const params = {
       category_id: categoryItem.id,
     }
-    console.log('itemId11',itemId)
     return _updateItem(lookId, itemId, params, dispatch).then(data => {
       const payload = {categoryItem, itemId}
       dispatch({
@@ -256,12 +254,10 @@ export function addItemType(categoryItem, itemId) {
 }
 
 export function addBrandName(payload) {
-  console.log('vffvfvfv')
   return (dispatch, getState) => {
     const state = getState();
     const { lookId } = state.uploadLook;
     const itemId = payload.itemId
-    console.log('payload',payload)
     const params = {
       brand_id: payload.id,
     }
@@ -279,7 +275,6 @@ export function addBrandName(payload) {
 }
 
 export function createBrandName(newBrand) {
-  console.log('value',newBrand)
   return (dispatch) => {
     const body = {
       brand: {
@@ -289,7 +284,6 @@ export function createBrandName(newBrand) {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
-          console.log('value2222',newBrand, 'blab', data)
           dispatch(loadBrands());
           dispatch(addBrandName({ id: data.brand.id, name: data.brand.name, itemId: newBrand.itemId })).then(resolve, reject);
         } else {
@@ -301,7 +295,6 @@ export function createBrandName(newBrand) {
 }
 
 export function removeBrandName(itemId) {
-  console.log('itemId3',itemId)
   return {
     type: REMOVE_BRAND_NAME,
     payload: itemId
