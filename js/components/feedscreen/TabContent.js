@@ -281,12 +281,12 @@ class TabContent extends BaseComponent {
     return (
       <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
         <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-          <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
-            {this.renderInviteFriend()}
-          </TouchableOpacity>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
         <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+          <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
+            {this.renderInviteFriend()}
+          </TouchableOpacity>
           {this._renderLooks(this.state.flatLooksRight)}
         </View>
       </View>
