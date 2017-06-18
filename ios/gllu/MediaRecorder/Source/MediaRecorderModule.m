@@ -17,17 +17,17 @@
 @implementation MediaRecorderModule
 RCT_EXPORT_MODULE(CameraUtils);
 
-- (void)setConfiguration: (nonnull NSNumber *)videoEnabled
+- (void)setConfiguration: (BOOL)videoEnabled
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject {
     
     self.resolve = resolve;
     self.reject = reject;
 
-    self.videoEnabled = [videoEnabled boolValue];
+    self.videoEnabled = videoEnabled;
 }
 
-RCT_EXPORT_METHOD(openCamera:(nonnull NSNumber *)videoEnabled
+RCT_EXPORT_METHOD(openCamera:(BOOL)videoEnabled
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject){
   
@@ -36,7 +36,7 @@ RCT_EXPORT_METHOD(openCamera:(nonnull NSNumber *)videoEnabled
   
     [self setConfiguration:videoEnabled resolver:resolve rejecter:reject];
     dispatch_async(dispatch_get_main_queue(), ^{
-        MediaRecorderViewController* mediaRecorder = [MediaRecorderViewController new];
+        MediaRecorderViewController* mediaRecorder = [MediaRecorderViewController MediaRecorder:videoEnabled];
         UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:mediaRecorder];
         
         [[self getRootVC] presentViewController:nav animated:YES completion:nil];
