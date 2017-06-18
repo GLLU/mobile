@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, BackAndroid, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import SpinnerSwitch from './components/loaders/SpinnerSwitch'
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import ErrorHandler from './components/errorHandler';
 import ParisMessages from './components/paris/ParisMessages';
@@ -9,8 +8,8 @@ import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'
 import { addNavigationHelpers } from "react-navigation";
-import * as _ from "lodash";
 import {expireCache} from './lib/cache/FSVideoCache'
+import { trackScreenByNavigationState } from "./utils/TrackingUtils";
 
 
 const styles = StyleSheet.create({
@@ -65,13 +64,19 @@ class AppNavigator extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.navigationState!==this.props.navigationState){
+      trackScreenByNavigationState(nextProps.navigationState,this.props.navigationState)
+    }
+  }
+
   render() {
     const {dispatch,navigationState} = this.props;
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle='default'/>
         <CardStack navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
-        {this.props.isLoading ? <SpinnerSwitch /> : null}
+        {/*{this.props.isLoading ? <SpinnerSwitch /> : null}*/}
         {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
@@ -89,7 +94,6 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const isLoading = state.loader.loading || false;
   const isProcessing = state.loader.processing || false;
   const isError = state.errorHandler.error || false;
   const isFatalError = state.errorHandler.fatal_error || false;
@@ -99,7 +103,6 @@ const mapStateToProps = state => {
   return ({
     navigationState: state.cardNavigation,
     user: state.user,
-    isLoading: isLoading,
     isProcessing: isProcessing,
     error: isError,
     fatalError: isFatalError,

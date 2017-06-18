@@ -53,16 +53,18 @@ export default class CommentRow extends Component {
   }
 
   render() {
+    const name = this.props.user?this.props.user.name:'';
+    const avatar = this.props.user?this.props.user.avatar:{url:'https://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg'};
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={this._onUserPress} style={{flex:2}} name="avatar">
-          <Image resizeMode='cover' source={{ uri: this.props.user.avatar.url}} style={styles.photo}/>
+          <Image resizeMode='cover' source={{ uri: avatar.url}} style={styles.photo}/>
         </TouchableOpacity>
         <View style={{flex:13, flexDirection:'column'}}>
           <View style={{flex:1, flexDirection:'row'}}>
             <TouchableOpacity style={{flex:3}} onPress={this._onUserPress}>
               <Text style={{fontWeight:'bold'}} name="name">
-                {this.props.user.name}
+                {name}
               </Text>
             </TouchableOpacity>
             <Text style={{flex:2, fontSize:10, textAlign:'right'}} name="created_at">

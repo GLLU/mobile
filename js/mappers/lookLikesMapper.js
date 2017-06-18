@@ -1,18 +1,14 @@
-
-export function mapLike(like) {
-  return map(like)
-}
-
-function map(like, index) {
+export function map(like) {
+  const {user} = like;
   return {
     id: like.id,
-    user_id: like.user.id,
-    avatar: like.user.avatar,
-    name: like.user.name,
-    username: like.user.username,
-    is_me: like.user.is_me,
-    about_me: like.user.about_me,
-    is_following: like.user.is_following,
-    is_follower: like.user.is_follower
+    user_id: user.id,
+    avatar: user.avatar,
+    name: user.name,
+    username: user.username,
+    is_me: user.is_me,
+    about_me: user.about_me,
+    is_following: user.is_following,
+    is_follower: user.is_follower
   };
 }

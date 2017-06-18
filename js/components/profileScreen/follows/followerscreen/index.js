@@ -8,9 +8,9 @@ import SelectPhoto from '../../../common/SelectPhoto';
 import { addNewLook, getUserFollowersData, initUserFollowers } from '../../../../actions';
 
 import FollowListView from '../shared/FollowListView'
-import BasePage from "../../../common/base/BasePage";
+import asScreen from "../../../common/containers/Screen"
 
-class FollowerScreen extends BasePage {
+class FollowerScreen extends Component {
 
   static propTypes = {
     mode: React.PropTypes.string,
@@ -25,7 +25,15 @@ class FollowerScreen extends BasePage {
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.currentPageIndex = 1;
     this.state = {
-      photoModal: false
+      photoModal: false,
+      followers: []
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const userData = this.props.navigation.state.params;
+    if(nextProps.currId === userData.user.id){
+      this.setState({followers: nextProps.followers})
     }
   }
 
@@ -34,10 +42,6 @@ class FollowerScreen extends BasePage {
     if (userData.count) {
       this.getFollowersData();
     }
-  }
-
-  componentWillUnmount() {
-    this.props.initUserFollowers();
   }
 
   getFollowersData() {
@@ -57,7 +61,7 @@ class FollowerScreen extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.navigateTo('addItemScreen');
+        this.props.navigateTo('addItemScreen');
       });
     })
   }
@@ -72,14 +76,15 @@ class FollowerScreen extends BasePage {
 
   render() {
     const userData = this.props.navigation.state.params;
+    const currentUserData = this.state.followers;
     return (
           <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
             <FollowListView
               renderEmpty={this._renderOnEmpty}
               headerData={userData}
-              follows={this.props.followers}
-              navigateTo={this.navigateTo}
-              goBack={this.goBack}
+              follows={currentUserData}
+              navigateTo={this.props.navigateTo}
+              goBack={this.props.goBack}
               onEndReached={this.getFollowersData}
               mode={userData.mode}/>
             <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
@@ -93,14 +98,14 @@ function bindAction(dispatch) {
   return {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     getUserFollowersData: (id, pageNumber, pageSize) => dispatch(getUserFollowersData(id, pageNumber, pageSize)),
-    initUserFollowers: () => dispatch(initUserFollowers()),
   };
 }
 
 const mapStateToProps = state => {
   return {
     followers: state.userFollowers.userFollowersData,
+    currId: state.userFollowers.currId,
   }
 };
 
-export default connect(mapStateToProps, bindAction)(FollowerScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(FollowerScreen));

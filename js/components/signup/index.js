@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
+import asScreen from '../common/containers/Screen'
 import {
   Image, Linking, TouchableWithoutFeedback, Text, View, StyleSheet, TouchableOpacity,
   TextInput
@@ -13,7 +13,7 @@ import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
-import ImagePicker from 'react-native-image-crop-picker';
+import CircleProfileImage from '../common/avatars/CircleProfileImage'
 import LetsGLLUButton from "./LetsGLLUButton";
 import {openCamera} from '../../lib/camera/CameraUtils'
 
@@ -25,7 +25,7 @@ import {
   PRIVACY_URL,
 } from '../../constants';
 
-class SignUpPage extends BasePage {
+class SignUpPage extends Component {
 
   static propTypes = {
     emailSignUp: React.PropTypes.func
@@ -71,8 +71,8 @@ class SignUpPage extends BasePage {
       }
       this.props.emailSignUp(data)
         .then(user=>{
-          this.logEvent('SignupPage', {name: `user signed up with email ${email}`, invitation_token: this.props.invitation_token});
-          this.resetTo('feedscreen',user)
+          this.props.logEvent('SignUpScreen', {name: `user signed up with email ${email}`, invitation_token: this.props.invitation_token});
+          this.props.resetTo('feedscreen',user)
         })
         .catch(err=>console.log(err));
     }
@@ -122,18 +122,18 @@ class SignUpPage extends BasePage {
   }
 
   handleCameraPress() {
-    this.logEvent('SignUpEmailScreen', { name: 'Camera click' });
+    this.props.logEvent('SignUpScreen', { name: 'Camera click' });
     this.openCamera();
   }
 
   handleSignupPress() {
-    this.logEvent('SignUpEmailScreen', { name: 'Lets inFash click' });
+    this.props.logEvent('SignUpScreen', { name: 'Lets inFash click' });
     this.singupWithEmail();
   }
 
   handleLoginPress() {
-    this.logEvent('SignUpEmailScreen', { name: 'Already user click' });
-    this.navigateTo('signinemail');
+    this.props.logEvent('SignUpScreen', { name: 'Already user click' });
+    this.props.navigateTo('signinemail');
   }
 
   handleTermPress() {
@@ -145,7 +145,7 @@ class SignUpPage extends BasePage {
   }
 
   handleOpenLink(url) {
-    this.logEvent('SignUpEmailScreen', { name: 'Link click', url });
+    this.props.logEvent('SignUpScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -155,18 +155,8 @@ class SignUpPage extends BasePage {
     }).catch(err => console.error('An error occurred', err));
   }
 
-  addUserAvatar() {
-    ImagePicker.openPicker({
-      cropping: false,
-    }).then(image => {
-      image.type = 'multipart/form-data'
-      image.uri = image.path;
-      this.setState({avatar: image, avatarIcon: 'check'})
-    });
-  }
-
   async openCamera() {
-    this.logEvent('Signup', { name: 'Open Camera click' });
+    this.props.logEvent('SignUpScreen', { name: 'Open Camera click' });
     let image = {};
     image.path = await openCamera(false);
     image.type = 'multipart/form-data'
@@ -183,20 +173,17 @@ class SignUpPage extends BasePage {
             <Image source={backgroundShadow} style={styles.bgShadow} />
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={() => this.goBack()}>
+                <Button transparent onPress={this.props.goBack}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Sign up</Text>
               </View>
             </View>
             <Content scrollEnabled={false}>
+
               <View style={styles.uploadImgContainer}>
                 <View style={{height: 100, width: 100, borderRadius:50}}>
-                  <View style={styles.uploadImgBtn}>
-                    <TouchableOpacity onPress={this.handleCameraPress.bind(this)}>
-                      <IconB size={30} color={'#009688'} name={this.state.avatarIcon} style={StyleSheet.flatten(styles.uploadImgIcon)}/>
-                    </TouchableOpacity>
-                  </View>
+                    <CircleProfileImage style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
                 </View>
               </View>
               <View>
@@ -265,4 +252,4 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   invitation_token:state.user.invitation_token
 });
-export default connect(mapStateToProps, bindAction)(SignUpPage);
+export default connect(mapStateToProps, bindAction)(asScreen(SignUpPage));

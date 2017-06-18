@@ -1,6 +1,4 @@
-import type { Action } from './types';
-import { createEntity, setAccessToken } from 'redux-json-api';
-import { showLoader, hideLoader, showError, hideError, showFatalError, hideFatalError } from './index';
+import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
@@ -26,12 +24,7 @@ const setRestOptions = function (dispatch, rest, user) {
     };
   }).use("responseHandler", (err, data) => {
     if (err) {
-      if (err.errors && err.errors.length > 0) {
-        const error = _.first(err.errors);
-        if (error == "Bad Credentials") {
-          //what do we do with bad credentials here?
-        }
-      }
+      console.log("ERROR", err,data);
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
       console.log("SUCCESS", data)
@@ -57,7 +50,7 @@ const signInFromRest = function (dispatch, data, invitation_token, invitationTok
   });
 };
 
-export function setUser(user: string): Action {
+export function setUser(user: string) {
 
   return {
     type: SET_USER,
@@ -65,7 +58,7 @@ export function setUser(user: string): Action {
   };
 }
 
-export function setInvitationToken(token): Action {
+export function setInvitationToken(token) {
 
   return {
     type: SET_INVITATION_TOKEN,
@@ -73,7 +66,7 @@ export function setInvitationToken(token): Action {
   };
 }
 
-export function setInvitationTokenIsUsed(): Action {
+export function setInvitationTokenIsUsed() {
 
   return {
     type: SET_INVITATION_IS_USED,
@@ -81,14 +74,14 @@ export function setInvitationTokenIsUsed(): Action {
   };
 }
 
-export function setInvitationInvitationShareToken(shareToken): Action {
+export function setInvitationInvitationShareToken(shareToken) {
   return {
     type: SET_INVITATION_SHARE_TOKEN,
     payload: shareToken,
   };
 }
 
-export function loginViaFacebook(data): Action {
+export function loginViaFacebook(data) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
     const user = getState().user;
@@ -113,7 +106,7 @@ export function loginViaFacebook(data): Action {
   }
 }
 
-export function useInvitationCode(token): Action {
+export function useInvitationCode(token) {
   return (dispatch) => {
     return dispatch(rest.actions.invitation.post({}, {body: JSON.stringify({"token": token})}, (err, data) => {
       if (!err && !_.isEmpty(data)) {
@@ -125,7 +118,7 @@ export function useInvitationCode(token): Action {
   }
 }
 
-export function requestInvitation(data): Action {
+export function requestInvitation(data) {
   return (dispatch) => {
     console.log('data',data)
     return dispatch(rest.actions.invitation_request.post({}, {body: JSON.stringify({"name": data.name, "email": data.email})}, (err, data) => {
@@ -138,7 +131,7 @@ export function requestInvitation(data): Action {
   }
 }
 
-export function createInvitationCode(): Action {
+export function createInvitationCode() {
   return (dispatch) => {
     return dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({"limit_by_days": 3})}, (err, data) => {
       if (!err && !_.isEmpty(data)) {
@@ -150,7 +143,7 @@ export function createInvitationCode(): Action {
   }
 }
 
-export function invitationCheckExistance(token): Action {
+export function invitationCheckExistance(token) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.invitation_check_if_exists.get({"token": token}, (err, data) => {
@@ -198,7 +191,7 @@ const signUp = function (dispatch, data) {
   });
 }
 
-export function emailSignUp(data): Action {
+export function emailSignUp(data) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
     dispatch(hideFatalError());
@@ -233,7 +226,7 @@ export function emailSignUp(data): Action {
   };
 }
 
-export function emailSignIn(data): Action {
+export function emailSignIn(data) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
     const body = {auth: data};
@@ -253,7 +246,7 @@ export function emailSignIn(data): Action {
   };
 }
 
-export function forgotPassword(email): Action {
+export function forgotPassword(email) {
   const data = {email}
   return (dispatch) => {
     return dispatch(rest.actions.password_recovery.post({}, {body: JSON.stringify(data)}, (err, data) => {
@@ -277,11 +270,9 @@ export function statsUpdate(data) {
 
 export function getStats(id) {
   return (dispatch) => {
-    dispatch(showLoader());
     dispatch(rest.actions.stats({id}, (err, data) => {
       if (!err) {
         dispatch(statsUpdate(data));
-        dispatch(hideLoader());
       }
     }));
   };
@@ -316,13 +307,17 @@ export function checkLogin(user) {
 
 export function changeUserAboutMe(data) {
   return (dispatch) => {
-    dispatch(showLoader());
-    dispatch(rest.actions.changeUserAboutMe.put({id: data.id}, {body: JSON.stringify(data)}, (err, data) => {
-      if (!err) {
-        dispatch(setUser(data.user));
-        dispatch(hideLoader());
-      }
-    }))
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.changeUserAboutMe.put({id: data.id}, {body: JSON.stringify(data)}, (err, data) => {
+        if (!err && data) {
+          dispatch(setUser(data.user));
+          resolve(data.user);
+        }
+        else {
+          reject(err)
+        }
+      }))
+    })
   }
 }
 
@@ -330,13 +325,11 @@ export function changeUserAvatar(data) {
   const image = data.image;
   const id = data.id;
   return (dispatch, getState) => {
-    dispatch(showLoader());
     return new Promise((resolve, reject) => {
       const user = getState().user;
       if (user && user.id != -1) {
         Utils.postMultipartForm(api_key, `/users/${id}`, [], 'user[avatar]', image, 'PUT').then(data => {
           resolve(dispatch(setUser(data.user)));
-          dispatch(hideLoader());
         }).catch(reject);
       } else {
         reject('Authorization error')

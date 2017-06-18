@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
+import asScreen from '../common/containers/Screen'
 import { Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
@@ -24,7 +24,8 @@ const backgroundShadow = require('../../../images/shadows/background-shadow-70p.
 
 import { emailRule, passwordRule } from '../../validators';
 
-class SignInPage extends BasePage {
+
+class SignInPage extends Component {
 
   static propTypes = {
     emailSignIn: React.PropTypes.func,
@@ -52,10 +53,10 @@ class SignInPage extends BasePage {
       if(this.checkValidations()) {
           this.props.emailSignIn(data)
             .then(user=>{
-              this.logEvent('SignIn', { name: 'Sign in successful!'});
-              this.resetTo('feedscreen')
+              this.props.logEvent('SignInScreen', { name: 'Sign in successful!'});
+              this.props.resetTo('feedscreen')
             })
-            .catch(error=>this.logEvent('SignIn', { name: 'Sign in failed!'}));
+            .catch(error=>this.props.logEvent('SignInScreen', { name: 'Sign in failed!'}));
       }
   }
   checkValidations() {
@@ -96,7 +97,7 @@ class SignInPage extends BasePage {
   }
 
   handleOpenLink(url) {
-    this.logEvent('SignIn', { name: 'Link click', url });
+    this.props.logEvent('SignInScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -107,14 +108,14 @@ class SignInPage extends BasePage {
   }
 
   handleSigninPress() {
-    this.logEvent('SignInEmailScreen', { name: 'Lets inFash click' });
+    this.props.logEvent('SignInScreen', { name: 'Lets inFash click' });
 
    this.singinWithEmail();
   }
 
   handleForgotPasswordPress() {
-    this.logEvent('SignInEmailScreen', { name: 'Forgot password click' });
-    this.navigateTo('forgotpassword');
+    this.props.logEvent('SignInScreen', { name: 'Forgot password click' });
+    this.props.navigateTo('forgotpassword');
   }
 
   render() {
@@ -126,7 +127,7 @@ class SignInPage extends BasePage {
             <Image source={backgroundShadow} style={styles.bgShadow} />
             <View style={{height:50}}>
               <View style={styles.header} >
-                <Button transparent onPress={() => this.goBack()}>
+                <Button transparent onPress={this.props.goBack}>
                   <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
                 </Button>
                 <Text style={styles.headerTitle}>Sign in</Text>
@@ -186,4 +187,4 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps, bindAction)(SignInPage);
+export default connect(mapStateToProps, bindAction)(asScreen(SignInPage));

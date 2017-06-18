@@ -1,4 +1,5 @@
 import rest from '../api/rest';
+import { isEmpty } from "lodash";
 
 // Actions
 export const SET_LOOK_COMMENTS_DATA = 'SET_LOOK_COMMENTS_DATA';
@@ -21,8 +22,8 @@ export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
         number: pageNumber
       }
     }, {}, (err, lookCommentsData) => {
-      if (!err && lookCommentsData) {
-        let commentsData = {
+      if (!err && lookCommentsData && !isEmpty(lookCommentsData)) {
+        const commentsData = {
           currId: id,
           comments: lookCommentsData.comments
         };

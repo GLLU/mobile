@@ -9,7 +9,7 @@ const initialState = {
 function setLookComments(state, action) {
   let lookCommentsData = action.payload.comments;
   if (action.payload.currId === state.currId) {
-    lookCommentsData.unshift(...state.lookCommentsData)
+    lookCommentsData = _.union(state.lookCommentsData, action.payload.comments);
   }
   return {
     ...state,

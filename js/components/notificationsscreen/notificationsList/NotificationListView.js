@@ -9,6 +9,7 @@ import { followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsRead
 import ListViewHeader from './ListViewHeader';
 import NotificationRow from './NotificationRow';
 import BaseComponent from "../../common/base/BaseComponent";
+import SpinnerSwitch from "../../loaders/SpinnerSwitch";
 
 const styles = StyleSheet.create({
   separator: {
@@ -61,8 +62,15 @@ class NotificationListView extends BaseComponent {
     if(props.action_kind === 'Follow') {
       this.props.navigateTo('profileScreen',props);
     } else  {
-      this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
-        .then(look=>this.props.navigateTo('looksScreen', look));
+      this.setState({isNavigating:true},()=>{
+        this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
+          .then(look=>{
+            this.setState({isNavigating:false},()=> {
+              this.props.navigateTo('looksScreen', look)
+            });
+          });
+      });
+
     }
 
   }
@@ -100,6 +108,7 @@ class NotificationListView extends BaseComponent {
       <View style={{flex:1, flexDirection:'column'}}>
         <ListViewHeader goBack={this.props.goBack} title={`My ${this.props.headerData.mode}`}/>
         {this.props.notifications.allNotifications && this.props.notifications.allNotifications.length > 0 ? this.renderListView() : this.props.renderEmpty()}
+        {this.state.isNavigating? <SpinnerSwitch/> : null}
       </View>
     );
   }

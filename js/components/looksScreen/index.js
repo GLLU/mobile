@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import {
   View,
   Image,
@@ -13,12 +12,15 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import { likeUpdate, unLikeUpdate,loadMore } from '../../actions';
+import { likeUpdate, unLikeUpdate,loadMore,getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from "lodash";
 import VideoWithCaching from "../common/media/VideoWithCaching";
+import SpinnerClothing from '../loaders/SpinnerClothing';
+import ImageWrapper from "../common/media/ImageWrapper";
+import asScreen from "../common/containers/Screen"
 
 const config = {
   velocityThreshold: 0.3,
@@ -27,7 +29,7 @@ const config = {
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const width = Dimensions.get('window').width;
 
-class LooksScreen extends BasePage {
+class LooksScreen extends Component {
   static propTypes = {
     flatLook: React.PropTypes.oneOfType([
       React.PropTypes.object,
@@ -57,7 +59,8 @@ class LooksScreen extends BasePage {
       isBottomDrawerOpen: false,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
       startAnimte: false,
-      currScrollIndex: flatLook.originalIndex
+      currScrollIndex: flatLook.originalIndex,
+      loader: Platform.OS !== 'ios' && !flatLook.singleItem
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
   }
@@ -78,16 +81,20 @@ class LooksScreen extends BasePage {
             if(total === 2) {
               _.delay(() => this._scrollView.scrollTo({
                 x: 0,
-                y: this.state.currScrollIndex*height,
+                y: this.state.currScrollIndex * height,
                 animated: false
               }), 0);
+              _.delay(() => this.setState({loader: false}), 0);
+              this.setState({loader: false})
             } else {
-              _.delay(() => this._scrollView.scrollTo({
-                x: 0,
-                y: height,
-                animated: false
-              }), 0);
-            }
+                _.delay(() => this._scrollView.scrollTo({
+                  x: 0,
+                  y: height,
+                  animated: false
+                }), 0);
+                _.delay(() => this.setState({loader: false}), 0);
+              }
+
           break;
       }
     }
@@ -97,7 +104,7 @@ class LooksScreen extends BasePage {
   }
 
   _toggleLike(isLiked) {
-    this.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
+    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
     const { flatLook } = this.state
     if (isLiked) {
       let data = {id: flatLook.id, likes: flatLook.likes + 1, liked: true}
@@ -109,7 +116,7 @@ class LooksScreen extends BasePage {
   }
 
   _goToProfile(look) {
-    this.navigateTo('profileScreen',look);
+    this.props.navigateTo('profileScreen',look);
   }
 
   onToggleDrawer(shouldOpen){
@@ -140,7 +147,7 @@ class LooksScreen extends BasePage {
   }
 
   onSwipe(gestureName) {
-    this.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}`});
+    this.props.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}`});
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
@@ -195,12 +202,13 @@ class LooksScreen extends BasePage {
           muted={this.state.currScrollIndex !== look.originalIndex}
           style={styles.videoBackground}
           repeat={true}
+          navigation={this.props.cardNavigation}
         />
         <BottomLookContainer
           width={width}
           height={height}
           look={look}
-          goBack={this.goBack}
+          goBack={this.props.goBack}
           goToProfile={(user) => this._goToProfile(user)}
           toggleLike={(isLiked) => this._toggleLike(isLiked)}
           toggleMenu={() => this._toggleMenu()}
@@ -208,7 +216,7 @@ class LooksScreen extends BasePage {
           onBottomDrawerOpen={this.onToggleDrawer}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           lookType={"video"}
-          onLikesNumberPress={() => this.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
+          onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
         />
       </GestureRecognizer>
     )
@@ -224,15 +232,16 @@ class LooksScreen extends BasePage {
           flex: 1,
           backgroundColor: 'transparent',
         }}>
-            <Image
+            <ImageWrapper
             resizeMode={'stretch'}
             style={styles.itemImage}
-            source={{uri: look.uri}}>
+            source={{uri: look.uri}}
+            navigation={this.props.cardNavigation}>
               <BottomLookContainer
                 width={width}
                 height={height}
                 look={look}
-                goBack={this.goBack}
+                goBack={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
                 toggleLike={(isLiked) => this._toggleLike(isLiked)}
                 toggleMenu={() => this._toggleMenu()}
@@ -240,9 +249,9 @@ class LooksScreen extends BasePage {
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-                onLikesNumberPress={() => this.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
+                onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
-            </Image>
+            </ImageWrapper>
       </GestureRecognizer>
     )
   }
@@ -281,6 +290,28 @@ class LooksScreen extends BasePage {
     }
   }
 
+  renderLoader() {
+    const lookType = this.props.navigation.state.params.coverType
+    if(lookType === 'video') {
+      const avatarUri = this.props.navigation.state.params.avatar.url
+      return (
+        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
+          <Image resizeMode={'stretch'} source={{uri: avatarUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}>
+            <SpinnerClothing />
+          </Image>
+        </View>
+      )
+    } else {
+      const lookUri = this.props.navigation.state.params.uri
+      return (
+        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
+          <Image resizeMode={'stretch'} source={{uri: lookUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}/>
+        </View>
+      )
+    }
+
+  }
+
   render() {
     let looksArr = '';
     if(this.state.showAsFeed) {
@@ -289,6 +320,8 @@ class LooksScreen extends BasePage {
       looksArr = [this.state.flatLook]
     }
     return (
+    <View style={{flex: 1}}>
+
       <ScrollView pagingEnabled={false}
                   ref={(c) => {
                     this._scrollView = c;
@@ -299,6 +332,8 @@ class LooksScreen extends BasePage {
           return look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index)
         })}
       </ScrollView>
+      {this.state.loader ? this.renderLoader() : null}
+    </View>
     )
   }
 }
@@ -314,14 +349,16 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
+
   return {
     isLoading: state.loader.loading,
     flatLooksData: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
     userLooks: state.userLooks.userLooksData,
-    shareToken: state.user.invitation_share_token
+    shareToken: state.user.invitation_share_token,
+    cardNavigation: state.cardNavigation
   };
 };
 
-export default connect(mapStateToProps, bindAction)(LooksScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(LooksScreen));

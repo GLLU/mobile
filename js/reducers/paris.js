@@ -14,8 +14,7 @@ export default function (state = initialState, action) {
     };
     case HIDE_PARIS_BOTTOM_MESSAGE:
       return {
-        ...state,
-        messageBottom: null,
+        ...initialState
       };
     // case SHOW_PARIS_ADJUSTABLE_MESSAGE:
     //   return {

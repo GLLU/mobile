@@ -54,12 +54,11 @@ class TabContent extends BaseComponent {
       isRefreshing: false,
       currentScrollPosition: 0,
       flatLooksLeft: _.filter(props.flatLooks,(look,index)=>index%2===0),
-      flatLooksRight: _.filter(props.flatLooks,(look,index)=>index%2===1)
+      flatLooksRight: _.filter(props.flatLooks,(look,index)=>index%2===1),
+      loadingMore: false
     };
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
-    this.loadMoreAsync = _.debounce(this.loadMore, 100)
     this.showBodyModal = _.once(this._showBodyModal);
-    this.layoutWidth = 0;
     this.currPosition = 0
     this.contentHeight = 0
   }
@@ -72,13 +71,13 @@ class TabContent extends BaseComponent {
 
   componentDidMount() {
     let that = this
-    setInterval(function(){ that.handleScrollPositionForVideo(); }, 100);
-    this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
+    setInterval(function(){ that.handleScrollPositionForVideo(); }, 1000);
+    //this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.flatLooks !== this.props.flatLooks){
-      this.setState({flatLooksLeft: _.filter(nextProps.flatLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.flatLooks,(look,index)=>index%2===1)})
+      this.setState({flatLooksLeft: _.filter(nextProps.flatLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.flatLooks,(look,index)=>index%2===1), loadingMore: false})
     }
 
     if(this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
@@ -99,23 +98,42 @@ class TabContent extends BaseComponent {
 
   }
 
-  handleScroll(event) {
-    if (!this.props.hasUserSize) {
-      this.scrollCallAsync(event);
-    } else {
-      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-      const contentSizeHeight = event.nativeEvent.contentSize.height;
-      const currentScroll = event.nativeEvent.contentOffset.y
-      if (currentScroll === contentSizeHeight - layoutMeasurementHeight) {
-        if(this.contentHeight !== contentSizeHeight) {
-          this.contentHeight = contentSizeHeight
-          this.loadMoreAsync();
-        }
+  // shouldComponentUpdate(nextProps) {
+  //   if(nextProps !== this.props) {
+  //     _.each(Object.keys(this.props),thisPropsKey=>{
+  //       if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
+  //         console.log(`MediaContainer, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
+  //         return true
+  //       }
+  //     })
+  //   }
+  //   return false
+  // }
 
+  handleScroll(event) {
+    if(this.props.cardNavigationStack.index === 0) {
+      if (!this.props.hasUserSize) {
+        this.scrollCallAsync(event);
       } else {
+        const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+        const contentSizeHeight = event.nativeEvent.contentSize.height;
+        const currentScroll = event.nativeEvent.contentOffset.y
+        if (currentScroll + layoutMeasurementHeight > contentSizeHeight-250) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+          if(this.contentHeight !== contentSizeHeight) {
+            this.contentHeight = contentSizeHeight
+            if(!this.state.loadingMore) {
+              console.log('happenned')
+              this.setState({loadingMore: true}, () => this.loadMore())
+            }
+
+          }
+
+        } else {
+        }
       }
+      this.currPosition = event.nativeEvent.contentOffset.y;
     }
-    this.currPosition = event.nativeEvent.contentOffset.y;
+
   }
 
 
@@ -126,6 +144,7 @@ class TabContent extends BaseComponent {
   }
 
   loadMore() {
+    console.log('1')
     if (this.state.isLoading) {
       console.log('already isLoading')
       return;
@@ -157,17 +176,8 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
-  getLookDimensions(look) {
-    const colW = (deviceWidth) / 2;
-    const {width, height} = look;
-    const lookWidth = colW;
-    const lookHeight = height / width * colW;
-    return {lookWidth, lookHeight}
-  }
-
   _renderLooks(looks) {
     return _.map(looks, (look) => {
-      const dimensions = this.getLookDimensions(look)
       return (
           <MediaContainer look={look}
                           currScroll={this.state.currentScrollPosition}
@@ -175,9 +185,10 @@ class TabContent extends BaseComponent {
                           unLikeUpdate={this.props.likeUpdate}
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
-                          navigation={this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName}
-                          dimensions={dimensions}
-          key={look.id}/>
+                          key={look.id}
+                          shouldOptimize={this.state.flatLooksLeft.length>20}
+                          showMediaGrid={true}
+                          fromScreen={'Feedscreen'}/>
       );
     });
   }

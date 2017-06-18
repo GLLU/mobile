@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import { Container, Header, Content, Button, Icon, Title, getTheme, StyleProvider } from 'native-base';
 import { Text, View, StyleSheet } from 'react-native';
 import styles from './styles';
@@ -10,8 +9,9 @@ import { saveUserSize } from '../../actions/myBodyMeasure';
 
 import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
+import asScreen from "../common/containers/Screen"
 
-class MyBodyMeasure extends BasePage {
+class MyBodyMeasure extends Component {
   constructor(props) {
     super(props);
     this.handleSaveUserSizePress=this.handleSaveUserSizePress.bind(this);
@@ -39,9 +39,9 @@ class MyBodyMeasure extends BasePage {
   }
 
   handleSaveUserSizePress() {
-    this.logEvent('MyBodyMeasureScreen', {name: 'Lets inFash clicks'});
+    this.props.logEvent('BodyMeasureScreen', {name: 'Lets inFash clicks'});
     this.saveUserSize()
-      .then(()=>this.resetTo('feedscreen'))
+      .then(()=>this.props.resetTo('feedscreen'))
       .catch(err=>console.log(err));
   }
 
@@ -50,7 +50,7 @@ class MyBodyMeasure extends BasePage {
       <Container>
         <View style={{height: 50}}>
           <View style={[styles.header,{flexDirection:'row', flex: 1, alignItems:'center'}]}>
-            <Button transparent onPress={()=>this.goBack()}>
+            <Button transparent onPress={this.props.goBack}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back"/>
             </Button>
             <Text style={styles.headerTitle}>My Body Measures</Text>
@@ -92,4 +92,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, bindAction)(MyBodyMeasure);
+export default connect(mapStateToProps, bindAction)(asScreen(MyBodyMeasure));

@@ -1,4 +1,4 @@
-import { showLoader, hideLoader, showProcessing, hideProcessing } from './loader';
+import { showProcessing, hideProcessing } from './loader';
 import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
 import { showParisBottomMessage, hideParisBottomMessage } from './paris';
 import { loadCategories, loadBrands, loadOccasionTags } from './filters';
@@ -10,9 +10,8 @@ import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  fr
 import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications, clearNewNotifications }  from './notifications';
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
-import { getUserLooksData, getUserLooks } from './looks';
+import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
 import { getFeed, resetFeed, loadMore, clearFeed } from './feed';
-import { createEntity, updateEntity, readEndpoint, deleteEntity } from 'redux-json-api';
 import {
   addNewLook,
   editNewLook,
@@ -50,10 +49,6 @@ import { setUser,
   } from './user';
 
 export {
-  createEntity,
-  updateEntity,
-  readEndpoint,
-  deleteEntity,
   requestInvitation,
   loadCategories,
   loadOccasionTags,
@@ -93,8 +88,6 @@ export {
   addLocation,
   toggleOccasionTag,
   addPhotosVideo,
-  showLoader,
-  hideLoader,
   showProcessing,
   hideProcessing,
   showError,
@@ -111,6 +104,7 @@ export {
   getUserLooks,
   likeUpdate,
   unLikeUpdate,
+  loadMoreUserLooks,
   followUpdate,
   getLookLikes,
   initLookLikes,

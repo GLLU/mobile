@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
 import { Dimensions, BackAndroid, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './styles';
@@ -9,12 +8,10 @@ import MainView from './MainView';
 import Modal from 'react-native-modalbox';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
-import glluTheme from '../../themes/gllu-theme';
 import SelectPhoto from '../common/SelectPhoto';
-import Gllu from '../common';
-import * as _ from "lodash";
+import asScreen from "../common/containers/Screen"
 
-class FeedPage extends BasePage {
+class FeedPage extends Component {
 
   static propTypes = {
     user: React.PropTypes.object,
@@ -49,7 +46,7 @@ class FeedPage extends BasePage {
   componentWillMount() {
 
     if (!this.props.user || this.props.user.id === -1) {
-      this.navigateTo('splashscreen');
+      this.props.navigateTo('splashscreen');
     }
     BackAndroid.addEventListener('hardwareBackPress', () => {
       if(this.state.photoModal) {
@@ -72,7 +69,7 @@ class FeedPage extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.navigateTo('addItemScreen',{ mode: 'create' });
+        this.props.navigateTo('addItemScreen',{ mode: 'create' });
       });
     })
   }
@@ -104,15 +101,15 @@ class FeedPage extends BasePage {
           <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
             <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={this._handleSearchStatus} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
             {!this.state.searchStatus ?
-              <NavigationBarView navigateTo={this.navigateTo} addNewItem={this.goToAddNewItem} handleOpenPhotoModal={this._handleOpenPhotoModal}/>
+              <NavigationBarView navigateTo={this.props.navigateTo} addNewItem={this.goToAddNewItem} handleOpenPhotoModal={this._handleOpenPhotoModal}/>
               :
               null
             }
           </View>
-          <MainView navigateTo={this.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
+          <MainView navigateTo={this.props.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal isOpen={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
             position={"top"}>
-            <BodyTypePicker onPick={()=>this.navigateTo('myBodyMeasure')}/>
+            <BodyTypePicker onPick={()=>this.props.navigateTo('myBodyMeasure')}/>
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
       </View>
@@ -125,7 +122,6 @@ function bindActions(dispatch) {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
-    createInvitationCode: name => dispatch(createInvitationCode(name)),
   };
 }
 
@@ -134,4 +130,4 @@ const mapStateToProps = state => ({
   modalShowing: state.myBodyType.modalShowing
 });
 
-export default connect(mapStateToProps, bindActions)(FeedPage);
+export default connect(mapStateToProps, bindActions)(asScreen(FeedPage));

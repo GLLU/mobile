@@ -1,9 +1,9 @@
-import * as React from "react";
+import React,{Component} from "react";
 import * as Cache from '../../../lib/cache/FSVideoCache'
 
 const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
 
-  return class CachedComponentWrapper extends React.Component {
+  return class CachedComponentWrapper extends Component {
 
     constructor(props) {
       super(props);
@@ -41,8 +41,10 @@ const cacheComponent=LoaderComponent=>uriProvider=>WrappedComponent=>{
       const nextUri=uriProvider(nextProps);
       const currentUri=uriProvider(this.props);
       if(nextUri!==currentUri){
-        this.setState({isLoading: true, localUri: ''});
-        this.cacheOrReturnCachedPath(nextUri);
+        this.setState({isLoading: true, localUri: ''},() => {
+          this.cacheOrReturnCachedPath(nextUri);
+        });
+
       }
     }
 

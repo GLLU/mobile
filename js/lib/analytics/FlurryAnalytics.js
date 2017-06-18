@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import RNFlurryAnalytics from 'react-native-flurry-analytics';
 import Config from 'react-native-config';
-import BaseAnalytic from './BaseAnalytic';
 import _ from 'lodash';
+import { encrypt } from "../../utils/MD5Utils";
 
 /*global __DEV__ */
 const DEV=__DEV__;
 
-class FlurryAnalytics extends BaseAnalytic {
+class FlurryAnalytics {
   constructor() {
-    super();
     RNFlurryAnalytics.setAppVersion(Config.APP_VERSION);
     RNFlurryAnalytics.setSessionContinueSeconds(10);
     RNFlurryAnalytics.setEventLoggingEnabled(true);
@@ -21,6 +20,10 @@ class FlurryAnalytics extends BaseAnalytic {
       RNFlurryAnalytics.setCrashReportingEnabled(true);
       RNFlurryAnalytics.setDebugLogEnabled(false);
     }
+    this.startSession();
+  }
+
+  startSession() {
     const key = Platform.OS === 'ios' ? Config.FLURRY_API_KEY_IOS : Config.FLURRY_API_KEY_ANDROID
     RNFlurryAnalytics.startSession(key);
   }
@@ -28,7 +31,7 @@ class FlurryAnalytics extends BaseAnalytic {
   setUser(user) {
     if (!_.isEmpty(user)) {
       if (user.id && user.id != -1) {
-        RNFlurryAnalytics.setUserId(this.encryptUserId(user.id));
+        RNFlurryAnalytics.setUserId(encrypt(user.id));
         RNFlurryAnalytics.setUserGender(user.gender === 'male' ? 'm' : 'f');
       }
     }

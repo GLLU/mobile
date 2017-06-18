@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, Modal,TouchableWithoutFeedback,Dimensions } from 'react-native';
 import { noop } from 'lodash'
 
-import styles from "../styles";
-
 const {height} = Dimensions.get('window')
 
 export default class BottomDrawerModal extends Component {

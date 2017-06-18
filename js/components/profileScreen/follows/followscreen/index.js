@@ -7,9 +7,9 @@ import { getUserFollowsData, initUserFollows } from '../../../../actions';
 import EmptyView from './EmptyView'
 
 import FollowListView from '../shared/FollowListView'
-import BasePage from "../../../common/base/BasePage";
+import asScreen from "../../../common/containers/Screen"
 
-class FollowScreen extends BasePage {
+class FollowScreen extends Component {
 
   static propTypes = {
     mode: React.PropTypes.string,
@@ -20,6 +20,9 @@ class FollowScreen extends BasePage {
     this.getFollowsData = this.getFollowsData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
     this.currentPageIndex = 1;
+    this.state = {
+      follows: []
+    }
   }
 
   componentWillMount() {
@@ -29,32 +32,36 @@ class FollowScreen extends BasePage {
     }
   }
 
-  componentWillUnmount() {
-    this.props.initUserFollows();
-  }
-
   getFollowsData() {
     const userData = this.props.navigation.state.params;
     this.props.getUserFollowsData(userData.user.id, this.currentPageIndex);
     this.currentPageIndex++;
   }
 
+  componentWillReceiveProps(nextProps) {
+    const userData = this.props.navigation.state.params;
+    if(nextProps.currId === userData.user.id){
+      this.setState({follows: nextProps.follows})
+    }
+  }
+
   _renderOnEmpty() {
     const userData = this.props.navigation.state.params;
     return (
-      <EmptyView onFindInterestingPeopleButtonPress={()=>this.resetTo('feedscreen')} isMyProfile={userData.isMyProfile} name={userData.user.name}/>
+      <EmptyView onFindInterestingPeopleButtonPress={()=>this.props.resetTo('feedscreen')} isMyProfile={userData.isMyProfile} name={userData.user.name}/>
     );
   }
 
   render() {
     const userData = this.props.navigation.state.params;
+    const currentUserData = this.state.follows
     return (
       <FollowListView
         renderEmpty={this._renderOnEmpty}
         headerData={userData}
-        follows={this.props.follows}
-        navigateTo={this.navigateTo}
-        goBack={this.goBack}
+        follows={currentUserData}
+        navigateTo={this.props.navigateTo}
+        goBack={this.props.goBack}
         onEndReached={this.getFollowsData}
         mode={userData.mode}/>
     );
@@ -64,14 +71,14 @@ class FollowScreen extends BasePage {
 function bindAction(dispatch) {
   return {
     getUserFollowsData: (id, pageNumber, pageSize) => dispatch(getUserFollowsData(id, pageNumber, pageSize)),
-    initUserFollows: () => dispatch(initUserFollows()),
   };
 }
 
 const mapStateToProps = state => {
   return {
     follows: state.userFollows.userFollowsData,
+    currId: state.userFollows.currId,
   }
 };
 
-export default connect(mapStateToProps, bindAction)(FollowScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(FollowScreen));

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import BasePage from '../common/base/BasePage';
+import asScreen from '../common/containers/Screen'
 import listenToAppState from '../common/eventListeners/AppStateListener'
 import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Content, Button } from 'native-base';
@@ -24,7 +24,7 @@ const logo = require('../../../images/logo/inFashLogo.png');
 
 let PERMISSIONS = ["email", "public_profile"];
 
-class SplashPage extends BasePage {
+class SplashPage extends Component {
 
   static propTypes = {
     isLoading: React.PropTypes.number,
@@ -40,10 +40,10 @@ class SplashPage extends BasePage {
     this.handleEmailSigninPress=this.handleEmailSigninPress.bind(this);
     this.state = {
       name: '',
-      repeat: props.active
+      repeat: props.currentAppState==='active'
     };
     if(this.props.showTutorial && Platform !== 'ios'){
-      this.navigateTo('tutorialscreen');
+      this.props.navigateTo('tutorialscreen');
     }
   }
 
@@ -57,46 +57,48 @@ class SplashPage extends BasePage {
 
   checkLogin(user) {
     this.props.checkLogin(user)
-      .then(() => this.resetTo('feedscreen'))
+      .then(() => {
+      this.props.resetTo('feedscreen')
+      })
       .catch(err => console.log(err));
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.active!==this.props.active){
-      if(this.props.active){
+    if(nextProps.currentAppState!==this.props.currentAppState){
+      if(this.props.currentAppState==='active'){
         this._root.seek(0)
       }
-      this.setState({repeat:nextProps.active})
+      this.setState({repeat:nextProps.currentAppState==='active'})
     }
   }
 
   connectWithFB() {
-    this.logEvent('Splashscreen', { name: 'Facebook signup click' });
+    this.props.logEvent('Splashscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
     if(this.props.invitation_token !== -1) {
       Utils.loginWithFacebook()
         .then((data) => this.props.loginViaFacebook(data)
-          .then(user=>this.resetTo('feedscreen',user))
+          .then(user=>this.props.resetTo('feedscreen',user))
           .catch((err) => console.log('facebook login Error',err)))
         .catch((err) => console.log('facebook login Error',err))
     } else {
-      this.navigateTo('activationcode','facebook');
+      this.props.navigateTo('activationcode','facebook');
     }
   }
 
   handleEmailSignupPress() {
-    this.logEvent('Splashscreen', {name: 'Email signup click'});
+    this.props.logEvent('Splashscreen', {name: 'Email signup click'});
     if(this.props.invitation_token !== -1) {
-      this.navigateTo('genderselect');
+      this.props.navigateTo('genderselect');
     } else {
-      this.navigateTo('activationcode','genderselect');
+      this.props.navigateTo('activationcode','genderselect');
     }
 
   }
 
   handleEmailSigninPress() {
-    this.logEvent('Splashscreen', {name: 'Email signin click'});
-    this.navigateTo('signinemail');
+    this.props.logEvent('Splashscreen', {name: 'Email signin click'});
+    this.props.navigateTo('signinemail');
   }
 
   handleTermPress() {
@@ -108,7 +110,7 @@ class SplashPage extends BasePage {
   }
 
   handleOpenLink(url) {
-    this.logEvent('Splashscreen', { name: 'Link click', url });
+    this.props.logEvent('Splashscreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -141,6 +143,7 @@ class SplashPage extends BasePage {
   }
 
   render() {
+
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>
@@ -185,4 +188,4 @@ const mapStateToProps = state => ({
   showTutorial: state.user.showTutorial
 });
 
-export default connect(mapStateToProps, bindAction)(listenToAppState(SplashPage));
+export default connect(mapStateToProps, bindAction)(asScreen(listenToAppState(SplashPage)));

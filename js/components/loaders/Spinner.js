@@ -6,6 +6,12 @@ import { ActivityIndicator } from 'react-native';
 
 export default class Spinner extends Component {
 
+  static defaultProps={
+    style:{
+      height:80
+    }
+  }
+
   getColor = () => {
     if (this.props.color) {
       return this.props.color;
@@ -17,7 +23,7 @@ export default class Spinner extends Component {
     return (
       <ActivityIndicator
         {...this.props}
-        style={ {height: 80}}
+        style={ this.props.style}
         color={this.getColor()}
         size={this.props.size ? this.props.size : 'large'}
       />

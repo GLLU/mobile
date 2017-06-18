@@ -1,5 +1,5 @@
-import React from 'react';
-import BasePage from '../common/base/BasePage';
+import React,{Component} from 'react';
+import asScreen from "../common/containers/Screen"
 import { Image, TouchableOpacity, Text, ScrollView,View, StyleSheet } from 'react-native';
 import styles from './styles';
 import { Container, Content,  Icon } from 'native-base';
@@ -7,16 +7,18 @@ import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks } from '../../actions';
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
+import { editNewLook } from "../../actions/uploadLook";
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toFeedScreen = require('../../../images/icons/feed.png');
 const toSettings = require('../../../images/icons/settings.png');
-const LOADER_HEIGHT = 30;
+import Spinner from '../loaders/Spinner';
 
-class ProfileScreen extends BasePage {
+
+class ProfileScreen extends Component {
   static propTypes = {
     userData: React.PropTypes.object,
     navigation: React.PropTypes.object,
@@ -33,22 +35,35 @@ class ProfileScreen extends BasePage {
     super(props);
     const userData = props.navigation.state.params;
     const isMyProfile = userData.id === this.props.myUser.id || userData.user_id === this.props.myUser.id;
+    const currUserId = isMyProfile ? props.myUser.id : userData.user_id||userData.id;
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.handleFollowersPress = this.handleFollowersPress.bind(this);
     this.handleFollowingPress = this.handleFollowingPress.bind(this);
     this.handleBalancePress = this.handleBalancePress.bind(this);
+    this.handleScrollUserLooks = this.handleScrollUserLooks.bind(this)
+    this.loadMoreUserLooks = this.loadMoreUserLooks.bind(this)
     this.state = {
       isMyProfile,
+      userId: currUserId,
       noMoreData: false,
       isFollowing: userData.is_following,
-      userId: isMyProfile ? props.myUser.id : userData.user_id,
       photoModal: false,
+      isLoadingLooks: true,
+      stats: currUserId === props.stats.user_id ? props.stats : {},
+      userLooks: currUserId === props.currLookScreenId ? props.userLooks : []
 
     }
-    this.loadMoreAsync = _.debounce(this.loadMoreAsync, 500)
-    this.pagination = 1
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.stats.user_id === this.state.userId && nextProps.stats !== this.state.stats){
+      this.setState({stats: nextProps.stats})
+    }
+    if(nextProps.currLookScreenId === this.state.userId && nextProps.userLooks !== this.state.userLooks){
+      this.setState({userLooks: nextProps.userLooks, loadingMore: false})
+    }
   }
 
   componentDidMount() {
@@ -68,13 +83,10 @@ class ProfileScreen extends BasePage {
     if (this.state.userId !== this.props.currLookScreenId) {
       const looksCall = {
         id: this.state.userId,
-        page: 1,
         all: this.state.isMyProfile
       }
       const looksDataCall = {
         id: this.state.userId,
-        name: user.name,
-        looksCount: this.props.stats.looks_count,
         isMyProfile: this.state.isMyProfile
       }
       this.props.getUserLooks(looksCall);
@@ -84,8 +96,8 @@ class ProfileScreen extends BasePage {
   }
 
   handleSettingsPress() {
-    this.logEvent('ProfileScreen', {name: 'Settings click'});
-    this.navigateTo('settingsScreen');
+    this.props.logEvent('ProfileScreen', {name: 'Settings click'});
+    this.props.navigateTo('settingsScreen');
   }
 
   _renderleftBtn() {
@@ -107,7 +119,7 @@ class ProfileScreen extends BasePage {
   goToAddNewItem(imagePath) {
     this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.navigateTo('addItemScreen');
+        this.props.navigateTo('addItemScreen');
       });
     })
   }
@@ -121,16 +133,15 @@ class ProfileScreen extends BasePage {
   }
 
   toggleFollow(isFollowing) {
-    this.logEvent('ProfileScreen', {name: 'Follow click', isFollowing:`${isFollowing}`});
+    this.props.logEvent('ProfileScreen', {name: 'Follow click', isFollowing:`${isFollowing}`});
     this.setState({isFollowing: isFollowing});
     this.props.getStats(this.state.userId);
   }
 
   _renderStats() {
-    const { following, followers, likes_count} = this.props.stats
+    const { following, followers, likes_count} = this.state.stats
     const { isMyProfile } = this.state
-
-    if (this.props.stats.user_id === this.state.userId) {
+    if(!_.isEmpty(this.state.stats)) {
       return (
         <View>
           <StatsView
@@ -145,12 +156,14 @@ class ProfileScreen extends BasePage {
         </View>
       )
     }
+
+
   }
 
   handleFollowingPress(stat) {
-    this.logEvent('ProfileScreen', {name: 'Following click'});
+    this.props.logEvent('ProfileScreen', {name: 'Following click'});
     const userData = this.props.navigation.state.params;
-    this.navigateTo('followScreen', {
+    this.props.navigateTo('followScreen', {
       user: {id: this.state.userId, name:userData.name},
       isMyProfile: this.state.isMyProfile,
       mode: stat.type,
@@ -159,9 +172,9 @@ class ProfileScreen extends BasePage {
   }
 
   handleFollowersPress(stat) {
-    this.logEvent('ProfileScreen', {name: 'Followers click'});
+    this.props.logEvent('ProfileScreen', {name: 'Followers click'});
     const userData = this.props.navigation.state.params;
-    this.navigateTo('followerScreen', {
+    this.props.navigateTo('followerScreen', {
       user: {id: this.state.userId, name:userData.name},
       isMyProfile: this.state.isMyProfile,
       mode: stat.type,
@@ -169,34 +182,96 @@ class ProfileScreen extends BasePage {
     });
   }
 
-  handleUserLooksScroll(event) {
-    const contentSizeHeight = event.nativeEvent.contentSize.height;
-    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-    const currentScroll = event.nativeEvent.contentOffset.y
-    const compare = (contentSizeHeight - layoutMeasurementHeight) / currentScroll;
-    if (compare <= LOADER_HEIGHT && !this.props.isLoading) {
-      this.loadMoreAsync()
-    }
+  handleScrollUserLooks(event) {
+      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+      const contentSizeHeight = event.nativeEvent.contentSize.height;
+      const currentScroll = event.nativeEvent.contentOffset.y
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight-250) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+        if(this.contentHeight !== contentSizeHeight) {
+          this.contentHeight = contentSizeHeight
+          if(!this.state.loadingMore) {
+            this.setState({loadingMore: true}, () => this.loadMoreUserLooks())
+          }
+
+        }
+      }
+
+    this.currPosition = event.nativeEvent.contentOffset.y;
   }
 
-  loadMoreAsync() {
-    this.pagination+=1
+  loadMoreUserLooks() {
+    if (this.state.isLoading) {
+      console.log('already isLoading')
+      return;
+    }
     let data = {
       id: this.state.userId,
-      page: this.pagination,
       all: this.state.isMyProfile
     }
-    this.props.getUserLooks(data)
+    const {meta: {total_count}, query} = this.props;
+    const pageSize = query.page.size;
+    const pageNumber = query.page.number;
+    if (pageSize * pageNumber < total_count) {
+    // if (pageSize * pageNumber < total_count) {
+      this.setState({isLoading: true}, () => {
+        this.props.loadMoreUserLooks(data).then(() => {
+          this.setState({isLoading: false})}
+        ).catch(err => {
+          console.log('error', err);
+          this.setState({isLoading: false});
+        });
+      });
+    } else {
+      this.setState({noMoreData: true})
+      console.log('end of LooksScreen');
+    }
   }
 
   handleBackToFeedPress() {
-    this.logEvent('ProfileScreen', {name: 'Back to Feed click'});
-    this.goBack();
+    this.props.logEvent('ProfileScreen', {name: 'Back to Feed click'});
+    this.props.goBack();
   }
 
   handleBalancePress() {
-    this.logEvent('ProfileScreen', {name: 'Wallet Pressed'});
+    this.props.logEvent('ProfileScreen', {name: 'Wallet Pressed'});
     this.props.showParisBottomMessage(`Hey, you can withdraw the reward once you reach at least US$50.00`);
+  }
+
+  _renderLoadMore() {
+    return (
+      <View style={styles.loader}>
+        {(() => {
+          if (this.state.noMoreData) {
+            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
+          }
+          if (this.state.isLoading) {
+            return <Spinner color='rgb(230,230,230)'/>;
+          }
+          if(this.props.userLooks.length > 2) {
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+
+          }
+          return null;
+        })()}
+      </View>);
+  }
+
+
+  _renderRefreshingCover() {
+    return (
+      this.state.isRefreshing &&
+      <View style={styles.refreshingCover}/>
+    )
+  }
+
+  _renderLoading() {
+    if (this.props.reloading) {
+      return (
+        <View style={styles.spinnerContainer}>
+          <Spinner color='#666666'/>
+        </View>
+      );
+    }
   }
 
   render() {
@@ -211,7 +286,7 @@ class ProfileScreen extends BasePage {
       return (
         <Container>
             <ScrollView scrollEventThrottle={100}
-                        onScroll={this.handleUserLooksScroll.bind(this)}
+                        onScroll={this.handleScrollUserLooks}
                         pagingEnabled={false}>
               <Image source={profileBackground} style={styles.bg}>
                 <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
@@ -228,9 +303,9 @@ class ProfileScreen extends BasePage {
                                  isMyProfile={this.state.isMyProfile}
                                  isFollowing={this.state.isFollowing}
                                  onFollowPress={this.toggleFollow.bind(this)}
-                                 navigateTo = {this.navigateTo}
+                                 navigateTo = {this.props.navigateTo}
                     /> : null }
-                  <TouchableOpacity transparent onPress={() => this.goBack()} style={styles.headerBtn}>
+                  <TouchableOpacity transparent onPress={this.props.goBack} style={styles.headerBtn}>
                     { this._renderRightBtn() }
                   </TouchableOpacity>
                 </View>
@@ -239,8 +314,20 @@ class ProfileScreen extends BasePage {
                 </View>
                 { this._renderStats() }
               </Image>
-              {this.props.userLooks.length > 0 && this.props.userLooksUserId === this.state.userId ? <UserLooks navigateTo={this.navigateTo} isMyProfile={this.state.isMyProfile} /> : null}
+              <UserLooks
+                myUserId={this.props.myUser.id}
+                userLooks={this.state.userLooks}
+                navigateTo={this.props.navigateTo}
+                isMyProfile={this.state.isMyProfile}
+                editNewLook = {this.props.editNewLook}
+                addNewLook = {this.props.addNewLook}
+                likeUpdate = {this.props.likeUpdate}
+                unLikeUpdate = {this.props.unLikeUpdate}
+              />
+              {this._renderLoadMore()}
+              {this._renderRefreshingCover()}
             </ScrollView>
+          {this._renderLoading()}
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
       )
@@ -255,9 +342,13 @@ function bindAction(dispatch) {
     getStats: (id) => dispatch(getStats(id)),
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
+    editNewLook: (id) => dispatch(editNewLook(id)),
     getUserLooksData: data => dispatch(getUserLooksData(data)),
     getUserLooks: data => dispatch(getUserLooks(data)),
+    loadMoreUserLooks: (looksCall) => dispatch(loadMoreUserLooks(looksCall)),
     showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),
+    likeUpdate: (id) => dispatch(likeUpdate(id)),
+    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
   };
 }
 
@@ -272,9 +363,10 @@ const mapStateToProps = state => {
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
     userLooks: state.userLooks.userLooksData,
-    userLooksUserId: state.userLooks.currId,
-
+    cardNavigation: state.cardNavigation,
+    meta: state.userLooks.meta,
+    query: state.userLooks.query,
   };
 };
 
-export default connect(mapStateToProps, bindAction)(ProfileScreen);
+export default connect(mapStateToProps, bindAction)(asScreen(ProfileScreen));

@@ -53,12 +53,11 @@ class LikeView extends Component {
     const { likes, isLiked } = this.state
     this.setState({isLiked: !isLiked, likes: isLiked ? likes-1 : likes+1})
     const shouldActive = !this.state.isLiked;
-    let that = this;
-    setTimeout(() => {that.props.onPress(shouldActive);}, 1000);
+    this.props.onPress(shouldActive);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.routeName !== 'feedscreen' && nextProps.item.likes !== this.state.likes) {
+    if(nextProps.item.likes !== this.state.likes) {
       this.setState({isLiked: nextProps.item.liked, likes: nextProps.item.likes})
     }
   }
