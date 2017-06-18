@@ -8,6 +8,7 @@ import VideoWithCaching from "../common/media/VideoWithCaching";
 import ImageWrapper from '../common/media/ImageWrapper'
 import MediaContainer from '../common/MediaContainer';
 const deviceWidth = Dimensions.get('window').width;
+import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 
 class UserLooks extends Component {
 
@@ -32,7 +33,8 @@ class UserLooks extends Component {
       noMoreData: false,
       isRefreshing: false,
       currentScrollPosition: 0,
-      loadingMore: false
+      loadingMore: false,
+      totalLooks: 0
     };
     this.currPosition = 0
     this.contentHeight = 0
@@ -52,7 +54,7 @@ class UserLooks extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.userLooks !== this.props.userLooks){
-      this.setState({flatLooksLeft: _.filter(nextProps.userLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.userLooks,(look,index)=>index%2===1), loadingMore: false})
+      this.setState({flatLooksLeft: _.filter(nextProps.userLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.userLooks,(look,index)=>index%2===1), loadingMore: false, totalLooks: nextProps.meta.total_count})
     }
 
     if(nextProps.clearedField){
@@ -116,24 +118,11 @@ class UserLooks extends Component {
     )
   }
 
-  _renderImages(looks) {
-    return looks.map((look, index) => {
-      return  (
-        <View key={index} style={{width: look.width, height: look.height, paddingLeft: 0 }}>
-          <TouchableOpacity onPress={(e) => this._handleItemPress(look)}>
-            <View style={{width: look.width, height: look.height, paddingLeft: 0 }}>
-             {look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index)}
-            </View>
-          </TouchableOpacity>
-
-        </View>
-      );
-    });
-  }
-
   renderEmptyView() {
     return(
-      <View><Text>EmptyView</Text></View>
+      <View>
+        <ParisAdjustableMessage text={'Sorry, no looks available yet'}/>
+      </View>
     )
   }
 
@@ -167,7 +156,7 @@ class UserLooks extends Component {
   }
 
   render() {
-    if(this.state.flatLooksLeft.length === 0){
+    if(this.state.totalLooks === 0 && !this.props.isLoading){
       return this.renderEmptyView()
     } else {
       return (
