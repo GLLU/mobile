@@ -10,6 +10,8 @@ class VideoWithCaching extends Component {
   static propTypes={
     localUri:React.PropTypes.string,
     source:React.PropTypes.object,
+    currentAppState:React.PropTypes.string,
+    isOnScreen:React.PropTypes.bool
   }
 
   static formatSource = (localUri, source = {}) => Object.assign({}, source, {uri: localUri});
