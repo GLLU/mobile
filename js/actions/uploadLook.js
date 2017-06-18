@@ -95,7 +95,7 @@ export function editNewLook(lookId) {
         dispatch(hideProcessing());
         if (!err) {
           const look = data.look;
-          const url = _.find(look.cover.list, x => x.version == 'small').url;
+          const url = _.find(look.cover.list, x => x.version === 'small').url;
           Utils.preloadImages([url]).then(() => {
             let payload = {
               image: url,

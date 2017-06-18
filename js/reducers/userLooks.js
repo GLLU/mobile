@@ -44,7 +44,7 @@ export default function (state = initialState, action) {
     case SET_USER_LOOKS_FEED_DATA_QUEUE:
       meta = _.merge(state.meta, action.payload.data.meta);
       query = action.payload.query;
-      userLooksDataLength = action.payload.loadMore ? 0 : 0;
+      userLooksDataLength = action.payload.loadMore ? state.userLooksData.length : 0;
       newData = _.map(action.payload.data.looks||[],(look, index) => feedLookMapper.map(look, index, userLooksDataLength));
       return {
         ...state,

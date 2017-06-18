@@ -83,7 +83,7 @@ class LooksScreen extends Component {
                 x: 0,
                 y: this.state.currScrollIndex * height,
                 animated: false
-              }), 1000);
+              }), 0);
               _.delay(() => this.setState({loader: false}), 0);
               this.setState({loader: false})
             } else {
@@ -91,7 +91,7 @@ class LooksScreen extends Component {
                   x: 0,
                   y: height,
                   animated: false
-                }), 1000);
+                }), 0);
                 _.delay(() => this.setState({loader: false}), 0);
               }
 
@@ -104,7 +104,7 @@ class LooksScreen extends Component {
   }
 
   _toggleLike(isLiked) {
-    this.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
+    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
     const { flatLook } = this.state
     if (isLiked) {
       let data = {id: flatLook.id, likes: flatLook.likes + 1, liked: true}
@@ -349,6 +349,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
+
   return {
     isLoading: state.loader.loading,
     flatLooksData: state.feed.flatLooksData,

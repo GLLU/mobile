@@ -55,14 +55,13 @@ class MediaContainer extends PureComponent {
 
   _handleItemPress() {
     const item = this.props.look
-    this.props.logEvent('Feedscreen', {name: 'Image click'});
-    let that = this
-    if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to, we let the TouchableOpacity end. and then go to next page.
-      setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
-    } else {
-      setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
+    this.props.logEvent(this.props.fromScreen, {name: 'Image click'});
+    if(this.props.fromScreen === 'profileScreen') {
+      console.log('happenned from profile')
+      item.singleItem = true
     }
-    this.setState({isMuted: true})
+    let that = this
+    setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
   }
 
   toggleLikeAction(isLiked) {
@@ -216,7 +215,7 @@ class MediaContainer extends PureComponent {
     const { look } = this.props
     return(
       <View onLayout={(e) => this.setLookPosition(e)}>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={this._handleItemPress}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look)}
           {look.coverType === 'video' && Platform.OS === 'ios' ? this.renderVideoGrid(look) : null}
         </TouchableOpacity>

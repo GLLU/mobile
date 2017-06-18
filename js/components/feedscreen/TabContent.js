@@ -184,7 +184,8 @@ class TabContent extends BaseComponent {
                           sendParisMessage={this.props.showParisBottomMessage}
                           key={look.id}
                           shouldOptimize={this.state.flatLooksLeft.length>20}
-                          showMediaGrid={true}/>
+                          showMediaGrid={true}
+                          fromScreen={'Feedscreen'}/>
       );
     });
   }
