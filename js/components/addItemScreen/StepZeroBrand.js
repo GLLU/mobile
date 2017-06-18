@@ -84,7 +84,6 @@ class StepZeroBrand extends BaseComponent {
       this.toggleBottomContainer()
     }
     if(item.id !== this.props.item.id) {
-
       this.setState({
         brandName: item.brand ? item.brand.name : null,
       });
@@ -186,7 +185,6 @@ class StepZeroBrand extends BaseComponent {
     const currItem = _.find(items, listItem => listItem.id === item.id);
     const brand = currItem ? currItem.brand : null;
     const brandName = brand ? typeof brand === 'string' ? brand : brand.name : ''
-    console.log('brand', typeof brand)
     return (
       <View style={{position: 'absolute', height: h, bottom: 60}}>
         <View style={{ width: w, flex: 1, justifyContent: 'flex-end' }}>
@@ -217,6 +215,7 @@ class StepZeroBrand extends BaseComponent {
     )
   }
 }
+
 import { connect } from 'react-redux';
 function bindActions(dispatch) {
   return {
