@@ -2,11 +2,24 @@ import React,{Component} from "react";
 import WithAnalytics from '../analytics/WithAnalytics'
 import {NavigationActions} from "react-navigation";
 import {Alert} from "react-native";
+import { connect } from "react-redux";
+import * as _ from "lodash";
 
 
 export default function withNavigation(WrappedComponent) {
 
   class WithNavigation extends Component {
+
+    static propTypes={
+      cardNavigation:React.PropTypes.object.isRequired,
+      navigation:React.PropTypes.object.isRequired,
+      logEvent:React.PropTypes.func
+    }
+
+    static defaultProps={
+      logEvent:_.noop
+    }
+
     constructor(props) {
       super(props);
       this.navigateTo=this.navigateTo.bind(this);
@@ -27,7 +40,11 @@ export default function withNavigation(WrappedComponent) {
     }
 
     navigateTo(route,params) {
-      this.props.navigation.navigate(route, params)
+      const {routes,index}=this.props.cardNavigation;
+      const currentRoute= routes[index].routeName;
+      if(currentRoute!==route){
+        this.props.navigation.navigate(route, params)
+      }
     }
 
     goBack(withConfirmation = false) {
@@ -67,5 +84,12 @@ export default function withNavigation(WrappedComponent) {
       />
     }
   }
-  return WithAnalytics(WithNavigation)
+
+  const mapStateToProps = state => {
+    return {
+      cardNavigation: state.cardNavigation,
+    };
+  };
+
+  return connect(mapStateToProps)(WithAnalytics(WithNavigation))
 }
