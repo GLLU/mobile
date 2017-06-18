@@ -16,12 +16,15 @@ import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 import _ from 'lodash';
 import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
 
+
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const LOADER_HEIGHT = 30;
 
 class TabContent extends BaseComponent {
@@ -46,7 +49,7 @@ class TabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
     this.state = {
-      isLoading: false,
+      isLoading: true,
       noMoreData: false,
       isRefreshing: false,
       currentScrollPosition: 0,
@@ -274,6 +277,22 @@ class TabContent extends BaseComponent {
     }
   }
 
+  renderColumns() {
+    return (
+      <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+          <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
+            {this.renderInviteFriend()}
+          </TouchableOpacity>
+          {this._renderLooks(this.state.flatLooksLeft)}
+        </View>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+          {this._renderLooks(this.state.flatLooksRight)}
+        </View>
+      </View>
+    )
+  }
+
   render() {
       return (
         <View style={styles.tab}>
@@ -282,17 +301,7 @@ class TabContent extends BaseComponent {
             scrollEventThrottle={100}
             onScroll={this.handleScroll}
             refreshControl={this._renderRefreshControl()}>
-            <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
-              <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-                <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
-                  {this.renderInviteFriend()}
-                </TouchableOpacity>
-                {this._renderLooks(this.state.flatLooksLeft)}
-              </View>
-              <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
-                {this._renderLooks(this.state.flatLooksRight)}
-              </View>
-            </View>
+            {this.renderColumns()}
             {this._renderLoadMore()}
             {this._renderRefreshingCover()}
           </ScrollView>
@@ -335,7 +344,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff'
-  }
+  },
 });
 
 function bindActions(dispatch) {
