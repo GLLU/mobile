@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
 import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition} from '../../actions';
-import StepMarker from './StepMarker';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
 import StepTwoOccasions from './StepTwoOccasions';

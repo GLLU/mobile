@@ -193,10 +193,10 @@ function makeRequest(dispatch, endPoint, endPointParams) {
   });
 }
 
-export function updateLookItem(currItem) {
+export function updateLookItem(currItemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const itemId = currItem.id
+    const itemId = currItemId
     const { lookId, items } = state.uploadLook;
     const item = itemId ? _.find(items, item => item.id === itemId) : null;
     const { brand, category, locationX, locationY } = item;
