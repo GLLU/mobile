@@ -101,12 +101,14 @@ class MediaContainer extends PureComponent {
     }    if(Platform.OS === 'ios') {
       return (
         <View style={{height: lookHeight, width: lookWidth-6,  overflow: 'hidden', borderRadius: 10,  alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
-                 resizeMode={'stretch'}
-                 muted={this.state.isMuted}
-                 style={{width: lookWidth, height: lookHeight, overflow:'hidden'}}
-                 paused={!ShouldShowLookImage}
-                 navigation={this.props.navigation}
+          <VideoWithCaching
+            source={{uri: video.uri, mainVer: 1, patchVer: 0}}
+            resizeMode={'stretch'}
+            muted={this.state.isMuted}
+            style={{width: lookWidth, height: lookHeight, overflow:'hidden'}}
+            paused={!ShouldShowLookImage}
+            navigation={this.props.navigation}
+            preview={video.preview}
           />
         </View>
       )
@@ -121,6 +123,7 @@ class MediaContainer extends PureComponent {
                               paused={!ShouldShowLookImage}
                               repeat={true}
                               navigation={this.props.navigation}
+                              preview={video.preview}
             />
           :
             <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>
