@@ -251,7 +251,7 @@ class ProfileScreen extends Component {
           if (this.state.isLoading) {
             return <Spinner color='rgb(230,230,230)'/>;
           }
-          if(this.props.userLooks.length > 2) {
+          if(this.state.userLooks.length > 2) {
             return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
 
           }

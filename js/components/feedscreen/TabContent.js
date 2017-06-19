@@ -49,7 +49,7 @@ class TabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
     this.state = {
-      isLoading: true,
+      isLoading: false,
       noMoreData: false,
       isRefreshing: false,
       currentScrollPosition: 0,
