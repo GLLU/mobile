@@ -52,7 +52,9 @@ class ProfileScreen extends Component {
       photoModal: false,
       isLoadingLooks: true,
       stats: currUserId === props.stats.user_id ? props.stats : {},
-      userLooks: currUserId === props.currLookScreenId ? props.userLooks : []
+      userLooks: currUserId === props.currLookScreenId ? props.userLooks : [],
+      meta: currUserId === props.currLookScreenId ? props.meta : {total_count: 0},
+      isLoading: currUserId === props.currLookScreenId
 
     }
   }
@@ -62,7 +64,7 @@ class ProfileScreen extends Component {
       this.setState({stats: nextProps.stats})
     }
     if(nextProps.currLookScreenId === this.state.userId && nextProps.userLooks !== this.state.userLooks){
-      this.setState({userLooks: nextProps.userLooks, loadingMore: false})
+      this.setState({userLooks: nextProps.userLooks, loadingMore: false, meta: this.props.meta})
     }
   }
 
@@ -105,15 +107,21 @@ class ProfileScreen extends Component {
   }
 
   _renderleftBtn() {
-    return this.state.isMyProfile ?
-      <Image source={toFeedScreen} style={styles.toFeedScreenBtn}/>
-      :
-      <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
+    return (
+      <TouchableOpacity transparent onPress={this.handleBackToFeedPress.bind(this)} style={styles.headerBtn}>
+        { this.state.isMyProfile ? <Image source={toFeedScreen} style={styles.toFeedScreenBtn}/>
+          :
+          <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
+        }
+      </TouchableOpacity>
+    )
+
+
   }
 
   _renderRightBtn() {
     return this.state.isMyProfile ?
-      <TouchableOpacity onPress={this.handleSettingsPress.bind(this)}>
+      <TouchableOpacity onPress={this.handleSettingsPress.bind(this)} style={styles.headerBtn}>
         <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn}/>
       </TouchableOpacity>
       :
@@ -242,6 +250,7 @@ class ProfileScreen extends Component {
   }
 
   _renderLoadMore() {
+    console.log('state',this.state)
     return (
       <View style={styles.loader}>
         {(() => {
@@ -297,9 +306,8 @@ class ProfileScreen extends Component {
                 <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                                 style={[styles.linearGradient, {opacity: 0.7}]}/>
                 <View style={styles.header}>
-                  <TouchableOpacity transparent onPress={this.handleBackToFeedPress.bind(this)} style={styles.headerBtn}>
+
                     { this._renderleftBtn() }
-                  </TouchableOpacity>
                   { avatarUrl ?
                     <ProfileView profilePic={avatarUrl}
                                  userid={this.state.userId}
@@ -310,9 +318,7 @@ class ProfileScreen extends Component {
                                  onFollowPress={this.toggleFollow.bind(this)}
                                  navigateTo = {this.props.navigateTo}
                     /> : null }
-                  <TouchableOpacity transparent onPress={this.props.goBack} style={styles.headerBtn}>
                     { this._renderRightBtn() }
-                  </TouchableOpacity>
                 </View>
                 <View style={styles.description}>
                   <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>

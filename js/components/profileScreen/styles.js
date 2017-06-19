@@ -27,6 +27,7 @@ export default StyleSheet.create({
   },
   headerBtn: {
     backgroundColor: 'transparent',
+    height: 30
   },
   toFeedScreenBtn: {
     marginLeft: 20,

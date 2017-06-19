@@ -97,27 +97,6 @@ class UserLooks extends Component {
     )
   }
 
-  renderVideo(img) {
-    return (
-      <View style={{flex: 1}}>
-        <VideoWithCaching source={{uri: img.uri, mainVer: 1, patchVer: 0}}
-               resizeMode={'contain'}
-               muted={true}
-               style={{width: img.width - 5, height: img.height, overflow: 'hidden'}}
-               repeat={true}
-               rate={1}
-               navigation={this.props.navigation}
-        />
-      </View>
-    )
-  }
-
-  renderImage(img) {
-    return (
-      <ImageWrapper source={{uri: img.uri}} resizeMode="contain" style={{width: img.width - 5, height: img.height }}/>
-    )
-  }
-
   renderEmptyView() {
     return(
       <View>
@@ -156,6 +135,7 @@ class UserLooks extends Component {
   }
 
   render() {
+    console.log('total',this.state.totalLooks, 'isLoading ',!this.props.isLoading)
     if(this.state.totalLooks === 0 && !this.props.isLoading){
       return this.renderEmptyView()
     } else {
