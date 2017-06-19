@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { Dimensions, BackAndroid, View, StyleSheet } from 'react-native';
+import { Dimensions, BackAndroid, View, StyleSheet,Modal } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
 import MainView from './MainView';
-import Modal from 'react-native-modalbox';
+// import Modal from 'react-native-modalbox';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
 import SelectPhoto from '../common/SelectPhoto';
 import asScreen from "../common/containers/Screen"
+import { hideBodyTypeModal } from "../../actions/myBodyType";
+import { noop } from "lodash";
 
 class FeedPage extends Component {
 
@@ -21,6 +23,12 @@ class FeedPage extends Component {
     }),
     setUser: React.PropTypes.func,
     addNewLook: React.PropTypes.func,
+    hideBodyTypeModal: React.PropTypes.func
+  }
+
+  static defaultProps= {
+    hideBodyTypeModal: noop,
+    addNewLook: noop
   }
 
   constructor(props) {
@@ -29,6 +37,7 @@ class FeedPage extends Component {
     this._handleOpenPhotoModal=this._handleOpenPhotoModal.bind(this);
     this._handleSearchStatus=this._handleSearchStatus.bind(this);
     this._clearFilter=this._clearFilter.bind(this);
+    this._onPickBodyType=this._onPickBodyType.bind(this);
     this.goToAddNewItem=this.goToAddNewItem.bind(this);
     this.state = {
       name: '',
@@ -92,7 +101,11 @@ class FeedPage extends Component {
 
   _handleSearchInput(term) {
     this.setState({searchTerm: term})
+  }
 
+  _onPickBodyType(){
+    this.props.hideBodyTypeModal();
+    this.props.navigateTo('myBodyMeasure')
   }
 
   render() {
@@ -107,9 +120,8 @@ class FeedPage extends Component {
             }
           </View>
           <MainView navigateTo={this.props.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
-          <Modal isOpen={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
-            position={"top"}>
-            <BodyTypePicker onPick={()=>this.props.navigateTo('myBodyMeasure')}/>
+          <Modal animationType='slide' visible={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.props.hideBodyTypeModal}>
+            <BodyTypePicker onPick={this._onPickBodyType}/>
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
       </View>
@@ -120,6 +132,7 @@ class FeedPage extends Component {
 function bindActions(dispatch) {
   return {
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
+    hideBodyTypeModal: () => dispatch(hideBodyTypeModal()),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
   };
