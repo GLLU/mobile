@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import asScreen from "../common/containers/Screen"
 import {
-  Image, Animated, InteractionManager, TouchableOpacity, View, Text, TextInput, ScrollView, FormData } from 'react-native';
+  Image, Animated, InteractionManager, TouchableOpacity, View, Text, TextInput, ScrollView, FormData, Modal } from 'react-native';
 import styles from './styles';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,7 +12,6 @@ import EditProfileName from './EditProfileName';
 import CircleProfileImage from '../common/avatars/CircleProfileImage';
 import InformationTextIcon from '../common/informationTextIcon';
 import {openCamera} from '../../lib/camera/CameraUtils'
-import Modal from 'react-native-modalbox';
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 import BodyTypePicker from "../myBodyType/BodyTypePicker";
@@ -101,7 +100,6 @@ class EditProfile extends Component {
           </Image>
         </View>
         <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
-
         <ScrollView
           style={[styles.scrollView]}
         >
@@ -121,8 +119,7 @@ class EditProfile extends Component {
             <InformationTextIcon text={'This information is private to you only'} />
           </View>
         </ScrollView>
-        <Modal isOpen={this.state.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}}
-               position={"top"}>
+        <Modal animationType='slide' visible={this.state.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={()=>this.toggleBodyTypeModal(false)}>
           <BodyTypePicker goBack={()=>this.toggleBodyTypeModal(false)} onPick={()=>this.toggleBodyTypeModal(false)}/>
         </Modal>
         {this.state.isUpdating?<SpinnerSwitch/>:null}
