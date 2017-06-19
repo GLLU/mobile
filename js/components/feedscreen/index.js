@@ -5,7 +5,6 @@ import styles from './styles';
 import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
 import MainView from './MainView';
-// import Modal from 'react-native-modalbox';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
 import SelectPhoto from '../common/SelectPhoto';
