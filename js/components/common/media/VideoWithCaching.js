@@ -5,6 +5,7 @@ import cachedWrapper from './CachedComponentWrapper'
 import listenToAppState from '../eventListeners/AppStateListener'
 import IsOnScreenChecker from './IsOnScreenChecker'
 import { debounce } from "lodash";
+import Spinner from "../../loaders/Spinner";
 
 class VideoWithCaching extends Component {
 
@@ -60,7 +61,9 @@ class VideoWithCaching extends Component {
       <View>
         {
           !this.state.isPlaying ?
-            <Image source={{uri:this.props.preview}} style={[this.props.style,{position:'absolute', top:0}]}/>:
+            <Image source={{uri:this.props.preview}} style={[this.props.style,{position:'absolute', top:0, justifyContent:'center',alignItems:'center'}]}>
+              <Spinner color='grey'/>
+            </Image>:
             null
         }
         {
