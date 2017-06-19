@@ -186,7 +186,7 @@ class TabContent extends BaseComponent {
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
                           key={look.id}
-                          shouldOptimize={this.state.flatLooksLeft.length>20}
+                          shouldOptimize={this.state.flatLooksLeft.length>10}
                           showMediaGrid={true}
                           fromScreen={'Feedscreen'}/>
       );
