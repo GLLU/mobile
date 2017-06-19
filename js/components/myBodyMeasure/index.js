@@ -10,12 +10,14 @@ import { saveUserSize } from '../../actions/myBodyMeasure';
 import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
 import asScreen from "../common/containers/Screen"
+import { showBodyTypeModal } from "../../actions/myBodyType";
 
 class MyBodyMeasure extends Component {
   constructor(props) {
     super(props);
     this.handleSaveUserSizePress=this.handleSaveUserSizePress.bind(this);
     this.saveUserSize=this.saveUserSize.bind(this);
+    this.goBack=this.goBack.bind(this);
   }
 
   static propTypes = {
@@ -45,12 +47,17 @@ class MyBodyMeasure extends Component {
       .catch(err=>console.log(err));
   }
 
+  goBack(){
+    this.props.showBodyTypeModal();
+    this.props.goBack();
+  }
+
   render() {
     return (
       <Container>
         <View style={{height: 50}}>
           <View style={[styles.header,{flexDirection:'row', flex: 1, alignItems:'center'}]}>
-            <Button transparent onPress={this.props.goBack}>
+            <Button transparent onPress={this.goBack}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back"/>
             </Button>
             <Text style={styles.headerTitle}>My Body Measures</Text>
@@ -79,7 +86,8 @@ class MyBodyMeasure extends Component {
 
 function bindAction(dispatch) {
   return {
-    saveUserSize: (measurements) => dispatch(saveUserSize(measurements))
+    saveUserSize: (measurements) => dispatch(saveUserSize(measurements)),
+    showBodyTypeModal: () => dispatch(showBodyTypeModal())
   };
 }
 

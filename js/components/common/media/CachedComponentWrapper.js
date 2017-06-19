@@ -16,8 +16,12 @@ const cacheComponent=uriProvider=>WrappedComponent=>{
     }
 
     componentDidMount() {
+      this._isMounted=true;
       const uri=uriProvider(this.props);
       this.cacheOrReturnCachedPath(uri);
+    }
+    componentWillUnmount(){
+      this._isMounted=false;
     }
 
     cacheOrReturnCachedPath(uri){
@@ -34,7 +38,9 @@ const cacheComponent=uriProvider=>WrappedComponent=>{
     }
 
     onCached(localUri) {
-      this.setState({isCaching: false, localUri: localUri})
+      if(this._isMounted){
+        this.setState({isCaching: false, localUri: localUri})
+      }
     }
 
     componentWillReceiveProps(nextProps){

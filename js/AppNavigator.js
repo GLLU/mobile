@@ -3,7 +3,7 @@ import { View, BackAndroid, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import ErrorHandler from './components/errorHandler';
-import ParisMessages from './components/parisMessages';
+import ParisMessages from './components/paris/ParisMessages';
 import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'

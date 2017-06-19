@@ -12,6 +12,13 @@ class VideoWithCaching extends Component {
     isCaching:React.PropTypes.bool,
     localUri:React.PropTypes.string,
     source:React.PropTypes.object,
+    currentAppState:React.PropTypes.string,
+    isOnScreen:React.PropTypes.bool,
+    preview:React.PropTypes.string
+  }
+
+  static defaultProps={
+    preview:'https://bollyspice.com/wp-content/uploads/2011/12/11dec_don2-comic.jpg'
   }
 
   constructor(props) {
@@ -25,7 +32,7 @@ class VideoWithCaching extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.currentAppState!==this.props.currentAppState){
-      if(this.props.currentAppState==='active'){
+      if(this.props.currentAppState==='active'&&this._root){
         this._root.seek(0)
       }
       this.setState({repeat:nextProps.currentAppState==='active'})
@@ -53,7 +60,7 @@ class VideoWithCaching extends Component {
       <View>
         {
           !this.state.isPlaying ?
-            <Image source={{uri:'https://bollyspice.com/wp-content/uploads/2011/12/11dec_don2-comic.jpg'}} style={[this.props.style,{position:'absolute', top:0}]}/>:
+            <Image source={{uri:this.props.preview}} style={[this.props.style,{position:'absolute', top:0}]}/>:
             null
         }
         {

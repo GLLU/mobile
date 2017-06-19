@@ -1,18 +1,72 @@
 import rest from '../api/rest';
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
+export const SET_USER_LOOKS_FEED_DATA_QUEUE = 'SET_USER_LOOKS_FEED_DATA_QUEUE';
+import _ from 'lodash';
 
-export function getUserLooks(data) {
+export function getUserLooks(looksCall, query, retryCount = 0) {
   return (dispatch) => {
-    return dispatch(rest.actions.user_looks({id: data.id, "page[size]" : 8, "page[number]" : data.page, 'all': data.all}, {}, (err, userLooksData) => {
-      if (!err && userLooksData) {
-        let looksData = {
-          looks: userLooksData.looks,
-          currId: data.id,
+    const query = Object.assign({}, query, {
+      page: {
+        size: 10,
+        number: 1,
+      },
+      id: looksCall.id,
+      all: looksCall.isMyProfile
+    });
+    return new Promise((resolve, reject) => {
+      return dispatch(rest.actions.user_looks(query, {}, (err, data) => {
+        if (!err && !_.isEmpty(data)) {
+          data.currId = looksCall.id;
+          dispatch(setUserLooks({data, query: query}));
+          dispatch(loadMoreUserLooks(looksCall))
+          resolve(data.looks);
+        } else {
+          if(retryCount < 5) {
+            dispatch(getUserLooks(looksCall,query, retryCount+1))
+          } else {
+            reject();
+          }
         }
-        dispatch(setUserLooks(looksData));
+      }));
+    });
+  };
+}
+
+export function loadMoreUserLooks(looksCall, retryCount = 0) {
+  return (dispatch, getState) => {
+    const state = getState().userLooks;
+    const currPage = state.query.page.number
+    const nextPageNumber = currPage + 1;
+    const newState = _.merge(state.query, {page: { number: nextPageNumber }});
+    const query = {
+      page: {
+        size: 10,
+        number: nextPageNumber,
+      },
+      id: looksCall.id,
+      all: looksCall.isMyProfile
+    };
+    return new Promise((resolve, reject) => {
+      if(state.userLooksDataQueue.length > 0 && currPage > 1) {
+        const data = {looks: state.userLooksDataQueue, meta: state.meta}
+        dispatch(setUserLooks({data, query: newState, loadMore: true}));
       }
-    }));
+      return dispatch(rest.actions.user_looks(newState, (err, data) => {
+        if (!err && !_.isEmpty(data)) {
+          data.currId = looksCall.id;
+          dispatch(setUserLooksDataQueue({data, query, loadMore: true}));
+          resolve(data.looks);
+        } else {
+          if(retryCount < 5) {
+            dispatch(loadMoreUserLooks(looksCall, query, retryCount+1))
+          } else {
+            reject();
+          }
+
+        }
+      }));
+    });
   };
 }
 
@@ -51,6 +105,13 @@ export function setUserLooksData(data) {
 export function setUserLooks(data) {
   return {
     type: SET_USER_LOOKS,
+    payload: data
+  };
+}
+
+export function setUserLooksDataQueue(data) {
+  return {
+    type: SET_USER_LOOKS_FEED_DATA_QUEUE,
     payload: data
   };
 }

@@ -55,14 +55,13 @@ class MediaContainer extends PureComponent {
 
   _handleItemPress() {
     const item = this.props.look
-    this.props.logEvent('Feedscreen', {name: 'Image click'});
-    let that = this
-    if(Platform.OS === 'ios') { // On android we use interactionManager, on ios we dont need to, we let the TouchableOpacity end. and then go to next page.
-      setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
-    } else {
-      setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
+    this.props.logEvent(this.props.fromScreen, {name: 'Image click'});
+    if(this.props.fromScreen === 'profileScreen') {
+      console.log('happenned from profile')
+      item.singleItem = true
     }
-    this.setState({isMuted: true})
+    let that = this
+    setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
   }
 
   toggleLikeAction(isLiked) {
@@ -139,6 +138,18 @@ class MediaContainer extends PureComponent {
 
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   if(nextProps !== this.props) {
+  //     _.each(Object.keys(this.props),thisPropsKey=>{
+  //     if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
+  //       console.log(`UserLooks, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
+  //       return true
+  //     }
+  //   })
+  // }
+  //   return false
+  // }
+
   renderImage(look) {
     const {lookWidth, lookHeight} = this.state.dimensions;
     let  ShouldShowLookImage;
@@ -151,10 +162,8 @@ class MediaContainer extends PureComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <ImageWrapper source={{uri: look.uri, cache: true}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} navigation={this.props.navigation}>
-            <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookHeight={lookHeight}/>
-            </View>
+          <ImageWrapper source={{uri: look.uri, cache: true}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}>
+            {this.renderImageGrid(look, lookHeight)}
           </ImageWrapper>
         </View>
       )
@@ -163,9 +172,7 @@ class MediaContainer extends PureComponent {
         <View>
           {ShouldShowLookImage ? <ImageWrapper source={{uri: look.uri, cache: true}} resizeMode={'stretch'} style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} navigation={this.props.navigation}/> : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} />}
           <MediaBorderPatch media={look} lookWidth={lookWidth} lookHeight={lookHeight}>
-            <View style={{bottom: 15, zIndex: 1}}>
-              <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookHeight={lookHeight} lookId={look.id}/>
-            </View>
+            {this.renderImageGrid(look, lookHeight)}
           </MediaBorderPatch>
         </View>
       )
@@ -173,14 +180,35 @@ class MediaContainer extends PureComponent {
 
   }
 
+  renderImageGrid(look, lookHeight) {
+    if(this.props.showMediaGrid) {
+      return(
+        <View style={{zIndex: 1}}>
+          {this.props.children}
+          <View style={{bottom: 15}}>
+            <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookHeight={lookHeight} lookId={look.id}/>
+          </View>
+        </View>
+      )
+    } else {
+      return this.props.children
+    }
+  }
+
   renderVideoGrid(look) {
     const { lookHeight } = this.state.dimensions
-    return(
-      <View style={Platform.OS === 'ios' ? [styles.videoGridIos, {width: look.width}] : styles.videoGridAndroid}>
-        <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
-        <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()} lookHeight={lookHeight}/>
-      </View>
-    )
+    if(this.props.showMediaGrid) {
+      return (
+          <View style={Platform.OS === 'ios' ? [styles.videoGridIos, {width: look.width}] : styles.videoGridAndroid}>
+
+            {this.props.children}
+            <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
+            <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()} lookHeight={lookHeight}/>
+          </View>
+      )
+    } else {
+      return this.props.children
+    }
   }
 
   render() {

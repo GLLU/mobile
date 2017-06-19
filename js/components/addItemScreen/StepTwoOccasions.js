@@ -115,8 +115,11 @@ class StepTwoOccasions extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
+    const currItem = _.find(this.props.items, listItem => listItem.id === this.props.item.id);
     const selectedCategory = nextProps.item.category ? nextProps.item.category : false
-    const brand = nextProps.item ? nextProps.item.brand : null
+    console.log('curritem',currItem)
+    const brand = currItem ? currItem.brand : null
+    console.log('brand',brand)
       if(selectedCategory && brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
         this.toggleBottomContainer()
       }
@@ -198,9 +201,12 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
+  const { items } = state.uploadLook;
+
   return {
     categories: state.filters.categories,
     occasionTags: state.filters.occasion_tags,
+    items
 
   };
 };

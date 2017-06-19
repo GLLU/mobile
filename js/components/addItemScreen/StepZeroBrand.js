@@ -62,7 +62,6 @@ class StepZeroBrand extends BaseComponent {
     brands: React.PropTypes.array,
     createBrandName: React.PropTypes.func,
     addBrandName: React.PropTypes.func,
-    onValid: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -85,7 +84,6 @@ class StepZeroBrand extends BaseComponent {
       this.toggleBottomContainer()
     }
     if(item.id !== this.props.item.id) {
-
       this.setState({
         brandName: item.brand ? item.brand.name : null,
       });
@@ -99,7 +97,6 @@ class StepZeroBrand extends BaseComponent {
     const data = typeof value === 'string' ? {value, itemId: this.props.item.id} : {...value, itemId: this.props.item.id}
     const brandName = typeof value === 'string' ? value : value.name;
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
-    console.log('data',data)
     f(data).then(() => {
       console.log('brand added')
 
@@ -187,7 +184,7 @@ class StepZeroBrand extends BaseComponent {
     const { modalVisible } = this.state;
     const currItem = _.find(items, listItem => listItem.id === item.id);
     const brand = currItem ? currItem.brand : null;
-    const _brand = brand ? brand : null;
+    const brandName = brand ? typeof brand === 'string' ? brand : brand.name : ''
     return (
       <View style={{position: 'absolute', height: h, bottom: 60}}>
         <View style={{ width: w, flex: 1, justifyContent: 'flex-end' }}>
@@ -196,7 +193,7 @@ class StepZeroBrand extends BaseComponent {
             <Text style={styles.titleLabelInfo}>Brand Name</Text>
             <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
               <Text style={styles.input}>
-                {brand}
+                {brandName}
               </Text>
               {this.renderClearIcon(brand)}
             </TouchableOpacity>
@@ -209,7 +206,7 @@ class StepZeroBrand extends BaseComponent {
           onRequestClose={() => this.setState({modalVisible: false})}>
           <BrandNameInput
             style={{marginTop: 10}}
-            brand={_brand}
+            brand={brand}
             brands={brands}
             onCancel={this.handleBrandCancel.bind(this)}
             findOrCreateBrand={this.findOrCreateBrand.bind(this)}/>
@@ -218,6 +215,7 @@ class StepZeroBrand extends BaseComponent {
     )
   }
 }
+
 import { connect } from 'react-redux';
 function bindActions(dispatch) {
   return {

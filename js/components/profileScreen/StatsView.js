@@ -61,7 +61,7 @@ class StatsView extends Component {
           <Text style={styles.text}>Followers</Text>
         </TouchableOpacity>
         <View style={styles.statsTotal}>
-          <Text style={[styles.text, styles.number]}>{`${likes}`}{likes}</Text>
+          <Text style={[styles.text, styles.number]}>{`${likes}`}</Text>
           <Text style={styles.text}>Likes</Text>
         </View>
       </View>

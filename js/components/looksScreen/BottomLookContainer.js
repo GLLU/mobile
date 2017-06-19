@@ -143,6 +143,7 @@ export default class BottomLookContainer extends BaseComponent {
         delay: 250
       }            // Configuration
     ).start();
+    console.log('look',this.props.look.items)
     return (
       <View style={{marginTop: 0}}>
         <LookHeader

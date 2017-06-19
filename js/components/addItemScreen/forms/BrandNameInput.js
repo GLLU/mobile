@@ -44,10 +44,7 @@ class BrandNameInput extends Component {
   }
 
   handleFindOrCreateBrand(value, createNew) {
-    console.log('vlue111',value)
-    console.log('createNew',createNew)
     const query = createNew ? value : value.name;
-    console.log('query',query);
     this.setState({query}, () => {
       this.props.findOrCreateBrand(value, createNew);
     });
