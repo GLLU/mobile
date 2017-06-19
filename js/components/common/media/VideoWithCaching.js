@@ -18,7 +18,7 @@ class VideoWithCaching extends Component {
   }
 
   static defaultProps={
-    preview:'https://bollyspice.com/wp-content/uploads/2011/12/11dec_don2-comic.jpg'
+    preview:''
   }
 
   constructor(props) {
