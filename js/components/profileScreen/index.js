@@ -87,13 +87,8 @@ class ProfileScreen extends Component {
         id: this.state.userId,
         all: this.state.isMyProfile
       }
-      const looksDataCall = {
-        id: this.state.userId,
-        isMyProfile: this.state.isMyProfile
-      }
       this.setState({isLoading: true}, () => {
         this.props.getUserLooks(looksCall).then(() => {
-          this.props.getUserLooksData(looksDataCall);
           this.setState({ isLoading: false});
         });
       })
@@ -356,7 +351,6 @@ function bindAction(dispatch) {
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     editNewLook: (id) => dispatch(editNewLook(id)),
-    getUserLooksData: data => dispatch(getUserLooksData(data)),
     getUserLooks: data => dispatch(getUserLooks(data)),
     loadMoreUserLooks: (looksCall) => dispatch(loadMoreUserLooks(looksCall)),
     showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),

@@ -40,18 +40,6 @@ class UserLooks extends Component {
     this.contentHeight = 0
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   if(nextProps !== this.props) {
-  //     _.each(Object.keys(this.props),thisPropsKey=>{
-  //       if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
-  //         console.log(`UserLooks, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
-  //         return true
-  //       }
-  //     })
-  //   }
-  //   return false
-  // }
-
   componentWillReceiveProps(nextProps) {
     if(nextProps.userLooks !== this.props.userLooks){
       this.setState({flatLooksLeft: _.filter(nextProps.userLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.userLooks,(look,index)=>index%2===1), loadingMore: false, totalLooks: nextProps.meta.total_count})
@@ -62,6 +50,9 @@ class UserLooks extends Component {
       this.contentHeight = 0
       this.currPosition = 0
       this.setState({noMoreData: false})
+    }
+    if(nextProps) {
+
     }
 
   }
@@ -75,11 +66,6 @@ class UserLooks extends Component {
     if(this.state.currentScrollPosition !== this.currPosition) {
       this.setState({currentScrollPosition: this.currPosition})
     }
-  }
-
-  _handleItemPress(item) {
-    item.singleItem = true
-    this.props.navigateTo('looksScreen', item);
   }
 
   _handleEditPress(look) {
