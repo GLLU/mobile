@@ -42,6 +42,7 @@ class LikeView extends Component {
 
   constructor(props) {
     super(props);
+    console.log('propsLikeView',props)
     this.state = {
       isLiked: props.item.liked,
       likes: props.item.likes
@@ -68,7 +69,7 @@ class LikeView extends Component {
     }
   }
 
-  getLikesString() {
+  getLikesStringFeedView() {
     let { likes }  = this.state
     likes = likes.toString()
     if(likes.length > 4 && likes.length < 7){
@@ -82,7 +83,7 @@ class LikeView extends Component {
   render() {
     const {lookHeight} = this.props;
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
-    const likes = this.getLikesString()
+    const likes = this.getLikesStringFeedView()
     console.log('likes.length',likes.length)
     return (
       <View style={[styles.likeContainer, { marginTop: lookHeight - 30 }, likes.length > 3 ? {width: 60} : null]}>

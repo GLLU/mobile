@@ -11,6 +11,7 @@ export default class LikeButton extends Component {
     super(props);
     this._onNumberPress = this._onNumberPress.bind(this);
     this._onIconPress = this._onIconPress.bind(this);
+    console.log('propsButton',props)
     this.state = {
       isLiked: props.isLiked,
       likes: props.likes
@@ -29,10 +30,11 @@ export default class LikeButton extends Component {
 
   _onIconPress() {
     const { likes, isLiked } = this.state
-    this.setState({isLiked: !isLiked, likes: isLiked ? likes-1 : likes+1})
-    const shouldActive = !this.state.isLiked;
-    let that = this;
-    setTimeout(() => {that.props.onIconPress(shouldActive);}, 1000);
+    this.setState({isLiked: !isLiked, likes: isLiked ? likes-1 : likes+1}, () => {
+      const { isLiked, likes } = this.state;
+      this.props.onIconPress(isLiked, likes);
+    })
+
 
   }
 

@@ -50,8 +50,6 @@ export default class BottomLookContainer extends BaseComponent {
     this._toggleItem = this._toggleItem.bind(this);
     this.goToProfile=this.goToProfile.bind(this);
     this.state = {
-      likes: this.props.look.likes,
-      isLiked: this.props.look.liked,
       comments: this.props.look.comments || 0,
       isDescriptionActive: false,
       isCommentsActive: false,
@@ -143,7 +141,7 @@ export default class BottomLookContainer extends BaseComponent {
         delay: 250
       }            // Configuration
     ).start();
-    console.log('look',this.props.look.items)
+    console.log('look',this.props.look)
     return (
       <View style={{marginTop: 0}}>
         <LookHeader
@@ -160,8 +158,8 @@ export default class BottomLookContainer extends BaseComponent {
                 hasDescription={!_.isEmpty(this.props.look.description)}
                 isDescriptionActive={this.state.isDescriptionActive}
                 toggleDescription={this._toggleDescription}
-                isLiked={this.state.isLiked}
-                likes={this.state.likes}
+                isLiked={this.props.look.is_liked}
+                likes={this.props.look.likes}
                 toggleLike={this.props.toggleLike}
                 toggleMenu={() => this._toggleMenu()}
                 items={this.props.look.items}
