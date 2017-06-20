@@ -44,9 +44,7 @@ class VideoWithCaching extends Component {
 
   onVideoStartsPlaying = ()=>{
     debounce(()=>{
-      console.log('lets debounce')
       if(this.state.isPlaying!==true){
-        console.log('setting state')
         this.setState({isPlaying:true})
       }
     },500)
@@ -55,8 +53,6 @@ class VideoWithCaching extends Component {
   render() {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
-    console.log( `video playing?`,this.state.isPlaying);
-    console.log( `is on screen?`,this.props.isOnScreen);
     return (
       <View>
         {

@@ -6,6 +6,7 @@ import {  Button, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageWithTags from '../common/ImageWithTags';
 import TagInput from './forms/TagInput';
+import BrandUrlInput from './forms/BrandUrlInput';
 import Gllu from '../common';
 import BaseComponent from '../common/base/BaseComponent';
 import {
@@ -142,6 +143,7 @@ class StepThreePublish extends BaseComponent {
       urlOverlayVisible: false,
       description: props.description,
       url: props.url,
+      shouldFocus: false
     }
 
     this.urlDialogShown = false;
@@ -151,11 +153,6 @@ class StepThreePublish extends BaseComponent {
     switch (key) {
       case 'location':
         this.props.addLocation(value);
-        break;
-      case 'url':
-        this.setState({
-          url: value
-        });
         break;
       case 'description':
         this.setState({
@@ -193,9 +190,7 @@ class StepThreePublish extends BaseComponent {
 
   handleOkPress() {
     this.logEvent('UploadLookScreen', { name: 'user came back to edit url'});
-    this.setState({urlOverlayVisible: false}, () => {
-      this.urlText.focus();
-    });
+    this.setState({urlOverlayVisible: false, shouldFocus: true})
   }
 
   handleContinuePress() {
@@ -342,7 +337,7 @@ class StepThreePublish extends BaseComponent {
 
   renderBrandsUrl() {
 
-    const { items } = this.props
+    const { items } = this.props;
     return _.map(items, (item, index) => {
       const iconUrl =  item.category.icon ? item.category.icon.url : this.getItemIconUrl(item);
       let url;
@@ -351,26 +346,7 @@ class StepThreePublish extends BaseComponent {
       } else {
         url = item.brand ? item.brand.url : null;
       }
-      return (
-      <View key={index} style={{flexDirection: 'row'}}>
-          <TextInput
-            ref={ref => this.urlText = ref}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
-            keyboardType='url'
-            style={styles.textInput}
-            placeholder='http://www.infash.com'
-            onChangeText={text => this.updateSelectValue('url', text)}
-            onEndEditing={(event) => this.handleUrlEndEditing(event, item.id)}
-            value={url}/>
-        <View style={{height: 50, padding: 2, backgroundColor: 'white', marginTop: 10, marginBottom: 10}}>
-          <Image source={{uri: iconUrl}} style={[{height: 46, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
-            resizeMode: 'contain',
-            alignSelf: 'center',}]} />
-        </View>
-      </View>
-
-      );
+      return <BrandUrlInput key={index}  itemUrl={url} itemId={item.id} iconUrl={iconUrl} shouldFocus={this.state.shouldFocus} handleUrlEndEditing={(event,text) =>this.handleUrlEndEditing(event,text)} />
     });
   }
 
