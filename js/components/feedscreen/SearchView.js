@@ -11,7 +11,6 @@ const myStyles = StyleSheet.create({
 
 class SearchView extends Component {
   static propTypes = {
-    handleSearchInput: React.PropTypes.func,
     clearText: React.PropTypes.string,
     typeFilter: React.PropTypes.string,
     clearFilter: React.PropTypes.func,
@@ -21,7 +20,6 @@ class SearchView extends Component {
 
   static defaultProps = {
     onSearchBarLayout: _.noop,
-    handleSearchInput: _.noop,
     clearText: '',
     onFilterBarLayout: _.noop,
     clearFilter: _.noop,
@@ -40,6 +38,7 @@ class SearchView extends Component {
           type={this.props.typeFilter}
           filterFeed={this.props.filterFeed}
           clearFilter={this.props.clearFilter}
+          query={this.props.query}
         />
       </View>
     )

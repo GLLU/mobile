@@ -46,7 +46,8 @@ class MainView extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.searchTerm !== this.props.searchTerm) {
-      this._handleSearchInput(nextProps.searchTerm)
+      const query = {...this.props.query, term: nextProps.searchTerm}
+      this._filterFeed(query)
     }
   }
 
@@ -105,19 +106,15 @@ class MainView extends Component {
     );
   }
 
-  _handleSearchInput(term) {
-    this._filterFeed({term})
-  }
-
   renderSearchView() {
     return (
       <VisibilityContainer visible={this.props.searchStatus}>
         <SearchView
-          handleSearchInput={(term) => this._handleSearchInput(term)}
           clearText={this.props.query.term}
           typeFilter={this.props.query.type}
           clearFilter={this._clearFilter.bind(this)}
           filterFeed={this._filterFeed.bind(this)}
+          query={this.props.query}
         />
       </VisibilityContainer>
     );

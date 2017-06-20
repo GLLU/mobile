@@ -198,6 +198,9 @@ class FilterBar extends BaseComponent {
       .value();
     let query = {};
     selections.forEach(selection => query[selection.kind] = selection.id)
+    if(this.props.query.term){
+      query = {...query, term: this.props.query.term}
+    }
     this.props.filterFeed(query)
   }
 
