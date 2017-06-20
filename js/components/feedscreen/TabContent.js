@@ -144,7 +144,6 @@ class TabContent extends BaseComponent {
   }
 
   loadMore() {
-    console.log('1')
     if (this.state.isLoading) {
       console.log('already isLoading')
       return;

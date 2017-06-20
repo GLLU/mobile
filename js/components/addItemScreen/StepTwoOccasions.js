@@ -117,9 +117,7 @@ class StepTwoOccasions extends BaseComponent {
   componentWillReceiveProps(nextProps) {
     const currItem = _.find(this.props.items, listItem => listItem.id === this.props.item.id);
     const selectedCategory = nextProps.item.category ? nextProps.item.category : false
-    console.log('curritem',currItem)
     const brand = currItem ? currItem.brand : null
-    console.log('brand',brand)
       if(selectedCategory && brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
         this.toggleBottomContainer()
       }
