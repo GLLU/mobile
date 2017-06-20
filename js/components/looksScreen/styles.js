@@ -49,7 +49,6 @@ export default StyleSheet.create({
     right: 10
   },
   footerButton: {
-
     flexDirection: 'column',
     padding: 5,
     alignItems: 'center',

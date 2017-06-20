@@ -84,7 +84,6 @@ class LikeView extends Component {
     const {lookHeight} = this.props;
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
     const likes = this.getLikesStringFeedView()
-    console.log('likes.length',likes.length)
     return (
       <View style={[styles.likeContainer, { marginTop: lookHeight - 30 }, likes.length > 3 ? {width: 60} : null]}>
         <Grid style={{ backgroundColor: 'rgba(0,0,0,0.5)'}}>

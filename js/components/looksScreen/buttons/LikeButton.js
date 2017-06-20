@@ -65,7 +65,8 @@ export default class LikeButton extends Component {
   render() {
     const likes = this.getLikesString()
     return (
-    <View style={[styles.footerButton,{padding: 0, width: 30, maxWidth: 60, alignSelf: 'center', alignItems: 'center', justifyContent: 'center'}]}>
+    <View style={[{padding: 0, maxWidth: 60, alignSelf: 'flex-end', margin:5, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: 10,minHeight: 35,
+      width: 45}]}>
         <View style={[ {flexDirection: 'column', padding: 0, alignSelf: 'center', justifyContent: 'center'}]}>
           <TouchableOpacity style={{alignSelf: 'center'}} onPress={this._onIconPress}>
             <Image source={this.state.isLiked ? likeClickedImage : likeImage}
