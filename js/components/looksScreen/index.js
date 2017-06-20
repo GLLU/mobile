@@ -50,6 +50,7 @@ class LooksScreen extends Component {
     super(props);
     this._goToProfile=this._goToProfile.bind(this);
     this.onToggleDrawer=this.onToggleDrawer.bind(this);
+    this._toggleLike=this._toggleLike.bind(this);
     const flatLook=this.props.navigation.state.params
     this.state = {
       flatLook: this.props.navigation.state.params,
@@ -103,14 +104,19 @@ class LooksScreen extends Component {
     }
   }
 
-  _toggleLike(isLiked) {
+  _toggleLike(isLiked, likes) {
+    console.log('likes',likes)
+    console.log('isLiked',isLiked)
     this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
     const { flatLook } = this.state
     if (isLiked) {
-      let data = {id: flatLook.id, likes: flatLook.likes + 1, liked: true}
+      let data = {id: flatLook.id, likes: likes, liked: true}
+      console.log('data isLiked',data)
       this.props.likeUpdate(data);
     } else {
-      let data = {id: flatLook.id, likes: flatLook.likes - 1, liked: false}
+
+      let data = {id: flatLook.id, likes: likes, liked: false}
+      console.log('data is not Liked',data)
       this.props.unLikeUpdate(data);
     }
   }
@@ -210,7 +216,7 @@ class LooksScreen extends Component {
           look={look}
           goBack={this.props.goBack}
           goToProfile={(user) => this._goToProfile(user)}
-          toggleLike={(isLiked) => this._toggleLike(isLiked)}
+          toggleLike={this._toggleLike}
           toggleMenu={() => this._toggleMenu()}
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
@@ -243,7 +249,7 @@ class LooksScreen extends Component {
                 look={look}
                 goBack={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
-                toggleLike={(isLiked) => this._toggleLike(isLiked)}
+                toggleLike={this._toggleLike}
                 toggleMenu={() => this._toggleMenu()}
                 isMenuOpen={this.state.isMenuOpen}
                 onBottomDrawerOpen={this.onToggleDrawer}

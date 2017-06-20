@@ -73,19 +73,11 @@ export default class ButtonsBar extends BaseComponent {
     this._onBubbleClicked = this._onBubbleClicked.bind(this);
     this.handleTextLayout = this.handleTextLayout.bind(this);
     this.state = {
-      likes: this.props.likes,
       isLiked: this.props.isLiked,
       itemY: 0,
       itemLineOpen: false
     }
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.likes !== this.props.likes || nextProps.isLiked !== this.props.isLiked) {
-      this.setState({likes: nextProps.likes, isLiked: nextProps.isLiked})
-    }
-  }
-
 
   _onLikeClicked(isLiked) {
     this.props.toggleLike(isLiked)
@@ -132,7 +124,7 @@ export default class ButtonsBar extends BaseComponent {
 
       <View style={[styles.rightContainer, styles[this.props.direction]]} >
         { this.props.lookType === 'video' ? this.renderVideoItems() : null }
-        <LikeButton isLiked={this.state.isLiked} likes={this.state.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />
+        <LikeButton isLiked={this.props.isLiked} likes={this.props.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />
         { this._renderInformationButton(this.props.hasDescription) }
         <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
         <MenuButton onPress={() => this._onMenuClicked()}/>
