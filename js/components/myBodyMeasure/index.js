@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, Button, Icon, Title, getTheme, StyleProvider } from 'native-base';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, BackAndroid } from 'react-native';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 
@@ -18,6 +18,7 @@ class MyBodyMeasure extends Component {
     this.handleSaveUserSizePress=this.handleSaveUserSizePress.bind(this);
     this.saveUserSize=this.saveUserSize.bind(this);
     this.goBack=this.goBack.bind(this);
+    this.logBackEvent=this.logBackEvent.bind(this);
   }
 
   static propTypes = {
@@ -25,6 +26,19 @@ class MyBodyMeasure extends Component {
     currentBodyType: React.PropTypes.object,
     gender: React.PropTypes.string,
     saveUserSize: React.PropTypes.func,
+  }
+
+  componentDidMount() {
+    BackAndroid.addEventListener('BodyMeasureHardwareBackPress', this.logBackEvent);
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('BodyMeasureHardwareBackPress', this.logBackEvent)
+
+  }
+
+  logBackEvent() {
+    this.props.logEvent('BodyMeasureScreen', {name: 'BodyMeasure hardware back button press'});
   }
 
   saveUserSize() {

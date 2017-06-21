@@ -72,6 +72,18 @@ class BodyTypePicker extends Component {
     );
   }
 
+  componentDidMount() {
+    this.props.logEvent('ChooseBodyTypeScreen', { name: 'pick the init bodyType onLoad' });
+
+    // const { gender } = this.props;
+    // const index = this.props.currentIndex ? this.props.currentIndex : 3;
+    // let data = {
+    //   index,
+    //   gender
+    // }
+    // this.props.changeBodyType(data);
+  }
+
   render() {
     return (
       <Container theme={glluTheme}>

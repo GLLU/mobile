@@ -37,6 +37,14 @@ export default class HorizontalCarousel extends Component {
         transitionDelay: 50
     };
 
+    constructor(props) {
+      super(props);
+      this.goToPage = this.goToPage.bind(this)
+      this.calculateGap = this.calculateGap.bind(this)
+      this.handleScrollEnd = this.handleScrollEnd.bind(this)
+      this._onPageChange = this._onPageChange.bind(this)
+    }
+
     componentWillMount() {
         this.calculateGap(this.props);
     }

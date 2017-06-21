@@ -38,6 +38,7 @@ class FeedPage extends Component {
     this._clearFilter=this._clearFilter.bind(this);
     this._onPickBodyType=this._onPickBodyType.bind(this);
     this.goToAddNewItem=this.goToAddNewItem.bind(this);
+    this.closeModal=this.closeModal.bind(this);
     this.state = {
       name: '',
       searchTerm: '',
@@ -107,6 +108,13 @@ class FeedPage extends Component {
     this.props.navigateTo('myBodyMeasure')
   }
 
+  closeModal() {
+    console.log('bam')
+    this.props.logEvent('Feedscreen', {name: 'Hard close bodyType modal'});
+    this.props.hideBodyTypeModal()
+
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -119,7 +127,7 @@ class FeedPage extends Component {
             }
           </View>
           <MainView navigateTo={this.props.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
-          <Modal animationType='slide' visible={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.props.hideBodyTypeModal}>
+          <Modal animationType='slide' visible={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
             <BodyTypePicker onPick={this._onPickBodyType}/>
           </Modal>
           <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
