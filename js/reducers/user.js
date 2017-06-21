@@ -1,4 +1,4 @@
-import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN, SET_INVITATION_IS_USED, SET_INVITATION_SHARE_TOKEN, HIDE_TUTORIAL } from '../actions/user';
+import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN, SET_INVITATION_IS_USED, SET_INVITATION_SHARE_TOKEN, HIDE_TUTORIAL, HIDE_BODY_MODAL} from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -15,6 +15,7 @@ const initialState = {
   invitation_is_used: false,
   invitation_share_token: -1,
   showTutorial: true,
+  showBodyModal: true
 };
 
 // Action Handlers
@@ -23,6 +24,12 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       showTutorial: false
+    };
+  },
+  [HIDE_BODY_MODAL]: (state, action) => {
+    return {
+      ...state,
+      showBodyModal: false
     };
   },
   [SET_USER]: (state, action) => {
@@ -68,7 +75,8 @@ const ACTION_HANDLERS = {
       ...initialState,
       invitation_token: state.invitation_token,
       invitation_is_used: state.invitation_is_used,
-      showTutorial: state.showTutorial
+      showTutorial: state.showTutorial,
+      showBodyModal: state.showBodyModal
     };
   }
 }

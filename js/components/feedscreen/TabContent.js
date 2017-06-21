@@ -18,7 +18,7 @@ import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import _ from 'lodash';
-import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage } from '../../actions';
+import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
 
@@ -112,8 +112,9 @@ class TabContent extends BaseComponent {
 
   handleScroll(event) {
     if(this.props.cardNavigationStack.index === 0) {
-      if (!this.props.hasUserSize) {
+      if (this.props.showBodyModal) {
         this.scrollCallAsync(event);
+        this.props.clearBodyModal()
       } else {
         const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
         const contentSizeHeight = event.nativeEvent.contentSize.height;
@@ -353,6 +354,7 @@ function bindActions(dispatch) {
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     getFeed: (query) => dispatch(getFeed(query)),
     loadMore: () => dispatch(loadMore()),
+    clearBodyModal: () => dispatch(clearBodyModal()),
     showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),
   };
 }
@@ -370,7 +372,8 @@ const mapStateToProps = state => {
     user_gender: state.user.gender,
     cardNavigationStack: state.cardNavigation,
     shareToken: state.user.invitation_share_token,
-    userName: state.user.name
+    userName: state.user.name,
+    showBodyModal: state.user.showBodyModal
   }
 };
 
