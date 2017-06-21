@@ -2,15 +2,18 @@ import { SHOW_PARIS_BOTTOM_MESSAGE, HIDE_PARIS_BOTTOM_MESSAGE, SHOW_PARIS_ADJUST
 
 const initialState = {
   messageBottom: null,
+  messageBottomTime: null,
   messageAdjustable: null
 };
 
 export default function (state = initialState, action) {
   switch(action.type){
     case SHOW_PARIS_BOTTOM_MESSAGE:
+      console.log('payload',action.payload)
     return {
       ...state,
-      messageBottom: action.payload,
+      messageBottom: action.payload.message,
+      messageBottomTime: action.payload.time,
     };
     case HIDE_PARIS_BOTTOM_MESSAGE:
       return {

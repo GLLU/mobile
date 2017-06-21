@@ -10,7 +10,8 @@ import {
   Platform,
   Animated,
   RefreshControl,
-  View
+  View,
+  NetInfo
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
@@ -22,9 +23,7 @@ import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showPar
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
 
-
 const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const LOADER_HEIGHT = 30;
 
 class TabContent extends BaseComponent {
@@ -72,7 +71,9 @@ class TabContent extends BaseComponent {
   componentDidMount() {
     let that = this
     setInterval(function(){ that.handleScrollPositionForVideo(); }, 1000);
-    //this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`);
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null }
+    );
   }
 
   componentWillReceiveProps(nextProps) {

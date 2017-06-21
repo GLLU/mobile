@@ -42,7 +42,6 @@ class LikeView extends Component {
 
   constructor(props) {
     super(props);
-    console.log('propsLikeView',props)
     this.state = {
       isLiked: props.item.liked,
       likes: props.item.likes
