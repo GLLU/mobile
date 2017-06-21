@@ -45,7 +45,8 @@ import { setUser,
   createInvitationCode,
   clearTutorial,
   hideTutorial,
-  requestInvitation
+  requestInvitation,
+  clearBodyModal
   } from './user';
 
 export {
@@ -66,6 +67,7 @@ export {
   createLookItem,
   selectLookItem,
   updateLookItem,
+  clearBodyModal,
   publishLookItem,
   editTag,
   setTagPosition,

@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
+export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const SET_INVITATION_TOKEN = 'SET_INVITATION_TOKEN';
@@ -356,7 +357,6 @@ export function logout() {
 
 
 export function clearTutorial() {
-  console.log('clear action')
   return (dispatch, getState) => {
     dispatch(hideTutorial())
   };
@@ -366,6 +366,21 @@ export function hideTutorial() {
   return (dispatch) => {
     dispatch({
       type: HIDE_TUTORIAL,
+    });
+  };
+}
+
+export function clearBodyModal() {
+  console.log('clear action')
+  return (dispatch, getState) => {
+    dispatch(hideBodyModal())
+  };
+}
+
+export function hideBodyModal() {
+  return (dispatch) => {
+    dispatch({
+      type: HIDE_BODY_MODAL,
     });
   };
 }
