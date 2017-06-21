@@ -121,7 +121,6 @@ export default class ButtonsBar extends BaseComponent {
   render() {
     return (
     <View style={[styles.container, styles['row']]}>
-
       <View style={[styles.rightContainer, styles[this.props.direction]]} >
         { this.props.lookType === 'video' ? this.renderVideoItems() : null }
         <LikeButton isLiked={this.props.isLiked} likes={this.props.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />

@@ -11,7 +11,6 @@ export default class LikeButton extends Component {
     super(props);
     this._onNumberPress = this._onNumberPress.bind(this);
     this._onIconPress = this._onIconPress.bind(this);
-    console.log('propsButton',props)
     this.state = {
       isLiked: props.isLiked,
       likes: props.likes
