@@ -21,6 +21,8 @@ import VideoWithCaching from "../common/media/VideoWithCaching";
 import SpinnerClothing from '../loaders/SpinnerClothing';
 import ImageWrapper from "../common/media/ImageWrapper";
 import asScreen from "../common/containers/Screen"
+const arrowDown = require('../../../images/icons/arrow_down.png');
+const arrowUp = require('../../../images/icons/arrow_up.png');
 
 const config = {
   velocityThreshold: 0.3,
@@ -51,6 +53,8 @@ class LooksScreen extends Component {
     this._goToProfile=this._goToProfile.bind(this);
     this.onToggleDrawer=this.onToggleDrawer.bind(this);
     this._toggleLike=this._toggleLike.bind(this);
+    this.renderUpArrow=this.renderUpArrow.bind(this);
+    this.renderDownArrow=this.renderDownArrow.bind(this);
     const flatLook=this.props.navigation.state.params
     this.state = {
       flatLook: this.props.navigation.state.params,
@@ -105,18 +109,14 @@ class LooksScreen extends Component {
   }
 
   _toggleLike(isLiked, likes) {
-    console.log('likes',likes)
-    console.log('isLiked',isLiked)
     this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
     const { flatLook } = this.state
     if (isLiked) {
       let data = {id: flatLook.id, likes: likes, liked: true}
-      console.log('data isLiked',data)
       this.props.likeUpdate(data);
     } else {
 
       let data = {id: flatLook.id, likes: likes, liked: false}
-      console.log('data is not Liked',data)
       this.props.unLikeUpdate(data);
     }
   }
@@ -191,6 +191,7 @@ class LooksScreen extends Component {
   }
 
   renderVideo(look, index) {
+    const showShowArrow = this.shouldRenderArrows()
     return (
       <GestureRecognizer
         key={look.originalIndex !==undefined ? look.originalIndex : -1}
@@ -224,11 +225,49 @@ class LooksScreen extends Component {
           lookType={"video"}
           onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
         />
+        {showShowArrow ? this.renderUpArrow() : null}
+        {showShowArrow ? this.renderDownArrow() : null}
       </GestureRecognizer>
     )
   }
 
+  shouldRenderArrows() {
+    if(this.state.showAsFeed) {
+      const {meta: {total}} = this.props;
+      return total > 2
+    } else {
+      return false
+    }
+  }
+
+  renderUpArrow() {
+    if(this.state.currScrollIndex !== 0) {
+      return (
+        <View style={{position: 'absolute', top: 0, width: width, height: 30}}>
+          <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_DOWN')} style={{width: 50, alignSelf: 'center'}}>
+            <Image source={arrowUp} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+  }
+
+  renderDownArrow() {
+    return (
+
+      <View style={{position: 'absolute', bottom: 0, width: width, height: 30}}>
+        <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_UP')} style={{width: 50, alignSelf: 'center'}}>
+           <Image source={arrowDown} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+        </TouchableOpacity>
+      </View>
+
+
+      )
+  }
+
   renderImage(look, index) {
+    const showShowArrow = this.shouldRenderArrows()
+    console.log('showShowArrow',showShowArrow)
     return (
       <GestureRecognizer
         key={look.originalIndex!==undefined ? look.originalIndex : -1}
@@ -257,6 +296,8 @@ class LooksScreen extends Component {
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                 onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
+              {showShowArrow ? this.renderUpArrow() : null}
+              {showShowArrow ? this.renderDownArrow() : null}
             </ImageWrapper>
       </GestureRecognizer>
     )
