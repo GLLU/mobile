@@ -109,10 +109,8 @@ class FeedPage extends Component {
   }
 
   closeModal() {
-    console.log('bam')
     this.props.logEvent('Feedscreen', {name: 'Hard close bodyType modal'});
     this.props.hideBodyTypeModal()
-
   }
 
   render() {
