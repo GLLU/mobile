@@ -38,10 +38,6 @@ class SignUpEmailButton extends Component {
     onPress: _.noop
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <View style={[styles.container, styles.center, styles.btn]}>

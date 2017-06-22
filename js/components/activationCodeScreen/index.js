@@ -13,7 +13,7 @@ import {
   PRIVACY_URL,
 } from '../../constants';
 import { emailRule, passwordRule } from '../../validators';
-import SplashButton from "./SplashButton";
+import SolidButton from "../common/buttons/SolidButton";
 import {NavigationActions} from "react-navigation";
 import asScreen from "../common/containers/Screen"
 
@@ -159,7 +159,7 @@ class ActivationCodeScreen extends Component {
               </InputGroup>
             </Row>
           </Grid>
-          <SplashButton style={[styles.formBtn ,styles.validationPassed ]} label='Submit' onPress={this.handleSigninPress}/>
+          <SolidButton style={[styles.formBtn ,styles.validationPassed ]} label='Submit' onPress={this.handleSigninPress}/>
           <View style={styles.centerBox}>
             <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Don't have code? <Text style={[styles.alreadyTxt, {fontWeight: '600', opacity: 10}]}>Apply for code</Text></Text>
             <TouchableOpacity onPress={this.renderGetCode.bind(this)}>
@@ -213,7 +213,7 @@ if(this.state.renderThanksYou) {
             </InputGroup>
           </Row>
         </Grid>
-        <SplashButton style={[styles.formBtn, styles.validationPassed]} label='Ask for Code' onPress={()=> this.handleRequestCodePress()}/>
+        <SolidButton style={[styles.formBtn, styles.validationPassed]} label='Ask for Code' onPress={()=> this.handleRequestCodePress()}/>
         <View style={styles.centerBox}>
           <Text style={[styles.alreadyTxt, {opacity: 0.8}]}>Already have a code?</Text>
           <TouchableOpacity onPress={this.renderEnterCode.bind(this)}>
