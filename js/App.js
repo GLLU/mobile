@@ -7,8 +7,7 @@ import Modal from 'react-native-modalbox';
 import AppNavigator from './AppNavigator';
 
 import theme from './themes/base-theme';
-import Spinner from "./components/loaders/Spinner";
-
+import SpinnerSwitch from './components/loaders/SpinnerSwitch';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -38,15 +37,19 @@ class App extends Component {
   componentDidMount() {
     CodePush.sync({ updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE },
       (status) => {
+        console.log('status',status)
         switch (status) {
           case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+            console.log('download')
             this.setState({ showDownloadingModal: true });
             this._modal.open();
             break;
           case CodePush.SyncStatus.INSTALLING_UPDATE:
+            console.log('installing')
             this.setState({ showInstalling: true });
             break;
           case CodePush.SyncStatus.UPDATE_INSTALLED:
+            console.log('installed')
             this._modal.close();
             this.setState({ showDownloadingModal: false });
             break;
@@ -64,9 +67,7 @@ class App extends Component {
   render() {
     if (this.state.showDownloadingModal) {
       return (
-        <Container style={{ backgroundColor: theme.defaultBackgroundColor }}>
-          <StyleProvider style={getTheme(theme)}>
-          <Content style={styles.container}>
+        <View style={{ backgroundColor: 'white' ,flex: 1}}>
             <Modal
               style={[styles.modal, styles.modal1]}
               backdrop={false}
@@ -79,7 +80,7 @@ class App extends Component {
                 {this.state.showInstalling ?
                   <Text
                     style={{
-                      color: theme.brandPrimary,
+                      color: 'white',
                       textAlign: 'center',
                       marginBottom: 15,
                       fontSize: 15,
@@ -89,15 +90,14 @@ class App extends Component {
                   </Text> :
                   <View
                     style={{
-                      flex: 1,
                       alignSelf: 'stretch',
                       justifyContent: 'center',
-                      padding: 20,
+                      padding: 20
                     }}
                   >
                     <Text
                       style={{
-                        color: theme.brandPrimary,
+                        color: 'black',
                         textAlign: 'center',
                         marginBottom: 15,
                         fontSize: 15,
@@ -105,22 +105,17 @@ class App extends Component {
                     >
                       Downloading update... {`${parseInt(this.state.downloadProgress, 10)} %`}
                     </Text>
-                    <Spinner
-                      color="theme.brandPrimary"
-                      progress={parseInt(this.state.downloadProgress, 10)}
-                    />
+
                   </View>
                 }
               </View>
             </Modal>
-          </Content>
-          </StyleProvider>
-        </Container>
+          </View>
       );
     }
 
     return <AppNavigator/>;
   }
 }
-
+App = CodePush(App);
 export default App;
