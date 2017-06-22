@@ -7,9 +7,10 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case UPDATE_BALANCE:
+      const balance = action.payload.wallet.amount
       return {
         ...state,
-        ...action.payload
+        balance
       };
     default:
       return state;
