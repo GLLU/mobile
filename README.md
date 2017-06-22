@@ -47,4 +47,4 @@ It'll take significantly less time to clone.
 - To update Release you first need to update the staging version:
      code-push release-react infash android (for IOS just change to IOS)
 - If everything is ok you can promote the update to production:
-     code-push promote infash Production Staging
+     code-push promote infash Staging Production
