@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
 import Video from 'react-native-video';
 import cachedWrapper from './CachedComponentWrapper'
 import listenToAppState from '../eventListeners/AppStateListener'
 import IsOnScreenChecker from './IsOnScreenChecker'
 import { debounce } from "lodash";
 import Spinner from "../../loaders/Spinner";
+
+const styles = StyleSheet.create({
+  loaderContainer:{
+    position: 'absolute',
+    top: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+});
 
 class VideoWithCaching extends Component {
 
@@ -50,23 +59,39 @@ class VideoWithCaching extends Component {
     },500)
   };
 
-  render() {
+  renderLoader = () => {
+    if (this.state.isPlaying) {
+      return null;
+    }
+    if (this.props.preview) {
+      return (
+        <Image source={{uri: this.props.preview}} style={[this.props.style, styles.loaderContainer]}>
+          <Spinner color='grey'/>
+        </Image>
+      )
+    }
+    return (
+      <View style={[this.props.style, styles.loaderContainer]}>
+        <Spinner color='grey'/>
+      </View>
+    )
+  };
+
+  renderVideo = () => {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
+    if (!this.props.isCaching && this.state.repeat && this.props.isOnScreen) {
+      return <Video {...this.props} source={formattedSource} onprogress={this.onVideoStartsPlaying}
+                    ref={component => this._root = component}/>
+    }
+    return null;
+  }
+
+  render() {
     return (
       <View>
-        {
-          !this.state.isPlaying ?
-            <Image source={{uri:this.props.preview}} style={[this.props.style,{position:'absolute', top:0, justifyContent:'center',alignItems:'center'}]}>
-              <Spinner color='grey'/>
-            </Image>:
-            null
-        }
-        {
-          !this.props.isCaching && this.state.repeat && this.props.isOnScreen?
-            <Video {...this.props} source={formattedSource} onprogress={this.onVideoStartsPlaying} ref={component => this._root = component}/>:
-            null
-        }
+        {this.renderLoader()}
+        {this.renderVideo()}
       </View>
     )
   }
