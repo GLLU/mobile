@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class LetsGLLUButton extends Component {
+class SolidButton extends Component {
 
   static propTypes = {
     label: React.PropTypes.string.isRequired,
@@ -50,4 +50,4 @@ class LetsGLLUButton extends Component {
   }
 }
 
-export default LetsGLLUButton;
+export default SolidButton;

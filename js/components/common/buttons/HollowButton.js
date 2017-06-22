@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class SignUpEmailButton extends Component {
+class HollowButton extends Component {
 
   static propTypes = {
     onPress: React.PropTypes.func
@@ -49,4 +49,4 @@ class SignUpEmailButton extends Component {
   }
 }
 
-export default SignUpEmailButton;
+export default HollowButton;
