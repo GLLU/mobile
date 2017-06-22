@@ -96,6 +96,12 @@ export default reduxApi({
       method: 'get'
     }
   },
+  wallet: {
+    url: '/users/:id/wallet',
+    options: {
+      method: 'get'
+    }
+  },
   publish: {
     url: '/looks/:look_id/publish',
     options: {

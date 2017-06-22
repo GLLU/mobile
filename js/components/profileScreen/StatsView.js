@@ -39,12 +39,23 @@ class StatsView extends Component {
   }
 
   renderBalance() {
-    return (
-      <TouchableOpacity style={styles.statsTotal} onPress={this.props.handleBalancePress}>
-        <Text style={[styles.text, styles.number]}>$0</Text>
-        <Text style={styles.text}>Balance</Text>
-      </TouchableOpacity>
-    )
+    let { balance } = this.props
+    if(balance === -1) {
+      return (
+        <TouchableOpacity style={styles.statsTotal} onPress={this.props.handleBalanceNotAvailablePress}>
+          <Text style={[styles.text, styles.number, {fontSize: 10}]}>Currently not available</Text>
+          <Text style={styles.text}>Balance</Text>
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity style={styles.statsTotal} onPress={this.props.handleBalancePress}>
+          <Text style={[styles.text, styles.number]}>${`${balance}`}</Text>
+          <Text style={styles.text}>Balance</Text>
+        </TouchableOpacity>
+      )
+    }
+
   }
 
   render() {

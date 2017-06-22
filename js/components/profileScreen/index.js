@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks, getUserBalance } from '../../actions';
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import SelectPhoto from '../common/SelectPhoto';
@@ -42,6 +42,7 @@ class ProfileScreen extends Component {
     this.handleFollowersPress = this.handleFollowersPress.bind(this);
     this.handleFollowingPress = this.handleFollowingPress.bind(this);
     this.handleBalancePress = this.handleBalancePress.bind(this);
+    this.handleBalanceNotAvailablePress = this.handleBalanceNotAvailablePress.bind(this);
     this.handleScrollUserLooks = this.handleScrollUserLooks.bind(this)
     this.loadMoreUserLooks = this.loadMoreUserLooks.bind(this)
     this.state = {
@@ -54,7 +55,8 @@ class ProfileScreen extends Component {
       stats: currUserId === props.stats.user_id ? props.stats : {},
       userLooks: currUserId === props.currLookScreenId ? props.userLooks : [],
       meta: currUserId === props.currLookScreenId ? props.meta : {total_count: 0},
-      isLoading: currUserId === props.currLookScreenId
+      isLoading: currUserId === props.currLookScreenId,
+      balance: props.balance
 
     }
   }
@@ -65,6 +67,9 @@ class ProfileScreen extends Component {
     }
     if(nextProps.currLookScreenId === this.state.userId && nextProps.userLooks !== this.state.userLooks){
       this.setState({userLooks: nextProps.userLooks, loadingMore: false, meta: this.props.meta})
+    }
+    if(this.state.isMyProfile && this.state.balance !== nextProps.balance) {
+      this.setState({balance: nextProps.balance})
     }
   }
 
@@ -94,6 +99,10 @@ class ProfileScreen extends Component {
       })
     }
     this.props.getStats(this.state.userId);
+
+    if(this.state.isMyProfile){
+      this.props.getUserBalance(this.state.userId);
+    }
   }
 
   handleSettingsPress() {
@@ -159,6 +168,8 @@ class ProfileScreen extends Component {
             onFollowersPress={this.handleFollowersPress}
             onFollowingPress={this.handleFollowingPress}
             handleBalancePress = {this.handleBalancePress}
+            handleBalanceNotAvailablePress = {this.handleBalanceNotAvailablePress}
+            balance={this.state.balance}
           />
         </View>
       )
@@ -241,7 +252,17 @@ class ProfileScreen extends Component {
 
   handleBalancePress() {
     this.props.logEvent('ProfileScreen', {name: 'Wallet Pressed'});
-    this.props.showParisBottomMessage(`Hey, you can withdraw the reward once you reach at least US$50.00`);
+    if(this.state.balance < 50) {
+      this.props.showParisBottomMessage(`Hey, you can withdraw the reward once you reach at least US$50.00`);
+    } else {
+      this.props.showParisBottomMessage(`Hey, to withdraw please Contact us`);
+    }
+
+  }
+
+  handleBalanceNotAvailablePress() {
+    this.props.logEvent('ProfileScreen', {name: 'Wallet Pressed Not Available'});
+    this.props.showParisBottomMessage(`Sorry, We are having problems with our servers, please check again shortly`);
   }
 
   _renderLoadMore() {
@@ -348,6 +369,7 @@ class ProfileScreen extends Component {
 function bindAction(dispatch) {
   return {
     getStats: (id) => dispatch(getStats(id)),
+    getUserBalance: (id) => dispatch(getUserBalance(id)),
     getUserBodyType: (data) => dispatch(getUserBodyType(data)),
     addNewLook: (imagePath) => dispatch(addNewLook(imagePath)),
     editNewLook: (id) => dispatch(editNewLook(id)),
@@ -365,6 +387,7 @@ const mapStateToProps = state => {
   return {
     myUser: state.user,
     stats: state.stats,
+    balance: state.wallet.balance,
     hasUserSize,
     user_size: user_size,
     currLookScreenId: state.userLooks.currId,
