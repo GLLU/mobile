@@ -2,9 +2,7 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text } from 'react-native';
-import {  Button, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
-import ImagePicker from 'react-native-image-crop-picker';
-import ImageWithTags from '../common/ImageWithTags';
+import { Grid, Row, Col } from 'native-base';
 import TagInput from './forms/TagInput';
 import BrandUrlInput from './forms/BrandUrlInput';
 import Gllu from '../common';
@@ -21,11 +19,7 @@ import _ from 'lodash';
 import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
-import VideoWithTags from '../common/VideoWithTags';
 import Utils from '../../utils';
-
-const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
-const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 import WantMoreMony from '../../../images/upload/want-more-money.png';
 const deviceWidth = Dimensions.get('window').width;
 const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;

@@ -6,7 +6,6 @@ import { addNewLook } from '../../actions';
 import SocialShare from '../../lib/social';
 import Gllu from '../common';
 import glluTheme from '../../themes/gllu-theme';
-import SelectPhoto from '../common/SelectPhoto';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import {openCamera} from '../../lib/camera/CameraUtils'
 import finishPhoto from '../../../images/upload/finish-upload-look.png'
