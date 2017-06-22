@@ -9,9 +9,7 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
-import glluTheme from '../../themes/gllu-theme';
 import _ from 'lodash';
-import Gllu from '../common';
 import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');

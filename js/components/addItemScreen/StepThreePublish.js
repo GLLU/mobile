@@ -2,12 +2,10 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text } from 'react-native';
-import {  Button, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
-import ImagePicker from 'react-native-image-crop-picker';
-import ImageWithTags from '../common/ImageWithTags';
+import { Grid, Row, Col } from 'native-base';
 import TagInput from './forms/TagInput';
 import BrandUrlInput from './forms/BrandUrlInput';
-import Gllu from '../common';
+import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import BaseComponent from '../common/base/BaseComponent';
 import {
     createLookItem,
@@ -21,11 +19,7 @@ import _ from 'lodash';
 import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
-import VideoWithTags from '../common/VideoWithTags';
 import Utils from '../../utils';
-
-const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
-const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 import WantMoreMony from '../../../images/upload/want-more-money.png';
 const deviceWidth = Dimensions.get('window').width;
 const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
@@ -271,10 +265,10 @@ class StepThreePublish extends BaseComponent {
                     </Text>
                   </View>
                   <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
-                    <Gllu.Button
+                    <NativeBaseButton
                       onPress={this.handleOkPress.bind(this)}
                       style={{alignSelf: 'center', width: 200}}
-                      text="OK. Let's do it"
+                      label="OK. Let's do it"
                     />
                     <Text style={styles.link} onPress={this.handleContinuePress.bind(this)}>
                       Continue Anyway
@@ -394,10 +388,10 @@ class StepThreePublish extends BaseComponent {
             {this.renderBrandsUrl()}
           </Row>
           <Row style={[styles.row, {height: 100}]}>
-            <Gllu.Button
+            <NativeBaseButton
               disabled={false}
               onPress={() => this.handlePublishPress()}
-              text={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
+              label={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
           </Row>
         </Grid>

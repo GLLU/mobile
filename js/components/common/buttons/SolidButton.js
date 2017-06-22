@@ -28,9 +28,10 @@ const styles = StyleSheet.create({
   }
 });
 
-class SignUpEmailButton extends Component {
+class SolidButton extends Component {
 
   static propTypes = {
+    label: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func
   }
 
@@ -38,19 +39,15 @@ class SignUpEmailButton extends Component {
     onPress: _.noop
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
-      <View style={[styles.container, styles.center, styles.btn]}>
+      <View style={[styles.center, this.props.style]}>
         <TouchableHighlight onPress={this.props.onPress}>
-          <Text style={styles.text}>Signup with Email</Text>
+          <Text style={styles.text}>{this.props.label}</Text>
         </TouchableHighlight>
       </View>
     );
   }
 }
 
-export default SignUpEmailButton;
+export default SolidButton;

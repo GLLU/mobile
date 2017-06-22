@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { Text,StyleSheet, Dimensions, Image, UIManager, LayoutAnimation } from 'react-native'
 import { Button } from 'native-base';
-import BaseComponent from './base/BaseComponent';
-import FontSizeCalculator from './../../calculators/FontSize';
-import glluTheme from '../../themes/gllu-theme';
-import * as _ from "lodash";
+import BaseComponent from '../base/BaseComponent';
+import FontSizeCalculator from '../../../calculators/FontSize';
 const screen = Dimensions.get('window');
-
-const ACTIVE_COLOR = '#05d7b2';
-const INACTIVE_COLOR = '#ADADAD';
 
 const styles = StyleSheet.create({
   button: {
@@ -22,47 +17,50 @@ const styles = StyleSheet.create({
   },
 });
 
-class GlluButton extends BaseComponent {
+class NativeBaseButton extends BaseComponent {
   static propTypes = {
+    color: React.PropTypes.string,
+    disabledColor: React.PropTypes.string,
     style: React.PropTypes.object,
-    text: React.PropTypes.string,
+    label: React.PropTypes.string,
     disabled: React.PropTypes.bool,
     onPress: React.PropTypes.func,
   }
 
-  constructor(props) {
-    super(props);
-  }
+  static defaultProps={
+    color: '#00D7B2',
+    disabledColor: '#b5b5b5',
+    style: {},
+    textStyle: {},
+    label: '',
+  };
 
-  render() {
-    const bgColorBtn = this.props.disabled ? glluTheme.btnDisabledBg : glluTheme.btnPrimaryBg;
-
-    let style ={
+  getStyle=(style,screenWidth)=>{
+    const defaultStyle ={
       marginTop: 20,
       marginBottom: 20,
-      backgroundColor:bgColorBtn,
+      backgroundColor:this.props.disabled ? this.props.disabledColor : this.props.color,
       height: 50,
-      width: screen.width / 2 - 28,
+      width: screenWidth / 2 - 28,
       borderRadius: 0,
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center'
     };
-    Object.assign(style,this.props.style);
-    const textStyle = [styles.text, this.props.textStyle];
+    return {
+      ...defaultStyle,
+      ...style
+    }
+  };
 
+  render() {
+    const style = this.getStyle(this.props.style,screen.width);
     return (
       <Button disabled={this.props.disabled} transparent onPress={this.props.onPress} style={style}>
-          <Text style={textStyle}>{this.props.text}</Text>
+          <Text style={[styles.text, this.props.textStyle]}>{this.props.label}</Text>
       </Button>
     );
   }
 }
 
-GlluButton.defaultProps = {
-  style: {},
-  textStyle: {},
-  text: '',
-};
-
-export default GlluButton;
+export default NativeBaseButton;
