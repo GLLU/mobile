@@ -5,6 +5,7 @@ import { loadCategories, loadBrands, loadOccasionTags } from './filters';
 import { completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
+import { getUserBalance } from './wallet';
 import { getLookLikes, initLookLikes } from './lookLikes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
 import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications, clearNewNotifications }  from './notifications';
@@ -68,6 +69,7 @@ export {
   selectLookItem,
   updateLookItem,
   clearBodyModal,
+  getUserBalance,
   publishLookItem,
   editTag,
   setTagPosition,
