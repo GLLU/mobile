@@ -4,7 +4,7 @@ import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'nati
 import { connect } from 'react-redux';
 import { addNewLook } from '../../actions';
 import SocialShare from '../../lib/social';
-import Gllu from '../common';
+import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import glluTheme from '../../themes/gllu-theme';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import {openCamera} from '../../lib/camera/CameraUtils'
@@ -134,10 +134,10 @@ class FinishLookPage extends Component {
             </Button>
           </View>
           <View style={{flex: 2}}>
-            <Gllu.Button
+            <NativeBaseButton
               onPress={this.handleGlluAgainPress.bind(this)}
               style={{alignSelf: 'center', width: 200}}
-              text="Post another look!"
+              label="Post another look!"
             />
           </View>
           <TouchableOpacity

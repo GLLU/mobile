@@ -5,7 +5,7 @@ import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableO
 import { Grid, Row, Col } from 'native-base';
 import TagInput from './forms/TagInput';
 import BrandUrlInput from './forms/BrandUrlInput';
-import Gllu from '../common';
+import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import BaseComponent from '../common/base/BaseComponent';
 import {
     createLookItem,
@@ -265,10 +265,10 @@ class StepThreePublish extends BaseComponent {
                     </Text>
                   </View>
                   <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
-                    <Gllu.Button
+                    <NativeBaseButton
                       onPress={this.handleOkPress.bind(this)}
                       style={{alignSelf: 'center', width: 200}}
-                      text="OK. Let's do it"
+                      label="OK. Let's do it"
                     />
                     <Text style={styles.link} onPress={this.handleContinuePress.bind(this)}>
                       Continue Anyway
@@ -388,10 +388,10 @@ class StepThreePublish extends BaseComponent {
             {this.renderBrandsUrl()}
           </Row>
           <Row style={[styles.row, {height: 100}]}>
-            <Gllu.Button
+            <NativeBaseButton
               disabled={false}
               onPress={() => this.handlePublishPress()}
-              text={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
+              label={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
           </Row>
         </Grid>
