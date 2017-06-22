@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Animated, View, Text, StyleSheet, Modal, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import {
+  Animated, View, Text, StyleSheet, Modal, TouchableWithoutFeedback, Dimensions,
+  KeyboardAvoidingView
+} from 'react-native';
 import { noop } from 'lodash'
 
 const {height} = Dimensions.get('window')
@@ -35,14 +38,14 @@ export default class BottomHalfScreenModal extends Component {
         animationType='slide'
         transparent={true}
         onRequestClose={this._onRequestClose}>
-        <View style={[{height: height}, this.props.style, {flexDirection: 'column-reverse'}]}>
+        <KeyboardAvoidingView behavior='padding' style={[{height: height}, this.props.style, {flexDirection: 'column-reverse'}]}>
           <View style={{backgroundColor: 'white', flex: 1}}>
             {this.props.children}
           </View>
           <TouchableWithoutFeedback onPress={this._onRequestClose}>
             <View style={{flex: 1}}/>
           </TouchableWithoutFeedback>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     );
   }
