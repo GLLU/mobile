@@ -24,7 +24,7 @@
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.4",
     "react-native-autocomplete-input": "^3.2.0",
-    "react-native-code-push": "2.0.3-beta",
+    "react-native-code-push": "^2.1.0-beta",
     "react-native-config": "^0.4.2",
     "react-native-easy-grid": "^0.1.8",
     "react-native-extra-dimensions-android": "^0.20.1",
