@@ -18,9 +18,9 @@ import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from "lodash";
 import VideoWithCaching from "../common/media/VideoWithCaching";
-import SpinnerClothing from '../loaders/SpinnerClothing';
 import ImageWrapper from "../common/media/ImageWrapper";
 import asScreen from "../common/containers/Screen"
+import Spinner from "../loaders/Spinner";
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
 
@@ -338,24 +338,25 @@ class LooksScreen extends Component {
   }
 
   renderLoader() {
-    const lookType = this.props.navigation.state.params.coverType
-    if(lookType === 'video') {
-      const avatarUri = this.props.navigation.state.params.avatar.url
-      return (
-        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
-          <Image resizeMode={'stretch'} source={{uri: avatarUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}>
-            <SpinnerClothing />
-          </Image>
-        </View>
-      )
-    } else {
-      const lookUri = this.props.navigation.state.params.uri
-      return (
-        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
-          <Image resizeMode={'stretch'} source={{uri: lookUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}/>
-        </View>
-      )
-    }
+    const navigationPropLook = this.props.navigation.state.params
+    const {preview, coverType, uri, avatar} = navigationPropLook;
+    const previewUri = coverType === 'video' ?
+      preview || avatar.url :
+      uri;
+    return (
+      <View style={{position: 'absolute', top: 0, height: height, width: width}}>
+        <Image resizeMode={'contain'} source={{uri: previewUri}} style={{
+          position: 'absolute',
+          top: 0,
+          height: height,
+          width: width,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Spinner color='grey'/>
+        </Image>
+      </View>
+    )
 
   }
 
