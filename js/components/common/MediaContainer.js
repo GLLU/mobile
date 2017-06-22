@@ -69,8 +69,8 @@ class MediaContainer extends PureComponent {
     const { look } = this.props
     if (isLiked) {
       let data = {id: look.id, likes: look.likes + 1, liked: true}
-      //let msg = likeSentences[Math.floor(Math.random()*likeSentences.length)];
-      //this.props.sendParisMessage(msg);
+      let msg = likeSentences[Math.floor(Math.random()*likeSentences.length)];
+      this.props.sendParisMessage(msg);
       this.props.likeUpdate(data);
     } else {
       let data = {id: look.id, likes: look.likes - 1, liked: false}
