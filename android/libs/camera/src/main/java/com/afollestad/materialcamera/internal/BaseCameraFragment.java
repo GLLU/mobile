@@ -136,6 +136,8 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d("martin", "created");
+
         mIsVideoAllowed = MaterialCamera.mAllowVideo;
 // just one line to try and make it works
         mDelayStartCountdown = (TextView) view.findViewById(R.id.delayStartCountdown);
@@ -160,7 +162,12 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
         mButtonVideo.setOnClickListener(this);
         mButtonStillshot.setOnClickListener(this);
         mButtonFacing.setOnClickListener(this);
-        mGallery.setOnClickListener(this);
+
+
+
+        if (mGallery != null){
+            mGallery.setOnClickListener(this);
+        }
         mButtonFlash.setOnClickListener(this);
 
         int primaryColor = getArguments().getInt(CameraIntentKey.PRIMARY_COLOR);
@@ -174,8 +181,13 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
         d = DrawableCompat.wrap(d.mutate());
 
         mButtonFacing.setImageDrawable(d);
-        mGallery.setBackgroundResource(R.drawable.gallery);
-        mRecordIconIndicator.setBackgroundResource(R.drawable.red_circle);
+        if (mGallery != null) {
+            mGallery.setBackgroundResource(R.drawable.gallery);
+        }
+
+        if(mRecordIconIndicator != null) {
+            mRecordIconIndicator.setBackgroundResource(R.drawable.red_circle);
+        }
 
         if (mMediaRecorder != null && mIsRecording) {
             mButtonVideo.setBackgroundResource(R.drawable.red_circle);
@@ -275,6 +287,7 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
         mButtonVideo = null;
         mButtonStillshot = null;
         mButtonFacing = null;
+        mGallery = null;
         mButtonFlash = null;
         mRecordDuration = null;
     }
@@ -282,6 +295,7 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (mInterface != null && mInterface.hasLengthLimit()) {
             if (mInterface.countdownImmediately() || mInterface.getRecordingStart() > -1) {
                 if (mInterface.getRecordingStart() == -1)
@@ -396,7 +410,7 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
     }
 
     public void stopRecordingVideo(boolean reachedZero) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
