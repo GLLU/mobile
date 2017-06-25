@@ -87,13 +87,12 @@ class NavigationBarView extends BaseComponent {
     let file = {};
     file.path = await openCamera(true);
     if(file.path.search(".mp4") > -1) {
-      console.log('filepath: ',file.path)
       file.localPath = file.path
-      file.path = file.path.replace('file://', '')
       file.type = 'look[video]'
     } else {
       file.type = 'look[image]'
     }
+    file.path = file.path.replace('file://', '')
     this.props.addNewItem(file);
   }
 
@@ -101,7 +100,7 @@ class NavigationBarView extends BaseComponent {
     if(Platform.OS !== 'ios') {
       this.openCamera()
     } else {
-      this.props.handleOpenPhotoModal();
+      this.openCamera()
     }
   }
 
