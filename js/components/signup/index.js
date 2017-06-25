@@ -34,6 +34,7 @@ class SignUpPage extends Component {
   constructor(props) {
 
     super(props);
+    this.focusNext=this.focusNext.bind(this);
     this.state = {
       username: '',
       email: '',
@@ -49,6 +50,10 @@ class SignUpPage extends Component {
       confirmPasswordValid: 'times',
       emailValid: 'times',
     };
+  }
+
+  componentDidMount(){
+    this.focusNext('usernameInput');
   }
 
   singupWithEmail() {
@@ -196,7 +201,7 @@ class SignUpPage extends Component {
                     <TextInput
                       placeholder='Username'
                       placeholderTextColor='lightgrey'
-                      autoFocus
+                      ref={c=>this.usernameInput=c}
                       blurOnSubmit={false}
                       onSubmitEditing={()=>this.focusNext('nameInput')}
                       returnKeyType='next'
