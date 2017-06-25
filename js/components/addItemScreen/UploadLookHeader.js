@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   headerContainer: {
 
     top: Platform.OS === 'ios' ? 20 : 10,
-    height: 30,
+    height: 60,
     flexDirection: 'row',
     width: w,
     justifyContent: 'space-around'
@@ -137,8 +137,8 @@ class UploadLookHeader extends BaseComponent {
   renderAddAnotherItemBtn() {
     if(this.props.isVideo) {
       return (
-        <View style={{flexDirection: 'row', marginTop: 10, flex: 1, alignSelf: 'center'}}>
-          <TouchableOpacity onPress={this.props.handleNewItem} style={{height: 30, width: 30,marginTop: 18, backgroundColor: 'rgba(32, 32, 32, 0.8)', alignItems: 'center', alignSelf: 'center', borderRadius: 3, marginRight: 3 }}>
+        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+          <TouchableOpacity onPress={this.props.handleNewItem} style={{height: 30, width: 30, backgroundColor: 'rgba(32, 32, 32, 0.8)', alignItems: 'center', alignSelf: 'center', borderRadius: 3, marginRight: 3 }}>
             <Icon style={{ color: '#F2F2F2'}} name="ios-add" />
           </TouchableOpacity>
           {this.renderVideoItemsBtns()}
@@ -146,7 +146,7 @@ class UploadLookHeader extends BaseComponent {
       )
     } else {
       return (
-        <TouchableOpacity onPress={() => this.props.handleNewItem()} style={{height: 20, width: 100,marginTop: 8, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+        <TouchableOpacity onPress={() => this.props.handleNewItem()} style={{height: 20, width: 100, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
           <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>Tag another Item</Text>
         </TouchableOpacity>
       )
@@ -166,7 +166,7 @@ class UploadLookHeader extends BaseComponent {
       const isSelected = this.props.currItem.id === item.id;
       const isDone = item.brand && item.category !== null
       return (
-        <TouchableOpacity key={index} onPress={() => this.props.setCurrentItem(item)} style={{height: 30, width: 30,marginTop: 18, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderRadius: 3, marginLeft: 3, marginRight: 3 }}>
+        <TouchableOpacity key={index} onPress={() => this.props.setCurrentItem(item)} style={{height: 30, width: 30, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderRadius: 3, marginLeft: 3, marginRight: 3 }}>
           {isDone ? null : <View style={{width: 5, height: 5, borderRadius: 5, backgroundColor: 'red', position: 'absolute', top: 3, right: 3}} />}
           {item.category ? this.renderItemCategorySmallIcon(item, isSelected) : <Text style={{color: isSelected ? '#009688' : 'white', textAlign: 'center', fontSize: 13}}>{`${index}`}</Text>}
         </TouchableOpacity>
@@ -180,7 +180,6 @@ class UploadLookHeader extends BaseComponent {
       categoryIcon = isSelected ? item.category.icon.url_hover : item.category.icon.url;
     } else {
       const iconUrl =  this.getItemIconUrl(item.category);
-      console.log(iconUrl)
       categoryIcon = isSelected ? iconUrl.icon.url_hover : iconUrl.icon.url;
 
     }
@@ -198,9 +197,9 @@ class UploadLookHeader extends BaseComponent {
     const allowContinue = this.getAllowContinue();
     const fgColor = '#F2F2F2';
     return (
-      <View style={{height: 60, width: w}}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity transparent onPress={() => this.props.handleBackButton()} style={{width: 30, height: 30}}>
+      <View style={{marginTop: 30}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <TouchableOpacity transparent onPress={() => this.props.handleBackButton()} style={{width: 30, height: 30, backgroundColor: 'transparent'}}>
             <Icon style={{ color: '#F2F2F2' }} name="ios-arrow-back" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>

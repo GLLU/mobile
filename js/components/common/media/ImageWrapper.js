@@ -9,6 +9,8 @@ class ImageWrapper extends PureComponent {
 
   render() {
     if(this.props.isOnScreen) {
+      console.log('props2',{...this.props})
+
       return(
         <Image {...this.props} cache={true}>
           {this.props.children}

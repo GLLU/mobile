@@ -96,14 +96,6 @@ class NavigationBarView extends BaseComponent {
     this.props.addNewItem(file);
   }
 
-  handleOpenCamera() {
-    if(Platform.OS !== 'ios') {
-      this.openCamera()
-    } else {
-      this.openCamera()
-    }
-  }
-
   render() {
     const notificationBtn = this.state.gotNewNotifications ? gotNotification : emptyNotification;
     return(
@@ -114,7 +106,7 @@ class NavigationBarView extends BaseComponent {
           </TouchableOpacity>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <TouchableOpacity transparent onPress={() => this.handleOpenCamera()} style={styles.btnCamera}>
+          <TouchableOpacity transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </TouchableOpacity>
         </View>

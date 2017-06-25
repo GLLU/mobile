@@ -165,7 +165,7 @@ class MediaContainer extends PureComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <ImageWrapper source={{uri: look.uri, cache: true}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}>
+          <ImageWrapper source={{uri: look.uri}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}>
             {this.renderImageGrid(look, lookHeight)}
           </ImageWrapper>
         </View>
