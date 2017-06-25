@@ -164,6 +164,10 @@ class SignUpPage extends Component {
     this.setState({avatar: image, avatarIcon: 'check'})
   }
 
+  focusNext(value){
+    this[value].focus();
+  }
+
   render() {
     let allValid = this.checkValidations()
     return (
@@ -192,6 +196,10 @@ class SignUpPage extends Component {
                     <TextInput
                       placeholder='Username'
                       placeholderTextColor='lightgrey'
+                      autoFocus
+                      blurOnSubmit={false}
+                      onSubmitEditing={()=>this.focusNext('nameInput')}
+                      returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(username) => this.validateTextInput(username,'username')}/>
                     {this.state.username.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
@@ -200,6 +208,10 @@ class SignUpPage extends Component {
                     <TextInput
                       placeholder='Name'
                       placeholderTextColor='lightgrey'
+                      ref={c=>this.nameInput=c}
+                      blurOnSubmit={false}
+                      onSubmitEditing={()=>this.focusNext('emailInput')}
+                      returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(name) => this.validateTextInput(name,'name')}/>
                     {this.state.name.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
@@ -209,6 +221,10 @@ class SignUpPage extends Component {
                       placeholder='Email'
                       keyboardType='email-address'
                       placeholderTextColor='lightgrey'
+                      ref={c=>this.emailInput=c}
+                      blurOnSubmit={false}
+                      onSubmitEditing={()=>this.focusNext('passwordInput')}
+                      returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(email) => this.validateEmailInput(email)}/>
                     {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
@@ -217,6 +233,7 @@ class SignUpPage extends Component {
                     <TextInput
                       placeholder='Password'
                       placeholderTextColor='lightgrey'
+                      ref={c=>this.passwordInput=c}
                       secureTextEntry={true}
                       style={[styles.formInput]}
                       onChangeText={(password) => this.validatePasswordInput(password)}/>
