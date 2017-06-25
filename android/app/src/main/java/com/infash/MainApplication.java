@@ -73,7 +73,7 @@ public class MainApplication extends Application
                             new ReactVideoPackage(),
                             new ExtraDimensionsPackage(),
                             new VectorIconsPackage(),
-                            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
+                            new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
                             new FBSDKPackage(mCallbackManager)
                     );
                 }

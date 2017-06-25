@@ -83,15 +83,15 @@ class CategoryItem extends Component {
     const iconWidth = itemWidth * 5 / 8;
     const iconHeight = iconWidth * 150 / 170;
     return (
-      <View >
-              <Text style={styles.categoryItemTitle}>{item.name}</Text>
-              <Button
-                transparent
-                onPress={() => this.handlePressItem(item)}
-                style={StyleSheet.flatten(styles.btnCategoryItem)}>
-                {this._renderIcon(item.icon, selected, iconWidth, iconHeight)}
-              </Button>
-            </View>
+      <View>
+          <Button
+            transparent
+            onPress={() => this.handlePressItem(item)}
+            style={StyleSheet.flatten(styles.btnCategoryItem)}>
+            {this._renderIcon(item.icon, selected, iconWidth, iconHeight)}
+          </Button>
+        <Text style={styles.categoryItemTitle}>{item.name}</Text>
+      </View>
     );
   }
 }

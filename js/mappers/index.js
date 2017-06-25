@@ -1,5 +1,5 @@
 import itemMapper from './itemMapper';
-import lookMapper from './lookMapper';
+import lookMapper from './uploadLookMapper';
 import followMapper from './followMapper';
 
 export {

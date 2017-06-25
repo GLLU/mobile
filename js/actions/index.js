@@ -5,12 +5,13 @@ import { loadCategories, loadBrands, loadOccasionTags } from './filters';
 import { completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unLikeUpdate } from './likes';
+import { getUserBalance } from './wallet';
 import { getLookLikes, initLookLikes } from './lookLikes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
 import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications, clearNewNotifications }  from './notifications';
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
-import { getUserLooksData, getUserLooks } from './looks';
+import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
 import { getFeed, resetFeed, loadMore, clearFeed } from './feed';
 import {
   addNewLook,
@@ -45,7 +46,8 @@ import { setUser,
   createInvitationCode,
   clearTutorial,
   hideTutorial,
-  requestInvitation
+  requestInvitation,
+  clearBodyModal
   } from './user';
 
 export {
@@ -66,6 +68,8 @@ export {
   createLookItem,
   selectLookItem,
   updateLookItem,
+  clearBodyModal,
+  getUserBalance,
   publishLookItem,
   editTag,
   setTagPosition,
@@ -104,6 +108,7 @@ export {
   getUserLooks,
   likeUpdate,
   unLikeUpdate,
+  loadMoreUserLooks,
   followUpdate,
   getLookLikes,
   initLookLikes,

@@ -79,7 +79,7 @@ export function clearFeed() {
   };
 }
 
-export function loadMore() {
+export function loadMore(retryCount = 0) {
   return (dispatch, getState) => {
     const state = getState().feed;
     const currPage = state.query.page.number
@@ -96,7 +96,12 @@ export function loadMore() {
           dispatch(setFeedDataQueue({data, query: newState, loadMore: true}));
           resolve(data.looks);
         } else {
-          reject();
+          if(retryCount < 5) {
+            dispatch(loadMore(query, retryCount+1))
+          } else {
+            reject();
+          }
+
         }
       }));
     });

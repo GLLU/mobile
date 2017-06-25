@@ -42,3 +42,9 @@ It'll take significantly less time to clone.
 ## Workflow
 - Every change must be in branch
 - Lint code before commit `npm run eslint js`
+
+## CodePush
+- To update Release you first need to update the staging version:
+     code-push release-react infash android (for IOS just change to IOS)
+- If everything is ok you can promote the update to production:
+     code-push promote infash Staging Production

@@ -5,7 +5,7 @@ import { StyleSheet, Image, Platform, View, Text ,TouchableWithoutFeedback } fro
 import { Col, Grid } from "react-native-easy-grid";
 
 const likeIcon = require('../../../../images/icons/like.png');
-const likedIcon = require('../../../../images/icons/likedGreen.png');
+const likedIcon = require('../../../../images/icons/likedRed.png');
 
 const styles = StyleSheet.create({
   likeContainer: {
@@ -57,7 +57,7 @@ class LikeView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.routeName !== 'feedscreen' && nextProps.item.likes !== this.state.likes) {
+    if(nextProps.item.likes !== this.state.likes) {
       this.setState({isLiked: nextProps.item.liked, likes: nextProps.item.likes})
     }
   }
@@ -68,21 +68,33 @@ class LikeView extends Component {
     }
   }
 
+  getLikesStringFeedView() {
+    let { likes }  = this.state
+    likes = likes.toString()
+    if(likes.length > 4 && likes.length < 7){
+      likes = Math.floor(likes/1000) + 'K'
+    } else if(likes.length === 7){
+      likes = Math.floor(likes/1000000) + 'M'
+    }
+    return likes
+  }
+
   render() {
     const {lookHeight} = this.props;
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
+    const likes = this.getLikesStringFeedView()
     return (
-      <View style={[styles.likeContainer, { marginTop: lookHeight - 30 }]}>
+      <View style={[styles.likeContainer, { marginTop: lookHeight - 30 }, likes.length > 3 ? {width: 60} : null]}>
         <Grid style={{ backgroundColor: 'rgba(0,0,0,0.5)'}}>
           <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
             <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
           </Col>
-          <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}}>
+          <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'center', marginRight: 3}}>
             <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()}>
               <View>
-                <Text style={styles.countLikeLabel}>{`${this.state.likes}`}</Text>
+                <Text style={styles.countLikeLabel}>{`${likes}`}</Text>
               </View>
             </TouchableWithoutFeedback>
           </Col>

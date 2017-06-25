@@ -55,7 +55,8 @@ class ParisMessages extends Component {
   }
 
   componentDidMount(){
-    setTimeout(this.hide, 6500)
+    const time = this.props.messageTime * 1000
+    setTimeout(this.hide, time)
   }
 
   render() {
@@ -82,6 +83,7 @@ function bindActions(dispatch) {
 const mapStateToProps = state => {
   return {
     message: state.paris.messageBottom || '',
+    messageTime: state.paris.messageBottomTime,
     userName: state.user.name
 
   }

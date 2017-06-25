@@ -2,11 +2,10 @@
 
 import React, { Component } from 'react';
 import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text } from 'react-native';
-import {  Button, Thumbnail, H3, Grid, Row, Col, Icon } from 'native-base';
-import ImagePicker from 'react-native-image-crop-picker';
-import ImageWithTags from '../common/ImageWithTags';
+import { Grid, Row, Col } from 'native-base';
 import TagInput from './forms/TagInput';
-import Gllu from '../common';
+import BrandUrlInput from './forms/BrandUrlInput';
+import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import BaseComponent from '../common/base/BaseComponent';
 import {
     createLookItem,
@@ -20,11 +19,7 @@ import _ from 'lodash';
 import { LOOK_STATES } from '../../constants';
 
 import FontSizeCalculator from './../../calculators/FontSize';
-import VideoWithTags from '../common/VideoWithTags';
 import Utils from '../../utils';
-
-const checkboxUncheckIcon = require('../../../images/icons/checkbox-uncheck.png');
-const checkboxCheckedIcon = require('../../../images/icons/checkbox-checked.png');
 import WantMoreMony from '../../../images/upload/want-more-money.png';
 const deviceWidth = Dimensions.get('window').width;
 const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
@@ -142,6 +137,7 @@ class StepThreePublish extends BaseComponent {
       urlOverlayVisible: false,
       description: props.description,
       url: props.url,
+      shouldFocus: false
     }
 
     this.urlDialogShown = false;
@@ -151,11 +147,6 @@ class StepThreePublish extends BaseComponent {
     switch (key) {
       case 'location':
         this.props.addLocation(value);
-        break;
-      case 'url':
-        this.setState({
-          url: value
-        });
         break;
       case 'description':
         this.setState({
@@ -193,9 +184,7 @@ class StepThreePublish extends BaseComponent {
 
   handleOkPress() {
     this.logEvent('UploadLookScreen', { name: 'user came back to edit url'});
-    this.setState({urlOverlayVisible: false}, () => {
-      this.urlText.focus();
-    });
+    this.setState({urlOverlayVisible: false, shouldFocus: true})
   }
 
   handleContinuePress() {
@@ -276,10 +265,10 @@ class StepThreePublish extends BaseComponent {
                     </Text>
                   </View>
                   <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
-                    <Gllu.Button
+                    <NativeBaseButton
                       onPress={this.handleOkPress.bind(this)}
                       style={{alignSelf: 'center', width: 200}}
-                      text="OK. Let's do it"
+                      label="OK. Let's do it"
                     />
                     <Text style={styles.link} onPress={this.handleContinuePress.bind(this)}>
                       Continue Anyway
@@ -342,51 +331,38 @@ class StepThreePublish extends BaseComponent {
 
   renderBrandsUrl() {
 
-    const { items } = this.props
+    const { items } = this.props;
     return _.map(items, (item, index) => {
+      const iconUrl =  item.category.icon ? item.category.icon.url : this.getItemIconUrl(item);
       let url;
       if (item.url) {
         url = item.url;
       } else {
         url = item.brand ? item.brand.url : null;
       }
-      return (
-      <View key={index} style={{flexDirection: 'row'}}>
-          <TextInput
-            ref={ref => this.urlText = ref}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
-            keyboardType='url'
-            style={styles.textInput}
-            placeholder='http://www.infash.com'
-            onChangeText={text => this.updateSelectValue('url', text)}
-            onEndEditing={(event) => this.handleUrlEndEditing(event, item.id)}
-            value={url}/>
-        <View style={{height: 50, padding: 2, backgroundColor: 'white', marginTop: 10, marginBottom: 10}}>
-          <Image source={{uri: item.category.icon.url}} style={[{height: 46, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
-            resizeMode: 'contain',
-            alignSelf: 'center',}]} />
-        </View>
-      </View>
-
-      );
+      return <BrandUrlInput key={index}  itemUrl={url} itemId={item.id} iconUrl={iconUrl} shouldFocus={this.state.shouldFocus} handleUrlEndEditing={(event,text) =>this.handleUrlEndEditing(event,text)} />
     });
+  }
+
+  getItemIconUrl(item) { //Temp function until we will receive it from the server
+   return _.find(this.props.categories, category => category.name === item.name);
   }
 
   renderItemTags() {
     const { items } = this.props
     return _.map(items, (item, index) => {
+      const iconUrl =  item.category.icon ? item.category.icon.url : this.getItemIconUrl(item);
       return (
       <View key={index} style={{flexDirection: 'row'}}>
         <TagInput
-          categoryIcon={item.category.icon.url}
+          categoryIcon={iconUrl}
           itemId={item.id}
           tags={item.tags}
           addItemTag={this.props.addItemTag}
           removeItemTag={this.props.removeItemTag}
         />
         <View style={{height: 40, padding: 2, backgroundColor: 'white', marginTop: 10, marginBottom: 10}}>
-          <Image source={{uri: item.category.icon.url}} style={[{height: 36, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
+          <Image source={{uri: iconUrl}} style={[{height: 36, backgroundColor: 'white', borderLeftWidth: 2,width: 30,
             resizeMode: 'contain',
             alignSelf: 'center',}]} />
         </View>
@@ -412,10 +388,10 @@ class StepThreePublish extends BaseComponent {
             {this.renderBrandsUrl()}
           </Row>
           <Row style={[styles.row, {height: 100}]}>
-            <Gllu.Button
+            <NativeBaseButton
               disabled={false}
               onPress={() => this.handlePublishPress()}
-              text={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
+              label={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
           </Row>
         </Grid>
@@ -443,7 +419,8 @@ const mapStateToProps = state => {
   const isVideo = Utils.isVideo(image)
   return {
     isVideo,
-    image
+    image,
+    categories: state.filters.categories,
   }
 };
 

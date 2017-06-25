@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, Button, Icon, Title, getTheme, StyleProvider } from 'native-base';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, BackAndroid } from 'react-native';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 
@@ -10,12 +10,15 @@ import { saveUserSize } from '../../actions/myBodyMeasure';
 import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
 import asScreen from "../common/containers/Screen"
+import { showBodyTypeModal } from "../../actions/myBodyType";
 
 class MyBodyMeasure extends Component {
   constructor(props) {
     super(props);
     this.handleSaveUserSizePress=this.handleSaveUserSizePress.bind(this);
     this.saveUserSize=this.saveUserSize.bind(this);
+    this.goBack=this.goBack.bind(this);
+    this.logBackEvent=this.logBackEvent.bind(this);
   }
 
   static propTypes = {
@@ -23,6 +26,19 @@ class MyBodyMeasure extends Component {
     currentBodyType: React.PropTypes.object,
     gender: React.PropTypes.string,
     saveUserSize: React.PropTypes.func,
+  }
+
+  componentDidMount() {
+    BackAndroid.addEventListener('BodyMeasureHardwareBackPress', this.logBackEvent);
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('BodyMeasureHardwareBackPress', this.logBackEvent)
+
+  }
+
+  logBackEvent() {
+    this.props.logEvent('BodyMeasureScreen', {name: 'BodyMeasure hardware back button press'});
   }
 
   saveUserSize() {
@@ -45,12 +61,17 @@ class MyBodyMeasure extends Component {
       .catch(err=>console.log(err));
   }
 
+  goBack(){
+    this.props.showBodyTypeModal();
+    this.props.goBack();
+  }
+
   render() {
     return (
       <Container>
         <View style={{height: 50}}>
           <View style={[styles.header,{flexDirection:'row', flex: 1, alignItems:'center'}]}>
-            <Button transparent onPress={this.props.goBack}>
+            <Button transparent onPress={this.goBack}>
               <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back"/>
             </Button>
             <Text style={styles.headerTitle}>My Body Measures</Text>
@@ -79,7 +100,8 @@ class MyBodyMeasure extends Component {
 
 function bindAction(dispatch) {
   return {
-    saveUserSize: (measurements) => dispatch(saveUserSize(measurements))
+    saveUserSize: (measurements) => dispatch(saveUserSize(measurements)),
+    showBodyTypeModal: () => dispatch(showBodyTypeModal())
   };
 }
 

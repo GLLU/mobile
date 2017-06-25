@@ -19,6 +19,7 @@ export function map(look) {
     width: cover ? cover.width : null,
     height: cover ? cover.height : null,
     coverType: look.cover.type,
+    preview: look.cover.thumbnail_url || '',
     avatar: look.user.avatar,
     name: look.user.name,
     username: look.user.username,

@@ -1,7 +1,3 @@
-/*
- this is a Duplicate of LetsGLLUButton and should be refactored
- */
-
 import React, { Component } from 'react';
 import * as _ from 'lodash';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
@@ -32,32 +28,25 @@ const styles = StyleSheet.create({
   }
 });
 
-class SplashButton extends Component {
+class HollowButton extends Component {
 
   static propTypes = {
-    label: React.PropTypes.string,
     onPress: React.PropTypes.func
   }
 
   static defaultProps = {
-    label: 'Button',
     onPress: _.noop
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   render() {
     return (
-      <TouchableOpacity onPress={this.props.onPress}>
-        <View style={[styles.center, this.props.style]}>
-
-          <Text style={styles.text}>{this.props.label}</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={[styles.container, styles.center, styles.btn]}>
+        <TouchableHighlight onPress={this.props.onPress}>
+          <Text style={styles.text}>Signup with Email</Text>
+        </TouchableHighlight>
+      </View>
     );
   }
 }
 
-export default SplashButton;
+export default HollowButton;

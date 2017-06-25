@@ -27,6 +27,7 @@ export default StyleSheet.create({
   },
   headerBtn: {
     backgroundColor: 'transparent',
+    height: 30
   },
   toFeedScreenBtn: {
     marginLeft: 20,
@@ -151,6 +152,14 @@ export default StyleSheet.create({
     top: 100,
     left: w / 2 - 50,
 
+  },
+  loader: {
+    backgroundColor: 'white',
+    flex: 1,
+    justifyContent: 'center',
+    height: 30,
+    alignItems: 'center',
+    padding: 5,
   },
   editAvatarImage: {
     borderWidth: 2,

@@ -13,6 +13,7 @@ import userLooks from './userLooks';
 import userFollows from './userFollows';
 import userFollowers from './userFollowers';
 import stats from './stats';
+import wallet from './wallet';
 import notifications from './notifications';
 import paris from './paris';
 import lookLikes from './lookLikes';
@@ -30,6 +31,7 @@ export default combineReducers({
   feed,
   userLooks,
   stats,
+  wallet,
   userFollows,
   userFollowers,
   notifications,

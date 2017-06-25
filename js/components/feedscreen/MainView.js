@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { getFeed, resetFeed, loadMore, clearFeed } from '../../actions';
 import TabContent from './TabContent';
 import SearchView from './SearchView'
-import Utils from '../../utils';
 import _ from 'lodash';
 import VisibilityContainer from "../common/VisibilityContainer";
+const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
+import LinearGradient from 'react-native-linear-gradient';
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 
 const myStyles = StyleSheet.create({
   mainView: {
     backgroundColor: '#FFFFFF',
     flex: 1,
+  },
+  linearGradient: {
+    width: deviceWidth,
+    position: 'absolute',
+    top: 0
   },
 });
 
@@ -30,13 +40,14 @@ class MainView extends Component {
       locked: false,
       isOpen: false,
       reloading: false,
-      clearedField: false
+      clearedField: true
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.searchTerm !== this.props.searchTerm) {
-      this._handleSearchInput(nextProps.searchTerm)
+      const query = {...this.props.query, term: nextProps.searchTerm}
+      this._filterFeed(query)
     }
   }
 
@@ -95,22 +106,33 @@ class MainView extends Component {
     );
   }
 
-  _handleSearchInput(term) {
-    this._filterFeed({term})
-  }
-
   renderSearchView() {
     return (
       <VisibilityContainer visible={this.props.searchStatus}>
         <SearchView
-          handleSearchInput={(term) => this._handleSearchInput(term)}
           clearText={this.props.query.term}
           typeFilter={this.props.query.type}
           clearFilter={this._clearFilter.bind(this)}
           filterFeed={this._filterFeed.bind(this)}
+          query={this.props.query}
         />
       </VisibilityContainer>
     );
+  }
+
+  renderEmptyContent() {
+    return (
+      <View style={{flex: 1, flexDirection: 'column'}}>
+        <Image source={profileBackground} style={{resizeMode: 'contain', width: deviceWidth, height: deviceHeight-80, alignSelf: 'flex-start'}} >
+          <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
+                          style={[myStyles.linearGradient, {opacity: 0.7}]}/>
+          <View style={{marginTop: 100}}>
+            <ParisAdjustableMessage text={'Sorry, we could not find any relevant results'}/>
+          </View>
+        </Image>
+
+      </View>
+    )
   }
 
   render() {
@@ -118,7 +140,7 @@ class MainView extends Component {
       <View style={myStyles.mainView}>
         {this.renderSearchView()}
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-          { this._renderFeed() }
+          { !this.state.clearedField && this.props.totalLooks === 0 ? this.renderEmptyContent() : this._renderFeed() }
         </View>
       </View>
     )
@@ -150,6 +172,7 @@ const mapStateToProps = state => {
   return {
     defaultFilters: defaultFilters,
     query: state.feed.query,
+    totalLooks: state.feed.meta.total
   };
 }
 

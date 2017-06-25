@@ -12,7 +12,7 @@ import { checkLogin, loginViaFacebook } from '../../actions';
 import _ from 'lodash';
 import Video from 'react-native-video';
 import glluTheme from '../../themes/gllu-theme';
-import SignUpEmailButton from './SignUpEmailButton'
+import SignUpEmailButton from '../common/buttons/HollowButton'
 import {
   TERMS_URL,
   PRIVACY_URL,

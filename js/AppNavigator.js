@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { View, BackAndroid, StatusBar } from 'react-native';
+import { View, BackAndroid, StatusBar, NetInfo } from 'react-native';
 import { connect } from 'react-redux';
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import ErrorHandler from './components/errorHandler';
-import ParisMessages from './components/parisMessages';
+import ParisMessages from './components/paris/ParisMessages';
 import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
 import CardStack from './routes'
 import { addNavigationHelpers } from "react-navigation";
 import {expireCache} from './lib/cache/FSVideoCache'
 import { trackScreenByNavigationState } from "./utils/TrackingUtils";
+import { showParisBottomMessage, hideParisBottomMessage } from './actions';
 
 
 const styles = StyleSheet.create({
@@ -31,7 +32,17 @@ class AppNavigator extends Component {
     })
   }
 
+  constructor(props) {
+    super(props)
+    this.handleConnectionChange = this.handleConnectionChange.bind(this)
+  }
+
   componentDidMount() {
+    NetInfo.isConnected.addEventListener('change', this.handleConnectionChange);
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { !isConnected ? this.props.showParisBottomMessage(`It seems you have no internet connection`, 999999) : null }
+    );
+
     BackAndroid.addEventListener('hardwareBackPress', () => {
       Analytics.logEvent('Android back button click');
       const {dispatch,navigationState} = this.props;
@@ -51,10 +62,22 @@ class AppNavigator extends Component {
     Analytics.trackAppLoaded();
     expireCache()
       .then(()=>console.log('removed expired items in cache!'))
+
+
+  }
+
+  handleConnectionChange = (isConnected) => {
+    console.log(`is network connected: ${isConnected}`);
+    if(!isConnected){
+      this.props.showParisBottomMessage(`It seems you have no internet connection`, 999999);
+    } else {
+      this.props.hideParisBottomMessage();
+    }
   }
 
   componentWillUnmount() {
     Analytics.endTrackAppLoaded();
+    NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
   }
 
   generateNaivgationObject(dispatch,navigationState){
@@ -63,6 +86,7 @@ class AppNavigator extends Component {
       state: navigationState,
     })
   }
+
 
   componentWillReceiveProps(nextProps){
     if(nextProps.navigationState!==this.props.navigationState){
@@ -89,7 +113,9 @@ class AppNavigator extends Component {
 
 function bindAction(dispatch) {
   return {
-    dispatch
+    dispatch,
+    showParisBottomMessage: (message, time) => dispatch(showParisBottomMessage(message, time)),
+    hideParisBottomMessage: (message, time) => dispatch(hideParisBottomMessage(message, time)),
   };
 }
 

@@ -1,48 +1,103 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
 import Video from 'react-native-video';
 import cachedWrapper from './CachedComponentWrapper'
 import listenToAppState from '../eventListeners/AppStateListener'
+import IsOnScreenChecker from './IsOnScreenChecker'
+import { debounce } from "lodash";
+import Spinner from "../../loaders/Spinner";
+
+const styles = StyleSheet.create({
+  loaderContainer:{
+    position: 'absolute',
+    top: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+});
 
 class VideoWithCaching extends Component {
 
   static propTypes={
+    isCaching:React.PropTypes.bool,
     localUri:React.PropTypes.string,
     source:React.PropTypes.object,
+    currentAppState:React.PropTypes.string,
+    isOnScreen:React.PropTypes.bool,
+    preview:React.PropTypes.string
   }
 
-  static formatSource = (localUri, source = {}) => Object.assign({}, source, {uri: localUri});
+  static defaultProps={
+    preview:''
+  }
+
   constructor(props) {
     super(props);
+    this.onVideoStartsPlaying=this.onVideoStartsPlaying.bind(this);
     this.state = {
-      repeat: true
+      repeat: true,
+      isPlaying:false
     }
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.currentAppState!==this.props.currentAppState){
-      if(this.props.currentAppState==='active'){
+      if(this.props.currentAppState==='active'&&this._root){
         this._root.seek(0)
       }
       this.setState({repeat:nextProps.currentAppState==='active'})
     }
   }
 
-  render() {
+  static formatSource = (localUri, source = {}) => ({...source, uri: localUri});
+
+  onVideoStartsPlaying = ()=>{
+    debounce(()=>{
+      if(this.state.isPlaying!==true){
+        this.setState({isPlaying:true})
+      }
+    },500)
+  };
+
+  renderLoader = () => {
+    if (this.state.isPlaying) {
+      return null;
+    }
+    if (this.props.preview) {
+      return (
+        <Image source={{uri: this.props.preview}} style={[this.props.style, styles.loaderContainer]}>
+          <Spinner color='grey'/>
+        </Image>
+      )
+    }
+    return (
+      <View style={[this.props.style, styles.loaderContainer]}>
+        <Spinner color='grey'/>
+      </View>
+    )
+  };
+
+  renderVideo = () => {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
-    if(this.state.repeat){
-      return (
-        <Video {...this.props} source={formattedSource} ref={component => this._root = component}/>
-      )
-    } else {
-      return <View style={this.props.style}/>
+    if (!this.props.isCaching && this.state.repeat && this.props.isOnScreen) {
+      return <Video {...this.props} source={formattedSource} onprogress={this.onVideoStartsPlaying}
+                    ref={component => this._root = component}/>
     }
+    return null;
+  }
+
+  render() {
+    return (
+      <View>
+        {this.renderLoader()}
+        {this.renderVideo()}
+      </View>
+    )
   }
 }
 
-const renderLoader = () => <View style={{}}/>;
+const cache = cachedWrapper(props => props.source.uri);
+export default cache(IsOnScreenChecker(listenToAppState(VideoWithCaching)));
 
-const cache = cachedWrapper(renderLoader)(props => props.source.uri);
-export default cache(listenToAppState(VideoWithCaching));
 

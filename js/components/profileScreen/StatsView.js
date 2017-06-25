@@ -39,12 +39,23 @@ class StatsView extends Component {
   }
 
   renderBalance() {
-    return (
-      <TouchableOpacity style={styles.statsTotal} onPress={this.props.handleBalancePress}>
-        <Text style={[styles.text, styles.number]}>$0</Text>
-        <Text style={styles.text}>Balance</Text>
-      </TouchableOpacity>
-    )
+    let { balance } = this.props
+    if(balance === -1) {
+      return (
+        <TouchableOpacity style={styles.statsTotal} onPress={this.props.handleBalanceNotAvailablePress}>
+          <Text style={[styles.text, styles.number, {fontSize: 10}]}>Currently not available</Text>
+          <Text style={styles.text}>Balance</Text>
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity style={styles.statsTotal} onPress={this.props.handleBalancePress}>
+          <Text style={[styles.text, styles.number]}>${`${balance}`}</Text>
+          <Text style={styles.text}>Balance</Text>
+        </TouchableOpacity>
+      )
+    }
+
   }
 
   render() {
@@ -53,15 +64,15 @@ class StatsView extends Component {
       <View style={styles.statsContainer}>
         { isMyProfile ? this.renderBalance() : null }
         <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowingPress}>
-          <Text style={[styles.text, styles.number]}>{following}</Text>
+          <Text style={[styles.text, styles.number]}>{`${following}`}</Text>
           <Text style={styles.text}>Following</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statsTotal} onPress={this.onFollowersPress}>
-          <Text style={[styles.text, styles.number]}>{followers}</Text>
+          <Text style={[styles.text, styles.number]}>{`${followers}`}</Text>
           <Text style={styles.text}>Followers</Text>
         </TouchableOpacity>
         <View style={styles.statsTotal}>
-          <Text style={[styles.text, styles.number]}>{likes}</Text>
+          <Text style={[styles.text, styles.number]}>{`${likes}`}</Text>
           <Text style={styles.text}>Likes</Text>
         </View>
       </View>

@@ -14,7 +14,7 @@ import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
 import CircleProfileImage from '../common/avatars/CircleProfileImage'
-import LetsGLLUButton from "./LetsGLLUButton";
+import SolidButton from "../common/buttons/SolidButton";
 import {openCamera} from '../../lib/camera/CameraUtils'
 
 const background = require('../../../images/backgrounds/hands.png');
@@ -223,7 +223,7 @@ class SignUpPage extends Component {
                     {this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                   </Row>
                 </Grid>
-                <LetsGLLUButton style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}/>
+                <SolidButton label="Let's infash" style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}/>
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text></TouchableOpacity>

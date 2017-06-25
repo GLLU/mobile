@@ -18,8 +18,11 @@ import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from "lodash";
 import VideoWithCaching from "../common/media/VideoWithCaching";
-import SpinnerClothing from '../loaders/SpinnerClothing';
+import ImageWrapper from "../common/media/ImageWrapper";
 import asScreen from "../common/containers/Screen"
+import Spinner from "../loaders/Spinner";
+const arrowDown = require('../../../images/icons/arrow_down.png');
+const arrowUp = require('../../../images/icons/arrow_up.png');
 
 const config = {
   velocityThreshold: 0.3,
@@ -49,6 +52,9 @@ class LooksScreen extends Component {
     super(props);
     this._goToProfile=this._goToProfile.bind(this);
     this.onToggleDrawer=this.onToggleDrawer.bind(this);
+    this._toggleLike=this._toggleLike.bind(this);
+    this.renderUpArrow=this.renderUpArrow.bind(this);
+    this.renderDownArrow=this.renderDownArrow.bind(this);
     const flatLook=this.props.navigation.state.params
     this.state = {
       flatLook: this.props.navigation.state.params,
@@ -102,14 +108,15 @@ class LooksScreen extends Component {
     }
   }
 
-  _toggleLike(isLiked) {
-    this.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
+  _toggleLike(isLiked, likes) {
+    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
     const { flatLook } = this.state
     if (isLiked) {
-      let data = {id: flatLook.id, likes: flatLook.likes + 1, liked: true}
+      let data = {id: flatLook.id, likes: likes, liked: true}
       this.props.likeUpdate(data);
     } else {
-      let data = {id: flatLook.id, likes: flatLook.likes - 1, liked: false}
+
+      let data = {id: flatLook.id, likes: likes, liked: false}
       this.props.unLikeUpdate(data);
     }
   }
@@ -184,6 +191,7 @@ class LooksScreen extends Component {
   }
 
   renderVideo(look, index) {
+    const showShowArrow = this.shouldRenderArrows()
     return (
       <GestureRecognizer
         key={look.originalIndex !==undefined ? look.originalIndex : -1}
@@ -201,6 +209,7 @@ class LooksScreen extends Component {
           muted={this.state.currScrollIndex !== look.originalIndex}
           style={styles.videoBackground}
           repeat={true}
+          navigation={this.props.cardNavigation}
         />
         <BottomLookContainer
           width={width}
@@ -208,7 +217,7 @@ class LooksScreen extends Component {
           look={look}
           goBack={this.props.goBack}
           goToProfile={(user) => this._goToProfile(user)}
-          toggleLike={(isLiked) => this._toggleLike(isLiked)}
+          toggleLike={this._toggleLike}
           toggleMenu={() => this._toggleMenu()}
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
@@ -216,11 +225,49 @@ class LooksScreen extends Component {
           lookType={"video"}
           onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
         />
+        {showShowArrow ? this.renderUpArrow() : null}
+        {showShowArrow ? this.renderDownArrow() : null}
       </GestureRecognizer>
     )
   }
 
+  shouldRenderArrows() {
+    if(this.state.showAsFeed) {
+      const {meta: {total}} = this.props;
+      return total > 2
+    } else {
+      return false
+    }
+  }
+
+  renderUpArrow() {
+    if(this.state.currScrollIndex !== 0) {
+      return (
+        <View style={{position: 'absolute', top: 0, width: width, height: 30}}>
+          <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_DOWN')} style={{width: 50, alignSelf: 'center'}}>
+            <Image source={arrowUp} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+  }
+
+  renderDownArrow() {
+    return (
+
+      <View style={{position: 'absolute', bottom: 0, width: width, height: 30}}>
+        <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_UP')} style={{width: 50, alignSelf: 'center'}}>
+           <Image source={arrowDown} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+        </TouchableOpacity>
+      </View>
+
+
+      )
+  }
+
   renderImage(look, index) {
+    const showShowArrow = this.shouldRenderArrows()
+    console.log('showShowArrow',showShowArrow)
     return (
       <GestureRecognizer
         key={look.originalIndex!==undefined ? look.originalIndex : -1}
@@ -230,17 +277,18 @@ class LooksScreen extends Component {
           flex: 1,
           backgroundColor: 'transparent',
         }}>
-            <Image
+            <ImageWrapper
             resizeMode={'stretch'}
             style={styles.itemImage}
-            source={{uri: look.uri}}>
+            source={{uri: look.uri}}
+            navigation={this.props.cardNavigation}>
               <BottomLookContainer
                 width={width}
                 height={height}
                 look={look}
                 goBack={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
-                toggleLike={(isLiked) => this._toggleLike(isLiked)}
+                toggleLike={this._toggleLike}
                 toggleMenu={() => this._toggleMenu()}
                 isMenuOpen={this.state.isMenuOpen}
                 onBottomDrawerOpen={this.onToggleDrawer}
@@ -248,7 +296,9 @@ class LooksScreen extends Component {
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
                 onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
-            </Image>
+              {showShowArrow ? this.renderUpArrow() : null}
+              {showShowArrow ? this.renderDownArrow() : null}
+            </ImageWrapper>
       </GestureRecognizer>
     )
   }
@@ -288,24 +338,25 @@ class LooksScreen extends Component {
   }
 
   renderLoader() {
-    const lookType = this.props.navigation.state.params.coverType
-    if(lookType === 'video') {
-      const avatarUri = this.props.navigation.state.params.avatar.url
-      return (
-        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
-          <Image resizeMode={'stretch'} source={{uri: avatarUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}>
-            <SpinnerClothing />
-          </Image>
-        </View>
-      )
-    } else {
-      const lookUri = this.props.navigation.state.params.uri
-      return (
-        <View style={{position: 'absolute', top: 0, height: height, width: width, backgroundColor: 'green'}}>
-          <Image resizeMode={'stretch'} source={{uri: lookUri}} style={{position: 'absolute', top: 0, height: height, width: width,}}/>
-        </View>
-      )
-    }
+    const navigationPropLook = this.props.navigation.state.params
+    const {preview, coverType, uri, avatar} = navigationPropLook;
+    const previewUri = coverType === 'video' ?
+      preview || avatar.url :
+      uri;
+    return (
+      <View style={{position: 'absolute', top: 0, height: height, width: width}}>
+        <Image resizeMode={'contain'} source={{uri: previewUri}} style={{
+          position: 'absolute',
+          top: 0,
+          height: height,
+          width: width,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Spinner color='grey'/>
+        </Image>
+      </View>
+    )
 
   }
 
@@ -346,13 +397,15 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
+
   return {
     isLoading: state.loader.loading,
     flatLooksData: state.feed.flatLooksData,
     meta: state.feed.meta,
     query: state.feed.query,
     userLooks: state.userLooks.userLooksData,
-    shareToken: state.user.invitation_share_token
+    shareToken: state.user.invitation_share_token,
+    cardNavigation: state.cardNavigation
   };
 };
 

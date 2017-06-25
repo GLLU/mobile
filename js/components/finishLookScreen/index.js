@@ -4,13 +4,13 @@ import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'nati
 import { connect } from 'react-redux';
 import { addNewLook } from '../../actions';
 import SocialShare from '../../lib/social';
-import Gllu from '../common';
+import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import glluTheme from '../../themes/gllu-theme';
-import SelectPhoto from '../common/SelectPhoto';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import {openCamera} from '../../lib/camera/CameraUtils'
 import finishPhoto from '../../../images/upload/finish-upload-look.png'
 import asScreen from "../common/containers/Screen"
+import {NavigationActions} from "react-navigation";
 
 const styles = StyleSheet.create({
   container: {
@@ -79,12 +79,6 @@ class FinishLookPage extends Component {
     this.openCamera()
   }
 
-  goToAddNewItem(imagePath) {
-    this.props.addNewLook(imagePath).then(() => {
-      this.props.navigateTo('addItemScreen',{ mode: 'create' });
-    });
-  }
-
   async openCamera() {
     this.props.logEvent('FinishLookScreen', { name: 'Open Camera click' });
     let file = {};
@@ -100,14 +94,17 @@ class FinishLookPage extends Component {
   }
 
   goToAddNewItem(imagePath) {
-    this.setState({photoModal: false}, () => {
       this.props.addNewLook(imagePath).then(() => {
-        this.resetToOriginalPlace();
-        this.props.navigateTo('addItemScreen');
+        this.props.resetWithPayload({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'feedscreen' }),
+            NavigationActions.navigate({ routeName: 'addItemScreen',params:{ mode: 'create' }})
+          ]
+        });
       }).catch(err => {
         console.log('addNewLook err', err);
       });
-    })
   }
 
   render() {
@@ -137,10 +134,10 @@ class FinishLookPage extends Component {
             </Button>
           </View>
           <View style={{flex: 2}}>
-            <Gllu.Button
+            <NativeBaseButton
               onPress={this.handleGlluAgainPress.bind(this)}
               style={{alignSelf: 'center', width: 200}}
-              text="Post another look!"
+              label="Post another look!"
             />
           </View>
           <TouchableOpacity
@@ -164,7 +161,6 @@ class FinishLookPage extends Component {
           >
             <Icon name="md-close" style={{fontSize: 20}} color='#F2F2F2' />
           </TouchableOpacity>
-          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem.bind(this)}/>
         </Content>
       </Container>
     );

@@ -9,9 +9,7 @@ import {
 
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
-import glluTheme from '../../themes/gllu-theme';
 import _ from 'lodash';
-import Gllu from '../common';
 import BaseComponent from '../common/base/BaseComponent';
 
 const styles = StyleSheet.create({

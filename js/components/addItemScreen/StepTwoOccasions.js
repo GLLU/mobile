@@ -9,7 +9,6 @@ import {
 import OccasionsStrip from '../common/OccasionsStrip';
 import FontSizeCalculator from '../../calculators/FontSize';
 import _ from 'lodash';
-import Gllu from '../common';
 import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
@@ -115,8 +114,9 @@ class StepTwoOccasions extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
+    const currItem = _.find(this.props.items, listItem => listItem.id === this.props.item.id);
     const selectedCategory = nextProps.item.category ? nextProps.item.category : false
-    const brand = nextProps.item ? nextProps.item.brand : null
+    const brand = currItem ? currItem.brand : null
       if(selectedCategory && brand && this.state.selectedOccasions.length === 0 && this.state.fadeAnimContentOnPress._value === 0) {
         this.toggleBottomContainer()
       }
@@ -198,9 +198,12 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
+  const { items } = state.uploadLook;
+
   return {
     categories: state.filters.categories,
     occasionTags: state.filters.occasion_tags,
+    items
 
   };
 };
