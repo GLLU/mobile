@@ -1,7 +1,10 @@
 
 import React, { Component } from 'react';
 import asScreen from '../common/containers/Screen'
-import { Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import {
+  Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TextInput, TouchableOpacity,
+  KeyboardAvoidingView
+} from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
@@ -137,7 +140,7 @@ class SignInPage extends Component {
               <View style={StyleSheet.flatten(styles.logoContainer)}>
                 <Image source={logo} style={StyleSheet.flatten(styles.logo)} />
               </View>
-              <View>
+              <KeyboardAvoidingView behavior='padding'>
                 <Grid>
                   <Row style={styles.formItem} >
                     <TextInput
@@ -164,7 +167,7 @@ class SignInPage extends Component {
                   <Text style={styles.alreadyTxt}>Forgot your password?</Text>
                   <TouchableOpacity onPress={this.handleForgotPasswordPress.bind(this)}><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text></TouchableOpacity>
                 </View>
-              </View>
+              </KeyboardAvoidingView>
             </Content>
             <View style={styles.bottomContainerContent}>
               <Text style={styles.text}>By signing-up I agree to inFash </Text>

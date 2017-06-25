@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import asScreen from '../common/containers/Screen'
 import {
   Image, Linking, TouchableWithoutFeedback, Text, View, StyleSheet, TouchableOpacity,
-  TextInput
+  TextInput, KeyboardAvoidingView
 } from 'react-native';
 import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
@@ -186,7 +186,7 @@ class SignUpPage extends Component {
                     <CircleProfileImage style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
                 </View>
               </View>
-              <View>
+              <KeyboardAvoidingView behavior='padding'>
                 <Grid>
                   <Row style={styles.formItem}>
                     <TextInput
@@ -228,7 +228,7 @@ class SignUpPage extends Component {
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text></TouchableOpacity>
                 </View>
-              </View>
+              </KeyboardAvoidingView>
 
             </Content>
             <View style={styles.bottomContainerContent}>
