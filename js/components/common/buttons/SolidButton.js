@@ -41,7 +41,7 @@ class SolidButton extends Component {
 
   render() {
     return (
-      <View style={[styles.center, this.props.style]}>
+      <View style={[styles.center,styles.btn,this.props.style]}>
         <TouchableHighlight onPress={this.props.onPress}>
           <Text style={styles.text}>{this.props.label}</Text>
         </TouchableHighlight>
