@@ -14,6 +14,7 @@ import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
 import ResetMyPasswordButton from "./ResetMyPasswordButton";
+import Header from "../common/containers/Header";
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 import asScreen from "../common/containers/Screen"
 
@@ -99,14 +100,7 @@ class forgotPasswordPage extends Component {
       <Container>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
-            <View style={{height:50}}>
-              <View style={styles.header} >
-                <Button transparent onPress={this.props.goBack}>
-                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
-                </Button>
-                <Text style={styles.headerTitle}>Forgot Password</Text>
-              </View>
-            </View>
+            <Header title='Forgot Password?' goBack={this.props.goBack}/>
             <StyleProvider style={getTheme(glluTheme)}>
             {this.state.emailWasSent?this.renderEmailSent():this.renderBeforeEmailSent()}
             </StyleProvider>
