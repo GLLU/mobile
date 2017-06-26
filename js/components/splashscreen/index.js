@@ -124,8 +124,8 @@ class SplashPage extends Component {
   renderMainView() {
     return (
         <View style={styles.signupContainer}>
-          <View style={{height:50}} >
-          <HollowButton label='Signup with Email' onPress={this.handleEmailSignupPress.bind(this)} />
+          <View style={{height:50, marginBottom:10}} >
+            <HollowButton label='Signup with Email' onPress={this.handleEmailSignupPress.bind(this)} />
           </View>
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}

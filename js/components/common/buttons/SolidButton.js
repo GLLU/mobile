@@ -5,9 +5,6 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, Vie
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'transparent',
-  },
   center: {
     flex: 1,
     justifyContent: 'center',
@@ -17,8 +14,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: '#009688',
     borderWidth: 2,
-    marginBottom: 10,
-    width: deviceWidth - 80
+    width: deviceWidth - 80,
   },
   text: {
     color: 'white',
@@ -41,11 +37,9 @@ class SolidButton extends Component {
 
   render() {
     return (
-      <View style={[styles.center,styles.btn,this.props.style]}>
-        <TouchableHighlight onPress={this.props.onPress}>
-          <Text style={styles.text}>{this.props.label}</Text>
+        <TouchableHighlight style={[styles.center, this.props.style]} onPress={this.props.onPress}>
+            <Text style={styles.text}>{this.props.label}</Text>
         </TouchableHighlight>
-      </View>
     );
   }
 }
