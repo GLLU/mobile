@@ -99,6 +99,7 @@ class UserActionRow extends Component {
   }
 
   render() {
+    console.log(`useraction props`,this.props);
     return (
       <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
         <View style={styles.photoContainer}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
-import ListViewHeader from './ListHeader';
+import ListHeader from './ListHeader';
 import { isEmpty, noop } from "lodash";
 import FullscreenView from "../containers/FullscreenView";
 
@@ -19,7 +19,7 @@ export default class ListScreen extends Component {
     onEndReached: React.PropTypes.func,
     keyExtractor: React.PropTypes.func,
     renderItem: React.PropTypes.func,
-    renderEmptyView: React.PropTypes.func,
+    renderEmpty: React.PropTypes.func,
   };
 
   static defaultProps={
@@ -55,16 +55,8 @@ export default class ListScreen extends Component {
   render() {
     return (
       <FullscreenView style={{backgroundColor:'white'}}>
-        <ListViewHeader {...this.props.headerData} goBack={this.props.goBack}/>
-        <FlatList
-          style={styles.container}
-          data={this.props.data}
-          keyExtractor={this.props.keyExtractor}
-          renderItem={({item}) => this.props.renderItem(item)}
-          onEndReached={this.state.isTrueEndReached? noop:this.props.onEndReached}
-          onEndReachedThreshold={100}
-        />
-        {this.props.likes.length > 0 ? this.renderList() : this.props.renderEmptyView() }
+        <ListHeader {...this.props.headerData} goBack={this.props.goBack}/>
+        {this.props.data.length > 0 ? this.renderList() : this.props.renderEmpty() }
       </FullscreenView>
     );
   }
