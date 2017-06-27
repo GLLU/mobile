@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Image, TouchableWithoutFeedback, Text, View, StyleSheet, TextInput } from 'react-native';
-import {
-  Container, Button, Content, Icon, StyleProvider, getTheme
-} from 'native-base';
+import { Container, Content, StyleProvider, getTheme } from 'native-base';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
@@ -12,8 +10,8 @@ import { emailRule } from '../../validators';
 import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
-import ResetMyPasswordButton from "./ResetMyPasswordButton";
 import Header from "../common/containers/Header";
+import SolidButton from "../common/buttons/SolidButton";
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 import asScreen from "../common/containers/Screen"
 
