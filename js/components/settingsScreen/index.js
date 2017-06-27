@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import { StyleSheet, Alert, Linking, Text, View, Image } from 'react-native';
-import { Container, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
+import {
+  StyleSheet, Alert, Linking, Text, View, Image, FlatList, TouchableOpacity,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { logout } from '../../actions';
 import SocialShare from '../../lib/social';
-import glluTheme from '../../themes/gllu-theme';
 import {
   SUPPORT_EMAIL,
   EMAIL_URL,
@@ -16,6 +16,7 @@ import {
 import { formatInvitationMessage } from "../../lib/messages/index";
 import asScreen from "../common/containers/Screen"
 import Header from "../common/containers/ModalHeader";
+import FullscreenView from "../common/containers/FullscreenView";
 
 const styles = StyleSheet.create({
   container: {
@@ -42,7 +43,10 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   listItem: {
-    borderBottomWidth: 0
+    flexDirection:'row',
+    height:60,
+    alignItems:'center',
+    paddingLeft:10
   },
   listItemThumbnail: {
     marginHorizontal: 10,
@@ -71,61 +75,15 @@ class SettingsScreen extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {
+    this.renderListItem=this.renderListItem.bind(this);
+    this.getSettingsConfiguration=this.getSettingsConfiguration.bind(this);
+    this.state={
+      settings:this.getSettingsConfiguration()
     }
   }
 
-  _onInviteFriendsClick() {
-    this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
-    SocialShare.nativeShare(message);
-  }
-
-  handleOpenLink(url, type = 'link') {
-    this.props.logEvent('SettingsScreen', { name: 'Link click', url });
-    Linking.canOpenURL(url).then(supported => {
-      if (!supported) {
-        console.log('Can\'t handle url: ' + url);
-        if (type == 'email') {
-          Alert.alert(
-            '',
-            `Sorry, but it seems you don't have an email client enabled in this device. You can email us to ${SUPPORT_EMAIL}`,
-            [
-              {
-                text: 'OK',
-                onPress: () => {
-                  console.log('Alert OK pressed');
-                }
-              }
-            ]
-          );
-        }
-      } else {
-        return Linking.openURL(url);
-      }
-    }).catch(err => console.error('An error occurred', err));
-  }
-
-  handleLogout() {
-    this.props.logEvent('SettingsScreen', { name: 'Logout click' });
-    this.props.logout()
-      .then(()=>this.props.resetTo('splashscreen'))
-      .catch((err)=>console.log(err));
-  }
-
-  _renderList(list){
-    return _.map(list,(item,i)=>{
-      return(
-        <ListItem key={i} style={StyleSheet.flatten(styles.listItem)} onPress={item.onPress}>
-          <Image style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
-          <Text style={styles.listItemText}>{item.text}</Text>
-        </ListItem>
-      );
-    })
-  }
-
-  render() {
-    const settings=[
+  getSettingsConfiguration(){
+    return [
       {
         text:'Invite your Friends',
         icon:iconShare,
@@ -162,14 +120,68 @@ class SettingsScreen extends Component {
         onPress:this.handleLogout.bind(this)
       },
 
-    ];
+    ]
+  }
+
+  _onInviteFriendsClick() {
+    this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
+    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.nativeShare(message);
+  }
+
+  handleOpenLink(url, type = 'link') {
+    this.props.logEvent('SettingsScreen', { name: 'Link click', url });
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + url);
+        if (type === 'email') {
+          Alert.alert(
+            '',
+            `Sorry, but it seems you don't have an email client enabled in this device. You can email us to ${SUPPORT_EMAIL}`,
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('Alert OK pressed');
+                }
+              }
+            ]
+          );
+        }
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
+  }
+
+  handleLogout() {
+    this.props.logEvent('SettingsScreen', { name: 'Logout click' });
+    this.props.logout()
+      .then(()=>this.props.resetTo('splashscreen'))
+      .catch((err)=>console.log(err));
+  }
+
+  renderListItem({item}){
+    return(
+      <TouchableOpacity onPress={item.onPress}>
+        <View style={styles.listItem}>
+          <Image style={styles.listItemThumbnail} small square source={item.icon} />
+          <Text style={styles.listItemText}>{item.text}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  render() {
     return (
-      <Container theme={glluTheme}>
+      <FullscreenView style={{backgroundColor: 'white'}}>
         <Header title='Settings' goBack={this.props.goBack}/>
-        <Content style={{backgroundColor: '#FFFFFF'}}>
-          {this._renderList(settings)}
-        </Content>
-      </Container>
+        <FlatList
+          data={this.state.settings}
+          keyExtractor={(item, index) => index}
+          renderItem={this.renderListItem}
+        />
+      </FullscreenView>
     );
   }
 }
