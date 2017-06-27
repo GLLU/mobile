@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
-import { Container, Content, StyleProvider, getTheme } from 'native-base';
+import { Container, Header, Button, Title, Content, Icon, StyleProvider, getTheme } from 'native-base';
 import asScreen from '../common/containers/Screen'
 import styles from './styles'
 import glluTheme from '../../themes/gllu-theme';
-import Header from "../common/containers/Header";
 
 const background = require('../../../images/backgrounds/man-female_screen2.png');
 
@@ -30,7 +29,14 @@ class SignUpGenderPage extends Component {
       <Container>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={0}>
-            <Header title='Choose Your Gender' goBack={this.props.goBack}/>
+            <View style={{height:50}}>
+              <View style={styles.header} >
+                <Button transparent onPress={this.props.goBack}>
+                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
+                </Button>
+                <Text style={styles.headerTitle}>Sign up</Text>
+              </View>
+            </View>
             <StyleProvider style={getTheme(glluTheme)}>
             <Content scrollEnabled={false}>
               <View style={styles.genderSelectContainer}>

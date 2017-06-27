@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image, TouchableWithoutFeedback, Linking, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Container, Content, InputGroup, Input } from 'native-base';
+import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
 import { invitationCheckExistance, requestInvitation, loginViaFacebook } from '../../actions/user';
@@ -16,7 +16,6 @@ import { emailRule, passwordRule } from '../../validators';
 import SolidButton from "../common/buttons/SolidButton";
 import {NavigationActions} from "react-navigation";
 import asScreen from "../common/containers/Screen"
-import Header from "../common/containers/Header";
 
 const logo = require('../../../images/logo/inFashLogo.png');
 const background = require('../../../images/backgrounds/forgot-password-background.png');
@@ -244,7 +243,14 @@ if(this.state.renderThanksYou) {
       <Container theme={glluTheme}>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow}>
-            <Header title='Insert Code' goBack={this.props.goBack}/>
+            <View style={{height:50}}>
+              <View style={styles.header} >
+                <Button transparent onPress={this.props.goBack}>
+                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
+                </Button>
+                <Text style={styles.headerTitle}>Sign in</Text>
+              </View>
+            </View>
             <Content scrollEnabled={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
               { this.state.renderEnterCode ? this._renderEnterCode() : this._renderGetCode() }
             </Content>

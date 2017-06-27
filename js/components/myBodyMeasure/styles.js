@@ -22,7 +22,7 @@ export default StyleSheet.create({
   },
   selectBodyTypeText: {
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 25,
     paddingHorizontal: 50,
     textAlign: 'center',
     fontWeight: '400',
@@ -34,7 +34,7 @@ export default StyleSheet.create({
     marginHorizontal: 50
   },
   container: {
-    paddingVertical: 10,
+    paddingTop: 25,
     paddingHorizontal: 10,
     marginHorizontal: 10,
     backgroundColor: '#ffffff'
