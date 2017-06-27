@@ -5,7 +5,7 @@ import {
   Image, TouchableWithoutFeedback, Linking, View, StyleSheet, Text, TextInput, TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
+import { Container, Content} from 'native-base';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
@@ -19,6 +19,7 @@ import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
+import Header from "../common/containers/Header";
 
 const logo = require('../../../images/logo/inFashLogo.png');
 
@@ -135,14 +136,7 @@ class SignInPage extends Component {
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
             <Image source={backgroundShadow} style={styles.bgShadow} />
-            <View style={{height:50}}>
-              <View style={styles.header} >
-                <Button transparent onPress={this.props.goBack}>
-                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
-                </Button>
-                <Text style={styles.headerTitle}>Sign in</Text>
-              </View>
-            </View>
+            <Header title='Sign In' goBack={this.props.goBack}/>
             <Content scrollEnabled={false}>
               <View style={StyleSheet.flatten(styles.logoContainer)}>
                 <Image source={logo} style={StyleSheet.flatten(styles.logo)} />
