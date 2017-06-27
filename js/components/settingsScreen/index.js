@@ -165,7 +165,7 @@ class SettingsScreen extends Component {
     return(
       <TouchableOpacity onPress={item.onPress}>
         <View style={styles.listItem}>
-          <Image style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
+          <Image style={styles.listItemThumbnail} small square source={item.icon} />
           <Text style={styles.listItemText}>{item.text}</Text>
         </View>
       </TouchableOpacity>
