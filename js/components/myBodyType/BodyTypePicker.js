@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import withAnalytics from '../common/analytics/WithAnalytics'
-import {Container, Header, Content, Button, Icon, Title,StyleProvider, getTheme } from 'native-base';
+import {Container, Content, Button, Icon, Title,StyleProvider, getTheme } from 'native-base';
 import {Text, View, StyleSheet} from 'react-native';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
@@ -12,12 +12,12 @@ import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
 import CarouselItem from './horizontalCarousel/carouselItem';
 import ArrowTextBox from './arrowTextBox';
 import * as _ from "lodash";
+import Header from "../common/containers/ModalHeader";
 
 
 class BodyTypePicker extends Component {
   constructor(props) {
     super(props);
-    this.renderBackButton=this.renderBackButton.bind(this);
     this.state = {
       currBodyType: '',
       currDescription: ''
@@ -64,24 +64,10 @@ class BodyTypePicker extends Component {
     this.props.onPick();
   }
 
-  renderBackButton(){
-    return(
-      <Button transparent onPress={this.props.goBack} style={{borderWidth: 0,flex:1, alignSelf:'center'}}>
-        <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
-      </Button>
-    );
-  }
-
   render() {
     return (
       <Container theme={glluTheme}>
-        <View style={{height:60,backgroundColor:'#f0f0f0'}}>
-          <View style={styles.header} >
-            {this.props.goBack!==undefined? this.renderBackButton():<View name='spacer' style={{flex:1}}/>}
-            <Text style={[styles.headerTitle,{flex:2,textAlign:'center'}]}>My Body Shape</Text>
-            <View name='spacer' style={{flex:1}}/>
-          </View>
-        </View>
+        <Header title='My Body Shape' goBack={this.props.goBack}/>
         <StyleProvider style={getTheme(glluTheme)}>
         <Content>
           <View style={styles.container}>

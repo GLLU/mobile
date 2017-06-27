@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { StyleSheet, Alert, Linking, Text, View, Image } from 'react-native';
-import { Container, Header, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
+import { Container, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import { logout } from '../../actions';
 import SocialShare from '../../lib/social';
@@ -15,6 +15,7 @@ import {
 } from '../../constants';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import asScreen from "../common/containers/Screen"
+import Header from "../common/containers/ModalHeader";
 
 const styles = StyleSheet.create({
   container: {
@@ -164,14 +165,7 @@ class SettingsScreen extends Component {
     ];
     return (
       <Container theme={glluTheme}>
-        <View style={{height:50}}>
-          <View style={styles.header} >
-            <Button transparent onPress={this.props.goBack} style={{borderWidth: 0}}>
-              <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
-            </Button>
-            <Text style={styles.headerTitle}>Settings</Text>
-          </View>
-        </View>
+        <Header title='Settings' goBack={this.props.goBack}/>
         <Content style={{backgroundColor: '#FFFFFF'}}>
           {this._renderList(settings)}
         </Content>

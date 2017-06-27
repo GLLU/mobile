@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Button, Icon, Title, getTheme, StyleProvider } from 'native-base';
+import { Container, Content, Button, Icon, Title, getTheme, StyleProvider } from 'native-base';
 import { Text, View, StyleSheet, BackAndroid } from 'react-native';
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
@@ -11,6 +11,7 @@ import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
 import asScreen from "../common/containers/Screen"
 import { showBodyTypeModal } from "../../actions/myBodyType";
+import Header from "../common/containers/ModalHeader";
 
 class MyBodyMeasure extends Component {
   constructor(props) {
@@ -69,14 +70,7 @@ class MyBodyMeasure extends Component {
   render() {
     return (
       <Container>
-        <View style={{height: 50}}>
-          <View style={[styles.header,{flexDirection:'row', flex: 1, alignItems:'center'}]}>
-            <Button transparent onPress={this.goBack}>
-              <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back"/>
-            </Button>
-            <Text style={styles.headerTitle}>My Body Measures</Text>
-          </View>
-        </View>
+        <Header title='My Body Measures' goBack={this.goBack}/>
         <StyleProvider style={getTheme(glluTheme)}>
           <Content>
             <Text style={StyleSheet.flatten(styles.selectBodyTypeText)}>This will help us find unique items for a
