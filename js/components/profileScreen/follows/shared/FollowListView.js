@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Dimensions,ListView, Image, StyleSheet, TouchableOpacity, Text,View } from 'react-native';
+import { Dimensions, ListView, Image, StyleSheet, TouchableOpacity, Text, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { followUpdate, unFollowUpdate } from '../../../../actions';
@@ -31,9 +31,9 @@ class FollowListView extends Component {
   constructor(props) {
     super(props);
     this.renderListView = this.renderListView.bind(this);
-    const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
+    this.onUserNavigate = this.onUserNavigate.bind(this);
+    this.toggleFollowAction = this.toggleFollowAction.bind(this);
     this.state = {
-      dataSource: ds.cloneWithRows(props.follows),
       isTrueEndReached: false
     };
   }
@@ -42,19 +42,10 @@ class FollowListView extends Component {
     if (_.isEmpty(nextProps.follows)) {
       this.setState({isTrueEndReached: true});
     }
-    if (nextProps.follows !== this.props.follows) {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.follows)
-      })
-    }
   }
 
-  rowHasChanged(r1, r2) {
-    return r1 !== r2;
-  }
-
-  onUserNavigate(user) {
-    this.props.navigateTo('profileScreen', user);
+  onUserNavigate(props) {
+    this.props.navigateTo('profileScreen', props);
   }
 
   toggleFollowAction(user, shouldFollow) {
@@ -69,14 +60,14 @@ class FollowListView extends Component {
 
   renderListView() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(data) => <FollowRow onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
-        renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
-        enableEmptySections={true}
-        onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
-        onEndReachedThreshold={100}
-      />
+    <FlatList
+      style={styles.container}
+      data={this.props.follows}
+      keyExtractor={(follow,index)=>follow.id!==-1?follow.id:index}
+      renderItem={({item}) => <FollowRow onUserPress={this.onUserNavigate} onFollowPress={this.toggleFollowAction} {...item}/>}
+      onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
+      onEndReachedThreshold={100}
+    />
     );
   }
 
