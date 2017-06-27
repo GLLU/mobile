@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import { StyleSheet, Alert, Linking, Text, View, Image } from 'react-native';
-import { Container, Content, Thumbnail, Icon, Button, List, Title, ListItem } from 'native-base';
+import React, {PureComponent} from 'react';
+import {
+  StyleSheet, Alert, Linking, Text, View, Image, FlatList, TouchableOpacity,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { logout } from '../../actions';
 import SocialShare from '../../lib/social';
-import glluTheme from '../../themes/gllu-theme';
 import {
   SUPPORT_EMAIL,
   EMAIL_URL,
@@ -16,6 +16,7 @@ import {
 import { formatInvitationMessage } from "../../lib/messages/index";
 import asScreen from "../common/containers/Screen"
 import Header from "../common/containers/ModalHeader";
+import FullscreenView from "../common/containers/FullscreenView";
 
 const styles = StyleSheet.create({
   container: {
@@ -42,7 +43,10 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   listItem: {
-    borderBottomWidth: 0
+    flexDirection:'row',
+    height:60,
+    alignItems:'center',
+    paddingLeft:10
   },
   listItemThumbnail: {
     marginHorizontal: 10,
@@ -64,15 +68,14 @@ const iconCopyright = require('../../../images/icons/copyright.png');
 const iconLogout = require('../../../images/icons/logout.png');
 const iconRateUs = require('../../../images/icons/rate_us.png');
 
-class SettingsScreen extends Component {
+class SettingsScreen extends PureComponent {
   static propTypes = {
     navigation: React.PropTypes.object,
     back: React.PropTypes.func,
   };
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this._renderListItem=this._renderListItem.bind(this);
   }
 
   _onInviteFriendsClick() {
@@ -113,15 +116,15 @@ class SettingsScreen extends Component {
       .catch((err)=>console.log(err));
   }
 
-  _renderList(list){
-    return _.map(list,(item,i)=>{
-      return(
-        <ListItem key={i} style={StyleSheet.flatten(styles.listItem)} onPress={item.onPress}>
+  _renderListItem({item}){
+    return(
+      <TouchableOpacity onPress={item.onPress}>
+        <View style={styles.listItem}>
           <Image style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
           <Text style={styles.listItemText}>{item.text}</Text>
-        </ListItem>
-      );
-    })
+        </View>
+      </TouchableOpacity>
+    );
   }
 
   render() {
@@ -164,12 +167,14 @@ class SettingsScreen extends Component {
 
     ];
     return (
-      <Container theme={glluTheme}>
+      <FullscreenView style={{backgroundColor: 'white'}}>
         <Header title='Settings' goBack={this.props.goBack}/>
-        <Content style={{backgroundColor: '#FFFFFF'}}>
-          {this._renderList(settings)}
-        </Content>
-      </Container>
+        <FlatList
+          data={settings}
+          keyExtractor={(item, index) => index}
+          renderItem={this._renderListItem}
+        />
+      </FullscreenView>
     );
   }
 }
