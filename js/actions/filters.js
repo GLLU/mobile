@@ -1,5 +1,6 @@
 import rest from '../api/rest';
 import Utils from '../utils';
+import { filter } from "lodash";
 
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_BRANDS = 'SET_BRANDS';
@@ -10,14 +11,12 @@ export function loadCategories() {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.category_tags({}, (err, data) => {
         if (!err && data) {
+          const tags = filter(data.tags, tag=>tag.icon) || [];
           // load in another thread
-          setTimeout(() => {
-            const tags = data.tags || [];
-            Promise.all([
-              Utils.preloadImages(tags.map(x => x.icon.url)),
-              Utils.preloadImages(tags.map(x => x.icon.url_hover))
-            ]).finally();
-          }, 1);
+          Promise.all([
+            Utils.preloadImages(tags.map(x => x.icon.url)),
+            Utils.preloadImages(tags.map(x => x.icon.url_hover))
+          ]).finally();
 
           resolve(dispatch({
             type: SET_CATEGORIES,

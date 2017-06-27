@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-
-
-import FollowView from '../FollowView'
+import FollowView from '../../profileScreen/follows/FollowView'
+import { connect } from "react-redux";
+import { followUpdate, unFollowUpdate } from "../../../actions/follows";
+import { noop } from "lodash";
 
 const styles = StyleSheet.create({
   container: {
@@ -39,18 +40,21 @@ const styles = StyleSheet.create({
   }
 });
 
-class FollowRow extends Component {
+class UserActionRow extends Component {
 
   static propTypes = {
     name: React.PropTypes.string,
     username: React.PropTypes.string,
     aboutMe: React.PropTypes.string,
     avatar: React.PropTypes.object,
-    onFollowPress: React.PropTypes.func,
-    onUserPress: React.PropTypes.func,
     userid: React.PropTypes.number,
-    isFollowing: React.PropTypes.bool
+    is_following: React.PropTypes.bool,
+    navigateTo:React.PropTypes.func
   };
+
+  static defaultProps={
+    navigateTo:noop
+  }
 
   constructor(props) {
     super(props);
@@ -63,17 +67,23 @@ class FollowRow extends Component {
   }
 
   onUserPress() {
-    this.props.onUserPress(this.props);
+    this.props.navigateTo('profileScreen', this.props);
   }
 
   onFollowPress(user, shouldFollow) {
-    this.props.onFollowPress(...arguments);
+    let data = {id: user.id};
+    if (shouldFollow) {
+      this.props.followUpdate(data);
+    }
+    else {
+      this.props.unFollowUpdate(data);
+    }
     this.setState({isFollowing: shouldFollow})
   }
 
   renderFollowText() {
     return (
-      <View onPress={this.onUserPress.bind(this)} style={styles.textContainer}>
+      <View style={styles.textContainer}>
         <Text style={styles.followName}>{this.props.name}</Text>
         <Text style={styles.followUsername}>@{this.props.username}</Text>
       </View>
@@ -89,6 +99,7 @@ class FollowRow extends Component {
   }
 
   render() {
+    console.log(`useraction props`,this.props);
     return (
       <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
         <View style={styles.photoContainer}>
@@ -101,4 +112,13 @@ class FollowRow extends Component {
   }
 }
 
-export default FollowRow;
+function bindAction(dispatch) {
+  return {
+    followUpdate: (id) => dispatch(followUpdate(id)),
+    unFollowUpdate: (id) => dispatch(unFollowUpdate(id))
+  };
+}
+
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, bindAction)(UserActionRow);

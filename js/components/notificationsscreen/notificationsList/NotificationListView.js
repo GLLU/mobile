@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text,View  } from 'react-native';
+import { ListView, Image, StyleSheet, TouchableOpacity, Text, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
@@ -35,9 +35,10 @@ class NotificationListView extends BaseComponent {
   constructor(props) {
     super(props);
     this.renderListView = this.renderListView.bind(this);
-    const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
+    this.onMarkAsReadPress = this.onMarkAsReadPress.bind(this);
+    this.onUserNavigate = this.onUserNavigate.bind(this);
+    this.toggleFollowAction = this.toggleFollowAction.bind(this);
     this.state = {
-      dataSource: ds.cloneWithRows(props.notifications.allNotifications||[]),
       isTrueEndReached: false
     };
   }
@@ -46,15 +47,6 @@ class NotificationListView extends BaseComponent {
     if (_.isEmpty(nextProps.notifications.allNotifications)) {
       this.setState({isTrueEndReached: true});
     }
-    if (nextProps.notifications !== this.props.notifications.allNotifications) {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.notifications.allNotifications||[])
-      })
-    }
-  }
-
-  rowHasChanged(r1, r2) {
-    return r1 !== r2;
   }
 
   onUserNavigate(props) {
@@ -92,14 +84,14 @@ class NotificationListView extends BaseComponent {
 
   renderListView() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(data) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress.bind(this)} onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
-        renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
-        enableEmptySections={true}
-        onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
-        onEndReachedThreshold={100}
-      />
+    <FlatList
+      style={styles.container}
+      data={this.props.notifications.allNotifications}
+      keyExtractor={(notification,index)=>notification.id!==-1?notification.id:index}
+      renderItem={({item}) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress} onUserPress={this.onUserNavigate} onFollowPress={this.toggleFollowAction} {...item}/>}
+      onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
+      onEndReachedThreshold={100}
+    />
     );
   }
 

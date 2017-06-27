@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text, Platform, View } from 'react-native';
 import { Icon } from 'native-base';
 import * as _ from 'lodash'
-import FontSizeCalculator from './../../../../calculators/FontSize';
+import FontSizeCalculator from '../../../calculators/FontSize';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +58,7 @@ class ListViewHeader extends Component {
       <View style={[styles.container, styles.column]}>
         <View style={[styles.header, styles.row]}>
           <View style={{flex: 0.5}} name="spacer"/>
-          <TouchableOpacity style={{flex: 1}} onPress={() => this.props.goBack()}>
+          <TouchableOpacity style={{flex: 1}} onPress={this.props.goBack}>
             <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
           </TouchableOpacity>
           <Text style={styles.followsTitle}>{_.startCase(this.props.title)}</Text>
