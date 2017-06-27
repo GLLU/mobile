@@ -7,6 +7,7 @@ import TagInput from './forms/TagInput';
 import BrandUrlInput from './forms/BrandUrlInput';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import BaseComponent from '../common/base/BaseComponent';
+import ExpandableTextAreaDescription from './forms/ExpandableTextAreaDescription';
 import {
     createLookItem,
     addDescription,
@@ -36,19 +37,21 @@ const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   titleLabelInfo: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontSize: new FontSizeCalculator(15).getSize(),
     color: '#7f7f7f',
     fontWeight: '300',
   },
   describe: {
     flex: 1,
-    flexGrow: 1,
+    minHeight: 40,
+    flexGrow: 100,
+
     fontFamily: 'PlayfairDisplay-Regular',
     fontSize: new FontSizeCalculator(15).getSize(),
     color: '#9E9E9E',
     backgroundColor: '#FFFFFF',
-    padding: 10
+
   },
   textInput: {
     flex: 1,
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
   confirmText: {
     flex: 1,
     height: 120,
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontSize: new FontSizeCalculator(15).getSize(),
     fontWeight: '300',
     color: '#000',
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
   },
   btnGoToStep3Text: {
     color: '#FFFFFF',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontSize: new FontSizeCalculator(18).getSize(),
     fontWeight: '400',
     textAlign: 'center'
@@ -318,7 +321,7 @@ class StepThreePublish extends BaseComponent {
           <TextInput
             textAlignVertical='top'
             multiline={true}
-            style={styles.describe}
+            style={[styles.describe, {minHeight: 80}]}
             value={this.state.description}
             placeholder="Describe what you're wearing..."
             underlineColorAndroid='transparent'
@@ -375,7 +378,7 @@ class StepThreePublish extends BaseComponent {
     const { image } = this.props;
     return(
 
-      <ScrollView scrollEnabled={true} style={{paddingTop: 10,marginTop: 50, paddingHorizontal: 20}}>
+      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
         <Grid>
           {this.props.isVideo ? this.renderFirstRowWithOutImage() : this.renderFirstRowWithImage(image)}
           <Row style={styles.row}>

@@ -100,6 +100,7 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
        vectorDrawables.useSupportLibrary = true
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -182,7 +183,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':react-native-fabric')
+    compile project(':react-native-image-crop-picker')
 
     compile project(':libs:cropper')
     compile project(':libs:video-trimmer')

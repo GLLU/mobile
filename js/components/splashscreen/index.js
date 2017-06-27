@@ -44,7 +44,7 @@ class SplashPage extends Component {
       repeat: props.currentAppState==='active'
     };
     if(this.props.showTutorial && Platform !== 'ios'){
-      this.props.navigateTo('tutorialscreen');
+      //this.props.navigateTo('tutorialscreen');
     }
   }
 

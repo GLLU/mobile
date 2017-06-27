@@ -16,7 +16,7 @@ const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.g
 const w = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   titleLabelInfo: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     color: 'white',
     fontWeight: '300',
     fontSize: new FontSizeCalculator(15).getSize(),
@@ -184,10 +184,10 @@ class StepZeroBrand extends BaseComponent {
     const brand = currItem ? currItem.brand : null;
     const brandName = brand ? typeof brand === 'string' ? brand : brand.name : ''
     return (
-      <View style={{position: 'absolute', height: h, bottom: 60}}>
-        <View style={{ width: w, flex: 1, justifyContent: 'flex-end' }}>
+      <View>
+        <View style={{ width: w }}>
           {this.renderOpenButton(brand)}
-          <Animated.View style={{borderRadius: 10, alignSelf: 'center', width: w-100, paddingLeft: 25, paddingRight: 25, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
+          <Animated.View style={{borderRadius: 10, alignSelf: 'center', overflow: 'hidden',justifyContent: 'flex-start', bottom: 0, width: w-100, paddingLeft: 25, paddingRight: 25, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
             <Text style={styles.titleLabelInfo}>Brand Name</Text>
             <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
               <Text style={styles.input}>

@@ -13,7 +13,6 @@ export const postMultipartForm = (api_key, path, formData, fileField, file, meth
       type: 'image/*',
       data: RNFetchBlob.wrap(file.path)
     });
-
     return RNFetchBlob.fetch(method, `${Config.API_URL}${path}`, {
       Authorization: `Token token=${api_key}`,
       'Content-Type': 'multipart/form-data',

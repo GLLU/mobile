@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   titleLabelInfo: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     flexWrap: 'nowrap',
     color: 'white',
     fontWeight: '300',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   headinSharing: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     color: '#000000',
     fontSize: new FontSizeCalculator(20).getSize(),
     fontWeight: '300',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
   },
   checkboxLabelStyle: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontSize: new FontSizeCalculator(15).getSize(),
     fontWeight: '300',
     paddingTop: 15
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   textInfo: {
     color: '#000',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontWeight: '300',
     fontSize: new FontSizeCalculator(12).getSize(),
     paddingTop: 5,

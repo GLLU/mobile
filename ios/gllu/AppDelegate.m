@@ -8,8 +8,10 @@
  */
 
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
 
+#import <CodePush/CodePush.h>
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -38,12 +40,12 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [Fabric with:@[[Crashlytics class]]];
 
   //
  [[FBSDKApplicationDelegate sharedInstance] application:application
                           didFinishLaunchingWithOptions:launchOptions];
   // Add any custom logic here.
-
   return YES;
 }
 
@@ -57,6 +59,7 @@
                                                              annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
                   ];
   // Add any custom logic here.
+  
   return handled;
 }
 

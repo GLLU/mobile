@@ -184,9 +184,10 @@ class AddItemPage extends Component {
 
   renderActions() {
     return (
-      <View>
+      <View style={{ height: h, width: w}}>
         {this.renderHeader()}
         {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
+
       </View>
     )
   }
@@ -194,29 +195,25 @@ class AddItemPage extends Component {
   renderThreeSteps() {
     const {currItem} = this.state
     return (
-      <View style={{height: h}}>
-        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 20, height: h - 70}}>
+      <View style={{flexDirection: 'column', justifyContent: 'space-between', flex: 1}}>
+        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row'}}>
           <StepTwoOccasions item={currItem} />
           <StepOneCategory item={currItem} />
         </View>
-        <StepZeroBrand item={currItem}/>
+
+          <StepZeroBrand item={currItem}/>
+
       </View>
     )
   }
 
   renderContent() {
     if (this.state.currentStep !== 1) {
-      return (
-        <View>
-          {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
-        </View>
-      );
+      return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()
     }
     return (
       <View>
-        <View style={{position: 'absolute'}}>
           {this.renderHeader()}
-        </View>
         <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)} />
       </View>);
   }
