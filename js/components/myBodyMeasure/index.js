@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Content } from 'native-base';
-import { Text, View, StyleSheet, BackAndroid, Dimensions } from 'react-native';
+import { Container, Header, Content, Button, Icon, Title, getTheme, StyleProvider } from 'native-base';
+import { Text, View, StyleSheet, BackAndroid } from 'react-native';
 import styles from './styles';
+import glluTheme from '../../themes/gllu-theme';
 
 import { connect } from 'react-redux';
 import { saveUserSize } from '../../actions/myBodyMeasure';
@@ -10,11 +11,6 @@ import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
 import asScreen from "../common/containers/Screen"
 import { showBodyTypeModal } from "../../actions/myBodyType";
-import Header from "../common/containers/ModalHeader";
-import SolidButton from "../common/buttons/SolidButton";
-
-const h = Dimensions.get('window').height;
-const w = Dimensions.get('window').width;
 
 class MyBodyMeasure extends Component {
   constructor(props) {
@@ -73,22 +69,30 @@ class MyBodyMeasure extends Component {
   render() {
     return (
       <Container>
-        <Header title='My Body Measures' goBack={this.goBack}/>
-          <Content style={{backgroundColor:'#eee'}}>
-            <View style={[{backgroundColor:'#fff'},styles.container]}>
-              <Text style={styles.selectBodyTypeText}>This will help us find unique items for a
-                perfect fit</Text>
+        <View style={{height: 50}}>
+          <View style={[styles.header,{flexDirection:'row', flex: 1, alignItems:'center'}]}>
+            <Button transparent onPress={this.goBack}>
+              <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back"/>
+            </Button>
+            <Text style={styles.headerTitle}>My Body Measures</Text>
+          </View>
+        </View>
+        <StyleProvider style={getTheme(glluTheme)}>
+          <Content>
+            <Text style={StyleSheet.flatten(styles.selectBodyTypeText)}>This will help us find unique items for a
+              perfect fit</Text>
+            <View style={StyleSheet.flatten(styles.container)}>
+              <BodyMeasureView gender={this.props.gender} bodyType={this.props.currentBodyType}/>
             </View>
-            <View style={{backgroundColor:'#eee'}}>
-              <View style={styles.container}>
-                <BodyMeasureView gender={this.props.gender} bodyType={this.props.currentBodyType}/>
-              </View>
-              <View style={{marginTop: 15}}>
-                <InformationTextIcon text='This information is private to you only'/>
-              </View>
-              <SolidButton label="All Set. Let's inFash!" onPress={this.handleSaveUserSizePress.bind(this)} style={[styles.continueButton,{backgroundColor:'#00D7B2', height:45}]}/>
+            <View style={{marginTop: 15}}>
+              <InformationTextIcon text='This information is private to you only'/>
             </View>
+            <Button block style={StyleSheet.flatten(styles.continueButton)}
+                    onPress={this.handleSaveUserSizePress.bind(this)}>
+              <Text style={{color:'white'}}>All Set. Let's inFash!</Text>
+            </Button>
           </Content>
+        </StyleProvider>
       </Container>
     )
   }

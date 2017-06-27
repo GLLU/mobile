@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class HollowButton extends Component {
+class ResetMyPasswordButton extends Component {
 
   static propTypes = {
     onPress: React.PropTypes.func
@@ -38,15 +38,19 @@ class HollowButton extends Component {
     onPress: _.noop
   }
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <View style={[styles.container, styles.center, styles.btn]}>
+      <View style={[styles.center, this.props.style]}>
         <TouchableHighlight onPress={this.props.onPress}>
-          <Text style={styles.text}>Signup with Email</Text>
+          <Text style={styles.text}>Reset My Password</Text>
         </TouchableHighlight>
       </View>
     );
   }
 }
 
-export default HollowButton;
+export default ResetMyPasswordButton;
