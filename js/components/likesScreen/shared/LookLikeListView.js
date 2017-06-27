@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Dimensions,ListView, Image, StyleSheet, TouchableOpacity, Text,View } from 'react-native';
+import { Dimensions, ListView, Image, StyleSheet, TouchableOpacity, Text, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { followUpdate, unFollowUpdate } from '../../../actions';
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class FollowListView extends Component {
+class LookLikeListView extends Component {
 
   static propTypes = {
     likes: React.PropTypes.array,
@@ -26,26 +26,21 @@ class FollowListView extends Component {
   constructor(props) {
     super(props);
     this.renderListView = this.renderListView.bind(this);
-    const ds = new ListView.DataSource({rowHasChanged: this.rowHasChanged});
+    this.onUserNavigate = this.onUserNavigate.bind(this);
+    this.toggleFollowAction = this.toggleFollowAction.bind(this);
     this.state = {
-      dataSource: ds.cloneWithRows(props.likes),
+      isTrueEndReached: false
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.likes !== this.props.likes) {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.likes)
-      })
+    if (_.isEmpty(nextProps.likes)) {
+      this.setState({isTrueEndReached: true});
     }
   }
 
-  rowHasChanged(r1, r2) {
-    return r1 !== r2;
-  }
-
-  onUserNavigate(user) {
-    this.props.navigateTo('profileScreen', user);
+  onUserNavigate(props) {
+    this.props.navigateTo('profileScreen', props.user);
   }
 
   toggleFollowAction(user, shouldFollow) {
@@ -60,12 +55,14 @@ class FollowListView extends Component {
 
   renderListView() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(data) => <FollowRow onUserPress={this.onUserNavigate.bind(this)} onFollowPress={this.toggleFollowAction.bind(this)} {...data}/>}
-        renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
-        enableEmptySections={true}
-      />
+    <FlatList
+      style={styles.container}
+      data={this.props.likes}
+      keyExtractor={(likes,index)=>likes.id!==-1?likes.id:index}
+      renderItem={({item}) => <FollowRow onUserPress={this.onUserNavigate} onFollowPress={this.toggleFollowAction} {...item}/>}
+      onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
+      onEndReachedThreshold={100}
+    />
     );
   }
 
@@ -89,5 +86,5 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps, bindAction)(FollowListView);
+export default connect(mapStateToProps, bindAction)(LookLikeListView);
 
