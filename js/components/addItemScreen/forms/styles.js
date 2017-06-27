@@ -40,11 +40,10 @@ export default StyleSheet.create({
     marginBottom: 8
   },
   editAboutMeContainer: {
-
+    minHeight: 80,
     backgroundColor: 'white',
   },
   editAboutMeInput: {
-
     backgroundColor: '#FFFFFF',
     fontSize: 16,
     padding: 10,

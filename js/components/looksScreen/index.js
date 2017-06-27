@@ -267,7 +267,6 @@ class LooksScreen extends Component {
 
   renderImage(look, index) {
     const showShowArrow = this.shouldRenderArrows()
-    console.log('showShowArrow',showShowArrow)
     return (
       <GestureRecognizer
         key={look.originalIndex!==undefined ? look.originalIndex : -1}

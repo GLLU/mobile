@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     fontSize: fontSizeDefault * 1.2,
     color: '#ccc',
     alignSelf: 'flex-end',
-    marginBottom: (Platform.OS === 'ios') ? 16 : 5,
+    marginBottom: (Platform.OS === 'ios') ? 5 : 5,
   },
   infoDetailTouch: {
     flexDirection: 'column',
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
   },
   sizeLineIcons: {
     color: '#00c497',
-    fontSize: (Platform.OS === 'ios') ? 35 : 28,
+    fontSize: (Platform.OS === 'ios') ? 28 : 28,
+    backgroundColor: 'transparent'
   },
   infoDetailText: {
     fontSize: fontSizeDefault,
@@ -46,9 +47,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'flex-end',
     color: '#000000',
-    width: 53,
-    marginLeft: 8,
-    marginRight: 4,
+    width: 50,
+    marginLeft: 7,
+    marginRight: 3,
   }
 });
 

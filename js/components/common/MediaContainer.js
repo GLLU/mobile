@@ -98,46 +98,34 @@ class MediaContainer extends PureComponent {
       ShouldShowLookImage = this.props.currScroll + lookHeight > this.state.currLookPosition - lookHeight*2 && this.props.currScroll - lookHeight < this.state.currLookPosition+lookHeight*2
     } else {
       ShouldShowLookImage = true
-    }    if(Platform.OS === 'ios') {
-      return (
-        <View style={{height: lookHeight, width: lookWidth-6,  overflow: 'hidden', borderRadius: 10,  alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <VideoWithCaching
-            source={{uri: video.uri, mainVer: 1, patchVer: 0}}
-            resizeMode={'stretch'}
-            muted={this.state.isMuted}
-            style={{width: lookWidth, height: lookHeight, overflow:'hidden'}}
-            paused={!ShouldShowLookImage}
-            navigation={this.props.navigation}
-            preview={video.preview}
+    }
+    return (
+      <View style={[{alignSelf: 'center',height: lookHeight, width: lookWidth-6, overflow: 'hidden', borderRadius: 10, backgroundColor: this.state.backgroundColor}, Platform.OS === 'ios' ? {marginBottom: 3, marginTop: 3} : null]}>
+        {ShouldShowLookImage ?
+          <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
+                            resizeMode={'stretch'}
+                            muted={this.state.isMuted}
+                            style={{width: lookWidth, height: lookHeight, overflow:'hidden', borderRadius: 10}}
+                            paused={!ShouldShowLookImage}
+                            repeat={true}
+                            preview={video.preview}
           />
-        </View>
-      )
-    } else {
-      return (
-        <View style={{height: lookHeight, width: lookWidth, overflow: 'hidden', borderRadius: 10, backgroundColor: this.state.backgroundColor}}>
-          {ShouldShowLookImage ?
-            <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
-                              resizeMode={'stretch'}
-                              muted={this.state.isMuted}
-                              style={{width: lookWidth, height: lookHeight, overflow:'hidden', borderRadius: 10}}
-                              paused={!ShouldShowLookImage}
-                              repeat={true}
-                              navigation={this.props.navigation}
-                              preview={video.preview}
-            />
           :
-            <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>
-
-          }
-
+          <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>
+        }
+        {Platform.OS !== 'ios' ?
           <MediaBorderPatch media={video} lookWidth={lookWidth} lookHeight={lookHeight}>
             <View style={{bottom: 15}}>
               { this.renderVideoGrid(video) }
             </View>
           </MediaBorderPatch>
-        </View>
-      )
-    }
+          :
+          null
+
+        }
+
+      </View>
+    )
 
   }
 
@@ -165,15 +153,16 @@ class MediaContainer extends PureComponent {
     if(Platform.OS === 'ios') {
       return (
         <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          <ImageWrapper source={{uri: look.uri}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}>
+          {ShouldShowLookImage ? <ImageWrapper source={{uri: look.uri}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}>
             {this.renderImageGrid(look, lookHeight)}
           </ImageWrapper>
+            : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} />}
         </View>
       )
     } else {
       return (
         <View>
-          {ShouldShowLookImage ? <ImageWrapper source={{uri: look.uri, cache: true}} resizeMode={'stretch'} style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} navigation={this.props.navigation}/> : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} />}
+          {ShouldShowLookImage ? <ImageWrapper source={{uri: look.uri}} resizeMode={'stretch'} style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} /> : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} />}
           <MediaBorderPatch media={look} lookWidth={lookWidth} lookHeight={lookHeight}>
             {this.renderImageGrid(look, lookHeight)}
           </MediaBorderPatch>
@@ -199,11 +188,10 @@ class MediaContainer extends PureComponent {
   }
 
   renderVideoGrid(look) {
-    const { lookHeight } = this.state.dimensions
+    const { lookHeight, lookWidth } = this.state.dimensions
     if(this.props.showMediaGrid) {
       return (
-          <View style={Platform.OS === 'ios' ? [styles.videoGridIos, {width: look.width}] : styles.videoGridAndroid}>
-
+          <View style={Platform.OS === 'ios' ? [styles.videoGridIos, {width: lookWidth-2}] : styles.videoGridAndroid}>
             {this.props.children}
             <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} routeName={this.props.navigation} lookHeight={lookHeight}/>
             <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()} lookHeight={lookHeight}/>

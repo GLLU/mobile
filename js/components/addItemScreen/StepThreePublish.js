@@ -318,11 +318,15 @@ class StepThreePublish extends BaseComponent {
     return (
       <Row style={[styles.row, { flexDirection: 'row' }]}>
         <Col size={100} style={{flexDirection: 'column'}}>
-          <ExpandableTextAreaDescription
-            text={this.state.about_me}
+          <TextInput
+            textAlignVertical='top'
+            multiline={true}
+            style={[styles.describe, {minHeight: 80}]}
+            value={this.state.description}
+            placeholder="Describe what you're wearing..."
+            underlineColorAndroid='transparent'
             onEndEditing={this.handleDescriptionEndEditing.bind(this)}
-            handleTextInput={(text) => this.updateSelectValue('description', text)}
-          />
+            onChangeText={(text) => this.updateSelectValue('description', text)}/>
         </Col>
       </Row>
     )

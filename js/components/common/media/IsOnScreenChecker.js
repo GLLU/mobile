@@ -31,7 +31,6 @@ const isOnScreenCheck=WrappedComponent=>{
     }
 
     render() {
-      console.log('props',{...this.props})
       return <WrappedComponent {...this.props} isOnScreen={this.state.isOnScreen}/>
     }
   }

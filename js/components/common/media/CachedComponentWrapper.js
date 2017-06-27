@@ -18,8 +18,15 @@ const cacheComponent=uriProvider=>WrappedComponent=>{
     componentDidMount() {
       this._isMounted=true;
       const uri=uriProvider(this.props);
-      this.cacheOrReturnCachedPath(uri);
+      if(uri.search("file://") > -1){
+        this.setState({isCaching: false, localUri: uri})
+      } else {
+        this.cacheOrReturnCachedPath(uri);
+        //this.setState({isCaching: false, localUri: uri})
+      }
+
     }
+
     componentWillUnmount(){
       this._isMounted=false;
     }

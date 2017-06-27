@@ -8,6 +8,7 @@ const TAG_WIDTH = 100;
 const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
 const w = Dimensions.get('window').width;
+import VideoWithCaching from "./media/VideoWithCaching";
 
 const styles = StyleSheet.create({
   base: {
@@ -144,11 +145,14 @@ class VideoWithTags extends Component {
   render() {
     return (
     <View style={{ flex: 1}}>
-      <Video source={{uri: this.props.image}}
-             resizeMode="contain"
-             muted={false}
-             style={{position: 'absolute', height: h, width: w}}
-             repeat={true}/>
+      <VideoWithCaching
+        source={{uri: this.props.image, mainVer: 1, patchVer: 0}}
+        resizeMode={'stretch'}
+        muted={false}
+        style={{width: w, height: h, overflow:'hidden'}}
+        paused={false}
+        repeat={true}
+      />
 
       {this.props.children}
     </View>

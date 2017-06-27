@@ -111,9 +111,7 @@ export default StyleSheet.create({
   statsContainer:{
     flexDirection: 'row',
     height: 75,
-    justifyContent: 'space-between',
-    marginLeft: 15,
-    marginRight: 15,
+    justifyContent: 'space-around',
     marginTop: 5,
     backgroundColor: 'transparent',
 
