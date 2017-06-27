@@ -19,6 +19,7 @@ export default class ListScreen extends Component {
     onEndReached: React.PropTypes.func,
     keyExtractor: React.PropTypes.func,
     renderItem: React.PropTypes.func,
+    renderEmptyView: React.PropTypes.func,
   };
 
   static defaultProps={
@@ -38,6 +39,19 @@ export default class ListScreen extends Component {
     }
   }
 
+  renderList=()=>{
+    return (
+      <FlatList
+      style={styles.container}
+      data={this.props.data}
+      keyExtractor={this.props.keyExtractor}
+      renderItem={({item}) => this.props.renderItem(item)}
+      onEndReached={this.state.isTrueEndReached? noop:this.props.onEndReached}
+      onEndReachedThreshold={100}
+    />
+    );
+  };
+
   render() {
     return (
       <FullscreenView style={{backgroundColor:'white'}}>
@@ -50,6 +64,7 @@ export default class ListScreen extends Component {
           onEndReached={this.state.isTrueEndReached? noop:this.props.onEndReached}
           onEndReachedThreshold={100}
         />
+        {this.props.likes.length > 0 ? this.renderList() : this.props.renderEmptyView() }
       </FullscreenView>
     );
   }
