@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import * as _ from 'lodash'
 import FooterButton from './FooterButton'
 import { connect } from 'react-redux';
 
-const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
-//get the category icon
 class ItemButton extends Component {
   constructor(props) {
     super(props);
+    //get the category icon
     const category = _.find(this.props.categories, category => category.name === this.props.category);
-    this.iconNotActive = category.icon.url
-    this.iconActive = category.icon.url_hover
+    const icon = category? category.icon : {};
     this.state = {
-      icon: this.iconActive
+      icon: icon.url,
+      iconActive: icon.url_hover
     }
   }
 
@@ -26,17 +24,10 @@ class ItemButton extends Component {
     onPress: _.noop,
     isActive: false
   };
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.isActive === true) {
-      this.setState({icon: this.iconNotActive})
-    } else {
-      this.setState({icon: this.iconActive})
-    }
-  }
 
   render() {
     return (
-      <FooterButton {...this.props} iconUrl={this.state.icon}/>
+      <FooterButton {...this.props} iconUrl={this.props.isActive?this.state.iconActive:this.state.icon}/>
     );
   }
 }
