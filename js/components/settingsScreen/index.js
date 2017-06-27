@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet, Alert, Linking, Text, View, Image, FlatList, TouchableOpacity,
 } from 'react-native';
@@ -68,67 +68,22 @@ const iconCopyright = require('../../../images/icons/copyright.png');
 const iconLogout = require('../../../images/icons/logout.png');
 const iconRateUs = require('../../../images/icons/rate_us.png');
 
-class SettingsScreen extends PureComponent {
+class SettingsScreen extends Component {
   static propTypes = {
     navigation: React.PropTypes.object,
     back: React.PropTypes.func,
   };
   constructor(props) {
     super(props);
-    this._renderListItem=this._renderListItem.bind(this);
+    this.renderListItem=this.renderListItem.bind(this);
+    this.getSettingsConfiguration=this.getSettingsConfiguration.bind(this);
+    this.state={
+      settings:this.getSettingsConfiguration()
+    }
   }
 
-  _onInviteFriendsClick() {
-    this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
-    SocialShare.nativeShare(message);
-  }
-
-  handleOpenLink(url, type = 'link') {
-    this.props.logEvent('SettingsScreen', { name: 'Link click', url });
-    Linking.canOpenURL(url).then(supported => {
-      if (!supported) {
-        console.log('Can\'t handle url: ' + url);
-        if (type == 'email') {
-          Alert.alert(
-            '',
-            `Sorry, but it seems you don't have an email client enabled in this device. You can email us to ${SUPPORT_EMAIL}`,
-            [
-              {
-                text: 'OK',
-                onPress: () => {
-                  console.log('Alert OK pressed');
-                }
-              }
-            ]
-          );
-        }
-      } else {
-        return Linking.openURL(url);
-      }
-    }).catch(err => console.error('An error occurred', err));
-  }
-
-  handleLogout() {
-    this.props.logEvent('SettingsScreen', { name: 'Logout click' });
-    this.props.logout()
-      .then(()=>this.props.resetTo('splashscreen'))
-      .catch((err)=>console.log(err));
-  }
-
-  _renderListItem({item}){
-    return(
-      <TouchableOpacity onPress={item.onPress}>
-        <View style={styles.listItem}>
-          <Image style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
-          <Text style={styles.listItemText}>{item.text}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
-  render() {
-    const settings=[
+  getSettingsConfiguration(){
+    return [
       {
         text:'Invite your Friends',
         icon:iconShare,
@@ -165,14 +120,66 @@ class SettingsScreen extends PureComponent {
         onPress:this.handleLogout.bind(this)
       },
 
-    ];
+    ]
+  }
+
+  _onInviteFriendsClick() {
+    this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
+    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.nativeShare(message);
+  }
+
+  handleOpenLink(url, type = 'link') {
+    this.props.logEvent('SettingsScreen', { name: 'Link click', url });
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + url);
+        if (type === 'email') {
+          Alert.alert(
+            '',
+            `Sorry, but it seems you don't have an email client enabled in this device. You can email us to ${SUPPORT_EMAIL}`,
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('Alert OK pressed');
+                }
+              }
+            ]
+          );
+        }
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch(err => console.error('An error occurred', err));
+  }
+
+  handleLogout() {
+    this.props.logEvent('SettingsScreen', { name: 'Logout click' });
+    this.props.logout()
+      .then(()=>this.props.resetTo('splashscreen'))
+      .catch((err)=>console.log(err));
+  }
+
+  renderListItem({item}){
+    return(
+      <TouchableOpacity onPress={item.onPress}>
+        <View style={styles.listItem}>
+          <Image style={StyleSheet.flatten(styles.listItemThumbnail)} small square source={item.icon} />
+          <Text style={styles.listItemText}>{item.text}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  render() {
     return (
       <FullscreenView style={{backgroundColor: 'white'}}>
         <Header title='Settings' goBack={this.props.goBack}/>
         <FlatList
-          data={settings}
+          data={this.state.settings}
           keyExtractor={(item, index) => index}
-          renderItem={this._renderListItem}
+          renderItem={this.renderListItem}
         />
       </FullscreenView>
     );
