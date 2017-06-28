@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 class ItemButton extends Component {
   constructor(props) {
     super(props);
-    //get the category icon
-    const category = _.find(this.props.categories, category => category.name === this.props.category);
+    const {category} = props;
     const icon = category? category.icon : {};
     this.state = {
       icon: icon.url,

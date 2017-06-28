@@ -30,7 +30,7 @@ class VideoItemLine extends Component {
       return (
         <View style={{flex: 1, height: 45, flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end'}} >
           <ItemDataLine isOpen={this.state.itemLineOpen} data={item} />
-          <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={item.category.name} />
+          <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={item.category} />
 
         </View>
       );
