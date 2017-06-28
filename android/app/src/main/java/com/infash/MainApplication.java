@@ -12,6 +12,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.smixx.fabric.FabricPackage;
 import com.infash.customPackages.CameraReactPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
@@ -61,7 +62,8 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
-            new PickerPackage(),
+                            new PickerPackage(),
+                            new FabricPackage(),
                             new CameraReactPackage(),
                             new GoogleAnalyticsBridgePackage(),
                             new FlurryAnalyticsPackage(),

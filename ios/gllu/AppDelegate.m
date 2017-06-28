@@ -8,7 +8,6 @@
  */
 
 #import "AppDelegate.h"
-
 #import <CodePush/CodePush.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
@@ -45,6 +44,7 @@
   //
  [[FBSDKApplicationDelegate sharedInstance] application:application
                           didFinishLaunchingWithOptions:launchOptions];
+[Fabric with:@[[Crashlytics class]]];
   // Add any custom logic here.
   return YES;
 }
