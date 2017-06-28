@@ -3,6 +3,6 @@
 
 @interface VideoTrimmerViewController : UIViewController
 
-- (instancetype)initWithAssetUrl:(NSURL*)url;
+- (instancetype)initWithAssetUrl:(NSURL*)url trimmer:(BOOL)enabled;
 
 @end
