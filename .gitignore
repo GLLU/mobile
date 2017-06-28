@@ -58,9 +58,6 @@ fastlane/Preview.html
 fastlane/screenshots
 
 ios/build
-ios/gllu.xcodeproj
-ios/gllu.xcworkspace
-ios/Pods/
 my-release-key.keystore
 
 # Webstorm/intelliJ
