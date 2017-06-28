@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
+ <dict>
+        <key>Fabric</key>
+        <dict>
+          <key>APIKey</key>
+          <string>073fbe796531c6ef71a3c78ed34e237691bf78bf</string>
+          <key>Kits</key>
+          <array>
+            <dict>
+              <key>KitInfo</key>
+              <dict/>
+              <key>KitName</key>
+              <string>Crashlytics</string>
+            </dict>
+          </array>
+        </dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
