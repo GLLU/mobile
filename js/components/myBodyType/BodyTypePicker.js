@@ -86,7 +86,7 @@ class BodyTypePicker extends Component {
           </View>
           <Button block primary style={StyleSheet.flatten(styles.continueButton)}
                   onPress={this.handleContinuePress.bind(this)}>
-            <Text style={{color:'white'}}>Continue</Text>
+            <Text style={{color:'white'}}>Choose</Text>
           </Button>
         </Content>
         </StyleProvider>
