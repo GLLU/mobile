@@ -109,9 +109,9 @@ class EditProfile extends Component {
             onEndEditing={this._handleAboutMeEndEding.bind(this)}
             handleTextInput={(text) => this._handleAboutMeTextInput(text)}
           />
-          <View style={styles.editBodyTypeTitleContainer}>
+          <TouchableOpacity onPress={()=>this.toggleBodyTypeModal(true)} style={styles.editBodyTypeTitleContainer}>
             <Text style={styles.editBodyTypeTitle}>EDIT BODY SHAPE</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.bodyMeasureContainer}>
             <BodyMeasureView gender={this.props.user.gender} bodyType={this.props.bodyType} userSize={this.props.user.user_size} onBodyTypePress={()=>this.toggleBodyTypeModal(true)}/>
           </View>
