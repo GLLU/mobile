@@ -22,6 +22,7 @@ export function map(look) {
     preview: look.cover.thumbnail_url || '',
     avatar: look.user.avatar,
     name: look.user.name,
+    is_following: look.user.is_following,
     username: look.user.username,
     about_me: look.user.about_me,
     ...look

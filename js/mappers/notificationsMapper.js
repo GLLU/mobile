@@ -13,6 +13,8 @@ export function notificationMapper(notification) {
     avatar: initiator.avatar,
     name: initiator.name,
     username: initiator.username,
+    is_following: initiator.is_following,
+    about_me: initiator.about_me,
     action_kind: notification.action_kind,
     actionText: getTextByAction(notification.action_kind)
   };
