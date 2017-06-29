@@ -19,18 +19,18 @@ class VideoItemLine extends Component {
     this.setState({itemY: evt.nativeEvent.layout.y})
   }
 
-  _onItemClick() {
-    this.props.toggleItem(...arguments);
+  _onItemClick(shouldActive) {
+    this.props.toggleItem(shouldActive);
     this.setState({itemLineOpen: !this.state.itemLineOpen})
   }
 
   render() {
-    const { item } = this.props
-
+    const { item } = this.props;
+    const category = item.category || {};
       return (
         <View style={{flex: 1, height: 45, flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end'}} >
           <ItemDataLine isOpen={this.state.itemLineOpen} data={item} />
-          <ItemButton isActive={this.state.itemLineOpen} onPress={(y) => this._onItemClick(y)} category={item.category} />
+          <ItemButton isActive={this.state.itemLineOpen} onPress={this._onItemClick} categoryIcon={category.icon} />
 
         </View>
       );

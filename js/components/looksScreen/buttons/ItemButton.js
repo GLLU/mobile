@@ -1,40 +1,29 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import * as _ from 'lodash'
 import FooterButton from './FooterButton'
-import { connect } from 'react-redux';
 
-class ItemButton extends Component {
-  constructor(props) {
-    super(props);
-    const {category} = props;
-    const icon = category? category.icon : {};
-    this.state = {
-      icon: icon.url,
-      iconActive: icon.url_hover
-    }
-  }
+class ItemButton extends PureComponent {
 
   static propTypes = {
+    categoryIcon:React.PropTypes.object,
     onPress: React.PropTypes.func,
     isActive: React.PropTypes.bool
   };
 
   static defaultProps = {
+    categoryIcon:{},
     onPress: _.noop,
     isActive: false
   };
 
+  getIconByActive = (iconObject,isActive) => isActive ? iconObject.url_hover : iconObject.url;
+
   render() {
+    const iconUrl =this.getIconByActive(this.props.categoryIcon,this.props.isActive);
     return (
-      <FooterButton {...this.props} iconUrl={this.props.isActive?this.state.iconActive:this.state.icon}/>
+      <FooterButton {...this.props} isActive={false} iconUrl={iconUrl}/>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    categories: state.filters.categories,
-  };
-};
-
-export default connect(mapStateToProps)(ItemButton);
+export default ItemButton;
