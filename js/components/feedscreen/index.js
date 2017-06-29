@@ -7,7 +7,6 @@ import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
-import SelectPhoto from '../common/SelectPhoto';
 import asScreen from "../common/containers/Screen"
 import { hideBodyTypeModal } from "../../actions/myBodyType";
 import { noop } from "lodash";
@@ -32,8 +31,6 @@ class FeedPage extends Component {
 
   constructor(props) {
     super(props);
-    this._handleClosePhotoModal=this._handleClosePhotoModal.bind(this);
-    this._handleOpenPhotoModal=this._handleOpenPhotoModal.bind(this);
     this._handleSearchStatus=this._handleSearchStatus.bind(this);
     this._clearFilter=this._clearFilter.bind(this);
     this._onPickBodyType=this._onPickBodyType.bind(this);
@@ -88,13 +85,6 @@ class FeedPage extends Component {
     this.setState({searchStatus})
   }
 
-  _handleOpenPhotoModal() {
-    this.setState({photoModal: true});
-  }
-
-  _handleClosePhotoModal() {
-    this.setState({photoModal: false});
-  }
   _clearFilter() {
     this.setState({searchTerm: ''})
   }
@@ -119,7 +109,7 @@ class FeedPage extends Component {
           <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
             <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={this._handleSearchStatus} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
             {!this.state.searchStatus ?
-              <NavigationBarView navigateTo={this.props.navigateTo} addNewItem={this.goToAddNewItem} handleOpenPhotoModal={this._handleOpenPhotoModal}/>
+              <NavigationBarView navigateTo={this.props.navigateTo} addNewItem={this.goToAddNewItem}/>
               :
               null
             }
@@ -128,7 +118,6 @@ class FeedPage extends Component {
           <Modal animationType='slide' visible={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
             <BodyTypePicker onPick={this._onPickBodyType}/>
           </Modal>
-          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
       </View>
     );
   }
