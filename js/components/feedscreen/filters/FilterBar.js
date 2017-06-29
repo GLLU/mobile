@@ -107,7 +107,8 @@ class FilterBar extends BaseComponent {
   }
 
   componentDidMount() {
-    this.props.loadCategories();
+    console.log(`gender`,console.log(this.props.defaultFilters.gender));
+    this.props.loadCategories(this.props.defaultFilters.gender);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -239,7 +240,7 @@ class FilterBar extends BaseComponent {
 
 function bindActions(dispatch) {
   return {
-    loadCategories: () => dispatch(loadCategories()),
+    loadCategories: (gender) => dispatch(loadCategories(gender)),
   };
 }
 

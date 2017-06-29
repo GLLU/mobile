@@ -19,11 +19,9 @@ export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 
 import _ from 'lodash';
 
-import rest, { API_URL } from '../api/rest';
+import rest from '../api/rest';
 import { loadBrands, showProcessing, hideProcessing } from './index';
-import itemMapper from '../mappers/itemMapper';
 import Utils from '../utils';
-
 
 let api_key = null;
 // Actions

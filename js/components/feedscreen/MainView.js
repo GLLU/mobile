@@ -114,6 +114,7 @@ class MainView extends Component {
           typeFilter={this.props.query.type}
           clearFilter={this._clearFilter.bind(this)}
           filterFeed={this._filterFeed.bind(this)}
+          defaultFilters={this.props.defaultFilters}
           query={this.props.query}
         />
       </VisibilityContainer>

@@ -1,26 +1,29 @@
 import rest from '../api/rest';
-import Utils from '../utils';
-import { filter } from "lodash";
+import { chain } from "lodash";
 
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_BRANDS = 'SET_BRANDS';
 export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
 
-export function loadCategories() {
+export function loadCategories(gender) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.category_tags({}, (err, data) => {
+      const query= {
+        gender,
+        page: {
+          size: 200,
+          number: 1
+        }
+      };
+      dispatch(rest.actions.category_tags(query, (err, data) => {
         if (!err && data) {
-          const tags = filter(data.tags, tag=>tag.icon) || [];
-          // load in another thread
-          Promise.all([
-            Utils.preloadImages(tags.map(x => x.icon.url)),
-            Utils.preloadImages(tags.map(x => x.icon.url_hover))
-          ]).finally();
 
           resolve(dispatch({
             type: SET_CATEGORIES,
-            payload: data
+            payload: {
+              tags:data.tags,
+              meta:data.meta
+            }
           }));
         } else {
           reject(err);
@@ -54,7 +57,7 @@ export function loadBrands(term) {
   };
 }
 
-export function loadOccasionTags(data) {
+export function loadOccasionTags() {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.occasion_tags({}, (err, data) => {
