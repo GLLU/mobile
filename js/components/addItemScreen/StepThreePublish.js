@@ -336,7 +336,7 @@ class StepThreePublish extends BaseComponent {
 
     const { items } = this.props;
     return _.map(items, (item, index) => {
-      const iconUrl =  item.category.icon ? item.category.icon.url : this.getItemIconUrl(item);
+      const iconUrl =  item.category.icon.url
       let url;
       if (item.url) {
         url = item.url;
@@ -347,14 +347,10 @@ class StepThreePublish extends BaseComponent {
     });
   }
 
-  getItemIconUrl(item) { //Temp function until we will receive it from the server
-   return _.find(this.props.categories, category => category.name === item.name);
-  }
-
   renderItemTags() {
     const { items } = this.props
     return _.map(items, (item, index) => {
-      const iconUrl =  item.category.icon ? item.category.icon.url : this.getItemIconUrl(item);
+      const iconUrl =  item.category.icon.url
       return (
       <View key={index} style={{flexDirection: 'row'}}>
         <TagInput

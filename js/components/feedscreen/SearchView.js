@@ -35,6 +35,7 @@ class SearchView extends Component {
     return (
       <View style={myStyles.container}>
         <FilterBar
+          defaultFilters={this.props.defaultFilters}
           type={this.props.typeFilter}
           filterFeed={this.props.filterFeed}
           clearFilter={this.props.clearFilter}

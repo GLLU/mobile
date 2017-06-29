@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Animated, View, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput } from 'react-native';
 import { noop } from 'lodash'
 import BaseComponent from "../../common/base/BaseComponent";
+import SolidButton from "../../common/buttons/SolidButton";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,7 +16,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'left',
     paddingLeft:5,
-    height: 40
   },
   sendButton: {
     backgroundColor: '#00D7B2',
@@ -83,11 +83,10 @@ export default class CommentInput extends BaseComponent {
           placeholder="Add Comment"
           onChangeText={this.onChange}
           value={this.state.value}
+          multiline={true}
           underlineColorAndroid='transparent'/>
         <View style={{flex:1}} name="spacer"/>
-        <TouchableOpacity style={styles.sendButton} onPress={this.onSendPress}>
-          <Text style={styles.sendButtonText}>SEND</Text>
-        </TouchableOpacity>
+        <SolidButton label='SEND' style={styles.sendButton} onPress={this.onSendPress}/>
         <View style={{flex:1}} name="spacer"/>
       </View>
     );

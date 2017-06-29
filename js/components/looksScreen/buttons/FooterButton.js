@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 import * as _ from 'lodash'
 import styles from '../styles'
 
-export default class FooterButton extends Component {
+export default class FooterButton extends PureComponent {
   constructor(props) {
     super(props);
     this._onPress = this._onPress.bind(this);
@@ -21,9 +21,7 @@ export default class FooterButton extends Component {
     isActive: false
   };
 
-  _getStyle(isActive) {
-    return isActive ? styles.footerButtonActive : styles.footerButton;
-  }
+  _getStyle=(isActive) =>isActive ? styles.footerButtonActive : styles.footerButton;
 
   _onPress() {
     const shouldActive = !this.props.isActive;

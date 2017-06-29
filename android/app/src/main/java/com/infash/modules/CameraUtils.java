@@ -141,12 +141,14 @@ public class CameraUtils extends ReactContextBaseJavaModule {
 
         if (Build.VERSION.SDK_INT < 19) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             intent.setType("image/* video/*");
             getCurrentActivity().startActivityForResult(Intent.createChooser(intent, "select a file to upload"), PICK_GALLERY);
         } else {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             intent.putExtra(Intent.EXTRA_MIME_TYPES, fileTypesObject);
             getCurrentActivity().startActivityForResult(intent, PICK_GALLERY);
         }

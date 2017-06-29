@@ -5,10 +5,10 @@ import { ListView, Image, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
 import SelectPhoto from '../../../common/SelectPhoto';
-import { addNewLook, getUserFollowersData, initUserFollowers } from '../../../../actions';
-
-import FollowListView from '../shared/FollowListView'
+import { addNewLook, getUserFollowersData} from '../../../../actions';
 import asScreen from "../../../common/containers/Screen"
+import ListScreen from "../../../common/lists/ListScreen";
+import UserActionRow from "../../../common/lists/UserActionRow";
 
 class FollowerScreen extends Component {
 
@@ -76,20 +76,20 @@ class FollowerScreen extends Component {
 
   render() {
     const userData = this.props.navigation.state.params;
-    const currentUserData = this.state.followers;
+    const headerData = {title: 'Followers', count:userData.count};
     return (
-          <View style={{flex:1, flexDirection:'column', backgroundColor:'white'}} >
-            <FollowListView
-              renderEmpty={this._renderOnEmpty}
-              headerData={userData}
-              follows={currentUserData}
-              navigateTo={this.props.navigateTo}
-              goBack={this.props.goBack}
-              onEndReached={this.getFollowersData}
-              mode={userData.mode}/>
-            <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
-                         onRequestClose={this._handleClosePhotoModal}/>
-          </View>
+      <View>
+      <ListScreen
+        renderEmpty={this._renderOnEmpty}
+        renderItem={(item) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+        headerData={headerData}
+        data={this.state.followers}
+        navigateTo={this.props.navigateTo}
+        goBack={this.props.goBack}
+        onEndReached={this.getFollowersData}/>
+        <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
+                     onRequestClose={this._handleClosePhotoModal}/>
+      </View>
     );
   }
 }

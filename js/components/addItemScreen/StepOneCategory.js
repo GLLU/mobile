@@ -5,7 +5,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
   addItemType,
-  loadCategories,
 } from '../../actions';
 import CategoryStrip from '../common/CategoryStrip';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -125,10 +124,6 @@ class StepOneCategory extends BaseComponent {
     }
   }
 
-  componentWillMount() {
-    this.props.loadCategories().catch(()=> {});
-  }
-
   selectCategory(category) {
     if (category.id !== this.props.selectedCategory) {
       this.logEvent('UploadLookScreen', { name: 'Category select', category: category.name });
@@ -194,7 +189,6 @@ class StepOneCategory extends BaseComponent {
 function bindActions(dispatch) {
   return {
     addItemType: (type, itemId) => dispatch(addItemType(type, itemId)),
-    loadCategories: () => dispatch(loadCategories()),
   };
 }
 

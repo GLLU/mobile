@@ -1,9 +1,6 @@
-
 import React, { Component } from 'react';
 import { Image, TouchableWithoutFeedback, Text, View, StyleSheet, TextInput } from 'react-native';
-import {
-  Container,  Button, Content, Icon, StyleProvider, getTheme
-} from 'native-base';
+import { Container, Content, StyleProvider, getTheme } from 'native-base';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
@@ -13,7 +10,8 @@ import { emailRule } from '../../validators';
 import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
-import ResetMyPasswordButton from "./ResetMyPasswordButton";
+import Header from "../common/containers/Header";
+import SolidButton from "../common/buttons/SolidButton";
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 import asScreen from "../common/containers/Screen"
 
@@ -29,44 +27,41 @@ class forgotPasswordPage extends Component {
 
   constructor(props) {
     super(props);
-
-      this.state = {
-          email: '',
-          emailValid: 'times',
-          emailWasSent: false
-      };
+    this.forgotPasswordEmail = this.forgotPasswordEmail.bind(this);
+    this.validateEmailInput = this.validateEmailInput.bind(this);
+    this.state = {
+      email: '',
+      emailValid: 'times',
+      emailWasSent: false
+    };
 
   }
 
   forgotPasswordEmail() {
-      let { email } = this.state;
-      if(this.checkValidations()) {
-        this.props.forgotPassword(email);
-        this.setState({emailWasSent: true});
-      }
+    let {email} = this.state;
+    if (this.checkValidations()) {
+      this.props.forgotPassword(email);
+      this.setState({emailWasSent: true});
+    }
   }
 
   checkValidations() {
-    let { emailValid } = this.state;
+    let {emailValid} = this.state;
     return (emailValid !== 'times')
   }
 
   validateEmailInput(email) {
     emailRule.validate(email, (err) => {
-      if(!err){
-        this.setState({email, emailValid: 'check'});
-      } else {
-        this.setState({email, emailValid: 'times'});
-      }
+      this.setState({email, emailValid: !err ? 'check' : 'times'});
     });
   }
 
   renderEmailSent() {
     return (
       <Content scrollEnabled={false}>
-      <View style={styles.instuctionsContainer}>
-        <Text style={styles.instuctions}>You will get an email shortly to recover your password</Text>
-      </View>
+        <View style={styles.instuctionsContainer}>
+          <Text style={styles.instuctions}>You will get an email shortly to recover your password</Text>
+        </View>
       </Content>
     );
   }
@@ -75,7 +70,8 @@ class forgotPasswordPage extends Component {
     return (
       <Content scrollEnabled={false}>
         <View style={styles.instuctionsContainer}>
-          <Text style={styles.instuctions}>Please insert your email and we will send you details on reseting your password</Text>
+          <Text style={styles.instuctions}>Please insert your email and we will send you details on reseting your
+            password</Text>
         </View>
         <Grid>
           <Row style={styles.formItem}>
@@ -85,11 +81,14 @@ class forgotPasswordPage extends Component {
               placeholderTextColor='lightgrey'
               autoFocus={true}
               style={[styles.formInput]}
-              onChangeText={(email) => this.validateEmailInput(email)}/>
-            {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
+              onChangeText={this.validateEmailInput}/>
+            {this.state.email.length > 0 ?
+              <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/> : null}
           </Row>
         </Grid>
-        <ResetMyPasswordButton style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null ]} onPress={() => this.forgotPasswordEmail()}/>
+        <SolidButton label='Reset My Password'
+                     style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null]}
+                     onPress={this.forgotPasswordEmail}/>
       </Content>
     );
   }
@@ -99,16 +98,9 @@ class forgotPasswordPage extends Component {
       <Container>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
-            <View style={{height:50}}>
-              <View style={styles.header} >
-                <Button transparent onPress={this.props.goBack}>
-                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
-                </Button>
-                <Text style={styles.headerTitle}>Forgot Password</Text>
-              </View>
-            </View>
+            <Header title='Forgot Password?' goBack={this.props.goBack}/>
             <StyleProvider style={getTheme(glluTheme)}>
-            {this.state.emailWasSent?this.renderEmailSent():this.renderBeforeEmailSent()}
+              {this.state.emailWasSent ? this.renderEmailSent() : this.renderBeforeEmailSent()}
             </StyleProvider>
           </Image>
         </View>
@@ -119,10 +111,9 @@ class forgotPasswordPage extends Component {
 }
 
 
-
 function bindAction(dispatch) {
   return {
-      forgotPassword: (email) => dispatch(forgotPassword(email)),
+    forgotPassword: (email) => dispatch(forgotPassword(email)),
   };
 }
 

@@ -10,7 +10,7 @@ const initialState = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [SET_CATEGORIES]: (state, action) => {
-    const categories = _.filter(action.payload.tags, (item) => item.parent_id === null);
+    const categories = _.filter(action.payload.tags, item => item.icon);
     return {
       ...state,
       categories,

@@ -1,11 +1,8 @@
 import reduxApi from "redux-api";
-import { setCategories } from '../actions/filters';
-const adapterFetch = require("redux-api/lib/adapters/fetch");
-
 import Utils from '../utils';
 import Config from 'react-native-config';
 
-export const API_URL = Config.API_URL;
+const adapterFetch = require("redux-api/lib/adapters/fetch");
 
 export default reduxApi({
   facebook_auth: {

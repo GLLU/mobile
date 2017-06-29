@@ -3,11 +3,11 @@
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { getUserFollowsData, initUserFollows } from '../../../../actions';
+import { getUserFollowsData} from '../../../../actions';
 import EmptyView from './EmptyView'
-
-import FollowListView from '../shared/FollowListView'
 import asScreen from "../../../common/containers/Screen"
+import ListScreen from "../../../common/lists/ListScreen";
+import UserActionRow from "../../../common/lists/UserActionRow";
 
 class FollowScreen extends Component {
 
@@ -54,16 +54,16 @@ class FollowScreen extends Component {
 
   render() {
     const userData = this.props.navigation.state.params;
-    const currentUserData = this.state.follows
+    const headerData = {title: 'Following', count:userData.count};
     return (
-      <FollowListView
+      <ListScreen
         renderEmpty={this._renderOnEmpty}
-        headerData={userData}
-        follows={currentUserData}
+        renderItem={(item) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+        headerData={headerData}
+        data={this.state.follows}
         navigateTo={this.props.navigateTo}
         goBack={this.props.goBack}
-        onEndReached={this.getFollowsData}
-        mode={userData.mode}/>
+        onEndReached={this.getFollowsData}/>
     );
   }
 }

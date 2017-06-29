@@ -88,7 +88,7 @@ class CommentsView extends Component {
   _renderFooter() {
     return (
       <View
-        style={{ height: 80, flexDirection: 'column',justifyContent:'center', backgroundColor: '#f2f2f2'}}>
+        style={{ height: 70, flexDirection: 'column',justifyContent:'center', backgroundColor: '#f2f2f2'}}>
         <CommentInput onSendPress={this._pushComment}/>
       </View>
     );
