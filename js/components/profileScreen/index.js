@@ -307,8 +307,7 @@ class ProfileScreen extends Component {
     const userData = this.props.navigation.state.params;
     const {myUser} = this.props;
     const user = isMyProfile ? myUser : userData;
-    let about_me = user.about_me;
-    let avatar = user.avatar;
+    const {about_me,avatar} = user;
     if (!_.isEmpty(user)) {
       let avatarUrl = avatar ? avatar.url : null;
       return (

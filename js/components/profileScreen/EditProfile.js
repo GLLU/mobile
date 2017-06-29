@@ -28,12 +28,17 @@ class EditProfile extends Component {
     changeUserAvatar: React.PropTypes.func,
     changeUserAboutMe: React.PropTypes.func,
   }
+
+  static defaultProps = {
+    user:{}
+  }
+
   constructor(props) {
     super(props);
     this.toggleBodyTypeModal=this.toggleBodyTypeModal.bind(this);
     this._saveChanges=this._saveChanges.bind(this);
     this.state = {
-      about_me: this.props.user.about_me ? this.props.user.about_me : '',
+      about_me: props.user.about_me || '',
       modalShowing:false,
       isUpdating: false
     }

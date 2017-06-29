@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as userMapper from "./userMapper";
 
 export function notificationMapper(notification) {
   const cover = notification.go_to_object.data.cover ? notification.go_to_object.data.cover : null
@@ -9,12 +10,7 @@ export function notificationMapper(notification) {
     is_read: notification.is_read,
     go_to_object: notification.go_to_object,
     coverImage: cover ? _.find(cover.list, x => x.version === 'medium') : null,
-    user_id: initiator.id,
-    avatar: initiator.avatar,
-    name: initiator.name,
-    username: initiator.username,
-    is_following: initiator.is_following,
-    about_me: initiator.about_me,
+    ...userMapper.map(initiator),
     action_kind: notification.action_kind,
     actionText: getTextByAction(notification.action_kind)
   };
