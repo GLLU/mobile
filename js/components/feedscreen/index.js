@@ -6,7 +6,7 @@ import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
+import { addNewLook, setUser, getNotifications } from '../../actions';
 import asScreen from "../common/containers/Screen"
 import { hideBodyTypeModal } from "../../actions/myBodyType";
 import { noop } from "lodash";
