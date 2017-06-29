@@ -13,7 +13,7 @@ import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
-import CircleProfileImage from '../common/avatars/CircleProfileImage'
+import ProfileAvatar from '../common/avatars/ProfileAvatar'
 import SolidButton from "../common/buttons/SolidButton";
 import {openCamera} from '../../lib/camera/CameraUtils'
 import Header from "../common/containers/Header";
@@ -186,7 +186,7 @@ class SignUpPage extends Component {
 
               <View style={styles.uploadImgContainer}>
                 <View style={{height: 100, width: 100, borderRadius:50}}>
-                    <CircleProfileImage style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
+                    <ProfileAvatar style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
                 </View>
               </View>
               <KeyboardAvoidingView behavior='padding'>

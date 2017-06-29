@@ -9,7 +9,7 @@ import BodyMeasureView from '../myBodyMeasure/bodyMeasureView';
 import ExpandableTextArea from './ExpandableTextArea';
 import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
-import CircleProfileImage from '../common/avatars/CircleProfileImage';
+import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import InformationTextIcon from '../common/informationTextIcon';
 import {openCamera} from '../../lib/camera/CameraUtils'
 import { saveUserSize} from '../../actions/myBodyMeasure';
@@ -104,7 +104,7 @@ class EditProfile extends Component {
             <EditProfileHeader cancelEdit={this.props.goBack} save={this._saveChanges} />
           </Image>
         </View>
-        <CircleProfileImage avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
+        <ProfileAvatar avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
         <ScrollView
           style={[styles.scrollView]}
         >

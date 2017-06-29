@@ -44,7 +44,7 @@ const styles=StyleSheet.create({
 });
 
 
-class CircleProfileImage extends Component {
+class ProfileAvatar extends Component {
 
   static propTypes = {
     avatarUrl: React.PropTypes.string,
@@ -84,5 +84,5 @@ class CircleProfileImage extends Component {
   }
 }
 
-export default CircleProfileImage
+export default ProfileAvatar
 
