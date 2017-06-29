@@ -258,24 +258,13 @@ class TabContent extends BaseComponent {
   }
 
   renderInviteFriend() {
-    if(Platform.OS === 'ios') {
-      return (
-        <View style={{width: deviceWidth / 2, height: deviceWidth / 4, marginVertical: 3}}>
-          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-                 style={{width: deviceWidth / 2-6, height: deviceWidth / 4, borderRadius: 10, alignSelf: 'center'}}
-                 resizeMode={'stretch'}/>
-        </View>
-      )
-    } else {
-      return (
-        <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
-          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-                 style={{width: deviceWidth / 2, height: deviceWidth / 4}}
-                 resizeMode={'stretch'}/>
-          <MediaBorderPatch />
-        </View>
-      )
-    }
+    return (
+      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
+        <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
+               style={{width: deviceWidth / 2-6, height: deviceWidth / 4}}
+               resizeMode={'stretch'}/>
+      </View>
+    )
   }
 
   renderColumns() {
