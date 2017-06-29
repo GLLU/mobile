@@ -4,6 +4,7 @@ import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUE
 import { SET_LOOK_LIKE_STATE } from '../actions/likes';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
 import * as feedLookMapper from "../mappers/feedLookMapper";
+import { REHYDRATE } from "redux-persist/constants";
 
 const initialState = {
   flatLooksData: [],
@@ -98,7 +99,13 @@ const ACTION_HANDLERS = {
     return {
       ...initialState,
     }
-  }
+  },
+  [REHYDRATE]: (state, action) => {
+    return {
+      ...state,
+      ...action.payload.user
+    }
+  },
 }
 
 export default function reducers(state = initialState, action) {
