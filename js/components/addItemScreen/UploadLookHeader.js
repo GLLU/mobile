@@ -200,7 +200,7 @@ class UploadLookHeader extends BaseComponent {
       <View style={Platform.OS === 'ios' ? {marginTop: 30} : {marginTop: 20}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <TouchableOpacity transparent onPress={() => this.props.handleBackButton()} style={{width: 30, height: 30, backgroundColor: 'transparent'}}>
-            <Icon style={{ color: '#F2F2F2' }} name="ios-arrow-back" />
+            <Icon style={{ color: this.props.currentStep !== 1?'#F2F2F2':'#000' }} name="ios-arrow-back" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
           {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
