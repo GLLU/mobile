@@ -107,7 +107,6 @@ class FilterBar extends BaseComponent {
   }
 
   componentDidMount() {
-    console.log(`gender`,console.log(this.props.defaultFilters.gender));
     this.props.loadCategories(this.props.defaultFilters.gender);
   }
 

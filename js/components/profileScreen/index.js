@@ -266,7 +266,6 @@ class ProfileScreen extends Component {
   }
 
   _renderLoadMore() {
-    console.log('state',this.state)
     return (
       <View style={styles.loader}>
         {(() => {
