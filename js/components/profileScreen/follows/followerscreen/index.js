@@ -8,6 +8,7 @@ import { addNewLook, getUserFollowersData} from '../../../../actions';
 import asScreen from "../../../common/containers/Screen"
 import ListScreen from "../../../common/lists/ListScreen";
 import UserActionRow from "../../../common/lists/UserActionRow";
+import { openCamera } from "../../../../lib/camera/CameraUtils";
 
 class FollowerScreen extends Component {
 
@@ -20,6 +21,7 @@ class FollowerScreen extends Component {
     this.getFollowersData = this.getFollowersData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
+    this.handleUploadPress = this.handleUploadPress.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.currentPageIndex = 1;
     this.state = {
@@ -48,23 +50,37 @@ class FollowerScreen extends Component {
     this.currentPageIndex++;
   }
 
-  _handleOpenPhotoModal() {
-    this.setState({photoModal: true});
-    console.log('used to open modal') //TODO cleanup!!
+  handleUploadPress() {
+    this.props.logEvent('Followerscreen', { name: "Upload '+' click" });
+    this.openCamera()
+  }
+
+  async openCamera() {
+    this.props.logEvent('Followerscreen', { name: 'Open Camera click' });
+    let file = {};
+    file.path = await openCamera(true);
+    if(file.path.search(".mp4") > -1) {
+      file.localPath = file.path
+      file.path = file.path.replace('file://', '')
+      file.type = 'look[video]'
+    } else {
+      file.type = 'look[image]'
+    }
+    this.goToAddNewItem(file);
   }
 
   goToAddNewItem(imagePath) {
-    this.setState({photoModal: false}, () => {
-      this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen');
-      });
-    })
+    this.props.addNewLook(imagePath).then(() => {
+      this.props.navigateTo('addItemScreen',{ mode: 'create' })
+    }).catch(err => {
+      console.log('addNewLook err', err);
+    });
   }
 
   _renderOnEmpty() {
     const userData = this.props.navigation.state.params;
     return (
-      <EmptyView onUploadButtonPress={this._handleOpenPhotoModal} isMyProfile={userData.isMyProfile}
+      <EmptyView onUploadButtonPress={this.handleUploadPress} isMyProfile={userData.isMyProfile}
                  name={userData.user.name}/>
     );
   }
@@ -74,14 +90,14 @@ class FollowerScreen extends Component {
     const headerData = {title: 'Followers', count:userData.count};
     return (
       <View>
-        <ListScreen
-          renderEmpty={this._renderOnEmpty}
-          renderItem={(item) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
-          headerData={headerData}
-          data={this.state.followers}
-          navigateTo={this.props.navigateTo}
-          goBack={this.props.goBack}
-          onEndReached={this.getFollowersData}/>
+      <ListScreen
+        renderEmpty={this._renderOnEmpty}
+        renderItem={(item) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+        headerData={headerData}
+        data={this.state.followers}
+        navigateTo={this.props.navigateTo}
+        goBack={this.props.goBack}
+        onEndReached={this.getFollowersData}/>
       </View>
     );
   }

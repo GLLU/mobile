@@ -11,10 +11,10 @@ import { getStats, getUserBodyType, addNewLook, getUserLooks, showParisBottomMes
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import { editNewLook } from "../../actions/uploadLook";
-const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
-const toFeedScreen = require('../../../images/icons/feed.png');
-const toSettings = require('../../../images/icons/settings.png');
 import Spinner from '../loaders/Spinner';
+const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
+const toSettings = require('../../../images/icons/settings.png');
+
 
 
 class ProfileScreen extends Component {
@@ -109,10 +109,7 @@ class ProfileScreen extends Component {
   _renderleftBtn() {
     return (
       <TouchableOpacity transparent onPress={this.handleBackToFeedPress.bind(this)} style={styles.headerBtn}>
-        { this.state.isMyProfile ? <Image source={toFeedScreen} style={styles.toFeedScreenBtn}/>
-          :
-          <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
-        }
+        <Icon style={StyleSheet.flatten(styles.backBtn)} name="ios-arrow-back"/>
       </TouchableOpacity>
     )
 
