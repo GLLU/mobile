@@ -7,10 +7,9 @@ import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, getUserLooksData, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks, getUserBalance } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks, getUserBalance } from '../../actions';
 import _ from 'lodash';
 import UserLooks from './UserLooks';
-import SelectPhoto from '../common/SelectPhoto';
 import { editNewLook } from "../../actions/uploadLook";
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toFeedScreen = require('../../../images/icons/feed.png');
@@ -36,8 +35,6 @@ class ProfileScreen extends Component {
     const userData = props.navigation.state.params;
     const isMyProfile = userData.id === this.props.myUser.id || userData.user_id === this.props.myUser.id;
     const currUserId = isMyProfile ? props.myUser.id : userData.user_id||userData.id;
-    this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
-    this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.handleFollowersPress = this.handleFollowersPress.bind(this);
     this.handleFollowingPress = this.handleFollowingPress.bind(this);
@@ -50,7 +47,6 @@ class ProfileScreen extends Component {
       userId: currUserId,
       noMoreData: false,
       isFollowing: userData.is_following,
-      photoModal: false,
       isLoadingLooks: true,
       stats: currUserId === props.stats.user_id ? props.stats : {},
       userLooks: currUserId === props.currLookScreenId ? props.userLooks : [],
@@ -133,19 +129,9 @@ class ProfileScreen extends Component {
   }
 
   goToAddNewItem(imagePath) {
-    this.setState({photoModal: false}, () => {
-      this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen');
-      });
-    })
-  }
-
-  _handleOpenPhotoModal() {
-    this.setState({photoModal: true});
-  }
-
-  _handleClosePhotoModal() {
-    this.setState({photoModal: false});
+    this.props.addNewLook(imagePath).then(() => {
+      this.props.navigateTo('addItemScreen');
+    });
   }
 
   toggleFollow(isFollowing) {
@@ -355,7 +341,6 @@ class ProfileScreen extends Component {
               {this._renderRefreshingCover()}
             </ScrollView>
           {this._renderLoading()}
-          <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem} onRequestClose={this._handleClosePhotoModal}/>
         </Container>
       )
     }

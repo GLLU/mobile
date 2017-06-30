@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import EmptyView from './EmptyView'
-import SelectPhoto from '../../../common/SelectPhoto';
 import { addNewLook, getUserFollowersData} from '../../../../actions';
 import asScreen from "../../../common/containers/Screen"
 import ListScreen from "../../../common/lists/ListScreen";
@@ -21,7 +20,6 @@ class FollowerScreen extends Component {
     this.getFollowersData = this.getFollowersData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
     this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
-    this._handleClosePhotoModal = this._handleClosePhotoModal.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.currentPageIndex = 1;
     this.state = {
@@ -52,10 +50,7 @@ class FollowerScreen extends Component {
 
   _handleOpenPhotoModal() {
     this.setState({photoModal: true});
-  }
-
-  _handleClosePhotoModal() {
-    this.setState({photoModal: false});
+    console.log('used to open modal') //TODO cleanup!!
   }
 
   goToAddNewItem(imagePath) {
@@ -79,16 +74,14 @@ class FollowerScreen extends Component {
     const headerData = {title: 'Followers', count:userData.count};
     return (
       <View>
-      <ListScreen
-        renderEmpty={this._renderOnEmpty}
-        renderItem={(item) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
-        headerData={headerData}
-        data={this.state.followers}
-        navigateTo={this.props.navigateTo}
-        goBack={this.props.goBack}
-        onEndReached={this.getFollowersData}/>
-        <SelectPhoto photoModal={this.state.photoModal} addNewItem={this.goToAddNewItem}
-                     onRequestClose={this._handleClosePhotoModal}/>
+        <ListScreen
+          renderEmpty={this._renderOnEmpty}
+          renderItem={(item) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+          headerData={headerData}
+          data={this.state.followers}
+          navigateTo={this.props.navigateTo}
+          goBack={this.props.goBack}
+          onEndReached={this.getFollowersData}/>
       </View>
     );
   }
