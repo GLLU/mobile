@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image, Text, View, TouchableHighlight } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modalbox';
 import BaseComponent from './base/BaseComponent';
 import { noop } from 'lodash'
@@ -63,9 +62,9 @@ class SelectPhoto extends BaseComponent {
     };
     switch (type) {
       case 'camera':
-        return ImagePicker.openCamera(settings);
+        //return ImagePicker.openCamera(settings);
       default:
-        return ImagePicker.openPicker(settings);
+        //return ImagePicker.openPicker(settings);
     }
   }
 
