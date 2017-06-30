@@ -29,15 +29,17 @@
 @property (strong, nonatomic) NSURL* assetUrl;
 
 @property (assign, nonatomic) BOOL restartOnPlay;
+@property (assign, nonatomic) BOOL trimmerEnabled;
 
 @end
 
 @implementation VideoTrimmerViewController
 
-- (instancetype)initWithAssetUrl:(NSURL*)url{
+- (instancetype)initWithAssetUrl:(NSURL*)url trimmer:(BOOL)enabled{
     self = [super init];
     _assetUrl = url;
-    
+  _trimmerEnabled = enabled;
+  
     return self;
 }
 
@@ -53,6 +55,11 @@
     if (self.assetUrl){
         [self processSelectedAsset:self.assetUrl];
     }
+  
+  if (!self.trimmerEnabled){
+    [self.trimmerView setHidden:YES];
+    self.trimmerView.userInteractionEnabled = NO;
+  }
     
     CGFloat buttonY = 10.0;
     
@@ -70,6 +77,13 @@
     [self.view addSubview:rB];
     
     [self.navigationController setNavigationBarHidden:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+  [super viewDidAppear:animated];
+  
+  [self tapOnVideoLayer:nil];
+  
 }
 
 - (void)viewDidDisappear:(BOOL)animated{

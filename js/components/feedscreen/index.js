@@ -6,7 +6,7 @@ import NavigationBarView from './NavigationBarView';
 import SearchBarView from './SearchBarView';
 import MainView from './MainView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import { addNewLook, setUser, getNotifications } from '../../actions';
+import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
 import asScreen from "../common/containers/Screen"
 import { hideBodyTypeModal } from "../../actions/myBodyType";
 import { noop } from "lodash";
@@ -15,7 +15,6 @@ class FeedPage extends Component {
 
   static propTypes = {
     user: React.PropTypes.object,
-    modalShowing: React.PropTypes.bool,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
@@ -40,7 +39,6 @@ class FeedPage extends Component {
       name: '',
       searchTerm: '',
       searchStatus: false,
-      photoModal: false,
       contentHeight: null
     };
   }
@@ -73,11 +71,9 @@ class FeedPage extends Component {
   }
 
   goToAddNewItem(imagePath) {
-    this.setState({photoModal: false}, () => {
-      this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen',{ mode: 'create' });
-      });
-    })
+    this.props.addNewLook(imagePath).then(() => {
+      this.props.navigateTo('addItemScreen',{ mode: 'create' });
+    });
   }
 
   _handleSearchStatus(newStatus) {

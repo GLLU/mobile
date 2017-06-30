@@ -47,7 +47,6 @@ class ProfileScreen extends Component {
       userId: currUserId,
       noMoreData: false,
       isFollowing: userData.is_following,
-      photoModal: false,
       isLoadingLooks: true,
       stats: currUserId === props.stats.user_id ? props.stats : {},
       userLooks: currUserId === props.currLookScreenId ? props.userLooks : [],
@@ -127,11 +126,9 @@ class ProfileScreen extends Component {
   }
 
   goToAddNewItem(imagePath) {
-    this.setState({photoModal: false}, () => {
-      this.props.addNewLook(imagePath).then(() => {
-        this.props.navigateTo('addItemScreen');
-      });
-    })
+    this.props.addNewLook(imagePath).then(() => {
+      this.props.navigateTo('addItemScreen');
+    });
   }
 
   toggleFollow(isFollowing) {

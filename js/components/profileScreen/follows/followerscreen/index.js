@@ -20,6 +20,7 @@ class FollowerScreen extends Component {
     super(props);
     this.getFollowersData = this.getFollowersData.bind(this);
     this._renderOnEmpty = this._renderOnEmpty.bind(this);
+    this._handleOpenPhotoModal = this._handleOpenPhotoModal.bind(this);
     this.handleUploadPress = this.handleUploadPress.bind(this);
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.currentPageIndex = 1;

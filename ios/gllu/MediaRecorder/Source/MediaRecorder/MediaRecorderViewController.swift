@@ -10,7 +10,9 @@ class MediaRecorderViewController: AVSessionRecorderViewController, AVSessionRec
     var backButton: UIButton!
     var timerView: TimerView!
     var videoEnabled: Bool = true
-    
+    var recordingStart: Date = Date()
+    var recordingEnd: Date = Date()
+  
     class func MediaRecorder(_ videoEnabled: Bool) -> MediaRecorderViewController{
         let vc = MediaRecorderViewController()
         vc.videoEnabled = videoEnabled
@@ -53,11 +55,12 @@ class MediaRecorderViewController: AVSessionRecorderViewController, AVSessionRec
 	}
 
 	func recorder(_ recorder: AVSessionRecorderViewController, didBeginRecordingVideo camera: AVSessionRecorderViewController.CameraSelection) {
-		print("Did Begin Recording")
+        self.recordingStart = Date()
         animateVideoStart()
 	}
 
 	func recorder(_ recorder: AVSessionRecorderViewController, didFinishRecordingVideo camera: AVSessionRecorderViewController.CameraSelection) {
+    self.recordingEnd = Date()
 		print("Did finish Recording")
 		animateVideoEnd()
 	}
@@ -67,7 +70,7 @@ class MediaRecorderViewController: AVSessionRecorderViewController, AVSessionRec
             animateVideoEnd()
             return
         }
-        let trimmerVC = VideoTrimmerViewController(assetUrl: url)!
+      let trimmerVC = VideoTrimmerViewController(assetUrl: url, trimmer: self.videoLengthCropSufficient())!
 		self.navigationController?.pushViewController(trimmerVC, animated: true)
 	}
 
@@ -148,6 +151,11 @@ class MediaRecorderViewController: AVSessionRecorderViewController, AVSessionRec
         
         self.present(mediaPicker, animated: true, completion: nil)
     }
+  
+  func videoLengthCropSufficient() -> Bool{
+    let diff = self.recordingEnd.timeIntervalSince(self.recordingStart)
+    return diff > 3.0
+  }
 }
 
 extension MediaRecorderViewController: UIImagePickerControllerDelegate {
@@ -165,7 +173,7 @@ extension MediaRecorderViewController: UIImagePickerControllerDelegate {
             
         else if (mediaType  == (kUTTypeMovie as String)){
             self.dismiss(animated: true) {
-                let vc = VideoTrimmerViewController(assetUrl: info[UIImagePickerControllerMediaURL] as! URL)!
+                let vc = VideoTrimmerViewController(assetUrl: info[UIImagePickerControllerMediaURL] as! URL, trimmer: self.videoLengthCropSufficient())!
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
@@ -185,10 +193,59 @@ extension MediaRecorderViewController: UIImagePickerControllerDelegate {
     }
 
     func crop(_ image: UIImage){
-        let cropper = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.square)
+        let cropper = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.custom)
         cropper.delegate = self
+        cropper.dataSource = self
         self.navigationController?.pushViewController(cropper, animated: true)
     }
+}
+
+extension MediaRecorderViewController: RSKImageCropViewControllerDataSource{
+  
+  // Returns a custom rect for the mask.
+  func imageCropViewControllerCustomMaskRect(_ controller : RSKImageCropViewController) -> CGRect{
+    let viewWidth : CGFloat = controller.view.frame.size.width
+    let viewHeight : CGFloat = controller.view.frame.size.height
+    
+    let height = viewHeight * 0.90
+    let width = height * (9 / 16.0)
+    let maskSize : CGSize = CGSize(width: width, height: height)
+    
+    
+    
+    let maskRect : CGRect = CGRect(x: (viewWidth - maskSize.width) * 0.5,
+                                   y: (viewHeight - maskSize.height) * 0.5,
+                                   width: maskSize.width,
+                                   height: maskSize.height)
+    
+    return maskRect
+  }
+  
+  // Returns a custom path for the mask.
+  func imageCropViewControllerCustomMaskPath(_ controller:RSKImageCropViewController) -> UIBezierPath{
+    let rect: CGRect = controller.maskRect
+    
+    let point1: CGPoint = CGPoint(x: rect.minX, y: rect.minY)
+    let point2 : CGPoint = CGPoint(x: rect.maxX, y: rect.minY)
+    let point3 : CGPoint = CGPoint(x: rect.maxX, y: rect.maxY)
+    let point4 : CGPoint = CGPoint(x: rect.minX, y: rect.maxY)
+    
+    let rectangle = UIBezierPath()
+    rectangle.move(to: point1)
+    rectangle.addLine(to: point2)
+    rectangle.addLine(to: point3)
+    rectangle.addLine(to: point4)
+    rectangle.close()
+    
+    return rectangle
+  }
+  
+  // Returns a custom rect in which the image can be moved.
+  func imageCropViewControllerCustomMovementRect(_ controller: RSKImageCropViewController) -> CGRect
+  {
+  // If the image is not rotated, then the movement rect coincides with the mask rect.
+  return controller.maskRect;
+  }
 }
 
 extension MediaRecorderViewController: RSKImageCropViewControllerDelegate{
