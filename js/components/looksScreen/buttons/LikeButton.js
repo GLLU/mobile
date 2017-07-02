@@ -3,6 +3,7 @@ import { View, Image, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Te
 import * as _ from 'lodash'
 import styles from '../styles'
 import FooterButton from "./FooterButton";
+import { formatNumberAsString } from "../../../utils/FormatUtils";
 
 const likeImage = require('../../../../images/icons/like.png');
 const likeClickedImage = require('../../../../images/icons/likedRed.png');
@@ -40,32 +41,27 @@ export default class LikeButton extends Component {
     if(this.props.likes > 0) {
       this.props.onNumberPress();
     }
-
-  }
-
-  getLikesString() {
-    let { likes }  = this.state;
-    likes = likes.toString();
-    if(likes.length > 4 && likes.length < 7){
-      likes = Math.floor(likes/1000) + 'K'
-    } else if(likes.length === 7){
-      likes = Math.floor(likes/1000000) + 'M'
-    }
-    return likes
   }
 
   getIconByActive = (isActive) => isActive ? likeClickedImage : likeImage;
 
+  renderCount(){
+    const likes = formatNumberAsString(this.state.likes);
+    return(
+      <TouchableWithoutFeedback onPress={this._onNumberPress}>
+        <View>
+          <Text style={styles.footerButtonText}>{`${likes}`}</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+
   render() {
-    const likes = this.getLikesString();
+
     return (
       <View>
         <FooterButton {...this.props} onPress={this._onIconPress} isActive={false} icon={this.getIconByActive(this.state.isLiked)}/>
-        <TouchableWithoutFeedback onPress={this._onNumberPress}>
-          <View>
-            <Text style={styles.footerButtonText}>{`${likes}`}</Text>
-          </View>
-        </TouchableWithoutFeedback>
+        {this.renderCount()}
       </View>
     );
   }
