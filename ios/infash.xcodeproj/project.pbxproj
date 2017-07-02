@@ -36,6 +36,7 @@
 		29D17A21A6F74E588B9135A0 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BEE0C419AF49E59C089445 /* libRCTGoogleAnalyticsBridge.a */; };
 		334694C9799148C88B9D67E4 /* SanFrancisco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20F5BB5C64064F20A659883B /* SanFrancisco.ttf */; };
 		36DCE79019E3483C99D9D96E /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84012D3D75F34A4E88B3679F /* Rubik-Italic.ttf */; };
+		394F7272EED21714CAC71957 /* libPods-infash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E570D495DA57E804D25780C /* libPods-infash.a */; };
 		40D3A1310FFC4BFEB451C3F4 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B531CDBB4841E384D13E0B /* libRCTVideo.a */; };
 		4A13ECC6B442412D8DE5CD9A /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A011C62B8B304B13B116B84A /* libBVLinearGradient.a */; };
 		4B83A7C864134355AFD01B42 /* Courier New.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 500B07A619DA41C79E79CD12 /* Courier New.ttf */; };
@@ -87,13 +88,11 @@
 		D066434A1E00E5F500DCEFDE /* libFBSDKCoreKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643451E00E5F500DCEFDE /* libFBSDKCoreKit.a */; };
 		D066434B1E00E5F500DCEFDE /* libFBSDKLoginKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643461E00E5F500DCEFDE /* libFBSDKLoginKit.a */; };
 		D066434C1E00E5F500DCEFDE /* libFBSDKShareKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643471E00E5F500DCEFDE /* libFBSDKShareKit.a */; };
-		D066434D1E00E5F500DCEFDE /* libPods-gllu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643481E00E5F500DCEFDE /* libPods-gllu.a */; };
 		D9500252B8464B5EA9600D7D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEA0FF5BAAE14B8C90D86F3D /* SimpleLineIcons.ttf */; };
 		DB843DEF3EA144819620A980 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 270A5312FCF34EAD8C6CC8ED /* libRCTFBSDK.a */; };
 		E1F82379AF874C81A759EF9E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E84A8501BA8149F0A53F9964 /* Foundation.ttf */; };
 		E20A3F32836A46A29759179F /* libRNFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F640DE27BB5A484B835C3102 /* libRNFlurryAnalytics.a */; };
 		E70CBA5DF0B84BABBFE78BC6 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B0C2826D367497EAE251EA2 /* libRNKeychain.a */; };
-		EC99D906B7C45F900C10F08F /* libPods-gllu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0769BE554497F447F415744 /* libPods-gllu.a */; };
 		F50F403ECBC14B978BFB3887 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 745F988C3EFD45C7BF8E0448 /* MaterialCommunityIcons.ttf */; };
 		F579DE2F94D44CDCB20C37BC /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B5454D4AA6E417EB8F6C23C /* Foundation.ttf */; };
 		FF6D81E1B9D54CB7B21B39BD /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F49AC9E1EAB74B129ECDC20E /* Roboto.ttf */; };
@@ -403,6 +402,7 @@
 		20F5BB5C64064F20A659883B /* SanFrancisco.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SanFrancisco.ttf; path = "../node_modules/native-base/Fonts/SanFrancisco.ttf"; sourceTree = "<group>"; };
 		270A5312FCF34EAD8C6CC8ED /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
 		2967F5C5301D4E2DB9FF96F6 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
+		2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-infash.release.xcconfig"; path = "Pods/Target Support Files/Pods-infash/Pods-infash.release.xcconfig"; sourceTree = "<group>"; };
 		2E1927E96C424F7CB741E0E6 /* Rubik-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Bold.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Bold.ttf"; sourceTree = "<group>"; };
 		2F9FA01B10344E87A414777E /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		31D641E6016C4803B48B56F7 /* Rubik-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BoldItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -417,11 +417,13 @@
 		4F010170E6FB4AC494C7E102 /* SF-UI-Text-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-UI-Text-Regular.otf"; path = "../node_modules/native-base/Fonts/SF-UI-Text-Regular.otf"; sourceTree = "<group>"; };
 		500B07A619DA41C79E79CD12 /* Courier New.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Courier New.ttf"; path = "../node_modules/native-base/Fonts/Courier New.ttf"; sourceTree = "<group>"; };
 		5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gllu.release.xcconfig"; path = "Pods/Target Support Files/Pods-gllu/Pods-gllu.release.xcconfig"; sourceTree = "<group>"; };
+		5E570D495DA57E804D25780C /* libPods-infash.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-infash.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E936F3E326F44EA96579D63 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
 		62F3FFD4390546D3B254EF38 /* libReactNativeConfig.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeConfig.a; sourceTree = "<group>"; };
 		63A00FAE1EB5E53200749D54 /* libQBImagePickerController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libQBImagePickerController.a; path = "../../../../../Library/Developer/Xcode/DerivedData/gllu-cllcymnvvwrifnemamkbgmfnvusp/Build/Products/Release-iphoneos/QBImagePickerController/libQBImagePickerController.a"; sourceTree = "<group>"; };
 		63A439211E544D88002CD308 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		65DD188C568749D9AC549134 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
+		692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-infash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-infash/Pods-infash.debug.xcconfig"; sourceTree = "<group>"; };
 		693C7585FBCC441F89EF29A0 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
 		69F86904EF6342629BB11BC5 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		6C9C1E7C9F814080B4281DBB /* Skia.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Skia.ttf; path = "../node_modules/native-base/Fonts/Skia.ttf"; sourceTree = "<group>"; };
@@ -509,7 +511,6 @@
 				D066434A1E00E5F500DCEFDE /* libFBSDKCoreKit.a in Frameworks */,
 				D066434B1E00E5F500DCEFDE /* libFBSDKLoginKit.a in Frameworks */,
 				D066434C1E00E5F500DCEFDE /* libFBSDKShareKit.a in Frameworks */,
-				D066434D1E00E5F500DCEFDE /* libPods-gllu.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -523,7 +524,6 @@
 				DB843DEF3EA144819620A980 /* libRCTFBSDK.a in Frameworks */,
 				1866995F8EB34FC1930BD50E /* libCodePush.a in Frameworks */,
 				9CB15071635240FE9A394C36 /* libRNVectorIcons.a in Frameworks */,
-				EC99D906B7C45F900C10F08F /* libPods-gllu.a in Frameworks */,
 				624A9EFA5E7E45039AD8BB01 /* libReactNativeConfig.a in Frameworks */,
 				4A13ECC6B442412D8DE5CD9A /* libBVLinearGradient.a in Frameworks */,
 				E70CBA5DF0B84BABBFE78BC6 /* libRNKeychain.a in Frameworks */,
@@ -532,6 +532,7 @@
 				E20A3F32836A46A29759179F /* libRNFlurryAnalytics.a in Frameworks */,
 				29D17A21A6F74E588B9135A0 /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				40D3A1310FFC4BFEB451C3F4 /* libRCTVideo.a in Frameworks */,
+				394F7272EED21714CAC71957 /* libPods-infash.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -741,6 +742,7 @@
 				D06643481E00E5F500DCEFDE /* libPods-gllu.a */,
 				CCB86FE5FBC94155832F3959 /* libz.tbd */,
 				A0769BE554497F447F415744 /* libPods-gllu.a */,
+				5E570D495DA57E804D25780C /* libPods-infash.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -846,6 +848,8 @@
 			children = (
 				AA7BD6E1D054348A56BE3EF9 /* Pods-gllu.debug.xcconfig */,
 				5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */,
+				692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */,
+				2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -917,9 +921,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* gllu */ = {
+		13B07F861A680F5B00A75B9A /* infash */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "gllu" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "infash" */;
 			buildPhases = (
 				A5ACA84231C9E0E5E444B343 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -929,13 +933,13 @@
 				4CB65DC2654D57FC3E535290 /* [CP] Embed Pods Frameworks */,
 				CBD018FCF1F379F04B7925D4 /* [CP] Copy Pods Resources */,
 				63A00D7D1EB5D1FC00749D54 /* Embed Frameworks */,
-				63EF4DEF1F03BE8B00B32743 /* ShellScript */,
+				63684E2F1F0918B200C4BC2F /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = gllu;
+			name = infash;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* inFash.app */;
 			productType = "com.apple.product-type.application";
@@ -950,12 +954,12 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = R3FGALCQ4U;
+						DevelopmentTeam = KH536MNTS7;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "gllu" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "infash" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1062,7 +1066,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* gllu */,
+				13B07F861A680F5B00A75B9A /* infash */,
 			);
 		};
 /* End PBXProject section */
@@ -1421,22 +1425,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-gllu/Pods-gllu-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-infash/Pods-infash-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		63EF4DEF1F03BE8B00B32743 /* ShellScript */ = {
+		63684E2F1F0918B200C4BC2F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\".Fabric/run\" 073fbe796531c6ef71a3c78ed34e237691bf78bf 5ba957e3155c3e2486b6761741131b6891d868551cdeb44bcce84ce3a42f2624";
-			showEnvVarsInLog = 0;
+			shellScript = "\"${PODS_ROOT}\"/Fabric/run 073fbe796531c6ef71a3c78ed34e237691bf78bf 5ba957e3155c3e2486b6761741131b6891d868551cdeb44bcce84ce3a42f2624";
 		};
 		A5ACA84231C9E0E5E444B343 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1465,7 +1468,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-gllu/Pods-gllu-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-infash/Pods-infash-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1497,14 +1500,15 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA7BD6E1D054348A56BE3EF9 /* Pods-gllu.debug.xcconfig */;
+			baseConfigurationReference = 692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = R3FGALCQ4U;
+				DEVELOPMENT_TEAM = KH536MNTS7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1558,7 +1562,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.com.gllu1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infash;
 				PRODUCT_NAME = inFash;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1569,13 +1573,14 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */;
+			baseConfigurationReference = 2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R3FGALCQ4U;
+				DEVELOPMENT_TEAM = KH536MNTS7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1629,8 +1634,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.com.gllu1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infash;
 				PRODUCT_NAME = inFash;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1638,6 +1644,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA7BD6E1D054348A56BE3EF9 /* Pods-gllu.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1709,6 +1716,7 @@
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1775,7 +1783,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "gllu" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "infash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1784,7 +1792,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "gllu" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "infash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
