@@ -14,7 +14,7 @@ const initialState = {
   invitation_token: -1,
   invitation_is_used: false,
   invitation_share_token: -1,
-  showTutorial: true,
+  showTutorial: false,
   showBodyModal: true
 };
 

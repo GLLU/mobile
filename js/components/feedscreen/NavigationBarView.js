@@ -50,12 +50,10 @@ const styles = StyleSheet.create({
 class NavigationBarView extends BaseComponent {
   static propTypes = {
     user: React.PropTypes.object,
-    handleOpenPhotoModal: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
   }
 
   static defaultProps = {
-    handleOpenPhotoModal: _.noop,
     navigateTo: _.noop,
   }
 
@@ -83,26 +81,18 @@ class NavigationBarView extends BaseComponent {
   }
 
   async openCamera() {
+    console.log('123')
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
     let file = {};
     file.path = await openCamera(true);
     if(file.path.search(".mp4") > -1) {
-      console.log('filepath: ',file.path)
       file.localPath = file.path
-      file.path = file.path.replace('file://', '')
       file.type = 'look[video]'
     } else {
       file.type = 'look[image]'
     }
+    file.path = file.path.replace('file://', '')
     this.props.addNewItem(file);
-  }
-
-  handleOpenCamera() {
-    if(Platform.OS !== 'ios') {
-      this.openCamera()
-    } else {
-      this.props.handleOpenPhotoModal();
-    }
   }
 
   render() {
@@ -115,7 +105,7 @@ class NavigationBarView extends BaseComponent {
           </TouchableOpacity>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <TouchableOpacity transparent onPress={() => this.handleOpenCamera()} style={styles.btnCamera}>
+          <TouchableOpacity transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </TouchableOpacity>
         </View>

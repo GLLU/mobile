@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0620"
-   version = "1.7">
+   LastUpgradeVersion = "0830"
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
-      <PreActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "echo &quot;.env.production&quot; &gt; /tmp/envfile">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-                     BuildableName = "gllu.app"
-                     BlueprintName = "gllu"
-                     ReferencedContainer = "container:gllu.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -47,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "gllu.app"
+               BuildableName = "inFash.app"
                BlueprintName = "gllu"
                ReferencedContainer = "container:gllu.xcodeproj">
             </BuildableReference>
@@ -65,7 +47,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "gllu.app"
+            BuildableName = "inFash.app"
             BlueprintName = "gllu"
             ReferencedContainer = "container:gllu.xcodeproj">
          </BuildableReference>
@@ -74,7 +56,7 @@
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -88,7 +70,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "gllu.app"
+            BuildableName = "inFash.app"
             BlueprintName = "gllu"
             ReferencedContainer = "container:gllu.xcodeproj">
          </BuildableReference>
@@ -107,7 +89,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "gllu.app"
+            BuildableName = "inFash.app"
             BlueprintName = "gllu"
             ReferencedContainer = "container:gllu.xcodeproj">
          </BuildableReference>

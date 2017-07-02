@@ -11,7 +11,7 @@ export default StyleSheet.create({
     padding: 10
   },
   smallTextInput: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     color: '#a6a6a6',
     fontWeight: '300',
     fontSize: new FontSizeCalculator(13).getSize(),
@@ -33,10 +33,21 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   titleLabelInfo: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontSize: new FontSizeCalculator(15).getSize(),
     color: '#7f7f7f',
     fontWeight: '300',
     marginBottom: 8
+  },
+  editAboutMeContainer: {
+    minHeight: 80,
+    backgroundColor: 'white',
+  },
+  editAboutMeInput: {
+    backgroundColor: '#FFFFFF',
+    fontSize: 16,
+    padding: 10,
+    textAlign: 'left',
+    borderColor: 'lightgrey'
   },
 });

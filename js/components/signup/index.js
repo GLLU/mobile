@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import asScreen from '../common/containers/Screen'
 import {
   Image, Linking, TouchableWithoutFeedback, Text, View, StyleSheet, TouchableOpacity,
-  TextInput
+  TextInput, KeyboardAvoidingView
 } from 'react-native';
-import { Container, Header, Button, Title, Content, Icon, InputGroup, Input } from 'native-base';
+import { Container, Content} from 'native-base';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
@@ -13,9 +13,10 @@ import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
-import CircleProfileImage from '../common/avatars/CircleProfileImage'
+import ProfileAvatar from '../common/avatars/ProfileAvatar'
 import SolidButton from "../common/buttons/SolidButton";
 import {openCamera} from '../../lib/camera/CameraUtils'
+import Header from "../common/containers/Header";
 
 const background = require('../../../images/backgrounds/hands.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
@@ -34,6 +35,7 @@ class SignUpPage extends Component {
   constructor(props) {
 
     super(props);
+    this.focusNext=this.focusNext.bind(this);
     this.state = {
       username: '',
       email: '',
@@ -49,6 +51,10 @@ class SignUpPage extends Component {
       confirmPasswordValid: 'times',
       emailValid: 'times',
     };
+  }
+
+  componentDidMount(){
+    this.focusNext('usernameInput');
   }
 
   singupWithEmail() {
@@ -164,6 +170,10 @@ class SignUpPage extends Component {
     this.setState({avatar: image, avatarIcon: 'check'})
   }
 
+  focusNext(value){
+    this[value].focus();
+  }
+
   render() {
     let allValid = this.checkValidations()
     return (
@@ -171,27 +181,24 @@ class SignUpPage extends Component {
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
             <Image source={backgroundShadow} style={styles.bgShadow} />
-            <View style={{height:50}}>
-              <View style={styles.header} >
-                <Button transparent onPress={this.props.goBack}>
-                  <Icon style={StyleSheet.flatten(styles.headerArrow)} name="ios-arrow-back" />
-                </Button>
-                <Text style={styles.headerTitle}>Sign up</Text>
-              </View>
-            </View>
+            <Header title='Sign Up' goBack={this.props.goBack}/>
             <Content scrollEnabled={false}>
 
               <View style={styles.uploadImgContainer}>
                 <View style={{height: 100, width: 100, borderRadius:50}}>
-                    <CircleProfileImage style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
+                    <ProfileAvatar style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
                 </View>
               </View>
-              <View>
+              <KeyboardAvoidingView behavior='padding'>
                 <Grid>
                   <Row style={styles.formItem}>
                     <TextInput
                       placeholder='Username'
                       placeholderTextColor='lightgrey'
+                      ref={c=>this.usernameInput=c}
+                      blurOnSubmit={false}
+                      onSubmitEditing={()=>this.focusNext('nameInput')}
+                      returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(username) => this.validateTextInput(username,'username')}/>
                     {this.state.username.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.usernameValid} style={styles.uploadImgIcon}/> : null}
@@ -200,6 +207,10 @@ class SignUpPage extends Component {
                     <TextInput
                       placeholder='Name'
                       placeholderTextColor='lightgrey'
+                      ref={c=>this.nameInput=c}
+                      blurOnSubmit={false}
+                      onSubmitEditing={()=>this.focusNext('emailInput')}
+                      returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(name) => this.validateTextInput(name,'name')}/>
                     {this.state.name.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.nameValid} style={styles.uploadImgIcon}/> : null}
@@ -209,6 +220,10 @@ class SignUpPage extends Component {
                       placeholder='Email'
                       keyboardType='email-address'
                       placeholderTextColor='lightgrey'
+                      ref={c=>this.emailInput=c}
+                      blurOnSubmit={false}
+                      onSubmitEditing={()=>this.focusNext('passwordInput')}
+                      returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(email) => this.validateEmailInput(email)}/>
                     {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/>  : null}
@@ -217,6 +232,7 @@ class SignUpPage extends Component {
                     <TextInput
                       placeholder='Password'
                       placeholderTextColor='lightgrey'
+                      ref={c=>this.passwordInput=c}
                       secureTextEntry={true}
                       style={[styles.formInput]}
                       onChangeText={(password) => this.validatePasswordInput(password)}/>
@@ -228,7 +244,7 @@ class SignUpPage extends Component {
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text></TouchableOpacity>
                 </View>
-              </View>
+              </KeyboardAvoidingView>
 
             </Content>
             <View style={styles.bottomContainerContent}>

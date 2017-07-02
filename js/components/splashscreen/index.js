@@ -12,11 +12,12 @@ import { checkLogin, loginViaFacebook } from '../../actions';
 import _ from 'lodash';
 import Video from 'react-native-video';
 import glluTheme from '../../themes/gllu-theme';
-import SignUpEmailButton from '../common/buttons/HollowButton'
+import HollowButton from '../common/buttons/HollowButton'
 import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
+import SolidButton from "../common/buttons/SolidButton";
 
 const background = require('../../../images/backgrounds/bags.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
@@ -43,7 +44,7 @@ class SplashPage extends Component {
       repeat: props.currentAppState==='active'
     };
     if(this.props.showTutorial && Platform !== 'ios'){
-      this.props.navigateTo('tutorialscreen');
+      //this.props.navigateTo('tutorialscreen');
     }
   }
 
@@ -123,8 +124,8 @@ class SplashPage extends Component {
   renderMainView() {
     return (
         <View style={styles.signupContainer}>
-          <View style={{height:50}} >
-          <SignUpEmailButton onPress={this.handleEmailSignupPress.bind(this)} />
+          <View style={{height:50, marginBottom:10}} >
+            <HollowButton label='Signup with Email' onPress={this.handleEmailSignupPress.bind(this)} />
           </View>
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}

@@ -11,13 +11,14 @@ import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
 import Utils from '../../utils';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-const w = Dimensions.get('window').width;
 import VideoWithTags from '../common/VideoWithTags';
 import asScreen from "../common/containers/Screen"
+import {connect} from 'react-redux';
+import SpinnerSwitch from "../loaders/SpinnerSwitch";
+import { BackAndroid } from "react-native";
 
-const IMAGE_VIEW_PADDING = 80;
-
+const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
+const w = Dimensions.get('window').width;
 
 class AddItemPage extends Component {
 
@@ -51,6 +52,17 @@ class AddItemPage extends Component {
 
   setCurrentItem(item) {
     this.setState({currItem: item})
+  }
+
+  componentWillMount() {
+    BackAndroid.addEventListener('uploadBackPress', () => {
+      this.handleBackButton()
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('uploadBackPress');
   }
 
   componentDidMount() {
@@ -184,9 +196,10 @@ class AddItemPage extends Component {
 
   renderActions() {
     return (
-      <View>
+      <View style={{ height: h, width: w}}>
         {this.renderHeader()}
         {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
+
       </View>
     )
   }
@@ -194,29 +207,25 @@ class AddItemPage extends Component {
   renderThreeSteps() {
     const {currItem} = this.state
     return (
-      <View style={{height: h}}>
-        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row', marginTop: 20, height: h - 70}}>
+      <View style={{flexDirection: 'column', justifyContent: 'space-between', flex: 1}}>
+        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row'}}>
           <StepTwoOccasions item={currItem} />
           <StepOneCategory item={currItem} />
         </View>
-        <StepZeroBrand item={currItem}/>
+
+          <StepZeroBrand item={currItem}/>
+
       </View>
     )
   }
 
   renderContent() {
     if (this.state.currentStep !== 1) {
-      return (
-        <View>
-          {this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
-        </View>
-      );
+      return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()
     }
     return (
       <View>
-        <View style={{position: 'absolute'}}>
           {this.renderHeader()}
-        </View>
         <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)} />
       </View>);
   }
@@ -245,9 +254,6 @@ class AddItemPage extends Component {
     );
   }
 }
-
-import {connect} from 'react-redux';
-import SpinnerSwitch from "../loaders/SpinnerSwitch";
 
 function bindActions(dispatch) {
   return {

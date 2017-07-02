@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MediaRecordingActionsView" customModule="RipMedia" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="JKB-qe-qpF"/>
+                <outlet property="galleryButton" destination="4aQ-qk-gWu" id="ayB-3V-XQo"/>
+                <outlet property="recordButton" destination="h7O-qP-1Is" id="mqV-jo-OMJ"/>
+                <outlet property="switchCameraButton" destination="zQk-MU-3W4" id="Hnf-qE-9J6"/>
+                <outlet property="textLabel" destination="89y-Cn-Aln" id="ITn-Nr-fHi"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" userLabel="ContentView">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="150"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kRt-rd-VZ3">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="150"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YtH-fb-Zwq">
+                            <rect key="frame" x="20" y="25" width="374" height="74.5"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aQ-qk-gWu">
+                                    <rect key="frame" x="0.0" y="17.5" width="44" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="44" id="vrE-rQ-U0a"/>
+                                        <constraint firstAttribute="height" constant="40" id="yr9-op-ASB"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
+                                    <state key="normal" image="gallery"/>
+                                </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7O-qP-1Is" customClass="RoundedRecordButton" customModule="RipMedia" customModuleProvider="target">
+                                    <rect key="frame" x="149.5" y="0.0" width="75" height="75"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="75" id="TZv-Ol-Q1d"/>
+                                        <constraint firstAttribute="height" constant="75" id="Vqt-9g-JQr"/>
+                                    </constraints>
+                                </view>
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQk-MU-3W4">
+                                    <rect key="frame" x="330" y="17.5" width="44" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="44" id="QSv-rZ-gef"/>
+                                        <constraint firstAttribute="height" constant="40" id="hcu-H1-Ubi"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="4" minY="5" maxX="4" maxY="5"/>
+                                    <state key="normal" image="switch-camera"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="4aQ-qk-gWu" firstAttribute="centerY" secondItem="YtH-fb-Zwq" secondAttribute="centerY" id="5WM-Rb-yFE"/>
+                                <constraint firstAttribute="trailing" secondItem="zQk-MU-3W4" secondAttribute="trailing" id="9Vi-WN-dqW"/>
+                                <constraint firstItem="zQk-MU-3W4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="h7O-qP-1Is" secondAttribute="trailing" constant="30" id="Vp9-xq-7zj"/>
+                                <constraint firstItem="h7O-qP-1Is" firstAttribute="centerY" secondItem="YtH-fb-Zwq" secondAttribute="centerY" id="cQj-zp-CMZ"/>
+                                <constraint firstItem="zQk-MU-3W4" firstAttribute="centerY" secondItem="YtH-fb-Zwq" secondAttribute="centerY" id="fF2-gs-BqG"/>
+                                <constraint firstItem="4aQ-qk-gWu" firstAttribute="leading" secondItem="YtH-fb-Zwq" secondAttribute="leading" id="gYF-We-TAg"/>
+                                <constraint firstItem="h7O-qP-1Is" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4aQ-qk-gWu" secondAttribute="trailing" constant="30" id="lsg-UU-wa8"/>
+                                <constraint firstItem="h7O-qP-1Is" firstAttribute="centerX" secondItem="YtH-fb-Zwq" secondAttribute="centerX" id="nVf-Wf-zBw"/>
+                                <constraint firstAttribute="height" constant="75" id="s0e-04-jKi"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89y-Cn-Aln">
+                            <rect key="frame" x="10" y="119.5" width="394" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="89y-Cn-Aln" secondAttribute="bottom" constant="10" id="ItH-3W-P75"/>
+                        <constraint firstAttribute="trailing" secondItem="YtH-fb-Zwq" secondAttribute="trailing" constant="20" id="L5X-YN-U3D"/>
+                        <constraint firstItem="YtH-fb-Zwq" firstAttribute="leading" secondItem="kRt-rd-VZ3" secondAttribute="leading" constant="20" id="Pkv-zY-LTY"/>
+                        <constraint firstAttribute="trailing" secondItem="89y-Cn-Aln" secondAttribute="trailing" constant="10" id="Plz-ex-XbN"/>
+                        <constraint firstItem="89y-Cn-Aln" firstAttribute="top" secondItem="YtH-fb-Zwq" secondAttribute="bottom" constant="20" id="Wrk-tR-WjE"/>
+                        <constraint firstItem="89y-Cn-Aln" firstAttribute="leading" secondItem="kRt-rd-VZ3" secondAttribute="leading" constant="10" id="dPR-xn-OVo"/>
+                        <constraint firstItem="YtH-fb-Zwq" firstAttribute="top" secondItem="kRt-rd-VZ3" secondAttribute="top" constant="25" id="ge8-8Y-Ya0"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="kRt-rd-VZ3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fEQ-Ce-IW3"/>
+                <constraint firstAttribute="bottom" secondItem="kRt-rd-VZ3" secondAttribute="bottom" id="mY3-ZJ-F2t"/>
+                <constraint firstAttribute="trailing" secondItem="kRt-rd-VZ3" secondAttribute="trailing" id="pb7-NG-X0W"/>
+                <constraint firstItem="kRt-rd-VZ3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="wo6-fU-5j9"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-168" y="251"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="gallery" width="116" height="98"/>
+        <image name="switch-camera" width="134" height="96"/>
+    </resources>
+</document>

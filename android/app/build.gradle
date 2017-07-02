@@ -183,9 +183,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':react-native-image-crop-picker')
     compile project(':react-native-fabric')
-
     compile project(':libs:cropper')
     compile project(':libs:video-trimmer')
     compile project(':libs:camera')

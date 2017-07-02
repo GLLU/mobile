@@ -9,7 +9,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch(action.type){
     case SHOW_PARIS_BOTTOM_MESSAGE:
-      console.log('payload',action.payload)
     return {
       ...state,
       messageBottom: action.payload.message,

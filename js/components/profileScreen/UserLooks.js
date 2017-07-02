@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { View, Text,Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text,Image, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import {  Icon } from 'native-base';
 import _ from 'lodash';
 import VideoWithCaching from "../common/media/VideoWithCaching";
@@ -76,9 +76,8 @@ class UserLooks extends Component {
 
   renderLookStatus(look) {
     return (
-      <View style={[{position: 'absolute', left: 0, padding: 3}, look.coverType === 'video' ? {top: 30} : {top: 15}]}>
-        <View style={{position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, backgroundColor: '#00D7B2'}}/>
-        <Text style={{color: '#fff', fontSize: 10, flex: 1, backgroundColor: 'transparent'}}>{look.state}</Text>
+      <View style={[{position: 'absolute', left: 0}, look.coverType === 'video' ? {top: 30} : {top: 15}, Platform.OS === 'ios' && look.coverType === 'video' ? {left: 3} : null]}>
+          <Text style={styles.lookStatusText}>{look.state}</Text>
       </View>
     )
   }
@@ -93,7 +92,7 @@ class UserLooks extends Component {
 
   renderEditLookBtn(look) {
     return (
-      <TouchableOpacity onPress={() =>this._handleEditPress(look)} style={[{position: 'absolute', right: 0, height: 30, width: 30, zIndex: 1, backgroundColor:'#00d7b2',alignItems:'center'}, look.coverType === 'video' ? {top: 30} : {top: 15}]}>
+      <TouchableOpacity onPress={() =>this._handleEditPress(look)} style={[styles.editLookBtn, look.coverType === 'video' ? {top: 30,} : {top: 15}, Platform.OS === 'ios' ? {right: 3} : null]}>
         <Icon name='ios-create-outline' style={{color: '#000'}} size={28}/>
       </TouchableOpacity>
 
@@ -121,17 +120,16 @@ class UserLooks extends Component {
   }
 
   render() {
-    console.log('total',this.state.totalLooks, 'isLoading ',!this.props.isLoading)
     if(this.state.totalLooks === 0 && !this.props.isLoading){
       return this.renderEmptyView()
     } else {
       return (
         <View style={styles.tab}>
-          <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
-            <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+          <View style={styles.columnContainer}>
+            <View style={styles.looksColumn}>
               {this._renderLooks(this.state.flatLooksLeft)}
             </View>
-            <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+            <View style={styles.looksColumn}>
               {this._renderLooks(this.state.flatLooksRight)}
             </View>
           </View>
@@ -149,6 +147,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginTop: -10
   },
+  editLookBtn: {
+    position: 'absolute',
+    right: 0,
+    width: 30,
+    zIndex: 1,
+    backgroundColor:'#00d7b2',
+    alignItems:'center'
+  },
+  columnContainer: {
+    flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center',
+  },
+  looksColumn: {
+    flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0
+  },
+  lookStatusText: {
+    color: '#fff', fontSize: 10, flex: 1, backgroundColor: '#00D7B2', padding: 3,
+  }
 });
 
 export default UserLooks;

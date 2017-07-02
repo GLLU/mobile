@@ -52,11 +52,10 @@ class VideoWithCaching extends Component {
   static formatSource = (localUri, source = {}) => ({...source, uri: localUri});
 
   onVideoStartsPlaying = ()=>{
-    debounce(()=>{
       if(this.state.isPlaying!==true){
         this.setState({isPlaying:true})
       }
-    },500)
+
   };
 
   renderLoader = () => {
@@ -81,7 +80,7 @@ class VideoWithCaching extends Component {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
     if (!this.props.isCaching && this.state.repeat && this.props.isOnScreen) {
-      return <Video {...this.props} source={formattedSource} onprogress={this.onVideoStartsPlaying}
+      return <Video {...this.props} source={formattedSource} onProgress={this.onVideoStartsPlaying} onError={(err) => console.log('error on video',err)}
                     ref={component => this._root = component}/>
     }
     return null;
@@ -90,8 +89,8 @@ class VideoWithCaching extends Component {
   render() {
     return (
       <View>
-        {this.renderLoader()}
         {this.renderVideo()}
+        {this.renderLoader()}
       </View>
     )
   }

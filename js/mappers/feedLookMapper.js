@@ -1,4 +1,4 @@
-import {map as userLookMap} from './userLookMapper'
+import {map as userLookMap} from './lookMapper'
 
 
 export function map(look, index, flatLooksDataLength) {

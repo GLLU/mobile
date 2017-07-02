@@ -97,7 +97,7 @@ class SearchBar extends BaseComponent {
           underlineColorAndroid='transparent'
           onChangeText={(text) => this.handleTextInput(text)}
           value={this.state.text}/>
-        <Button transparent onPress={() => this.clearSearch()} style={StyleSheet.flatten(styles.btnCloseFilter)}>
+        <Button transparent onPress={this.clearSearch} style={StyleSheet.flatten(styles.btnCloseFilter)}>
           <Text style={styles.clearText}>Clear</Text>
         </Button>
       </View>

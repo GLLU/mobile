@@ -39,13 +39,13 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [Fabric with:@[[Crashlytics class]]];
 
   //
  [[FBSDKApplicationDelegate sharedInstance] application:application
                           didFinishLaunchingWithOptions:launchOptions];
 [Fabric with:@[[Crashlytics class]]];
   // Add any custom logic here.
-
   return YES;
 }
 
@@ -59,6 +59,7 @@
                                                              annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
                   ];
   // Add any custom logic here.
+  
   return handled;
 }
 
