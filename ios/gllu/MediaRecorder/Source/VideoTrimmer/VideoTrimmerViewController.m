@@ -3,7 +3,7 @@
 #import "ICGVideoTrimmerView.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
-#import "gllu-Swift.h"
+#import "inFash-Swift.h"
 
 @interface VideoTrimmerViewController () <ICGVideoTrimmerDelegate>
 
