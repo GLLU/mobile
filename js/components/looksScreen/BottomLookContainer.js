@@ -11,15 +11,18 @@ import {
 import _ from 'lodash'
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
-import MenuModal from './menuModal';
+import SocialShare from '../../lib/social';
 import ItemMarker from './markers/ItemMarker';
 import DescriptionView from './DescriptionView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/base/BaseComponent';
 import LookHeader from './LookHeader'
+import MenuView from "./MenuView";
+import { formatInvitationMessage } from "../../lib/messages/index";
+import withAnalytics from '../common/analytics/WithAnalytics'
 
 
-export default class BottomLookContainer extends BaseComponent {
+class BottomLookContainer extends BaseComponent {
 
   static propTypes = {
     look: React.PropTypes.object,
@@ -47,8 +50,10 @@ export default class BottomLookContainer extends BaseComponent {
     super(props);
     this._toggleDescription = this._toggleDescription.bind(this);
     this._toggleComments = this._toggleComments.bind(this);
+    this._toggleMenuView = this._toggleMenuView.bind(this);
     this._toggleItem = this._toggleItem.bind(this);
     this.goToProfile=this.goToProfile.bind(this);
+    this.onShareClicked = this.onShareClicked.bind(this);
     this.state = {
       comments: this.props.look.comments || 0,
       isDescriptionActive: false,
@@ -76,10 +81,29 @@ export default class BottomLookContainer extends BaseComponent {
     this.setState({isDescriptionActive: shouldActive, isCommentsActive: false})
   }
 
-  _toggleMenu() {
+  _toggleMenuView(){
     const shouldActive = !this.state.isMenuOpen;
-    this.logEvent('LookScreen', {name: `Report & Share Menu ${shouldActive?'visible':'hidden'}`});
-    this.setState({isMenuOpen: shouldActive})
+    this.logEvent('LookScreen', {name: `Menu View ${shouldActive?'visible':'hidden'}`});
+    this.props.onBottomDrawerOpen(shouldActive);
+    this.setState({isMenuOpen: shouldActive, isDescriptionActive: false, isCommentsActive: false})
+  }
+
+  onShareClicked() {
+    this.props.logEvent('LookScreen', {name: 'Share clicked'});
+    const message = SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    SocialShare.nativeShare(message);
+  }
+
+  _renderMenuView(isActive) {
+    return(
+      <MenuView
+        actions={['share','report']}
+        isOpen={isActive}
+        onRequestClose={this._toggleMenuView}
+        onReportPress={(lookId) => this.props.reportAbuse(lookId)}
+        onEditPress={(lookId) => console.log(`edit look`,lookId)}
+        onShareClicked={this.onShareClicked}
+        shareToken={this.props.shareToken}/>);
   }
 
   _renderDescriptionView(isActive) {
@@ -104,6 +128,7 @@ export default class BottomLookContainer extends BaseComponent {
     this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
   }
+
   _toggleItem(shouldActive) {
     this.props.onBottomDrawerOpen(shouldActive);
   }
@@ -161,7 +186,7 @@ export default class BottomLookContainer extends BaseComponent {
                 likes={this.props.look.likes}
                 comments={this.props.look.comments}
                 toggleLike={this.props.toggleLike}
-                toggleMenu={() => this._toggleMenu()}
+                toggleMenu={() => this._toggleMenuView()}
                 items={this.props.look.items}
                 activeItem={this.state.activeItem}
                 lookType={this.props.lookType}
@@ -173,10 +198,10 @@ export default class BottomLookContainer extends BaseComponent {
           {this._renderDescriptionView(this.state.isDescriptionActive)}
         </Animated.View>
         { !this.props.lookType ? this._renderBuyItButtons(this.props.look) : null}
-        <MenuModal isMenuOpen={this.state.isMenuOpen} reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-                   closeModal={() => this._toggleMenu()}
-                   shareToken={this.props.shareToken}/>
+        {this._renderMenuView(this.state.isMenuOpen)}
       </View>
     )
   }
 }
+
+export default withAnalytics(BottomLookContainer);
