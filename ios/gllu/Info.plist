@@ -117,5 +117,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow recording audio during video recordings</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow selecting a video from your photos album</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow taking a video for your use only</string>
 </dict>
 </plist>
