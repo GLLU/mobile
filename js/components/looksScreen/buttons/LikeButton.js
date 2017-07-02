@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Text } from 'react-native';
 import * as _ from 'lodash'
 import styles from '../styles'
+import FooterButton from "./FooterButton";
 
 const likeImage = require('../../../../images/icons/like.png');
 const likeClickedImage = require('../../../../images/icons/likedRed.png');
@@ -33,8 +34,6 @@ export default class LikeButton extends Component {
       const { isLiked, likes } = this.state;
       this.props.onIconPress(isLiked, likes);
     })
-
-
   }
 
   _onNumberPress() {
@@ -44,15 +43,9 @@ export default class LikeButton extends Component {
 
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if(nextProps.isLiked !== this.state.isLiked) {
-  //     this.setState({isLiked: nextProps.isLiked, likes: nextProps.likes})
-  //   }
-  // }
-
   getLikesString() {
-    let { likes }  = this.state
-    likes = likes.toString()
+    let { likes }  = this.state;
+    likes = likes.toString();
     if(likes.length > 4 && likes.length < 7){
       likes = Math.floor(likes/1000) + 'K'
     } else if(likes.length === 7){
@@ -61,25 +54,19 @@ export default class LikeButton extends Component {
     return likes
   }
 
-  render() {
-    const likes = this.getLikesString()
-    return (
-    <View style={[{padding: 0, maxWidth: 60, alignSelf: 'flex-end', margin:5, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: 10,minHeight: 35,
-      width: 45}]}>
-        <View style={[ {flexDirection: 'column', padding: 0, alignSelf: 'center', justifyContent: 'center'}]}>
-          <TouchableOpacity style={{alignSelf: 'center'}} onPress={this._onIconPress}>
-            <Image source={this.state.isLiked ? likeClickedImage : likeImage}
-                   style={[styles.footerButtonIcon,{width: 30, height: 30}]} resizeMode={'stretch'}/>
-          </TouchableOpacity>
-          <View style={{height:1}}/>
-          <TouchableWithoutFeedback  onPress={this._onNumberPress}>
-            <View style={{width: 30}}>
-              <Text style={styles.footerButtonText}>{`${likes}`}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-    </View>
+  getIconByActive = (isActive) => isActive ? likeClickedImage : likeImage;
 
+  render() {
+    const likes = this.getLikesString();
+    return (
+      <View>
+        <FooterButton {...this.props} onPress={this._onIconPress} isActive={false} icon={this.getIconByActive(this.state.isLiked)}/>
+        <TouchableWithoutFeedback onPress={this._onNumberPress}>
+          <View>
+            <Text style={styles.footerButtonText}>{`${likes}`}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     );
   }
 }
