@@ -159,6 +159,7 @@ export default class BottomLookContainer extends BaseComponent {
                 toggleDescription={this._toggleDescription}
                 isLiked={this.props.look.is_liked}
                 likes={this.props.look.likes}
+                comments={this.props.look.comments}
                 toggleLike={this.props.toggleLike}
                 toggleMenu={() => this._toggleMenu()}
                 items={this.props.look.items}

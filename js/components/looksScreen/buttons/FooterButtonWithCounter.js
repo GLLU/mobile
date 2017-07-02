@@ -24,19 +24,25 @@ export default class FooterButtonWithCounter extends PureComponent {
     isActive:React.PropTypes.bool,
     onIconPress: React.PropTypes.func,
     onNumberPress: React.PropTypes.func,
+    onPress: React.PropTypes.func,
   };
 
   static defaultProps = {
-    onIconPress: _.noop,
-    onNumberPress: _.noop,
+    count:0,
+    onPress:_.noop
   };
+
+  constructor(props) {
+    super(props);
+    this._onPress = this._onPress.bind(this);
+  }
 
   getIconByActive = (icon,isActive) => isActive ? icon.active : icon.inactive;
 
   renderCount(){
     const count = formatNumberAsString(this.props.count);
     return(
-      <TouchableWithoutFeedback onPress={this.props.onNumberPress}>
+      <TouchableWithoutFeedback onPress={this.props.onNumberPress || this._onPress}>
         <View>
           <Text style={styles.footerButtonText}>{count}</Text>
         </View>
@@ -44,10 +50,15 @@ export default class FooterButtonWithCounter extends PureComponent {
     )
   }
 
+  _onPress() {
+    const shouldActive = !this.props.isActive;
+    this.props.onPress(shouldActive);
+  }
+
   render() {
     return (
       <View>
-        <FooterButton {...this.props} onPress={this.props.onIconPress} isActive={false} icon={this.getIconByActive(this.props.icon,this.props.isActive)}/>
+        <FooterButton {...this.props} onPress={this.props.onIconPress || this._onPress} isActive={false} icon={this.getIconByActive(this.props.icon,this.props.isActive)}/>
         {this.renderCount()}
       </View>
     );

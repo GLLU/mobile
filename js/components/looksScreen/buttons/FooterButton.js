@@ -32,10 +32,6 @@ const styles = StyleSheet.create({
 });
 
 export default class FooterButton extends PureComponent {
-  constructor(props) {
-    super(props);
-    this._onPress = this._onPress.bind(this);
-  }
 
   static propTypes = {
     onPress: React.PropTypes.func,
@@ -48,6 +44,11 @@ export default class FooterButton extends PureComponent {
     onPress: _.noop,
     isActive: false
   };
+
+  constructor(props) {
+    super(props);
+    this._onPress = this._onPress.bind(this);
+  }
 
   _getStyle=(isActive) =>isActive ? styles.footerButtonActive : styles.footerButton;
 
