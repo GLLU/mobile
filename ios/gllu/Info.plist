@@ -106,6 +106,9 @@
 		<string>Times New Roman.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>PlayfairDisplay-Regular.ttf</string>
+		<string>PlayfairDisplay-Bold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -121,5 +124,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow recording audio during video recordings</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow selecting a video from your photos album</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow taking a video for your use only</string>
 </dict>
 </plist>
