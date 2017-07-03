@@ -1,6 +1,6 @@
 {
   "name": "infash",
-  "version": "5.2.1",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "postinstall": "rndebugger-open --open --port 8081",
