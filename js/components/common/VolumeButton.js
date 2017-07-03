@@ -13,12 +13,10 @@ const styles = StyleSheet.create({
   likeContainer: {
     height: 30,
     width: 30,
-    paddingBottom: 6,
     backgroundColor: 'rgba(0,0,0,0.6)',
     borderRadius: 15,
-    marginRight: 10,
-    alignItems: 'center',
-
+    marginRight: 5,
+    marginTop: 5
   },
   bgShadow: {
     position: 'absolute',
@@ -58,11 +56,12 @@ class VolumeButton extends Component {
 
 
   render() {
-    const {lookHeight, isMuted} = this.props
+    const {isMuted} = this.props
     let volumeIcon = isMuted ? 'ios-volume-off' : 'ios-volume-down'
     let volumeColor = isMuted ? 'rgba(0,0,0,0.6)' : 'rgba(29,233,182,0.6)'
     return (
-      <View style={[styles.likeContainer, { marginTop: lookHeight - 30, backgroundColor: volumeColor}]}>
+
+      <View style={[styles.likeContainer, { top: 0, backgroundColor: volumeColor}]}>
             <TouchableOpacity transparent onPress={() => this.props.togglePlaySoundAction()}>
               <Icon name={volumeIcon} style={StyleSheet.flatten(styles.iconWithImage)}/>
             </TouchableOpacity>

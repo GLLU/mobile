@@ -56,7 +56,19 @@ class CommentsView extends Component {
     return comments
   }
 
+  renderCommentsAmount(comments) {
+    return (
+      <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
+          <View>
+            <Text style={styles.countLikeLabel}>{`${comments}`}</Text>
+          </View>
+      </Col>
+    )
+  }
+
   render() {
+    console.log('comments',this.state.comments > 0)
+    console.log('comments',this.state.comments)
     const comments = this.getLikesStringFeedView()
     return (
       <View style={[styles.likeContainer, comments.length > 3 ? {width: 60} : null]}>
@@ -65,11 +77,9 @@ class CommentsView extends Component {
             <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
                 <Image source={bubbleIcon} style={styles.iconBubbleWithImage}/>
             </Col>
-            <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
-                <View>
-                  <Text style={styles.countLikeLabel}>{`${comments}`}</Text>
-                </View>
-            </Col>
+
+            {this.state.comments > 0 ? this.renderCommentsAmount(comments) : <View/>}
+
           </Grid>
         </TouchableWithoutFeedback>
       </View>

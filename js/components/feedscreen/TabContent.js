@@ -22,7 +22,9 @@ import _ from 'lodash';
 import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
-
+import LikeView from './items/LikeView';
+import CommentsView from './items/CommentsView';
+import VolumeButton from '../common/VolumeButton';
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
 
@@ -124,7 +126,6 @@ class TabContent extends BaseComponent {
           if(this.contentHeight !== contentSizeHeight) {
             this.contentHeight = contentSizeHeight
             if(!this.state.loadingMore) {
-              console.log('happenned')
               this.setState({loadingMore: true}, () => this.loadMore())
             }
 

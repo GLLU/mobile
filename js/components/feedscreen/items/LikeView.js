@@ -78,7 +78,6 @@ class LikeView extends Component {
   }
 
   render() {
-    const {lookHeight} = this.props;
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
     const likes = this.getLikesStringFeedView()
     return (
