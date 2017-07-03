@@ -61,7 +61,7 @@ class LooksScreen extends Component {
       fadeAnim: new Animated.Value(0.35),
       fadeAnimContent: new Animated.Value(0),
       showAsFeed: !flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
-      isBottomDrawerOpen: false,
+      isBottomDrawerOpen: flatLook.openComments,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
       startAnimte: false,
       currScrollIndex: flatLook.originalIndex,
@@ -267,6 +267,9 @@ class LooksScreen extends Component {
 
   renderImage(look, index) {
     const showShowArrow = this.shouldRenderArrows()
+    const openComments = this.state.flatLook.openComments && look.id === this.state.flatLook.id
+    console.log('openComments',openComments)
+
     return (
       <GestureRecognizer
         key={look.originalIndex!==undefined ? look.originalIndex : -1}
@@ -290,6 +293,7 @@ class LooksScreen extends Component {
                 toggleLike={this._toggleLike}
                 toggleMenu={() => this._toggleMenu()}
                 isMenuOpen={this.state.isMenuOpen}
+                openComments={openComments}
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}

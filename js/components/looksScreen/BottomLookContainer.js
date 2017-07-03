@@ -52,7 +52,7 @@ export default class BottomLookContainer extends BaseComponent {
     this.state = {
       comments: this.props.look.comments || 0,
       isDescriptionActive: false,
-      isCommentsActive: false,
+      isCommentsActive: props.openComments,
       activeItem: '',
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
@@ -100,6 +100,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _toggleComments(shouldActive) {
+    console.log('123')
     this.logEvent('LookScreen', {name: `Comments View ${shouldActive?'visible':'hidden'}`});
     this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
