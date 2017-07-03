@@ -67,8 +67,6 @@ class CommentsView extends Component {
   }
 
   render() {
-    console.log('comments',this.state.comments > 0)
-    console.log('comments',this.state.comments)
     const comments = this.getLikesStringFeedView()
     return (
       <View style={[styles.likeContainer, comments.length > 3 ? {width: 60} : null]}>
