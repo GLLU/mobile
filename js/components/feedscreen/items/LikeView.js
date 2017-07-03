@@ -10,7 +10,6 @@ const likedIcon = require('../../../../images/icons/likedRed.png');
 const styles = StyleSheet.create({
   likeContainer: {
     height: 30,
-    width: 50,
     backgroundColor: 'transparent',
   },
   btnWithImage: {
@@ -19,7 +18,7 @@ const styles = StyleSheet.create({
   iconWithImage: {
     height: 25,
     width: 25,
-    resizeMode: 'contain',
+    resizeMode: 'stretch',
     alignSelf: 'center',
     marginTop: 3
   },
@@ -27,8 +26,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '500',
-    textAlign: 'center',
-    alignSelf: 'center'
   },
 });
 
@@ -80,25 +77,24 @@ class LikeView extends Component {
   }
 
   render() {
-    const {lookHeight} = this.props;
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
     const likes = this.getLikesStringFeedView()
     return (
-      <View style={[styles.likeContainer, { marginTop: lookHeight - 30 }, likes.length > 3 ? {width: 60} : null]}>
-        <Grid style={{ backgroundColor: 'rgba(0,0,0,0.5)'}}>
-          <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
+      <View style={[styles.likeContainer]}>
+        <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', justifyContent: 'space-between', marginRight: 5}}>
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
             <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
-          </Col>
-          <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'center', marginRight: 3}}>
-            <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()}>
+          </View>
+          <View style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start'}}>
+            <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()} style={{width: 20, backgroundColor: 'red'}}>
               <View>
                 <Text style={styles.countLikeLabel}>{`${likes}`}</Text>
               </View>
             </TouchableWithoutFeedback>
-          </Col>
-        </Grid>
+          </View>
+        </View>
       </View>
     )
   }

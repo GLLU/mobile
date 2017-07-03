@@ -61,13 +61,15 @@ class LooksScreen extends Component {
       fadeAnim: new Animated.Value(0.35),
       fadeAnimContent: new Animated.Value(0),
       showAsFeed: !flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
-      isBottomDrawerOpen: false,
+      isBottomDrawerOpen: flatLook.openComments,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
       startAnimte: false,
       currScrollIndex: flatLook.originalIndex,
-      loader: Platform.OS !== 'ios' && !flatLook.singleItem
+      loader: Platform.OS !== 'ios' && !flatLook.singleItem,
+      mountedOnce: false
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
+    this.opennedComments = false
   }
 
   componentDidMount() {
@@ -102,6 +104,7 @@ class LooksScreen extends Component {
 
           break;
       }
+      this.setState({mountedOnce: true}) //because comments are re-open when you this.goBack
     }
     if(this.state.currScrollIndex === this.props.flatLooksData.length-1) {
       this.loadMore()
@@ -190,8 +193,49 @@ class LooksScreen extends Component {
     }
   }
 
+  shouldRenderArrows() {
+    if(this.state.showAsFeed) {
+      const {meta: {total}} = this.props;
+      return total > 2
+    } else {
+      return false
+    }
+  }
+
+  renderUpArrow() {
+    if(this.state.currScrollIndex !== 0) {
+      return (
+        <View style={{position: 'absolute', top: 0, width: width, height: 30}}>
+          <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_DOWN')} style={{width: 50, alignSelf: 'center'}}>
+            <Image source={arrowUp} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+  }
+
+  renderDownArrow() {
+    return (
+      <View style={{position: 'absolute', bottom: 0, width: width, height: 30}}>
+        <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_UP')} style={{width: 50, alignSelf: 'center'}}>
+           <Image source={arrowDown} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  openCommentsInAdvance(look) {
+
+    if(!this.state.mountedOnce && this.state.flatLook.openComments && look.id === this.state.flatLook.id) {
+      this.opennedComments = !this.opennedComments
+      return this.opennedComments
+    }
+     return false
+  }
+
   renderVideo(look, index) {
     const showShowArrow = this.shouldRenderArrows()
+    const openComments = this.openCommentsInAdvance(look)
     return (
       <GestureRecognizer
         key={look.originalIndex !==undefined ? look.originalIndex : -1}
@@ -221,6 +265,7 @@ class LooksScreen extends Component {
           toggleMenu={() => this._toggleMenu()}
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
+          openComments={openComments}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           lookType={"video"}
           onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
@@ -231,42 +276,9 @@ class LooksScreen extends Component {
     )
   }
 
-  shouldRenderArrows() {
-    if(this.state.showAsFeed) {
-      const {meta: {total}} = this.props;
-      return total > 2
-    } else {
-      return false
-    }
-  }
-
-  renderUpArrow() {
-    if(this.state.currScrollIndex !== 0) {
-      return (
-        <View style={{position: 'absolute', top: 0, width: width, height: 30}}>
-          <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_DOWN')} style={{width: 50, alignSelf: 'center'}}>
-            <Image source={arrowUp} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
-          </TouchableOpacity>
-        </View>
-      )
-    }
-  }
-
-  renderDownArrow() {
-    return (
-
-      <View style={{position: 'absolute', bottom: 0, width: width, height: 30}}>
-        <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_UP')} style={{width: 50, alignSelf: 'center'}}>
-           <Image source={arrowDown} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
-        </TouchableOpacity>
-      </View>
-
-
-      )
-  }
-
   renderImage(look, index) {
     const showShowArrow = this.shouldRenderArrows()
+    const openComments = this.openCommentsInAdvance(look)
     return (
       <GestureRecognizer
         key={look.originalIndex!==undefined ? look.originalIndex : -1}
@@ -290,6 +302,7 @@ class LooksScreen extends Component {
                 toggleLike={this._toggleLike}
                 toggleMenu={() => this._toggleMenu()}
                 isMenuOpen={this.state.isMenuOpen}
+                openComments={openComments}
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
                 reportAbuse={(lookId) => this.props.reportAbuse(lookId)}

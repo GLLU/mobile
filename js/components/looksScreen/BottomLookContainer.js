@@ -52,7 +52,7 @@ export default class BottomLookContainer extends BaseComponent {
     this.state = {
       comments: this.props.look.comments || 0,
       isDescriptionActive: false,
-      isCommentsActive: false,
+      isCommentsActive: props.openComments,
       activeItem: '',
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,

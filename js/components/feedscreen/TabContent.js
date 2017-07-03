@@ -22,7 +22,9 @@ import _ from 'lodash';
 import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import MediaBorderPatch from '../common/MediaBorderPatch'
 import { formatInvitationMessage } from "../../lib/messages/index";
-
+import LikeView from './items/LikeView';
+import CommentsView from './items/CommentsView';
+import VolumeButton from '../common/VolumeButton';
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
 
@@ -124,7 +126,6 @@ class TabContent extends BaseComponent {
           if(this.contentHeight !== contentSizeHeight) {
             this.contentHeight = contentSizeHeight
             if(!this.state.loadingMore) {
-              console.log('happenned')
               this.setState({loadingMore: true}, () => this.loadMore())
             }
 
@@ -258,24 +259,13 @@ class TabContent extends BaseComponent {
   }
 
   renderInviteFriend() {
-    if(Platform.OS === 'ios') {
-      return (
-        <View style={{width: deviceWidth / 2, height: deviceWidth / 4, marginVertical: 3}}>
-          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-                 style={{width: deviceWidth / 2-6, height: deviceWidth / 4, borderRadius: 10, alignSelf: 'center'}}
-                 resizeMode={'stretch'}/>
-        </View>
-      )
-    } else {
-      return (
-        <View style={{width: deviceWidth / 2, height: deviceWidth / 4}}>
-          <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-                 style={{width: deviceWidth / 2, height: deviceWidth / 4}}
-                 resizeMode={'stretch'}/>
-          <MediaBorderPatch />
-        </View>
-      )
-    }
+    return (
+      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
+        <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
+               style={{width: deviceWidth / 2-6, height: deviceWidth / 4}}
+               resizeMode={'stretch'}/>
+      </View>
+    )
   }
 
   renderColumns() {
