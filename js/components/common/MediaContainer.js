@@ -1,5 +1,5 @@
 import React,{PureComponent} from 'react';
-import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
+import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, TouchableHighlight, Image, View } from 'react-native';
 import LikeView from '../feedscreen/items/LikeView';
 import CommentsView from '../feedscreen/items/CommentsView';
 import VolumeButton from './VolumeButton';
@@ -47,6 +47,7 @@ class MediaContainer extends PureComponent {
     this.toggleLikeAction = this.toggleLikeAction.bind(this)
     this._handleItemPress = this._handleItemPress.bind(this)
     this._handleCommentPress = this._handleCommentPress.bind(this)
+    this.goToProfile = this.goToProfile.bind(this)
     this.state = {
       currLookPosition: -1,
       shouldPlay: false,
@@ -164,9 +165,23 @@ class MediaContainer extends PureComponent {
     )
   }
 
+  goToProfile(){
+    const { look } = this.props
+    const user = look;
+    this.props.navigateTo('profileScreen',user);
+  }
+
+  getUsernameStringFeedView(username) {
+    if(username.length > 12){
+      return username.substring(0,9) + '...'
+    } else {
+      return username
+    }
+  }
+
   renderFeedMediaGrid(look) {
     const { lookHeight, lookWidth } = this.state.dimensions;
-    const userName = look.username
+    const userName = this.getUsernameStringFeedView(look.username)
     if(this.props.showMediaGrid) {
       return (
         <View style={[styles.videoGridIos, {flex: 1,  width:lookWidth, height: lookHeight, alignItems: 'stretch'}]}>
@@ -175,7 +190,9 @@ class MediaContainer extends PureComponent {
           </View>
           <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', height: 30,  bottom: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
             <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookId={look.id}/>
-            <Text style={{color: 'white', alignSelf: 'center',textAlign: 'center',  fontSize: 10}}>{userName}</Text>
+            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.goToProfile()}>
+                <Text style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{userName}</Text>
+            </TouchableOpacity>
             <CommentsView item={look} onPress={this._handleCommentPress} lookId={look.id}/>
           </View>
         </View>
