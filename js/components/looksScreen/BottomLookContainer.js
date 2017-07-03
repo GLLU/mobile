@@ -96,10 +96,10 @@ class BottomLookContainer extends BaseComponent {
   _renderMenuView(isActive) {
     return(
       <MenuView
+        look_id={this.props.look.id}
         isMyLook={this.props.look.user.is_me}
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}
-        onReportPress={()=>this.props.reportAbuse(this.props.look.id)}
         onEditPress={()=>this.goToEdit(this.props.look)}
         onShareClicked={this.onShareClicked}
         shareToken={this.props.shareToken}/>);

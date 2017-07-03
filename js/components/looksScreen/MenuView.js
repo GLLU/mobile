@@ -5,6 +5,8 @@ import BottomHalfScreenModal from "./common/BottomHalfScreenModal";
 import SolidButton from "../common/buttons/SolidButton";
 import * as _ from "lodash";
 import withAnalytics from '../common/analytics/WithAnalytics'
+import { connect } from "react-redux";
+import { reportAbuse } from "../../actions/looks";
 
 const cancelIcon = require('../../../images/icons/cancel-black.png');
 
@@ -26,7 +28,6 @@ class MenuView extends Component {
   static propTypes = {
     style: React.PropTypes.any,
     isOpen: React.PropTypes.bool,
-    onReportPress: React.PropTypes.func,
     onEditPress: React.PropTypes.func,
     onShareClicked: React.PropTypes.func,
     isMyLook: React.PropTypes.bool
@@ -38,16 +39,21 @@ class MenuView extends Component {
     onRequestClose: noop,
     onDeletePress: noop,
     onEditPress: noop,
-    onReportPress: noop,
     onShareClicked: noop,
     isMyLook: false
   };
 
   constructor(props){
     super(props);
+    this._reportAbuse=this._reportAbuse.bind(this);
     this.state={
-      isReported:false
+      abuseReported:false
     }
+  }
+
+  _reportAbuse() {
+    this.setState({abuseReported: true})
+    this.props.reportAbuse(this.props.look_id)
   }
 
   renderSeparator=({key})=><View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
@@ -70,16 +76,19 @@ class MenuView extends Component {
 
   renderReport() {
     return(
-      this.state.isReported ?
+      this.state.abuseReported ?
         this.renderReportThankYou({key:'report'}):
-        this.renderRow({key:'report',label: 'Report', onPress: this.props.onReportPress})
+        this.renderRow({key:'report',label: 'Report', onPress: this._reportAbuse})
     );
   }
 
   renderReportThankYou({key}) {
     return (
-      <View key={key} style={styles.thankYouContainer}>
-        <Text style={styles.thankYouText}>Thank you for making inFash better! we'll examine your report and will be in touch with you over email.</Text>
+      <View key={key} style={{height: 75, paddingVertical: 15}}>
+        <View key={key} style={styles.thankYouContainer}>
+          <Text style={styles.thankYouText}>Thank you for making inFash better! we'll examine your report and will be in
+            touch with you over email.</Text>
+        </View>
       </View>
     )
   }
@@ -120,4 +129,12 @@ class MenuView extends Component {
   }
 }
 
-export default withAnalytics(MenuView);
+function bindAction(dispatch) {
+  return {
+    reportAbuse: (id) => dispatch(reportAbuse(id)),
+  };
+}
+
+const mapStateToProps = () => ({});
+
+export default connect(mapStateToProps, bindAction)(withAnalytics(MenuView));
