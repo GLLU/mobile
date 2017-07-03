@@ -119,7 +119,6 @@ export default class ButtonsBar extends BaseComponent {
   }
 
   render() {
-    console.log('4444',this.props.isCommentsActive)
     return (
     <View style={[styles.container, styles['row']]}>
       <View style={[styles.rightContainer, styles[this.props.direction]]} >
