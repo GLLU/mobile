@@ -111,11 +111,9 @@ export default class ButtonsBar extends BaseComponent {
 
   renderVideoItems() {
     return _.map(this.props.items, item => {
-      if(item.category && item.brand) {
-        return (
-            <VideoItemLine key={item.id} item={item} toggleItem={this.props.toggleItem}/>
-        )
-      }
+      return item.category && item.brand ? (
+        <VideoItemLine key={item.id} item={item} toggleItem={this.props.toggleItem}/>
+      ) : null;
     });
   }
 

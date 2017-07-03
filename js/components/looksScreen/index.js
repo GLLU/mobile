@@ -292,7 +292,7 @@ class LooksScreen extends Component {
                 isMenuOpen={this.state.isMenuOpen}
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
-                reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+                reportAbuse={this.props.reportAbuse}
                 onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
               {showShowArrow ? this.renderUpArrow() : null}
