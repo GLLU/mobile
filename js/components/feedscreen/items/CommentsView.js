@@ -71,13 +71,11 @@ class CommentsView extends Component {
     return (
       <View style={[styles.likeContainer, comments.length > 3 ? {width: 60} : null]}>
         <TouchableWithoutFeedback transparent onPress={() => this.props.onPress()} style={styles.btnWithImage}>
-          <Grid >
+          <Grid>
             <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
                 <Image source={bubbleIcon} style={styles.iconBubbleWithImage}/>
             </Col>
-
             {this.state.comments > 0 ? this.renderCommentsAmount(comments) : <View/>}
-
           </Grid>
         </TouchableWithoutFeedback>
       </View>

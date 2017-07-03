@@ -69,6 +69,7 @@ class LooksScreen extends Component {
       mountedOnce: false
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
+    this.opennedComments
   }
 
   componentDidMount() {
@@ -224,7 +225,12 @@ class LooksScreen extends Component {
   }
 
   openCommentsInAdvance(look) {
-    return this.state.flatLook.openComments && look.id === this.state.flatLook.id && this.state.mountedOnce === false
+
+    if(this.state.flatLook.openComments && look.id === this.state.flatLook.id && this.state.mountedOnce === false) {
+      this.opennedComments = !this.opennedComments
+      return this.opennedComments
+    }
+     return false
   }
 
   renderVideo(look, index) {
