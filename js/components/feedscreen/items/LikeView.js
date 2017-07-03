@@ -10,7 +10,6 @@ const likedIcon = require('../../../../images/icons/likedRed.png');
 const styles = StyleSheet.create({
   likeContainer: {
     height: 30,
-    width: 50,
     backgroundColor: 'transparent',
   },
   btnWithImage: {
@@ -81,14 +80,14 @@ class LikeView extends Component {
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
     const likes = this.getLikesStringFeedView()
     return (
-      <View style={[styles.likeContainer, likes.length > 3 ? {width: 60} : null]}>
+      <View style={[styles.likeContainer]}>
         <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', justifyContent: 'space-between', marginRight: 5}}>
           <View style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
             <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
           </View>
-          <View style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
+          <View style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start'}}>
             <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()} style={{width: 20, backgroundColor: 'red'}}>
               <View>
                 <Text style={styles.countLikeLabel}>{`${likes}`}</Text>

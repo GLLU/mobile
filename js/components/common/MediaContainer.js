@@ -172,8 +172,9 @@ class MediaContainer extends PureComponent {
   }
 
   getUsernameStringFeedView(username) {
+    console.log('username.length',username.length)
     if(username.length > 12){
-      return username.substring(0,9) + '...'
+      return username.substring(0,11) + '..'
     } else {
       return username
     }
@@ -191,7 +192,7 @@ class MediaContainer extends PureComponent {
           <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', height: 30,  bottom: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
             <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookId={look.id}/>
             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.goToProfile()}>
-                <Text style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{userName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{userName}</Text>
             </TouchableOpacity>
             <CommentsView item={look} onPress={this._handleCommentPress} lookId={look.id}/>
           </View>

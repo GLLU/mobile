@@ -8,7 +8,7 @@ const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
 const styles = StyleSheet.create({
   likeContainer: {
     height: 30,
-    width: 50,
+    marginLeft: 3,
     backgroundColor: 'transparent',
   },
   btnWithImage: {
@@ -68,7 +68,7 @@ class CommentsView extends Component {
   render() {
     const comments = this.getLikesStringFeedView()
     return (
-      <View style={[styles.likeContainer, comments.length > 3 ? {width: 60} : null]}>
+      <View style={[styles.likeContainer]}>
         <TouchableWithoutFeedback transparent onPress={() => this.props.onPress()} style={styles.btnWithImage}>
           <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-end', justifyContent: 'space-between', marginRight: 5}}>
             <View style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
