@@ -21,6 +21,7 @@ import VideoWithCaching from "../common/media/VideoWithCaching";
 import ImageWrapper from "../common/media/ImageWrapper";
 import asScreen from "../common/containers/Screen"
 import Spinner from "../loaders/Spinner";
+import { editNewLook } from "../../actions/uploadLook";
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
 
@@ -51,6 +52,7 @@ class LooksScreen extends Component {
   constructor(props) {
     super(props);
     this._goToProfile=this._goToProfile.bind(this);
+    this._goToEdit=this._goToEdit.bind(this);
     this.onToggleDrawer=this.onToggleDrawer.bind(this);
     this._toggleLike=this._toggleLike.bind(this);
     this.renderUpArrow=this.renderUpArrow.bind(this);
@@ -123,6 +125,12 @@ class LooksScreen extends Component {
 
   _goToProfile(look) {
     this.props.navigateTo('profileScreen',look);
+  }
+
+  _goToEdit(look) {
+    this.props.editNewLook(look.id).then(() => {
+      this.props.navigateTo('addItemScreen',{ mode: 'edit' });
+    });
   }
 
   onToggleDrawer(shouldOpen){
@@ -216,9 +224,9 @@ class LooksScreen extends Component {
           height={height}
           look={look}
           goBack={this.props.goBack}
-          goToProfile={(user) => this._goToProfile(user)}
+          goToProfile={this._goToProfile}
+          goToEdit={this._goToEdit}
           toggleLike={this._toggleLike}
-          toggleMenu={() => this._toggleMenu()}
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
@@ -288,7 +296,6 @@ class LooksScreen extends Component {
                 goBack={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
                 toggleLike={this._toggleLike}
-                toggleMenu={() => this._toggleMenu()}
                 isMenuOpen={this.state.isMenuOpen}
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
@@ -387,6 +394,7 @@ class LooksScreen extends Component {
 
 function bindAction(dispatch) {
   return {
+    editNewLook: (id) => dispatch(editNewLook(id)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
     unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     getLookLikes: (id) => dispatch(getLookLikes(id)),

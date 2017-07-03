@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback
 } from 'react-native';
-import _ from 'lodash'
+import * as _ from 'lodash'
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import SocialShare from '../../lib/social';
@@ -32,7 +32,6 @@ class BottomLookContainer extends BaseComponent {
     goBack: React.PropTypes.func,
     goToProfile: React.PropTypes.func,
     toggleLike: React.PropTypes.func,
-    toggleMenu: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
     onBottomDrawerOpen: React.PropTypes.func,
   };
@@ -41,7 +40,6 @@ class BottomLookContainer extends BaseComponent {
     goBack: _.noop,
     goToProfile: _.noop,
     toggleLike: _.noop,
-    toggleMenu: _.noop,
     reportAbuse: _.noop,
     onBottomDrawerOpen: _.noop,
   };
@@ -53,6 +51,7 @@ class BottomLookContainer extends BaseComponent {
     this._toggleMenuView = this._toggleMenuView.bind(this);
     this._toggleItem = this._toggleItem.bind(this);
     this.goToProfile=this.goToProfile.bind(this);
+    this.goToEdit=this.goToEdit.bind(this);
     this.onShareClicked = this.onShareClicked.bind(this);
     this.state = {
       comments: this.props.look.comments || 0,
@@ -101,7 +100,7 @@ class BottomLookContainer extends BaseComponent {
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}
         onReportPress={()=>this.props.reportAbuse(this.props.look.id)}
-        onEditPress={(lookId) => console.log(`edit look`,lookId)}
+        onEditPress={()=>this.goToEdit(this.props.look)}
         onShareClicked={this.onShareClicked}
         shareToken={this.props.shareToken}/>);
   }
@@ -135,7 +134,12 @@ class BottomLookContainer extends BaseComponent {
 
   goToProfile(user){
     this.props.goToProfile(user);
-    this.setState({isCommentsActive: false, isDescriptionActive: false})
+    this.setState({isCommentsActive: false, isDescriptionActive: false, isMenuOpen: false})
+  }
+
+  goToEdit(look){
+    this.props.goToEdit(look);
+    this.setState({isCommentsActive: false, isDescriptionActive: false, isMenuOpen: false})
   }
 
   toggleBottomContainer() {

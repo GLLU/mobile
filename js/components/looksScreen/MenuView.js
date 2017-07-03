@@ -89,8 +89,8 @@ class MenuView extends Component {
       this.renderShare(),
       this.renderSeparator({key:1}),
       this.renderReport(),
-      this.renderSeparator({key:2}),
-      this.renderWishlist()
+      // this.renderSeparator({key:2}),
+      // this.renderWishlist()
     ];
   }
 
@@ -99,8 +99,8 @@ class MenuView extends Component {
       this.renderShare(),
       this.renderSeparator({key:1}),
       this.renderEdit(),
-      this.renderSeparator({key:2}),
-      this.renderDelete()
+      // this.renderSeparator({key:2}),
+      // this.renderDelete()
     ];
   }
 
