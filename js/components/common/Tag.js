@@ -112,7 +112,7 @@ class Tag extends Component {
         <Animated.View
 
           {...this.panResponder.panHandlers}
-          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? { zIndex: 1 } : null]}>
 
           <Image source={markerImage} style={styles.itemBgImage} />
         </Animated.View>
@@ -120,7 +120,7 @@ class Tag extends Component {
     } else {
       return (
 
-        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}]}>
+        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? { zIndex: 1 } : null]}>
           <TouchableOpacity onPress={() => this.props.setCurrentItem(item)}>
             <Image source={markerImage} style={[styles.itemBgImage]} />
           </TouchableOpacity>
