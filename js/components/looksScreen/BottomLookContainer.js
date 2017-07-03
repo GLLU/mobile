@@ -45,6 +45,7 @@ export default class BottomLookContainer extends BaseComponent {
 
   constructor(props) {
     super(props);
+    console.log('bammsdfsdfm')
     this._toggleDescription = this._toggleDescription.bind(this);
     this._toggleComments = this._toggleComments.bind(this);
     this._toggleItem = this._toggleItem.bind(this);
@@ -52,13 +53,23 @@ export default class BottomLookContainer extends BaseComponent {
     this.state = {
       comments: this.props.look.comments || 0,
       isDescriptionActive: false,
-      isCommentsActive: props.openComments,
+      isCommentsActive: false,
       activeItem: '',
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
-      fadeAnimContentOnPress: new Animated.Value(1)
+      fadeAnimContentOnPress: new Animated.Value(1),
     }
   }
+
+  componentDidMount() {
+    console.log('baaammmm')
+    this.setState({isCommentsActive: this.props.openComments})
+  }
+
+  componentWillUnmount() {
+
+  }
+
 
   _renderBuyItButtons(look) {
     const {width, height} = this.props;
@@ -91,6 +102,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _renderCommentsView(isActive) {
+    console.log('isActive',isActive)
     return <CommentsView
       goToProfile={this.goToProfile}
       look_id={this.props.look.id}
@@ -100,7 +112,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   _toggleComments(shouldActive) {
-    console.log('123')
+    console.log('123', shouldActive)
     this.logEvent('LookScreen', {name: `Comments View ${shouldActive?'visible':'hidden'}`});
     this.props.onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isDescriptionActive: false})
@@ -135,6 +147,7 @@ export default class BottomLookContainer extends BaseComponent {
   }
 
   render() {
+    console.log('render isCommentsActive',this.state.isCommentsActive)
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
