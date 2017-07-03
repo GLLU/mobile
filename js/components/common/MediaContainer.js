@@ -31,6 +31,7 @@ class MediaContainer extends PureComponent {
     handleSearchInput: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
     unLikeUpdate: React.PropTypes.func,
+    navigateTo: React.PropTypes.func,
     logEvent: React.PropTypes.func,
     sendParisMessage: React.PropTypes.func,
     clearText: React.PropTypes.string,
