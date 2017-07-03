@@ -52,6 +52,12 @@ class CommentsView extends Component {
     this.currentPageIndex++;
   }
 
+  componentDidMount() {
+    if(this.props.isOpen) {
+      this.getCommentsData();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.isOpen !== this.props.isOpen) {
       if (!nextProps.isOpen) {

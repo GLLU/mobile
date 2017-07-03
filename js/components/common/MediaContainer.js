@@ -1,8 +1,8 @@
 import React,{PureComponent} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
 import LikeView from '../feedscreen/items/LikeView';
+import CommentsView from '../feedscreen/items/CommentsView';
 import VolumeButton from './VolumeButton';
-import MediaBorderPatch from './MediaBorderPatch'
 import Utils from '../../utils';
 import VideoWithCaching from "./media/VideoWithCaching";
 import ImageWrapper from "./media/ImageWrapper";
@@ -36,6 +36,7 @@ class MediaContainer extends PureComponent {
     super(props);
     this.toggleLikeAction = this.toggleLikeAction.bind(this)
     this._handleItemPress = this._handleItemPress.bind(this)
+    this._handleCommentPress = this._handleCommentPress.bind(this)
     this.state = {
       currLookPosition: -1,
       shouldPlay: false,
@@ -105,7 +106,7 @@ class MediaContainer extends PureComponent {
           <VideoWithCaching source={{uri: video.uri, mainVer: 1, patchVer: 0}}
                             resizeMode={'stretch'}
                             muted={this.state.isMuted}
-                            style={{width: lookWidth, height: lookHeight, overflow:'hidden', borderRadius: 10}}
+                            style={{width: lookWidth, height: lookHeight, overflow:'hidden'}}
                             paused={!ShouldShowLookImage}
                             repeat={true}
                             preview={video.preview}
@@ -114,11 +115,11 @@ class MediaContainer extends PureComponent {
           <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}/>
         }
         {Platform.OS !== 'ios' ?
-          <MediaBorderPatch media={video} lookWidth={lookWidth} lookHeight={lookHeight}>
+
             <View style={{bottom: 15}}>
               { this.renderVideoGrid(video) }
             </View>
-          </MediaBorderPatch>
+
           :
           null
 
@@ -150,35 +151,36 @@ class MediaContainer extends PureComponent {
       ShouldShowLookImage = true
     }
 
-    if(Platform.OS === 'ios') {
-      return (
-        <View style={{alignSelf: 'center', marginBottom: 3, marginTop: 3}}>
-          {ShouldShowLookImage ? <ImageWrapper source={{uri: look.uri}} resizeMode={'stretch'} style={{width: lookWidth-6, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}}>
-            {this.renderImageGrid(look, lookHeight)}
-          </ImageWrapper>
-            : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} />}
-        </View>
-      )
-    } else {
-      return (
-        <View>
-          {ShouldShowLookImage ? <ImageWrapper source={{uri: look.uri}} resizeMode={'stretch'} style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} /> : <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10}} />}
-          <MediaBorderPatch media={look} lookWidth={lookWidth} lookHeight={lookHeight}>
-            {this.renderImageGrid(look, lookHeight)}
-          </MediaBorderPatch>
-        </View>
-      )
-    }
+    return (
+      <View>
+        {ShouldShowLookImage ?
+        <ImageWrapper source={{uri: look.uri}} resizeMode={'stretch'} style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor}} >
+          {this.renderImageGrid(look, lookHeight, lookWidth)}
+        </ImageWrapper>
+          :
+          <View style={{width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor}} />}
+      </View>
+    )
 
   }
+  _handleCommentPress() {
+    console.log('blab')
+    this.props.logEvent(this.props.fromScreen, {name: 'Image click trough comment button'});
+    const item = {...this.props.look,openComments:true};
+    let that = this
+    setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
+  }
 
-  renderImageGrid(look, lookHeight) {
+  renderImageGrid(look, lookHeight, lookWidth) {
+    const userName = look.username
     if(this.props.showMediaGrid) {
       return(
-        <View style={{zIndex: 1}}>
+        <View >
           {this.props.children}
-          <View style={{bottom: 15}}>
+          <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', height: 30, bottom: 0, marginTop: lookHeight - 30, flexDirection: 'row', justifyContent: 'space-between'}}>
             <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookHeight={lookHeight} lookId={look.id}/>
+            <Text style={{color: 'white', alignSelf: 'center',textAlign: 'center',  fontSize: 10}}>{userName}</Text>
+            <CommentsView item={look} onPress={this._handleCommentPress} lookHeight={lookHeight} lookId={look.id}/>
           </View>
         </View>
       )
@@ -205,7 +207,7 @@ class MediaContainer extends PureComponent {
   render() {
     const { look } = this.props
     return(
-      <View onLayout={(e) => this.setLookPosition(e)}>
+      <View onLayout={(e) => this.setLookPosition(e)} style={{margin: 3}}>
         <TouchableOpacity onPress={this._handleItemPress}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look)}
           {look.coverType === 'video' && Platform.OS === 'ios' ? this.renderVideoGrid(look) : null}

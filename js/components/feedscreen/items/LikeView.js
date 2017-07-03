@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   iconWithImage: {
     height: 25,
     width: 25,
-    resizeMode: 'contain',
+    resizeMode: 'stretch',
     alignSelf: 'center',
     marginTop: 3
   },
@@ -27,8 +27,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '500',
-    textAlign: 'center',
-    alignSelf: 'center'
   },
 });
 
@@ -84,15 +82,15 @@ class LikeView extends Component {
     const likeIconView = this.state.isLiked ? likedIcon : likeIcon;
     const likes = this.getLikesStringFeedView()
     return (
-      <View style={[styles.likeContainer, { marginTop: lookHeight - 30 }, likes.length > 3 ? {width: 60} : null]}>
-        <Grid style={{ backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <View style={[styles.likeContainer, likes.length > 3 ? {width: 60} : null]}>
+        <Grid >
           <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
             <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
           </Col>
-          <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'center', marginRight: 3}}>
-            <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()}>
+          <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
+            <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()} style={{width: 20, backgroundColor: 'red'}}>
               <View>
                 <Text style={styles.countLikeLabel}>{`${likes}`}</Text>
               </View>
