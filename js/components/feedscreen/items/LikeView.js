@@ -82,20 +82,20 @@ class LikeView extends Component {
     const likes = this.getLikesStringFeedView()
     return (
       <View style={[styles.likeContainer, likes.length > 3 ? {width: 60} : null]}>
-        <Grid >
-          <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
+        <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', justifyContent: 'space-between', marginRight: 5}}>
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
             <TouchableWithoutFeedback transparent onPress={() => this.handleLikePress()} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
-          </Col>
-          <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
+          </View>
+          <View style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
             <TouchableWithoutFeedback onPress={() => this.handleLikesNumberPress()} style={{width: 20, backgroundColor: 'red'}}>
               <View>
                 <Text style={styles.countLikeLabel}>{`${likes}`}</Text>
               </View>
             </TouchableWithoutFeedback>
-          </Col>
-        </Grid>
+          </View>
+        </View>
       </View>
     )
   }

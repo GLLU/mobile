@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, View, Text ,TouchableWithoutFeedback } from 'react-native';
-import { Col, Grid } from "react-native-easy-grid";
 
 const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
 
@@ -58,11 +57,11 @@ class CommentsView extends Component {
 
   renderCommentsAmount(comments) {
     return (
-      <Col style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
+      <View style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start', marginLeft: 3}}>
           <View>
             <Text style={styles.countLikeLabel}>{`${comments}`}</Text>
           </View>
-      </Col>
+      </View>
     )
   }
 
@@ -71,12 +70,12 @@ class CommentsView extends Component {
     return (
       <View style={[styles.likeContainer, comments.length > 3 ? {width: 60} : null]}>
         <TouchableWithoutFeedback transparent onPress={() => this.props.onPress()} style={styles.btnWithImage}>
-          <Grid>
-            <Col style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
+          <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-end', justifyContent: 'space-between', marginRight: 5}}>
+            <View style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
                 <Image source={bubbleIcon} style={styles.iconBubbleWithImage}/>
-            </Col>
+            </View>
             {this.state.comments > 0 ? this.renderCommentsAmount(comments) : <View/>}
-          </Grid>
+          </View>
         </TouchableWithoutFeedback>
       </View>
     )
