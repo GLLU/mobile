@@ -29,6 +29,30 @@
 		14C6C2CE5918487CA602B224 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BA68A6CACBA4316BBA3F65B /* Zocial.ttf */; };
 		1737D333132E43D688CFF506 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D1B9999768496FBFB2D230 /* Entypo.ttf */; };
 		1866995F8EB34FC1930BD50E /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9EAE8D736B84131A0BE302D /* libCodePush.a */; };
+		18CFF7711F092DA200438900 /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7481F092DA200438900 /* CGGeometry+RSKImageCropper.m */; };
+		18CFF7721F092DA200438900 /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF74C1F092DA200438900 /* RSKImageCropViewController.m */; };
+		18CFF7731F092DA200438900 /* RSKImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF74E1F092DA200438900 /* RSKImageScrollView.m */; };
+		18CFF7741F092DA200438900 /* RSKInternalUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7501F092DA200438900 /* RSKInternalUtility.m */; };
+		18CFF7751F092DA200438900 /* RSKTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7521F092DA200438900 /* RSKTouchView.m */; };
+		18CFF7761F092DA200438900 /* UIApplication+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7541F092DA200438900 /* UIApplication+RSKImageCropper.m */; };
+		18CFF7771F092DA200438900 /* UIImage+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7561F092DA200438900 /* UIImage+RSKImageCropper.m */; };
+		18CFF7781F092DA200438900 /* AVSessionRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7581F092DA200438900 /* AVSessionRecorderViewController.swift */; };
+		18CFF7791F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7591F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift */; };
+		18CFF77A1F092DA200438900 /* MediaFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75B1F092DA200438900 /* MediaFileWriter.m */; };
+		18CFF77B1F092DA200438900 /* MediaRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75C1F092DA200438900 /* MediaRecorderViewController.swift */; };
+		18CFF77C1F092DA200438900 /* MediaRecordingActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75D1F092DA200438900 /* MediaRecordingActionsView.swift */; };
+		18CFF77D1F092DA200438900 /* MediaRecordingActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CFF75E1F092DA200438900 /* MediaRecordingActionsView.xib */; };
+		18CFF77E1F092DA200438900 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75F1F092DA200438900 /* PreviewView.swift */; };
+		18CFF77F1F092DA200438900 /* RecordButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7601F092DA200438900 /* RecordButtonDelegate.swift */; };
+		18CFF7801F092DA200438900 /* RoundedRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7611F092DA200438900 /* RoundedRecordButton.swift */; };
+		18CFF7811F092DA200438900 /* TempMediaFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7621F092DA200438900 /* TempMediaFileWriter.swift */; };
+		18CFF7821F092DA200438900 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7631F092DA200438900 /* TimerView.swift */; };
+		18CFF7831F092DA200438900 /* MediaRecorderModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7651F092DA200438900 /* MediaRecorderModule.m */; };
+		18CFF7841F092DA200438900 /* ICGRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7681F092DA200438900 /* ICGRulerView.m */; };
+		18CFF7851F092DA200438900 /* ICGThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF76A1F092DA200438900 /* ICGThumbView.m */; };
+		18CFF7861F092DA200438900 /* ICGVideoTrimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF76D1F092DA200438900 /* ICGVideoTrimmerView.m */; };
+		18CFF7871F092DA200438900 /* VideoTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF76F1F092DA200438900 /* VideoTrimmerViewController.m */; };
+		18CFF7881F092DA200438900 /* VideoTrimmerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CFF7701F092DA200438900 /* VideoTrimmerViewController.xib */; };
 		1E4CD2BDB90C459E9261F52D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 055048ECC9C34D7B984AA527 /* Octicons.ttf */; };
 		1FA1E659D055463B945A72D8 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C088D1238D1B457992234ACE /* Arial Black.ttf */; };
 		21BA7C6A0CEB4A26B0887E41 /* SanFranciscoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A595DDD308D44E84BCE736B3 /* SanFranciscoBold.ttf */; };
@@ -398,6 +422,47 @@
 		1407E961A4DD43838E1FB8D2 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		17D3F07812774530A43EC6D4 /* Microsoft Sans Serif.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Microsoft Sans Serif.ttf"; path = "../node_modules/native-base/Fonts/Microsoft Sans Serif.ttf"; sourceTree = "<group>"; };
+		18CFF7431F092DA200438900 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "gllu/Bridging-Header.h"; sourceTree = "<group>"; };
+		18CFF7471F092DA200438900 /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18CFF7481F092DA200438900 /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18CFF7491F092DA200438900 /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
+		18CFF74A1F092DA200438900 /* RSKImageCropViewController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSKImageCropViewController+Protected.h"; sourceTree = "<group>"; };
+		18CFF74B1F092DA200438900 /* RSKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropViewController.h; sourceTree = "<group>"; };
+		18CFF74C1F092DA200438900 /* RSKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageCropViewController.m; sourceTree = "<group>"; };
+		18CFF74D1F092DA200438900 /* RSKImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageScrollView.h; sourceTree = "<group>"; };
+		18CFF74E1F092DA200438900 /* RSKImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageScrollView.m; sourceTree = "<group>"; };
+		18CFF74F1F092DA200438900 /* RSKInternalUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKInternalUtility.h; sourceTree = "<group>"; };
+		18CFF7501F092DA200438900 /* RSKInternalUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKInternalUtility.m; sourceTree = "<group>"; };
+		18CFF7511F092DA200438900 /* RSKTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKTouchView.h; sourceTree = "<group>"; };
+		18CFF7521F092DA200438900 /* RSKTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKTouchView.m; sourceTree = "<group>"; };
+		18CFF7531F092DA200438900 /* UIApplication+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18CFF7541F092DA200438900 /* UIApplication+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18CFF7551F092DA200438900 /* UIImage+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18CFF7561F092DA200438900 /* UIImage+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18CFF7581F092DA200438900 /* AVSessionRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSessionRecorderViewController.swift; sourceTree = "<group>"; };
+		18CFF7591F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSessionRecorderViewControllerDelegate.swift; sourceTree = "<group>"; };
+		18CFF75A1F092DA200438900 /* MediaFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaFileWriter.h; sourceTree = "<group>"; };
+		18CFF75B1F092DA200438900 /* MediaFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaFileWriter.m; sourceTree = "<group>"; };
+		18CFF75C1F092DA200438900 /* MediaRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRecorderViewController.swift; sourceTree = "<group>"; };
+		18CFF75D1F092DA200438900 /* MediaRecordingActionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRecordingActionsView.swift; sourceTree = "<group>"; };
+		18CFF75E1F092DA200438900 /* MediaRecordingActionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaRecordingActionsView.xib; sourceTree = "<group>"; };
+		18CFF75F1F092DA200438900 /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		18CFF7601F092DA200438900 /* RecordButtonDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordButtonDelegate.swift; sourceTree = "<group>"; };
+		18CFF7611F092DA200438900 /* RoundedRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRecordButton.swift; sourceTree = "<group>"; };
+		18CFF7621F092DA200438900 /* TempMediaFileWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempMediaFileWriter.swift; sourceTree = "<group>"; };
+		18CFF7631F092DA200438900 /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		18CFF7641F092DA200438900 /* MediaRecorderModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaRecorderModule.h; sourceTree = "<group>"; };
+		18CFF7651F092DA200438900 /* MediaRecorderModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaRecorderModule.m; sourceTree = "<group>"; };
+		18CFF7671F092DA200438900 /* ICGRulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGRulerView.h; sourceTree = "<group>"; };
+		18CFF7681F092DA200438900 /* ICGRulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGRulerView.m; sourceTree = "<group>"; };
+		18CFF7691F092DA200438900 /* ICGThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGThumbView.h; sourceTree = "<group>"; };
+		18CFF76A1F092DA200438900 /* ICGThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGThumbView.m; sourceTree = "<group>"; };
+		18CFF76B1F092DA200438900 /* ICGVideoTrimmer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmer.h; sourceTree = "<group>"; };
+		18CFF76C1F092DA200438900 /* ICGVideoTrimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmerView.h; sourceTree = "<group>"; };
+		18CFF76D1F092DA200438900 /* ICGVideoTrimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGVideoTrimmerView.m; sourceTree = "<group>"; };
+		18CFF76E1F092DA200438900 /* VideoTrimmerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoTrimmerViewController.h; sourceTree = "<group>"; };
+		18CFF76F1F092DA200438900 /* VideoTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTrimmerViewController.m; sourceTree = "<group>"; };
+		18CFF7701F092DA200438900 /* VideoTrimmerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoTrimmerViewController.xib; sourceTree = "<group>"; };
 		1A8E89A7117A4B63A93E7C4F /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		20F5BB5C64064F20A659883B /* SanFrancisco.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SanFrancisco.ttf; path = "../node_modules/native-base/Fonts/SanFrancisco.ttf"; sourceTree = "<group>"; };
 		270A5312FCF34EAD8C6CC8ED /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
@@ -619,6 +684,8 @@
 		13B07FAE1A68108700A75B9A /* gllu */ = {
 			isa = PBXGroup;
 			children = (
+				18CFF7431F092DA200438900 /* Bridging-Header.h */,
+				18CFF7441F092DA200438900 /* MediaRecorder */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -643,6 +710,86 @@
 				29F795DE1EC84C39002E98C8 /* libjschelpers.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		18CFF7441F092DA200438900 /* MediaRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7451F092DA200438900 /* Source */,
+			);
+			name = MediaRecorder;
+			path = gllu/MediaRecorder;
+			sourceTree = "<group>";
+		};
+		18CFF7451F092DA200438900 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7461F092DA200438900 /* ImageCropper */,
+				18CFF7571F092DA200438900 /* MediaRecorder */,
+				18CFF7641F092DA200438900 /* MediaRecorderModule.h */,
+				18CFF7651F092DA200438900 /* MediaRecorderModule.m */,
+				18CFF7661F092DA200438900 /* VideoTrimmer */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		18CFF7461F092DA200438900 /* ImageCropper */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7471F092DA200438900 /* CGGeometry+RSKImageCropper.h */,
+				18CFF7481F092DA200438900 /* CGGeometry+RSKImageCropper.m */,
+				18CFF7491F092DA200438900 /* RSKImageCropper.h */,
+				18CFF74A1F092DA200438900 /* RSKImageCropViewController+Protected.h */,
+				18CFF74B1F092DA200438900 /* RSKImageCropViewController.h */,
+				18CFF74C1F092DA200438900 /* RSKImageCropViewController.m */,
+				18CFF74D1F092DA200438900 /* RSKImageScrollView.h */,
+				18CFF74E1F092DA200438900 /* RSKImageScrollView.m */,
+				18CFF74F1F092DA200438900 /* RSKInternalUtility.h */,
+				18CFF7501F092DA200438900 /* RSKInternalUtility.m */,
+				18CFF7511F092DA200438900 /* RSKTouchView.h */,
+				18CFF7521F092DA200438900 /* RSKTouchView.m */,
+				18CFF7531F092DA200438900 /* UIApplication+RSKImageCropper.h */,
+				18CFF7541F092DA200438900 /* UIApplication+RSKImageCropper.m */,
+				18CFF7551F092DA200438900 /* UIImage+RSKImageCropper.h */,
+				18CFF7561F092DA200438900 /* UIImage+RSKImageCropper.m */,
+			);
+			path = ImageCropper;
+			sourceTree = "<group>";
+		};
+		18CFF7571F092DA200438900 /* MediaRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7581F092DA200438900 /* AVSessionRecorderViewController.swift */,
+				18CFF7591F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift */,
+				18CFF75A1F092DA200438900 /* MediaFileWriter.h */,
+				18CFF75B1F092DA200438900 /* MediaFileWriter.m */,
+				18CFF75C1F092DA200438900 /* MediaRecorderViewController.swift */,
+				18CFF75D1F092DA200438900 /* MediaRecordingActionsView.swift */,
+				18CFF75E1F092DA200438900 /* MediaRecordingActionsView.xib */,
+				18CFF75F1F092DA200438900 /* PreviewView.swift */,
+				18CFF7601F092DA200438900 /* RecordButtonDelegate.swift */,
+				18CFF7611F092DA200438900 /* RoundedRecordButton.swift */,
+				18CFF7621F092DA200438900 /* TempMediaFileWriter.swift */,
+				18CFF7631F092DA200438900 /* TimerView.swift */,
+			);
+			path = MediaRecorder;
+			sourceTree = "<group>";
+		};
+		18CFF7661F092DA200438900 /* VideoTrimmer */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7671F092DA200438900 /* ICGRulerView.h */,
+				18CFF7681F092DA200438900 /* ICGRulerView.m */,
+				18CFF7691F092DA200438900 /* ICGThumbView.h */,
+				18CFF76A1F092DA200438900 /* ICGThumbView.m */,
+				18CFF76B1F092DA200438900 /* ICGVideoTrimmer.h */,
+				18CFF76C1F092DA200438900 /* ICGVideoTrimmerView.h */,
+				18CFF76D1F092DA200438900 /* ICGVideoTrimmerView.m */,
+				18CFF76E1F092DA200438900 /* VideoTrimmerViewController.h */,
+				18CFF76F1F092DA200438900 /* VideoTrimmerViewController.m */,
+				18CFF7701F092DA200438900 /* VideoTrimmerViewController.xib */,
+			);
+			path = VideoTrimmer;
 			sourceTree = "<group>";
 		};
 		297B484A1ECDA17F003A8E58 /* Products */ = {
@@ -955,6 +1102,7 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = KH536MNTS7;
+						LastSwiftMigration = 830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1369,6 +1517,7 @@
 				C54905B8E76E49A49BCA76CC /* Octicons.ttf in Resources */,
 				5B26F3762A9E4C5B8DF166DA /* Zocial.ttf in Resources */,
 				1161F1713C15460EB8699F21 /* Entypo.ttf in Resources */,
+				18CFF77D1F092DA200438900 /* MediaRecordingActionsView.xib in Resources */,
 				912CABBFA280458584350030 /* EvilIcons.ttf in Resources */,
 				137555E02CA74F4FBDFBFFB2 /* FontAwesome.ttf in Resources */,
 				F579DE2F94D44CDCB20C37BC /* Foundation.ttf in Resources */,
@@ -1384,6 +1533,7 @@
 				4E0065C7EA0E46A1A1A79527 /* Rubik-Light.ttf in Resources */,
 				118A3B1FB77340138FF37D0F /* Rubik-LightItalic.ttf in Resources */,
 				AAB261D21B094C8F9381B4AC /* Rubik-Medium.ttf in Resources */,
+				18CFF7881F092DA200438900 /* VideoTrimmerViewController.xib in Resources */,
 				6D2AC0A7EE61433E9C850A88 /* Rubik-MediumItalic.ttf in Resources */,
 				C9D2AEF522B1473AA10C946D /* Rubik-Regular.ttf in Resources */,
 				334694C9799148C88B9D67E4 /* SanFrancisco.ttf in Resources */,
@@ -1478,8 +1628,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18CFF7731F092DA200438900 /* RSKImageScrollView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				18CFF7721F092DA200438900 /* RSKImageCropViewController.m in Sources */,
+				18CFF77C1F092DA200438900 /* MediaRecordingActionsView.swift in Sources */,
+				18CFF7801F092DA200438900 /* RoundedRecordButton.swift in Sources */,
+				18CFF7851F092DA200438900 /* ICGThumbView.m in Sources */,
+				18CFF7751F092DA200438900 /* RSKTouchView.m in Sources */,
+				18CFF77E1F092DA200438900 /* PreviewView.swift in Sources */,
+				18CFF7771F092DA200438900 /* UIImage+RSKImageCropper.m in Sources */,
+				18CFF77A1F092DA200438900 /* MediaFileWriter.m in Sources */,
+				18CFF7711F092DA200438900 /* CGGeometry+RSKImageCropper.m in Sources */,
+				18CFF7821F092DA200438900 /* TimerView.swift in Sources */,
+				18CFF7781F092DA200438900 /* AVSessionRecorderViewController.swift in Sources */,
+				18CFF7871F092DA200438900 /* VideoTrimmerViewController.m in Sources */,
+				18CFF7831F092DA200438900 /* MediaRecorderModule.m in Sources */,
+				18CFF7811F092DA200438900 /* TempMediaFileWriter.swift in Sources */,
+				18CFF7761F092DA200438900 /* UIApplication+RSKImageCropper.m in Sources */,
+				18CFF77F1F092DA200438900 /* RecordButtonDelegate.swift in Sources */,
+				18CFF7741F092DA200438900 /* RSKInternalUtility.m in Sources */,
+				18CFF7841F092DA200438900 /* ICGRulerView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				18CFF7791F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift in Sources */,
+				18CFF77B1F092DA200438900 /* MediaRecorderViewController.swift in Sources */,
+				18CFF7861F092DA200438900 /* ICGVideoTrimmerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1566,6 +1738,8 @@
 				PRODUCT_NAME = inFash;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/gllu/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1637,6 +1811,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.infash;
 				PRODUCT_NAME = inFash;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/gllu/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1644,7 +1820,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA7BD6E1D054348A56BE3EF9 /* Pods-gllu.debug.xcconfig */;
+			baseConfigurationReference = 2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1716,7 +1892,7 @@
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */;
+			baseConfigurationReference = 2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
