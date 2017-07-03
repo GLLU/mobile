@@ -2,7 +2,7 @@
 #import "MediaRecorderModule.h"
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import "gllu-Swift.h"
+#import "inFash-Swift.h"
 #import <React/RCTBridgeModule.h>
 
 @interface MediaRecorderModule()<RCTBridgeModule>

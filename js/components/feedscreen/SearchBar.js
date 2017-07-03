@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, Text, Platform,View } from 'react-native';
 import {  Button } from 'native-base';
-import BaseComponent from '../common/base/BaseComponent';
+import withAnalytics from '../common/analytics/WithAnalytics';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
 
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class SearchBar extends BaseComponent {
+class SearchBar extends Component {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
     clearText: React.PropTypes.string
@@ -52,11 +52,12 @@ class SearchBar extends BaseComponent {
 
   constructor(props) {
     super(props);
+    this.clearSearch=this.clearSearch.bind(this);
+    this.handleTextInput=this.handleTextInput.bind(this);
+    this.doSearch = _.debounce(this._doSearch, 500);
     this.state = {
       text: ''
     }
-
-    this.doSearch = _.debounce(this._doSearch, 500)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,7 +69,7 @@ class SearchBar extends BaseComponent {
   }
 
   _doSearch(text) {
-    this.logEvent('Feedscreen', {name: 'Search'});
+    this.props.logEvent('Feedscreen', {name: 'Search'});
     this.props.handleSearchInput(text)
   }
 
@@ -81,7 +82,7 @@ class SearchBar extends BaseComponent {
   }
 
   clearSearch() {
-    this.logEvent('Feedscreen', {name: 'Clear search'});
+    this.props.logEvent('Feedscreen', {name: 'Clear search'});
     this.setState({
       text: ''
     })
@@ -95,7 +96,7 @@ class SearchBar extends BaseComponent {
           style={styles.searchInput}
           placeholder='Search'
           underlineColorAndroid='transparent'
-          onChangeText={(text) => this.handleTextInput(text)}
+          onChangeText={this.handleTextInput}
           value={this.state.text}/>
         <Button transparent onPress={this.clearSearch} style={StyleSheet.flatten(styles.btnCloseFilter)}>
           <Text style={styles.clearText}>Clear</Text>
@@ -105,4 +106,4 @@ class SearchBar extends BaseComponent {
   }
 }
 
-export default SearchBar;
+export default withAnalytics(SearchBar);
