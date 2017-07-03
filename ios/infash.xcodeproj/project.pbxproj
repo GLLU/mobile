@@ -29,6 +29,30 @@
 		14C6C2CE5918487CA602B224 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BA68A6CACBA4316BBA3F65B /* Zocial.ttf */; };
 		1737D333132E43D688CFF506 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D1B9999768496FBFB2D230 /* Entypo.ttf */; };
 		1866995F8EB34FC1930BD50E /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9EAE8D736B84131A0BE302D /* libCodePush.a */; };
+		18CFF7711F092DA200438900 /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7481F092DA200438900 /* CGGeometry+RSKImageCropper.m */; };
+		18CFF7721F092DA200438900 /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF74C1F092DA200438900 /* RSKImageCropViewController.m */; };
+		18CFF7731F092DA200438900 /* RSKImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF74E1F092DA200438900 /* RSKImageScrollView.m */; };
+		18CFF7741F092DA200438900 /* RSKInternalUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7501F092DA200438900 /* RSKInternalUtility.m */; };
+		18CFF7751F092DA200438900 /* RSKTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7521F092DA200438900 /* RSKTouchView.m */; };
+		18CFF7761F092DA200438900 /* UIApplication+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7541F092DA200438900 /* UIApplication+RSKImageCropper.m */; };
+		18CFF7771F092DA200438900 /* UIImage+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7561F092DA200438900 /* UIImage+RSKImageCropper.m */; };
+		18CFF7781F092DA200438900 /* AVSessionRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7581F092DA200438900 /* AVSessionRecorderViewController.swift */; };
+		18CFF7791F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7591F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift */; };
+		18CFF77A1F092DA200438900 /* MediaFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75B1F092DA200438900 /* MediaFileWriter.m */; };
+		18CFF77B1F092DA200438900 /* MediaRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75C1F092DA200438900 /* MediaRecorderViewController.swift */; };
+		18CFF77C1F092DA200438900 /* MediaRecordingActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75D1F092DA200438900 /* MediaRecordingActionsView.swift */; };
+		18CFF77D1F092DA200438900 /* MediaRecordingActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CFF75E1F092DA200438900 /* MediaRecordingActionsView.xib */; };
+		18CFF77E1F092DA200438900 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF75F1F092DA200438900 /* PreviewView.swift */; };
+		18CFF77F1F092DA200438900 /* RecordButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7601F092DA200438900 /* RecordButtonDelegate.swift */; };
+		18CFF7801F092DA200438900 /* RoundedRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7611F092DA200438900 /* RoundedRecordButton.swift */; };
+		18CFF7811F092DA200438900 /* TempMediaFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7621F092DA200438900 /* TempMediaFileWriter.swift */; };
+		18CFF7821F092DA200438900 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7631F092DA200438900 /* TimerView.swift */; };
+		18CFF7831F092DA200438900 /* MediaRecorderModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7651F092DA200438900 /* MediaRecorderModule.m */; };
+		18CFF7841F092DA200438900 /* ICGRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF7681F092DA200438900 /* ICGRulerView.m */; };
+		18CFF7851F092DA200438900 /* ICGThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF76A1F092DA200438900 /* ICGThumbView.m */; };
+		18CFF7861F092DA200438900 /* ICGVideoTrimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF76D1F092DA200438900 /* ICGVideoTrimmerView.m */; };
+		18CFF7871F092DA200438900 /* VideoTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CFF76F1F092DA200438900 /* VideoTrimmerViewController.m */; };
+		18CFF7881F092DA200438900 /* VideoTrimmerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CFF7701F092DA200438900 /* VideoTrimmerViewController.xib */; };
 		1E4CD2BDB90C459E9261F52D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 055048ECC9C34D7B984AA527 /* Octicons.ttf */; };
 		1FA1E659D055463B945A72D8 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C088D1238D1B457992234ACE /* Arial Black.ttf */; };
 		21BA7C6A0CEB4A26B0887E41 /* SanFranciscoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A595DDD308D44E84BCE736B3 /* SanFranciscoBold.ttf */; };
@@ -36,6 +60,7 @@
 		29D17A21A6F74E588B9135A0 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BEE0C419AF49E59C089445 /* libRCTGoogleAnalyticsBridge.a */; };
 		334694C9799148C88B9D67E4 /* SanFrancisco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20F5BB5C64064F20A659883B /* SanFrancisco.ttf */; };
 		36DCE79019E3483C99D9D96E /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84012D3D75F34A4E88B3679F /* Rubik-Italic.ttf */; };
+		394F7272EED21714CAC71957 /* libPods-infash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E570D495DA57E804D25780C /* libPods-infash.a */; };
 		40D3A1310FFC4BFEB451C3F4 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B531CDBB4841E384D13E0B /* libRCTVideo.a */; };
 		4A13ECC6B442412D8DE5CD9A /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A011C62B8B304B13B116B84A /* libBVLinearGradient.a */; };
 		4B83A7C864134355AFD01B42 /* Courier New.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 500B07A619DA41C79E79CD12 /* Courier New.ttf */; };
@@ -87,13 +112,11 @@
 		D066434A1E00E5F500DCEFDE /* libFBSDKCoreKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643451E00E5F500DCEFDE /* libFBSDKCoreKit.a */; };
 		D066434B1E00E5F500DCEFDE /* libFBSDKLoginKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643461E00E5F500DCEFDE /* libFBSDKLoginKit.a */; };
 		D066434C1E00E5F500DCEFDE /* libFBSDKShareKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643471E00E5F500DCEFDE /* libFBSDKShareKit.a */; };
-		D066434D1E00E5F500DCEFDE /* libPods-gllu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D06643481E00E5F500DCEFDE /* libPods-gllu.a */; };
 		D9500252B8464B5EA9600D7D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEA0FF5BAAE14B8C90D86F3D /* SimpleLineIcons.ttf */; };
 		DB843DEF3EA144819620A980 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 270A5312FCF34EAD8C6CC8ED /* libRCTFBSDK.a */; };
 		E1F82379AF874C81A759EF9E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E84A8501BA8149F0A53F9964 /* Foundation.ttf */; };
 		E20A3F32836A46A29759179F /* libRNFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F640DE27BB5A484B835C3102 /* libRNFlurryAnalytics.a */; };
 		E70CBA5DF0B84BABBFE78BC6 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B0C2826D367497EAE251EA2 /* libRNKeychain.a */; };
-		EC99D906B7C45F900C10F08F /* libPods-gllu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0769BE554497F447F415744 /* libPods-gllu.a */; };
 		F50F403ECBC14B978BFB3887 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 745F988C3EFD45C7BF8E0448 /* MaterialCommunityIcons.ttf */; };
 		F579DE2F94D44CDCB20C37BC /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B5454D4AA6E417EB8F6C23C /* Foundation.ttf */; };
 		FF6D81E1B9D54CB7B21B39BD /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F49AC9E1EAB74B129ECDC20E /* Roboto.ttf */; };
@@ -399,10 +422,52 @@
 		1407E961A4DD43838E1FB8D2 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		17D3F07812774530A43EC6D4 /* Microsoft Sans Serif.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Microsoft Sans Serif.ttf"; path = "../node_modules/native-base/Fonts/Microsoft Sans Serif.ttf"; sourceTree = "<group>"; };
+		18CFF7431F092DA200438900 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "gllu/Bridging-Header.h"; sourceTree = "<group>"; };
+		18CFF7471F092DA200438900 /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18CFF7481F092DA200438900 /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18CFF7491F092DA200438900 /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
+		18CFF74A1F092DA200438900 /* RSKImageCropViewController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSKImageCropViewController+Protected.h"; sourceTree = "<group>"; };
+		18CFF74B1F092DA200438900 /* RSKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropViewController.h; sourceTree = "<group>"; };
+		18CFF74C1F092DA200438900 /* RSKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageCropViewController.m; sourceTree = "<group>"; };
+		18CFF74D1F092DA200438900 /* RSKImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageScrollView.h; sourceTree = "<group>"; };
+		18CFF74E1F092DA200438900 /* RSKImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageScrollView.m; sourceTree = "<group>"; };
+		18CFF74F1F092DA200438900 /* RSKInternalUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKInternalUtility.h; sourceTree = "<group>"; };
+		18CFF7501F092DA200438900 /* RSKInternalUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKInternalUtility.m; sourceTree = "<group>"; };
+		18CFF7511F092DA200438900 /* RSKTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKTouchView.h; sourceTree = "<group>"; };
+		18CFF7521F092DA200438900 /* RSKTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKTouchView.m; sourceTree = "<group>"; };
+		18CFF7531F092DA200438900 /* UIApplication+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18CFF7541F092DA200438900 /* UIApplication+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18CFF7551F092DA200438900 /* UIImage+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RSKImageCropper.h"; sourceTree = "<group>"; };
+		18CFF7561F092DA200438900 /* UIImage+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RSKImageCropper.m"; sourceTree = "<group>"; };
+		18CFF7581F092DA200438900 /* AVSessionRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSessionRecorderViewController.swift; sourceTree = "<group>"; };
+		18CFF7591F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSessionRecorderViewControllerDelegate.swift; sourceTree = "<group>"; };
+		18CFF75A1F092DA200438900 /* MediaFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaFileWriter.h; sourceTree = "<group>"; };
+		18CFF75B1F092DA200438900 /* MediaFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaFileWriter.m; sourceTree = "<group>"; };
+		18CFF75C1F092DA200438900 /* MediaRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRecorderViewController.swift; sourceTree = "<group>"; };
+		18CFF75D1F092DA200438900 /* MediaRecordingActionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaRecordingActionsView.swift; sourceTree = "<group>"; };
+		18CFF75E1F092DA200438900 /* MediaRecordingActionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaRecordingActionsView.xib; sourceTree = "<group>"; };
+		18CFF75F1F092DA200438900 /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		18CFF7601F092DA200438900 /* RecordButtonDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordButtonDelegate.swift; sourceTree = "<group>"; };
+		18CFF7611F092DA200438900 /* RoundedRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRecordButton.swift; sourceTree = "<group>"; };
+		18CFF7621F092DA200438900 /* TempMediaFileWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempMediaFileWriter.swift; sourceTree = "<group>"; };
+		18CFF7631F092DA200438900 /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		18CFF7641F092DA200438900 /* MediaRecorderModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaRecorderModule.h; sourceTree = "<group>"; };
+		18CFF7651F092DA200438900 /* MediaRecorderModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaRecorderModule.m; sourceTree = "<group>"; };
+		18CFF7671F092DA200438900 /* ICGRulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGRulerView.h; sourceTree = "<group>"; };
+		18CFF7681F092DA200438900 /* ICGRulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGRulerView.m; sourceTree = "<group>"; };
+		18CFF7691F092DA200438900 /* ICGThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGThumbView.h; sourceTree = "<group>"; };
+		18CFF76A1F092DA200438900 /* ICGThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGThumbView.m; sourceTree = "<group>"; };
+		18CFF76B1F092DA200438900 /* ICGVideoTrimmer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmer.h; sourceTree = "<group>"; };
+		18CFF76C1F092DA200438900 /* ICGVideoTrimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGVideoTrimmerView.h; sourceTree = "<group>"; };
+		18CFF76D1F092DA200438900 /* ICGVideoTrimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGVideoTrimmerView.m; sourceTree = "<group>"; };
+		18CFF76E1F092DA200438900 /* VideoTrimmerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoTrimmerViewController.h; sourceTree = "<group>"; };
+		18CFF76F1F092DA200438900 /* VideoTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTrimmerViewController.m; sourceTree = "<group>"; };
+		18CFF7701F092DA200438900 /* VideoTrimmerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoTrimmerViewController.xib; sourceTree = "<group>"; };
 		1A8E89A7117A4B63A93E7C4F /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		20F5BB5C64064F20A659883B /* SanFrancisco.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SanFrancisco.ttf; path = "../node_modules/native-base/Fonts/SanFrancisco.ttf"; sourceTree = "<group>"; };
 		270A5312FCF34EAD8C6CC8ED /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
 		2967F5C5301D4E2DB9FF96F6 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
+		2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-infash.release.xcconfig"; path = "Pods/Target Support Files/Pods-infash/Pods-infash.release.xcconfig"; sourceTree = "<group>"; };
 		2E1927E96C424F7CB741E0E6 /* Rubik-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Bold.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Bold.ttf"; sourceTree = "<group>"; };
 		2F9FA01B10344E87A414777E /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		31D641E6016C4803B48B56F7 /* Rubik-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BoldItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -417,11 +482,14 @@
 		4F010170E6FB4AC494C7E102 /* SF-UI-Text-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-UI-Text-Regular.otf"; path = "../node_modules/native-base/Fonts/SF-UI-Text-Regular.otf"; sourceTree = "<group>"; };
 		500B07A619DA41C79E79CD12 /* Courier New.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Courier New.ttf"; path = "../node_modules/native-base/Fonts/Courier New.ttf"; sourceTree = "<group>"; };
 		5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gllu.release.xcconfig"; path = "Pods/Target Support Files/Pods-gllu/Pods-gllu.release.xcconfig"; sourceTree = "<group>"; };
+		5E570D495DA57E804D25780C /* libPods-infash.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-infash.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E936F3E326F44EA96579D63 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
 		62F3FFD4390546D3B254EF38 /* libReactNativeConfig.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeConfig.a; sourceTree = "<group>"; };
+		6368516A1F09666B00C4BC2F /* inFash.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = inFash.entitlements; sourceTree = "<group>"; };
 		63A00FAE1EB5E53200749D54 /* libQBImagePickerController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libQBImagePickerController.a; path = "../../../../../Library/Developer/Xcode/DerivedData/gllu-cllcymnvvwrifnemamkbgmfnvusp/Build/Products/Release-iphoneos/QBImagePickerController/libQBImagePickerController.a"; sourceTree = "<group>"; };
 		63A439211E544D88002CD308 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		65DD188C568749D9AC549134 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
+		692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-infash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-infash/Pods-infash.debug.xcconfig"; sourceTree = "<group>"; };
 		693C7585FBCC441F89EF29A0 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
 		69F86904EF6342629BB11BC5 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		6C9C1E7C9F814080B4281DBB /* Skia.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Skia.ttf; path = "../node_modules/native-base/Fonts/Skia.ttf"; sourceTree = "<group>"; };
@@ -509,7 +577,6 @@
 				D066434A1E00E5F500DCEFDE /* libFBSDKCoreKit.a in Frameworks */,
 				D066434B1E00E5F500DCEFDE /* libFBSDKLoginKit.a in Frameworks */,
 				D066434C1E00E5F500DCEFDE /* libFBSDKShareKit.a in Frameworks */,
-				D066434D1E00E5F500DCEFDE /* libPods-gllu.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -523,7 +590,6 @@
 				DB843DEF3EA144819620A980 /* libRCTFBSDK.a in Frameworks */,
 				1866995F8EB34FC1930BD50E /* libCodePush.a in Frameworks */,
 				9CB15071635240FE9A394C36 /* libRNVectorIcons.a in Frameworks */,
-				EC99D906B7C45F900C10F08F /* libPods-gllu.a in Frameworks */,
 				624A9EFA5E7E45039AD8BB01 /* libReactNativeConfig.a in Frameworks */,
 				4A13ECC6B442412D8DE5CD9A /* libBVLinearGradient.a in Frameworks */,
 				E70CBA5DF0B84BABBFE78BC6 /* libRNKeychain.a in Frameworks */,
@@ -532,6 +598,7 @@
 				E20A3F32836A46A29759179F /* libRNFlurryAnalytics.a in Frameworks */,
 				29D17A21A6F74E588B9135A0 /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				40D3A1310FFC4BFEB451C3F4 /* libRCTVideo.a in Frameworks */,
+				394F7272EED21714CAC71957 /* libPods-infash.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,6 +685,8 @@
 		13B07FAE1A68108700A75B9A /* gllu */ = {
 			isa = PBXGroup;
 			children = (
+				18CFF7431F092DA200438900 /* Bridging-Header.h */,
+				18CFF7441F092DA200438900 /* MediaRecorder */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -642,6 +711,86 @@
 				29F795DE1EC84C39002E98C8 /* libjschelpers.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		18CFF7441F092DA200438900 /* MediaRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7451F092DA200438900 /* Source */,
+			);
+			name = MediaRecorder;
+			path = gllu/MediaRecorder;
+			sourceTree = "<group>";
+		};
+		18CFF7451F092DA200438900 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7461F092DA200438900 /* ImageCropper */,
+				18CFF7571F092DA200438900 /* MediaRecorder */,
+				18CFF7641F092DA200438900 /* MediaRecorderModule.h */,
+				18CFF7651F092DA200438900 /* MediaRecorderModule.m */,
+				18CFF7661F092DA200438900 /* VideoTrimmer */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		18CFF7461F092DA200438900 /* ImageCropper */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7471F092DA200438900 /* CGGeometry+RSKImageCropper.h */,
+				18CFF7481F092DA200438900 /* CGGeometry+RSKImageCropper.m */,
+				18CFF7491F092DA200438900 /* RSKImageCropper.h */,
+				18CFF74A1F092DA200438900 /* RSKImageCropViewController+Protected.h */,
+				18CFF74B1F092DA200438900 /* RSKImageCropViewController.h */,
+				18CFF74C1F092DA200438900 /* RSKImageCropViewController.m */,
+				18CFF74D1F092DA200438900 /* RSKImageScrollView.h */,
+				18CFF74E1F092DA200438900 /* RSKImageScrollView.m */,
+				18CFF74F1F092DA200438900 /* RSKInternalUtility.h */,
+				18CFF7501F092DA200438900 /* RSKInternalUtility.m */,
+				18CFF7511F092DA200438900 /* RSKTouchView.h */,
+				18CFF7521F092DA200438900 /* RSKTouchView.m */,
+				18CFF7531F092DA200438900 /* UIApplication+RSKImageCropper.h */,
+				18CFF7541F092DA200438900 /* UIApplication+RSKImageCropper.m */,
+				18CFF7551F092DA200438900 /* UIImage+RSKImageCropper.h */,
+				18CFF7561F092DA200438900 /* UIImage+RSKImageCropper.m */,
+			);
+			path = ImageCropper;
+			sourceTree = "<group>";
+		};
+		18CFF7571F092DA200438900 /* MediaRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7581F092DA200438900 /* AVSessionRecorderViewController.swift */,
+				18CFF7591F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift */,
+				18CFF75A1F092DA200438900 /* MediaFileWriter.h */,
+				18CFF75B1F092DA200438900 /* MediaFileWriter.m */,
+				18CFF75C1F092DA200438900 /* MediaRecorderViewController.swift */,
+				18CFF75D1F092DA200438900 /* MediaRecordingActionsView.swift */,
+				18CFF75E1F092DA200438900 /* MediaRecordingActionsView.xib */,
+				18CFF75F1F092DA200438900 /* PreviewView.swift */,
+				18CFF7601F092DA200438900 /* RecordButtonDelegate.swift */,
+				18CFF7611F092DA200438900 /* RoundedRecordButton.swift */,
+				18CFF7621F092DA200438900 /* TempMediaFileWriter.swift */,
+				18CFF7631F092DA200438900 /* TimerView.swift */,
+			);
+			path = MediaRecorder;
+			sourceTree = "<group>";
+		};
+		18CFF7661F092DA200438900 /* VideoTrimmer */ = {
+			isa = PBXGroup;
+			children = (
+				18CFF7671F092DA200438900 /* ICGRulerView.h */,
+				18CFF7681F092DA200438900 /* ICGRulerView.m */,
+				18CFF7691F092DA200438900 /* ICGThumbView.h */,
+				18CFF76A1F092DA200438900 /* ICGThumbView.m */,
+				18CFF76B1F092DA200438900 /* ICGVideoTrimmer.h */,
+				18CFF76C1F092DA200438900 /* ICGVideoTrimmerView.h */,
+				18CFF76D1F092DA200438900 /* ICGVideoTrimmerView.m */,
+				18CFF76E1F092DA200438900 /* VideoTrimmerViewController.h */,
+				18CFF76F1F092DA200438900 /* VideoTrimmerViewController.m */,
+				18CFF7701F092DA200438900 /* VideoTrimmerViewController.xib */,
+			);
+			path = VideoTrimmer;
 			sourceTree = "<group>";
 		};
 		297B484A1ECDA17F003A8E58 /* Products */ = {
@@ -741,6 +890,7 @@
 				D06643481E00E5F500DCEFDE /* libPods-gllu.a */,
 				CCB86FE5FBC94155832F3959 /* libz.tbd */,
 				A0769BE554497F447F415744 /* libPods-gllu.a */,
+				5E570D495DA57E804D25780C /* libPods-infash.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -822,6 +972,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6368516A1F09666B00C4BC2F /* inFash.entitlements */,
 				13B07FAE1A68108700A75B9A /* gllu */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -846,6 +997,8 @@
 			children = (
 				AA7BD6E1D054348A56BE3EF9 /* Pods-gllu.debug.xcconfig */,
 				5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */,
+				692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */,
+				2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -917,9 +1070,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* gllu */ = {
+		13B07F861A680F5B00A75B9A /* infash */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "gllu" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "infash" */;
 			buildPhases = (
 				A5ACA84231C9E0E5E444B343 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -929,13 +1082,13 @@
 				4CB65DC2654D57FC3E535290 /* [CP] Embed Pods Frameworks */,
 				CBD018FCF1F379F04B7925D4 /* [CP] Copy Pods Resources */,
 				63A00D7D1EB5D1FC00749D54 /* Embed Frameworks */,
-				63EF4DEF1F03BE8B00B32743 /* ShellScript */,
+				63684E2F1F0918B200C4BC2F /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = gllu;
+			name = infash;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* inFash.app */;
 			productType = "com.apple.product-type.application";
@@ -950,12 +1103,18 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = R3FGALCQ4U;
+						DevelopmentTeam = KH536MNTS7;
+						LastSwiftMigration = 830;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "gllu" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "infash" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1062,7 +1221,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* gllu */,
+				13B07F861A680F5B00A75B9A /* infash */,
 			);
 		};
 /* End PBXProject section */
@@ -1365,6 +1524,7 @@
 				C54905B8E76E49A49BCA76CC /* Octicons.ttf in Resources */,
 				5B26F3762A9E4C5B8DF166DA /* Zocial.ttf in Resources */,
 				1161F1713C15460EB8699F21 /* Entypo.ttf in Resources */,
+				18CFF77D1F092DA200438900 /* MediaRecordingActionsView.xib in Resources */,
 				912CABBFA280458584350030 /* EvilIcons.ttf in Resources */,
 				137555E02CA74F4FBDFBFFB2 /* FontAwesome.ttf in Resources */,
 				F579DE2F94D44CDCB20C37BC /* Foundation.ttf in Resources */,
@@ -1380,6 +1540,7 @@
 				4E0065C7EA0E46A1A1A79527 /* Rubik-Light.ttf in Resources */,
 				118A3B1FB77340138FF37D0F /* Rubik-LightItalic.ttf in Resources */,
 				AAB261D21B094C8F9381B4AC /* Rubik-Medium.ttf in Resources */,
+				18CFF7881F092DA200438900 /* VideoTrimmerViewController.xib in Resources */,
 				6D2AC0A7EE61433E9C850A88 /* Rubik-MediumItalic.ttf in Resources */,
 				C9D2AEF522B1473AA10C946D /* Rubik-Regular.ttf in Resources */,
 				334694C9799148C88B9D67E4 /* SanFrancisco.ttf in Resources */,
@@ -1421,22 +1582,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-gllu/Pods-gllu-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-infash/Pods-infash-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		63EF4DEF1F03BE8B00B32743 /* ShellScript */ = {
+		63684E2F1F0918B200C4BC2F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\".Fabric/run\" 073fbe796531c6ef71a3c78ed34e237691bf78bf 5ba957e3155c3e2486b6761741131b6891d868551cdeb44bcce84ce3a42f2624";
-			showEnvVarsInLog = 0;
+			shellScript = "\"${PODS_ROOT}\"/Fabric/run 073fbe796531c6ef71a3c78ed34e237691bf78bf 5ba957e3155c3e2486b6761741131b6891d868551cdeb44bcce84ce3a42f2624";
 		};
 		A5ACA84231C9E0E5E444B343 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1465,7 +1625,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-gllu/Pods-gllu-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-infash/Pods-infash-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1475,8 +1635,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18CFF7731F092DA200438900 /* RSKImageScrollView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				18CFF7721F092DA200438900 /* RSKImageCropViewController.m in Sources */,
+				18CFF77C1F092DA200438900 /* MediaRecordingActionsView.swift in Sources */,
+				18CFF7801F092DA200438900 /* RoundedRecordButton.swift in Sources */,
+				18CFF7851F092DA200438900 /* ICGThumbView.m in Sources */,
+				18CFF7751F092DA200438900 /* RSKTouchView.m in Sources */,
+				18CFF77E1F092DA200438900 /* PreviewView.swift in Sources */,
+				18CFF7771F092DA200438900 /* UIImage+RSKImageCropper.m in Sources */,
+				18CFF77A1F092DA200438900 /* MediaFileWriter.m in Sources */,
+				18CFF7711F092DA200438900 /* CGGeometry+RSKImageCropper.m in Sources */,
+				18CFF7821F092DA200438900 /* TimerView.swift in Sources */,
+				18CFF7781F092DA200438900 /* AVSessionRecorderViewController.swift in Sources */,
+				18CFF7871F092DA200438900 /* VideoTrimmerViewController.m in Sources */,
+				18CFF7831F092DA200438900 /* MediaRecorderModule.m in Sources */,
+				18CFF7811F092DA200438900 /* TempMediaFileWriter.swift in Sources */,
+				18CFF7761F092DA200438900 /* UIApplication+RSKImageCropper.m in Sources */,
+				18CFF77F1F092DA200438900 /* RecordButtonDelegate.swift in Sources */,
+				18CFF7741F092DA200438900 /* RSKInternalUtility.m in Sources */,
+				18CFF7841F092DA200438900 /* ICGRulerView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				18CFF7791F092DA200438900 /* AVSessionRecorderViewControllerDelegate.swift in Sources */,
+				18CFF77B1F092DA200438900 /* MediaRecorderViewController.swift in Sources */,
+				18CFF7861F092DA200438900 /* ICGVideoTrimmerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1497,14 +1679,16 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA7BD6E1D054348A56BE3EF9 /* Pods-gllu.debug.xcconfig */;
+			baseConfigurationReference = 692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = inFash.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = R3FGALCQ4U;
+				DEVELOPMENT_TEAM = KH536MNTS7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1558,10 +1742,12 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.com.gllu1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infash;
 				PRODUCT_NAME = inFash;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/gllu/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1569,13 +1755,15 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5044B8F4ACD152F0D70BF795 /* Pods-gllu.release.xcconfig */;
+			baseConfigurationReference = 2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = inFash.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R3FGALCQ4U;
+				DEVELOPMENT_TEAM = KH536MNTS7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1629,8 +1817,11 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.com.gllu1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infash;
 				PRODUCT_NAME = inFash;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/gllu/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1638,6 +1829,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1653,7 +1845,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODEPUSH_KEY = "";
+				CODEPUSH_KEY = "duk2EJENNZ5-ltCTR-6e5JAULmlD0d6ce24a-7e8a-4403-814f-55b77347936e";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = R3FGALCQ4U;
@@ -1704,11 +1896,13 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				d = "";
 			};
 			name = Debug;
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B00FDF7525A0E5B7C9B8203 /* Pods-infash.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1724,7 +1918,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODEPUSH_KEY = UHzuQxAopbR9Kcp24FqRntAOkrfGVkPDU6cPz;
+				CODEPUSH_KEY = "yzhN0vVVdpapIF9J4KL3CAbpDudw0d6ce24a-7e8a-4403-814f-55b77347936e";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = R3FGALCQ4U;
@@ -1769,13 +1963,14 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				d = "";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "gllu" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "infash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1784,7 +1979,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "gllu" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "infash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
