@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
 
 export default class ButtonsBar extends BaseComponent {
   static propTypes = {
+    comments: React.PropTypes.number,
     likes: React.PropTypes.number,
     isLiked: React.PropTypes.bool,
     toggleLike: React.PropTypes.func,
@@ -110,11 +111,9 @@ export default class ButtonsBar extends BaseComponent {
 
   renderVideoItems() {
     return _.map(this.props.items, item => {
-      if(item.category && item.brand) {
-        return (
-            <VideoItemLine key={item.id} item={item} toggleItem={this.props.toggleItem}/>
-        )
-      }
+      return item.category && item.brand ? (
+        <VideoItemLine key={item.id} item={item} toggleItem={this.props.toggleItem}/>
+      ) : null;
     });
   }
 
@@ -125,7 +124,7 @@ export default class ButtonsBar extends BaseComponent {
         { this.props.lookType === 'video' ? this.renderVideoItems() : null }
         <LikeButton isLiked={this.props.isLiked} likes={this.props.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />
         { this._renderInformationButton(this.props.hasDescription) }
-        <CommentsButton isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
+        <CommentsButton count={this.props.comments} isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
         <MenuButton onPress={() => this._onMenuClicked()}/>
       </View>
     </View>

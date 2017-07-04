@@ -83,7 +83,7 @@ export function getUserLooksData(data) {
 }
 
 export function reportAbuse(look_id) {
-  const data = { look_id }
+  const data = { look_id };
   return (dispatch) => {
     return dispatch(rest.actions.report_abuse.post({} ,{ body: JSON.stringify(data) } , (err, data) => {
       if (!err && data) {
