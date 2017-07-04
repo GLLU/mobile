@@ -9,6 +9,7 @@ const cacheComponent=uriProvider=>WrappedComponent=>{
       super(props);
       this.cacheOrReturnCachedPath=this.cacheOrReturnCachedPath.bind(this);
       this.onCached=this.onCached.bind(this);
+      this.forceCache=this.forceCache.bind(this);
       this.state={
         isCaching:true,
         localUri:''
@@ -31,9 +32,15 @@ const cacheComponent=uriProvider=>WrappedComponent=>{
       this._isMounted=false;
     }
 
-    cacheOrReturnCachedPath(uri){
+    forceCache(){
+      this.setState({isCaching: true, localUri: ''},() => {
+        this.cacheOrReturnCachedPath(uriProvider(this.props),true);
+      });
+    }
+
+    cacheOrReturnCachedPath(uri,force=false){
       Cache.get(uri).then(cachedPath => {
-        if (cachedPath) {
+        if (!force && cachedPath) {
           this.onCached(cachedPath);
         }
         else {
@@ -61,7 +68,7 @@ const cacheComponent=uriProvider=>WrappedComponent=>{
     }
 
     render() {
-      return <WrappedComponent {...this.props} isCaching={this.state.isCaching} localUri={this.state.localUri}/>
+      return <WrappedComponent {...this.props} isCaching={this.state.isCaching} localUri={this.state.localUri} forceCache={this.forceCache}/>
     }
   }
 };
