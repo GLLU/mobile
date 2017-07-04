@@ -173,7 +173,7 @@ extension MediaRecorderViewController: UIImagePickerControllerDelegate {
             
         else if (mediaType  == (kUTTypeMovie as String)){
             self.dismiss(animated: true) {
-                let vc = VideoTrimmerViewController(assetUrl: info[UIImagePickerControllerMediaURL] as! URL, trimmer: self.videoLengthCropSufficient())!
+                let vc = VideoTrimmerViewController(assetUrl: info[UIImagePickerControllerMediaURL] as! URL, trimmer: true)!
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
