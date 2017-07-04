@@ -39,6 +39,7 @@ class VideoWithCaching extends Component {
       repeat: true,
       isPlaying:false
     }
+    this.forceCacheAttempts=0;
   }
 
   componentWillReceiveProps(nextProps){
@@ -64,7 +65,10 @@ class VideoWithCaching extends Component {
 
   onError(err){
     console.log('error on video',err);
-    this.props.forceCache();
+    if(this.forceCacheAttempts<5){
+      this.forceCacheAttempts++;
+      this.props.forceCache();
+    }
   }
 
   renderLoader = () => {
