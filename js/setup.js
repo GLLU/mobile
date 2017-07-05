@@ -1,11 +1,14 @@
 
 import React, { Component } from 'react';
+import { Dimensions, Image } from 'react-native';
 import { Provider } from 'react-redux';
 import {whyDidYouUpdate} from 'why-did-you-update'
 import App from './App';
-import SpinnerSwitch from './components/loaders/SpinnerSwitch'
+import Spinner from './components/loaders/Spinner'
 import configureStore from './configureStore';
 import { disableConsole } from "./utils/DevUtils";
+const background = require('../images/backgrounds/iphone-splash_screen.png');
+const deviceWidth = Dimensions.get('window').width;
 
 //whyDidYouUpdate(React)
 
@@ -34,7 +37,11 @@ function setup():React.Component {
 
     render() {
       if (this.state.isLoading) {
-        return <SpinnerSwitch/>;
+        return (
+          <Image source={background} resizeMode={'stretch'} style={{flex: 1, width: deviceWidth, justifyContent: 'center', alignItems: 'center'}} >
+            <Spinner/>
+          </Image>
+        );
       }
       return (
         <Provider store={this.state.store}>
