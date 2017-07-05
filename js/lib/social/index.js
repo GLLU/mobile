@@ -1,25 +1,23 @@
 import nativeShare from './nativeShare'
 import facebookShare from './facebookShare'
 import Config from 'react-native-config';
-import { isEmpty } from "lodash";
 
 class SocialShare {
 
-  generateShareMessage(message){
-    const text = isEmpty(message)? 'Check out inFash - Fashion that fits':message;
+  generateShareMessage(text = 'Check out inFash - Fashion that fits', url = Config.HOME_PAGE) {
     return {
       text,
-      url: Config.HOME_PAGE
+      url
     }
   }
 
-  nativeShare(shareData){
-    const data= isEmpty(shareData)? this.generateShareMessage():shareData;
+  nativeShare(shareData) {
+    const data = shareData || this.generateShareMessage();
     return nativeShare(data);
   }
 
-  facebookShare(shareData){
-    const data= isEmpty(shareData)? this.generateShareMessage():shareData;
+  facebookShare(shareData) {
+    const data = shareData || this.generateShareMessage();
     return facebookShare(data);
   }
 

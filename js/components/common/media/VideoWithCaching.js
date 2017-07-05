@@ -34,10 +34,12 @@ class VideoWithCaching extends Component {
   constructor(props) {
     super(props);
     this.onVideoStartsPlaying=this.onVideoStartsPlaying.bind(this);
+    this.onError=this.onError.bind(this);
     this.state = {
       repeat: true,
       isPlaying:false
     }
+    this.forceCacheAttempts=0;
   }
 
   componentWillReceiveProps(nextProps){
@@ -46,6 +48,9 @@ class VideoWithCaching extends Component {
         this._root.seek(0)
       }
       this.setState({repeat:nextProps.currentAppState==='active'})
+    }
+    if(nextProps.isCaching&&nextProps.isCaching!==this.props.isCaching){
+      this.setState({isPlaying:false});
     }
   }
 
@@ -57,6 +62,14 @@ class VideoWithCaching extends Component {
       }
 
   };
+
+  onError(err){
+    console.log('error on video',err);
+    if(this.forceCacheAttempts<5){
+      this.forceCacheAttempts++;
+      this.props.forceCache();
+    }
+  }
 
   renderLoader = () => {
     if (this.state.isPlaying) {
@@ -80,7 +93,7 @@ class VideoWithCaching extends Component {
     const {source, localUri} = this.props;
     const formattedSource = VideoWithCaching.formatSource(localUri, source);
     if (!this.props.isCaching && this.state.repeat && this.props.isOnScreen) {
-      return <Video {...this.props} source={formattedSource} onProgress={this.onVideoStartsPlaying} onError={(err) => console.log('error on video',err)}
+      return <Video {...this.props} source={formattedSource} onProgress={this.onVideoStartsPlaying} onError={this.onError}
                     ref={component => this._root = component}/>
     }
     return null;

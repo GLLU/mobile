@@ -12,7 +12,6 @@ class FlurryAnalytics {
   constructor() {
     RNFlurryAnalytics.setAppVersion(Config.APP_VERSION);
     RNFlurryAnalytics.setSessionContinueSeconds(10);
-    RNFlurryAnalytics.setEventLoggingEnabled(true);
     if (DEV) {
       RNFlurryAnalytics.setCrashReportingEnabled(false);
       RNFlurryAnalytics.setDebugLogEnabled(true);

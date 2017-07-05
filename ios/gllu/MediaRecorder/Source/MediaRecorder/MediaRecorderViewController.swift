@@ -255,8 +255,7 @@ extension MediaRecorderViewController: RSKImageCropViewControllerDelegate{
     }
 
     func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
-        
-        let url = TempMediaFileWriter.saveImageToTempDirectory(croppedImage, withName: "tmpImg.png")
+        let url = TempMediaFileWriter.saveImageToTempDirectory(croppedImage, withName: "tmpImg" + String(Date().timeIntervalSince1970 * 1000) + ".png")
         NotificationCenter.default.post(name: Notification.Name.init(rawValue: MediaRecorderCompleted), object: self, userInfo: ["url": url ?? ""])
     }
 }

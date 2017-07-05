@@ -74,7 +74,7 @@ class menuModal extends BaseComponent {
 
   _reportAbuse() {
     this.setState({abuseReported: true})
-    this.props.reportAbuse()
+    this.props.reportAbuse(this.props.look_id)
   }
 
   _closeMenu() {
