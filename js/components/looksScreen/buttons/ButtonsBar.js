@@ -123,8 +123,8 @@ export default class ButtonsBar extends BaseComponent {
       <View style={[styles.rightContainer, styles[this.props.direction]]} >
         { this.props.lookType === 'video' ? this.renderVideoItems() : null }
         <LikeButton isLiked={this.props.isLiked} likes={this.props.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />
-        { this._renderInformationButton(this.props.hasDescription) }
         <CommentsButton count={this.props.comments} isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
+        { this._renderInformationButton(this.props.hasDescription) }
         <MenuButton onPress={() => this._onMenuClicked()}/>
       </View>
     </View>
