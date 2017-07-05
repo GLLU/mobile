@@ -73,6 +73,7 @@ class EditProfile extends Component {
     this.props.logEvent('EditProfileScreen', { name: 'Open Camera click' });
     let image = {};
     image.path = await openCamera(false);
+    image.path = image.path.replace('file://', '')
     image.type = 'multipart/form-data'
     const data = {
       image,

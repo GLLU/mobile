@@ -172,7 +172,6 @@ class MediaContainer extends PureComponent {
   }
 
   getUsernameStringFeedView(username) {
-    console.log('username.length',username.length)
     if(username.length > 12){
       return username.substring(0,11) + '..'
     } else {
