@@ -54,7 +54,7 @@ class ProfileAvatar extends Component {
 
   renderImage(){
     return <TouchableOpacity transparent onPress={() => this.props.changeUserAvatar()} style={this.props.style||styles.editProfileAvatarImg}>
-      <Image source={{uri: this.props.avatarUrl}} cache={false} style={[styles.avatarImg, (Platform.OS === 'ios') ? styles.editAvatarImage : null]} borderRadius={50} >
+      <Image source={{uri: this.props.avatarUrl}} style={[styles.avatarImg, (Platform.OS === 'ios') ? styles.editAvatarImage : null]} borderRadius={50} >
         { this.props.editable ?
           <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
             <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
