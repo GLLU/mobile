@@ -32,8 +32,8 @@
                                                       moduleName:@"gllu"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
-  UIImageView *launchView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Image"]];
-  rootView.loadingView = launchView;
+UIView* loadingView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Image"]];
+rootView.loadingView = loadingView;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;

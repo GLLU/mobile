@@ -81,7 +81,6 @@ class NavigationBarView extends BaseComponent {
   }
 
   async openCamera() {
-    console.log('123')
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
     let file = {};
     file.path = await openCamera(true);

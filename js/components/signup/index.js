@@ -165,6 +165,7 @@ class SignUpPage extends Component {
     this.props.logEvent('SignUpScreen', { name: 'Open Camera click' });
     let image = {};
     image.path = await openCamera(false);
+    image.path = image.path.replace('file://', '')
     image.type = 'multipart/form-data'
     console.log('image',image)
     this.setState({avatar: image, avatarIcon: 'check'})

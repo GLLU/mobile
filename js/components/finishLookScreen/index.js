@@ -85,11 +85,11 @@ class FinishLookPage extends Component {
     file.path = await openCamera(true);
     if(file.path.search(".mp4") > -1) {
       file.localPath = file.path
-      file.path = file.path.replace('file://', '')
       file.type = 'look[video]'
     } else {
       file.type = 'look[image]'
     }
+    file.path = file.path.replace('file://', '')
     this.goToAddNewItem(file);
   }
 
