@@ -17,6 +17,7 @@ export default class BottomHalfScreenModal extends Component {
   static propTypes = {
     description: React.PropTypes.string,
     style: React.PropTypes.any,
+    containerStyle: React.PropTypes.any,
     isOpen: React.PropTypes.bool,
     onRequestClose: React.PropTypes.func
   };
@@ -38,8 +39,8 @@ export default class BottomHalfScreenModal extends Component {
         animationType='slide'
         transparent={true}
         onRequestClose={this._onRequestClose}>
-        <KeyboardAvoidingView behavior='padding' style={[{height: height}, this.props.style, {flexDirection: 'column-reverse'}]}>
-          <View style={{backgroundColor: 'white', flex: 1}}>
+        <KeyboardAvoidingView behavior='padding' style={[{height: height}, this.props.containerStyle, {flexDirection: 'column-reverse'}]}>
+          <View style={[{backgroundColor: 'white', flex: 1},this.props.style]}>
             {this.props.children}
           </View>
           <TouchableWithoutFeedback onPress={this._onRequestClose}>
