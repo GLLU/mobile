@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -120,6 +119,7 @@
 		F50F403ECBC14B978BFB3887 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 745F988C3EFD45C7BF8E0448 /* MaterialCommunityIcons.ttf */; };
 		F579DE2F94D44CDCB20C37BC /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B5454D4AA6E417EB8F6C23C /* Foundation.ttf */; };
 		FF6D81E1B9D54CB7B21B39BD /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F49AC9E1EAB74B129ECDC20E /* Roboto.ttf */; };
+		17DDD1897557429E8793103A /* libSMXCrashlytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B94AAD195D7B412EBE507A90 /* libSMXCrashlytics.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -560,6 +560,8 @@
 		F9EAE8D736B84131A0BE302D /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		FB87A65A8C67419282AE6ED5 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		FD6E163DAD9E4D3487A63A01 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
+		4514476142504992896A2D23 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; name = "SMXCrashlytics.xcodeproj"; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		B94AAD195D7B412EBE507A90 /* libSMXCrashlytics.a */ = {isa = PBXFileReference; name = "libSMXCrashlytics.a"; path = "libSMXCrashlytics.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -599,6 +601,7 @@
 				29D17A21A6F74E588B9135A0 /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				40D3A1310FFC4BFEB451C3F4 /* libRCTVideo.a in Frameworks */,
 				394F7272EED21714CAC71957 /* libPods-infash.a in Frameworks */,
+				17DDD1897557429E8793103A /* libSMXCrashlytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -956,6 +959,7 @@
 				889304B2E54045B5B7BD1AD9 /* RCTGoogleAnalyticsBridge.xcodeproj */,
 				F6BF38B1AB5245FF9D1D99E1 /* imageCropPicker.xcodeproj */,
 				2967F5C5301D4E2DB9FF96F6 /* RCTVideo.xcodeproj */,
+				4514476142504992896A2D23 /* SMXCrashlytics.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1718,6 +1722,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/Crashlytics",
+					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 				);
 				INFOPLIST_FILE = gllu/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
@@ -1736,6 +1741,7 @@
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
+					"\"$(SRCROOT)/inFash\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1793,6 +1799,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/Crashlytics",
+					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 				);
 				INFOPLIST_FILE = gllu/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
@@ -1811,6 +1818,7 @@
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
+					"\"$(SRCROOT)/inFash\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
