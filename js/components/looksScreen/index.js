@@ -113,11 +113,11 @@ class LooksScreen extends Component {
     }
   }
 
-  _toggleLike(isLiked) {
-    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
+  _toggleLike(shouldLiked) {
+    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${shouldLiked}`});
     const { flatLook } = this.state;
     const {id} = flatLook;
-    if (!isLiked) {
+    if (shouldLiked) {
       this.props.likeUpdate(id);
     } else {
       this.props.unlikeUpdate(id);
