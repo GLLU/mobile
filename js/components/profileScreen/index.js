@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks, getUserBalance } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, getUserLooks, showParisBottomMessage, likeUpdate,unlikeUpdate, loadMoreUserLooks, getUserBalance } from '../../actions';
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import { editNewLook } from "../../actions/uploadLook";
@@ -328,7 +328,7 @@ class ProfileScreen extends Component {
                 editNewLook = {this.props.editNewLook}
                 addNewLook = {this.props.addNewLook}
                 likeUpdate = {this.props.likeUpdate}
-                unLikeUpdate = {this.props.unLikeUpdate}
+                unlikeUpdate = {this.props.unlikeUpdate}
                 meta={this.props.meta}
                 isLoading={this.state.isLoading}
               />
@@ -355,7 +355,7 @@ function bindAction(dispatch) {
     loadMoreUserLooks: (looksCall) => dispatch(loadMoreUserLooks(looksCall)),
     showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
-    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    unlikeUpdate: (id) => dispatch(unlikeUpdate(id)),
   };
 }
 

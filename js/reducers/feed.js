@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Image } from 'react-native';
 import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUEUE, CLEAR_FEED_DATA } from '../actions/feed';
-import { SET_LOOK_LIKE_STATE } from '../actions/likes';
+import { LOOK_LIKE, LOOK_UNLIKE, SET_LOOK_LIKE_STATE } from '../actions/likes';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
 import * as feedLookMapper from "../mappers/feedLookMapper";
 import { REHYDRATE } from "redux-persist/constants";
@@ -26,8 +26,8 @@ const initialState = {
 
 // Action Handlers
 const ACTION_HANDLERS = {
-  [SET_LOOK_LIKE_STATE]: (state, action) => {
-    const {id, likes, liked} = action.payload;
+  [LOOK_UNLIKE]: (state, action) => {
+    const {id} = action.payload;
     return {
       ...state,
       flatLooksData: _.map(state.flatLooksData||[],look => {
@@ -37,8 +37,26 @@ const ACTION_HANDLERS = {
         }
         else {
           const copy = _.cloneDeep(look);
-          copy.liked = liked;
-          copy.likes = likes;
+          copy.liked = false;
+          copy.likes--;
+          return copy
+        }
+      })
+    }
+  },
+  [LOOK_LIKE]: (state, action) => {
+    const {id} = action.payload;
+    return {
+      ...state,
+      flatLooksData: _.map(state.flatLooksData||[],look => {
+
+        if (look.id !== id) {
+          return look;
+        }
+        else {
+          const copy = _.cloneDeep(look);
+          copy.liked = true;
+          copy.likes++;
           return copy
         }
       })

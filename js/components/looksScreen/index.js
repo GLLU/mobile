@@ -12,7 +12,7 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import { likeUpdate, unLikeUpdate,loadMore,getLookLikes } from '../../actions';
+import { likeUpdate, unlikeUpdate,loadMore,getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
@@ -44,7 +44,7 @@ class LooksScreen extends Component {
     query: React.PropTypes.object,
     navigateTo: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
-    unLikeUpdate: React.PropTypes.func,
+    unlikeUpdate: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
     loadMore: React.PropTypes.func,
   }
@@ -113,16 +113,14 @@ class LooksScreen extends Component {
     }
   }
 
-  _toggleLike(isLiked, likes) {
+  _toggleLike(isLiked) {
     this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
-    const { flatLook } = this.state
-    if (isLiked) {
-      let data = {id: flatLook.id, likes: likes, liked: true}
-      this.props.likeUpdate(data);
+    const { flatLook } = this.state;
+    const {id} = flatLook;
+    if (!isLiked) {
+      this.props.likeUpdate(id);
     } else {
-
-      let data = {id: flatLook.id, likes: likes, liked: false}
-      this.props.unLikeUpdate(data);
+      this.props.unlikeUpdate(id);
     }
   }
 
@@ -409,7 +407,7 @@ function bindAction(dispatch) {
   return {
     editNewLook: (id) => dispatch(editNewLook(id)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
-    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    unlikeUpdate: (id) => dispatch(unlikeUpdate(id)),
     getLookLikes: (id) => dispatch(getLookLikes(id)),
     reportAbuse: (lookId) => dispatch(reportAbuse(lookId)),
     loadMore: () => dispatch(loadMore()),

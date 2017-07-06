@@ -17,14 +17,9 @@ import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import _ from 'lodash';
-import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
-import MediaBorderPatch from '../common/MediaBorderPatch'
+import { showBodyTypeModal, likeUpdate, unlikeUpdate, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import { formatInvitationMessage } from "../../lib/messages/index";
-import LikeView from './items/LikeView';
-import CommentsView from './items/CommentsView';
-import VolumeButton from '../common/VolumeButton';
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
 
@@ -38,7 +33,7 @@ class TabContent extends BaseComponent {
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
-    unLikeUpdate: React.PropTypes.func,
+    unlikeUpdate: React.PropTypes.func,
     getFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
@@ -184,7 +179,7 @@ class TabContent extends BaseComponent {
           <MediaContainer look={look}
                           currScroll={this.state.currentScrollPosition}
                           likeUpdate={this.props.likeUpdate}
-                          unLikeUpdate={this.props.likeUpdate}
+                          unlikeUpdate={this.props.unlikeUpdate}
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
                           key={look.id}
@@ -342,7 +337,7 @@ function bindActions(dispatch) {
   return {
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
-    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    unlikeUpdate: (id) => dispatch(unlikeUpdate(id)),
     getFeed: (query) => dispatch(getFeed(query)),
     loadMore: () => dispatch(loadMore()),
     clearBodyModal: () => dispatch(clearBodyModal()),

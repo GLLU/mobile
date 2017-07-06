@@ -11,10 +11,6 @@ export default class LikeButton extends Component {
     super(props);
     this._onNumberPress = this._onNumberPress.bind(this);
     this._onIconPress = this._onIconPress.bind(this);
-    this.state = {
-      liked: props.liked,
-      likes: props.likes
-    }
   }
 
   static propTypes = {
@@ -28,17 +24,8 @@ export default class LikeButton extends Component {
   };
 
   _onIconPress() {
-    const {likes, liked} = this.state;
-    this.setState({liked: !liked, likes: liked ? likes - 1 : likes + 1}, () => {
-      const {liked, likes} = this.state;
-      this.props.onIconPress(liked, likes);
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.likes !== this.state.likes) {
-      this.setState({liked: nextProps.liked, likes: nextProps.likes})
-    }
+    const {liked} = this.props;
+    this.props.onIconPress(!liked);
   }
 
   _onNumberPress() {
@@ -51,9 +38,9 @@ export default class LikeButton extends Component {
     return (
       <FooterButtonWithCounter
         {...this.props}
-        count={this.state.likes}
+        count={this.props.likes}
         icon={{active: likeClickedImage, inactive: likeImage}}
-        isActive={this.state.liked}
+        isActive={this.props.liked}
         onIconPress={this._onIconPress}
         onNumberPress={this._onNumberPress}/>
     );

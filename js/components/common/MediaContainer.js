@@ -30,7 +30,7 @@ class MediaContainer extends PureComponent {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
-    unLikeUpdate: React.PropTypes.func,
+    unlikeUpdate: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     logEvent: React.PropTypes.func,
     sendParisMessage: React.PropTypes.func,
@@ -69,7 +69,7 @@ class MediaContainer extends PureComponent {
     const item = this.props.look;
     this.props.logEvent(this.props.fromScreen, {name: 'Image click'});
     if(this.props.fromScreen === 'profileScreen') {
-      console.log('happenned from profile')
+      console.log('happenned from profile');
       item.singleItem = true
     }
     let that = this
@@ -79,15 +79,14 @@ class MediaContainer extends PureComponent {
   toggleLikeAction() {
     this.props.logEvent('Feedscreen', {name: 'Like Image click'});
     const { look } = this.props;
-    console.log(`is liked`,look.id,look.liked);
-    if (!look.liked) {
-      let data = {id: look.id, likes: look.likes + 1, liked: true};
+    const {id,liked} = look;
+    if (liked) {
+      this.props.unlikeUpdate(id);
+    }
+    else {
       let msg = likeSentences[Math.floor(Math.random()*likeSentences.length)];
       this.props.sendParisMessage(msg);
-      this.props.likeUpdate(data);
-    } else {
-      let data = {id: look.id, likes: look.likes - 1, liked: false};
-      this.props.unLikeUpdate(data);
+      this.props.likeUpdate(id);
     }
 
   }
@@ -204,7 +203,7 @@ class MediaContainer extends PureComponent {
   }
 
   render() {
-    const { look } = this.props
+    const { look } = this.props;
     return(
       <View onLayout={(e) => this.setLookPosition(e)} style={{margin: 3}}>
         <TouchableOpacity onPress={this._handleItemPress}>

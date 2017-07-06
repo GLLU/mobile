@@ -2,25 +2,28 @@ import rest from '../api/rest';
 
 // Actions
 export const SET_LOOK_LIKE_STATE = 'SET_LOOK_LIKE_STATE';
-export const GET_LOOK_LIKES = 'GET_LOOK_LIKES';
+export const LOOK_UNLIKE = 'LOOK_UNLIKE';
+export const LOOK_LIKE = 'LOOK_LIKE';
 
-export function likeUpdate(data) {
+export function likeUpdate(id) {
+  const data={id};
   return (dispatch) => {
     dispatch({
-      type: SET_LOOK_LIKE_STATE,
+      type: LOOK_LIKE,
       payload: data
     });
-    dispatch(like(data.id));
+    dispatch(like(id));
   };
 }
 
-export function unLikeUpdate(data) {
+export function unlikeUpdate(id) {
+  const data={id};
   return (dispatch) => {
     dispatch({
-      type: SET_LOOK_LIKE_STATE,
+      type: LOOK_UNLIKE,
       payload: data
     });
-    dispatch(unlike(data.id));
+    dispatch(unlike(id));
   };
 }
 
