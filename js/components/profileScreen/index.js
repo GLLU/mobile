@@ -15,8 +15,6 @@ import Spinner from '../loaders/Spinner';
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toSettings = require('../../../images/icons/settings.png');
 
-
-
 class ProfileScreen extends Component {
   static propTypes = {
     userData: React.PropTypes.object,
