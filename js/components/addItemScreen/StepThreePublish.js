@@ -1,13 +1,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text } from 'react-native';
+import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text, Platform } from 'react-native';
 import { Grid, Row, Col } from 'native-base';
 import TagInput from './forms/TagInput';
 import BrandUrlInput from './forms/BrandUrlInput';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import BaseComponent from '../common/base/BaseComponent';
-
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 import {
     createLookItem,
     addDescription,
@@ -23,7 +23,7 @@ import FontSizeCalculator from './../../calculators/FontSize';
 import Utils from '../../utils';
 import WantMoreMony from '../../../images/upload/want-more-money.png';
 const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
+const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
 
 const styles = StyleSheet.create({
