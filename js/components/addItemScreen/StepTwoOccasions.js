@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { View, Text,StyleSheet, Platform, Dimensions, TouchableWithoutFeedback, Animated } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
-  loadOccasionTags,
   toggleOccasionTag
 } from '../../actions';
 import OccasionsStrip from '../common/OccasionsStrip';
@@ -107,12 +106,6 @@ class StepTwoOccasions extends BaseComponent {
     }
   }
 
-  componentWillMount() {
-    this.props.loadOccasionTags().catch(err => {
-      console.log('unable to load occasionTags');
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
     const currItem = _.find(this.props.items, listItem => listItem.id === this.props.item.id);
     const selectedCategory = nextProps.item.category ? nextProps.item.category : false
@@ -192,7 +185,6 @@ class StepTwoOccasions extends BaseComponent {
 
 function bindActions(dispatch) {
   return {
-    loadOccasionTags: () => dispatch(loadOccasionTags()),
     toggleOccasionTag: (tag, selected, itemId) => dispatch(toggleOccasionTag(tag, selected, itemId)),
   };
 }

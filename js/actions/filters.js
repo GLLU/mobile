@@ -57,14 +57,24 @@ export function loadBrands(term) {
   };
 }
 
-export function loadOccasionTags() {
+export function loadOccasionTags(gender) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.occasion_tags({}, (err, data) => {
+      const query= {
+        gender,
+        page: {
+          size: 200,
+          number: 1
+        }
+      };
+      dispatch(rest.actions.occasion_tags(query, (err, data) => {
         if (!err && data) {
           resolve(dispatch({
             type: SET_OCCASION_TAGS,
-            payload: data
+            payload: {
+              tags:data.tags,
+              meta:data.meta
+            }
           }));
         } else {
           reject(err);
