@@ -50,7 +50,7 @@ class ItemDataLine extends Component {
                   <Image source={bagItImage}
                          style={[styles.footerButtonIcon,{width: 20, height: 20, margin: 2.5, marginLeft: 10}]}/>
               </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
           </Animated.View>
         </TouchableHighlight>
       );
