@@ -186,7 +186,7 @@ class BottomLookContainer extends BaseComponent {
                 hasDescription={!_.isEmpty(this.props.look.description)}
                 isDescriptionActive={this.state.isDescriptionActive}
                 toggleDescription={this._toggleDescription}
-                isLiked={this.props.look.is_liked}
+                liked={this.props.look.liked}
                 likes={this.props.look.likes}
                 comments={this.props.look.comments}
                 toggleLike={this.props.toggleLike}
