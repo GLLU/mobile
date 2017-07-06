@@ -12,7 +12,7 @@ export default class LikeButton extends Component {
     this._onNumberPress = this._onNumberPress.bind(this);
     this._onIconPress = this._onIconPress.bind(this);
     this.state = {
-      isLiked: props.isLiked,
+      liked: props.liked,
       likes: props.likes
     }
   }
@@ -28,11 +28,17 @@ export default class LikeButton extends Component {
   };
 
   _onIconPress() {
-    const {likes, isLiked} = this.state;
-    this.setState({isLiked: !isLiked, likes: isLiked ? likes - 1 : likes + 1}, () => {
-      const {isLiked, likes} = this.state;
-      this.props.onIconPress(isLiked, likes);
+    const {likes, liked} = this.state;
+    this.setState({liked: !liked, likes: liked ? likes - 1 : likes + 1}, () => {
+      const {liked, likes} = this.state;
+      this.props.onIconPress(liked, likes);
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.likes !== this.state.likes) {
+      this.setState({liked: nextProps.liked, likes: nextProps.likes})
+    }
   }
 
   _onNumberPress() {
@@ -47,7 +53,7 @@ export default class LikeButton extends Component {
         {...this.props}
         count={this.state.likes}
         icon={{active: likeClickedImage, inactive: likeImage}}
-        isActive={this.state.isLiked}
+        isActive={this.state.liked}
         onIconPress={this._onIconPress}
         onNumberPress={this._onNumberPress}/>
     );

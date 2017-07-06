@@ -66,7 +66,7 @@ class MediaContainer extends PureComponent {
   }
 
   _handleItemPress() {
-    const item = this.props.look
+    const item = this.props.look;
     this.props.logEvent(this.props.fromScreen, {name: 'Image click'});
     if(this.props.fromScreen === 'profileScreen') {
       console.log('happenned from profile')
@@ -76,16 +76,17 @@ class MediaContainer extends PureComponent {
     setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
   }
 
-  toggleLikeAction(isLiked) {
+  toggleLikeAction() {
     this.props.logEvent('Feedscreen', {name: 'Like Image click'});
-    const { look } = this.props
-    if (isLiked) {
-      let data = {id: look.id, likes: look.likes + 1, liked: true}
+    const { look } = this.props;
+    console.log(`is liked`,look.id,look.liked);
+    if (!look.liked) {
+      let data = {id: look.id, likes: look.likes + 1, liked: true};
       let msg = likeSentences[Math.floor(Math.random()*likeSentences.length)];
       this.props.sendParisMessage(msg);
       this.props.likeUpdate(data);
     } else {
-      let data = {id: look.id, likes: look.likes - 1, liked: false}
+      let data = {id: look.id, likes: look.likes - 1, liked: false};
       this.props.unLikeUpdate(data);
     }
 
