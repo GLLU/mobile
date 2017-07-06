@@ -73,8 +73,8 @@ export default class ButtonsBar extends BaseComponent {
     this._onInformationClicked = this._onInformationClicked.bind(this);
     this._onBubbleClicked = this._onBubbleClicked.bind(this);
     this.handleTextLayout = this.handleTextLayout.bind(this);
+    this._onMenuClicked = this._onMenuClicked.bind(this);
     this.state = {
-      liked: this.props.liked,
       itemY: 0,
       itemLineOpen: false
     }
@@ -114,16 +114,20 @@ export default class ButtonsBar extends BaseComponent {
   }
 
   render() {
+    const{direction}=this.props;
+    const{lookType,  hasDescription}=this.props;
+    const{comments, isCommentsActive}=this.props;
+    const {likes, liked, toggleLike, onNumberPress} = this.props;
     return (
-    <View style={[styles.container, styles['row']]}>
-      <View style={[styles.rightContainer, styles[this.props.direction]]} >
-        { this.props.lookType === 'video' ? this.renderVideoItems() : null }
-        <LikeButton liked={this.props.liked} likes={this.props.likes} onIconPress={this.props.toggleLike} onNumberPress={this.props.onNumberPress} />
-        <CommentsButton count={this.props.comments} isActive={this.props.isCommentsActive} onPress={this._onBubbleClicked}/>
-        { this._renderInformationButton(this.props.hasDescription) }
-        <MenuButton onPress={() => this._onMenuClicked()}/>
+      <View style={[styles.container, styles['row']]}>
+        <View style={[styles.rightContainer, styles[direction]]}>
+          { lookType === 'video' ? this.renderVideoItems() : null }
+          <LikeButton liked={liked} likes={likes} onIconPress={toggleLike} onNumberPress={onNumberPress}/>
+          <CommentsButton count={comments} isActive={isCommentsActive} onPress={this._onBubbleClicked}/>
+          { this._renderInformationButton(hasDescription) }
+          <MenuButton onPress={() => this._onMenuClicked()}/>
+        </View>
       </View>
-    </View>
     )
   }
 }
