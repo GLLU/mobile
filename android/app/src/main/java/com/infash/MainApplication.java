@@ -11,6 +11,7 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.smixx.fabric.FabricPackage;
 import com.infash.customPackages.CameraReactPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
@@ -61,6 +62,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new RNMixpanel(),
                             new FabricPackage(),
                             new CameraReactPackage(),
                             new GoogleAnalyticsBridgePackage(),
