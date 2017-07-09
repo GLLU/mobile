@@ -18,7 +18,7 @@ import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import { showBodyTypeModal, likeUpdate, unlikeUpdate, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
+import { showBodyTypeModal, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import { formatInvitationMessage } from "../../lib/messages/index";
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
@@ -32,8 +32,6 @@ class TabContent extends BaseComponent {
     reloading: React.PropTypes.bool,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
-    likeUpdate: React.PropTypes.func,
-    unlikeUpdate: React.PropTypes.func,
     getFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
@@ -178,8 +176,6 @@ class TabContent extends BaseComponent {
       return (
           <MediaContainer look={look}
                           currScroll={this.state.currentScrollPosition}
-                          likeUpdate={this.props.likeUpdate}
-                          unlikeUpdate={this.props.unlikeUpdate}
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
                           key={look.id}
@@ -336,8 +332,6 @@ const styles = StyleSheet.create({
 function bindActions(dispatch) {
   return {
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
-    likeUpdate: (id) => dispatch(likeUpdate(id)),
-    unlikeUpdate: (id) => dispatch(unlikeUpdate(id)),
     getFeed: (query) => dispatch(getFeed(query)),
     loadMore: () => dispatch(loadMore()),
     clearBodyModal: () => dispatch(clearBodyModal()),
