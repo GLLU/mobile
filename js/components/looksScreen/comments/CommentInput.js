@@ -6,8 +6,14 @@ import SolidButton from "../../common/buttons/SolidButton";
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    backgroundColor: '#f2f2f2',
+    flex:1
+  },
+  rowContainer: {
     flexDirection: 'row',
-    backgroundColor: '#f2f2f2'
+    backgroundColor: '#f2f2f2',
+    flex:3
   },
   textInput: {
     flex: 25,
@@ -78,6 +84,8 @@ export default class CommentInput extends BaseComponent {
     return (
       <View style={[styles.container,this.props.style]}>
         <View style={{flex:1}} name="spacer"/>
+      <View style={styles.rowContainer}>
+        <View style={{flex:1}} name="spacer"/>
         <TextInput
           style={styles.textInput}
           placeholder="Add Comment"
@@ -87,6 +95,8 @@ export default class CommentInput extends BaseComponent {
           underlineColorAndroid='transparent'/>
         <View style={{flex:1}} name="spacer"/>
         <SolidButton label='SEND' style={styles.sendButton} onPress={this.onSendPress}/>
+        <View style={{flex:1}} name="spacer"/>
+      </View>
         <View style={{flex:1}} name="spacer"/>
       </View>
     );
