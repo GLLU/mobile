@@ -53,8 +53,9 @@ class BottomLookContainer extends BaseComponent {
     this.goToProfile=this.goToProfile.bind(this);
     this.goToEdit=this.goToEdit.bind(this);
     this.onShareClicked = this.onShareClicked.bind(this);
+    const {look} = this.props;
     this.state = {
-      comments: this.props.look.comments || 0,
+      comments: look.comments || 0,
       isDescriptionActive: false,
       isCommentsActive: props.openComments,
       activeItem: '',
@@ -94,29 +95,32 @@ class BottomLookContainer extends BaseComponent {
   }
 
   _renderMenuView(isActive) {
+    const {look} = this.props;
     return(
       <MenuView
-        look_id={this.props.look.id}
-        isMyLook={this.props.look.user.is_me}
+        look_id={look.id}
+        isMyLook={look.user.is_me}
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}
-        onEditPress={()=>this.goToEdit(this.props.look)}
+        onEditPress={()=>this.goToEdit(look)}
         onShareClicked={this.onShareClicked}
         shareToken={this.props.shareToken}/>);
   }
 
   _renderDescriptionView(isActive) {
+    const {look} = this.props;
     return <DescriptionView
       isOpen={isActive}
-      description={this.props.look.description}
+      description={look.description}
       onRequestClose={this._toggleDescription}
     />;
   }
 
   _renderCommentsView(isActive) {
+    const {look} = this.props;
     return <CommentsView
       goToProfile={this.goToProfile}
-      look_id={this.props.look.id}
+      look_id={look.id}
       count={this.state.comments}
       isOpen={isActive}
       onRequestClose={this._toggleComments}/>
@@ -163,6 +167,7 @@ class BottomLookContainer extends BaseComponent {
   }
 
   render() {
+    const {look} = this.props;
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -173,9 +178,9 @@ class BottomLookContainer extends BaseComponent {
     return (
       <View style={{marginTop: 0}}>
         <LookHeader
-          avatar={{uri: this.props.look.avatar.url}}
+          avatar={{uri: look.avatar.url}}
           onBackNavigationPress={this.props.goBack}
-          onProfileAvatarPress={() => this.goToProfile(this.props.look)}/>
+          onProfileAvatarPress={() => this.goToProfile(look)}/>
         <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
           <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
             <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
@@ -183,15 +188,15 @@ class BottomLookContainer extends BaseComponent {
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
                 toggleItem={this._toggleItem}
-                hasDescription={!_.isEmpty(this.props.look.description)}
+                hasDescription={!_.isEmpty(look.description)}
                 isDescriptionActive={this.state.isDescriptionActive}
                 toggleDescription={this._toggleDescription}
-                isLiked={this.props.look.is_liked}
-                likes={this.props.look.likes}
-                comments={this.props.look.comments}
+                liked={look.liked}
+                likes={look.likes}
+                comments={look.comments}
                 toggleLike={this.props.toggleLike}
                 toggleMenu={() => this._toggleMenuView()}
-                items={this.props.look.items}
+                items={look.items}
                 activeItem={this.state.activeItem}
                 lookType={this.props.lookType}
                 onNumberPress={this.props.onLikesNumberPress}
@@ -201,7 +206,7 @@ class BottomLookContainer extends BaseComponent {
           {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderDescriptionView(this.state.isDescriptionActive)}
         </Animated.View>
-        { !this.props.lookType ? this._renderBuyItButtons(this.props.look) : null}
+        { !this.props.lookType ? this._renderBuyItButtons(look) : null}
         {this._renderMenuView(this.state.isMenuOpen)}
       </View>
     )
