@@ -72,9 +72,9 @@ class TabContent extends BaseComponent {
   componentDidMount() {
     let that = this
     setInterval(function(){ that.handleScrollPositionForVideo(); }, 1000);
-    // NetInfo.isConnected.fetch().done(
-    //   (isConnected) => { isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null }
-    // );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null }
+    );
   }
 
   componentWillReceiveProps(nextProps) {
