@@ -12,7 +12,7 @@ import { getNotifications, goToNotificationSubjectScreen, markAsReadNotification
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
-import { getFeed, resetFeed, loadMore, clearFeed } from './feed';
+import { getFeed, loadMore, clearFeed } from './feed';
 import {
   addNewLook,
   editNewLook,
@@ -121,7 +121,6 @@ export {
   initLookComments,
   addLookComment,
   getFeed,
-  resetFeed,
   loadMore,
   getNotifications,
   goToNotificationSubjectScreen,
