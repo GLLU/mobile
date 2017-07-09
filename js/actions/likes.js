@@ -6,22 +6,20 @@ export const LOOK_UNLIKE = 'LOOK_UNLIKE';
 export const LOOK_LIKE = 'LOOK_LIKE';
 
 export function likeUpdate(id) {
-  const data={id};
   return (dispatch) => {
     dispatch({
       type: LOOK_LIKE,
-      payload: data
+      lookId:id
     });
     dispatch(like(id));
   };
 }
 
 export function unlikeUpdate(id) {
-  const data={id};
   return (dispatch) => {
     dispatch({
       type: LOOK_UNLIKE,
-      payload: data
+      lookId:id
     });
     dispatch(unlike(id));
   };

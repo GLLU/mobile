@@ -27,12 +27,12 @@ const initialState = {
 // Action Handlers
 const ACTION_HANDLERS = {
   [LOOK_UNLIKE]: (state, action) => {
-    const {id} = action.payload;
+    const {lookId} = action;
     return {
       ...state,
       flatLooksData: _.map(state.flatLooksData||[],look => {
 
-        if (look.id !== id) {
+        if (look.id !== lookId) {
           return look;
         }
         else {
@@ -45,12 +45,12 @@ const ACTION_HANDLERS = {
     }
   },
   [LOOK_LIKE]: (state, action) => {
-    const {id} = action.payload;
+    const {lookId} = action;
     return {
       ...state,
       flatLooksData: _.map(state.flatLooksData||[],look => {
 
-        if (look.id !== id) {
+        if (look.id !== lookId) {
           return look;
         }
         else {
