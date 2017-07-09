@@ -80,10 +80,18 @@ export default class CommentInput extends BaseComponent {
     }
   }
 
-  render() {
+  renderRow(inputComponent) {
     return (
-      <View style={[styles.container,this.props.style]}>
-        <View style={{flex:1}} name="spacer"/>
+      <View style={[styles.container, this.props.style]}>
+        <View style={{flex: 1}} name="spacer"/>
+        {inputComponent}
+        <View style={{flex: 1}} name="spacer"/>
+      </View>
+    );
+  }
+
+  render() {
+    const inputComponent = (
       <View style={styles.rowContainer}>
         <View style={{flex:1}} name="spacer"/>
         <TextInput
@@ -97,9 +105,8 @@ export default class CommentInput extends BaseComponent {
         <SolidButton label='SEND' style={styles.sendButton} onPress={this.onSendPress}/>
         <View style={{flex:1}} name="spacer"/>
       </View>
-        <View style={{flex:1}} name="spacer"/>
-      </View>
     );
+    return this.renderRow(inputComponent);
   }
 }
 
