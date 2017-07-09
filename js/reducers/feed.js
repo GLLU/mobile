@@ -105,7 +105,7 @@ const ACTION_HANDLERS = {
     }
   },
   [RESET_FEED_DATA]: (state, {payload}) => {
-    const flatLooksData = _.map(payload.data.looks||[],look => feedLookMapper.map(look));
+    const flatLooksData = _.map(payload.data.looks||[],(look, index) => feedLookMapper.map(look,index));
     return {
       ...state,
       flatLooksData,
