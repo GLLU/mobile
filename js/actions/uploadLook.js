@@ -86,7 +86,6 @@ export function editNewLook(lookId) {
     dispatch(showProcessing());
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.looks.get({ id: lookId}, (err, data) => {
-        console.log('editNewLook', err, data);
         dispatch(hideProcessing());
         if (!err) {;
           const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
@@ -281,7 +280,7 @@ export function createBrandName(newBrand) {
     }
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
-        if (!err) {
+        if (!err && !_.isEmpty(data)) {
           dispatch(loadBrands());
           dispatch(addBrandName({ id: data.brand.id, name: data.brand.name, itemId: newBrand.itemId })).then(resolve, reject);
         } else {

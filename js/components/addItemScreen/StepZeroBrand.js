@@ -204,7 +204,7 @@ class StepZeroBrand extends BaseComponent {
           onRequestClose={() => this.setState({modalVisible: false})}>
           <BrandNameInput
             style={{marginTop: 10}}
-            brand={brand}
+            brand={brandName}
             brands={brands}
             onCancel={this.handleBrandCancel.bind(this)}
             findOrCreateBrand={this.findOrCreateBrand.bind(this)}/>
