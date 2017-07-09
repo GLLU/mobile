@@ -71,7 +71,6 @@ class MediaContainer extends PureComponent {
     const item = this.props.look;
     this.props.logEvent(this.props.fromScreen, {name: 'Image click'});
     if(this.props.fromScreen === 'profileScreen') {
-      console.log('happenned from profile');
       item.singleItem = true
     }
     let that = this
