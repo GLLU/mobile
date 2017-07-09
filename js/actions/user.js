@@ -134,7 +134,7 @@ export function requestInvitation(data) {
 
 export function createInvitationCode() {
   return (dispatch) => {
-    return dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({"limit_by_days": 3})}, (err, data) => {
+    return dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({"limit_by_days": 999})}, (err, data) => {
       if (!err && !_.isEmpty(data)) {
         dispatch(setInvitationInvitationShareToken(data.invitation.token))
       } else {
@@ -152,6 +152,10 @@ export function invitationCheckExistance(token) {
           if (data.invitation.is_valid) {
             dispatch(hideError())
             dispatch(setInvitationToken(data.invitation.token));
+            resolve();
+          } else {
+            const error = '*Code is wrong or expired';
+            dispatch(showError(error));
             resolve();
           }
         } else {
