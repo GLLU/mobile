@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, TextInput, Platform, View, Dimensions, StyleSheet } from 'react-native';
+import Spinner from "../../loaders/Spinner";
 
 const cameraWhite = require('../../../../images/icons/cameraWhite.png');
 
@@ -47,6 +48,7 @@ const styles=StyleSheet.create({
 class ProfileAvatar extends Component {
 
   static propTypes = {
+    isLoading:React.PropTypes.bool,
     avatarUrl: React.PropTypes.string,
     editable: React.PropTypes.bool,
     changeUserAvatar: React.PropTypes.func,
@@ -57,7 +59,7 @@ class ProfileAvatar extends Component {
       <Image source={{uri: this.props.avatarUrl}} style={[styles.avatarImg, (Platform.OS === 'ios') ? styles.editAvatarImage : null]} borderRadius={50} >
         { this.props.editable ?
           <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
-            <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
+            {this.props.isLoading? <Spinner color='white' style={styles.profilePicBtn}/> : <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />}
           </View>
           : null
         }
@@ -70,7 +72,7 @@ class ProfileAvatar extends Component {
       <View style={[styles.avatarImg, (Platform.OS === 'ios') ? styles.editAvatarImage : null]} borderRadius={50} >
         { this.props.editable ?
           <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
-            <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
+            {this.props.isLoading? <Spinner color='white' style={styles.profilePicBtn}/> : <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />}
           </View>
           : null
         }

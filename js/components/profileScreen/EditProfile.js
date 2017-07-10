@@ -37,10 +37,18 @@ class EditProfile extends Component {
     super(props);
     this.toggleBodyTypeModal=this.toggleBodyTypeModal.bind(this);
     this._saveChanges=this._saveChanges.bind(this);
+    this._changeUserAvatar=this._changeUserAvatar.bind(this);
     this.state = {
       about_me: props.user.about_me || '',
       modalShowing:false,
-      isUpdating: false
+      isUpdating: false,
+      isChangingAvatar:false
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.user.avatar!==this.props.user.avatar){
+      this.setState({isChangingAvatar:false})
     }
   }
 
@@ -66,7 +74,9 @@ class EditProfile extends Component {
 
   _changeUserAvatar() {
     this.props.logEvent('EditProfileScreen', { name: 'Change avatar click' });
-    this.openCamera()
+    this.openCamera().then(()=>{
+      this.setState({isChangingAvatar:true})
+    }).catch((err)=>console.log(err));
   }
 
   async openCamera() {
@@ -105,7 +115,7 @@ class EditProfile extends Component {
             <EditProfileHeader cancelEdit={this.props.goBack} save={this._saveChanges} />
           </Image>
         </View>
-        <ProfileAvatar avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
+        <ProfileAvatar avatarUrl={this.props.user.avatar.url} isLoading={this.state.isChangingAvatar} changeUserAvatar={this._changeUserAvatar} editable={true}/>
         <ScrollView
           style={[styles.scrollView]}
         >
