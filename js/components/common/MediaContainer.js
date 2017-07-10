@@ -7,6 +7,8 @@ import Utils from '../../utils';
 import VideoWithCaching from "./media/VideoWithCaching";
 import ImageWrapper from "./media/ImageWrapper";
 import withAnalytics from "../common/analytics/WithAnalytics";
+import { connect } from "react-redux";
+import { likeUpdate, unlikeUpdate } from "../../actions/likes";
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -30,7 +32,7 @@ class MediaContainer extends PureComponent {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
-    unLikeUpdate: React.PropTypes.func,
+    unlikeUpdate: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     logEvent: React.PropTypes.func,
     sendParisMessage: React.PropTypes.func,
@@ -66,27 +68,26 @@ class MediaContainer extends PureComponent {
   }
 
   _handleItemPress() {
-    const item = this.props.look
+    const item = this.props.look;
     this.props.logEvent(this.props.fromScreen, {name: 'Image click'});
     if(this.props.fromScreen === 'profileScreen') {
-      console.log('happenned from profile')
       item.singleItem = true
     }
     let that = this
     setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
   }
 
-  toggleLikeAction(isLiked) {
+  toggleLikeAction() {
     this.props.logEvent('Feedscreen', {name: 'Like Image click'});
-    const { look } = this.props
-    if (isLiked) {
-      let data = {id: look.id, likes: look.likes + 1, liked: true}
+    const { look } = this.props;
+    const {id,liked} = look;
+    if (liked) {
+      this.props.unlikeUpdate(id);
+    }
+    else {
       let msg = likeSentences[Math.floor(Math.random()*likeSentences.length)];
       this.props.sendParisMessage(msg);
-      this.props.likeUpdate(data);
-    } else {
-      let data = {id: look.id, likes: look.likes - 1, liked: false}
-      this.props.unLikeUpdate(data);
+      this.props.likeUpdate(id);
     }
 
   }
@@ -203,7 +204,7 @@ class MediaContainer extends PureComponent {
   }
 
   render() {
-    const { look } = this.props
+    const { look } = this.props;
     return(
       <View onLayout={(e) => this.setLookPosition(e)} style={{margin: 3}}>
         <TouchableOpacity onPress={this._handleItemPress}>
@@ -215,4 +216,13 @@ class MediaContainer extends PureComponent {
   }
 }
 
-export default withAnalytics(MediaContainer);
+function bindActions(dispatch) {
+  return {
+    likeUpdate: (id) => dispatch(likeUpdate(id)),
+    unlikeUpdate: (id) => dispatch(unlikeUpdate(id)),
+  };
+}
+
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, bindActions)(withAnalytics(MediaContainer));

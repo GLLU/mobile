@@ -17,14 +17,9 @@ import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import _ from 'lodash';
-import { showBodyTypeModal, likeUpdate, unLikeUpdate, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
-import MediaBorderPatch from '../common/MediaBorderPatch'
+import { showBodyTypeModal, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import { formatInvitationMessage } from "../../lib/messages/index";
-import LikeView from './items/LikeView';
-import CommentsView from './items/CommentsView';
-import VolumeButton from '../common/VolumeButton';
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
 
@@ -37,8 +32,6 @@ class TabContent extends BaseComponent {
     reloading: React.PropTypes.bool,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
-    likeUpdate: React.PropTypes.func,
-    unLikeUpdate: React.PropTypes.func,
     getFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
@@ -49,6 +42,7 @@ class TabContent extends BaseComponent {
     this._renderRefreshControl = this._renderRefreshControl.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
+    this.loadMore = this.loadMore.bind(this)
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -61,7 +55,6 @@ class TabContent extends BaseComponent {
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
     this.currPosition = 0
-    this.contentHeight = 0
   }
 
   _onInviteFriendsClick() {
@@ -93,8 +86,6 @@ class TabContent extends BaseComponent {
       }
     }
     if(nextProps.clearedField){
-      this.contentHeight = 0
-      this.contentHeight = 0
       this.currPosition = 0
       this.setState({noMoreData: false})
     }
@@ -123,14 +114,9 @@ class TabContent extends BaseComponent {
         const contentSizeHeight = event.nativeEvent.contentSize.height;
         const currentScroll = event.nativeEvent.contentOffset.y
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight-250) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
-          if(this.contentHeight !== contentSizeHeight) {
-            this.contentHeight = contentSizeHeight
-            if(!this.state.loadingMore) {
-              this.setState({loadingMore: true}, () => this.loadMore())
-            }
-
+          if(!this.state.loadingMore && !this.state.isLoading) {
+            this.setState({loadingMore: true}, this.loadMore)
           }
-
         } else {
         }
       }
@@ -183,8 +169,6 @@ class TabContent extends BaseComponent {
       return (
           <MediaContainer look={look}
                           currScroll={this.state.currentScrollPosition}
-                          likeUpdate={this.props.likeUpdate}
-                          unLikeUpdate={this.props.likeUpdate}
                           navigateTo={this.props.navigateTo}
                           sendParisMessage={this.props.showParisBottomMessage}
                           key={look.id}
@@ -341,8 +325,6 @@ const styles = StyleSheet.create({
 function bindActions(dispatch) {
   return {
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
-    likeUpdate: (id) => dispatch(likeUpdate(id)),
-    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
     getFeed: (query) => dispatch(getFeed(query)),
     loadMore: () => dispatch(loadMore()),
     clearBodyModal: () => dispatch(clearBodyModal()),

@@ -4,7 +4,7 @@ import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimen
 import FilterGroup from './FilterGroup';
 import BaseComponent from '../../common/base/BaseComponent';
 import _ from 'lodash'
-import { loadCategories } from '../../../actions/filters';
+import { loadCategories, loadOccasionTags } from '../../../actions/filters';
 
 const myStyles = StyleSheet.create({
   container: {
@@ -108,6 +108,7 @@ class FilterBar extends BaseComponent {
 
   componentDidMount() {
     this.props.loadCategories(this.props.defaultFilters.gender);
+    this.props.loadOccasionTags(this.props.defaultFilters.gender);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -240,6 +241,7 @@ class FilterBar extends BaseComponent {
 function bindActions(dispatch) {
   return {
     loadCategories: (gender) => dispatch(loadCategories(gender)),
+    loadOccasionTags: (gender) => dispatch(loadOccasionTags(gender)),
   };
 }
 

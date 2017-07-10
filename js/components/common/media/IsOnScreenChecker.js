@@ -25,9 +25,8 @@ const isOnScreenCheck=WrappedComponent=>{
       }
     }
 
-    isOnScreen(props) {
-
-      return props.navigation.index === this.state.currentPageIndex
+    isOnScreen(props) { //TODO will be refactored after we will refactor redux containers
+      return props.navigation.index === this.state.currentPageIndex || props.navigation.index === 0 //When the current media is mounted it will save the index of the screen is created on, then we will check if this screen is on the front/show all media if on feed
     }
 
     render() {

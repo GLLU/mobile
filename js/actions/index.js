@@ -4,7 +4,7 @@ import { showParisBottomMessage, hideParisBottomMessage } from './paris';
 import { loadCategories, loadBrands, loadOccasionTags } from './filters';
 import { completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
-import { likeUpdate, unLikeUpdate } from './likes';
+import { likeUpdate, unlikeUpdate } from './likes';
 import { getUserBalance } from './wallet';
 import { getLookLikes, initLookLikes } from './lookLikes';
 import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
@@ -12,7 +12,7 @@ import { getNotifications, goToNotificationSubjectScreen, markAsReadNotification
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
-import { getFeed, resetFeed, loadMore, clearFeed } from './feed';
+import { getFeed, loadMore, clearFeed } from './feed';
 import {
   addNewLook,
   editNewLook,
@@ -107,7 +107,7 @@ export {
   getUserLooksData,
   getUserLooks,
   likeUpdate,
-  unLikeUpdate,
+  unlikeUpdate,
   loadMoreUserLooks,
   followUpdate,
   getLookLikes,
@@ -121,7 +121,6 @@ export {
   initLookComments,
   addLookComment,
   getFeed,
-  resetFeed,
   loadMore,
   getNotifications,
   goToNotificationSubjectScreen,
