@@ -37,7 +37,6 @@ const findItem = function(state, itemId) {
 // Action Handlers
 const ACTION_HANDLERS = {
   [EDIT_NEW_LOOK]: (state, action) => {
-    console.log()
     return {
       ...action.payload,
       ...lookMapper(action.payload),
@@ -86,14 +85,12 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
-    console.log('action.payload.itemId',action.payload)
     return {
       ...state,
-      items: mutateItem(state, 'brand', action.payload.name, action.payload.itemId)
+      items: mutateItem(state, 'brand', action.payload, action.payload.itemId)
     }
   },
   [REMOVE_BRAND_NAME]: (state, action) => {
-    console.log('action.payload2',action.payload)
     return {
       ...state,
       items: mutateItem(state, 'brand', null, action.payload)
