@@ -88,6 +88,7 @@ class NotificationListView extends BaseComponent {
       style={styles.container}
       data={this.props.notifications.allNotifications}
       keyExtractor={(notification,index)=>notification.id!==-1?notification.id:index}
+      ItemSeparatorComponent={()=><Seperator/>}
       renderItem={({item}) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress} onUserPress={this.onUserNavigate} onFollowPress={this.toggleFollowAction} {...item}/>}
       onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
       onEndReachedThreshold={100}

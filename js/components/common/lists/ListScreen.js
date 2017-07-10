@@ -45,6 +45,7 @@ export default class ListScreen extends Component {
       style={styles.container}
       data={this.props.data}
       keyExtractor={this.props.keyExtractor}
+      ItemSeparatorComponent={()=><Seperator/>}
       renderItem={({item}) => this.props.renderItem(item)}
       onEndReached={this.state.isTrueEndReached? noop:this.props.onEndReached}
       onEndReachedThreshold={100}
