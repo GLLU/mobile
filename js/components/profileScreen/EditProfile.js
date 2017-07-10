@@ -115,7 +115,7 @@ class EditProfile extends Component {
             <EditProfileHeader cancelEdit={this.props.goBack} save={this._saveChanges} />
           </Image>
         </View>
-        <ProfileAvatar avatarUrl={this.props.user.avatar.url} isLoading={this.state.isChangingAvatar} changeUserAvatar={this._changeUserAvatar} editable={true}/>
+        <ProfileAvatar avatarUrl={this.props.user.avatar.url} isLoading={this.state.isChangingAvatar} changeUserAvatar={this._changeUserAvatar} isEditable={true}/>
         <ScrollView
           style={[styles.scrollView]}
         >

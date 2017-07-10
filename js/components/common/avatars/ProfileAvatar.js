@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Image, TouchableOpacity, TextInput, Platform, View, Dimensions, StyleSheet } from 'react-native';
 import Spinner from "../../loaders/Spinner";
 import { noop } from "lodash";
@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
 });
 
 
-class ProfileAvatar extends Component {
+class ProfileAvatar extends PureComponent {
 
   static propTypes = {
     isLoading: React.PropTypes.bool,
     avatarUrl: React.PropTypes.string,
-    editable: React.PropTypes.bool,
+    isEditable: React.PropTypes.bool,
     changeUserAvatar: React.PropTypes.func,
   };
 
@@ -66,23 +66,23 @@ class ProfileAvatar extends Component {
       styles.avatarImg
   }
 
-  renderAvatar() {
+  renderAvatar({avatarUrl,isEditable,isLoading}) {
     return (
-        <Image source={{uri: this.props.avatarUrl}} style={this.getContainerStyle()} borderRadius={50}>
-          {this.renderOverlay(this.props.editable, this.props.isLoading)}
+        <Image source={{uri: avatarUrl}} style={this.getContainerStyle()} borderRadius={50}>
+          {this.renderOverlay({isEditable, isLoading})}
         </Image>
     );
   }
 
-  renderWhiteCircle() {
+  renderWhiteCircle({isEditable,isLoading}) {
     return (
         <View style={this.getContainerStyle()} borderRadius={50}>
-          {this.renderOverlay(this.props.editable, this.props.isLoading)}
+          {this.renderOverlay({isEditable, isLoading})}
         </View>
     );
   }
 
-  renderOverlay(isEditable, isLoading) {
+  renderOverlay({isEditable, isLoading}) {
     return isEditable ? (
       <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
         {
@@ -96,9 +96,10 @@ class ProfileAvatar extends Component {
 
 
   render() {
+    const {props} = this;
     return(
-      <TouchableOpacity transparent onPress={this.props.changeUserAvatar} style={this.props.style || styles.editProfileAvatarImg}>
-        {this.props.avatarUrl ? this.renderAvatar() : this.renderWhiteCircle()}
+      <TouchableOpacity transparent onPress={props.changeUserAvatar} style={props.style || styles.editProfileAvatarImg}>
+        {this.props.avatarUrl ? this.renderAvatar(props) : this.renderWhiteCircle(props)}
       </TouchableOpacity>
     );
   }
