@@ -91,11 +91,11 @@ class StepZeroBrand extends BaseComponent {
 
   }
 
-  findOrCreateBrand(value, createNew) {
-    const data = {name: value, itemId: this.props.item.id}
-    const brandName = value
-    const f = createNew ? this.props.createBrandName : this.props.addBrandName;
-    f(data).then(() => {
+  findOrCreateBrand(value) {
+    const data = {...value, itemId: this.props.item.id}
+    const brandName = value.name
+    const brandFunction = value.id ? this.props.addBrandName : this.props.createBrandName;
+    brandFunction(data).then(() => {
       console.log('brand added')
 
     }).catch(err => {
@@ -103,10 +103,10 @@ class StepZeroBrand extends BaseComponent {
     })
     this.setState({modalVisible: false, brandName});
 
-    if (createNew) {
-      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
-    } else {
+    if (value.id) {
       this.logEvent('UploadLookScreen', { name: 'Brand pick', brand: brandName });
+    } else {
+      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
     }
   }
 
@@ -151,8 +151,8 @@ class StepZeroBrand extends BaseComponent {
     }
   }
 
-  renderClearIcon(currItem) {
-    if (currItem.brand) {
+  renderClearIcon({brand}) {
+    if (brand) {
       return (
         <TouchableOpacity
           style={styles.iconCheckCompleteContainer}
@@ -166,8 +166,8 @@ class StepZeroBrand extends BaseComponent {
     return null;
   }
 
-  renderOpenButton(currItem) {
-    const btnColor = !currItem.brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+  renderOpenButton({brand}) {
+    const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
         <View style={{ backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center'}}>

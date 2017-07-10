@@ -146,8 +146,6 @@ class CustomAutocomplete extends Autocomplete {
   }
 
   _renderItems() {
-    const { query } = this.props
-    const alreadyExist =  this.checkIfBrandExistsinData(query)
     return (
       <View style={styles.autocompleteResults}>
         <ScrollView
@@ -204,8 +202,8 @@ class CustomAutocomplete extends Autocomplete {
     const { dataSource } = this.state;
     const brands = dataSource._dataBlob.s1;
     const alreadyExist =  this.checkIfBrandExistsinData(query)
-    let l = Object.keys(brands).length;
-    let showResults = query !== '' && l > 0 && !selected;
+    let brandsKeysCount = Object.keys(brands).length;
+    let showResults = query !== '' && brandsKeysCount > 0 && !selected;
     let showCreateBtn = (query !== '' && alreadyExist && !selected);
     return (
       <View style={[styles.container, containerStyle]}>
