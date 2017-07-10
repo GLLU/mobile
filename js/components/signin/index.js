@@ -9,9 +9,7 @@ import { Container, Content} from 'native-base';
 import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { Row, Grid } from "react-native-easy-grid";
-
-import SolidButton from '../common/buttons/SolidButton'
-
+import SolidButtonWithLoader from '../common/buttons/SolidButtonWithLoader'
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 import { emailSignIn } from '../../actions/user';
@@ -42,6 +40,7 @@ class SignInPage extends Component {
     super(props);
     this.focusNext=this.focusNext.bind(this);
       this.state = {
+          signIn: false,
           email: '',
           password: '',
           passwordValid: 'times',
@@ -57,13 +56,15 @@ class SignInPage extends Component {
   singinWithEmail() {
       let { password, email } = this.state;
       const data = { email, password };
-      if(this.checkValidations()) {
+      if(this.checkValidations() && !this.state.signIn) {
+        this.setState({signIn: true}, () => {
           this.props.emailSignIn(data)
             .then(user=>{
               this.props.logEvent('SignInScreen', { name: 'Sign in successful!'});
               this.props.resetTo('feedscreen')
             })
             .catch(error=>this.props.logEvent('SignInScreen', { name: 'Sign in failed!'}));
+        })
       }
   }
   checkValidations() {
@@ -167,7 +168,7 @@ class SignInPage extends Component {
                     {this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                   </Row>
                 </Grid>
-                <SolidButton label="Let's infash" style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}/>
+                <SolidButtonWithLoader showLoader={this.state.signIn} label={"Let's infash"} style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSigninPress.bind(this)}/>
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Forgot your password?</Text>
                   <TouchableOpacity onPress={this.handleForgotPasswordPress.bind(this)}><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text></TouchableOpacity>
