@@ -275,7 +275,7 @@ export function createBrandName(newBrand) {
   return (dispatch) => {
     const body = {
       brand: {
-        name: newBrand.value
+        name: newBrand.name
       }
     }
     return new Promise((resolve, reject) => {

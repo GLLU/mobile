@@ -89,7 +89,7 @@ const ACTION_HANDLERS = {
     console.log('action.payload.itemId',action.payload)
     return {
       ...state,
-      items: mutateItem(state, 'brand', action.payload.name, action.payload.itemId)
+      items: mutateItem(state, 'brand', action.payload, action.payload.itemId)
     }
   },
   [REMOVE_BRAND_NAME]: (state, action) => {

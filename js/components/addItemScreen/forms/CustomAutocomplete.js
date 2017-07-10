@@ -165,7 +165,7 @@ class CustomAutocomplete extends Autocomplete {
     return (
       <View style={styles.autocompleteResults}>
         <View style={styles.btnContainer} >
-          <Button transparent onPress={() => this.props.findOrCreateBrand(this.props.query, true)} style={StyleSheet.flatten(styles.btnCreateNew)} >
+          <Button transparent onPress={() => this.props.findOrCreateBrand({name: this.props.query}, true)} style={StyleSheet.flatten(styles.btnCreateNew)} >
             <Text style={styles.btnCreateNewText}>Add a New Brand "{this.props.query}"</Text>
           </Button>
         </View>

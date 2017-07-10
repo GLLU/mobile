@@ -92,8 +92,10 @@ class StepZeroBrand extends BaseComponent {
   }
 
   findOrCreateBrand(value, createNew) {
-    const data = typeof value === 'string' ? {value, itemId: this.props.item.id} : {...value, itemId: this.props.item.id}
-    const brandName = typeof value === 'string' ? value : value.name;
+    const data = {name: value, itemId: this.props.item.id}
+    const brandName = value
+    console.log('brandName',brandName)
+    console.log('data',data)
     const f = createNew ? this.props.createBrandName : this.props.addBrandName;
     f(data).then(() => {
       console.log('brand added')
@@ -151,8 +153,8 @@ class StepZeroBrand extends BaseComponent {
     }
   }
 
-  renderClearIcon(brand) {
-    if (brand) {
+  renderClearIcon(currItem) {
+    if (currItem) {
       return (
         <TouchableOpacity
           style={styles.iconCheckCompleteContainer}
@@ -166,8 +168,8 @@ class StepZeroBrand extends BaseComponent {
     return null;
   }
 
-  renderOpenButton(brand) {
-    const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+  renderOpenButton(currItem) {
+    const btnColor = !currItem ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
         <View style={{ backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center'}}>
@@ -181,19 +183,20 @@ class StepZeroBrand extends BaseComponent {
     const { brands, item, items} = this.props;
     const { modalVisible } = this.state;
     const currItem = _.find(items, listItem => listItem.id === item.id);
-    const brand = currItem ? currItem.brand : null;
-    const brandName = brand ? typeof brand === 'string' ? brand : brand.name : ''
+    console.log('currItem',currItem)
+    const brandName = currItem.brand ? currItem.brand.name : null;
+    //const brandName = brand ? typeof brand === 'string' ? brand : brand.name : ''
     return (
       <View>
         <View style={{ width: w }}>
-          {this.renderOpenButton(brand)}
+          {this.renderOpenButton(currItem)}
           <Animated.View style={{borderRadius: 10, alignSelf: 'center', overflow: 'hidden',justifyContent: 'flex-start', bottom: 0, width: w-100, paddingLeft: 25, paddingRight: 25, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
             <Text style={styles.titleLabelInfo}>Brand Name</Text>
             <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
               <Text style={styles.input}>
                 {brandName}
               </Text>
-              {this.renderClearIcon(brand)}
+              {this.renderClearIcon(currItem)}
             </TouchableOpacity>
           </Animated.View>
         </View>
