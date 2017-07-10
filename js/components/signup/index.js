@@ -14,9 +14,10 @@ import styles from './styles';
 import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
 import ProfileAvatar from '../common/avatars/ProfileAvatar'
-import SolidButtonWithLoader from '../common/buttons/SolidButtonWithLoader'
+import SolidButton from '../common/buttons/SolidButton'
 import {openCamera} from '../../lib/camera/CameraUtils'
 import Header from "../common/containers/Header";
+import Spinner from '../loaders/Spinner'
 
 const background = require('../../../images/backgrounds/hands.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
@@ -37,7 +38,7 @@ class SignUpPage extends Component {
     super(props);
     this.focusNext=this.focusNext.bind(this);
     this.state = {
-      signIn: false,
+      isSigningUp: false,
       username: '',
       email: '',
       password: '',
@@ -76,7 +77,7 @@ class SignUpPage extends Component {
         password,
         confirmPassword: password,
       }
-      this.setState({signIn: true}, () => {
+      this.setState({isSigningUp: true}, () => {
         this.props.emailSignUp(data)
           .then(user=>{
             this.props.logEvent('SignUpScreen', {name: `user signed up with email ${email}`, invitation_token: this.props.invitation_token});
@@ -243,7 +244,13 @@ class SignUpPage extends Component {
                     {this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid} style={styles.uploadImgIcon}/>  : null}
                   </Row>
                 </Grid>
-                <SolidButtonWithLoader showLoader={this.state.signIn} label="Let's infash" style={[styles.formBtn, allValid ? styles.validationPassed : null ]} onPress={this.handleSignupPress.bind(this)}/>
+                <SolidButton
+                  showLoader={this.state.isSigningUp}
+                  label="Let's infash"
+                  style={[styles.formBtn, allValid ? styles.validationPassed : null ]}
+                  onPress={this.handleSignupPress.bind(this)}
+                  loaderElement={<Spinner animating={this.state.isSigningUp} size={'small'} style={{left:10}}/>}
+                />
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Click Here</Text></TouchableOpacity>
