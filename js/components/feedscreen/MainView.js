@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { getFeed, resetFeed, loadMore, clearFeed } from '../../actions';
+import { getFeed, loadMore, clearFeed } from '../../actions';
 import TabContent from './TabContent';
 import SearchView from './SearchView'
 import _ from 'lodash';
@@ -30,7 +30,6 @@ class MainView extends Component {
     searchStatus: React.PropTypes.bool,
     query: React.PropTypes.object,
     getFeed: React.PropTypes.func,
-    resetFeed: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -70,26 +69,13 @@ class MainView extends Component {
       });
   }
 
-  resetFeed() {
-    this.setState({reloading: true}, () => {
-      this.props.resetFeed().then(() => {
-        this.setState({reloading: false});
-      });
-    });
-  }
-
   _clearFilter() {
     this._filterFeed({}, true);
   }
 
   _filterFeed(query) {
-    if (_.isEmpty(query)) {
-      this.resetFeed()
-    }
-    else {
-      if (!_.isEqual(query, this.props.query)) {
-        this.getFeed(query);
-      }
+    if (!_.isEqual(query, this.props.query)) {
+      this.getFeed(query);
     }
   }
 
@@ -151,7 +137,6 @@ class MainView extends Component {
 function bindActions(dispatch) {
   return {
     getFeed: (query) => dispatch(getFeed(query)),
-    resetFeed: () => dispatch(resetFeed()),
     clearFeed: () => dispatch(clearFeed()),
     loadMore: () => dispatch(loadMore()),
   };

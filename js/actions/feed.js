@@ -3,7 +3,6 @@ import rest from '../api/rest';
 
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_FEED_DATA_QUEUE = 'SET_FLAT_LOOKS_FEED_DATA_QUEUE';
-export const RESET_FEED_DATA = 'RESET_FEED_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
 
 const parseQueryFromState = function(state) {
@@ -31,37 +30,6 @@ export function getFeed(query, retryCount = 0) {
             reject();
           }
 
-        }
-      }));
-    });
-  };
-}
-
-export function resetFeed() {
-  return (dispatch) => {
-    const params = {
-      gender: null,
-      body_type: null,
-      category: null,
-      term: '',
-      page: {
-        size: 10,
-        number: 1
-      }
-    };
-    return new Promise((resolve, reject) => {
-      return dispatch(rest.actions.feeds(params, (err, data) => {
-        if (!err && data) {
-          dispatch({
-            type: RESET_FEED_DATA,
-            payload: { 
-              data,
-              query: params
-            }
-          });
-          resolve(data.looks);
-        } else {
-          reject();
         }
       }));
     });

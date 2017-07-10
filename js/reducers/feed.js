@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Image } from 'react-native';
-import { SET_FLAT_LOOKS_FEED_DATA, RESET_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUEUE, CLEAR_FEED_DATA } from '../actions/feed';
-import { LOOK_LIKE, LOOK_UNLIKE, SET_LOOK_LIKE_STATE } from '../actions/likes';
+import { SET_FLAT_LOOKS_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUEUE, CLEAR_FEED_DATA } from '../actions/feed';
+import { LOOK_LIKE, LOOK_UNLIKE } from '../actions/likes';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
 import * as feedLookMapper from "../mappers/feedLookMapper";
 import { REHYDRATE } from "redux-persist/constants";
@@ -102,15 +102,6 @@ const ACTION_HANDLERS = {
       flatLooksDataQueue: newData,
       meta,
       query,
-    }
-  },
-  [RESET_FEED_DATA]: (state, {payload}) => {
-    const flatLooksData = _.map(payload.data.looks||[],look => feedLookMapper.map(look));
-    return {
-      ...state,
-      flatLooksData,
-      meta: payload.data.meta,
-      query: payload.query
     }
   },
   [CLEAR_FEED_DATA]: () => {
