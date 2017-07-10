@@ -66,23 +66,25 @@ class ProfileAvatar extends PureComponent {
       styles.avatarImg
   }
 
-  renderAvatar({avatarUrl,isEditable,isLoading}) {
+  renderAvatar() {
+    const {avatarUrl,isEditable,isLoading}=this.props;
     return (
         <Image source={{uri: avatarUrl}} style={this.getContainerStyle()} borderRadius={50}>
-          {this.renderOverlay({isEditable, isLoading})}
+          {this.renderOverlay(isEditable, isLoading)}
         </Image>
     );
   }
 
-  renderWhiteCircle({isEditable,isLoading}) {
+  renderWhiteCircle() {
+    const {isEditable,isLoading}=this.props;
     return (
         <View style={this.getContainerStyle()} borderRadius={50}>
-          {this.renderOverlay({isEditable, isLoading})}
+          {this.renderOverlay(isEditable, isLoading)}
         </View>
     );
   }
 
-  renderOverlay({isEditable, isLoading}) {
+  renderOverlay(isEditable, isLoading) {
     return isEditable ? (
       <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
         {
@@ -96,10 +98,10 @@ class ProfileAvatar extends PureComponent {
 
 
   render() {
-    const {props} = this;
+    const {avatarUrl, changeUserAvatar,style} = this.props;
     return(
-      <TouchableOpacity transparent onPress={props.changeUserAvatar} style={props.style || styles.editProfileAvatarImg}>
-        {this.props.avatarUrl ? this.renderAvatar(props) : this.renderWhiteCircle(props)}
+      <TouchableOpacity transparent onPress={changeUserAvatar} style={style || styles.editProfileAvatarImg}>
+        {avatarUrl ? this.renderAvatar() : this.renderWhiteCircle()}
       </TouchableOpacity>
     );
   }
