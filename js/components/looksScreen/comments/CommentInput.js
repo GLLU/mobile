@@ -6,28 +6,24 @@ import SolidButton from "../../common/buttons/SolidButton";
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    backgroundColor: '#f2f2f2',
-    flex:1
-  },
-  rowContainer: {
     flexDirection: 'row',
+    alignItems: 'stretch',
     backgroundColor: '#f2f2f2',
-    flex:3
+    padding:10,
+    flex: 1
   },
   textInput: {
-    flex: 25,
+    flex: 4,
     backgroundColor: 'white',
     color: 'black',
     fontSize: 12,
     textAlign: 'left',
-    paddingLeft:5,
+    paddingLeft: 5
   },
   sendButton: {
     backgroundColor: '#00D7B2',
-    flex: 6,
-    justifyContent:'center',
-    flexDirection:'column'
+    flex: 1,
+    marginLeft:10
   },
   sendButtonText: {
     color: 'white',
@@ -73,27 +69,16 @@ export default class CommentInput extends BaseComponent {
   }
 
   onSendPress() {
-    const commentValue=this.state.value
+    const commentValue = this.state.value;
     if (commentValue) {
       this.logEvent('LookScreen', {name: `new comment added!`, content: commentValue});
       this.props.onSendPress(this.state.value);
     }
   }
 
-  renderRow(inputComponent) {
+  render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <View style={{flex: 1}} name="spacer"/>
-        {inputComponent}
-        <View style={{flex: 1}} name="spacer"/>
-      </View>
-    );
-  }
-
-  render() {
-    const inputComponent = (
-      <View style={styles.rowContainer}>
-        <View style={{flex:1}} name="spacer"/>
         <TextInput
           style={styles.textInput}
           placeholder="Add Comment"
@@ -101,12 +86,9 @@ export default class CommentInput extends BaseComponent {
           value={this.state.value}
           multiline={true}
           underlineColorAndroid='transparent'/>
-        <View style={{flex:1}} name="spacer"/>
         <SolidButton label='SEND' style={styles.sendButton} onPress={this.onSendPress}/>
-        <View style={{flex:1}} name="spacer"/>
       </View>
-    );
-    return this.renderRow(inputComponent);
+    )
   }
 }
 

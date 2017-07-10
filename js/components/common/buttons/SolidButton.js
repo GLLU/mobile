@@ -7,14 +7,9 @@ const deviceWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   center: {
     flex: 1,
+    flexDirection:'column',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  btn: {
-    borderRadius: 4,
-    borderColor: '#009688',
-    borderWidth: 2,
-    width: deviceWidth - 80,
   },
   text: {
     color: 'white',
