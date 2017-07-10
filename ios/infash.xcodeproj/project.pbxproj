@@ -121,6 +121,7 @@
 		F579DE2F94D44CDCB20C37BC /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B5454D4AA6E417EB8F6C23C /* Foundation.ttf */; };
 		FF6D81E1B9D54CB7B21B39BD /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F49AC9E1EAB74B129ECDC20E /* Roboto.ttf */; };
 		6B767161E3424E8DA25DC601 /* libRNMixpanel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BF71EA21694A08A9BA2E32 /* libRNMixpanel.a */; };
+		16A39445760D41DFBEF967BD /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9074739ED6A6487B8C2EA52C /* libRNI18n.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -572,6 +573,8 @@
 		FD6E163DAD9E4D3487A63A01 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		04D6BD043CF346EF9A3FD1F7 /* RNMixpanel.xcodeproj */ = {isa = PBXFileReference; name = "RNMixpanel.xcodeproj"; path = "../node_modules/react-native-mixpanel/RNMixpanel.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		35BF71EA21694A08A9BA2E32 /* libRNMixpanel.a */ = {isa = PBXFileReference; name = "libRNMixpanel.a"; path = "libRNMixpanel.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		2C3B33CA37B84EC7BB07306B /* RNI18n.xcodeproj */ = {isa = PBXFileReference; name = "RNI18n.xcodeproj"; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		9074739ED6A6487B8C2EA52C /* libRNI18n.a */ = {isa = PBXFileReference; name = "libRNI18n.a"; path = "libRNI18n.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -613,6 +616,7 @@
 				394F7272EED21714CAC71957 /* libPods-infash.a in Frameworks */,
 				17DDD1897557429E8793103A /* libSMXCrashlytics.a in Frameworks */,
 				6B767161E3424E8DA25DC601 /* libRNMixpanel.a in Frameworks */,
+				16A39445760D41DFBEF967BD /* libRNI18n.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -980,6 +984,7 @@
 				2967F5C5301D4E2DB9FF96F6 /* RCTVideo.xcodeproj */,
 				4514476142504992896A2D23 /* SMXCrashlytics.xcodeproj */,
 				04D6BD043CF346EF9A3FD1F7 /* RNMixpanel.xcodeproj */,
+				2C3B33CA37B84EC7BB07306B /* RNI18n.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1755,6 +1760,7 @@
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/Crashlytics",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-mixpanel/RNMixpanel",
+					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 				);
 				INFOPLIST_FILE = gllu/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
@@ -1773,6 +1779,7 @@
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
+					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
 				);
@@ -1834,6 +1841,7 @@
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/Crashlytics",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-mixpanel/RNMixpanel",
+					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 				);
 				INFOPLIST_FILE = gllu/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
@@ -1852,6 +1860,7 @@
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
+					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
 				);

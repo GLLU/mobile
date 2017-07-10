@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Dimensions, Image } from 'react-native';
-import { Provider } from 'react-redux';
-import { whyDidYouUpdate } from 'why-did-you-update';
+import React, {Component} from 'react';
+import {Dimensions, Image} from 'react-native';
+import {Provider} from 'react-redux';
+import {whyDidYouUpdate} from 'why-did-you-update';
 import App from './App';
 import Spinner from './components/loaders/Spinner';
 import configureStore from './configureStore';
-import { disableConsole } from './utils/DevUtils';
+import {disableConsole} from './utils/DevUtils';
 const background = require('../images/backgrounds/iphone-splash_screen.png');
 const deviceWidth = Dimensions.get('window').width;
 
@@ -28,6 +28,8 @@ function setup(): React.Component {
         store: configureStore(this.onStoreConfigured),
         isLoading: true,
       };
+
+      require('./strings/index');
     }
 
     onStoreConfigured() {
@@ -46,11 +48,11 @@ function setup(): React.Component {
       }
       return (
         <Provider store={this.state.store}>
-          <App isStoreConfigured={!this.state.isLoading} />
+          <App isStoreConfigured={!this.state.isLoading}/>
         </Provider>
       );
     }
-    }
+  }
 
   return Root;
 }
