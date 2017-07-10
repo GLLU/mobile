@@ -9,13 +9,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     justifyContent: 'center',
-    alignItems: 'center'
   },
   text: {
     color: 'white',
     fontWeight: '600',
     textAlign: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center',
+
+
   }
 });
 
@@ -23,18 +25,25 @@ class SolidButton extends Component {
 
   static propTypes = {
     label: React.PropTypes.string.isRequired,
-    onPress: React.PropTypes.func
+    onPress: React.PropTypes.func,
+    showLoader: React.PropTypes.bool,
   }
 
   static defaultProps = {
-    onPress: _.noop
+    onPress: _.noop,
+    showLoader: false,
+    loaderElement: null
   }
 
   render() {
+    console.log('this.props.loaderElement',this.props.loaderElement)
     return (
-        <TouchableHighlight style={[styles.center, this.props.style]} onPress={this.props.onPress}>
-            <Text style={styles.text}>{this.props.label}</Text>
-        </TouchableHighlight>
+      <TouchableHighlight style={[styles.center, this.props.style]} onPress={this.props.onPress}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+          <Text style={styles.text}>{this.props.label}</Text>
+          {this.props.loaderElement}
+        </View>
+      </TouchableHighlight>
     );
   }
 }
