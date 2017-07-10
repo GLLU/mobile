@@ -42,6 +42,7 @@ class TabContent extends BaseComponent {
     this._renderRefreshControl = this._renderRefreshControl.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
+    this.loadMore = this.loadMore.bind(this)
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -54,7 +55,6 @@ class TabContent extends BaseComponent {
     this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
     this.showBodyModal = _.once(this._showBodyModal);
     this.currPosition = 0
-    this.contentHeight = 0
   }
 
   _onInviteFriendsClick() {
@@ -86,8 +86,6 @@ class TabContent extends BaseComponent {
       }
     }
     if(nextProps.clearedField){
-      this.contentHeight = 0
-      this.contentHeight = 0
       this.currPosition = 0
       this.setState({noMoreData: false})
     }
@@ -116,14 +114,9 @@ class TabContent extends BaseComponent {
         const contentSizeHeight = event.nativeEvent.contentSize.height;
         const currentScroll = event.nativeEvent.contentOffset.y
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight-250) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
-          if(this.contentHeight !== contentSizeHeight) {
-            this.contentHeight = contentSizeHeight
-            if(!this.state.loadingMore) {
-              this.setState({loadingMore: true}, () => this.loadMore())
-            }
-
+          if(!this.state.loadingMore && !this.state.isLoading) {
+            this.setState({loadingMore: true}, this.loadMore)
           }
-
         } else {
         }
       }
