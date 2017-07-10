@@ -49,6 +49,7 @@ class TabContent extends BaseComponent {
     this._renderRefreshControl = this._renderRefreshControl.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
     this.handleScroll = this.handleScroll.bind(this)
+    this.loadMore = this.loadMore.bind(this)
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -121,7 +122,7 @@ class TabContent extends BaseComponent {
         const currentScroll = event.nativeEvent.contentOffset.y
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight-250) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if(!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({loadingMore: true}, () => this.loadMore())
+            this.setState({loadingMore: true}, this.loadMore)
           }
         } else {
         }
