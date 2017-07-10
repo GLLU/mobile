@@ -139,7 +139,7 @@ class CustomAutocomplete extends Autocomplete {
     const brands = dataSource._dataBlob.s1;
     return brands.map((item, index) => {
       const borderBottomWidth = index == (Object.keys(brands).length - 1) ? 1: 0;
-      return (<TouchableOpacity style={[styles.resultItem, {borderBottomWidth: borderBottomWidth}]} key={index} onPress={() => this.props.findOrCreateBrand(item, false)} >
+      return (<TouchableOpacity style={[styles.resultItem, {borderBottomWidth: borderBottomWidth}]} key={index} onPress={() => this.props.findOrCreateBrand(item)} >
                 <Text>{item.name}</Text>
               </TouchableOpacity>);
     });
@@ -163,7 +163,7 @@ class CustomAutocomplete extends Autocomplete {
     return (
       <View style={styles.autocompleteResults}>
         <View style={styles.btnContainer} >
-          <Button transparent onPress={() => this.props.findOrCreateBrand({name: this.props.query}, true)} style={StyleSheet.flatten(styles.btnCreateNew)} >
+          <Button transparent onPress={() => this.props.findOrCreateBrand({name: this.props.query})} style={StyleSheet.flatten(styles.btnCreateNew)} >
             <Text style={styles.btnCreateNewText}>Add a New Brand "{this.props.query}"</Text>
           </Button>
         </View>
