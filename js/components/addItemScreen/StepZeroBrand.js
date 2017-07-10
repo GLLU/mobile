@@ -91,10 +91,10 @@ class StepZeroBrand extends BaseComponent {
 
   }
 
-  findOrCreateBrand(value) {
-    const data = {...value, itemId: this.props.item.id}
-    const brandName = value.name
-    const brandFunction = value.id ? this.props.addBrandName : this.props.createBrandName;
+  findOrCreateBrand(brand) {
+    const data = {...brand, itemId: this.props.item.id}
+    const brandName = brand.name
+    const brandFunction = brand.id ? this.props.addBrandName : this.props.createBrandName;
     brandFunction(data).then(() => {
       console.log('brand added')
 
@@ -103,7 +103,7 @@ class StepZeroBrand extends BaseComponent {
     })
     this.setState({modalVisible: false, brandName});
 
-    if (value.id) {
+    if (brand.id) {
       this.logEvent('UploadLookScreen', { name: 'Brand pick', brand: brandName });
     } else {
       this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
