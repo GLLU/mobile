@@ -162,19 +162,13 @@ class CustomAutocomplete extends Autocomplete {
   }
 
   _renderButtonCreateNewItem() {
-    const { query } = this.props
-    const alreadyExist =  this.checkIfBrandExistsinData(query)
-
     return (
       <View style={styles.autocompleteResults}>
-        {alreadyExist ? <View style={styles.btnContainer} >
-          <Button transparent onPress={() => this.props.findOrCreateBrand(query, true)} style={StyleSheet.flatten(styles.btnCreateNew)} >
-            <Text style={styles.btnCreateNewText}>Add a New Brand "{query}"</Text>
+        <View style={styles.btnContainer} >
+          <Button transparent onPress={() => this.props.findOrCreateBrand(this.props.query, true)} style={StyleSheet.flatten(styles.btnCreateNew)} >
+            <Text style={styles.btnCreateNewText}>Add a New Brand "{this.props.query}"</Text>
           </Button>
         </View>
-          :
-          null
-        }
       </View>
     );
   }
@@ -209,9 +203,10 @@ class CustomAutocomplete extends Autocomplete {
     const { containerStyle, inputContainerStyle, query, selected } = this.props;
     const { dataSource } = this.state;
     const brands = dataSource._dataBlob.s1;
+    const alreadyExist =  this.checkIfBrandExistsinData(query)
     let l = Object.keys(brands).length;
     let showResults = query !== '' && l > 0 && !selected;
-    let showCreateBtn = query !== '' && !selected;
+    let showCreateBtn = (query !== '' && alreadyExist && !selected);
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.inputContainer, inputContainerStyle]}>
@@ -224,7 +219,7 @@ class CustomAutocomplete extends Autocomplete {
           </View>
         </View>
         {showResults && this._renderItems()}
-        {showCreateBtn && this._renderButtonCreateNewItem()}
+        {query && showCreateBtn ? this._renderButtonCreateNewItem() : null}
       </View>
     );
   }
