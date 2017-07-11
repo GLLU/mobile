@@ -3,6 +3,7 @@ import { StyleSheet, View, FlatList } from 'react-native';
 import ListHeader from './ListHeader';
 import { isEmpty, noop } from "lodash";
 import FullscreenView from "../containers/FullscreenView";
+import Separator from "./Separator";
 
 const styles = StyleSheet.create({
   separator: {
@@ -45,6 +46,7 @@ export default class ListScreen extends Component {
       style={styles.container}
       data={this.props.data}
       keyExtractor={this.props.keyExtractor}
+      ItemSeparatorComponent={()=><Separator/>}
       renderItem={({item}) => this.props.renderItem(item)}
       onEndReached={this.state.isTrueEndReached? noop:this.props.onEndReached}
       onEndReachedThreshold={100}
