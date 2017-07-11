@@ -119,8 +119,7 @@ class SignInPage extends Component {
 
   handleSigninPress() {
     this.props.logEvent('SignInScreen', { name: 'Lets inFash click' });
-
-   this.singinWithEmail();
+    this.singinWithEmail();
   }
 
   handleForgotPasswordPress() {
