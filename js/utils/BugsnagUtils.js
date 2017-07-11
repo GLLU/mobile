@@ -2,7 +2,6 @@ import { Client, Configuration } from 'bugsnag-react-native';
 import Config from 'react-native-config';
 import {isEmpty,noop,each} from 'lodash';
 import * as selfRef from './BugsnagUtils'
-import {version} from '../../package.json';
 export default selfRef
 
 /*global __DEV__ */
