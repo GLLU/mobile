@@ -9,7 +9,6 @@ import BaseComponent from '../common/base/BaseComponent';
 
 const styles = StyleSheet.create({
   avatar: {
-    justifyContent: 'center',
     alignItems: 'center',
   },
   avatarImg: {
@@ -104,7 +103,7 @@ class ProfileView extends BaseComponent {
   render() {
 
     return (
-      <View style={[styles.avatar, this.props.isMyProfile ? null : {left: 20}]}>
+      <View style={[styles.avatar]}>
         <Image source={{uri: this.props.profilePic}} style={styles.avatarImg}/>
         <Text style={styles.name}>{this.props.name}</Text>
         <Text style={styles.username}>@{this.props.username}</Text>

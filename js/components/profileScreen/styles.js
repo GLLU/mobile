@@ -20,6 +20,7 @@ export default StyleSheet.create({
     left: 0
   },
   header: {
+    flex: 1,
     marginTop: 40,
     flexDirection: 'row',
     backgroundColor: 'transparent',
@@ -49,7 +50,8 @@ export default StyleSheet.create({
   backBtn: {
     marginLeft: 20,
     color: 'white',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    width: 25
   },
   avatar: {
     justifyContent: 'center',
