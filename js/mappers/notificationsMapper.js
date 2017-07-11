@@ -2,16 +2,13 @@ import _ from 'lodash';
 import * as userMapper from "./userMapper";
 
 export function notificationMapper(notification) {
-  const cover = notification.go_to_object.data.cover ? notification.go_to_object.data.cover : null
-  const {initiator} = notification;
+  const {initiator,go_to_object} = notification;
+  const cover = go_to_object.data ? go_to_object.data.cover : null
+
   return {
-    id: notification.id,
-    created_at: notification.created_at,
-    is_read: notification.is_read,
-    go_to_object: notification.go_to_object,
-    coverImage: cover ? _.find(cover.list, x => x.version === 'medium') : null,
+    ...notification,
     ...userMapper.map(initiator),
-    action_kind: notification.action_kind,
+    coverImage: cover ? _.find(cover.list, x => x.version === 'medium') : null,
     actionText: getTextByAction(notification.action_kind)
   };
 }
