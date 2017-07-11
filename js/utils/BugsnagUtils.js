@@ -2,15 +2,17 @@ import { Client, Configuration } from 'bugsnag-react-native';
 import Config from 'react-native-config';
 import {isEmpty,noop,each} from 'lodash';
 import * as selfRef from './BugsnagUtils'
-
+import {version} from '../../package.json';
 export default selfRef
 
 /*global __DEV__ */
 const DEV=__DEV__;
 
 const getRealBugsnagClient=()=>{
+
   const config = new Configuration(Config.BUGSNAG_API_KEY)
-  config.codeBundleId = Config.codeBundleId
+  console.log('version',version)
+  config.codeBundleId = Config.BUGSNAG_BUNDLE_ID
   return new Client(config)
 };
 
