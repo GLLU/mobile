@@ -191,7 +191,7 @@ class SignUpPage extends Component {
 
               <View style={styles.uploadImgContainer}>
                 <View style={{height: 100, width: 100, borderRadius:50}}>
-                    <ProfileAvatar style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} editable={true}/>
+                    <ProfileAvatar style = {styles.uploadImgBtn} avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)} isEditable={true}/>
                 </View>
               </View>
               <KeyboardAvoidingView behavior='padding'>

@@ -1,13 +1,15 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Image, TouchableOpacity, TextInput, Platform, View, Dimensions, StyleSheet } from 'react-native';
+import Spinner from "../../loaders/Spinner";
+import { noop } from "lodash";
 
 const cameraWhite = require('../../../../images/icons/cameraWhite.png');
 
 const w = Dimensions.get('window').width
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
   avatar: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -17,6 +19,7 @@ const styles=StyleSheet.create({
     height: 100,
     borderRadius: 50,
     justifyContent: 'center',
+    backgroundColor: 'white'
   },
   profilePicBtn: {
     width: 30,
@@ -44,43 +47,63 @@ const styles=StyleSheet.create({
 });
 
 
-class ProfileAvatar extends Component {
+class ProfileAvatar extends PureComponent {
 
   static propTypes = {
+    isLoading: React.PropTypes.bool,
     avatarUrl: React.PropTypes.string,
-    editable: React.PropTypes.bool,
+    isEditable: React.PropTypes.bool,
     changeUserAvatar: React.PropTypes.func,
+  };
+
+  static defaultProps = {
+    changeUserAvatar: noop
+  };
+
+  getContainerStyle = () => {
+    return Platform.OS === 'ios' ?
+      [styles.avatarImg, styles.editAvatarImage] :
+      styles.avatarImg
   }
 
-  renderImage(){
-    return <TouchableOpacity transparent onPress={() => this.props.changeUserAvatar()} style={this.props.style||styles.editProfileAvatarImg}>
-      <Image source={{uri: this.props.avatarUrl}} style={[styles.avatarImg, (Platform.OS === 'ios') ? styles.editAvatarImage : null]} borderRadius={50} >
-        { this.props.editable ?
-          <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
-            <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
-          </View>
-          : null
-        }
-      </Image>
-    </TouchableOpacity>
+  renderAvatar() {
+    const {avatarUrl,isEditable,isLoading}=this.props;
+    return (
+        <Image source={{uri: avatarUrl}} style={this.getContainerStyle()} borderRadius={50}>
+          {this.renderOverlay(isEditable, isLoading)}
+        </Image>
+    );
   }
 
-  renderWhiteCircle(){
-    return <TouchableOpacity transparent onPress={() => this.props.changeUserAvatar()} style={this.props.style||styles.editProfileAvatarImg}>
-      <View style={[styles.avatarImg, (Platform.OS === 'ios') ? styles.editAvatarImage : null]} borderRadius={50} >
-        { this.props.editable ?
-          <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
-            <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
-          </View>
-          : null
+  renderWhiteCircle() {
+    const {isEditable,isLoading}=this.props;
+    return (
+        <View style={this.getContainerStyle()} borderRadius={50}>
+          {this.renderOverlay(isEditable, isLoading)}
+        </View>
+    );
+  }
+
+  renderOverlay(isEditable, isLoading) {
+    return isEditable ? (
+      <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
+        {
+          isLoading ?
+            <Spinner color='white' style={styles.profilePicBtn}/> :
+            <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'}/>
         }
       </View>
-    </TouchableOpacity>
+    ) : null;
   }
 
 
   render() {
-    return this.props.avatarUrl ? this.renderImage() : this.renderWhiteCircle();
+    const {avatarUrl, changeUserAvatar,style} = this.props;
+    return(
+      <TouchableOpacity transparent onPress={changeUserAvatar} style={style || styles.editProfileAvatarImg}>
+        {avatarUrl ? this.renderAvatar() : this.renderWhiteCircle()}
+      </TouchableOpacity>
+    );
   }
 }
 
