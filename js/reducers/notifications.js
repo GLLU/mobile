@@ -12,13 +12,11 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_USER_NOTIFICATIONS: {
       let newNotifications = false;
-      let allNotifications = []
+      let allNotifications = action.payload.notificationsData.notifications.map(notificationMapper);
       if(state.page === 0){
-        allNotifications = action.payload.notificationsData.notifications.map(notificationMapper)
         newNotifications = action.payload.notificationsData.notifications.length > 0 ? !allNotifications[0].is_read : false
       } else {
-        allNotifications = state.allNotifications
-        allNotifications = allNotifications.concat(action.payload.notificationsData.notifications.map(notificationMapper))
+        allNotifications= _.unionBy(state.allNotifications, allNotifications, notification=>notification.id);
       }
       return {
         ...state,
