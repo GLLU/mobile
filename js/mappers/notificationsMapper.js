@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as userMapper from "./userMapper";
 
-export function notificationMapper(notification) {
+export function map(notification) {
   const {initiator,go_to_object} = notification;
   const cover = go_to_object.data ? go_to_object.data.cover : null
 
