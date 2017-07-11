@@ -9,9 +9,7 @@ export default selfRef
 const DEV=__DEV__;
 
 const getRealBugsnagClient=()=>{
-
   const config = new Configuration(Config.BUGSNAG_API_KEY)
-  console.log('version',version)
   config.codeBundleId = Config.BUGSNAG_BUNDLE_ID
   return new Client(config)
 };
