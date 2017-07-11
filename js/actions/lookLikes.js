@@ -22,10 +22,14 @@ export function initLookLikes(data) {
   };
 }
 
-export function getLookLikes(id) {
+export function getLookLikes(id, pageNumber = 1, pageSize = 25) {
   return (dispatch) => {
     return dispatch(rest.actions.likes.get({
       look_id: id,
+      page:{
+        size:pageSize,
+        number:pageNumber
+      }
     }, {}, (err, lookLikesData) => {
       if (!err && lookLikesData) {
         let likesData = {

@@ -36,7 +36,6 @@ class SolidButton extends Component {
   }
 
   render() {
-    console.log('this.props.loaderElement',this.props.loaderElement)
     return (
       <TouchableHighlight style={[styles.center, this.props.style]} onPress={this.props.onPress}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>

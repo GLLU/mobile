@@ -1,5 +1,5 @@
 import * as actions from '../actions/notifications';
-import { notificationMapper } from '../mappers/notificationsMapper'
+import * as notificationsMapper from '../mappers/notificationsMapper'
 import * as _ from "lodash";
 
 const initialState = {
@@ -12,13 +12,11 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_USER_NOTIFICATIONS: {
       let newNotifications = false;
-      let allNotifications = []
+      let allNotifications = action.payload.notificationsData.notifications.map(notificationsMapper.map);
       if(state.page === 0){
-        allNotifications = action.payload.notificationsData.notifications.map(notificationMapper)
         newNotifications = action.payload.notificationsData.notifications.length > 0 ? !allNotifications[0].is_read : false
       } else {
-        allNotifications = state.allNotifications
-        allNotifications = allNotifications.concat(action.payload.notificationsData.notifications.map(notificationMapper))
+        allNotifications= _.unionBy(state.allNotifications, allNotifications, notification=>notification.id);
       }
       return {
         ...state,
@@ -29,7 +27,7 @@ export default function (state = initialState, action) {
     }
     case actions.ADD_USER_NOTIFICATION: {
       let existNotifications = state.allNotifications;
-      let newNotification = notificationMapper(action.payload)
+      let newNotification = notificationsMapper.map(action.payload)
       existNotifications.unshift(newNotification)
       return {
         ...state,
