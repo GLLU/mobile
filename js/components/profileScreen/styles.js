@@ -19,12 +19,12 @@ export default StyleSheet.create({
     top: 0,
     left: 0
   },
-  header: {
-    flex: 1,
-    marginTop: 40,
+  profileHeader: {
+    marginTop: 30,
     flexDirection: 'row',
     backgroundColor: 'transparent',
     justifyContent: 'space-between',
+    overflow: 'hidden',
   },
   headerBtn: {
     backgroundColor: 'transparent',
@@ -65,7 +65,9 @@ export default StyleSheet.create({
   },
   description: {
     backgroundColor: 'transparent',
-    margin: 15,
+    marginHorizontal: 15,
+    marginTop: 5,
+    marginBottom: 35
   },
   descriptionText: {
     color: 'white',
@@ -115,6 +117,7 @@ export default StyleSheet.create({
     height: 75,
     justifyContent: 'space-around',
     marginTop: 5,
+    marginBottom: 15,
     backgroundColor: 'transparent',
 
   },
