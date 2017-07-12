@@ -5,31 +5,6 @@ import BaseComponent from "../../common/base/BaseComponent";
 import SolidButton from "../../common/buttons/SolidButton";
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
-    container: {
-        flexDirection: 'row',
-        backgroundColor: '#f2f2f2'
-    },
-    textInput: {
-        flex: 25,
-        backgroundColor: 'white',
-        color: 'black',
-        fontSize: 12,
-        textAlign: 'left',
-        paddingLeft: 5,
-    },
-    sendButton: {
-        backgroundColor: '#00D7B2',
-        flex: 6,
-        justifyContent: 'center',
-        flexDirection: 'column'
-    },
-    sendButtonText: {
-        color: 'white',
-        fontSize: 16,
-        textAlign: 'center',
-    }
-=======
   container: {
     flexDirection: 'row',
     alignItems: 'stretch',
@@ -55,7 +30,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   }
->>>>>>> f41fd990ea77bc65f32d264db8068ec9a3733772
 });
 
 export default class CommentInput extends BaseComponent {
@@ -89,40 +63,6 @@ export default class CommentInput extends BaseComponent {
         }
     }
 
-    onChange(value) {
-        this.props.onChange(value);
-        this.setState({value: value});
-    }
-<<<<<<< HEAD
-
-    onSendPress() {
-        const commentValue = this.state.value
-        if (commentValue) {
-            this.logEvent('LookScreen', {name: `new comment added!`, content: commentValue});
-            this.props.onSendPress(this.state.value);
-        }
-    }
-
-    render() {
-        return (
-            <View style={[styles.container, this.props.style]}>
-                <View style={{flex: 1}} name="spacer"/>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Add Comment"
-                    onChangeText={this.onChange}
-                    value={this.state.value}
-                    multiline={true}
-                    underlineColorAndroid='transparent'/>
-                <View style={{flex: 1}} name="spacer"/>
-                <SolidButton label='SEND' style={styles.sendButton} onPress={this.onSendPress}/>
-                <View style={{flex: 1}} name="spacer"/>
-            </View>
-        );
-    }
-=======
-  }
-
   onChange(value) {
     this.props.onChange(value);
     this.setState({value: value});
@@ -150,7 +90,6 @@ export default class CommentInput extends BaseComponent {
       </View>
     )
   }
->>>>>>> f41fd990ea77bc65f32d264db8068ec9a3733772
 }
 
 
