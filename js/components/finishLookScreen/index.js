@@ -7,7 +7,7 @@ import SocialShare from '../../lib/social';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import glluTheme from '../../themes/gllu-theme';
 import { formatInvitationMessage } from "../../lib/messages/index";
-import { openCamera, takeMedia } from '../../lib/camera/CameraUtils'
+import { takeMedia } from '../../lib/camera/CameraUtils'
 import finishPhoto from '../../../images/upload/finish-upload-look.png'
 import asScreen from "../common/containers/Screen"
 import {NavigationActions} from "react-navigation";
@@ -76,10 +76,10 @@ class FinishLookPage extends Component {
 
   handleGlluAgainPress() {
     this.props.logEvent('FinishLookScreen', { name: 'Lets inFash Again click' });
-    this.openCamera()
+    this.takeMedia()
   }
 
-  async openCamera() {
+  async takeMedia() {
     this.props.logEvent('FinishLookScreen', { name: 'Open Camera click' });
     const file = await takeMedia();
     this.goToAddNewItem(file);

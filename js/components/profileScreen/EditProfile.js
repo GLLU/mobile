@@ -11,7 +11,7 @@ import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
 import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import InformationTextIcon from '../common/informationTextIcon';
-import { openCamera, takePicture } from '../../lib/camera/CameraUtils'
+import { takePicture } from '../../lib/camera/CameraUtils'
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 import BodyTypePicker from "../myBodyType/BodyTypePicker";
@@ -74,12 +74,12 @@ class EditProfile extends Component {
 
   _changeUserAvatar() {
     this.props.logEvent('EditProfileScreen', { name: 'Change avatar click' });
-    this.openCamera().then(()=>{
+    this.takePicture().then(()=>{
       this.setState({isChangingAvatar:true})
     }).catch((err)=>console.log(err));
   }
 
-  async openCamera() {
+  async takePicture() {
     const {id} = this.props.user;
     this.props.logEvent('EditProfileScreen', {name: 'Open Camera click'});
     const image = await takePicture();

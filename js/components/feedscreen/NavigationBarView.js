@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, Platform ,View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux';
 import BaseComponent from '../common/base/BaseComponent';
-import { openCamera, takeMedia } from '../../lib/camera/CameraUtils'
+import { takeMedia } from '../../lib/camera/CameraUtils'
 import * as _ from "lodash";
 
 const userIcon = require('../../../images/icons/user.png');
@@ -82,7 +82,7 @@ class NavigationBarView extends BaseComponent {
     this.props.navigateTo('notificationsScreen');
   }
 
-  async openCamera() {
+  async takeMedia() {
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
     const file = await takeMedia();
     this.props.addNewItem(file);
@@ -98,7 +98,7 @@ class NavigationBarView extends BaseComponent {
           </TouchableOpacity>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <TouchableOpacity transparent onPress={() => this.openCamera()} style={styles.btnCamera}>
+          <TouchableOpacity transparent onPress={() => this.takeMedia()} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </TouchableOpacity>
         </View>
