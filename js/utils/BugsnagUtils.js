@@ -9,7 +9,7 @@ const DEV=__DEV__;
 
 const getRealBugsnagClient=()=>{
   const config = new Configuration(Config.BUGSNAG_API_KEY)
-  config.codeBundleId = Config.BUGSNAG_BUNDLE_ID
+  config.codeBundleId = '1.1.3'
   return new Client(config)
 };
 
