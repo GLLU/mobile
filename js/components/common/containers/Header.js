@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { Image, TouchableOpacity, Text, View, StyleSheet, Platform } from 'react-native';
 import { Button, Icon } from 'native-base';
 
 const styles = StyleSheet.create({
   headerContainer: {
+    marginTop: Platform.OS === 'ios' ? 10 : 0,
     height: 50
   },
   header: {
     backgroundColor: 'transparent',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+
   },
   headerTitle: {
     fontSize: 22,
-    fontWeight: '300',
-    fontFamily: 'Times New Roman',
     color: '#FFFFFF',
-    textAlign: 'left'
+    textAlign: 'left',
+    alignSelf: 'center',
+    marginBottom: 3
   },
   headerArrow: {
     color: '#FFFFFF'
@@ -30,11 +31,6 @@ class Header extends Component {
     title: React.PropTypes.string.isRequired,
     goBack: React.PropTypes.func
   };
-
-  constructor(props) {
-    super(props);
-
-  }
 
   render() {
     return (

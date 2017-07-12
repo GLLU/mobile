@@ -12,7 +12,7 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import BottomLookContainer from './BottomLookContainer';
-import { likeUpdate, unLikeUpdate,loadMore,getLookLikes } from '../../actions';
+import { likeUpdate, unlikeUpdate,loadMore,getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
@@ -21,6 +21,7 @@ import VideoWithCaching from "../common/media/VideoWithCaching";
 import ImageWrapper from "../common/media/ImageWrapper";
 import asScreen from "../common/containers/Screen"
 import Spinner from "../loaders/Spinner";
+import { editNewLook } from "../../actions/uploadLook";
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
 
@@ -43,7 +44,7 @@ class LooksScreen extends Component {
     query: React.PropTypes.object,
     navigateTo: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
-    unLikeUpdate: React.PropTypes.func,
+    unlikeUpdate: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
     loadMore: React.PropTypes.func,
   }
@@ -51,6 +52,7 @@ class LooksScreen extends Component {
   constructor(props) {
     super(props);
     this._goToProfile=this._goToProfile.bind(this);
+    this._goToEdit=this._goToEdit.bind(this);
     this.onToggleDrawer=this.onToggleDrawer.bind(this);
     this._toggleLike=this._toggleLike.bind(this);
     this.renderUpArrow=this.renderUpArrow.bind(this);
@@ -61,13 +63,15 @@ class LooksScreen extends Component {
       fadeAnim: new Animated.Value(0.35),
       fadeAnimContent: new Animated.Value(0),
       showAsFeed: !flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
-      isBottomDrawerOpen: false,
+      isBottomDrawerOpen: flatLook.openComments,
       isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
       startAnimte: false,
       currScrollIndex: flatLook.originalIndex,
-      loader: Platform.OS !== 'ios' && !flatLook.singleItem
+      loader: Platform.OS !== 'ios' && !flatLook.singleItem,
+      mountedOnce: false
     }
     this.loadMoreAsync = _.debounce(this.loadMore, 100)
+    this.opennedComments = false
   }
 
   componentDidMount() {
@@ -102,27 +106,32 @@ class LooksScreen extends Component {
 
           break;
       }
+      this.setState({mountedOnce: true}) //because comments are re-open when you this.goBack
     }
     if(this.state.currScrollIndex === this.props.flatLooksData.length-1) {
       this.loadMore()
     }
   }
 
-  _toggleLike(isLiked, likes) {
-    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${isLiked}`});
-    const { flatLook } = this.state
-    if (isLiked) {
-      let data = {id: flatLook.id, likes: likes, liked: true}
-      this.props.likeUpdate(data);
+  _toggleLike(shouldLiked) {
+    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${shouldLiked}`});
+    const { flatLook } = this.state;
+    const {id} = flatLook;
+    if (shouldLiked) {
+      this.props.likeUpdate(id);
     } else {
-
-      let data = {id: flatLook.id, likes: likes, liked: false}
-      this.props.unLikeUpdate(data);
+      this.props.unlikeUpdate(id);
     }
   }
 
   _goToProfile(look) {
     this.props.navigateTo('profileScreen',look);
+  }
+
+  _goToEdit(look) {
+    this.props.editNewLook(look.id).then(() => {
+      this.props.navigateTo('addItemScreen',{ mode: 'edit' });
+    });
   }
 
   onToggleDrawer(shouldOpen){
@@ -190,8 +199,49 @@ class LooksScreen extends Component {
     }
   }
 
+  shouldRenderArrows() {
+    if(this.state.showAsFeed) {
+      const {meta: {total}} = this.props;
+      return total > 2
+    } else {
+      return false
+    }
+  }
+
+  renderUpArrow() {
+    if(this.state.currScrollIndex !== 0) {
+      return (
+        <View style={{position: 'absolute', top: 0, width: width, height: 30}}>
+          <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_DOWN')} style={{width: 50, alignSelf: 'center'}}>
+            <Image source={arrowUp} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+  }
+
+  renderDownArrow() {
+    return (
+      <View style={{position: 'absolute', bottom: 0, width: width, height: 30}}>
+        <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_UP')} style={{width: 50, alignSelf: 'center'}}>
+           <Image source={arrowDown} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  openCommentsInAdvance(look) {
+
+    if(!this.state.mountedOnce && this.state.flatLook.openComments && look.id === this.state.flatLook.id) {
+      this.opennedComments = !this.opennedComments
+      return this.opennedComments
+    }
+     return false
+  }
+
   renderVideo(look, index) {
     const showShowArrow = this.shouldRenderArrows()
+    const openComments = this.openCommentsInAdvance(look)
     return (
       <GestureRecognizer
         key={look.originalIndex !==undefined ? look.originalIndex : -1}
@@ -216,11 +266,12 @@ class LooksScreen extends Component {
           height={height}
           look={look}
           goBack={this.props.goBack}
-          goToProfile={(user) => this._goToProfile(user)}
+          goToProfile={this._goToProfile}
+          goToEdit={this._goToEdit}
           toggleLike={this._toggleLike}
-          toggleMenu={() => this._toggleMenu()}
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
+          openComments={openComments}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           lookType={"video"}
           onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
@@ -231,42 +282,9 @@ class LooksScreen extends Component {
     )
   }
 
-  shouldRenderArrows() {
-    if(this.state.showAsFeed) {
-      const {meta: {total}} = this.props;
-      return total > 2
-    } else {
-      return false
-    }
-  }
-
-  renderUpArrow() {
-    if(this.state.currScrollIndex !== 0) {
-      return (
-        <View style={{position: 'absolute', top: 0, width: width, height: 30}}>
-          <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_DOWN')} style={{width: 50, alignSelf: 'center'}}>
-            <Image source={arrowUp} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
-          </TouchableOpacity>
-        </View>
-      )
-    }
-  }
-
-  renderDownArrow() {
-    return (
-
-      <View style={{position: 'absolute', bottom: 0, width: width, height: 30}}>
-        <TouchableOpacity onPress={() =>this.onSwipe('SWIPE_UP')} style={{width: 50, alignSelf: 'center'}}>
-           <Image source={arrowDown} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
-        </TouchableOpacity>
-      </View>
-
-
-      )
-  }
-
   renderImage(look, index) {
     const showShowArrow = this.shouldRenderArrows()
+    const openComments = this.openCommentsInAdvance(look)
     return (
       <GestureRecognizer
         key={look.originalIndex!==undefined ? look.originalIndex : -1}
@@ -288,11 +306,11 @@ class LooksScreen extends Component {
                 goBack={this.props.goBack}
                 goToProfile={(look) => this._goToProfile(look)}
                 toggleLike={this._toggleLike}
-                toggleMenu={() => this._toggleMenu()}
                 isMenuOpen={this.state.isMenuOpen}
+                openComments={openComments}
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
-                reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+                reportAbuse={this.props.reportAbuse}
                 onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
               />
               {showShowArrow ? this.renderUpArrow() : null}
@@ -387,8 +405,9 @@ class LooksScreen extends Component {
 
 function bindAction(dispatch) {
   return {
+    editNewLook: (id) => dispatch(editNewLook(id)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
-    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    unlikeUpdate: (id) => dispatch(unlikeUpdate(id)),
     getLookLikes: (id) => dispatch(getLookLikes(id)),
     reportAbuse: (lookId) => dispatch(reportAbuse(lookId)),
     loadMore: () => dispatch(loadMore()),

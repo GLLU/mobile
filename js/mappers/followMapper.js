@@ -1,3 +1,4 @@
+import * as userMapper from "./userMapper";
 export function mapFollower(follow) {
   return map(follow, follow.user)
 }
@@ -9,6 +10,6 @@ export function mapFollow(follow) {
 function map(follow, user) {
   return {
     ...follow,
-      ...user
+      ...userMapper.map(user)
   };
 }

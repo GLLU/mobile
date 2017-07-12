@@ -57,6 +57,8 @@ fastlane/README.md
 fastlane/Preview.html
 fastlane/screenshots
 
+sourceMap/
+
 ios/build
 ios/Pods/
 my-release-key.keystore

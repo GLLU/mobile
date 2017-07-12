@@ -45,6 +45,7 @@ It'll take significantly less time to clone.
 
 ## CodePush
 - To update Release you first need to update the staging version:
-     code-push release-react infash android (for IOS just change to IOS)
+     android: code-push release-react infash android
+     ios: code-push release-react infash ios --plistFile "ios/gllu/Info.plist"
 - If everything is ok you can promote the update to production:
      code-push promote infash Staging Production

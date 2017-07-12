@@ -1,6 +1,7 @@
 {
   "parser": "babel-eslint",
   "parserOptions": {
+    "ecmaVersion": 7,
     "ecmaFeatures": {
       "jsx": true
     }
@@ -17,6 +18,7 @@
   },
   "globals": {"Promise": true},
   "rules": {
+    "react/jsx-no-bind": "warning",
     "strict": 0,
     "semi": 0,
     "comma-dangle": 0,

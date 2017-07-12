@@ -5,7 +5,7 @@ import { noop } from 'lodash'
 import CommentsViewHeader from './CommentsViewHeader'
 import CommentInput from './CommentInput'
 import CommentsListView from './CommentsListView'
-import BottomHalfScrenModal from '../common/BottomHalfScreenModal'
+import BottomHalfScreenModal from '../common/BottomHalfScreenModal'
 import Spinner from '../../loaders/Spinner';
 import { getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -50,6 +50,12 @@ class CommentsView extends Component {
   getCommentsData() {
     this.props.getLookCommentsData(this.props.look_id, this.currentPageIndex);
     this.currentPageIndex++;
+  }
+
+  componentDidMount() {
+    if(this.props.isOpen) {
+      this.getCommentsData();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -104,12 +110,12 @@ class CommentsView extends Component {
 
   render() {
     return (
-      <BottomHalfScrenModal {...this.props}>
+      <BottomHalfScreenModal {...this.props}>
         <CommentsViewHeader count={this.state.count}/>
         {this.props.areCommentsLoaded ? this._renderListView() : <Spinner style={{flex: 1, justifyContent: 'center', padding: 10}}/>}
         {this._renderFooter()}
         <View style={{height:statusBarHeight}}/>
-      </BottomHalfScrenModal>
+      </BottomHalfScreenModal>
     );
   }
 }

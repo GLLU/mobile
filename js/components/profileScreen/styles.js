@@ -19,11 +19,12 @@ export default StyleSheet.create({
     top: 0,
     left: 0
   },
-  header: {
-    marginTop: 40,
+  profileHeader: {
+    marginTop: 30,
     flexDirection: 'row',
     backgroundColor: 'transparent',
     justifyContent: 'space-between',
+    overflow: 'hidden',
   },
   headerBtn: {
     backgroundColor: 'transparent',
@@ -49,7 +50,8 @@ export default StyleSheet.create({
   backBtn: {
     marginLeft: 20,
     color: 'white',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    width: 25
   },
   avatar: {
     justifyContent: 'center',
@@ -63,7 +65,9 @@ export default StyleSheet.create({
   },
   description: {
     backgroundColor: 'transparent',
-    margin: 15,
+    marginHorizontal: 15,
+    marginTop: 5,
+    marginBottom: 35
   },
   descriptionText: {
     color: 'white',
@@ -113,6 +117,7 @@ export default StyleSheet.create({
     height: 75,
     justifyContent: 'space-around',
     marginTop: 5,
+    marginBottom: 15,
     backgroundColor: 'transparent',
 
   },

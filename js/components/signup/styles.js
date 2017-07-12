@@ -16,7 +16,6 @@ module.exports = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: '300',
-    fontFamily: 'Times New Roman',
     color: '#FFFFFF',
     textAlign: 'left'
   },

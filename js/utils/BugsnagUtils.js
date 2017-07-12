@@ -2,7 +2,6 @@ import { Client, Configuration } from 'bugsnag-react-native';
 import Config from 'react-native-config';
 import {isEmpty,noop,each} from 'lodash';
 import * as selfRef from './BugsnagUtils'
-
 export default selfRef
 
 /*global __DEV__ */
@@ -10,7 +9,7 @@ const DEV=__DEV__;
 
 const getRealBugsnagClient=()=>{
   const config = new Configuration(Config.BUGSNAG_API_KEY)
-  config.codeBundleId = Config.codeBundleId
+  config.codeBundleId = Config.BUGSNAG_BUNDLE_ID
   return new Client(config)
 };
 

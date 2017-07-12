@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Image, TouchableHighlight,} from 'react-native';
 import * as _ from 'lodash'
-import FooterButton from './FooterButton'
-
+import FooterButtonWithCounter from "./FooterButtonWithCounter";
 const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
-//get the category icon
+
 export default class CommentsButton extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   static propTypes = {
     onPress: React.PropTypes.func,
@@ -22,7 +18,10 @@ export default class CommentsButton extends Component {
 
   render() {
     return (
-      <FooterButton {...this.props} icon={bubbleIcon}/>
+      <FooterButtonWithCounter
+        {...this.props}
+        icon={{active: bubbleIcon, inactive: bubbleIcon}}
+      />
     );
   }
 }

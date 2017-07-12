@@ -12,7 +12,7 @@ export default function (state = initialState, action) {
     case actions.SET_USER_FOLLOWS_DATA: {
       let userFollowsData = action.payload.follows.map(followMapper.mapFollow);
       if (action.payload.currId === state.currId) {
-        userFollowsData = _.unionBy(state.userFollowsData, userFollowsData, follow=>follow.user_id);
+        userFollowsData = _.unionBy(state.userFollowsData, userFollowsData, follow=>follow.id);
       }
       return {
         ...state,

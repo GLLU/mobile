@@ -1,13 +1,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text } from 'react-native';
+import { ScrollView, Image, TextInput, Dimensions, StyleSheet, Modal, TouchableOpacity, View,Text, Platform } from 'react-native';
 import { Grid, Row, Col } from 'native-base';
 import TagInput from './forms/TagInput';
 import BrandUrlInput from './forms/BrandUrlInput';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import BaseComponent from '../common/base/BaseComponent';
-import ExpandableTextAreaDescription from './forms/ExpandableTextAreaDescription';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 import {
     createLookItem,
     addDescription,
@@ -23,6 +23,7 @@ import FontSizeCalculator from './../../calculators/FontSize';
 import Utils from '../../utils';
 import WantMoreMony from '../../../images/upload/want-more-money.png';
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
 const BTN_RADIO_MARGIN_TOP = deviceWidth < 375 ? 0 : 10;
 
 const styles = StyleSheet.create({
@@ -373,35 +374,37 @@ class StepThreePublish extends BaseComponent {
   render() {
     const { image } = this.props;
     return(
-
-      <ScrollView scrollEnabled={true} style={{paddingTop: 10, paddingHorizontal: 20}}>
-        <Grid>
+      <View style={{height: deviceHeight-50, paddingVertical:20}}>
+      <ScrollView scrollEnabled={true} style={{paddingHorizontal: 20}}>
+        <View style={{flexGrow: 1}} >
           {this.props.isVideo ? this.renderFirstRowWithOutImage() : this.renderFirstRowWithImage(image)}
-          <Row style={styles.row}>
+          <View style={styles.row}>
             <Text style={styles.titleLabelInfo}>Add tags</Text>
             {this.renderItemTags()}
-          </Row>
+          </View>
 
-          <Row style={styles.row}>
+          <View style={styles.row}>
             <Text style={styles.titleLabelInfo}>Link to the webpage of the item</Text>
             {this.renderBrandsUrl()}
-          </Row>
-          <Row style={[styles.row, {height: 100}]}>
-            <NativeBaseButton
-              disabled={false}
+          </View>
+          <View style={[styles.row, {height: 50}]}>
+            <SolidButton
+              style={{backgroundColor: '#05d7b2'}}
               onPress={() => this.handlePublishPress()}
               label={ this.props.state === LOOK_STATES.PUBLISHED ? 'SAVE' : 'PUBLISH'}
             />
-          </Row>
-        </Grid>
+          </View>
+        </View>
         {this.renderImageOverlay()}
         {this.renderConfirmUrlOverlay()}
       </ScrollView>
+      </View>
     )
   }
 }
 
 import { connect } from 'react-redux';
+import SolidButton from "../common/buttons/SolidButton";
 function bindActions(dispatch) {
   return {
     createLookItem: (tag) => dispatch(createLookItem(tag)),

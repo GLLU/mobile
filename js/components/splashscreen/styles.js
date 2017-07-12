@@ -64,15 +64,6 @@ module.exports = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'center',
   },
-  titleHeading: {
-    fontSize: 32,
-    fontWeight: '300',
-    fontFamily: 'Times New Roman',
-    color: '#FFFFFF',
-    marginTop: (Platform.OS === 'ios') ? 20 : 0,
-    paddingTop: 20,
-    textAlign: 'center'
-  },
   signupContainer: {
     flex: 0.1,
     marginTop: 0,

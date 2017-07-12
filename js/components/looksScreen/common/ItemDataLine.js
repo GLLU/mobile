@@ -1,16 +1,42 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableHighlight, TouchableOpacity, StyleSheet, Text, Animated, Linking } from 'react-native';
 import * as _ from 'lodash'
-import styles from '../styles'
 import { showInfo } from '../../../actions'
 import { connect } from 'react-redux'
 
 const bagItImage = require('../../../../images/icons/bag-white.png');
 
+const styles = StyleSheet.create({
+  footerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    minHeight: 45,
+    minWidth: 45,
+    borderRadius: 25,
+    paddingHorizontal:5
+  },
+  footerButtonIcon: {
+    height: 25,
+    width: 25,
+    resizeMode: 'contain',
+    alignSelf: 'center'
+  },
+  footerButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 12
+  }
+});
+
 class ItemDataLine extends Component {
   constructor(props) {
     super(props);
-
+    this.handleOpenLink = this.handleOpenLink.bind(this);
   }
 
   static propTypes = {
@@ -40,21 +66,19 @@ class ItemDataLine extends Component {
 
 
   render() {
-    if(this.props.isOpen){
-      return (
-        <TouchableHighlight>
-          <Animated.View style={[styles.footerButton, { flexDirection: 'row', padding: 0, margin: 5}]}>
+    return this.props.isOpen ? (
+      <TouchableHighlight>
+        <TouchableOpacity onPress={this.handleOpenLink}>
+          <View style={styles.footerButton}>
             <Text style={[styles.footerButtonText, {marginHorizontal: 10}]}>{this.props.data.brand.name}</Text>
-            <View style={{ margin: 5,borderLeftWidth: 2, borderColor: 'gray'}}>
-              <TouchableOpacity onPress={() => this.handleOpenLink()}>
-                <Image source={bagItImage}
-                       style={[styles.footerButtonIcon,{width: 20, height: 20, margin: 2.5, marginLeft: 10}]}/>
-              </TouchableOpacity>
+            <View style={{margin: 5, borderLeftWidth: 2, borderColor: 'gray'}}>
+              <Image source={bagItImage}
+                     style={[styles.footerButtonIcon, {width: 20, height: 20, margin: 2.5, marginLeft: 10}]}/>
             </View>
-          </Animated.View>
-        </TouchableHighlight>
-      );
-    } else return null
+          </View>
+        </TouchableOpacity>
+      </TouchableHighlight>
+    ) : null;
 
   }
 }
@@ -65,7 +89,7 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps= ()=>({});
+const mapStateToProps = () => ({});
 
 export default connect(mapStateToProps, bindActions)(ItemDataLine);
 

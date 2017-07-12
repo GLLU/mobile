@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, Platform,View } from 'react-native';
-import {  Button } from 'native-base';
+import { StyleSheet, TextInput, Text, Platform, View, TouchableHighlight } from 'react-native';
 import withAnalytics from '../common/analytics/WithAnalytics';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -30,7 +29,8 @@ const styles = StyleSheet.create({
   },
   btnCloseFilter: {
     marginHorizontal: 5,
-    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 0.4,
     borderColor: '#757575',
     borderRadius: 10,
@@ -98,9 +98,9 @@ class SearchBar extends Component {
           underlineColorAndroid='transparent'
           onChangeText={this.handleTextInput}
           value={this.state.text}/>
-        <Button transparent onPress={this.clearSearch} style={StyleSheet.flatten(styles.btnCloseFilter)}>
+        <TouchableHighlight onPress={this.clearSearch} style={styles.btnCloseFilter}>
           <Text style={styles.clearText}>Clear</Text>
-        </Button>
+        </TouchableHighlight>
       </View>
     )
   }

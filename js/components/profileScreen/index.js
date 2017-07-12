@@ -7,15 +7,13 @@ import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ProfileView  from './ProfileView';
 import StatsView  from './StatsView';
-import { getStats, getUserBodyType, addNewLook, getUserLooks, showParisBottomMessage, likeUpdate, unLikeUpdate, loadMoreUserLooks, getUserBalance } from '../../actions';
+import { getStats, getUserBodyType, addNewLook, getUserLooks, showParisBottomMessage, likeUpdate,unlikeUpdate, loadMoreUserLooks, getUserBalance } from '../../actions';
 import _ from 'lodash';
 import UserLooks from './UserLooks';
 import { editNewLook } from "../../actions/uploadLook";
 import Spinner from '../loaders/Spinner';
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const toSettings = require('../../../images/icons/settings.png');
-
-
 
 class ProfileScreen extends Component {
   static propTypes = {
@@ -122,7 +120,9 @@ class ProfileScreen extends Component {
         <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn}/>
       </TouchableOpacity>
       :
-      <Text style={styles.reportBtn}>REPORT</Text>
+
+        <View style={styles.settingsBtn}/>
+
   }
 
   goToAddNewItem(imagePath) {
@@ -302,10 +302,8 @@ class ProfileScreen extends Component {
               <Image source={profileBackground} style={styles.bg}>
                 <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                                 style={[styles.linearGradient, {opacity: 0.7}]}/>
-                <View style={styles.header}>
-
+                <View style={styles.profileHeader}>
                     { this._renderleftBtn() }
-                  { avatarUrl ?
                     <ProfileView profilePic={avatarUrl}
                                  userid={this.state.userId}
                                  name={user.name}
@@ -314,7 +312,7 @@ class ProfileScreen extends Component {
                                  isFollowing={this.state.isFollowing}
                                  onFollowPress={this.toggleFollow.bind(this)}
                                  navigateTo = {this.props.navigateTo}
-                    /> : null }
+                    />
                     { this._renderRightBtn() }
                 </View>
                 <View style={styles.description}>
@@ -330,7 +328,7 @@ class ProfileScreen extends Component {
                 editNewLook = {this.props.editNewLook}
                 addNewLook = {this.props.addNewLook}
                 likeUpdate = {this.props.likeUpdate}
-                unLikeUpdate = {this.props.unLikeUpdate}
+                unlikeUpdate = {this.props.unlikeUpdate}
                 meta={this.props.meta}
                 isLoading={this.state.isLoading}
               />
@@ -357,7 +355,7 @@ function bindAction(dispatch) {
     loadMoreUserLooks: (looksCall) => dispatch(loadMoreUserLooks(looksCall)),
     showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),
     likeUpdate: (id) => dispatch(likeUpdate(id)),
-    unLikeUpdate: (id) => dispatch(unLikeUpdate(id)),
+    unlikeUpdate: (id) => dispatch(unlikeUpdate(id)),
   };
 }
 

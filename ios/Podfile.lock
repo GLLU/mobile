@@ -15,6 +15,7 @@ PODS:
   - FBSDKShareKit (4.17.0):
     - FBSDKCoreKit
   - Flurry-iOS-SDK/FlurrySDK (8.1.0)
+  - QBImagePickerController (3.4.0)
 
 DEPENDENCIES:
   - Crashlytics
@@ -23,6 +24,7 @@ DEPENDENCIES:
   - FBSDKLoginKit (= 4.17)
   - FBSDKShareKit (= 4.17)
   - Flurry-iOS-SDK/FlurrySDK
+  - QBImagePickerController
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -32,7 +34,8 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 42b7129ac0373ca99eaf4cbebf4d07bd42371f59
   FBSDKShareKit: 9b573d03fbee36cbaf42d5bb1f2bc019e0d72347
   Flurry-iOS-SDK: 51065be4436f3e21fc8d3d7bb0b7d6869df6333d
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
 
-PODFILE CHECKSUM: b79349224384df7ca6b5c5082e13647b640ce6be
+PODFILE CHECKSUM: bc4dc9f07ce66ec3384a020f2e26c3636d42125e
 
 COCOAPODS: 1.2.1

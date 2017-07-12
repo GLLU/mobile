@@ -105,7 +105,7 @@ class UserLooks extends Component {
         <MediaContainer look={look}
                         currScroll={this.props.currentScrollPosition}
                         likeUpdate={this.props.likeUpdate}
-                        unLikeUpdate={this.props.likeUpdate}
+                        unlikeUpdate={this.props.unlikeUpdate}
                         navigateTo={this.props.navigateTo}
                         sendParisMessage={this.props.showParisBottomMessage}
                         key={look.id}

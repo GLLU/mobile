@@ -28,7 +28,7 @@ class VideoItemLine extends Component {
     const { item } = this.props;
     const category = item.category || {};
       return (
-        <View style={{flex: 1, height: 45, flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end'}} >
+        <View style={{flex:1,marginVertical:5, flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end'}} >
           <ItemDataLine isOpen={this.state.itemLineOpen} data={item} />
           <ItemButton isActive={this.state.itemLineOpen} onPress={this._onItemClick} categoryIcon={category.icon} />
 
