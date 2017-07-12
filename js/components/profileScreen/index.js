@@ -302,7 +302,7 @@ class ProfileScreen extends Component {
               <Image source={profileBackground} style={styles.bg}>
                 <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                                 style={[styles.linearGradient, {opacity: 0.7}]}/>
-                <View style={styles.header}>
+                <View style={styles.profileHeader}>
                     { this._renderleftBtn() }
                     <ProfileView profilePic={avatarUrl}
                                  userid={this.state.userId}
