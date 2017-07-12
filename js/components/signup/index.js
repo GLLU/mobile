@@ -15,7 +15,7 @@ import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
 import ProfileAvatar from '../common/avatars/ProfileAvatar'
 import SolidButton from '../common/buttons/SolidButton'
-import {openCamera} from '../../lib/camera/CameraUtils'
+import { openCamera, takePicture } from '../../lib/camera/CameraUtils'
 import Header from "../common/containers/Header";
 import Spinner from '../loaders/Spinner'
 
@@ -167,11 +167,7 @@ class SignUpPage extends Component {
 
   async openCamera() {
     this.props.logEvent('SignUpScreen', { name: 'Open Camera click' });
-    let image = {};
-    image.path = await openCamera(false);
-    image.path = image.path.replace('file://', '')
-    image.type = 'multipart/form-data'
-    console.log('image',image)
+    const image = await takePicture();
     this.setState({avatar: image, avatarIcon: 'check'})
   }
 

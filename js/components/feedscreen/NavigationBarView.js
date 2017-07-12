@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, Platform ,View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux';
 import BaseComponent from '../common/base/BaseComponent';
-import {openCamera} from '../../lib/camera/CameraUtils'
+import { openCamera, takeMedia } from '../../lib/camera/CameraUtils'
 import * as _ from "lodash";
 
 const userIcon = require('../../../images/icons/user.png');
@@ -51,10 +51,12 @@ class NavigationBarView extends BaseComponent {
   static propTypes = {
     user: React.PropTypes.object,
     navigateTo: React.PropTypes.func,
+    addNewItem: React.PropTypes.func
   }
 
   static defaultProps = {
     navigateTo: _.noop,
+    addNewItem: _.noop
   }
 
   constructor(props) {
@@ -82,15 +84,7 @@ class NavigationBarView extends BaseComponent {
 
   async openCamera() {
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
-    let file = {};
-    file.path = await openCamera(true);
-    if(file.path.search(".mp4") > -1) {
-      file.localPath = file.path
-      file.type = 'look[video]'
-    } else {
-      file.type = 'look[image]'
-    }
-    file.path = file.path.replace('file://', '')
+    const file = await takeMedia();
     this.props.addNewItem(file);
   }
 

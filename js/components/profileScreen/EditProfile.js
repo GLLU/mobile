@@ -11,7 +11,7 @@ import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
 import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import InformationTextIcon from '../common/informationTextIcon';
-import {openCamera} from '../../lib/camera/CameraUtils'
+import { openCamera, takePicture } from '../../lib/camera/CameraUtils'
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 import BodyTypePicker from "../myBodyType/BodyTypePicker";
@@ -80,17 +80,10 @@ class EditProfile extends Component {
   }
 
   async openCamera() {
-    this.props.logEvent('EditProfileScreen', { name: 'Open Camera click' });
-    let image = {};
-    image.path = await openCamera(false);
-    image.path = image.path.replace('file://', '')
-    image.type = 'multipart/form-data'
-    const data = {
-      image,
-      id: this.props.user.id
-    };
-    this.props.changeUserAvatar(data)
-
+    const {id} = this.props.user;
+    this.props.logEvent('EditProfileScreen', {name: 'Open Camera click'});
+    const image = await takePicture();
+    this.props.changeUserAvatar({id, image})
   }
 
   _handleAboutMeTextInput(text) {

@@ -7,7 +7,7 @@ import SocialShare from '../../lib/social';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import glluTheme from '../../themes/gllu-theme';
 import { formatInvitationMessage } from "../../lib/messages/index";
-import {openCamera} from '../../lib/camera/CameraUtils'
+import { openCamera, takeMedia } from '../../lib/camera/CameraUtils'
 import finishPhoto from '../../../images/upload/finish-upload-look.png'
 import asScreen from "../common/containers/Screen"
 import {NavigationActions} from "react-navigation";
@@ -81,15 +81,7 @@ class FinishLookPage extends Component {
 
   async openCamera() {
     this.props.logEvent('FinishLookScreen', { name: 'Open Camera click' });
-    let file = {};
-    file.path = await openCamera(true);
-    if(file.path.search(".mp4") > -1) {
-      file.localPath = file.path
-      file.type = 'look[video]'
-    } else {
-      file.type = 'look[image]'
-    }
-    file.path = file.path.replace('file://', '')
+    const file = await takeMedia();
     this.goToAddNewItem(file);
   }
 

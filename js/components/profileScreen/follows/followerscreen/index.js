@@ -8,7 +8,7 @@ import { addNewLook, getUserFollowersData} from '../../../../actions';
 import asScreen from "../../../common/containers/Screen"
 import ListScreen from "../../../common/lists/ListScreen";
 import UserActionRow from "../../../common/lists/UserActionRow";
-import { openCamera } from "../../../../lib/camera/CameraUtils";
+import { openCamera, takeMedia } from "../../../../lib/camera/CameraUtils";
 
 class FollowerScreen extends Component {
 
@@ -56,15 +56,7 @@ class FollowerScreen extends Component {
 
   async openCamera() {
     this.props.logEvent('Followerscreen', { name: 'Open Camera click' });
-    let file = {};
-    file.path = await openCamera(true);
-    if(file.path.search(".mp4") > -1) {
-      file.localPath = file.path
-      file.type = 'look[video]'
-    } else {
-      file.type = 'look[image]'
-    }
-    file.path = file.path.replace('file://', '')
+    const file = await takeMedia();
     this.goToAddNewItem(file);
   }
 
