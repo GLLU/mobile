@@ -8,6 +8,7 @@ target 'infash' do
 # Pods for gllu
 pod 'Fabric'
 pod 'Crashlytics'
+pod 'Mixpanel'
 pod 'FBSDKCoreKit', '4.17'
 pod 'FBSDKLoginKit', '4.17'
 pod 'FBSDKShareKit', '4.17'

@@ -5,9 +5,12 @@ class MixPanelAnalytics {
   constructor() {
     Mixpanel.sharedInstanceWithToken('b1124c27f83903679e358ddab0dd87f1');
     Mixpanel.trackWithProperties('martin logged in', { firstParameter: '48543537' });
-  // Mixpanel.registerSuperProperties();
+    // Mixpanel.registerSuperProperties();
   }
-  logEvent(eventName: string, properties: any) {
+
+  logEvent(screenName: string, properties: any) {
+    const eventName = properties.name;
+
     if (properties) {
       Mixpanel.trackWithProperties(eventName, properties);
     } else {
