@@ -45,13 +45,13 @@ class FlurryAnalytics {
   }
 
   logEvent(name, params = {}, timed = false) {
-    const eventName = params.name;
+    const eventName = params.name ? params.name : name;
     delete params['name']
     RNFlurryAnalytics.logEvent(eventName, params, timed);
   }
 
   endTimedEvent(name, params = {}) {
-    const eventName = params.name;
+    const eventName = params.name ? params.name : name;
     delete params['name']
     RNFlurryAnalytics.endTimedEvent(eventName, params);
   }

@@ -9,7 +9,6 @@ import Utils from '../utils';
 
 class NetworkManager {
 
-  static _orgId;
   static _token;
 
   static fetch(route: string, method: string, body: any, isFormData: boolean): void {

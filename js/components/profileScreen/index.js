@@ -120,7 +120,9 @@ class ProfileScreen extends Component {
         <Image source={toSettings} name="ios-arrow-back" style={styles.settingsBtn}/>
       </TouchableOpacity>
       :
-      <Text style={styles.reportBtn}>REPORT</Text>
+
+        <View style={styles.settingsBtn}/>
+
   }
 
   goToAddNewItem(imagePath) {
@@ -300,10 +302,8 @@ class ProfileScreen extends Component {
               <Image source={profileBackground} style={styles.bg}>
                 <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                                 style={[styles.linearGradient, {opacity: 0.7}]}/>
-                <View style={styles.header}>
-
+                <View style={styles.profileHeader}>
                     { this._renderleftBtn() }
-                  { avatarUrl ?
                     <ProfileView profilePic={avatarUrl}
                                  userid={this.state.userId}
                                  name={user.name}
@@ -312,7 +312,7 @@ class ProfileScreen extends Component {
                                  isFollowing={this.state.isFollowing}
                                  onFollowPress={this.toggleFollow.bind(this)}
                                  navigateTo = {this.props.navigateTo}
-                    /> : null }
+                    />
                     { this._renderRightBtn() }
                 </View>
                 <View style={styles.description}>

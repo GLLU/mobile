@@ -4,12 +4,13 @@ import Mixpanel from 'react-native-mixpanel';
 class MixPanelAnalytics {
   constructor() {
     Mixpanel.sharedInstanceWithToken('b1124c27f83903679e358ddab0dd87f1');
-    Mixpanel.trackWithProperties('martin logged in', { firstParameter: '48543537' });
+    this.logEvent('Screen', { name: 'martin logged in', firstParameter: 'eswqewqe' })
+    // Mixpanel.trackWithProperties('martin logged in', { firstParameter: '48543537' });
     // Mixpanel.registerSuperProperties();
   }
 
   logEvent(screenName: string, properties: any) {
-    const eventName = properties.name;
+    const eventName = properties.name ? properties.name : screenName;
 
     if (properties) {
       Mixpanel.trackWithProperties(eventName, properties);

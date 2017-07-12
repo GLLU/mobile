@@ -91,11 +91,11 @@ class StepZeroBrand extends BaseComponent {
 
   }
 
-  findOrCreateBrand(value, createNew) {
-    const data = typeof value === 'string' ? {value, itemId: this.props.item.id} : {...value, itemId: this.props.item.id}
-    const brandName = typeof value === 'string' ? value : value.name;
-    const f = createNew ? this.props.createBrandName : this.props.addBrandName;
-    f(data).then(() => {
+  findOrCreateBrand(brand) {
+    const data = {...brand, itemId: this.props.item.id}
+    const brandName = brand.name
+    const brandFunction = brand.id ? this.props.addBrandName : this.props.createBrandName;
+    brandFunction(data).then(() => {
       console.log('brand added')
 
     }).catch(err => {
@@ -103,10 +103,10 @@ class StepZeroBrand extends BaseComponent {
     })
     this.setState({modalVisible: false, brandName});
 
-    if (createNew) {
-      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
-    } else {
+    if (brand.id) {
       this.logEvent('UploadLookScreen', { name: 'Brand pick', brand: brandName });
+    } else {
+      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
     }
   }
 
@@ -151,7 +151,7 @@ class StepZeroBrand extends BaseComponent {
     }
   }
 
-  renderClearIcon(brand) {
+  renderClearIcon({brand}) {
     if (brand) {
       return (
         <TouchableOpacity
@@ -166,7 +166,7 @@ class StepZeroBrand extends BaseComponent {
     return null;
   }
 
-  renderOpenButton(brand) {
+  renderOpenButton({brand}) {
     const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
@@ -181,19 +181,18 @@ class StepZeroBrand extends BaseComponent {
     const { brands, item, items} = this.props;
     const { modalVisible } = this.state;
     const currItem = _.find(items, listItem => listItem.id === item.id);
-    const brand = currItem ? currItem.brand : null;
-    const brandName = brand ? typeof brand === 'string' ? brand : brand.name : ''
+    const brandName = currItem.brand ? currItem.brand.name : null;
     return (
       <View>
         <View style={{ width: w }}>
-          {this.renderOpenButton(brand)}
+          {this.renderOpenButton(currItem)}
           <Animated.View style={{borderRadius: 10, alignSelf: 'center', overflow: 'hidden',justifyContent: 'flex-start', bottom: 0, width: w-100, paddingLeft: 25, paddingRight: 25, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
             <Text style={styles.titleLabelInfo}>Brand Name</Text>
             <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
               <Text style={styles.input}>
                 {brandName}
               </Text>
-              {this.renderClearIcon(brand)}
+              {this.renderClearIcon(currItem)}
             </TouchableOpacity>
           </Animated.View>
         </View>
@@ -204,7 +203,7 @@ class StepZeroBrand extends BaseComponent {
           onRequestClose={() => this.setState({modalVisible: false})}>
           <BrandNameInput
             style={{marginTop: 10}}
-            brand={brand}
+            brand={brandName}
             brands={brands}
             onCancel={this.handleBrandCancel.bind(this)}
             findOrCreateBrand={this.findOrCreateBrand.bind(this)}/>

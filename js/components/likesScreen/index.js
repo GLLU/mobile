@@ -17,6 +17,7 @@ class LikesScreen extends Component {
   constructor(props) {
     super(props);
     this.getLookLikesData = this.getLookLikesData.bind(this);
+    this.currentPageIndex = 1;
   }
 
   componentWillMount() {
@@ -32,8 +33,9 @@ class LikesScreen extends Component {
   }
 
   getLookLikesData() {
-    const userData = this.props.navigation.state.params.lookId;
-    this.props.getLookLikes(userData);
+    const {lookId} = this.props.navigation.state.params;
+    this.props.getLookLikes(lookId, this.currentPageIndex);
+    this.currentPageIndex++;
   }
   
   render() {
@@ -54,7 +56,7 @@ class LikesScreen extends Component {
 
 function bindAction(dispatch) {
   return {
-    getLookLikes: (id) => dispatch(getLookLikes(id)),
+    getLookLikes: (id, pageNumber, pageSize) => dispatch(getLookLikes(id, pageNumber, pageSize)),
     initLookLikes: () => dispatch(initLookLikes()),
   };
 }

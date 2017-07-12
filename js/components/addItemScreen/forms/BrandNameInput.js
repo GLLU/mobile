@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 class BrandNameInput extends Component {
   static propTypes = {
-    brand:  React.PropTypes.object,
+    brand:  React.PropTypes.string,
     brands: React.PropTypes.array,
     loadBrands: React.PropTypes.func,
     findOrCreateBrand: React.PropTypes.func,
@@ -43,10 +43,9 @@ class BrandNameInput extends Component {
     });
   }
 
-  handleFindOrCreateBrand(value, createNew) {
-    const query = createNew ? value : value.name;
-    this.setState({query}, () => {
-      this.props.findOrCreateBrand(value, createNew);
+  handleFindOrCreateBrand(value) {
+    this.setState({query: value.name}, () => {
+      this.props.findOrCreateBrand(value);
     });
   }
 

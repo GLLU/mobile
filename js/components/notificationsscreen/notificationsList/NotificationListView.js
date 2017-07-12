@@ -10,6 +10,7 @@ import ListViewHeader from './ListViewHeader';
 import NotificationRow from './NotificationRow';
 import BaseComponent from "../../common/base/BaseComponent";
 import SpinnerSwitch from "../../loaders/SpinnerSwitch";
+import Separator from "../../common/lists/Separator";
 
 const styles = StyleSheet.create({
   separator: {
@@ -88,6 +89,7 @@ class NotificationListView extends BaseComponent {
       style={styles.container}
       data={this.props.notifications.allNotifications}
       keyExtractor={(notification,index)=>notification.id!==-1?notification.id:index}
+      ItemSeparatorComponent={()=><Separator/>}
       renderItem={({item}) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress} onUserPress={this.onUserNavigate} onFollowPress={this.toggleFollowAction} {...item}/>}
       onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
       onEndReachedThreshold={100}

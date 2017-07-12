@@ -15,6 +15,7 @@ storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo(
 
 require('../../js/components/common/commonComponents.stories');
 
+
 storiesOf('button', module)
     .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
     .add('with some emoji', () =>

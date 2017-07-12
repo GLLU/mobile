@@ -16,6 +16,7 @@ export const SET_INVITATION_SHARE_TOKEN = 'SET_INVITATION_SHARE_TOKEN';
 
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
+
   api_key = user.api_key;
   rest.use('options', () => ({
     headers: {

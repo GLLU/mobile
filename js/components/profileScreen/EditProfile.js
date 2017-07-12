@@ -11,11 +11,12 @@ import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
 import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import InformationTextIcon from '../common/informationTextIcon';
-import {openCamera} from '../../lib/camera/CameraUtils'
+import { openCamera } from '../../lib/camera/CameraUtils'
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 import BodyTypePicker from "../myBodyType/BodyTypePicker";
 import SpinnerSwitch from "../loaders/SpinnerSwitch";
+import { formatAvatar } from "../../utils/UploadUtils";
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 
@@ -37,10 +38,18 @@ class EditProfile extends Component {
     super(props);
     this.toggleBodyTypeModal=this.toggleBodyTypeModal.bind(this);
     this._saveChanges=this._saveChanges.bind(this);
+    this._changeUserAvatar=this._changeUserAvatar.bind(this);
     this.state = {
       about_me: props.user.about_me || '',
       modalShowing:false,
-      isUpdating: false
+      isUpdating: false,
+      isChangingAvatar:false
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.user.avatar!==this.props.user.avatar){
+      this.setState({isChangingAvatar:false})
     }
   }
 
@@ -66,21 +75,19 @@ class EditProfile extends Component {
 
   _changeUserAvatar() {
     this.props.logEvent('EditProfileScreen', { name: 'Change avatar click' });
-    this.openCamera()
+    this.uploadAvatar().then(()=>{
+      this.setState({isChangingAvatar:true})
+    }).catch((err)=>console.log(err));
   }
 
-  async openCamera() {
-    this.props.logEvent('EditProfileScreen', { name: 'Open Camera click' });
-    let image = {};
-    image.path = await openCamera(false);
-    image.path = image.path.replace('file://', '')
-    image.type = 'multipart/form-data'
-    const data = {
-      image,
-      id: this.props.user.id
-    };
-    this.props.changeUserAvatar(data)
-
+  async uploadAvatar() {
+    this.props.logEvent('EditProfileScreen', {name: 'Open Camera click'});
+    const path = await openCamera(false);
+    const image = formatAvatar(path);
+    if(image){
+      const {id} = this.props.user;
+      this.props.changeUserAvatar({id, image})
+    }
   }
 
   _handleAboutMeTextInput(text) {
@@ -105,7 +112,7 @@ class EditProfile extends Component {
             <EditProfileHeader cancelEdit={this.props.goBack} save={this._saveChanges} />
           </Image>
         </View>
-        <ProfileAvatar avatarUrl={this.props.user.avatar.url} changeUserAvatar={() => this._changeUserAvatar()} editable={true}/>
+        <ProfileAvatar avatarUrl={this.props.user.avatar.url} isLoading={this.state.isChangingAvatar} changeUserAvatar={this._changeUserAvatar} isEditable={true}/>
         <ScrollView
           style={[styles.scrollView]}
         >
