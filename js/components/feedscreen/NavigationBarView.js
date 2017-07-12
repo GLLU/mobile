@@ -61,6 +61,9 @@ class NavigationBarView extends BaseComponent {
 
   constructor(props) {
     super(props);
+    this.handleNotificationsPress=this.handleNotificationsPress.bind(this);
+    this.takeMedia=this.takeMedia.bind(this);
+    this.goToProfile=this.goToProfile.bind(this);
     this.state = {
       gotNewNotifications: this.props.gotNewNotifications
     };
@@ -95,17 +98,17 @@ class NavigationBarView extends BaseComponent {
     return(
       <View style={styles.navigationBar}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
-          <TouchableOpacity transparent onPress={() => this.handleNotificationsPress()}>
+          <TouchableOpacity transparent onPress={this.handleNotificationsPress}>
             <Image source={notificationBtn} style={styles.btnImageHanger} />
           </TouchableOpacity>
         </View>
         <View style={{flex: 2, flexDirection: 'row', justifyContent: 'center'}}>
-          <TouchableOpacity transparent onPress={() => this.takeMedia()} style={styles.btnCamera}>
+          <TouchableOpacity transparent onPress={this.takeMedia} style={styles.btnCamera}>
             <Image source={cameraIcon} style={styles.btnImage} />
           </TouchableOpacity>
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <TouchableOpacity transparent onPress={() => this.goToProfile()} style={styles.btnProfile}>
+          <TouchableOpacity transparent onPress={this.goToProfile} style={styles.btnProfile}>
             <Image source={userIcon} style={styles.btnImage} />
           </TouchableOpacity>
         </View>
