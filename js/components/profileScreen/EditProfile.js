@@ -11,11 +11,12 @@ import EditProfileHeader from './EditProfileHeader';
 import EditProfileName from './EditProfileName';
 import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import InformationTextIcon from '../common/informationTextIcon';
-import { takePicture } from '../../lib/camera/CameraUtils'
+import { openCamera } from '../../lib/camera/CameraUtils'
 import { saveUserSize} from '../../actions/myBodyMeasure';
 import { changeUserAvatar, changeUserAboutMe } from '../../actions/user';
 import BodyTypePicker from "../myBodyType/BodyTypePicker";
 import SpinnerSwitch from "../loaders/SpinnerSwitch";
+import { formatAvatar } from "../../utils/UploadUtils";
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 
@@ -74,14 +75,15 @@ class EditProfile extends Component {
 
   _changeUserAvatar() {
     this.props.logEvent('EditProfileScreen', { name: 'Change avatar click' });
-    this.takePicture().then(()=>{
+    this.uploadAvatar().then(()=>{
       this.setState({isChangingAvatar:true})
     }).catch((err)=>console.log(err));
   }
 
-  async takePicture() {
+  async uploadAvatar() {
     this.props.logEvent('EditProfileScreen', {name: 'Open Camera click'});
-    const image = await takePicture();
+    const path = await openCamera(false);
+    const image = formatAvatar(path);
     if(image){
       const {id} = this.props.user;
       this.props.changeUserAvatar({id, image})

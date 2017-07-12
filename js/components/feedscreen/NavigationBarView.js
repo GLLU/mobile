@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, Image, Platform ,View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux';
 import withAnalytics from '../common/analytics/WithAnalytics'
-import { takeMedia } from '../../lib/camera/CameraUtils'
+import { openCamera} from '../../lib/camera/CameraUtils'
 import * as _ from "lodash";
+import { formatLook } from "../../utils/UploadUtils";
 
 const userIcon = require('../../../images/icons/user.png');
 const emptyNotification = require('../../../images/icons/emptyNotification.png');
@@ -62,7 +63,7 @@ class NavigationBarView extends PureComponent {
   constructor(props) {
     super(props);
     this.handleNotificationsPress=this.handleNotificationsPress.bind(this);
-    this.takeMedia=this.takeMedia.bind(this);
+    this.uploadLook=this.uploadLook.bind(this);
     this.goToProfile=this.goToProfile.bind(this);
   }
 
@@ -76,9 +77,10 @@ class NavigationBarView extends PureComponent {
     this.props.navigateTo('notificationsScreen');
   }
 
-  async takeMedia() {
+  async uploadLook() {
     this.props.logEvent('Feedscreen', { name: 'Open Camera click' });
-    const file = await takeMedia();
+    const path = await openCamera(true);
+    const file = formatLook(path);
     if(file){
       this.props.addNewItem(file);
     }
@@ -100,7 +102,7 @@ class NavigationBarView extends PureComponent {
     return(
       <View style={styles.navigationBar}>
         {this.renderNavigationButton(notificationsIcon,this.handleNotificationsPress,styles.btnImageHanger,styles.hangerBtnContainer)}
-        {this.renderNavigationButton(cameraIcon,this.takeMedia,styles.btnImage,styles.cameraBtnContainer)}
+        {this.renderNavigationButton(cameraIcon,this.uploadLook,styles.btnImage,styles.cameraBtnContainer)}
         {this.renderNavigationButton(userIcon,this.goToProfile,styles.btnImage,styles.profileBtnContainer)}
       </View>
     )

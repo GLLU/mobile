@@ -8,7 +8,8 @@ import { addNewLook, getUserFollowersData} from '../../../../actions';
 import asScreen from "../../../common/containers/Screen"
 import ListScreen from "../../../common/lists/ListScreen";
 import UserActionRow from "../../../common/lists/UserActionRow";
-import { takeMedia } from "../../../../lib/camera/CameraUtils";
+import { openCamera } from "../../../../lib/camera/CameraUtils";
+import { formatLook } from "../../../../utils/UploadUtils";
 
 class FollowerScreen extends Component {
 
@@ -51,12 +52,13 @@ class FollowerScreen extends Component {
 
   handleUploadPress() {
     this.props.logEvent('Followerscreen', { name: "Upload '+' click" });
-    this.takeMedia()
+    this.uploadLook()
   }
 
-  async takeMedia() {
+  async uploadLook() {
     this.props.logEvent('Followerscreen', { name: 'Open Camera click' });
-    const file = await takeMedia();
+    const path = await openCamera(true);
+    const file = formatLook(path);
     if(file){
       this.goToAddNewItem(file);
     }

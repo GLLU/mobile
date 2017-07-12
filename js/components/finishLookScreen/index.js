@@ -7,10 +7,11 @@ import SocialShare from '../../lib/social';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import glluTheme from '../../themes/gllu-theme';
 import { formatInvitationMessage } from "../../lib/messages/index";
-import { takeMedia } from '../../lib/camera/CameraUtils'
+import { openCamera } from '../../lib/camera/CameraUtils'
 import finishPhoto from '../../../images/upload/finish-upload-look.png'
 import asScreen from "../common/containers/Screen"
 import {NavigationActions} from "react-navigation";
+import { formatLook } from "../../utils/UploadUtils";
 
 const styles = StyleSheet.create({
   container: {
@@ -76,12 +77,13 @@ class FinishLookPage extends Component {
 
   handleGlluAgainPress() {
     this.props.logEvent('FinishLookScreen', { name: 'Lets inFash Again click' });
-    this.takeMedia()
+    this.uploadLook()
   }
 
-  async takeMedia() {
+  async uploadLook() {
     this.props.logEvent('FinishLookScreen', { name: 'Open Camera click' });
-    const file = await takeMedia();
+    const path = await openCamera(true);
+    const file = formatLook(path);
     if(file){
       this.goToAddNewItem(file);
     }
