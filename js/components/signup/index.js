@@ -15,9 +15,10 @@ import { emailRule, passwordRule, textInput } from '../../validators';
 import { changeUserAvatar } from '../../actions/user';
 import ProfileAvatar from '../common/avatars/ProfileAvatar'
 import SolidButton from '../common/buttons/SolidButton'
-import {openCamera} from '../../lib/camera/CameraUtils'
+import { openCamera } from '../../lib/camera/CameraUtils'
 import Header from "../common/containers/Header";
 import Spinner from '../loaders/Spinner'
+import { formatAvatar } from "../../utils/UploadUtils";
 
 const background = require('../../../images/backgrounds/hands.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
@@ -133,7 +134,7 @@ class SignUpPage extends Component {
 
   handleCameraPress() {
     this.props.logEvent('SignUpScreen', { name: 'Camera click' });
-    this.openCamera();
+    this.uploadAvatar();
   }
 
   handleSignupPress() {
@@ -165,14 +166,14 @@ class SignUpPage extends Component {
     }).catch(err => console.error('An error occurred', err));
   }
 
-  async openCamera() {
+  async uploadAvatar() {
     this.props.logEvent('SignUpScreen', { name: 'Open Camera click' });
-    let image = {};
-    image.path = await openCamera(false);
-    image.path = image.path.replace('file://', '')
-    image.type = 'multipart/form-data'
-    console.log('image',image)
-    this.setState({avatar: image, avatarIcon: 'check'})
+    const path = await openCamera(false);
+    const image = formatAvatar(path);
+    if(image){
+      this.setState({avatar: image, avatarIcon: 'check'})
+    }
+
   }
 
   focusNext(value){

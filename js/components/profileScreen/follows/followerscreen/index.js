@@ -9,6 +9,7 @@ import asScreen from "../../../common/containers/Screen"
 import ListScreen from "../../../common/lists/ListScreen";
 import UserActionRow from "../../../common/lists/UserActionRow";
 import { openCamera } from "../../../../lib/camera/CameraUtils";
+import { formatLook } from "../../../../utils/UploadUtils";
 
 class FollowerScreen extends Component {
 
@@ -51,21 +52,16 @@ class FollowerScreen extends Component {
 
   handleUploadPress() {
     this.props.logEvent('Followerscreen', { name: "Upload '+' click" });
-    this.openCamera()
+    this.uploadLook()
   }
 
-  async openCamera() {
+  async uploadLook() {
     this.props.logEvent('Followerscreen', { name: 'Open Camera click' });
-    let file = {};
-    file.path = await openCamera(true);
-    if(file.path.search(".mp4") > -1) {
-      file.localPath = file.path
-      file.type = 'look[video]'
-    } else {
-      file.type = 'look[image]'
+    const path = await openCamera(true);
+    const file = formatLook(path);
+    if(file){
+      this.goToAddNewItem(file);
     }
-    file.path = file.path.replace('file://', '')
-    this.goToAddNewItem(file);
   }
 
   goToAddNewItem(imagePath) {
