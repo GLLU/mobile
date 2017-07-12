@@ -1,6 +1,4 @@
-import React, {Component} from 'react';
-import {View, NativeModules} from 'react-native';
-
+import {NativeModules} from 'react-native';
 const {CameraUtils} = NativeModules;
 
 
