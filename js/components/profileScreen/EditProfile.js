@@ -80,10 +80,12 @@ class EditProfile extends Component {
   }
 
   async takePicture() {
-    const {id} = this.props.user;
     this.props.logEvent('EditProfileScreen', {name: 'Open Camera click'});
     const image = await takePicture();
-    this.props.changeUserAvatar({id, image})
+    if(image){
+      const {id} = this.props.user;
+      this.props.changeUserAvatar({id, image})
+    }
   }
 
   _handleAboutMeTextInput(text) {

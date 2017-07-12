@@ -168,7 +168,10 @@ class SignUpPage extends Component {
   async takePicture() {
     this.props.logEvent('SignUpScreen', { name: 'Open Camera click' });
     const image = await takePicture();
-    this.setState({avatar: image, avatarIcon: 'check'})
+    if(image){
+      this.setState({avatar: image, avatarIcon: 'check'})
+    }
+
   }
 
   focusNext(value){

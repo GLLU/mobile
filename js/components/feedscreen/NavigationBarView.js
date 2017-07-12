@@ -85,7 +85,9 @@ class NavigationBarView extends BaseComponent {
   async takeMedia() {
     this.logEvent('Feedscreen', { name: 'Open Camera click' });
     const file = await takeMedia();
-    this.props.addNewItem(file);
+    if(file){
+      this.props.addNewItem(file);
+    }
   }
 
   render() {

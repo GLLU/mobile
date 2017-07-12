@@ -57,7 +57,9 @@ class FollowerScreen extends Component {
   async takeMedia() {
     this.props.logEvent('Followerscreen', { name: 'Open Camera click' });
     const file = await takeMedia();
-    this.goToAddNewItem(file);
+    if(file){
+      this.goToAddNewItem(file);
+    }
   }
 
   goToAddNewItem(imagePath) {
