@@ -51,7 +51,6 @@ export default class ButtonsBar extends BaseComponent {
     toggleLike: React.PropTypes.func,
     toggleMenu: React.PropTypes.func,
     hasDescription: React.PropTypes.bool,
-    isDescriptionActive: React.PropTypes.bool,
     toggleDescription: React.PropTypes.func,
     isCommentsActive: React.PropTypes.bool,
     lookType: React.PropTypes.string,
@@ -97,7 +96,7 @@ export default class ButtonsBar extends BaseComponent {
 
   _renderInformationButton(hasDescription) {
     if (hasDescription) {
-      return <InformationButton isActive={this.props.isDescriptionActive} onPress={this._onInformationClicked}/>
+      return <InformationButton isActive={this.props.isInformationActive} onPress={this._onInformationClicked}/>
     }
   }
 
