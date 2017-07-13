@@ -1,11 +1,11 @@
 
 import { AsyncStorage } from 'react-native';
-import devTools from 'remote-redux-devtools';
+//import devTools from 'remote-redux-devtools';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import sequenceAction from 'redux-sequence-action';
-import { persistStore, autoRehydrate } from 'redux-persist';
+import { persistStore } from 'redux-persist';
 import reducer from './reducers';
 import promise from './promise';
 

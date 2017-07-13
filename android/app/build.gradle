@@ -183,6 +183,8 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-i18n')
+    compile project(':react-native-mixpanel')
     compile project(':react-native-fabric')
     compile project(':libs:cropper')
     compile project(':libs:video-trimmer')

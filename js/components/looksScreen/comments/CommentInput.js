@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Animated, View, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput } from 'react-native';
-import { noop } from 'lodash'
+import React, {Component} from 'react';
+import {Animated, View, Text, TouchableOpacity, TouchableHighlight, StyleSheet, TextInput} from 'react-native';
+import {noop} from 'lodash'
 import BaseComponent from "../../common/base/BaseComponent";
 import SolidButton from "../../common/buttons/SolidButton";
 
@@ -34,34 +34,34 @@ const styles = StyleSheet.create({
 
 export default class CommentInput extends BaseComponent {
 
-  constructor(props) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-    this.onSendPress = this.onSendPress.bind(this);
-    this.state = {
-      value: this.props.value
+    constructor(props) {
+        super(props);
+        this.onChange = this.onChange.bind(this);
+        this.onSendPress = this.onSendPress.bind(this);
+        this.state = {
+            value: this.props.value
+        }
     }
-  }
 
-  static propTypes = {
-    style: React.PropTypes.any,
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    onSendPress: React.PropTypes.func
-  };
+    static propTypes = {
+        style: React.PropTypes.any,
+        value: React.PropTypes.string,
+        onChange: React.PropTypes.func,
+        onSendPress: React.PropTypes.func
+    };
 
-  static defaultProps = {
-    style: {},
-    value: '',
-    onChange: noop,
-    onSendPress: noop
-  };
+    static defaultProps = {
+        style: {},
+        value: '',
+        onChange: noop,
+        onSendPress: noop
+    };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== undefined) {
-      this.setState({value: nextProps.value})
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== undefined) {
+            this.setState({value: nextProps.value})
+        }
     }
-  }
 
   onChange(value) {
     this.props.onChange(value);
