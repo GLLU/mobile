@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 
 });
 
-export default class DescriptionView extends Component {
+export default class InformationView extends Component {
 
   constructor(props) {
     super(props);
@@ -34,20 +34,18 @@ export default class DescriptionView extends Component {
     onRequestClose: noop
   };
 
-  getBrandsFromItems(items){
-    return _.chain(items).map(item=>item.brand).uniqBy(brand=>brand.id).value()
-  }
+  getBrandsFromItems = (items) => _.chain(items).map(item => item.brand).uniqBy(brand => brand.id).value();
 
   render() {
-    const brands=this.getBrandsFromItems(this.props.items);
+    const brands = this.getBrandsFromItems(this.props.items);
     return (
       <BottomHalfScreenModal {...this.props}>
         <View>
-          <ItemBrandsView brands={brands}/>
           <Text style={styles.descriptionStyle}>
             {this.props.description}
           </Text>
-          <View style={{height:25}}/>
+          <ItemBrandsView brands={brands}/>
+          <View style={{height: 25}}/>
 
         </View>
       </BottomHalfScreenModal>
