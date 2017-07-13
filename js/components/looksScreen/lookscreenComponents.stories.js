@@ -6,6 +6,9 @@ import { action } from '@storybook/addon-actions';
 import ItemBrand from './information/ItemBrand';
 import ItemBrandsView from "./information/ItemBrandsView";
 import InformationView from "./information/InformationView";
+import CommentsView from "./information/social/CommentsView";
+import LikesView from "./information/social/LikesView";
+import InformationViewFooter from "./information/InformationViewFooter";
 
 storiesOf('look screen components', module)
   .add('item brand', () =>
@@ -30,6 +33,18 @@ storiesOf('look screen components', module)
       </View>
     )
   }
+).add('Footer View', () => {
+  const likes=693748512;
+  const comments=1337;
+    return (
+      <View style={{
+        backgroundColor: 'red', flex: 1,
+        flexDirection: 'column'
+      }}>
+        <InformationViewFooter likes={likes} comments={comments}/>
+      </View>
+    )
+  }
 ).add('Information menu', () => {
     const items = [
       {brand: {id: 1, name: 'a beautiful Life'}},
@@ -40,13 +55,17 @@ storiesOf('look screen components', module)
       {brand: {id: 6, name: 'american eagle'}}
     ];
     const description='HAPATAKATA ASKD:LKA:LSD KL:ASKDL:A KSDL:KAS:L DK:LASSKD L:AKSDL:K A:LSDKL:AK SD';
+    const likes=693748512;
+    const comments=1337;
     return (
       <View style={{
         backgroundColor: 'red', flex: 1,
         flexDirection: 'column'
       }}>
-        <InformationView description={description} isOpen={true} items={items}/>
+        <InformationView description={description} isOpen={true} items={items} likes={likes} comments={comments}/>
       </View>
     )
   }
 );
+
+

@@ -113,6 +113,8 @@ class BottomLookContainer extends BaseComponent {
       isOpen={isActive}
       description={look.description}
       items={look.items}
+      likes={look.likes}
+      comments={look.comments}
       onRequestClose={this._toggleInformation}
     />;
   }

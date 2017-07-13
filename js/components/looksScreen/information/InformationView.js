@@ -7,6 +7,7 @@ import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
 import Separator from "../../common/lists/Separator";
 
 import Colors from '../../../styles/Colors.styles'
+import InformationViewFooter from "./InformationViewFooter";
 
 const styles = StyleSheet.create({
   descriptionStyle: {
@@ -41,11 +42,12 @@ export default class InformationView extends Component {
   getBrandsFromItems = (items) => _.chain(items).map(item => item.brand).uniqBy(brand => brand.id).value();
 
   render() {
-    const brands = this.getBrandsFromItems(this.props.items);
+    const {likes,comments,items} = this.props;
+    const brands = this.getBrandsFromItems(items);
     return (
       <BottomHalfScreenModal {...this.props}>
         <HalfScreenModalHeader title="Infromation" onPress={this.props.onRequestClose}/>
-        <View>
+        <View style={{flex:1}}>
           <Text style={styles.descriptionStyle}>
             {this.props.description}
           </Text>
@@ -53,7 +55,7 @@ export default class InformationView extends Component {
           <Separator style={{backgroundColor:Colors.seperatorGray, height:1}}/>
           </View>
           <ItemBrandsView brands={brands}/>
-          <View style={{height: 25}}/>
+          <InformationViewFooter likes={likes} comments={comments} />
 
         </View>
       </BottomHalfScreenModal>
