@@ -46,9 +46,9 @@ export default class InformationView extends Component {
 
   getBrandsFromItems = (items) => _.chain(items).map(item => item.brand).uniqBy(brand => brand.id).value();
 
-  _onRequestClose() {
-    this.props.onRequestClose(false)
-  }
+    _onRequestClose() {
+      this.props.onRequestClose(false)
+    }
 
   render() {
     const {likes, comments, items} = this.props;

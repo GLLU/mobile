@@ -7,6 +7,7 @@ import * as _ from "lodash";
 import withAnalytics from '../../common/analytics/WithAnalytics'
 import { connect } from "react-redux";
 import { reportAbuse } from "../../../actions/looks";
+import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
 
 const cancelIcon = require('../../../../images/icons/cancel-black.png');
 
@@ -46,6 +47,7 @@ class MenuView extends Component {
   constructor(props){
     super(props);
     this._reportAbuse=this._reportAbuse.bind(this);
+    this._onRequestClose = this._onRequestClose.bind(this);
     this.state={
       abuseReported:false
     }
@@ -113,14 +115,14 @@ class MenuView extends Component {
     ];
   }
 
+  _onRequestClose() {
+    this.props.onRequestClose(false)
+  }
+
   render() {
     return (
       <BottomHalfScreenModal {...this.props} style={{borderWidth: 5}}>
-        <View style={{alignItems: 'flex-end'}}>
-          <TouchableOpacity onPress={this.props.onRequestClose}>
-            <Image style={{height: 25, width: 25, margin: 5}} source={cancelIcon}/>
-          </TouchableOpacity>
-        </View>
+        <HalfScreenModalHeader title="Options" onPress={this._onRequestClose}/>
         <View style={{backgroundColor: 'white', justifyContent: 'center', paddingHorizontal: 30, marginVertical: 25}}>
           {this.props.isMyLook?this.renderMyContent():this.renderGeneralContent()}
         </View>
