@@ -12,7 +12,6 @@ export function getUserLooks(looksCall, query, retryCount = 0) {
         number: 1,
       },
       id: looksCall.id,
-      all: looksCall.isMyProfile
     });
     return new Promise((resolve, reject) => {
       return dispatch(rest.actions.user_looks(query, {}, (err, data) => {
@@ -45,7 +44,6 @@ export function loadMoreUserLooks(looksCall, retryCount = 0) {
         number: nextPageNumber,
       },
       id: looksCall.id,
-      all: looksCall.isMyProfile
     };
     return new Promise((resolve, reject) => {
       if(state.userLooksDataQueue.length > 0 && currPage > 1) {
