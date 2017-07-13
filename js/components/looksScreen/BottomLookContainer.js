@@ -13,7 +13,7 @@ import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import SocialShare from '../../lib/social';
 import ItemMarker from './markers/ItemMarker';
-import InformationView from './InformationView'
+import InformationView from './information/InformationView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/base/BaseComponent';
 import LookHeader from './LookHeader'
@@ -112,6 +112,7 @@ class BottomLookContainer extends BaseComponent {
     return <InformationView
       isOpen={isActive}
       description={look.description}
+      items={look.items}
       onRequestClose={this._toggleInformation}
     />;
   }

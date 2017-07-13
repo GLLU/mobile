@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet } from 'react-native';
-import BottomDrawerModal from './common/BottomDrawerModal'
 import { noop } from 'lodash'
+import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
+import ItemBrandsView from "./ItemBrandsView";
 
 const styles = StyleSheet.create({
   descriptionStyle: {
@@ -21,6 +22,7 @@ export default class DescriptionView extends Component {
 
   static propTypes = {
     description: React.PropTypes.string,
+    items: React.PropTypes.array,
     style: React.PropTypes.any,
     isOpen: React.PropTypes.bool,
     onRequestClose: React.PropTypes.func
@@ -34,14 +36,16 @@ export default class DescriptionView extends Component {
 
   render() {
     return (
-      <BottomDrawerModal {...this.props}>
+      <BottomHalfScreenModal {...this.props}>
         <View>
+          <ItemBrandsView items={this.props.items}/>
           <Text style={styles.descriptionStyle}>
             {this.props.description}
           </Text>
           <View style={{height:25}}/>
+
         </View>
-      </BottomDrawerModal>
+      </BottomHalfScreenModal>
     );
   }
 }
