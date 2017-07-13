@@ -8,10 +8,12 @@ const FontStyles = StyleSheet.create({
     fontFamily: '',
   },
   boldFont: {
-    fontFamily: '',
+    fontFamily: 'HelveticaNeue',
+    fontSize:20,
+    fontWeight:'bold'
   },
   mediumFont: {
-    fontFamily: '',
+    fontFamily: 'HelveticaNeue'
   },
 });
 
