@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import RNFlurryAnalytics from 'react-native-flurry-analytics';
 import Config from 'react-native-config';
 import _ from 'lodash';
-import { encrypt } from "../../utils/MD5Utils";
+import {encrypt} from "../../utils/MD5Utils";
 
 /*global __DEV__ */
-const DEV=__DEV__;
+const DEV = __DEV__;
 
 class FlurryAnalytics {
   constructor() {
@@ -45,13 +45,15 @@ class FlurryAnalytics {
   }
 
   logEvent(name, params = {}, timed = false) {
+    const eventName = params.name ? params.name : name;
     delete params['name']
-    RNFlurryAnalytics.logEvent(name, params, timed);
+    RNFlurryAnalytics.logEvent(eventName, params, timed);
   }
 
   endTimedEvent(name, params = {}) {
+    const eventName = params.name ? params.name : name;
     delete params['name']
-    RNFlurryAnalytics.endTimedEvent(name, params);
+    RNFlurryAnalytics.endTimedEvent(eventName, params);
   }
 }
 
