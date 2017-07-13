@@ -15,7 +15,7 @@ import {
 } from '../../constants';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import asScreen from "../common/containers/Screen"
-import Header from "../common/containers/ModalHeader";
+import Header from "../common/headers/ModalHeader";
 import FullscreenView from "../common/containers/FullscreenView";
 
 const styles = StyleSheet.create({

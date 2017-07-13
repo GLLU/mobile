@@ -16,7 +16,7 @@ import { emailRule, passwordRule } from '../../validators';
 import SolidButton from "../common/buttons/SolidButton";
 import {NavigationActions} from "react-navigation";
 import asScreen from "../common/containers/Screen"
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 
 const logo = require('../../../images/logo/inFashLogo.png');
 const background = require('../../../images/backgrounds/forgot-password-background.png');

@@ -12,7 +12,7 @@ import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
 import CarouselItem from './horizontalCarousel/carouselItem';
 import ArrowTextBox from './arrowTextBox';
 import * as _ from "lodash";
-import Header from "../common/containers/ModalHeader";
+import Header from "../common/headers/ModalHeader";
 
 
 class BodyTypePicker extends Component {

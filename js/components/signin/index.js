@@ -19,7 +19,7 @@ import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 
 const logo = require('../../../images/logo/inFashLogo.png');
 
