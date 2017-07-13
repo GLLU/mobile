@@ -35,16 +35,15 @@ export default class DescriptionView extends Component {
   };
 
   getBrandsFromItems(items){
-    const brands=_.chain(this.props.items).map(item=>item.brand).uniqBy(brand=>brand.id).value()
-    return brands;
+    return _.chain(items).map(item=>item.brand).uniqBy(brand=>brand.id).value()
   }
 
   render() {
-
+    const brands=this.getBrandsFromItems(this.props.items);
     return (
       <BottomHalfScreenModal {...this.props}>
         <View>
-          <ItemBrandsView items={this.props.items}/>
+          <ItemBrandsView brands={brands}/>
           <Text style={styles.descriptionStyle}>
             {this.props.description}
           </Text>

@@ -22,22 +22,14 @@ const styles = StyleSheet.create({
   }
 });
 
-class ItemBrandView extends PureComponent {
+class ItemBrandsView extends PureComponent {
 
   static propTypes = {
-    brand: React.PropTypes.object,
+    brands: React.PropTypes.array,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
-  getBrandsFromItems(items){
-    return _.chain(items).map(item=>item.brand).uniqBy(brand=>brand.id).value()
-  }
-
   render() {
-    const brands=this.getBrandsFromItems(this.props.items);
+    const {brands}=this.props;
     return (
       <ScrollView horizontal={true} style={this.props.style} contentContainerStyle={styles.container}>
         {_.map(brands,brand=><ItemBrand key={brand.id} style={{marginHorizontal:10}} brand={brand}/>)}
@@ -46,5 +38,5 @@ class ItemBrandView extends PureComponent {
   }
 }
 
-export default ItemBrandView;
+export default ItemBrandsView;
 
