@@ -3,6 +3,10 @@ import { Animated, View, Text, StyleSheet } from 'react-native';
 import { noop } from 'lodash'
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
 import ItemBrandsView from "./ItemBrandsView";
+import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
+import Separator from "../../common/lists/Separator";
+
+import Colors from '../../../styles/Colors.styles'
 
 const styles = StyleSheet.create({
   descriptionStyle: {
@@ -40,10 +44,14 @@ export default class InformationView extends Component {
     const brands = this.getBrandsFromItems(this.props.items);
     return (
       <BottomHalfScreenModal {...this.props}>
+        <HalfScreenModalHeader title="Infromation" onPress={this.props.onRequestClose}/>
         <View>
           <Text style={styles.descriptionStyle}>
             {this.props.description}
           </Text>
+          <View style={{paddingVertical:20,paddingHorizontal:50}}>
+          <Separator style={{backgroundColor:Colors.seperatorGray, height:1}}/>
+          </View>
           <ItemBrandsView brands={brands}/>
           <View style={{height: 25}}/>
 
