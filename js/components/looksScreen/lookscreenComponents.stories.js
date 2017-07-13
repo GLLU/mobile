@@ -9,6 +9,7 @@ import InformationView from "./information/InformationView";
 import CommentsView from "./information/social/CommentsView";
 import LikesView from "./information/social/LikesView";
 import InformationViewFooter from "./information/InformationViewFooter";
+import MenuView from "./menu/MenuView";
 
 storiesOf('look screen components', module)
   .add('item brand', () =>
@@ -63,6 +64,26 @@ storiesOf('look screen components', module)
         flexDirection: 'column'
       }}>
         <InformationView description={description} isOpen={true} items={items} likes={likes} comments={comments}/>
+      </View>
+    )
+  }
+).add('three dots menu - my prespective', () => {
+    return (
+      <View style={{
+        backgroundColor: 'red', flex: 1,
+        flexDirection: 'column'
+      }}>
+        <MenuView isOpen={true} isMyLook={true}/>
+      </View>
+    )
+  }
+).add('three dots menu - their prespective', () => {
+    return (
+      <View style={{
+        backgroundColor: 'red', flex: 1,
+        flexDirection: 'column'
+      }}>
+        <MenuView isOpen={true} isMyLook={false}/>
       </View>
     )
   }

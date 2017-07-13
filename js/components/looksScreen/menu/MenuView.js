@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
 import { noop } from 'lodash'
-import BottomHalfScreenModal from "./common/BottomHalfScreenModal";
-import SolidButton from "../common/buttons/SolidButton";
+import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
+import SolidButton from "../../common/buttons/SolidButton";
 import * as _ from "lodash";
-import withAnalytics from '../common/analytics/WithAnalytics'
+import withAnalytics from '../../common/analytics/WithAnalytics'
 import { connect } from "react-redux";
-import { reportAbuse } from "../../actions/looks";
+import { reportAbuse } from "../../../actions/looks";
 
-const cancelIcon = require('../../../images/icons/cancel-black.png');
+const cancelIcon = require('../../../../images/icons/cancel-black.png');
 
 const styles = StyleSheet.create({
   thankYouContainer: {
@@ -129,12 +129,4 @@ class MenuView extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    reportAbuse: (id) => dispatch(reportAbuse(id)),
-  };
-}
-
-const mapStateToProps = () => ({});
-
-export default connect(mapStateToProps, bindAction)(withAnalytics(MenuView));
+export default MenuView;

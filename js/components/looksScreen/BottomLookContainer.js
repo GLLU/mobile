@@ -17,7 +17,7 @@ import InformationView from './information/InformationView'
 import CommentsView from './comments/CommentsView'
 import BaseComponent from '../common/base/BaseComponent';
 import LookHeader from './LookHeader'
-import MenuView from "./MenuView";
+import MenuView from "./menu/MenuViewContainer";
 import { formatInvitationMessage } from "../../lib/messages/index";
 import withAnalytics from '../common/analytics/WithAnalytics'
 
