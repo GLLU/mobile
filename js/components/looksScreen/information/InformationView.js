@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet } from 'react-native';
 import { noop } from 'lodash'
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
-import ItemBrandsView from "./ItemBrandsView";
+import ItemBrandView from "./ItemBrandView";
 
 const styles = StyleSheet.create({
   descriptionStyle: {
@@ -34,10 +34,17 @@ export default class DescriptionView extends Component {
     onRequestClose: noop
   };
 
+  getBrandsFromItems(items){
+    const brands=_.chain(this.props.items).map(item=>item.brand).uniqBy(brand=>brand.id).value()
+    return brands;
+  }
+
   render() {
+    const brands=this.getBrandsFromItems(this.props.items);
     return (
       <BottomHalfScreenModal {...this.props}>
         <View>
+          {_.map(brands,brand=><ItemBrandView brand={brand}/>)}
           <ItemBrandsView items={this.props.items}/>
           <Text style={styles.descriptionStyle}>
             {this.props.description}
