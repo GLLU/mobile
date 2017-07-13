@@ -61,7 +61,7 @@ class SocialView extends PureComponent {
   render() {
     const {item, icon, count} = this.props;
     return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent:'center', alignItems: 'center', padding:20}}>
+      <View style={{flex: 1, flexDirection: 'row', justifyContent:'center', alignItems: 'center', padding:15}}>
         <Image source={icon} style={{height:50,width:50}}/>
         <Text style={[Fonts.boldFont,{marginLeft:10}]}>{formatNumberAsString(count)}</Text>
       </View>

@@ -7,6 +7,7 @@ import { noop } from 'lodash'
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 const {height} = Dimensions.get('window');
+const softMenuBarHeight=ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
 const statusBarHeight=ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
 export default class BottomHalfScreenModal extends Component {
@@ -41,15 +42,15 @@ export default class BottomHalfScreenModal extends Component {
         animationType='slide'
         transparent={true}
         onRequestClose={this._onRequestClose}>
-        <KeyboardAvoidingView behavior='padding' style={[{height: height-statusBarHeight}, this.props.containerStyle, {flexDirection: 'column-reverse'}]}>
+        <KeyboardAvoidingView behavior='padding' style={[{height: height-(softMenuBarHeight-statusBarHeight)}, this.props.containerStyle, {flexDirection: 'column-reverse'}]}>
           <View style={[{backgroundColor: 'white', flex: 1},this.props.style]}>
             {this.props.children}
           </View>
           <TouchableWithoutFeedback onPress={this._onRequestClose}>
             <View style={{flex: 1}}/>
           </TouchableWithoutFeedback>
-          <View style={{height:statusBarHeight}}/>
         </KeyboardAvoidingView>
+        <View style={{height:softMenuBarHeight}}/>
       </Modal>
     );
   }

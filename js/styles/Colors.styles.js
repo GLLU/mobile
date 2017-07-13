@@ -6,7 +6,7 @@ const Colors = {
   background: '#F2F2F2',
   white: '#FFFFFF',
   black: '#000000',
-  seperatorGray:'#d6d6d6',
+  separatorGray:'#d6d6d6',
   transparent: 'transparent',
 };
 

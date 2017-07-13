@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   textStyle: {
     flex: -1,
     flexDirection: 'row',
-    padding: 15,
+    padding: 10 ,
     textAlign: 'center',
     borderColor: 'black',
     borderWidth: 2,

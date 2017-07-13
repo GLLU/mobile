@@ -6,28 +6,6 @@ import SocialView from "./SocialView";
 
 const likeIcon = require('../../../../../images/icons/like-black-hollow.png');
 
-const styles = StyleSheet.create({
-  likeContainer: {
-    height: 30,
-    backgroundColor: 'transparent',
-  },
-  btnWithImage: {
-    backgroundColor: 'blue'
-  },
-  iconWithImage: {
-    height: 25,
-    width: 25,
-    resizeMode: 'stretch',
-    alignSelf: 'center',
-    marginTop: 3
-  },
-  countLikeLabel: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-});
-
 class LikesView extends PureComponent {
 
   static propTypes = {

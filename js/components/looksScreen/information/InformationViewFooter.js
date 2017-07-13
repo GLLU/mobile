@@ -33,7 +33,7 @@ class InformationViewFooter extends PureComponent {
   render() {
     const {likes,comments}=this.props;
     return (
-      <View style={{flex:-1,flexDirection:'row',justifyContent:'space-around', alignItems:'center', backgroundColor:Colors.background}}>
+      <View style={{flex:-1,flexDirection:'row', alignItems:'center', backgroundColor:Colors.background}}>
         <LikesView likes={likes}/>
         <CommentsView comments={comments}/>
       </View>
