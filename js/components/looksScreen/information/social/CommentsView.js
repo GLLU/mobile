@@ -36,9 +36,9 @@ class CommentsView extends PureComponent {
   };
 
   render() {
-    const {comments} = this.props;
+    const {comments, onPress} = this.props;
     return (
-      <SocialView count={comments} icon={commentsIcon}/>
+      <SocialView count={comments} icon={commentsIcon} onPress={onPress}/>
     );
   }
 }

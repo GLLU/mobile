@@ -14,9 +14,9 @@ class LikesView extends PureComponent {
   };
 
   render() {
-    const {likes} = this.props;
+    const {likes,onPress} = this.props;
     return (
-      <SocialView count={likes} icon={likeIcon}/>
+      <SocialView count={likes} icon={likeIcon} onPress={onPress}/>
     );
   }
 }

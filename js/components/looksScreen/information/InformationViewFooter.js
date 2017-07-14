@@ -28,14 +28,16 @@ class InformationViewFooter extends PureComponent {
   static propTypes = {
     likes: React.PropTypes.number,
     comments: React.PropTypes.number,
+    onCommentsPress:React.PropTypes.func,
+    onLikesPress:React.PropTypes.func
   };
 
   render() {
-    const {likes,comments}=this.props;
+    const {likes,comments,onCommentsPress,onLikesPress}=this.props;
     return (
       <View style={{flex:-1,flexDirection:'row', alignItems:'center', backgroundColor:Colors.background}}>
-        <LikesView likes={likes}/>
-        <CommentsView comments={comments}/>
+        <LikesView likes={likes} onPress={onLikesPress}/>
+        <CommentsView comments={comments} onPress={onCommentsPress}/>
       </View>
     );
   }

@@ -76,9 +76,15 @@ class BottomLookContainer extends BaseComponent {
     );
   }
 
+  _toggleComments(shouldActive) {
+    this.logEvent('LookScreen', {name: `Comments View ${shouldActive?'visible':'hidden'}`});
+    this.props.onBottomDrawerOpen(shouldActive);
+    this.setState({isCommentsActive: shouldActive, isInformationActive: false,isMenuOpen: false})
+  }
+
   _toggleInformation(shouldActive) {
     this.props.onBottomDrawerOpen(shouldActive);
-    this.setState({isInformationActive: shouldActive, isCommentsActive: false})
+    this.setState({isInformationActive: shouldActive, isCommentsActive: false,isMenuOpen: false})
   }
 
   _toggleMenuView(){
@@ -108,13 +114,15 @@ class BottomLookContainer extends BaseComponent {
   }
 
   _renderInformationView(isActive) {
-    const {look} = this.props;
+    const {look,onLikesNumberPress} = this.props;
     return <InformationView
       isOpen={isActive}
       description={look.description}
       items={look.items}
       likes={look.likes}
       comments={look.comments}
+      onCommentsPress={this._toggleComments}
+      onLikesPress={onLikesNumberPress}
       onRequestClose={this._toggleInformation}
     />;
   }
@@ -127,12 +135,6 @@ class BottomLookContainer extends BaseComponent {
       count={this.state.comments}
       isOpen={isActive}
       onRequestClose={this._toggleComments}/>
-  }
-
-  _toggleComments(shouldActive) {
-    this.logEvent('LookScreen', {name: `Comments View ${shouldActive?'visible':'hidden'}`});
-    this.props.onBottomDrawerOpen(shouldActive);
-    this.setState({isCommentsActive: shouldActive, isInformationActive: false})
   }
 
   _toggleItem(shouldActive) {

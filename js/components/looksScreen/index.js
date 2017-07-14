@@ -53,6 +53,7 @@ class LooksScreen extends Component {
     super(props);
     this._goToProfile=this._goToProfile.bind(this);
     this._goToEdit=this._goToEdit.bind(this);
+    this.goToLikes=this.goToLikes.bind(this);
     this.onToggleDrawer=this.onToggleDrawer.bind(this);
     this._toggleLike=this._toggleLike.bind(this);
     this.renderUpArrow=this.renderUpArrow.bind(this);
@@ -132,6 +133,10 @@ class LooksScreen extends Component {
     this.props.editNewLook(look.id).then(() => {
       this.props.navigateTo('addItemScreen',{ mode: 'edit' });
     });
+  }
+
+  goToLikes(look){
+    this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})
   }
 
   onToggleDrawer(shouldOpen){
@@ -274,7 +279,7 @@ class LooksScreen extends Component {
           openComments={openComments}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           lookType={"video"}
-          onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
+          onLikesNumberPress={()=>this.goToLikes(look)}
         />
         {showShowArrow ? this.renderUpArrow() : null}
         {showShowArrow ? this.renderDownArrow() : null}
@@ -311,7 +316,7 @@ class LooksScreen extends Component {
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
                 reportAbuse={this.props.reportAbuse}
-                onLikesNumberPress={() => this.props.navigateTo('likesscreen',{lookId: look.id, count: look.likes})}
+                onLikesNumberPress={()=>this.goToLikes(look)}
               />
               {showShowArrow ? this.renderUpArrow() : null}
               {showShowArrow ? this.renderDownArrow() : null}

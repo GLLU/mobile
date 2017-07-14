@@ -30,7 +30,9 @@ export default class InformationView extends Component {
     items: React.PropTypes.array,
     style: React.PropTypes.any,
     isOpen: React.PropTypes.bool,
-    onRequestClose: React.PropTypes.func
+    onRequestClose: React.PropTypes.func,
+    onCommentsPress:React.PropTypes.func,
+    onLikesPress:React.PropTypes.func
   };
 
   static defaultProps = {
@@ -51,7 +53,7 @@ export default class InformationView extends Component {
     }
 
   render() {
-    const {likes, comments, items} = this.props;
+    const {likes, comments, items, onCommentsPress,onLikesPress} = this.props;
     const brands = this.getBrandsFromItems(items);
     return (
       <BottomHalfScreenModal {...this.props}>
@@ -67,7 +69,7 @@ export default class InformationView extends Component {
               <Separator style={{backgroundColor: Colors.separatorGray, height: 1}}/>
             </View>
             <ItemBrandsView style={{paddingVertical: 10}} brands={brands}/>
-            <InformationViewFooter likes={likes} comments={comments}/>
+            <InformationViewFooter onCommentsPress={onCommentsPress} onLikesPress={onLikesPress} likes={likes} comments={comments}/>
           </View>
         </View>
       </BottomHalfScreenModal>
