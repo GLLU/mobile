@@ -50,7 +50,7 @@
     fuse.js "^3.0.1"
     prop-types "^15.5.9"
 
-"@storybook/react-native@^3.1.8":
+"@storybook/react-native@3.1.7":
   version "3.1.8"
   resolved "https://registry.yarnpkg.com/@storybook/react-native/-/react-native-3.1.8.tgz#fba628fb9327bac75615a0fdd34ceb10d01a0a78"
   dependencies:
@@ -7652,7 +7652,7 @@ react-native-swipe-gestures@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.2.tgz#914e1a72a94bc55b322b4622a01103ab879296dd"
 
-react-native-tab-view@^0.0.65:
+react-native-tab-view@0.0.65, react-native-tab-view@^0.0.65:
   version "0.0.65"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.65.tgz#b685ea3081ff7c96486cd997361026c407302c59"
   dependencies:

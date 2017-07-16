@@ -10,16 +10,16 @@ import ActivationCodeScreen from './components/activationCodeScreen';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import LooksScreen from './components/looksScreen';
-import ProfileScreen from './components/profileScreen';
+import ProfileScreen from './components/profileScreen/profileScreenContainer';
 import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
 import NotificationsScreen from './components/notificationsscreen';
-import SettingsScreen from './components/settingsScreen';
+import SettingsScreen from './components/settingsScreen/SettingsContainer';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import FinishLookScreen from './components/finishLookScreen';
-import TutorialScreen from './components/tutorialScreen'
-import BadNavigationScreen from './components/badNavigationScreen'
-import likesScreen from './components/likesScreen'
+import TutorialScreen from './components/tutorialScreen';
+import BadNavigationScreen from './components/badNavigationScreen';
+import likesScreen from './components/likesScreen';
 
 const stackNavigatorConfig = {
   initialRouteName: 'splashscreen',

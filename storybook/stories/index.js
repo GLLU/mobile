@@ -13,8 +13,10 @@ import Welcome from './Welcome';
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')}/>);
 
-require('../../js/components/common/commonComponents.stories');
+require('../../js/strings/index');
 
+require('../../js/components/common/commonComponents.stories');
+require('../../js/components/profileScreen/profileScreen.stories');
 
 storiesOf('button', module)
     .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)

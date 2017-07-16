@@ -1,13 +1,11 @@
-'use strict';
-
-import React, { PureComponent } from 'react';
-import { Image, TouchableOpacity, TextInput, Platform, View, Dimensions, StyleSheet } from 'react-native';
-import Spinner from "../../loaders/Spinner";
-import { noop } from "lodash";
+import React, {PureComponent} from 'react';
+import {Image, TouchableOpacity, TextInput, Platform, View, Dimensions, StyleSheet} from 'react-native';
+import Spinner from '../../loaders/Spinner';
+import {noop} from 'lodash';
 
 const cameraWhite = require('../../../../images/icons/cameraWhite.png');
 
-const w = Dimensions.get('window').width
+const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   avatar: {
@@ -19,20 +17,24 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     justifyContent: 'center',
-    backgroundColor: 'white'
+    borderWidth: 1,
+    borderColor: 'white',
+    backgroundColor: 'transparent',
   },
   profilePicBtn: {
     width: 30,
     height: 20,
   },
-  editProfileAvatarImg: {
-    position: 'absolute',
-    top: 100,
-    left: w / 2 - 50,
-  },
+  /*
+   editProfileAvatarImg: {
+   position: 'absolute',
+   top: 100,
+   left: w / 2 - 50,
+   },
+   */
   editAvatarImage: {
     borderWidth: 2,
-    borderColor: 'white'
+    borderColor: 'white',
   },
   changeImageIconContainer: {
     width: 100,
@@ -43,9 +45,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 20,
-  }
+  },
 });
-
 
 class ProfileAvatar extends PureComponent {
 
@@ -57,30 +58,28 @@ class ProfileAvatar extends PureComponent {
   };
 
   static defaultProps = {
-    changeUserAvatar: noop
+    changeUserAvatar: noop,
   };
 
-  getContainerStyle = () => {
-    return Platform.OS === 'ios' ?
-      [styles.avatarImg, styles.editAvatarImage] :
-      styles.avatarImg
-  }
+  getContainerStyle = () => Platform.OS === 'ios' ?
+    [styles.avatarImg, styles.editAvatarImage] :
+    styles.avatarImg
 
   renderAvatar() {
-    const {avatarUrl,isEditable,isLoading}=this.props;
+    const { avatarUrl, isEditable, isLoading, style } = this.props;
     return (
-        <Image source={{uri: avatarUrl}} style={this.getContainerStyle()} borderRadius={50}>
-          {this.renderOverlay(isEditable, isLoading)}
-        </Image>
+      <Image source={{ uri: avatarUrl }} style={[this.getContainerStyle(), style]} borderRadius={50}>
+        {this.renderOverlay(isEditable, isLoading)}
+      </Image>
     );
   }
 
   renderWhiteCircle() {
-    const {isEditable,isLoading}=this.props;
+    const { isEditable, isLoading, style } = this.props;
     return (
-        <View style={this.getContainerStyle()} borderRadius={50}>
-          {this.renderOverlay(isEditable, isLoading)}
-        </View>
+      <View style={[this.getContainerStyle(), style]} borderRadius={50}>
+        {this.renderOverlay(isEditable, isLoading)}
+      </View>
     );
   }
 
@@ -89,23 +88,22 @@ class ProfileAvatar extends PureComponent {
       <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
         {
           isLoading ?
-            <Spinner color='white' style={styles.profilePicBtn}/> :
+            <Spinner color="white" style={styles.profilePicBtn}/> :
             <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'}/>
         }
       </View>
     ) : null;
   }
 
-
   render() {
-    const {avatarUrl, changeUserAvatar,style} = this.props;
-    return(
-      <TouchableOpacity transparent onPress={changeUserAvatar} style={style || styles.editProfileAvatarImg}>
+    const { avatarUrl, changeUserAvatar } = this.props;
+    return (
+      <TouchableOpacity transparent onPress={changeUserAvatar}>
         {avatarUrl ? this.renderAvatar() : this.renderWhiteCircle()}
       </TouchableOpacity>
     );
   }
 }
 
-export default ProfileAvatar
+export default ProfileAvatar;
 

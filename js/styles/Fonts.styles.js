@@ -3,16 +3,8 @@
  */
 import { StyleSheet } from 'react-native';
 
-const FontStyles = StyleSheet.create({
-  regularFont: {
-    fontFamily: '',
-  },
-  boldFont: {
-    fontFamily: '',
-  },
-  mediumFont: {
-    fontFamily: '',
-  },
-});
+const FontStyles = {
+  regularFont: 'Montserrat-Regular',
+};
 
 export default FontStyles;

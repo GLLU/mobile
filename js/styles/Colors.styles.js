@@ -5,7 +5,7 @@
 const Colors = {
   primaryColor: '',
   secondaryColor: '',
-  highlightColor: '',
+  highlightColor: '#00D7B2',
   white: '#FFFFFF',
   transparent: 'transparent',
 };
