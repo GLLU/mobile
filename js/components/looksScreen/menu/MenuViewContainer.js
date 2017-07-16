@@ -31,15 +31,9 @@ class MenuViewContainer extends Component {
 
   constructor(props){
     super(props);
-    this._reportAbuse=this._reportAbuse.bind(this);
     this.state={
       abuseReported:false
     }
-  }
-
-  _reportAbuse() {
-    this.setState({abuseReported: true})
-    this.props.reportAbuse(this.props.look_id)
   }
 
   render() {
@@ -49,9 +43,9 @@ class MenuViewContainer extends Component {
   }
 }
 
-function bindAction(dispatch) {
+function bindAction(dispatch,props) {
   return {
-    reportAbuse: (id) => dispatch(reportAbuse(id)),
+    reportAbuse: () => dispatch(reportAbuse(props.lookId)),
   };
 }
 

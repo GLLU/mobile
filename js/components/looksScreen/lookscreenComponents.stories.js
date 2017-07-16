@@ -82,7 +82,7 @@ storiesOf('look screen components', module)
         backgroundColor: 'red', flex: 1,
         flexDirection: 'column'
       }}>
-        <MenuView isOpen={true} isMyLook={false} lookId={7} reportAbuse={action('user-blocked')}/>
+        <MenuView isOpen={true} isMyLook={false} lookId={7} reportAbuse={action('user-reported')}/>
       </View>
     )
   }

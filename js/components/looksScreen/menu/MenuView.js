@@ -53,12 +53,7 @@ class MenuView extends Component {
   constructor(props) {
     super(props);
     this._onRequestClose = this._onRequestClose.bind(this);
-    this.reportAbuse = this.reportAbuse.bind(this);
     this.blockUser = this.blockUser.bind(this);
-  }
-
-  reportAbuse() {
-    this.props.reportAbuse(this.props.lookId)
   }
 
   blockUser() {
@@ -95,7 +90,7 @@ class MenuView extends Component {
     <MenuAction
       key={'report'}
       label={i18n.t('REPORT')}
-      onPress={this._reportAbuse}
+      onPress={this.props.reportAbuse}
       confirmationMessage={i18n.t('REPORT_TEXT')}/>;
 
   renderBlock = () =>
