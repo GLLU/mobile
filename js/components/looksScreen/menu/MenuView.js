@@ -129,7 +129,7 @@ class MenuView extends Component {
   render() {
     return (
       <BottomHalfScreenModal {...this.props} style={{borderWidth: 5}}>
-        <HalfScreenModalHeader title={i18n.t('OPTIONS')} onPress={this._onRequestClose}/>
+        <HalfScreenModalHeader title={i18n.t('OPTIONS')} onCancelPress={this._onRequestClose}/>
         <View style={styles.container}>
           {this.props.isMyLook ? this.renderMyContent() : this.renderGeneralContent()}
         </View>

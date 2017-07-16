@@ -129,7 +129,7 @@ class BottomLookContainer extends Component {
       likes={look.likes}
       comments={look.comments}
       onCommentsPress={this._toggleComments}
-      onLikesPress={this.goToLikes}
+      onNumberPress={()=>this.goToLikes(look)}
       onRequestClose={this._toggleInformation}
     />;
   }
@@ -220,7 +220,7 @@ class BottomLookContainer extends Component {
                 items={look.items}
                 activeItem={this.state.activeItem}
                 lookType={this.props.lookType}
-                onNumberPress={this.goToLikes}
+                onNumberPress={()=>this.goToLikes(look)}
               />
             </View>
           </TouchableWithoutFeedback>

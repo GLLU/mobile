@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import i18n from 'react-native-i18n';
 import { Animated, View, Text, StyleSheet } from 'react-native';
@@ -63,7 +65,7 @@ class InformationView extends Component {
   getBrandsFromItems = (items) =>
     chain(items)
       .map(item => item.brand)
-      .filter(brand=>brand&&brand.id)
+      .filter(brand => brand && brand.id)
       .uniqBy(brand => brand.id)
       .value();
 
@@ -77,23 +79,21 @@ class InformationView extends Component {
     return (
       <BottomHalfScreenModal {...this.props}>
         <View style={styles.container}>
-          <HalfScreenModalHeader title={i18n.t('INFORMATION')} onPress={this._onRequestClose}/>
-          <View>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>
-                {this.props.description}
-              </Text>
-            </View>
-            <View style={styles.separatorContainer}>
-              <Separator style={styles.separator}/>
-            </View>
-            <ItemBrandsView style={{paddingVertical: 10}} brands={brands}/>
-            <InformationViewFooter
-              onCommentsPress={onCommentsPress}
-              onLikesPress={onLikesPress}
-              likes={likes}
-              comments={comments}/>
+          <HalfScreenModalHeader title={i18n.t('INFORMATION')} onCancelPress={this._onRequestClose}/>
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.description}>
+              {this.props.description}
+            </Text>
           </View>
+          <View style={styles.separatorContainer}>
+            <Separator style={styles.separator}/>
+          </View>
+          <ItemBrandsView style={{paddingVertical: 10}} brands={brands}/>
+          <InformationViewFooter
+            onCommentsPress={onCommentsPress}
+            onLikesPress={onLikesPress}
+            likes={likes}
+            comments={comments}/>
         </View>
       </BottomHalfScreenModal>
     );
