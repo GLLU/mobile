@@ -4,6 +4,7 @@ import rest from '../api/rest';
 import _ from 'lodash';
 import i18n from 'react-native-i18n';
 import LoginService from '../services/loginService';
+import NetworkManager from '../network/NetworkManager';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
@@ -289,6 +290,7 @@ export function checkLogin(user) {
     if (user && user.id != -1) {
       Utils.getKeychainData().then((credentials) => {
         if (credentials) {
+          NetworkManager.setToken(user.api_key);
           setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
           dispatch(rest.actions.auth.get({}, (err, data) => {
             if (!err) {
