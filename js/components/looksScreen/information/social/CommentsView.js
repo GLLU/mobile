@@ -35,10 +35,21 @@ class CommentsView extends PureComponent {
     onPress: React.PropTypes.func,
   };
 
+  constructor(props){
+    super(props);
+    this.onPress=this.onPress.bind(this);
+  }
+
+  onPress(){
+    const {onPress,logEvent} = this.props;
+    logEvent('LookScreen', {name: 'Infromation Comments click'});
+    onPress(...arguments)
+  }
+
   render() {
-    const {comments, onPress} = this.props;
+    const {comments} = this.props;
     return (
-      <SocialView count={comments} icon={commentsIcon} onPress={onPress}/>
+      <SocialView count={comments} icon={commentsIcon} onPress={this.onPress}/>
     );
   }
 }

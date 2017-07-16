@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 });
 
-export default class InformationView extends Component {
+class InformationView extends Component {
 
   static propTypes = {
     description: React.PropTypes.string,
@@ -99,3 +99,5 @@ export default class InformationView extends Component {
     );
   }
 }
+
+export default InformationView
