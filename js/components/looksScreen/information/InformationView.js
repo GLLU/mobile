@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import i18n from 'react-native-i18n';
 import { Animated, View, Text, StyleSheet } from 'react-native';
 import { chain, noop } from 'lodash'
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
@@ -71,7 +72,7 @@ export default class InformationView extends Component {
     return (
       <BottomHalfScreenModal {...this.props}>
         <View style={styles.container}>
-          <HalfScreenModalHeader title="Infromation" onPress={this._onRequestClose}/>
+          <HalfScreenModalHeader title={i18n.t('INFORMATION')} onPress={this._onRequestClose}/>
           <View>
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>

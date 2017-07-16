@@ -1,3 +1,8 @@
 {
-  "INVALID_LOGIN": "Email/Password are incorrect"
+  "INVALID_LOGIN": "Email/Password are incorrect",
+  "INFORMATION": "Information",
+  "BLOCK": "Block",
+  "SHARE": "Share",
+  "EDIT": "Edit",
+  "OPTIONS": "Options"
 }

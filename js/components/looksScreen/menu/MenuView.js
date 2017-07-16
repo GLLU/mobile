@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
 import { noop } from 'lodash'
+import i18n from 'react-native-i18n';
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
 import SolidButton from "../../common/buttons/SolidButton";
-import * as _ from "lodash";
-import withAnalytics from '../../common/analytics/WithAnalytics'
-import { connect } from "react-redux";
-import { reportAbuse } from "../../../actions/looks";
 import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
 
 const cancelIcon = require('../../../../images/icons/cancel-black.png');
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    paddingHorizontal: 30,
+    marginVertical: 25
+  },
   thankYouContainer: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent: 'center',
     padding: 20
   },
   thankYouText: {
@@ -44,12 +47,12 @@ class MenuView extends Component {
     isMyLook: false
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this._reportAbuse=this._reportAbuse.bind(this);
+    this._reportAbuse = this._reportAbuse.bind(this);
     this._onRequestClose = this._onRequestClose.bind(this);
-    this.state={
-      abuseReported:false
+    this.state = {
+      abuseReported: false
     }
   }
 
@@ -58,9 +61,9 @@ class MenuView extends Component {
     this.props.reportAbuse(this.props.look_id)
   }
 
-  renderSeparator=({key})=><View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
+  renderSeparator = ({key}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
 
-  renderRow({key,label, onPress}) {
+  renderRow({key, label, onPress}) {
     return (
       <View key={key} style={{height: 75, paddingVertical: 15}}>
         <SolidButton style={{backgroundColor: '#00D7B2'}} label={label} onPress={onPress}/>
@@ -68,19 +71,23 @@ class MenuView extends Component {
     );
   }
 
-  renderShare=(key)=>this.renderRow({key:'share',label: 'Share', onPress: this.props.onShareClicked});
+  renderShare = (key) => this.renderRow({key: 'share', label: 'Share', onPress: this.props.onShareClicked});
 
-  renderEdit=()=>this.renderRow({key:'edit',label: 'Edit', onPress: this.props.onEditPress});
+  renderEdit = () => this.renderRow({key: 'edit', label: 'Edit', onPress: this.props.onEditPress});
 
-  renderDelete=()=>this.renderRow({key:'delete',label:'Delete',onPress:this.props.onDeletePress});
+  renderDelete = () => this.renderRow({key: 'delete', label: 'Delete', onPress: this.props.onDeletePress});
 
-  renderWishlist=()=>this.renderRow({key:'wishlist',label:'Add to Wishlist!',onPress:()=>{Alert.alert('coming soon')}});
+  renderWishlist = () => this.renderRow({
+    key: 'wishlist', label: 'Add to Wishlist!', onPress: () => {
+      Alert.alert('coming soon')
+    }
+  });
 
   renderReport() {
-    return(
+    return (
       this.state.abuseReported ?
-        this.renderReportThankYou({key:'report'}):
-        this.renderRow({key:'report',label: 'Report', onPress: this._reportAbuse})
+        this.renderReportThankYou({key: 'report'}) :
+        this.renderRow({key: 'report', label: 'Report', onPress: this._reportAbuse})
     );
   }
 
@@ -95,20 +102,20 @@ class MenuView extends Component {
     )
   }
 
-  renderGeneralContent(){
+  renderGeneralContent() {
     return [
       this.renderShare(),
-      this.renderSeparator({key:1}),
+      this.renderSeparator({key: 1}),
       this.renderReport(),
       // this.renderSeparator({key:2}),
       // this.renderWishlist()
     ];
   }
 
-  renderMyContent(){
+  renderMyContent() {
     return [
       this.renderShare(),
-      this.renderSeparator({key:1}),
+      this.renderSeparator({key: 1}),
       this.renderEdit(),
       // this.renderSeparator({key:2}),
       // this.renderDelete()
@@ -122,9 +129,9 @@ class MenuView extends Component {
   render() {
     return (
       <BottomHalfScreenModal {...this.props} style={{borderWidth: 5}}>
-        <HalfScreenModalHeader title="Options" onPress={this._onRequestClose}/>
-        <View style={{backgroundColor: 'white', justifyContent: 'center', paddingHorizontal: 30, marginVertical: 25}}>
-          {this.props.isMyLook?this.renderMyContent():this.renderGeneralContent()}
+        <HalfScreenModalHeader title={i18n.t('OPTIONS')} onPress={this._onRequestClose}/>
+        <View style={styles.container}>
+          {this.props.isMyLook ? this.renderMyContent() : this.renderGeneralContent()}
         </View>
       </BottomHalfScreenModal>
     );
