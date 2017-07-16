@@ -8,6 +8,7 @@ function resolveQueryParams(params) {
 
 export default class AppAPI {
   static get(route, queryParams) {
+    console.log('queryParams',queryParams)
     let finalRoute = route;
     if (queryParams) {
       finalRoute += `?${resolveQueryParams(queryParams)}`;
