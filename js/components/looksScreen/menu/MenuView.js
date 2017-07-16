@@ -71,11 +71,11 @@ class MenuView extends Component {
     );
   }
 
-  renderShare = (key) => this.renderRow({key: 'share', label: 'Share', onPress: this.props.onShareClicked});
+  renderShare = (key) => this.renderRow({key: 'share', label: i18n.t('SHARE'), onPress: this.props.onShareClicked});
 
-  renderEdit = () => this.renderRow({key: 'edit', label: 'Edit', onPress: this.props.onEditPress});
+  renderEdit = () => this.renderRow({key: 'edit', label: i18n.t('EDIT'), onPress: this.props.onEditPress});
 
-  renderDelete = () => this.renderRow({key: 'delete', label: 'Delete', onPress: this.props.onDeletePress});
+  renderDelete = () => this.renderRow({key: 'delete', label: i18n.t('DELETE'), onPress: this.props.onDeletePress});
 
   renderWishlist = () => this.renderRow({
     key: 'wishlist', label: 'Add to Wishlist!', onPress: () => {
@@ -87,7 +87,7 @@ class MenuView extends Component {
     return (
       this.state.abuseReported ?
         this.renderReportThankYou({key: 'report'}) :
-        this.renderRow({key: 'report', label: 'Report', onPress: this._reportAbuse})
+        this.renderRow({key: 'report', label: i18n.t('REPORT'), onPress: this._reportAbuse})
     );
   }
 
@@ -95,8 +95,7 @@ class MenuView extends Component {
     return (
       <View key={key} style={{height: 75, paddingVertical: 15}}>
         <View key={key} style={styles.thankYouContainer}>
-          <Text style={styles.thankYouText}>Thank you for making inFash better! we'll examine your report and will be in
-            touch with you over email.</Text>
+          <Text style={styles.thankYouText}>{i18n.t('REPORT_TEXT')}</Text>
         </View>
       </View>
     )

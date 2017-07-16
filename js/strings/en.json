@@ -4,5 +4,8 @@
   "BLOCK": "Block",
   "SHARE": "Share",
   "EDIT": "Edit",
-  "OPTIONS": "Options"
+  "OPTIONS": "Options",
+  "DELETE": "Delete",
+  "REPORT": "Report",
+  "REPORT_TEXT":"Thank you for making inFash better! we'll examine your report and will be in touch with you over email."
 }
