@@ -4,6 +4,8 @@ import { AppRegistry, Platform } from 'react-native';
 
 import { getStorybookUI, configure } from '@storybook/react-native';
 
+require('../js/strings/index');
+
 // import stories
 configure(() => {
   require('./stories');

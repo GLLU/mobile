@@ -101,6 +101,26 @@ class MenuView extends Component {
     )
   }
 
+  renderBlockConfirmation({key}) {
+    return (
+      <View key={key} style={{height: 75, paddingVertical: 15}}>
+        <View key={key} style={styles.thankYouContainer}>
+          <Text style={styles.thankYouText}>{i18n.t('BLOCK_TEXT')}</Text>
+        </View>
+      </View>
+    )
+  }
+
+  renderBlockMessage({key}) {
+    return (
+      <View key={key} style={{height: 75, paddingVertical: 15}}>
+        <View key={key} style={styles.thankYouContainer}>
+          <Text style={styles.thankYouText}>{i18n.t('BLOCK_TEXT')}</Text>
+        </View>
+      </View>
+    )
+  }
+
   renderGeneralContent() {
     return [
       this.renderShare(),

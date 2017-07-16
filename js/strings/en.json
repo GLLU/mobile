@@ -7,5 +7,7 @@
   "OPTIONS": "Options",
   "DELETE": "Delete",
   "REPORT": "Report",
-  "REPORT_TEXT":"Thank you for making inFash better! we'll examine your report and will be in touch with you over email."
+  "REPORT_TEXT":"Thank you for making inFash better! we'll examine your report and will be in touch with you over email.",
+  "BLOCK_TEXT":"The User was blocked.",
+  "BLOCK_ARE_YOU_SURE":"Are you sure you want to block this user?."
 }

@@ -6,10 +6,9 @@ import { action } from '@storybook/addon-actions';
 import ItemBrand from './information/ItemBrand';
 import ItemBrandsView from "./information/ItemBrandsView";
 import InformationView from "./information/InformationView";
-import CommentsView from "./information/social/CommentsView";
-import LikesView from "./information/social/LikesView";
 import InformationViewFooter from "./information/InformationViewFooter";
 import MenuView from "./menu/MenuView";
+import MenuAction from "./menu/MenuAction";
 
 storiesOf('look screen components', module)
   .add('item brand', () =>
@@ -84,6 +83,47 @@ storiesOf('look screen components', module)
         flexDirection: 'column'
       }}>
         <MenuView isOpen={true} isMyLook={false}/>
+      </View>
+    )
+  }
+).add('Menu Action - with Confirmation', () => {
+    return (
+      <View style={{
+        backgroundColor: 'red', flex: 1,
+        flexDirection: 'column'
+      }}>
+        <MenuAction
+          label='Random Action with confirmation'
+          withConfirmation={true}
+          areYouSureMessage={'Are you sure you wanna make a random action?'}
+          confirmationMessage={'thanks for clicking me :)'}
+          onPress={()=>action('Done!')}/>
+      </View>
+    )
+  }
+).add('Menu Action - without Confirmation', () => {
+    return (
+      <View style={{
+        backgroundColor: 'red', flex: 1,
+        flexDirection: 'column'
+      }}>
+        <MenuAction
+          label='Random Action without confirmation'
+          areYouSureMessage={'Are you sure you wanna make a random action?'}
+          confirmationMessage={'thanks for clicking me :)'}
+          onPress={()=>action('Done!')}/>
+      </View>
+    )
+  }
+).add('Menu Action - without message', () => {
+    return (
+      <View style={{
+        backgroundColor: 'red', flex: 1,
+        flexDirection: 'column'
+      }}>
+        <MenuAction
+          label='Random Action'
+          onPress={()=>action('Done!')}/>
       </View>
     )
   }
