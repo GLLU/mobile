@@ -125,7 +125,7 @@ class SettingsScreen extends Component {
 
   _onInviteFriendsClick() {
     this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const message=SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
@@ -194,7 +194,6 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    shareToken: state.user.invitation_share_token
   };
 };
 

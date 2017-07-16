@@ -103,7 +103,7 @@ class BottomLookContainer extends Component {
   onShareClicked() {
     const {logEvent} = this.props;
     logEvent('LookScreen', {name: 'Share clicked'});
-    const message = SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
