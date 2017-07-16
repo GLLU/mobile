@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet } from 'react-native';
-import { noop } from 'lodash'
+import { chain, noop } from 'lodash'
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
 import ItemBrandsView from "./ItemBrandsView";
 import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
@@ -15,10 +15,23 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between'
   },
-  descriptionStyle: {
+  descriptionContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    paddingVertical: 20
+  },
+  description: {
     paddingHorizontal: 20,
     color: "black",
     fontSize: 16
+  },
+  separatorContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: 50
+  },
+  separator: {
+    backgroundColor: Colors.separatorGray,
+    height: 1
   }
 
 });
@@ -31,8 +44,8 @@ export default class InformationView extends Component {
     style: React.PropTypes.any,
     isOpen: React.PropTypes.bool,
     onRequestClose: React.PropTypes.func,
-    onCommentsPress:React.PropTypes.func,
-    onLikesPress:React.PropTypes.func
+    onCommentsPress: React.PropTypes.func,
+    onLikesPress: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -46,30 +59,34 @@ export default class InformationView extends Component {
     this._onRequestClose = this._onRequestClose.bind(this);
   }
 
-  getBrandsFromItems = (items) => _.chain(items).map(item => item.brand).uniqBy(brand => brand.id).value();
+  getBrandsFromItems = (items) => chain(items).map(item => item.brand).uniqBy(brand => brand.id).value();
 
-    _onRequestClose() {
-      this.props.onRequestClose(false)
-    }
+  _onRequestClose() {
+    this.props.onRequestClose(false)
+  }
 
   render() {
-    const {likes, comments, items, onCommentsPress,onLikesPress} = this.props;
+    const {likes, comments, items, onCommentsPress, onLikesPress} = this.props;
     const brands = this.getBrandsFromItems(items);
     return (
       <BottomHalfScreenModal {...this.props}>
         <View style={styles.container}>
           <HalfScreenModalHeader title="Infromation" onPress={this._onRequestClose}/>
           <View>
-            <View style={{flexDirection: 'column', justifyContent: 'flex-end', paddingVertical: 20}}>
-              <Text style={styles.descriptionStyle}>
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.description}>
                 {this.props.description}
               </Text>
             </View>
-            <View style={{paddingVertical: 10, paddingHorizontal: 50}}>
-              <Separator style={{backgroundColor: Colors.separatorGray, height: 1}}/>
+            <View style={styles.separatorContainer}>
+              <Separator style={styles.separator}/>
             </View>
             <ItemBrandsView style={{paddingVertical: 10}} brands={brands}/>
-            <InformationViewFooter onCommentsPress={onCommentsPress} onLikesPress={onLikesPress} likes={likes} comments={comments}/>
+            <InformationViewFooter
+              onCommentsPress={onCommentsPress}
+              onLikesPress={onLikesPress}
+              likes={likes}
+              comments={comments}/>
           </View>
         </View>
       </BottomHalfScreenModal>

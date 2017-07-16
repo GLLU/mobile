@@ -13,10 +13,22 @@ class LikesView extends PureComponent {
     onPress: React.PropTypes.func,
   };
 
-  render() {
+  constructor(props){
+    super(props);
+    this.onPress=this.onPress.bind(this);
+  }
+
+  onPress(){
     const {likes,onPress} = this.props;
+    if(likes>0){
+      onPress(...arguments)
+    }
+  }
+
+  render() {
+    const {likes} = this.props;
     return (
-      <SocialView count={likes} icon={likeIcon} onPress={onPress}/>
+      <SocialView count={likes} icon={likeIcon} onPress={this.onPress}/>
     );
   }
 }

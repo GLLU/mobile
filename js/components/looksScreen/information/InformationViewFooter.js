@@ -8,18 +8,10 @@ import Colors from "../../../styles/Colors.styles";
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent: 'space-between'
-  },
-  textStyle:{
-    flex:-1,
-    flexDirection:'row',
-    padding:15,
-    textAlign:'center',
-    borderColor:'black',
-    borderWidth:2,
-    backgroundColor:'white'
+    flex: -1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.background
   }
 });
 
@@ -28,23 +20,23 @@ class InformationViewFooter extends PureComponent {
   static propTypes = {
     likes: React.PropTypes.number,
     comments: React.PropTypes.number,
-    onCommentsPress:React.PropTypes.func,
-    onLikesPress:React.PropTypes.func
+    onCommentsPress: React.PropTypes.func,
+    onLikesPress: React.PropTypes.func
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.onCommentsPress=this.onCommentsPress.bind(this);
+    this.onCommentsPress = this.onCommentsPress.bind(this);
   }
 
-  onCommentsPress(){
+  onCommentsPress() {
     this.props.onCommentsPress(true);
   }
 
   render() {
-    const {likes,comments,onLikesPress}=this.props;
+    const {likes, comments, onLikesPress} = this.props;
     return (
-      <View style={{flex:-1,flexDirection:'row', alignItems:'center', backgroundColor:Colors.background}}>
+      <View style={styles.container}>
         <LikesView likes={likes} onPress={onLikesPress}/>
         <CommentsView comments={comments} onPress={this.onCommentsPress}/>
       </View>

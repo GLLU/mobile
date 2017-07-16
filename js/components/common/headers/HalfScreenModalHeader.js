@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Image, TouchableOpacity, Text, View, StyleSheet, Platform } from 'react-native';
 import CancelButton from "../buttons/CancelButton";
 
@@ -7,27 +7,32 @@ import Colors from '../../../styles/Colors.styles'
 const infoIcon = require('../../../../images/icons/info-i-white.png');
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  container: {
     backgroundColor:'#F2F2F2',
     marginTop: Platform.OS === 'ios' ? 10 : 0,
     height: 50
   },
-  header: {
-    backgroundColor: 'transparent',
-    flex: 1,
-    flexDirection: 'row',
-
+  informationSymbolContainer: {
+    backgroundColor:Colors.primaryColor,
+    justifyContent:'center',
+    alignItems:'center'
   },
-  headerTitle: {
-    fontSize: 22,
-    color: '#FFFFFF',
-    textAlign: 'left',
-    alignSelf: 'center',
-    marginBottom: 3
+  informationSymbol:{
+    height: null,
+    width:null,
+    resizeMode:'contain',
+    padding:15
+  },
+  title: {
+    marginLeft:10,
+    textAlign:'left',
+    fontSize:20,
+    fontWeight:'bold',
+    fontFamily: Fonts.boldFont
   },
 });
 
-class HalfScreenModalHeader extends Component {
+class HalfScreenModalHeader extends PureComponent {
 
   static propTypes = {
     title: React.PropTypes.string.isRequired,
@@ -36,19 +41,19 @@ class HalfScreenModalHeader extends Component {
 
   renderInformationSymbol(size){
     return(
-      <View style={{width:size,height:size, backgroundColor:Colors.primaryColor, justifyContent:'center', alignItems:'center'}}>
-        <Image source={infoIcon} style={{height: null, width:null, resizeMode:'contain', padding:15}}/>
+      <View style={[{width:size,height:size},styles.informationSymbolContainer]}>
+        <Image source={infoIcon} style={styles.informationSymbol}/>
       </View>
     )
   }
 
   render() {
     return (
-      <View style={styles.headerContainer}>
+      <View style={styles.container}>
         <View style={{flex:1, flexDirection:'row', alignItems:'center'}}>
           {this.renderInformationSymbol(50)}
           <View style={{flex:1}}>
-            <Text style={[{marginLeft:10, textAlign:'left'},Fonts.boldFont]}>{this.props.title}</Text>
+            <Text style={styles.title}>{this.props.title}</Text>
           </View>
           <View style={{padding:5}}>
             <CancelButton onPress={this.props.onPress}/>

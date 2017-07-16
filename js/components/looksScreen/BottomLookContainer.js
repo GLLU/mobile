@@ -31,6 +31,7 @@ class BottomLookContainer extends BaseComponent {
     isMenuOpen: React.PropTypes.bool,
     goBack: React.PropTypes.func,
     goToProfile: React.PropTypes.func,
+    goToLikes: React.PropTypes.func,
     toggleLike: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
     onBottomDrawerOpen: React.PropTypes.func,
@@ -52,6 +53,8 @@ class BottomLookContainer extends BaseComponent {
     this._toggleItem = this._toggleItem.bind(this);
     this.goToProfile=this.goToProfile.bind(this);
     this.goToEdit=this.goToEdit.bind(this);
+    this.goToLikes=this.goToLikes.bind(this);
+    this.closeBottomModal=this.closeBottomModal.bind(this);
     this.onShareClicked = this.onShareClicked.bind(this);
     const {look} = this.props;
     this.state = {
@@ -114,7 +117,7 @@ class BottomLookContainer extends BaseComponent {
   }
 
   _renderInformationView(isActive) {
-    const {look,onLikesNumberPress} = this.props;
+    const {look} = this.props;
     return <InformationView
       isOpen={isActive}
       description={look.description}
@@ -122,7 +125,7 @@ class BottomLookContainer extends BaseComponent {
       likes={look.likes}
       comments={look.comments}
       onCommentsPress={this._toggleComments}
-      onLikesPress={onLikesNumberPress}
+      onLikesPress={this.goToLikes}
       onRequestClose={this._toggleInformation}
     />;
   }
@@ -143,11 +146,20 @@ class BottomLookContainer extends BaseComponent {
 
   goToProfile(user){
     this.props.goToProfile(user);
-    this.setState({isCommentsActive: false, isInformationActive: false, isMenuOpen: false})
+    this.closeBottomModal();
   }
 
   goToEdit(look){
     this.props.goToEdit(look);
+    this.closeBottomModal();
+  }
+
+  goToLikes(look){
+    this.props.goToLikes(look);
+    this.closeBottomModal();
+  }
+
+  closeBottomModal(){
     this.setState({isCommentsActive: false, isInformationActive: false, isMenuOpen: false})
   }
 
@@ -204,7 +216,7 @@ class BottomLookContainer extends BaseComponent {
                 items={look.items}
                 activeItem={this.state.activeItem}
                 lookType={this.props.lookType}
-                onNumberPress={this.props.onLikesNumberPress}
+                onNumberPress={this.goToLikes}
               />
             </View>
           </TouchableWithoutFeedback>

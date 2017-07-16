@@ -279,7 +279,7 @@ class LooksScreen extends Component {
           openComments={openComments}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           lookType={"video"}
-          onLikesNumberPress={()=>this.goToLikes(look)}
+          goToLikes={this.goToLikes}
         />
         {showShowArrow ? this.renderUpArrow() : null}
         {showShowArrow ? this.renderDownArrow() : null}
@@ -316,7 +316,7 @@ class LooksScreen extends Component {
                 onBottomDrawerOpen={this.onToggleDrawer}
                 shareToken={this.props.shareToken}
                 reportAbuse={this.props.reportAbuse}
-                onLikesNumberPress={()=>this.goToLikes(look)}
+                goToLikes={this.goToLikes}
               />
               {showShowArrow ? this.renderUpArrow() : null}
               {showShowArrow ? this.renderDownArrow() : null}

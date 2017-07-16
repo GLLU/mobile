@@ -9,7 +9,7 @@ class Separator extends PureComponent {
 
   render() {
     return (
-      <View style={{backgroundColor:'#e0e0e0', height:1},this.props.style}/>
+      <View style={[{backgroundColor:'#e0e0e0', height:1},this.props.style]}/>
     );
   }
 }
