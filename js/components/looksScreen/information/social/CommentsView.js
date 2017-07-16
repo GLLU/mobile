@@ -42,7 +42,7 @@ class CommentsView extends PureComponent {
 
   onPress(){
     const {onPress,logEvent} = this.props;
-    logEvent('LookScreen', {name: 'Infromation Comments click'});
+    logEvent('LookScreen', {name: 'Information Comments click'});
     onPress(...arguments)
   }
 

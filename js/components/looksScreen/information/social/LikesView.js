@@ -21,7 +21,7 @@ class LikesView extends PureComponent {
 
   onPress(){
     const {likes,onPress,logEvent} = this.props;
-    logEvent('LookScreen', {name: 'Infromation Likes click'});
+    logEvent('LookScreen', {name: 'Information Likes click'});
     if(likes>0){
       onPress(...arguments)
     }
