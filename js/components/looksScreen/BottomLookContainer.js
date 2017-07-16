@@ -15,14 +15,13 @@ import SocialShare from '../../lib/social';
 import ItemMarker from './markers/ItemMarker';
 import InformationView from './information/InformationView'
 import CommentsView from './comments/CommentsView'
-import BaseComponent from '../common/base/BaseComponent';
 import LookHeader from './LookHeader'
 import MenuView from "./menu/MenuViewContainer";
 import { formatInvitationMessage } from "../../lib/messages/index";
 import withAnalytics from '../common/analytics/WithAnalytics'
 
 
-class BottomLookContainer extends BaseComponent {
+class BottomLookContainer extends Component {
 
   static propTypes = {
     look: React.PropTypes.object,
@@ -80,26 +79,31 @@ class BottomLookContainer extends BaseComponent {
   }
 
   _toggleComments(shouldActive) {
-    this.logEvent('LookScreen', {name: `Comments View ${shouldActive?'visible':'hidden'}`});
-    this.props.onBottomDrawerOpen(shouldActive);
+    const {onBottomDrawerOpen,logEvent} = this.props;
+    logEvent('LookScreen', {name: `Comments View ${shouldActive?'visible':'hidden'}`});
+    onBottomDrawerOpen(shouldActive);
     this.setState({isCommentsActive: shouldActive, isInformationActive: false,isMenuOpen: false})
   }
 
   _toggleInformation(shouldActive) {
-    this.props.onBottomDrawerOpen(shouldActive);
+    const {onBottomDrawerOpen,logEvent} = this.props;
+    logEvent('LookScreen', {name: `Information View ${shouldActive?'visible':'hidden'}`});
+    onBottomDrawerOpen(shouldActive);
     this.setState({isInformationActive: shouldActive, isCommentsActive: false,isMenuOpen: false})
   }
 
   _toggleMenuView(){
+    const {onBottomDrawerOpen,logEvent} = this.props;
     const shouldActive = !this.state.isMenuOpen;
-    this.logEvent('LookScreen', {name: `Menu View ${shouldActive?'visible':'hidden'}`});
-    this.props.onBottomDrawerOpen(shouldActive);
+    logEvent('LookScreen', {name: `Menu View ${shouldActive?'visible':'hidden'}`});
+    onBottomDrawerOpen(shouldActive);
     this.setState({isMenuOpen: shouldActive, isInformationActive: false, isCommentsActive: false})
   }
 
   onShareClicked() {
-    this.props.logEvent('LookScreen', {name: 'Share clicked'});
-    const message = SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const {logEvent} = this.props;
+    logEvent('LookScreen', {name: 'Share clicked'});
+    const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 

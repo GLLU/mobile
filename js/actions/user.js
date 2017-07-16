@@ -11,9 +11,6 @@ export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
-export const SET_INVITATION_TOKEN = 'SET_INVITATION_TOKEN';
-export const SET_INVITATION_IS_USED = 'SET_INVITATION_IS_USED';
-export const SET_INVITATION_SHARE_TOKEN = 'SET_INVITATION_SHARE_TOKEN';
 
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
@@ -35,7 +32,7 @@ const setRestOptions = function (dispatch, rest, user) {
   });
 };
 
-const signInFromRest = function (dispatch, data, invitation_token, invitationTokenIsUsed) {
+const signInFromRest = function (dispatch, data) {
   return new Promise((resolve, reject) => {
     if (!data || _.isEmpty(data)) {
       reject();
@@ -43,11 +40,6 @@ const signInFromRest = function (dispatch, data, invitation_token, invitationTok
     Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
       setRestOptions(dispatch, rest, data.user);
       dispatch(setUser(data.user));
-      if (invitationTokenIsUsed === false) {
-        dispatch(useInvitationCode(invitation_token));
-        dispatch(setInvitationTokenIsUsed());
-      }
-      dispatch(createInvitationCode());
       resolve(data.user);
     });
   });
@@ -60,31 +52,8 @@ export function setUser(user: string) {
   };
 }
 
-export function setInvitationToken(token) {
-  return {
-    type: SET_INVITATION_TOKEN,
-    payload: token,
-  };
-}
-
-export function setInvitationTokenIsUsed() {
-  return {
-    type: SET_INVITATION_IS_USED,
-    payload: true,
-  };
-}
-
-export function setInvitationInvitationShareToken(shareToken) {
-  return {
-    type: SET_INVITATION_SHARE_TOKEN,
-    payload: shareToken,
-  };
-}
-
 export function loginViaFacebook(data) {
   return (dispatch, getState) => new Promise((resolve, reject) => {
-    const user = getState().user;
-    const invitation_is_used = user.invitation_is_used;
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
     const body = {
@@ -96,70 +65,12 @@ export function loginViaFacebook(data) {
 
     dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
       if (!err && data) {
-        signInFromRest(dispatch, data, user.invitation_token, invitation_is_used).then(resolve).catch(reject);
+        signInFromRest(dispatch, data).then(resolve).catch(reject);
       } else {
         reject('Unable to login via Facebook');
       }
     }));
   });
-}
-
-export function useInvitationCode(token) {
-  return dispatch => dispatch(rest.actions.invitation.post({}, {body: JSON.stringify({token})}, (err, data) => {
-    if (!err && !_.isEmpty(data)) {
-      console.log('invitation token passed and approved: ', data);
-    } else {
-      alert('Unable to use invitation code');
-    }
-  }));
-}
-
-export function requestInvitation(data) {
-  return (dispatch) => {
-    console.log('data', data);
-    return dispatch(rest.actions.invitation_request.post({}, {
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email
-      })
-    }, (err, data) => {
-      if (!err && !_.isEmpty(data)) {
-        console.log('invitation request has been created: ', data);
-      } else {
-        alert('Unable to create an invitation request');
-      }
-    }));
-  };
-}
-
-export function createInvitationCode() {
-  return dispatch => dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({limit_by_days: 999})}, (err, data) => {
-    if (!err && !_.isEmpty(data)) {
-      dispatch(setInvitationInvitationShareToken(data.invitation.token));
-    } else {
-      console.log('Unable to create invitation code ', err);
-    }
-  }));
-}
-
-export function invitationCheckExistance(token) {
-  return dispatch => new Promise((resolve, reject) => dispatch(rest.actions.invitation_check_if_exists.get({token}, (err, data) => {
-    if (!err && !_.isEmpty(data)) {
-      if (data.invitation.is_valid) {
-        dispatch(hideError());
-        dispatch(setInvitationToken(data.invitation.token));
-        resolve();
-      } else {
-        const error = '*Code is wrong or expired';
-        dispatch(showError(error));
-        resolve();
-      }
-    } else {
-      const error = '*Code is wrong or expired';
-      dispatch(showError(error));
-      reject(error);
-    }
-  })));
 }
 
 const signUp = function (dispatch, data) {
@@ -195,10 +106,7 @@ export function emailSignUp(data) {
     dispatch(hideFatalError());
     if (data) {
       signUp(dispatch, data).then((data) => {
-        const user = getState().user;
-        const invitation_is_used = user.invitation_is_used;
-        const invitation_token = user.invitation_token;
-        signInFromRest(dispatch, data, invitation_token, invitation_is_used).then(resolve).catch(reject);
+        signInFromRest(dispatch, data).then(resolve).catch(reject);
       }).catch((err) => {
         if (err.errors && err.errors.length > 0) {
           const pointers = [];

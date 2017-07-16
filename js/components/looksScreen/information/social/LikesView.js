@@ -3,6 +3,7 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Image, Platform, View, Text, TouchableWithoutFeedback } from 'react-native';
 import SocialView from "./SocialView";
+import withAnalytics from '../../../common/analytics/WithAnalytics';
 
 const likeIcon = require('../../../../../images/icons/like-black-hollow.png');
 
@@ -19,7 +20,8 @@ class LikesView extends PureComponent {
   }
 
   onPress(){
-    const {likes,onPress} = this.props;
+    const {likes,onPress,logEvent} = this.props;
+    logEvent('LookScreen', {name: 'Information Likes click'});
     if(likes>0){
       onPress(...arguments)
     }
@@ -33,5 +35,5 @@ class LikesView extends PureComponent {
   }
 }
 
-export default LikesView
+export default withAnalytics(LikesView)
 

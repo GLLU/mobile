@@ -13,22 +13,6 @@ export default reduxApi({
     url: "/auth",
     crud: true,
   },
-  invitation: {
-    url: "/invitation_usage",
-    crud: true,
-  },
-  invitation_create: {
-    url: "/invitations",
-    crud: true,
-  },
-  invitation_check_if_exists: {
-    url: "/invitations_finder?token=:token",
-    crud: true,
-  },
-  invitation_request: {
-    url: "/invitation_requests",
-    crud: true,
-  },
   password_recovery: {
     url: "/password_recovery",
     crud: true,

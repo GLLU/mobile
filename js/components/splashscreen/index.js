@@ -76,25 +76,16 @@ class SplashPage extends Component {
   connectWithFB() {
     this.props.logEvent('Splashscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
-    if(this.props.invitation_token !== -1) {
-      Utils.loginWithFacebook()
-        .then((data) => this.props.loginViaFacebook(data)
-          .then(user=>this.props.resetTo('feedscreen',user))
-          .catch((err) => console.log('facebook login Error',err)))
-        .catch((err) => console.log('facebook login Error',err))
-    } else {
-      this.props.navigateTo('activationcode','facebook');
-    }
+    Utils.loginWithFacebook()
+      .then((data) => this.props.loginViaFacebook(data)
+        .then(user=>this.props.resetTo('feedscreen',user))
+        .catch((err) => console.log('facebook login Error',err)))
+      .catch((err) => console.log('facebook login Error',err))
   }
 
   handleEmailSignupPress() {
     this.props.logEvent('Splashscreen', {name: 'Email signup click'});
-    if(this.props.invitation_token !== -1) {
-      this.props.navigateTo('genderselect');
-    } else {
-      this.props.navigateTo('activationcode','genderselect');
-    }
-
+    this.props.navigateTo('genderselect');
   }
 
   handleEmailSigninPress() {
@@ -185,7 +176,6 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  invitation_token: state.user.invitation_token,
   showTutorial: state.user.showTutorial
 });
 

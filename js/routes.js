@@ -6,7 +6,6 @@ import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
-import ActivationCodeScreen from './components/activationCodeScreen';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import LooksScreen from './components/looksScreen';
@@ -30,9 +29,6 @@ const stackNavigatorConfig = {
 const routes = {
   splashscreen: {
     screen: SplashPage,
-  },
-  activationcode: {
-    screen: ActivationCodeScreen,
   },
   signupemail: {
     screen: SignUpPage,

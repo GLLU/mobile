@@ -2,6 +2,8 @@
 
 import React, { PureComponent } from 'react';
 import { ListView, Image, StyleSheet, TouchableOpacity, Text, View, FlatList, ViewPropTypes } from 'react-native';
+import * as _ from "lodash";
+import withAnalytics from '../../common/analytics/WithAnalytics'
 
 const styles = StyleSheet.create({
   container: {
@@ -22,23 +24,35 @@ const styles = StyleSheet.create({
 class ItemBrand extends PureComponent {
 
   static propTypes = {
-    brand: React.PropTypes.object
+    brand: React.PropTypes.object.isRequired,
+    onPress: React.PropTypes.func
+  };
+
+  static defaultProps = {
+    onPress: _.noop
   };
 
   constructor(props) {
     super(props);
+    this.onPress=this.onPress.bind(this);
+  }
+
+  onPress(){
+    const {logEvent,brand} = this.props;
+    logEvent('LookScreen', {name: 'Information Brand clicked!',brandName:brand.name});
   }
 
   render() {
+    const {brand,style} = this.props;
     return (
-      <View style={[styles.container,this.props.style]}>
+      <TouchableOpacity style={[styles.container,style]} onPress={this.onPress}>
         <Text numberOfLines={1} style={styles.textStyle}>
-          {this.props.brand.name}
+          {brand.name}
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
 
-export default ItemBrand;
+export default withAnalytics(ItemBrand);
 

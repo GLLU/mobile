@@ -41,17 +41,12 @@ import { setUser,
   checkLogin,
   getStats,
   logout,
-  setInvitationToken,
-  invitationCheckExistance,
-  createInvitationCode,
   clearTutorial,
   hideTutorial,
-  requestInvitation,
   clearBodyModal
   } from './user';
 
 export {
-  requestInvitation,
   loadCategories,
   loadOccasionTags,
   loadBrands,
@@ -126,7 +121,4 @@ export {
   goToNotificationSubjectScreen,
   markAsReadNotifications,
   clearNewNotifications,
-  setInvitationToken,
-  invitationCheckExistance,
-  createInvitationCode
 };
