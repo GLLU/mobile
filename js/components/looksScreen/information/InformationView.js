@@ -60,7 +60,12 @@ export default class InformationView extends Component {
     this._onRequestClose = this._onRequestClose.bind(this);
   }
 
-  getBrandsFromItems = (items) => chain(items).map(item => item.brand).uniqBy(brand => brand.id).value();
+  getBrandsFromItems = (items) =>
+    chain(items)
+      .map(item => item.brand)
+      .filter(brand=>brand&&brand.id)
+      .uniqBy(brand => brand.id)
+      .value();
 
   _onRequestClose() {
     this.props.onRequestClose(false)
