@@ -1,13 +1,13 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, Platform, TouchableHighlight, Image, Animated, Dimensions } from 'react-native';
-import { TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar } from 'react-native-tab-view';
+import React, {Component} from 'react';
+import {Text, View, StyleSheet, Platform, TouchableHighlight, Image, Animated, Dimensions} from 'react-native';
+import {TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar} from 'react-native-tab-view';
 import I18n from 'react-native-i18n';
 
 import ParallaxView from '../../utils/ParallaxView';
 import ProfileScreenHeader from './ProfileScreenHeader';
-import ScalableText, { generateAdjustedSize } from '../../utils/AdjustedFontSize';
+import ScalableText, {generateAdjustedSize} from '../../utils/AdjustedFontSize';
 import UserLooks from './UserLooks';
 import SettingsScreen from '../settingsScreen/SettingsContainer';
 
@@ -40,6 +40,7 @@ class ProfileScreen extends Component {
 
   constructor(props: Props) {
     super(props);
+
     this.state = {
       index: 0,
       routes: [
@@ -124,33 +125,19 @@ class ProfileScreen extends Component {
   };
 
   _renderScene = ({ route }) => {
-    const { userId, navigateTo, navigation, isMyProfile, meta, userLooks, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
+    const { navigation } = this.props;
 
     switch (route.key) {
       case 'looks':
-        return (
-          <UserLooks
-            myUserId={userId}
-            userLooks={userLooks}
-            navigateTo={navigateTo}
-            isMyProfile={isMyProfile}
-            editNewLook={editNewLook}
-            addNewLook={addNewLook}
-            likeUpdate={likeUpdate}
-            unlikeUpdate={unlikeUpdate}
-            meta={meta}
-            isLoading={this.state.isLoading}
-
-          />
-        );
+        return this._renderUserLooks();
       case 'wallet':
-        return <View style={{ height: 200, width: 450, backgroundColor: 'yellow' }} />;
+        return <View style={{ height: 200, width: 450, backgroundColor: 'yellow' }}/>;
       case 'closet':
-        return <View style={{ height: 200, width: 450, backgroundColor: 'blue' }} />;
+        return <View style={{ height: 200, width: 450, backgroundColor: 'blue' }}/>;
       case 'settings':
         return <SettingsScreen navigation={navigation}/>;
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }}/>
           ;
     }
   };
@@ -159,7 +146,26 @@ class ProfileScreen extends Component {
     this.setState({ index: tabIndex });
   }
 
-  _renderPager = props => (<TabViewPagerPan {...props} swipeEnabled animationEnabled={false} />);
+  _renderUserLooks = () => {
+    const { userId, navigateTo, isMyProfile, meta, userLooks, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
+    return (
+      <UserLooks
+        myUserId={userId}
+        userLooks={userLooks}
+        navigateTo={navigateTo}
+        isMyProfile={isMyProfile}
+        editNewLook={editNewLook}
+        addNewLook={addNewLook}
+        likeUpdate={likeUpdate}
+        unlikeUpdate={unlikeUpdate}
+        meta={meta}
+        isLoading={this.state.isLoading}
+
+      />
+    );
+  }
+
+  _renderPager = props => (<TabViewPagerPan {...props} swipeEnabled animationEnabled={false}/>);
 
   _configureTransition = () => null;
 
@@ -174,19 +180,25 @@ class ProfileScreen extends Component {
     />);
   }
 
-  _renderBody = () => (
-    <View style={styles.container}>
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        configureTransition={this._configureTransition}
-        renderScene={this._renderScene}
-        renderPager={this._renderPager}
-        renderHeader={this._renderHeader}
-        onRequestChangeTab={this._handleChangeTab}
-      />
-    </View>
-  )
+  _renderBody = () => {
+    const { isMyProfile } = this.props;
+
+    return (<View style={styles.container}>
+
+        {!isMyProfile ? this._renderUserLooks() :
+          <TabViewAnimated
+            style={styles.container}
+            navigationState={this.state}
+            configureTransition={this._configureTransition}
+            renderScene={this._renderScene}
+            renderPager={this._renderPager}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleChangeTab}
+          />
+        }
+      </View>
+    );
+  };
 
   _renderFixedHeader = () => (
     <TouchableHighlight
@@ -196,7 +208,7 @@ class ProfileScreen extends Component {
       onPress={this._handleBackToFeedPress}>
       <Image
         style={{ width: 18, height: 18 }} resizeMode={'contain'}
-        source={require('../../../images/icons/backArrow.png')} />
+        source={require('../../../images/icons/backArrow.png')}/>
     </TouchableHighlight>
   )
 
