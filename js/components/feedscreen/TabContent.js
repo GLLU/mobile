@@ -59,7 +59,7 @@ class TabContent extends BaseComponent {
 
   _onInviteFriendsClick() {
     this.logEvent('Feedscreen', {name: 'Invite your friends click'});
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const message=SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
@@ -344,7 +344,6 @@ const mapStateToProps = state => {
     user_size: user_size,
     user_gender: state.user.gender,
     cardNavigationStack: state.cardNavigation,
-    shareToken: state.user.invitation_share_token,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal
   }
