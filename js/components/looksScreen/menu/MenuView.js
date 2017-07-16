@@ -3,7 +3,6 @@ import { Animated, View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Al
 import { noop } from 'lodash'
 import i18n from 'react-native-i18n';
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
-import SolidButton from "../../common/buttons/SolidButton";
 import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
 import MenuAction from "./MenuAction";
 
@@ -36,6 +35,8 @@ class MenuView extends Component {
     onEditPress: React.PropTypes.func,
     onShareClicked: React.PropTypes.func,
     reportAbuse: React.PropTypes.func,
+    lookId:React.PropTypes.number,
+    userId:React.PropTypes.number,
     isMyLook: React.PropTypes.bool
   };
 
@@ -53,11 +54,6 @@ class MenuView extends Component {
   constructor(props) {
     super(props);
     this._onRequestClose = this._onRequestClose.bind(this);
-    this.blockUser = this.blockUser.bind(this);
-  }
-
-  blockUser() {
-    console.log('blocked!')
   }
 
   renderSeparator = ({key}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
@@ -97,7 +93,7 @@ class MenuView extends Component {
     <MenuAction
       key={'block'}
       label={i18n.t('BLOCK')}
-      onPress={this.blockUser}
+      onPress={this.props.blockUser}
       confirmationMessage={i18n.t('BLOCK_TEXT')}
       withConfirmation={true}
       areYouSureMessage={i18n.t('BLOCK_ARE_YOU_SURE')}/>;

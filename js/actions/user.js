@@ -4,6 +4,7 @@ import rest from '../api/rest';
 import _ from 'lodash';
 import i18n from 'react-native-i18n';
 import LoginService from '../services/loginService';
+import UsersService from '../services/usersService';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
@@ -335,6 +336,14 @@ export function changeUserAvatar(data) {
       reject('Authorization error');
     }
   });
+}
+
+export function blockUser(blockUserId) {
+  return (dispatch,getState) => {
+    const userId = getState().user.id;
+    return UsersService.block(userId,blockUserId).catch(() => {});
+  }
+
 }
 
 export function logout() {
