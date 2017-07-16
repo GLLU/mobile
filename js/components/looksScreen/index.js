@@ -422,7 +422,6 @@ const mapStateToProps = state => {
     meta: state.feed.meta,
     query: state.feed.query,
     userLooks: state.userLooks.userLooksData,
-    shareToken: state.user.invitation_share_token,
     cardNavigation: state.cardNavigation
   };
 };

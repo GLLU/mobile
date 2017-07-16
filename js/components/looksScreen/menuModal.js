@@ -68,7 +68,7 @@ class menuModal extends BaseComponent {
 
   _onShareClicked() {
     this.logEvent('LookScreen', {name: 'Share clciked'});
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const message=SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
