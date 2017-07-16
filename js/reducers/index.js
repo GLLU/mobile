@@ -17,6 +17,7 @@ import wallet from './wallet';
 import notifications from './notifications';
 import paris from './paris';
 import lookLikes from './lookLikes';
+import looks from './looks';
 
 export default combineReducers({
   loader,
@@ -36,5 +37,6 @@ export default combineReducers({
   userFollowers,
   notifications,
   paris,
-  lookLikes
+  lookLikes,
+  looks,
 });

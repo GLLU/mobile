@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { SET_FLAT_LOOKS_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUEUE, CLEAR_FEED_DATA } from '../actions/feed';
+import { SET_FLAT_LOOKS_FEED_DATA, SET_FLAT_LOOKS_FEED_DATA_QUEUE, CLEAR_FEED_DATA, SET_FLAT_LOOKS_DATA } from '../actions/feed';
 import { LOOK_LIKE, LOOK_UNLIKE } from '../actions/likes';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
 import * as feedLookMapper from '../mappers/feedLookMapper';
-import { REHYDRATE } from 'redux-persist/constants';
+import { normalize, schema } from 'normalizr';
 
 const initialState = {
   flatLooksData: [],
@@ -25,39 +25,22 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_FLAT_LOOKS_FEED_DATA: {
-      console.log('state',state)
-      console.log('state',action)
-      const { query, meta, feedLooksIdsArray } = action.payload
+    case SET_FLAT_LOOKS_DATA: {
+      const newData = {}
       const currentLooksData = state.flatLooksData;
-      const newData = feedLooksIdsArray || [];
-      const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
+      newData.looks = _.map(action.payload.data.looks || [], (look, index) => feedLookMapper.map(look));
+      const LooksData = new schema.Entity('looks');
+      const mySchema = { looks: [LooksData] };
+      const normalizedData = normalize(newData, mySchema);
+      const flatLooksData = state.flatLooksData.length > 0 ? currentLooksData.concat(normalizedData.entities.looks) : normalizedData.entities.looks
       return {
         ...state,
         flatLooksData,
-        meta,
-        query,
-      };
-    }
-    case SET_FLAT_LOOKS_FEED_DATA_QUEUE: {
-      const { query, meta, feedQueueLooksIdsArray } = action.payload
-      const newData = feedQueueLooksIdsArray || [];
-      return {
-        ...state,
-        flatLooksDataQueue: newData,
-        meta,
-        query,
       };
     }
     case CLEAR_FEED_DATA: {
       return {
         ...initialState,
-      };
-    }
-    case REHYDRATE: {
-      return {
-        ...state,
-        ...action.payload.user,
       };
     }
     case ADD_LOOK_COMMENT: {
@@ -106,6 +89,5 @@ export default function (state = initialState, action) {
     }
     default:
       return state;
-      break;
   }
 }
