@@ -6,8 +6,6 @@ import { action } from '@storybook/addon-actions';
 import ItemBrand from './information/ItemBrand';
 import ItemBrandsView from "./information/ItemBrandsView";
 import InformationView from "./information/InformationView";
-import CommentsView from "./information/social/CommentsView";
-import LikesView from "./information/social/LikesView";
 import InformationViewFooter from "./information/InformationViewFooter";
 import MenuView from "./menu/MenuView";
 
