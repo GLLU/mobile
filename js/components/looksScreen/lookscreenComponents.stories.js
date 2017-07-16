@@ -72,7 +72,7 @@ storiesOf('look screen components', module)
         backgroundColor: 'red', flex: 1,
         flexDirection: 'column'
       }}>
-        <MenuView isOpen={true} isMyLook={true}/>
+        <MenuView isOpen={true} isMyLook={true} lookId={7}/>
       </View>
     )
   }
@@ -82,7 +82,7 @@ storiesOf('look screen components', module)
         backgroundColor: 'red', flex: 1,
         flexDirection: 'column'
       }}>
-        <MenuView isOpen={true} isMyLook={false}/>
+        <MenuView isOpen={true} isMyLook={false} lookId={7} reportAbuse={action('user-blocked')}/>
       </View>
     )
   }
@@ -97,7 +97,7 @@ storiesOf('look screen components', module)
           withConfirmation={true}
           areYouSureMessage={'Are you sure you wanna make a random action?'}
           confirmationMessage={'thanks for clicking me :)'}
-          onPress={()=>action('Done!')}/>
+          onPress={action('done-action')}/>
       </View>
     )
   }
@@ -111,7 +111,7 @@ storiesOf('look screen components', module)
           label='Random Action without confirmation'
           areYouSureMessage={'Are you sure you wanna make a random action?'}
           confirmationMessage={'thanks for clicking me :)'}
-          onPress={()=>action('Done!')}/>
+          onPress={action('done-action')}/>
       </View>
     )
   }
@@ -123,7 +123,7 @@ storiesOf('look screen components', module)
       }}>
         <MenuAction
           label='Random Action'
-          onPress={()=>action('Done!')}/>
+          onPress={action('done-action')}/>
       </View>
     )
   }

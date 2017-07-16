@@ -107,7 +107,7 @@ class BottomLookContainer extends BaseComponent {
     const {look} = this.props;
     return(
       <MenuView
-        look_id={look.id}
+        lookId={look.id}
         isMyLook={look.user.is_me}
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}

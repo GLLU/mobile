@@ -5,6 +5,7 @@ import i18n from 'react-native-i18n';
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
 import SolidButton from "../../common/buttons/SolidButton";
 import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
+import MenuAction from "./MenuAction";
 
 const cancelIcon = require('../../../../images/icons/cancel-black.png');
 
@@ -34,6 +35,7 @@ class MenuView extends Component {
     isOpen: React.PropTypes.bool,
     onEditPress: React.PropTypes.func,
     onShareClicked: React.PropTypes.func,
+    reportAbuse: React.PropTypes.func,
     isMyLook: React.PropTypes.bool
   };
 
@@ -44,89 +46,75 @@ class MenuView extends Component {
     onDeletePress: noop,
     onEditPress: noop,
     onShareClicked: noop,
+    reportAbuse: noop,
     isMyLook: false
   };
 
   constructor(props) {
     super(props);
-    this._reportAbuse = this._reportAbuse.bind(this);
     this._onRequestClose = this._onRequestClose.bind(this);
-    this.state = {
-      abuseReported: false
-    }
+    this.reportAbuse = this.reportAbuse.bind(this);
+    this.blockUser = this.blockUser.bind(this);
   }
 
-  _reportAbuse() {
-    this.setState({abuseReported: true})
-    this.props.reportAbuse(this.props.look_id)
+  reportAbuse() {
+    this.props.reportAbuse(this.props.lookId)
+  }
+
+  blockUser() {
+    console.log('blocked!')
   }
 
   renderSeparator = ({key}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
 
-  renderRow({key, label, onPress}) {
-    return (
-      <View key={key} style={{height: 75, paddingVertical: 15}}>
-        <SolidButton style={{backgroundColor: '#00D7B2'}} label={label} onPress={onPress}/>
-      </View>
-    );
-  }
+  renderShare = () =>
+    <MenuAction
+      key={'share'}
+      label={i18n.t('SHARE')}
+      onPress={this.props.onShareClicked}/>;
 
-  renderShare = (key) => this.renderRow({key: 'share', label: i18n.t('SHARE'), onPress: this.props.onShareClicked});
+  renderEdit = () =>
+    <MenuAction
+      key={'edit'}
+      label={i18n.t('EDIT')}
+      onPress={this.props.onEditPress}/>;
 
-  renderEdit = () => this.renderRow({key: 'edit', label: i18n.t('EDIT'), onPress: this.props.onEditPress});
+  renderDelete = () =>
+    <MenuAction
+      key={'delete'}
+      label={i18n.t('DELETE')}
+      onPress={this.props.onDeletePress}/>;
 
-  renderDelete = () => this.renderRow({key: 'delete', label: i18n.t('DELETE'), onPress: this.props.onDeletePress});
+  renderWishlist = () =>
+    <MenuAction
+      key={'wishlist'}
+      label={i18n.t('WISHLIST')}
+      onPress={() => Alert.alert('coming soon')}/>;
 
-  renderWishlist = () => this.renderRow({
-    key: 'wishlist', label: 'Add to Wishlist!', onPress: () => {
-      Alert.alert('coming soon')
-    }
-  });
+  renderReport = () =>
+    <MenuAction
+      key={'report'}
+      label={i18n.t('REPORT')}
+      onPress={this._reportAbuse}
+      confirmationMessage={i18n.t('REPORT_TEXT')}/>;
 
-  renderReport() {
-    return (
-      this.state.abuseReported ?
-        this.renderReportThankYou({key: 'report'}) :
-        this.renderRow({key: 'report', label: i18n.t('REPORT'), onPress: this._reportAbuse})
-    );
-  }
-
-  renderReportThankYou({key}) {
-    return (
-      <View key={key} style={{height: 75, paddingVertical: 15}}>
-        <View key={key} style={styles.thankYouContainer}>
-          <Text style={styles.thankYouText}>{i18n.t('REPORT_TEXT')}</Text>
-        </View>
-      </View>
-    )
-  }
-
-  renderBlockConfirmation({key}) {
-    return (
-      <View key={key} style={{height: 75, paddingVertical: 15}}>
-        <View key={key} style={styles.thankYouContainer}>
-          <Text style={styles.thankYouText}>{i18n.t('BLOCK_TEXT')}</Text>
-        </View>
-      </View>
-    )
-  }
-
-  renderBlockMessage({key}) {
-    return (
-      <View key={key} style={{height: 75, paddingVertical: 15}}>
-        <View key={key} style={styles.thankYouContainer}>
-          <Text style={styles.thankYouText}>{i18n.t('BLOCK_TEXT')}</Text>
-        </View>
-      </View>
-    )
-  }
+  renderBlock = () =>
+    <MenuAction
+      key={'block'}
+      label={i18n.t('BLOCK')}
+      onPress={this.blockUser}
+      confirmationMessage={i18n.t('BLOCK_TEXT')}
+      withConfirmation={true}
+      areYouSureMessage={i18n.t('BLOCK_ARE_YOU_SURE')}/>;
 
   renderGeneralContent() {
     return [
       this.renderShare(),
       this.renderSeparator({key: 1}),
       this.renderReport(),
-      // this.renderSeparator({key:2}),
+      this.renderSeparator({key: 2}),
+      this.renderBlock(),
+      // this.renderSeparator({key:3}),
       // this.renderWishlist()
     ];
   }
