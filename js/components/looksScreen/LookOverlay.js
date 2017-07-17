@@ -34,7 +34,7 @@ type Props = {
   toggleLike: void,
   reportabuse: void,
   onBottomDrawerOpen: void,
-  openComments:boolean
+  openComments: boolean
 }
 
 class LookOverlay extends Component {
@@ -117,7 +117,8 @@ class LookOverlay extends Component {
     const {look} = this.props;
     return (
       <MenuView
-        look_id={look.id}
+        lookId={look.id}
+        userId={look.user.id}
         isMyLook={look.user.is_me}
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}

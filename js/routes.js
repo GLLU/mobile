@@ -19,6 +19,7 @@ import FinishLookScreen from './components/finishLookScreen';
 import TutorialScreen from './components/tutorialScreen'
 import BadNavigationScreen from './components/badNavigationScreen'
 import likesScreen from './components/likesScreen'
+import BlockedUsersScreen from './components/blockedUsersScreen'
 
 const stackNavigatorConfig = {
   initialRouteName: 'splashscreen',
@@ -77,6 +78,9 @@ const routes = {
   },
   settingsScreen: {
     screen: SettingsScreen
+  },
+  blockedUsersScreen: {
+    screen: BlockedUsersScreen
   },
   editProfileScreen: {
     screen: EditProfile,

@@ -1,15 +1,21 @@
-import {showError, hideError, showFatalError, hideFatalError} from './index';
+// @flow
+
+import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
 import i18n from 'react-native-i18n';
 import LoginService from '../services/loginService';
+import UsersService from '../services/usersService';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
+export const USER_BLOCKED = 'USER_BLOCKED';
+export const USER_UNBLOCKED = 'USER_UNBLOCKED';
+export const SET_BLOCKED_USERS = 'SET_BLOCKED_USERS';
 
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
@@ -243,6 +249,78 @@ export function changeUserAvatar(data) {
       reject('Authorization error');
     }
   });
+}
+
+export function getBlockedUsers() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const userId = state.user.id;
+    const nextPage = 1;
+    UsersService.getBlockedUsers(userId, nextPage).then((data) => {
+      const {blockedUsers} = getState().blockedUsers;
+      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      dispatch({
+        type: SET_BLOCKED_USERS,
+        blockedUsers: blockedUsersUnion,
+        meta: {
+          currentPage: nextPage,
+          total: data.meta.total
+        }
+      });
+    })
+  };
+}
+
+export function getMoreBlockedUsers() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const userId = state.user.id;
+    const {meta} = state.blockedUsers;
+    const nextPage = meta.currentPage + 1;
+    UsersService.getBlockedUsers(userId, nextPage).then((data) => {
+      const {blockedUsers} = getState().blockedUsers;
+      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      dispatch({
+        type: SET_BLOCKED_USERS,
+        blockedUsers: blockedUsersUnion,
+        meta: {
+          currentPage: nextPage,
+          total: data.meta.total
+        }
+      });
+    })
+  }
+}
+
+export function blockUser(blockedUserId) {
+  return (dispatch, getState) => {
+    const userId = getState().user.id;
+    UsersService.block(userId, blockedUserId).then(() => {
+      dispatch({
+        type: USER_BLOCKED,
+        userId,
+        blockedUserId,
+      });
+    })
+  };
+}
+
+export function unblockUser(blockedUserId) {
+  return (dispatch, getState) => {
+    const userId = getState().user.id;
+    UsersService.unblock(userId, blockedUserId)
+      .catch(err => ({}));//mute error
+    const {blockedUsers, meta} = getState().blockedUsers;
+    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.id !== blockedUserId);
+    dispatch({
+      type: SET_BLOCKED_USERS,
+      blockedUsers: blockedUsersWithoutUnblocked,
+      meta: {
+        currentPage: meta.currentPage,
+        total: meta.total - 1
+      }
+    });
+  };
 }
 
 export function logout() {
