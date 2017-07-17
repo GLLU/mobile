@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { ListView, Image, TouchableOpacity, Text, View } from 'react-native';
 import ListScreen from "../common/lists/ListScreen";
+import i18n from 'react-native-i18n';
 import * as _ from "lodash";
 import BlockedUserRow from "./BlockedUserRow";
 
@@ -18,7 +19,8 @@ class BlockedUsersScreen extends Component {
   props: Props;
 
   static defaultProps = {
-    getBlockedUsers:_.noop
+    getBlockedUsers:_.noop,
+    blockedUsers:[]
   };
 
   constructor(props: Props) {
@@ -29,16 +31,26 @@ class BlockedUsersScreen extends Component {
     this.props.getBlockedUsers()
   }
 
+  renderEmptyView(){
+    return (
+      <View style={{flex:1, justifyContent:'center'}}>
+      <Text style={{textAlign:'center'}}>
+        {i18n.t('EMPTY_BLOCKED_USERS')}
+      </Text>
+    </View>
+    );
+  }
+
   render() {
-    const {totalBlockedUsersCount, } = this.props;
-    const headerData = {title: 'Blocked Users', count:totalBlockedUsersCount};
+    const {totalBlockedUsersCount, blockedUsers, goBack, unblockUser } = this.props;
+    const header = {title: 'Blocked Users', count:totalBlockedUsersCount};
     return (
       <ListScreen
-        renderEmpty={()=>null}
-        renderItem={(user) => <BlockedUserRow {...user} key={user.id} userId={user.id} onUnblockUserPress={this.props.unblockUser}/>}
-        headerData={headerData}
-        data={this.props.blockedUsers}
-        goBack={this.props.goBack}
+        renderEmpty={this.renderEmptyView}
+        renderItem={(user) => <BlockedUserRow {...user} key={user.id} userId={user.id} onUnblockUserPress={unblockUser}/>}
+        headerData={header}
+        data={blockedUsers}
+        goBack={goBack}
         />
     );
   }

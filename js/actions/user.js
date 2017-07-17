@@ -263,7 +263,7 @@ export function blockUser(blockedUserId) {
   };
 }
 
-export function blockUser(blockedUserId) {
+export function unblockUser(blockedUserId) {
   return (dispatch, getState) => {
     const userId = getState().user.id;
     UsersService.unblock(userId, blockedUserId).then(() => {
