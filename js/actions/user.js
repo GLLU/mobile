@@ -15,6 +15,7 @@ export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const USER_BLOCKED = 'USER_BLOCKED';
 export const USER_UNBLOCKED = 'USER_UNBLOCKED';
+export const SET_BLOCKED_USERS = 'SET_BLOCKED_USERS';
 
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
@@ -250,6 +251,47 @@ export function changeUserAvatar(data) {
   });
 }
 
+export function getBlockedUsers() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const userId = state.user.id;
+    const nextPage=1;
+    UsersService.getBlockedUsers(userId, nextPage).then((data) => {
+      const {blockedUsers}=getState().blockedUsers;
+      const blockedUsersUnion=_.unionBy(blockedUsers,data.blockedUsers,user=>user.id);
+      dispatch({
+        type: SET_BLOCKED_USERS,
+        blockedUsers:blockedUsersUnion,
+        meta:{
+          currentPage:nextPage,
+          total:data.meta.total
+        }
+      });
+    })
+  };
+}
+
+export function getMoreBlockedUsers() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const userId = state.user.id;
+    const {meta}= state.blockedUsers;
+    const nextPage=meta.currentPage+1;
+    UsersService.getBlockedUsers(userId, nextPage).then((data) => {
+      const {blockedUsers,meta}=getState().blockedUsers;
+      const blockedUsersUnion=_.unionBy(blockedUsers,data.blockedUsers,user=>user.id);
+      dispatch({
+        type: SET_BLOCKED_USERS,
+        blockedUser:blockedUsersUnion,
+        meta:{
+          currentPage:nextPage,
+          total:meta.total
+        }
+      });
+    })
+  };
+}
+
 export function blockUser(blockedUserId) {
   return (dispatch, getState) => {
     const userId = getState().user.id;
@@ -267,10 +309,12 @@ export function unblockUser(blockedUserId) {
   return (dispatch, getState) => {
     const userId = getState().user.id;
     UsersService.unblock(userId, blockedUserId).then(() => {
+      const {blockedUsers,meta}=getState().blockedUsers;
+      const blockedUsersWithoutUnblocked=_.filter(blockedUsers,user=>user.id!==userId);
       dispatch({
-        type: USER_UNBLOCKED,
-        userId,
-        blockedUserId,
+        type: SET_BLOCKED_USERS,
+        blockedUser:blockedUsersWithoutUnblocked,
+        meta
       });
     })
   };

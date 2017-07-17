@@ -3,17 +3,23 @@
 import asScreen from '../common/containers/Screen'
 import { connect } from "react-redux";
 import BlockedUsersScreen from "./BlockedUsersScreen";
-import { unblockUser } from "../../actions/user";
+import { getBlockedUsers, getMoreBlockedUsers, unblockUser } from "../../actions/user";
+import * as _ from "lodash";
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getBlockedUsers: () => ([]),
+    getBlockedUsers: () => dispatch(getBlockedUsers()),
+    getMoreBlockedUsers: () => dispatch(getMoreBlockedUsers()),
     unblockUser: (userId) => dispatch(unblockUser(userId)),
   };
 };
 
 const mapStateToProps = (state) => {
-  return {}
+  const blockedUsers = _.map(state.blockedUsers.blockedUsers, user => ({...user, id: user.user_id}));
+  return {
+    blockedUsers,
+    total: state.blockedUsers.meta.total
+  }
 
 };
 
