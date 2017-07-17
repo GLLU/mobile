@@ -33,35 +33,17 @@ export default function (state = initialState, action) {
       };
     }
     case LOOK_LIKE: {
-      const { lookId } = action;
+      const { flatLooksData } = action;
       return {
         ...state,
-        flatLooksData: _.map(state.flatLooksData || [], (look) => {
-          if (look.id !== lookId) {
-            return look;
-          } else {
-            const copy = _.cloneDeep(look);
-            copy.liked = true;
-            copy.likes++;
-            return copy;
-          }
-        }),
+        flatLooksData,
       };
     }
     case LOOK_UNLIKE: {
-      const { lookId } = action;
+      const { flatLooksData } = action;
       return {
         ...state,
-        flatLooksData: _.map(state.flatLooksData || [], (look) => {
-          if (look.id !== lookId) {
-            return look;
-          } else {
-            const copy = _.cloneDeep(look);
-            copy.liked = false;
-            copy.likes--;
-            return copy;
-          }
-        }),
+        flatLooksData,
       };
     }
     default:

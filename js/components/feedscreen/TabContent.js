@@ -20,6 +20,7 @@ import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { showBodyTypeModal, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import { formatInvitationMessage } from '../../lib/messages/index';
+import { generateFeedData }from '../../utils/FeedUtils';
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
 
@@ -347,13 +348,5 @@ const mapStateToProps = (state) => {
     showBodyModal: state.user.showBodyModal,
   };
 };
-
-function generateFeedData(feedLooksIds: array, flatLooksData: object) {
-  return _.map(feedLooksIds, (lookId, index) => {
-    const look = flatLooksData[lookId];
-    look.originalIndex = index;
-    return look;
-  });
-}
 
 export default connect(mapStateToProps, bindActions)(TabContent);

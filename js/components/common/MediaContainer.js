@@ -74,6 +74,7 @@ class MediaContainer extends PureComponent {
       item.singleItem = true
     }
     let that = this
+    console.log('lookToNavigate',item)
     setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
   }
 

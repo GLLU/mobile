@@ -3,6 +3,7 @@ import rest from '../api/rest';
 import LooksService from '../services/looksService';
 import i18n from 'react-native-i18n';
 import { normalize, schema } from 'normalizr';
+import { unifyLooks } from '../utils/FeedUtils';
 
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_FEED_DATA_QUEUE = 'SET_FLAT_LOOKS_FEED_DATA_QUEUE';
@@ -29,8 +30,8 @@ export function getFeed(query, retryCount = 0) {
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (!_.isEmpty(data)) {
         const { looksIdsArray, looksData, meta } = data;
-        const normalizedLooksData = normalizeLooksData(looksData, getState())
-        dispatch(setLooksData({ flatLooksData: normalizedLooksData, query: newState }));
+        const normalizedLooksData = normalizeLooksData(looksData)
+        dispatch(setLooksData({ flatLooksData: normalizedLooksData.entities.looks, query: newState }));
         dispatch(setFeedData({ looksIdsArray, meta, query: newState }));
         dispatch(loadMore());
         Promise.resolve(data);
@@ -46,15 +47,14 @@ export function getFeed(query, retryCount = 0) {
 }
 
 
-function normalizeLooksData(looksData, state) {
-  const currentLooksData = state.looks.flatLooksData;
+export function normalizeLooksData(looksData) {
+  console.log('looksData',looksData)
   const newData = {}
   newData.looks = looksData
   const LooksData = new schema.Entity('looks');
   const mySchema = { looks: [LooksData] };
   const normalizedData = normalize(newData, mySchema);
-  const flatLooksData = Object.assign({}, currentLooksData, normalizedData.entities.looks);
-  return flatLooksData;
+  return normalizedData;
 }
 
 export function clearFeed() {
@@ -81,7 +81,8 @@ export function loadMore(retryCount = 0) {
         if (!_.isEmpty(data)) {
           const { looksIdsArray, looksData, meta } = data;
           const normalizedLooksData = normalizeLooksData(looksData, getState())
-          dispatch(setLooksData({ flatLooksData: normalizedLooksData, query: newState }));
+          const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
+          dispatch(setLooksData({ flatLooksData: unfiedLooks, query: newState }));
           dispatch(setFeedDataQueue({ looksIdsArray, meta, query: newState }));
           resolve(data.looks);
         } else if (retryCount < 5) {
