@@ -58,7 +58,7 @@ class forgotPasswordPage extends Component {
 
   renderEmailSent() {
     return (
-      <Content scrollEnabled={false}>
+      <Content scrollEnabled={true}>
         <View style={styles.instuctionsContainer}>
           <Text style={styles.instuctions}>You will get an email shortly to recover your password</Text>
         </View>
@@ -68,7 +68,7 @@ class forgotPasswordPage extends Component {
 
   renderBeforeEmailSent() {
     return (
-      <Content scrollEnabled={false}>
+      <Content scrollEnabled={true}>
         <View style={styles.instuctionsContainer}>
           <Text style={styles.instuctions}>Please insert your email and we will send you details on reseting your
             password</Text>
