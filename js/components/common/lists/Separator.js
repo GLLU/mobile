@@ -1,18 +1,25 @@
+// @flow
+
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import Colors from "../../../styles/Colors.styles";
+
+const styles = StyleSheet.create({
+  separator: {
+    backgroundColor: Colors.separatorGray,
+    height: 1
+  }
+});
+
+type Props = {
+  style: any
+}
 
 class Separator extends PureComponent {
 
-  static defaultProps={
-    style:{}
-  }
+  props: Props;
 
-  render() {
-    return (
-      <View style={[{backgroundColor:'#e0e0e0', height:1},this.props.style]}/>
-    );
-  }
+  render = () => <View style={[styles.separator, this.props.style]}/>
 }
 
 export default Separator;
-

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
 import { noop } from 'lodash'
@@ -5,12 +7,11 @@ import i18n from 'react-native-i18n';
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
 import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
 import MenuAction from "./MenuAction";
-
-const cancelIcon = require('../../../../images/icons/cancel-black.png');
+import Colors from "../../../styles/Colors.styles";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     justifyContent: 'center',
     paddingHorizontal: 30,
     marginVertical: 25
@@ -27,18 +28,20 @@ const styles = StyleSheet.create({
   },
 });
 
+type Props = {
+  style: any,
+  isOpen: boolean,
+  onEditPress: void,
+  onShareClicked: void,
+  reportAbuse: void,
+  lookId:number,
+  userId:number,
+  isMyLook: boolean
+};
+
 class MenuView extends Component {
 
-  static propTypes = {
-    style: React.PropTypes.any,
-    isOpen: React.PropTypes.bool,
-    onEditPress: React.PropTypes.func,
-    onShareClicked: React.PropTypes.func,
-    reportAbuse: React.PropTypes.func,
-    lookId:React.PropTypes.number,
-    userId:React.PropTypes.number,
-    isMyLook: React.PropTypes.bool
-  };
+  props: Props;
 
   static defaultProps = {
     style: {},
@@ -51,7 +54,7 @@ class MenuView extends Component {
     isMyLook: false
   };
 
-  constructor(props) {
+  constructor(props:Props) {
     super(props);
     this._onRequestClose = this._onRequestClose.bind(this);
   }
@@ -127,7 +130,7 @@ class MenuView extends Component {
   render() {
     return (
       <BottomHalfScreenModal {...this.props} style={{borderWidth: 5}}>
-        <HalfScreenModalHeader title={i18n.t('OPTIONS')} onPress={this._onRequestClose}/>
+        <HalfScreenModalHeader title={i18n.t('OPTIONS')} onCancelPress={this._onRequestClose}/>
         <View style={styles.container}>
           {this.props.isMyLook ? this.renderMyContent() : this.renderGeneralContent()}
         </View>

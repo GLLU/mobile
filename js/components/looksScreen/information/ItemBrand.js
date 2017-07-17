@@ -1,9 +1,10 @@
-'use strict';
+// @flow
 
 import React, { PureComponent } from 'react';
-import { ListView, Image, StyleSheet, TouchableOpacity, Text, View, FlatList, ViewPropTypes } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View, ViewPropTypes } from 'react-native';
 import * as _ from "lodash";
 import withAnalytics from '../../common/analytics/WithAnalytics'
+import Colors from "../../../styles/Colors.styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -11,41 +12,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   textStyle: {
-    flex: -1,
-    flexDirection: 'row',
-    padding: 10 ,
+    padding: 10,
     textAlign: 'center',
-    borderColor: 'black',
+    borderColor: Colors.black,
     borderWidth: 2,
-    backgroundColor: 'white'
+    backgroundColor: Colors.white
   }
 });
 
+type Props = {
+  brand: object,
+  onPress: void
+}
+
 class ItemBrand extends PureComponent {
 
-  static propTypes = {
-    brand: React.PropTypes.object.isRequired,
-    onPress: React.PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     onPress: _.noop
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    this.onPress=this.onPress.bind(this);
+    this._onPress = this._onPress.bind(this);
   }
 
-  onPress(){
-    const {logEvent,brand} = this.props;
-    logEvent('LookScreen', {name: 'Information Brand clicked!',brandName:brand.name});
+  _onPress() {
+    const {logEvent, brand} = this.props;
+    logEvent('LookScreen', {name: 'Information Brand clicked!', brandName: brand.name});
   }
 
   render() {
-    const {brand,style} = this.props;
+    const {brand, style} = this.props;
     return (
-      <TouchableOpacity style={[styles.container,style]} onPress={this.onPress}>
+      <TouchableOpacity style={[styles.container, style]} onPress={this._onPress}>
         <Text numberOfLines={1} style={styles.textStyle}>
           {brand.name}
         </Text>

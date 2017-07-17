@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import i18n from 'react-native-i18n';
 import { Animated, View, Text, StyleSheet } from 'react-native';
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
   },
   description: {
     paddingHorizontal: 20,
-    color: "black",
+    color: Colors.black,
     fontSize: 16
   },
   separatorContainer: {
@@ -37,17 +39,19 @@ const styles = StyleSheet.create({
 
 });
 
+type Props = {
+  description: string,
+  items: Array<object>,
+  style: any,
+  isOpen: boolean,
+  onRequestClose: void,
+  onCommentsPress: void,
+  onLikesPress: void
+};
+
 class InformationView extends Component {
 
-  static propTypes = {
-    description: React.PropTypes.string,
-    items: React.PropTypes.array,
-    style: React.PropTypes.any,
-    isOpen: React.PropTypes.bool,
-    onRequestClose: React.PropTypes.func,
-    onCommentsPress: React.PropTypes.func,
-    onLikesPress: React.PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     style: {},
@@ -55,15 +59,15 @@ class InformationView extends Component {
     onRequestClose: noop
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this._onRequestClose = this._onRequestClose.bind(this);
   }
 
-  getBrandsFromItems = (items) =>
+  getBrandsFromItems = (items: Array<object>) =>
     chain(items)
       .map(item => item.brand)
-      .filter(brand=>brand&&brand.id)
+      .filter(brand => brand && brand.id)
       .uniqBy(brand => brand.id)
       .value();
 
@@ -77,23 +81,21 @@ class InformationView extends Component {
     return (
       <BottomHalfScreenModal {...this.props}>
         <View style={styles.container}>
-          <HalfScreenModalHeader title={i18n.t('INFORMATION')} onPress={this._onRequestClose}/>
-          <View>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>
-                {this.props.description}
-              </Text>
-            </View>
-            <View style={styles.separatorContainer}>
-              <Separator style={styles.separator}/>
-            </View>
-            <ItemBrandsView style={{paddingVertical: 10}} brands={brands}/>
-            <InformationViewFooter
-              onCommentsPress={onCommentsPress}
-              onLikesPress={onLikesPress}
-              likes={likes}
-              comments={comments}/>
+          <HalfScreenModalHeader title={i18n.t('INFORMATION')} onCancelPress={this._onRequestClose}/>
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.description}>
+              {this.props.description}
+            </Text>
           </View>
+          <View style={styles.separatorContainer}>
+            <Separator style={styles.separator}/>
+          </View>
+          <ItemBrandsView style={{paddingVertical: 10}} brands={brands}/>
+          <InformationViewFooter
+            onCommentsPress={onCommentsPress}
+            onLikesPress={onLikesPress}
+            likes={likes}
+            comments={comments}/>
         </View>
       </BottomHalfScreenModal>
     );

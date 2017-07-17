@@ -1,10 +1,13 @@
-'use strict';
+// @flow
 
 import React, { PureComponent } from 'react';
 import { ScrollView, Image, StyleSheet, TouchableOpacity, Text, View, FlatList } from 'react-native';
-import LikesView from "./social/LikesView";
-import CommentsView from "./social/CommentsView";
+import withAnalytics from '../../common/analytics/WithAnalytics';
 import Colors from "../../../styles/Colors.styles";
+import SocialView from "./SocialView";
+
+const commentsIcon = require('../../../../images/icons/comment-black-hollow.png');
+const likeIcon = require('../../../../images/icons/like-black-hollow.png');
 
 const styles = StyleSheet.create({
   container: {
@@ -15,34 +18,47 @@ const styles = StyleSheet.create({
   }
 });
 
+type Props = {
+  likes: number,
+  comments: number,
+  onCommentsPress: void,
+  onLikesPress: void
+}
+
 class InformationViewFooter extends PureComponent {
 
-  static propTypes = {
-    likes: React.PropTypes.number,
-    comments: React.PropTypes.number,
-    onCommentsPress: React.PropTypes.func,
-    onLikesPress: React.PropTypes.func
-  };
+  props: Props;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    this.onCommentsPress = this.onCommentsPress.bind(this);
+    this._onCommentsPress = this._onCommentsPress.bind(this);
+    this._onLikesPress = this._onLikesPress.bind(this);
   }
 
-  onCommentsPress() {
-    this.props.onCommentsPress(true);
+  _onCommentsPress() {
+    const {onCommentsPress, logEvent} = this.props;
+    logEvent('LookScreen', {name: 'Information Comments click'});
+    onCommentsPress(true);
+  }
+
+  _onLikesPress() {
+    const {likes, onLikesPress, logEvent} = this.props;
+    logEvent('LookScreen', {name: 'Information Likes click'});
+    if (likes > 0) {
+      onLikesPress()
+    }
   }
 
   render() {
-    const {likes, comments, onLikesPress} = this.props;
+    const {likes, comments} = this.props;
     return (
       <View style={styles.container}>
-        <LikesView likes={likes} onPress={onLikesPress}/>
-        <CommentsView comments={comments} onPress={this.onCommentsPress}/>
+        <SocialView count={likes} icon={likeIcon} onPress={this._onLikesPress}/>
+        <SocialView count={comments} icon={commentsIcon} onPress={this._onCommentsPress}/>
       </View>
     );
   }
 }
 
-export default InformationViewFooter;
+export default withAnalytics(InformationViewFooter);
 
