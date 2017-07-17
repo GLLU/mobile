@@ -32,6 +32,7 @@ export default function (state = initialState, action) {
       const currentLooksData = state.flatLooksData;
       const newData = feedLooksIdsArray || [];
       const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
+      console.log('sdc')
       return {
         ...state,
         flatLooksData,

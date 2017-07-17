@@ -41,6 +41,7 @@ const signInFromRest = function (dispatch, data, invitation_token, invitationTok
       reject();
     }
     Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+      NetworkManager.setToken(data.user.api_key);
       setRestOptions(dispatch, rest, data.user);
       dispatch(setUser(data.user));
       if (invitationTokenIsUsed === false) {

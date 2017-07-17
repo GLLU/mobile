@@ -32,8 +32,6 @@ const ACTION_HANDLERS = {
   }),
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
-    NetworkManager.setToken(user.api_key);
-    console.log('happenned')
     return {
       ...state,
       ...user,
