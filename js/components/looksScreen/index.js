@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
-import BottomLookContainer from './BottomLookContainer';
+import LookOverlay from './LookOverlay';
 import { likeUpdate, unlikeUpdate,loadMore,getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
@@ -266,7 +266,7 @@ class LooksScreen extends Component {
           repeat={true}
           navigation={this.props.cardNavigation}
         />
-        <BottomLookContainer
+        <LookOverlay
           width={width}
           height={height}
           look={look}
@@ -304,7 +304,7 @@ class LooksScreen extends Component {
             style={styles.itemImage}
             source={{uri: look.uri}}
             navigation={this.props.cardNavigation}>
-              <BottomLookContainer
+              <LookOverlay
                 width={width}
                 height={height}
                 look={look}
