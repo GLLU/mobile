@@ -1,4 +1,4 @@
-import {showError, hideError, showFatalError, hideFatalError} from './index';
+import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
@@ -11,6 +11,7 @@ export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
+export const USER_BLOCKED = 'USER_BLOCKED';
 
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
@@ -246,12 +247,17 @@ export function changeUserAvatar(data) {
   });
 }
 
-export function blockUser(blockUserId) {
-  return (dispatch,getState) => {
+export function blockUser(blockedUserId) {
+  return (dispatch, getState) => {
     const userId = getState().user.id;
-    return UsersService.block(userId,blockUserId).catch(() => {});
-  }
-
+    UsersService.block(userId, blockedUserId).then(() => {
+      dispatch({
+        type: USER_BLOCKED,
+        userId,
+        blockedUserId,
+      });
+    })
+  };
 }
 
 export function logout() {

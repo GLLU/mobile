@@ -34,8 +34,6 @@ type Props = {
   onEditPress: void,
   onShareClicked: void,
   reportAbuse: void,
-  lookId:number,
-  userId:number,
   isMyLook: boolean
 };
 

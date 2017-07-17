@@ -4,11 +4,16 @@ import { reportAbuse } from "../../../actions/looks";
 import MenuView from "./MenuView";
 import { blockUser } from "../../../actions/user";
 
-const mapDispatchToProps = (dispatch, props) => {
+type Props={
+  lookId:number,
+  userId:number
+}
+
+const mapDispatchToProps = (dispatch, props:Props) => {
   const {lookId, userId} = props;
   return {
     reportAbuse: () => dispatch(reportAbuse(lookId)),
-    blockUser: () => dispatch(blockUser( userId)),
+    blockUser: () => dispatch(blockUser(userId)),
   };
 };
 
