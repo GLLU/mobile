@@ -10,6 +10,8 @@
     "bundle-android": "react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/com/infash/infash/src/main/res/",
     "gradle-build": "cd android && ./gradlew assembleRelease && cd ../",
     "pack-android": "npm run bundle-android && npm run gradle-build",
+    "run-android": "react-native run-android",
+    "run-ios": "react-native run-ios --scheme infash-debug",
     "storybook": "storybook start -p 7007"
   },
   "dependencies": {
