@@ -38,7 +38,7 @@ class BlockedUsersScreen extends Component {
     this.props.getBlockedUsers()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.blockedUsers !== this.props.blockedUsers || nextProps.blockedUsers === []) {
       this.setState({isLoading: false});
     }
@@ -68,9 +68,9 @@ class BlockedUsersScreen extends Component {
       <ListScreen
         renderEmpty={this.renderEmptyView}
         renderItem={(user) => <BlockedUserRow
-                                {...user}
-                                userId={user.id}
-                                onUnblockPress={unblockUser}/>}
+          {...user}
+          userId={user.id}
+          onUnblockPress={unblockUser}/>}
         headerData={header}
         data={blockedUsers}
         goBack={goBack}

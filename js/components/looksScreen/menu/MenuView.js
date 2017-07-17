@@ -52,7 +52,7 @@ class MenuView extends Component {
     isMyLook: false
   };
 
-  constructor(props:Props) {
+  constructor(props: Props) {
     super(props);
     this._onRequestClose = this._onRequestClose.bind(this);
   }

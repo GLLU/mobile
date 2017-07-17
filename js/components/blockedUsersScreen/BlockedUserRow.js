@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
   name: {
     flex: 0.5,
     color: Colors.black,
-    fontFamily:Fonts.boldFont,
-    fontWeight:'bold',
-    fontSize:14
+    fontFamily: Fonts.boldFont,
+    fontWeight: 'bold',
+    fontSize: 14
   },
   username: {
     flex: 0.5,
     color: Colors.usernameColor,
-    fontFamily:Fonts.boldFont,
+    fontFamily: Fonts.boldFont,
   },
   photoContainer: {
     flex: 2,
@@ -77,7 +77,7 @@ class BlockedUserRow extends PureComponent {
     )
   }
 
-  renderAvatar(avatar:object) {
+  renderAvatar(avatar: object) {
     return (
       <View style={styles.photoContainer}>
         <Image resizeMode='cover' source={{uri: avatar.url}} style={styles.photo}/>

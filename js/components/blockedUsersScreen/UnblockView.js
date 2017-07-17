@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props={
-  onPress:void,
-  style:any
+type Props = {
+  onPress: void,
+  style: any
 }
 
 class UnblockView extends PureComponent {
@@ -31,9 +31,9 @@ class UnblockView extends PureComponent {
   props: Props;
 
   render() {
-    const {onPress,style}=this.props;
-    return(
-      <TouchableOpacity style={[styles.unblockBtn,style]} onPress={onPress}>
+    const {onPress, style} = this.props;
+    return (
+      <TouchableOpacity style={[styles.unblockBtn, style]} onPress={onPress}>
         <Text style={styles.unblockText}>{i18n.t('UNBLOCK')}</Text>
       </TouchableOpacity>
     )

@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   const blockedUsersState = state.blockedUsers;
   return {
-    blockedUsers:blockedUsersState.blockedUsers,
+    blockedUsers: blockedUsersState.blockedUsers,
     totalBlockedUsersCount: blockedUsersState.meta.total
   }
 

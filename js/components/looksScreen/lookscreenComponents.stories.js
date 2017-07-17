@@ -34,8 +34,8 @@ storiesOf('look screen components', module)
     )
   }
 ).add('Footer View', () => {
-  const likes=693748512;
-  const comments=1337;
+    const likes = 693748512;
+    const comments = 1337;
     return (
       <View style={{
         backgroundColor: 'red', flex: 1,
@@ -54,9 +54,9 @@ storiesOf('look screen components', module)
       {brand: {id: 5, name: 'billabong'}},
       {brand: {id: 6, name: 'american eagle'}}
     ];
-    const description='HAPATAKATA ASKD:LKA:LSD KL:ASKDL:A KSDL:KAS:L DK:LASSKD L:AKSDL:K A:LSDKL:AK SD';
-    const likes=693748512;
-    const comments=1337;
+    const description = 'HAPATAKATA ASKD:LKA:LSD KL:ASKDL:A KSDL:KAS:L DK:LASSKD L:AKSDL:K A:LSDKL:AK SD';
+    const likes = 693748512;
+    const comments = 1337;
     return (
       <View style={{
         backgroundColor: 'red', flex: 1,

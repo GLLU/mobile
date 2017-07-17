@@ -314,9 +314,9 @@ export function unblockUser(blockedUserId) {
       dispatch({
         type: SET_BLOCKED_USERS,
         blockedUsers: blockedUsersWithoutUnblocked,
-        meta:{
-          currentPage:meta.currentPage,
-          total: meta.total-1
+        meta: {
+          currentPage: meta.currentPage,
+          total: meta.total - 1
         }
       });
     })

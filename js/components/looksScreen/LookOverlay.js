@@ -34,7 +34,7 @@ type Props = {
   toggleLike: void,
   reportabuse: void,
   onBottomDrawerOpen: void,
-  openComments:boolean
+  openComments: boolean
 }
 
 class LookOverlay extends Component {
