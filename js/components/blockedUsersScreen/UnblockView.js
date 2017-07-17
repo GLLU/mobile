@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react';
 import i18n from 'react-native-i18n';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';

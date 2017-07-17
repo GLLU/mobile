@@ -1,3 +1,5 @@
+// @flow
+
 import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
@@ -12,6 +14,7 @@ export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const USER_BLOCKED = 'USER_BLOCKED';
+export const USER_UNBLOCKED = 'USER_UNBLOCKED';
 
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
@@ -253,6 +256,19 @@ export function blockUser(blockedUserId) {
     UsersService.block(userId, blockedUserId).then(() => {
       dispatch({
         type: USER_BLOCKED,
+        userId,
+        blockedUserId,
+      });
+    })
+  };
+}
+
+export function blockUser(blockedUserId) {
+  return (dispatch, getState) => {
+    const userId = getState().user.id;
+    UsersService.unblock(userId, blockedUserId).then(() => {
+      dispatch({
+        type: USER_UNBLOCKED,
         userId,
         blockedUserId,
       });

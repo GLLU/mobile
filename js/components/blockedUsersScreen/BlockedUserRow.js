@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { noop } from "lodash";
@@ -75,7 +77,7 @@ class BlockedUserRow extends PureComponent {
     )
   }
 
-  renderAvatar(avatar) {
+  renderAvatar(avatar:object) {
     return (
       <View style={styles.photoContainer}>
         <Image resizeMode='cover' source={{uri: avatar.url}} style={styles.photo}/>
