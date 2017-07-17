@@ -65,7 +65,7 @@ class MenuView extends Component {
     this.props.reportAbuse(this.props.look_id)
   }
 
-  renderSeparator = ({key: any}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
+  renderSeparator = ({key}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
 
   renderRow({key: any, label: string, onPress}) {
     return (
@@ -95,7 +95,7 @@ class MenuView extends Component {
     );
   }
 
-  renderReportThankYou({key: any}) {
+  renderReportThankYou({key}) {
     return (
       <View key={key} style={{height: 75, paddingVertical: 15}}>
         <View key={key} style={styles.thankYouContainer}>
