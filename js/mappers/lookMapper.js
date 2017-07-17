@@ -22,7 +22,7 @@ export function map(look) {
     coverType: look.cover.type,
     preview: look.cover.thumbnail_url || '',
     ...userMapper.map(look.user),
-    ...look
+    ...look,
   }
 }
 

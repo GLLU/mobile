@@ -331,15 +331,15 @@ function bindActions(dispatch) {
 
 const mapStateToProps = (state) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const user_size = hasUserSize ? state.user.user_size : '';
-  const flatLooksFeedData = _.map(state.feed.flatLooksData, lookId => state.looks.flatLooksData[lookId])
+  const userSize = hasUserSize ? state.user.user_size : '';
+  const flatLooksFeedData = generateFeedData(state.feed.flatLooksData, state.looks.flatLooksData);
   return {
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: flatLooksFeedData,
     meta: state.feed.meta,
     query: state.feed.query,
     hasUserSize,
-    user_size,
+    user_size: userSize,
     user_gender: state.user.gender,
     cardNavigationStack: state.cardNavigation,
     shareToken: state.user.invitation_share_token,
@@ -347,5 +347,13 @@ const mapStateToProps = (state) => {
     showBodyModal: state.user.showBodyModal,
   };
 };
+
+function generateFeedData(feedLooksIds: array, flatLooksData: object) {
+  return _.map(feedLooksIds, (lookId, index) => {
+    const look = flatLooksData[lookId];
+    look.originalIndex = index;
+    return look;
+  });
+}
 
 export default connect(mapStateToProps, bindActions)(TabContent);

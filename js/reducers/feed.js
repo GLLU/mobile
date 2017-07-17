@@ -26,13 +26,10 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_FLAT_LOOKS_FEED_DATA: {
-      console.log('state',state)
-      console.log('state',action)
-      const { query, meta, feedLooksIdsArray } = action.payload
+      const { query, meta, looksIdsArray } = action.payload
       const currentLooksData = state.flatLooksData;
-      const newData = feedLooksIdsArray || [];
-      const flatLooksData = action.payload.loadMore ? currentLooksData.concat(newData) : newData;
-      console.log('sdc')
+      const newData = looksIdsArray || [];
+      const flatLooksData = currentLooksData.concat(newData)
       return {
         ...state,
         flatLooksData,
@@ -41,8 +38,8 @@ export default function (state = initialState, action) {
       };
     }
     case SET_FLAT_LOOKS_FEED_DATA_QUEUE: {
-      const { query, meta, feedQueueLooksIdsArray } = action.payload
-      const newData = feedQueueLooksIdsArray || [];
+      const { query, meta, looksIdsArray } = action.payload
+      const newData = looksIdsArray || [];
       return {
         ...state,
         flatLooksDataQueue: newData,
