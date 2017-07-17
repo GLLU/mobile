@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
 import { noop } from 'lodash'
@@ -5,8 +7,6 @@ import i18n from 'react-native-i18n';
 import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
 import SolidButton from "../../common/buttons/SolidButton";
 import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
-
-const cancelIcon = require('../../../../images/icons/cancel-black.png');
 
 const styles = StyleSheet.create({
   container: {
@@ -27,15 +27,18 @@ const styles = StyleSheet.create({
   },
 });
 
+type Props = {
+  style: any,
+  isOpen: boolean,
+  onEditPress: void,
+  onShareClicked: void,
+  isMyLook: boolean,
+  look_id:number
+};
+
 class MenuView extends Component {
 
-  static propTypes = {
-    style: React.PropTypes.any,
-    isOpen: React.PropTypes.bool,
-    onEditPress: React.PropTypes.func,
-    onShareClicked: React.PropTypes.func,
-    isMyLook: React.PropTypes.bool
-  };
+  props: Props;
 
   static defaultProps = {
     style: {},
@@ -44,10 +47,11 @@ class MenuView extends Component {
     onDeletePress: noop,
     onEditPress: noop,
     onShareClicked: noop,
-    isMyLook: false
+    isMyLook: false,
+
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this._reportAbuse = this._reportAbuse.bind(this);
     this._onRequestClose = this._onRequestClose.bind(this);
@@ -61,9 +65,9 @@ class MenuView extends Component {
     this.props.reportAbuse(this.props.look_id)
   }
 
-  renderSeparator = ({key}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
+  renderSeparator = ({key: any}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
 
-  renderRow({key, label, onPress}) {
+  renderRow({key: any, label: string, onPress}) {
     return (
       <View key={key} style={{height: 75, paddingVertical: 15}}>
         <SolidButton style={{backgroundColor: '#00D7B2'}} label={label} onPress={onPress}/>
@@ -71,7 +75,7 @@ class MenuView extends Component {
     );
   }
 
-  renderShare = (key) => this.renderRow({key: 'share', label: 'Share', onPress: this.props.onShareClicked});
+  renderShare = (key: any) => this.renderRow({key: 'share', label: 'Share', onPress: this.props.onShareClicked});
 
   renderEdit = () => this.renderRow({key: 'edit', label: 'Edit', onPress: this.props.onEditPress});
 
@@ -91,7 +95,7 @@ class MenuView extends Component {
     );
   }
 
-  renderReportThankYou({key}) {
+  renderReportThankYou({key: any}) {
     return (
       <View key={key} style={{height: 75, paddingVertical: 15}}>
         <View key={key} style={styles.thankYouContainer}>

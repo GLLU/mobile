@@ -33,7 +33,8 @@ type Props = {
   goToLikes: void,
   toggleLike: void,
   reportabuse: void,
-  onBottomDrawerOpen: void
+  onBottomDrawerOpen: void,
+  openComments:boolean
 }
 
 class LookOverlay extends Component {
@@ -45,7 +46,7 @@ class LookOverlay extends Component {
     goToProfile: _.noop,
     toggleLike: _.noop,
     reportAbuse: _.noop,
-    onBottomDrawerOpen: _.noop,
+    onBottomDrawerOpen: _.noop
   };
 
   constructor(props: Props) {
@@ -59,7 +60,7 @@ class LookOverlay extends Component {
     this.goToEdit = this.goToEdit.bind(this);
     this.goToLikes = this.goToLikes.bind(this);
     this.closeBottomModal = this.closeBottomModal.bind(this);
-    this.onShareClicked = this.onShareClicked.bind(this);
+    this._onShareClicked = this._onShareClicked.bind(this);
     const {look} = this.props;
     this.state = {
       comments: look.comments || 0,
@@ -105,7 +106,7 @@ class LookOverlay extends Component {
     this.setState({isMenuOpen: shouldActive, isInformationActive: false, isCommentsActive: false})
   }
 
-  onShareClicked() {
+  _onShareClicked() {
     const {logEvent} = this.props;
     logEvent('LookScreen', {name: 'Share clicked'});
     const message = SocialShare.generateShareMessage(formatInvitationMessage());
@@ -121,8 +122,7 @@ class LookOverlay extends Component {
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}
         onEditPress={() => this.goToEdit(look)}
-        onShareClicked={this.onShareClicked}
-        shareToken={this.props.shareToken}/>);
+        onShareClicked={this._onShareClicked}/>);
   }
 
   _renderInformationView(isActive: boolean) {

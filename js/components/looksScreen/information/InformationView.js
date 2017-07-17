@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   description: {
     paddingHorizontal: 20,
-    color: "black",
+    color: Colors.black,
     fontSize: 16
   },
   separatorContainer: {
@@ -39,17 +39,19 @@ const styles = StyleSheet.create({
 
 });
 
+type Props = {
+  description: string,
+  items: Array<object>,
+  style: any,
+  isOpen: boolean,
+  onRequestClose: void,
+  onCommentsPress: void,
+  onLikesPress: void
+};
+
 class InformationView extends Component {
 
-  static propTypes = {
-    description: React.PropTypes.string,
-    items: React.PropTypes.array,
-    style: React.PropTypes.any,
-    isOpen: React.PropTypes.bool,
-    onRequestClose: React.PropTypes.func,
-    onCommentsPress: React.PropTypes.func,
-    onLikesPress: React.PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     style: {},
@@ -57,12 +59,12 @@ class InformationView extends Component {
     onRequestClose: noop
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this._onRequestClose = this._onRequestClose.bind(this);
   }
 
-  getBrandsFromItems = (items) =>
+  getBrandsFromItems = (items: Array<object>) =>
     chain(items)
       .map(item => item.brand)
       .filter(brand => brand && brand.id)

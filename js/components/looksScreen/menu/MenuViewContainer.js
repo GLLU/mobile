@@ -2,10 +2,8 @@ import withAnalytics from '../../common/analytics/WithAnalytics'
 import { connect } from "react-redux";
 import { reportAbuse } from "../../../actions/looks";
 import MenuView from "./MenuView";
-import { blockUser } from "../../../actions/user";
 
-const mapDispatchToProps = (dispatch, props) => {
-  const {lookId, userId} = props;
+const mapDispatchToProps = (dispatch) => {
   return {
     reportAbuse: (id) => dispatch(reportAbuse(id)),
   };

@@ -27,24 +27,24 @@ type Props = {
 
 class InformationViewFooter extends PureComponent {
 
-  props:Props;
+  props: Props;
 
-  constructor(props:Props) {
+  constructor(props: Props) {
     super(props);
     this._onCommentsPress = this._onCommentsPress.bind(this);
     this._onLikesPress = this._onLikesPress.bind(this);
   }
 
   _onCommentsPress() {
-    const {onCommentsPress,logEvent} = this.props;
+    const {onCommentsPress, logEvent} = this.props;
     logEvent('LookScreen', {name: 'Information Comments click'});
     onCommentsPress(true);
   }
 
-  _onLikesPress(){
-    const {likes,onLikesPress,logEvent} = this.props;
+  _onLikesPress() {
+    const {likes, onLikesPress, logEvent} = this.props;
     logEvent('LookScreen', {name: 'Information Likes click'});
-    if(likes>0){
+    if (likes > 0) {
       onLikesPress()
     }
   }
