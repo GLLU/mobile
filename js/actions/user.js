@@ -308,18 +308,18 @@ export function blockUser(blockedUserId) {
 export function unblockUser(blockedUserId) {
   return (dispatch, getState) => {
     const userId = getState().user.id;
-    UsersService.unblock(userId, blockedUserId).then(() => {
-      const {blockedUsers, meta} = getState().blockedUsers;
-      const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.id !== blockedUserId);
-      dispatch({
-        type: SET_BLOCKED_USERS,
-        blockedUsers: blockedUsersWithoutUnblocked,
-        meta: {
-          currentPage: meta.currentPage,
-          total: meta.total - 1
-        }
-      });
-    })
+    UsersService.unblock(userId, blockedUserId)
+      .catch(err => ({}));//mute error
+    const {blockedUsers, meta} = getState().blockedUsers;
+    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.id !== blockedUserId);
+    dispatch({
+      type: SET_BLOCKED_USERS,
+      blockedUsers: blockedUsersWithoutUnblocked,
+      meta: {
+        currentPage: meta.currentPage,
+        total: meta.total - 1
+      }
+    });
   };
 }
 
