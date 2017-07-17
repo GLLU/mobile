@@ -21,7 +21,7 @@ import { formatInvitationMessage } from "../../lib/messages/index";
 import withAnalytics from '../common/analytics/WithAnalytics'
 
 
-class BottomLookContainer extends Component {
+class LookOverlay extends Component {
 
   static propTypes = {
     look: React.PropTypes.object,
@@ -234,4 +234,4 @@ class BottomLookContainer extends Component {
   }
 }
 
-export default withAnalytics(BottomLookContainer);
+export default withAnalytics(LookOverlay);
