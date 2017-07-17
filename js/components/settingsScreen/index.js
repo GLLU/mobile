@@ -67,6 +67,7 @@ const iconPrivacy = require('../../../images/icons/privacy.png');
 const iconCopyright = require('../../../images/icons/copyright.png');
 const iconLogout = require('../../../images/icons/logout.png');
 const iconRateUs = require('../../../images/icons/rate_us.png');
+const iconBlockedUsers = require('../../../images/icons/blocked-users-green.png');
 
 class SettingsScreen extends Component {
   static propTypes = {
@@ -86,11 +87,6 @@ class SettingsScreen extends Component {
 
   getSettingsConfiguration() {
     return [
-      {
-        text: 'Blocked Users',
-        icon: iconShare,
-        onPress: this._navigateToBlockedUsers
-      },
       {
         text: 'Invite your Friends',
         icon: iconShare,
@@ -120,6 +116,11 @@ class SettingsScreen extends Component {
         text: 'Rate Us',
         icon: iconRateUs,
         onPress: this.handleOpenLink.bind(this, RATE_US_URL)
+      },
+      {
+        text: 'Blocked Users',
+        icon: iconBlockedUsers,
+        onPress: this._navigateToBlockedUsers
       },
       {
         text: 'Log Out',
