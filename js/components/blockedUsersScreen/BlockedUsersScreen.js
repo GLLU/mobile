@@ -71,7 +71,7 @@ class BlockedUsersScreen extends Component {
                                 key={user.id}
                                 {...user}
                                 userId={user.id}
-                                onUnblockUserPress={unblockUser}/>}
+                                onUnblockPress={unblockUser}/>}
         headerData={header}
         data={blockedUsers}
         goBack={goBack}
