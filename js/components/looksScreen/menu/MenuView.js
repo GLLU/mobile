@@ -90,14 +90,14 @@ class MenuView extends Component {
       key={'report'}
       label={i18n.t('REPORT')}
       onPress={this.props.reportAbuse}
-      confirmationMessage={i18n.t('REPORT_TEXT')}/>;
+      postActionMessage={i18n.t('REPORT_TEXT')}/>;
 
   renderBlock = () =>
     <MenuAction
       key={'block'}
       label={i18n.t('BLOCK')}
       onPress={this.props.blockUser}
-      confirmationMessage={i18n.t('BLOCK_TEXT')}
+      postActionMessage={i18n.t('BLOCK_TEXT')}
       withConfirmation={true}
       areYouSureMessage={i18n.t('BLOCK_ARE_YOU_SURE')}/>;
 

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Alert, Button } from 'react-native';
 import { noop } from 'lodash'
@@ -9,15 +11,14 @@ import Fonts from "../../../styles/Fonts.styles";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    paddingHorizontal: 30,
-    marginVertical: 25
+    height: 75,
+    paddingVertical: 15
   },
   messageContainer: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
-    padding: 20
+    alignItems: 'center'
   },
   areYouSureContainer: {
     flex: 1,
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
   },
   message: {
     textAlign: 'center',
-    fontSize: 16,
+    flex: 4,
+    fontSize: 14,
     paddingHorizontal: 10,
     fontWeight: '500'
   },
@@ -41,75 +43,67 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.black,
     fontFamily: Fonts.regularFont,
-    fontSize:20,
+    fontSize: 14,
     fontWeight: 'bold'
   }
 });
 
+type Props = {
+  label: string,
+  withConfirmation: boolean,
+  onPress: void,
+  postActionMessage: string,
+  areYouSureMessage: string
+};
+
 class MenuAction extends Component {
 
-  static propTypes = {
-    label: React.PropTypes.string.isRequired,
-    withConfirmation: React.PropTypes.bool,
-    onPress: React.PropTypes.func,
-    confirmationMessage: React.PropTypes.string,
-    areYouSureMessage: React.PropTypes.string
-  };
+  props: Props;
 
   static defaultProps = {
     onPress: _.noop,
     areYouSureMessage: 'Are you sure?'
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    this.onPress = this.onPress.bind(this);
-    this.onConfirmPress = this.onConfirmPress.bind(this);
-    this.onCancelPress = this.onCancelPress.bind(this);
+    this._onPress = this._onPress.bind(this);
+    this._onConfirmPress = this._onConfirmPress.bind(this);
+    this._onCancelPress = this._onCancelPress.bind(this);
     this.state = {
       isPressed: false,
-      isConfirmed: false
+      isDone: false
     }
   }
 
-  onConfirmPress() {
-    this.setState({isPressed: true, isConfirmed: true}, () => {
+  _onConfirmPress() {
+    this.setState({isPressed: true, isDone: true}, () => {
       this.props.onPress();
     });
   }
 
-  onCancelPress() {
+  _onCancelPress() {
     this.setState({isPressed: false});
   }
 
-  onPress() {
+  _onPress() {
     const {withConfirmation} = this.props;
     if (withConfirmation) {
       this.setState({isPressed: true});
     } else {
-      this.onConfirmPress()
+      this._onConfirmPress()
     }
   }
 
-  renderAction(label, onPress) {
+  renderPostActionMessage(message: string) {
     return (
-      <View style={{height: 75, paddingVertical: 15}}>
-        <SolidButton style={{backgroundColor: '#00D7B2'}} label={label} onPress={onPress}/>
+      <View style={styles.messageContainer}>
+        <Text style={styles.message}>{message}</Text>
       </View>
     );
   }
 
-  renderConfirmation(message) {
-    return (
-      <View style={{height: 75, paddingVertical: 15}}>
-        <View style={styles.messageContainer}>
-          <Text style={styles.message}>{message}</Text>
-        </View>
-      </View>
-    );
-  }
-
-  confirmationButton(label, onPress) {
+  renderConfirmationButton(label: string, onPress) {
     return (
       <TouchableOpacity style={styles.confirmationButton} onPress={onPress}>
         <Text style={styles.confirmationText}>{label}</Text>
@@ -119,27 +113,32 @@ class MenuAction extends Component {
 
   renderAreYouSure(areYouSureMessage) {
     return (
-      <View style={{height: 75, paddingVertical: 15}}>
-        <View style={styles.areYouSureContainer}>
-          {this.confirmationButton(i18n.t('NO'), this.onCancelPress)}
-          {/*<Button title={i18n.t('NO')} style={{flex:1,color:Colors.black}} onPress={this.onCancelPress}/>*/}
-          <Text style={[styles.message, {flex: 4}]}>{areYouSureMessage}</Text>
-          {this.confirmationButton(i18n.t('YES'), this.onConfirmPress)}
-          {/*<Button title={i18n.t('YES')} style={{flex:1, color:Colors.primaryColor}} onPress={this.onConfirmPress}/>*/}
-        </View>
+      <View style={styles.areYouSureContainer}>
+        {this.renderConfirmationButton(i18n.t('NO'), this._onCancelPress)}
+        <Text style={styles.message}>{areYouSureMessage}</Text>
+        {this.renderConfirmationButton(i18n.t('YES'), this._onConfirmPress)}
       </View>
     );
   }
 
-  render() {
-    const {label, confirmationMessage, areYouSureMessage} = this.props;
-    if (!this.state.isPressed || !this.props.confirmationMessage) {
-      return this.renderAction(label, this.onPress);
+  renderContent() {
+    const {label, postActionMessage, areYouSureMessage} = this.props;
+    const {isPressed, isDone} = this.state;
+    if (!isPressed || !postActionMessage) {
+      return <SolidButton style={{backgroundColor: Colors.primaryColor}} label={label} onPress={this._onPress}/>
     }
-    if (this.state.isConfirmed) {
-      return this.renderConfirmation(confirmationMessage);
+    if (isDone) {
+      return this.renderPostActionMessage(postActionMessage);
     }
     return this.renderAreYouSure(areYouSureMessage);
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        {this.renderContent()}
+      </View>
+    )
   }
 }
 

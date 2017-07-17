@@ -96,7 +96,7 @@ storiesOf('look screen components', module)
           label='Random Action with confirmation'
           withConfirmation={true}
           areYouSureMessage={'Are you sure you wanna make a random action?'}
-          confirmationMessage={'thanks for clicking me :)'}
+          postActionMessage={'thanks for clicking me :)'}
           onPress={action('done-action')}/>
       </View>
     )
@@ -110,7 +110,7 @@ storiesOf('look screen components', module)
         <MenuAction
           label='Random Action without confirmation'
           areYouSureMessage={'Are you sure you wanna make a random action?'}
-          confirmationMessage={'thanks for clicking me :)'}
+          postActionMessage={'thanks for clicking me :)'}
           onPress={action('done-action')}/>
       </View>
     )
