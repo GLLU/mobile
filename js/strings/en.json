@@ -2,6 +2,7 @@
   "INVALID_LOGIN": "Email/Password are incorrect",
   "INFORMATION": "Information",
   "BLOCK": "Block",
+  "UNBLOCK": "Unblock",
   "SHARE": "Share",
   "EDIT": "Edit",
   "OPTIONS": "Options",
@@ -12,5 +13,6 @@
   "BLOCK_TEXT":"You will not see any activity from this user anymore.",
   "BLOCK_ARE_YOU_SURE":"Are you sure you want to block this user?",
   "NO":"No",
-  "YES":"Yes"
+  "YES":"Yes",
+
 }
