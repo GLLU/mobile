@@ -255,16 +255,16 @@ export function getBlockedUsers() {
   return (dispatch, getState) => {
     const state = getState();
     const userId = state.user.id;
-    const nextPage=1;
+    const nextPage = 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
-      const {blockedUsers}=getState().blockedUsers;
-      const blockedUsersUnion=_.unionBy(blockedUsers,data.blockedUsers,user=>user.id);
+      const {blockedUsers} = getState().blockedUsers;
+      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
       dispatch({
         type: SET_BLOCKED_USERS,
-        blockedUsers:blockedUsersUnion,
-        meta:{
-          currentPage:nextPage,
-          total:data.meta.total
+        blockedUsers: blockedUsersUnion,
+        meta: {
+          currentPage: nextPage,
+          total: data.meta.total
         }
       });
     })
@@ -275,21 +275,21 @@ export function getMoreBlockedUsers() {
   return (dispatch, getState) => {
     const state = getState();
     const userId = state.user.id;
-    const {meta}= state.blockedUsers;
-    const nextPage=meta.currentPage+1;
+    const {meta} = state.blockedUsers;
+    const nextPage = meta.currentPage + 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
-      const {blockedUsers,meta}=getState().blockedUsers;
-      const blockedUsersUnion=_.unionBy(blockedUsers,data.blockedUsers,user=>user.id);
+      const {blockedUsers} = getState().blockedUsers;
+      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
       dispatch({
         type: SET_BLOCKED_USERS,
-        blockedUser:blockedUsersUnion,
-        meta:{
-          currentPage:nextPage,
-          total:meta.total
+        blockedUsers: blockedUsersUnion,
+        meta: {
+          currentPage: nextPage,
+          total: data.meta.total
         }
       });
     })
-  };
+  }
 }
 
 export function blockUser(blockedUserId) {
@@ -309,12 +309,15 @@ export function unblockUser(blockedUserId) {
   return (dispatch, getState) => {
     const userId = getState().user.id;
     UsersService.unblock(userId, blockedUserId).then(() => {
-      const {blockedUsers,meta}=getState().blockedUsers;
-      const blockedUsersWithoutUnblocked=_.filter(blockedUsers,user=>user.id!==userId);
+      const {blockedUsers, meta} = getState().blockedUsers;
+      const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.id !== blockedUserId);
       dispatch({
         type: SET_BLOCKED_USERS,
-        blockedUser:blockedUsersWithoutUnblocked,
-        meta
+        blockedUsers: blockedUsersWithoutUnblocked,
+        meta:{
+          currentPage:meta.currentPage,
+          total: meta.total-1
+        }
       });
     })
   };

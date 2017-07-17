@@ -4,7 +4,6 @@ import asScreen from '../common/containers/Screen'
 import { connect } from "react-redux";
 import BlockedUsersScreen from "./BlockedUsersScreen";
 import { getBlockedUsers, getMoreBlockedUsers, unblockUser } from "../../actions/user";
-import * as _ from "lodash";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -15,10 +14,10 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  const blockedUsers = _.map(state.blockedUsers.blockedUsers, user => ({...user, id: user.user_id}));
+  const blockedUsersState = state.blockedUsers;
   return {
-    blockedUsers,
-    total: state.blockedUsers.meta.total
+    blockedUsers:blockedUsersState.blockedUsers,
+    totalBlockedUsersCount: blockedUsersState.meta.total
   }
 
 };

@@ -68,7 +68,6 @@ class BlockedUsersScreen extends Component {
       <ListScreen
         renderEmpty={this.renderEmptyView}
         renderItem={(user) => <BlockedUserRow
-                                key={user.id}
                                 {...user}
                                 userId={user.id}
                                 onUnblockPress={unblockUser}/>}
