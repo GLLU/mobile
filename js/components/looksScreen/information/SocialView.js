@@ -5,6 +5,7 @@ import { StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { formatNumberAsString } from "../../../utils/FormatUtils";
 import Fonts from "../../../styles/Fonts.styles";
 import { noop } from "lodash";
+import Colors from "../../../styles/Colors.styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   countLikeLabel: {
-    color: '#FFFFFF',
+    color: Colors.white,
     fontSize: 12,
     fontWeight: '500',
   },

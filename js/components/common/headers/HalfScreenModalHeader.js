@@ -12,7 +12,6 @@ const infoIcon = require('../../../../images/icons/info-i-white.png');
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
-    marginTop: Platform.OS === 'ios' ? 10 : 0,
     height: 50
   },
   header: {
