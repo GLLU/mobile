@@ -10,7 +10,7 @@ import { emailRule } from '../../validators';
 import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 import SolidButton from "../common/buttons/SolidButton";
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 import asScreen from "../common/containers/Screen"

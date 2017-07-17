@@ -16,7 +16,7 @@ import { changeUserAvatar } from '../../actions/user';
 import ProfileAvatar from '../common/avatars/ProfileAvatar'
 import SolidButton from '../common/buttons/SolidButton'
 import { openCamera } from '../../lib/camera/CameraUtils'
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 import Spinner from '../loaders/Spinner'
 import { formatAvatar } from "../../utils/UploadUtils";
 
