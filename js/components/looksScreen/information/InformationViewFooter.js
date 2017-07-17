@@ -5,6 +5,7 @@ import { ScrollView, Image, StyleSheet, TouchableOpacity, Text, View, FlatList }
 import withAnalytics from '../../common/analytics/WithAnalytics';
 import Colors from "../../../styles/Colors.styles";
 import SocialView from "./SocialView";
+import { noop } from "lodash";
 
 const commentsIcon = require('../../../../images/icons/comment-black-hollow.png');
 const likeIcon = require('../../../../images/icons/like-black-hollow.png');
@@ -28,6 +29,11 @@ type Props = {
 class InformationViewFooter extends PureComponent {
 
   props: Props;
+
+  static defaultProps = {
+    onCommentsPress: noop,
+    onLikesPress: noop,
+  }
 
   constructor(props: Props) {
     super(props);
