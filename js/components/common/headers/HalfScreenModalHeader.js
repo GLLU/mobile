@@ -39,17 +39,17 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props={
-  title:string,
-  iconSize:number,
-  onCancelPress:void
+type Props = {
+  title: string,
+  iconSize: number,
+  onCancelPress: void
 }
 
 class HalfScreenModalHeader extends PureComponent {
 
-  props:Props;
+  props: Props;
 
-  renderInformationSymbol(size) {
+  renderInformationSymbol(size: number) {
     return (
       <View style={[{width: size, height: size}, styles.informationSymbolContainer]}>
         <Image source={infoIcon} style={styles.informationSymbol}/>
@@ -58,7 +58,7 @@ class HalfScreenModalHeader extends PureComponent {
   }
 
   render() {
-    const {iconSize=50,title,onCancelPress=noop} = this.props;
+    const {iconSize = 50, title, onCancelPress = noop} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.header}>

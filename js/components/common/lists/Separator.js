@@ -1,5 +1,7 @@
+// @flow
+
 import React, { PureComponent } from 'react';
-import { View,StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Colors from "../../../styles/Colors.styles";
 
 const styles = StyleSheet.create({
@@ -9,7 +11,13 @@ const styles = StyleSheet.create({
   }
 });
 
+type Props = {
+  style: any
+}
+
 class Separator extends PureComponent {
+
+  props: Props;
 
   render = () => <View style={[styles.separator, this.props.style]}/>
 }
