@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -20,7 +22,7 @@ import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { showBodyTypeModal, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import { formatInvitationMessage } from '../../lib/messages/index';
-import { getLooksById }from '../../utils/FeedUtils';
+import { getLooksById } from '../../utils/FeedUtils';
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
 
@@ -74,8 +76,10 @@ class TabContent extends BaseComponent {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.flatLooks !== this.props.flatLooks) {
-      console.log('bambambam1')
-      this.setState({ flatLooksLeft: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 0), flatLooksRight: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 1), loadingMore: false });
+      this.setState({
+        flatLooksLeft: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 0),
+        flatLooksRight: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 1),
+        loadingMore: false });
     }
 
     if (this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
@@ -164,10 +168,9 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
-  _renderLooks(looks) {
-    return _.map(looks, look => {
-     //console.log(`lookLike:`,look);
-      return (<MediaContainer
+  _renderLooks(looks: array) {
+    return _.map(looks, look => (
+      <MediaContainer
         look={look}
         currScroll={this.state.currentScrollPosition}
         navigateTo={this.props.navigateTo}
@@ -175,8 +178,8 @@ class TabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'}/>)
-    });
+        fromScreen={'Feedscreen'} />
+      ));
   }
 
   _renderLoadMore() {
