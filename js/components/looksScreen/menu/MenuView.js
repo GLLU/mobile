@@ -13,8 +13,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
     justifyContent: 'center',
-    paddingHorizontal: 30,
-    marginVertical: 25
+    flex:1,
+    flexDirection:'column',
+    paddingHorizontal: 30
   },
   thankYouContainer: {
     flex: 1,
@@ -127,7 +128,7 @@ class MenuView extends Component {
 
   render() {
     return (
-      <BottomHalfScreenModal {...this.props} style={{borderWidth: 5}}>
+      <BottomHalfScreenModal {...this.props} style={{borderWidth: 2}}>
         <HalfScreenModalHeader title={i18n.t('OPTIONS')} onCancelPress={this._onRequestClose}/>
         <View style={styles.container}>
           {this.props.isMyLook ? this.renderMyContent() : this.renderGeneralContent()}

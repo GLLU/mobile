@@ -135,7 +135,7 @@ class LookOverlay extends Component {
       likes={look.likes}
       comments={look.comments}
       onCommentsPress={this._toggleComments}
-      onNumberPress={() => this.goToLikes(look)}
+      onLikesPress={() => this.goToLikes(look)}
       onRequestClose={this._toggleInformation}
     />;
   }

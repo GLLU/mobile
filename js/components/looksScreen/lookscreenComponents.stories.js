@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
@@ -41,7 +43,19 @@ storiesOf('look screen components', module)
         backgroundColor: 'red', flex: 1,
         flexDirection: 'column'
       }}>
-        <InformationViewFooter likes={likes} comments={comments}/>
+        <InformationViewFooter likes={likes} comments={comments} onLikesPress={action('open-likes')} onCommentsPress={action('open-comments')}/>
+      </View>
+    )
+  }
+).add('Footer View without likes or comments', () => {
+    const likes = 0;
+    const comments = 0;
+    return (
+      <View style={{
+        backgroundColor: 'red', flex: 1,
+        flexDirection: 'column'
+      }}>
+        <InformationViewFooter likes={likes} comments={comments} onLikesPress={action('open-likes')} onCommentsPress={action('open-comments')}/>
       </View>
     )
   }
