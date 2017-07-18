@@ -116,14 +116,12 @@ class LooksScreen extends Component {
     }
   }
 
-  _toggleLike(shouldLiked: boolean) {
+  _toggleLike(shouldLiked: boolean, lookId: number) {
     this.props.logEvent('LookScreen', {name: 'Like click', liked: `${shouldLiked}`});
-    const {flatLook} = this.state;
-    const {id} = flatLook;
     if (shouldLiked) {
-      this.props.likeUpdate(id);
+      this.props.likeUpdate(lookId);
     } else {
-      this.props.unlikeUpdate(id);
+      this.props.unlikeUpdate(lookId);
     }
   }
 
@@ -275,7 +273,7 @@ class LooksScreen extends Component {
           goBack={this.props.goBack}
           goToProfile={this._goToProfile}
           goToEdit={this._goToEdit}
-          toggleLike={this._toggleLike}
+          toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
           openComments={openComments}
@@ -312,7 +310,7 @@ class LooksScreen extends Component {
             look={look}
             goBack={this.props.goBack}
             goToProfile={(look) => this._goToProfile(look)}
-            toggleLike={this._toggleLike}
+            toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
             isMenuOpen={this.state.isMenuOpen}
             openComments={openComments}
             onBottomDrawerOpen={this.onToggleDrawer}
