@@ -58,7 +58,9 @@ class LikeView extends Component {
   }
 
   render() {
+
     const {item} = this.props;
+
     const likeIconView = item.liked ? likedIcon : likeIcon;
     const likes = formatNumberAsString(item.likes);
     return (

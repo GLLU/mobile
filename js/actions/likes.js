@@ -1,6 +1,6 @@
+// @flow
+
 import rest from '../api/rest';
-import { normalizeLooksData } from './feed';
-import { unifyLooks } from '../utils/FeedUtils';
 
 // Actions
 export const SET_LOOK_LIKE_STATE = 'SET_LOOK_LIKE_STATE';
@@ -8,32 +8,20 @@ export const LOOK_UNLIKE = 'LOOK_UNLIKE';
 export const LOOK_LIKE = 'LOOK_LIKE';
 
 export function likeUpdate(id) {
-  return (dispatch, getState) => {
-    const looksData = getState().looks.flatLooksData
-    const lookToUpdate = looksData[id];
-    lookToUpdate.is_liked = true;
-    lookToUpdate.likes++;
-    console.log('lookToUpdate',lookToUpdate)
-    const unifiedLooks = unifyLooks(lookToUpdate, looksData)
-    console.log('unifiedLooks', unifiedLooks)
+  return (dispatch) => {
     dispatch({
       type: LOOK_LIKE,
-      flatLooksData: unifiedLooks,
+      lookId: id,
     });
     dispatch(like(id));
   };
 }
 
-export function unlikeUpdate(id) {
-  return (dispatch, getState) => {
-    const looksData = getState().looks.flatLooksData
-    const lookToUpdate = looksData[id];
-    lookToUpdate.is_liked = false;
-    lookToUpdate.likes--;
-    const unifiedLooks = unifyLooks(lookToUpdate, looksData)
+export function unlikeUpdate(id: number) {
+  return (dispatch) => {
     dispatch({
       type: LOOK_UNLIKE,
-      flatLooksData: unifiedLooks,
+      lookId: id,
     });
     dispatch(unlike(id));
   };

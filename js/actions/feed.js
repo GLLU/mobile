@@ -6,7 +6,6 @@ import { normalize, schema } from 'normalizr';
 import { unifyLooks } from '../utils/FeedUtils';
 
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
-export const SET_FLAT_LOOKS_FEED_DATA_QUEUE = 'SET_FLAT_LOOKS_FEED_DATA_QUEUE';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
 
@@ -29,10 +28,11 @@ export function getFeed(query, retryCount = 0) {
     });
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (!_.isEmpty(data)) {
-        const { looksIdsArray, looksData, meta } = data;
-        const normalizedLooksData = normalizeLooksData(looksData)
+        console.log('dataff',data)
+        const { looks, meta } = data;
+        const normalizedLooksData = normalizeLooksData(looks)
         dispatch(setLooksData({ flatLooksData: normalizedLooksData.entities.looks, query: newState }));
-        dispatch(setFeedData({ looksIdsArray, meta, query: newState }));
+        dispatch(setFeedData({ looksIdsArray: normalizedLooksData.result.looks, meta, query: newState }));
         dispatch(loadMore());
         Promise.resolve(data);
       } else if (retryCount < 5) {
@@ -47,10 +47,9 @@ export function getFeed(query, retryCount = 0) {
 }
 
 
-export function normalizeLooksData(looksData) {
-  console.log('looksData',looksData)
+export function normalizeLooksData(looks) {
   const newData = {}
-  newData.looks = looksData
+  newData.looks = looks
   const LooksData = new schema.Entity('looks');
   const mySchema = { looks: [LooksData] };
   const normalizedData = normalize(newData, mySchema);
@@ -74,16 +73,14 @@ export function loadMore(retryCount = 0) {
     const newState = _.merge(state.query, { page: { number: nextPageNumber } });
     const params = parseQueryFromState(newState);
     return new Promise((resolve, reject) => {
-      if (state.flatLooksDataQueue.length > 0 && currPage > 1) {
-        dispatch(setFeedData({ looksIdsArray: state.flatLooksDataQueue, meta: state.meta, query: newState }));
-      }
       return LooksService.getLooks(params).then((data) => {
         if (!_.isEmpty(data)) {
-          const { looksIdsArray, looksData, meta } = data;
-          const normalizedLooksData = normalizeLooksData(looksData, getState())
+          const { looks, meta } = data;
+          const normalizedLooksData = normalizeLooksData(looks)
           const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
-          //dispatch(setLooksData({ flatLooksData: unfiedLooks, query: newState }));
-          dispatch(setFeedDataQueue({ looksIdsArray, meta, query: newState }));
+          dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
+          const flatLooksData = state.flatLooksData.concat(normalizedLooksData.result.looks)
+          dispatch(setFeedData({ looksIdsArray: flatLooksData, meta, query: newState }));
           resolve(data.looks);
         } else if (retryCount < 5) {
           dispatch(loadMore(params, retryCount + 1));
@@ -111,9 +108,4 @@ export function setLooksData(data) {
   };
 }
 
-export function setFeedDataQueue(data) {
-  return {
-    type: SET_FLAT_LOOKS_FEED_DATA_QUEUE,
-    payload: data,
-  };
-}
+

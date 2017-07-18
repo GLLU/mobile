@@ -1,4 +1,4 @@
-import React,{PureComponent} from 'react';
+import React,{Component} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, TouchableHighlight, Image, View } from 'react-native';
 import LikeView from '../feedscreen/items/LikeView';
 import CommentsView from '../feedscreen/items/CommentsView';
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 const likeSentences = ["Wow, it will look amazing on you!", 'Nice Look, she looks poppy!', 'I liked it also, pretty nice!', 'That girl is on fire!', 'Very nice! can look perfect on you!']
 
-class MediaContainer extends PureComponent {
+class MediaContainer extends Component {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
@@ -74,7 +74,6 @@ class MediaContainer extends PureComponent {
       item.singleItem = true
     }
     let that = this
-    console.log('lookToNavigate',item)
     setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
   }
 
@@ -224,6 +223,6 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, bindActions)(withAnalytics(MediaContainer));

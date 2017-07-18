@@ -33,17 +33,25 @@ export default function (state = initialState, action) {
       };
     }
     case LOOK_LIKE: {
-      const { flatLooksData } = action;
+      const { lookId } = action;
+      const lookToUpdate = state.flatLooksData[lookId];
       return {
         ...state,
-        flatLooksData,
+        flatLooksData: {
+          ...state.flatLooksData,
+          [lookId]: { ...lookToUpdate, likes: lookToUpdate.likes + 1, liked: true },
+        },
       };
     }
     case LOOK_UNLIKE: {
-      const { flatLooksData } = action;
+      const { lookId } = action;
+      const lookToUpdate = state.flatLooksData[lookId];
       return {
         ...state,
-        flatLooksData,
+        flatLooksData: {
+          ...state.flatLooksData,
+          [lookId]: { ...lookToUpdate, likes: lookToUpdate.likes - 1, liked: false },
+        },
       };
     }
     default:

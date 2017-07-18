@@ -1,6 +1,6 @@
 
 
-export function generateFeedData(feedLooksIds: array, flatLooksData: object) {
+export function getLooksById(feedLooksIds: array, flatLooksData: object) {
   return _.map(feedLooksIds, (lookId, index) => {
     const look = flatLooksData[lookId];
     look.originalIndex = index;
@@ -8,13 +8,7 @@ export function generateFeedData(feedLooksIds: array, flatLooksData: object) {
   });
 }
 
-export function unifyLooks(look, stateLooksData) {
-  console.log('lookdd',look)
-  const lookId = `${look.id}`
-  console.log('stateLooksData',stateLooksData)
-  const tempObj = {[lookId]: look}
-  console.log('boom',tempObj)
-  const flatLooksData = { ...stateLooksData, [`${look.id}`]: look };
-  console.log('lookdd12',flatLooksData)
+export function unifyLooks(newLooksData, stateLooksData) {
+  const flatLooksData = { ...stateLooksData, ...newLooksData };
   return flatLooksData;
 }

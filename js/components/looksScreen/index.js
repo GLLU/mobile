@@ -22,7 +22,7 @@ import ImageWrapper from '../common/media/ImageWrapper';
 import asScreen from '../common/containers/Screen';
 import Spinner from '../loaders/Spinner';
 import { editNewLook } from '../../actions/uploadLook';
-import { generateFeedData }from '../../utils/FeedUtils';
+import { getLooksById }from '../../utils/FeedUtils';
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
 
@@ -415,7 +415,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = (state) => {
-  const flatLooksFeedData = generateFeedData(state.feed.flatLooksData, state.looks.flatLooksData);
+  const flatLooksFeedData = getLooksById(state.feed.flatLooksData, state.looks.flatLooksData);
 
   return {
     isLoading: state.loader.loading,

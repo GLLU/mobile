@@ -11,7 +11,7 @@ const getCoverByMediaType = (type, coverList) => {
   return cover;
 };
 
-export function map(look) {
+export function serializeLook(look) {
   const cover = getCoverByMediaType(look.cover.type,look.cover.list);
   return {
     liked: look.is_liked,
@@ -26,4 +26,6 @@ export function map(look) {
   }
 }
 
-
+export function serializeLooks(looks) {
+  return _.map(looks, look => serializeLook(look));
+}
