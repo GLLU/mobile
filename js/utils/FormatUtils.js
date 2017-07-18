@@ -9,11 +9,11 @@ export const format_number = (value) => Math.round(value * 100) / 100;
 
 const formatNumberAsStringConfig=[
   {
-    length:7,
+    length:6,
     suffix:'M'
   },
   {
-    length:4,
+    length:3,
     suffix:'K'
   }
 ];
@@ -24,5 +24,5 @@ export const formatNumberAsString = (value,config=formatNumberAsStringConfig) =>
     .filter(entry=>stringValue.length > entry.length)
     .maxBy(entry=>entry.length)
     .value();
-  return entry ? Math.floor(value / Math.pow(10, entry.length - 1)) + entry.suffix : stringValue;
-}
+  return entry ? Math.floor(value / Math.pow(10, entry.length)) + entry.suffix : stringValue;
+};

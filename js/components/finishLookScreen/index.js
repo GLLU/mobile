@@ -65,13 +65,13 @@ class FinishLookPage extends Component {
 
   handleFacebookPress() {
     this.props.logEvent('FinishLookScreen', { name: 'Facebook Share click' });
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const message=SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.facebookShare(message);
   }
 
   handleOthersPress() {
     this.props.logEvent('FinishLookScreen', { name: 'Other Share click' });
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const message=SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
@@ -180,7 +180,6 @@ const mapStateToProps = state => {
     lookId,
     image,
     items,
-    shareToken: state.user.invitation_share_token
   };
 };
 

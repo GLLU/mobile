@@ -6,7 +6,6 @@ import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
-import ActivationCodeScreen from './components/activationCodeScreen';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import LooksScreen from './components/looksScreen';
@@ -20,6 +19,7 @@ import FinishLookScreen from './components/finishLookScreen';
 import TutorialScreen from './components/tutorialScreen'
 import BadNavigationScreen from './components/badNavigationScreen'
 import likesScreen from './components/likesScreen'
+import BlockedUsersScreen from './components/blockedUsersScreen'
 
 const stackNavigatorConfig = {
   initialRouteName: 'splashscreen',
@@ -30,9 +30,6 @@ const stackNavigatorConfig = {
 const routes = {
   splashscreen: {
     screen: SplashPage,
-  },
-  activationcode: {
-    screen: ActivationCodeScreen,
   },
   signupemail: {
     screen: SignUpPage,
@@ -81,6 +78,9 @@ const routes = {
   },
   settingsScreen: {
     screen: SettingsScreen
+  },
+  blockedUsersScreen: {
+    screen: BlockedUsersScreen
   },
   editProfileScreen: {
     screen: EditProfile,

@@ -16,7 +16,7 @@ import { changeUserAvatar } from '../../actions/user';
 import ProfileAvatar from '../common/avatars/ProfileAvatar'
 import SolidButton from '../common/buttons/SolidButton'
 import { openCamera } from '../../lib/camera/CameraUtils'
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 import Spinner from '../loaders/Spinner'
 import { formatAvatar } from "../../utils/UploadUtils";
 
@@ -188,7 +188,7 @@ class SignUpPage extends Component {
           <Image source={background} style={styles.shadow} blurRadius={5}>
             <Image source={backgroundShadow} style={styles.bgShadow} />
             <Header title='Sign Up' goBack={this.props.goBack}/>
-            <Content scrollEnabled={false}>
+            <Content scrollEnabled={true}>
 
               <View style={styles.uploadImgContainer}>
                 <View style={{height: 100, width: 100, borderRadius:50}}>

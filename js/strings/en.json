@@ -1,0 +1,19 @@
+{
+  "INVALID_LOGIN": "Email/Password are incorrect",
+  "INFORMATION": "Information",
+  "BLOCK": "Block",
+  "UNBLOCK": "Unblock",
+  "SHARE": "Share",
+  "EDIT": "Edit",
+  "OPTIONS": "Options",
+  "DELETE": "Delete",
+  "WISHLIST": "Add To Wishlist",
+  "REPORT": "Report",
+  "REPORT_TEXT":"Thank you for making inFash better! we'll examine your report and will be in touch with you over email.",
+  "BLOCK_TEXT":"You will not see any activity from this user anymore.",
+  "BLOCK_ARE_YOU_SURE":"Are you sure you want to block this user?",
+  "EMPTY_BLOCKED_USERS":"You haven't blocked anyone yet.",
+  "NO":"No",
+  "YES":"Yes",
+
+}
