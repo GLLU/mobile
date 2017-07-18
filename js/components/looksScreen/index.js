@@ -268,6 +268,7 @@ class LooksScreen extends Component {
         />
         <LookOverlay
           width={width}
+          shouldShowLike={this.state.showAsFeed}
           height={height}
           look={look}
           goBack={this.props.goBack}
@@ -306,6 +307,7 @@ class LooksScreen extends Component {
           navigation={this.props.cardNavigation}>
           <LookOverlay
             width={width}
+            shouldShowLike={this.state.showAsFeed}
             height={height}
             look={look}
             goBack={this.props.goBack}
