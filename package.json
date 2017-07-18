@@ -12,7 +12,9 @@
     "pack-android": "npm run bundle-android && npm run gradle-build",
     "run-android": "react-native run-android",
     "run-ios": "react-native run-ios --scheme infash-debug",
-    "storybook": "storybook start -p 7007"
+    "storybook": "storybook start -p 7007",
+    "code-push-ios":"code-push release-react infash ios --plistFile \"ios/gllu/Info.plist\" --outputDir ./sourceMap/ios",
+    "code-push-android":"code-push release-react infash android --outputDir ./sourceMap/android"
   },
   "dependencies": {
     "axios": "^0.16.2",
