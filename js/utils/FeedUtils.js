@@ -10,9 +10,11 @@ export function generateFeedData(feedLooksIds: array, flatLooksData: object) {
 
 export function unifyLooks(look, stateLooksData) {
   console.log('lookdd',look)
-  const lookId = look.id
-  console.log('lookId',lookId)
-  const flatLooksData = { ...stateLooksData, [lookId]: look };
-  console.log('lookdd',flatLooksData)
+  const lookId = `${look.id}`
+  console.log('stateLooksData',stateLooksData)
+  const tempObj = {[lookId]: look}
+  console.log('boom',tempObj)
+  const flatLooksData = { ...stateLooksData, [`${look.id}`]: look };
+  console.log('lookdd12',flatLooksData)
   return flatLooksData;
 }

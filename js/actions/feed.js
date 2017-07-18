@@ -82,7 +82,7 @@ export function loadMore(retryCount = 0) {
           const { looksIdsArray, looksData, meta } = data;
           const normalizedLooksData = normalizeLooksData(looksData, getState())
           const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
-          dispatch(setLooksData({ flatLooksData: unfiedLooks, query: newState }));
+          //dispatch(setLooksData({ flatLooksData: unfiedLooks, query: newState }));
           dispatch(setFeedDataQueue({ looksIdsArray, meta, query: newState }));
           resolve(data.looks);
         } else if (retryCount < 5) {

@@ -11,7 +11,7 @@ export function likeUpdate(id) {
   return (dispatch, getState) => {
     const looksData = getState().looks.flatLooksData
     const lookToUpdate = looksData[id];
-    lookToUpdate.liked = true;
+    lookToUpdate.is_liked = true;
     lookToUpdate.likes++;
     console.log('lookToUpdate',lookToUpdate)
     const unifiedLooks = unifyLooks(lookToUpdate, looksData)
@@ -28,7 +28,7 @@ export function unlikeUpdate(id) {
   return (dispatch, getState) => {
     const looksData = getState().looks.flatLooksData
     const lookToUpdate = looksData[id];
-    lookToUpdate.liked = false;
+    lookToUpdate.is_liked = false;
     lookToUpdate.likes--;
     const unifiedLooks = unifyLooks(lookToUpdate, looksData)
     dispatch({
