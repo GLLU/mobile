@@ -1,4 +1,4 @@
-
+// @flow
 
 export function getLooksById(feedLooksIds: array, flatLooksData: object) {
   return _.map(feedLooksIds, (lookId, index) => {

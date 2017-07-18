@@ -1,7 +1,7 @@
+// @flow
+
 import _ from 'lodash';
-import rest from '../api/rest';
 import LooksService from '../services/looksService';
-import i18n from 'react-native-i18n';
 import { normalize, schema } from 'normalizr';
 import { unifyLooks } from '../utils/FeedUtils';
 
@@ -19,7 +19,7 @@ const parseQueryFromState = function (state) {
 };
 
 export function getFeed(query, retryCount = 0) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const newState = Object.assign({}, query, {
       page: {
         size: 10,
@@ -28,11 +28,10 @@ export function getFeed(query, retryCount = 0) {
     });
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (!_.isEmpty(data)) {
-        console.log('dataff',data)
         const { looks, meta } = data;
         const normalizedLooksData = normalizeLooksData(looks)
         dispatch(setLooksData({ flatLooksData: normalizedLooksData.entities.looks, query: newState }));
-        dispatch(setFeedData({ looksIdsArray: normalizedLooksData.result.looks, meta, query: newState }));
+        dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result.looks, meta, query: newState }));
         dispatch(loadMore());
         Promise.resolve(data);
       } else if (retryCount < 5) {
@@ -79,8 +78,8 @@ export function loadMore(retryCount = 0) {
           const normalizedLooksData = normalizeLooksData(looks)
           const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
           dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-          const flatLooksData = state.flatLooksData.concat(normalizedLooksData.result.looks)
-          dispatch(setFeedData({ looksIdsArray: flatLooksData, meta, query: newState }));
+          const flatLooksIdData = state.flatLooksData.concat(normalizedLooksData.result.looks)
+          dispatch(setFeedData({ flatLooksIdData, meta, query: newState }));
           resolve(data.looks);
         } else if (retryCount < 5) {
           dispatch(loadMore(params, retryCount + 1));
@@ -94,14 +93,14 @@ export function loadMore(retryCount = 0) {
   };
 }
 
-export function setFeedData(data) {
+export function setFeedData(data: object) {
   return {
     type: SET_FLAT_LOOKS_FEED_DATA,
     payload: data,
   };
 }
 
-export function setLooksData(data) {
+export function setLooksData(data: object) {
   return {
     type: SET_FLAT_LOOKS_DATA,
     payload: data,

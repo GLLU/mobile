@@ -415,7 +415,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = (state) => {
-  const flatLooksFeedData = getLooksById(state.feed.flatLooksData, state.looks.flatLooksData);
+  const flatLooksFeedData = getLooksById(state.feed.flatLooksIdData, state.looks.flatLooksData);
 
   return {
     isLoading: state.loader.loading,

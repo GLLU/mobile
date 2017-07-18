@@ -24,10 +24,10 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_FLAT_LOOKS_FEED_DATA: {
-      const { query, meta, looksIdsArray } = action.payload
+      const { query, meta, flatLooksIdData } = action.payload
       return {
         ...state,
-        flatLooksData: looksIdsArray,
+        flatLooksIdData,
         meta,
         query,
       };
@@ -41,18 +41,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ...action.payload.user,
-      };
-    }
-    case ADD_LOOK_COMMENT: {
-      const { look_id } = action.payload;
-      return {
-        ...state,
-        flatLooksData: _.map(state.flatLooksData || [], (look) => {
-          if (look.id === look_id) {
-            look.comments += 1;
-          }
-          return look;
-        }),
       };
     }
     default:

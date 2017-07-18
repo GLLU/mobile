@@ -22,14 +22,13 @@ export default function (state = initialState, action) {
     }
     case ADD_LOOK_COMMENT: {
       const { look_id } = action.payload;
+      const lookToUpdate = state.flatLooksData[look_id];
       return {
         ...state,
-        flatLooksData: _.map(state.flatLooksData || [], (look) => {
-          if (look.id === look_id) {
-            look.comments += 1;
-          }
-          return look;
-        }),
+        flatLooksData: {
+          ...state.flatLooksData,
+          [look_id]: { ...lookToUpdate, comments: lookToUpdate.comments + 1 },
+        },
       };
     }
     case LOOK_LIKE: {
