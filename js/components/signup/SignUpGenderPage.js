@@ -4,7 +4,7 @@ import { Container, Content, StyleProvider, getTheme } from 'native-base';
 import asScreen from '../common/containers/Screen'
 import styles from './styles'
 import glluTheme from '../../themes/gllu-theme';
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 
 const background = require('../../../images/backgrounds/man-female_screen2.png');
 

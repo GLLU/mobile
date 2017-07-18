@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet, Alert, Linking, Text, View, Image, FlatList, TouchableOpacity,
 } from 'react-native';
@@ -15,7 +15,7 @@ import {
 } from '../../constants';
 import { formatInvitationMessage } from "../../lib/messages/index";
 import asScreen from "../common/containers/Screen"
-import Header from "../common/containers/ModalHeader";
+import Header from "../common/headers/ModalHeader";
 import FullscreenView from "../common/containers/FullscreenView";
 
 const styles = StyleSheet.create({
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'transparent',
-    flex:1,
-    flexDirection:'row',
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center'
   },
   headerTitle: {
@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   listItem: {
-    flexDirection:'row',
-    height:60,
-    alignItems:'center',
-    paddingLeft:10
+    flexDirection: 'row',
+    height: 60,
+    alignItems: 'center',
+    paddingLeft: 10
   },
   listItemThumbnail: {
     marginHorizontal: 10,
@@ -67,70 +67,84 @@ const iconPrivacy = require('../../../images/icons/privacy.png');
 const iconCopyright = require('../../../images/icons/copyright.png');
 const iconLogout = require('../../../images/icons/logout.png');
 const iconRateUs = require('../../../images/icons/rate_us.png');
+const iconBlockedUsers = require('../../../images/icons/blocked-users-green.png');
 
 class SettingsScreen extends Component {
   static propTypes = {
     navigation: React.PropTypes.object,
     back: React.PropTypes.func,
   };
+
   constructor(props) {
     super(props);
-    this.renderListItem=this.renderListItem.bind(this);
-    this.getSettingsConfiguration=this.getSettingsConfiguration.bind(this);
-    this.state={
-      settings:this.getSettingsConfiguration()
+    this.renderListItem = this.renderListItem.bind(this);
+    this.getSettingsConfiguration = this.getSettingsConfiguration.bind(this);
+    this._navigateToBlockedUsers = this._navigateToBlockedUsers.bind(this);
+    this.state = {
+      settings: this.getSettingsConfiguration()
     }
   }
 
-  getSettingsConfiguration(){
+  getSettingsConfiguration() {
     return [
       {
-        text:'Invite your Friends',
-        icon:iconShare,
-        onPress:this._onInviteFriendsClick.bind(this)
+        text: 'Invite your Friends',
+        icon: iconShare,
+        onPress: this._onInviteFriendsClick.bind(this)
       },
       {
-        text:'Contact Us',
-        icon:iconContact,
-        onPress:this.handleOpenLink.bind(this, EMAIL_URL, 'email')
+        text: 'Contact Us',
+        icon: iconContact,
+        onPress: this.handleOpenLink.bind(this, EMAIL_URL, 'email')
       },
       {
-        text:'Terms of Service',
-        icon:iconTerms,
-        onPress:this.handleOpenLink.bind(this, TERMS_URL)
+        text: 'Terms of Service',
+        icon: iconTerms,
+        onPress: this.handleOpenLink.bind(this, TERMS_URL)
       },
       {
-        text:'Privacy Policy',
-        icon:iconPrivacy,
-        onPress:this.handleOpenLink.bind(this, PRIVACY_URL)
+        text: 'Privacy Policy',
+        icon: iconPrivacy,
+        onPress: this.handleOpenLink.bind(this, PRIVACY_URL)
       },
       {
-        text:'Copyrights',
-        icon:iconCopyright,
-        onPress:this.handleOpenLink.bind(this, COPYRIGHT_URL)
+        text: 'Copyrights',
+        icon: iconCopyright,
+        onPress: this.handleOpenLink.bind(this, COPYRIGHT_URL)
       },
       {
-        text:'Rate Us',
-        icon:iconRateUs,
-        onPress:this.handleOpenLink.bind(this, RATE_US_URL)
+        text: 'Rate Us',
+        icon: iconRateUs,
+        onPress: this.handleOpenLink.bind(this, RATE_US_URL)
       },
       {
-        text:'Log Out',
-        icon:iconLogout,
-        onPress:this.handleLogout.bind(this)
+        text: 'Blocked Users',
+        icon: iconBlockedUsers,
+        onPress: this._navigateToBlockedUsers
+      },
+      {
+        text: 'Log Out',
+        icon: iconLogout,
+        onPress: this.handleLogout.bind(this)
       },
 
     ]
   }
 
+  _navigateToBlockedUsers() {
+    const {logEvent, navigateTo} = this.props;
+    logEvent('SettingsScreen', {name: 'Blocked Users click'});
+    navigateTo('blockedUsersScreen')
+  }
+
   _onInviteFriendsClick() {
     this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
-    const message=SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
+    const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
   handleOpenLink(url, type = 'link') {
-    this.props.logEvent('SettingsScreen', { name: 'Link click', url });
+    this.props.logEvent('SettingsScreen', {name: 'Link click', url});
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -155,17 +169,17 @@ class SettingsScreen extends Component {
   }
 
   handleLogout() {
-    this.props.logEvent('SettingsScreen', { name: 'Logout click' });
+    this.props.logEvent('SettingsScreen', {name: 'Logout click'});
     this.props.logout()
-      .then(()=>this.props.resetTo('splashscreen'))
-      .catch((err)=>console.log(err));
+      .then(() => this.props.resetTo('splashscreen'))
+      .catch((err) => console.log(err));
   }
 
-  renderListItem({item}){
-    return(
+  renderListItem({item}) {
+    return (
       <TouchableOpacity onPress={item.onPress}>
         <View style={styles.listItem}>
-          <Image style={styles.listItemThumbnail} small square source={item.icon} />
+          <Image style={styles.listItemThumbnail} small square source={item.icon}/>
           <Text style={styles.listItemText}>{item.text}</Text>
         </View>
       </TouchableOpacity>
@@ -193,9 +207,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
-  return {
-    shareToken: state.user.invitation_share_token
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, bindAction)(asScreen(SettingsScreen));

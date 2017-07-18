@@ -18,6 +18,7 @@ import notifications from './notifications';
 import paris from './paris';
 import lookLikes from './lookLikes';
 import looks from './looks';
+import blockedUsers from './blockedUsers';
 
 export default combineReducers({
   loader,
@@ -39,4 +40,5 @@ export default combineReducers({
   paris,
   lookLikes,
   looks,
+  blockedUsers
 });
