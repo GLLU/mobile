@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 
+import { formatNumberAsString } from '../../utils/FormatUtils';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 
@@ -22,7 +23,7 @@ class ProfileScreenStat extends Component {
 
       <TouchableOpacity onPress={onClick}>
         <View style={{ alignItems: 'center' }}>
-          {number >= 0 ? <Text style={styles.number}>{String(number)}</Text> :
+          {number >= 0 ? <Text style={styles.number}>{formatNumberAsString(number)}</Text> :
           <ActivityIndicator animating style={{ height: 50 }} color={Colors.highlightColor} />}
           <Text style={styles.text}>{title}</Text>
         </View>

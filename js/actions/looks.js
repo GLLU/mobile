@@ -48,11 +48,13 @@ export function loadMoreUserLooks(looksCall, retryCount = 0) {
     return new Promise((resolve, reject) => {
       if(state.userLooksDataQueue.length > 0 && currPage > 1) {
         const data = {looks: state.userLooksDataQueue, meta: state.meta}
+        console.log('user looks', data);
         dispatch(setUserLooks({data, query: newState, loadMore: true}));
       }
       return dispatch(rest.actions.user_looks(newState, (err, data) => {
         if (!err && !_.isEmpty(data)) {
           data.currId = looksCall.id;
+          console.log('user looks data  queue', data);
           dispatch(setUserLooksDataQueue({data, query, loadMore: true}));
           resolve(data.looks);
         } else {

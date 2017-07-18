@@ -39,7 +39,7 @@ export default function (state = initialState, action) {
         userLooksData,
         meta,
         query,
-        currId: action.payload.data.currId
+        currId:  action.payload.loadMore ? state.currId : action.payload.data.currId
       };
     case SET_USER_LOOKS_FEED_DATA_QUEUE:
       meta = _.merge(state.meta, action.payload.data.meta);
@@ -51,7 +51,7 @@ export default function (state = initialState, action) {
         userLooksDataQueue: newData,
         meta,
         query,
-        currId: action.payload.data.currId
+        currId: action.payload.loadMore ? state.currId : action.payload.data.currId
       };
 
     case SET_USER_LOOKS_DATA:

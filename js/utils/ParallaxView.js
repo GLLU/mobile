@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-    Animated,
-    Dimensions,
-    ScrollView,
-    View,
+  Animated,
+  Dimensions,
+  ScrollView,
+  View,
 } from 'react-native';
 
 const { bool, func, number, string } = React.PropTypes;
@@ -66,24 +66,25 @@ class ParallaxView extends Component {
 
   render() {
     const {
-            backgroundColor,
-            backgroundScrollSpeed,
-            children,
-            contentBackgroundColor,
-            fadeOutForeground,
-            fadeOutBackground,
-            parallaxHeaderHeight,
-            renderBackground,
-            renderFixedHeader,
-            renderForeground,
-            renderParallaxHeader,
-            renderScrollComponent,
-            renderStickyHeader,
-            stickyHeaderHeight,
-            style,
-            contentContainerStyle,
-            ...scrollViewProps
-        } = this.props;
+      backgroundColor,
+      backgroundScrollSpeed,
+      children,
+      contentBackgroundColor,
+      fadeOutForeground,
+      fadeOutBackground,
+      parallaxHeaderHeight,
+      renderBackground,
+      renderFixedHeader,
+      renderForeground,
+      renderParallaxHeader,
+      onScroll,
+      renderScrollComponent,
+      renderStickyHeader,
+      stickyHeaderHeight,
+      style,
+      contentContainerStyle,
+      ...scrollViewProps
+    } = this.props;
 
     const background = this._renderBackground({
       fadeOutBackground,
@@ -120,25 +121,25 @@ class ParallaxView extends Component {
         onLayout={e => this._maybeUpdateViewDimensions(e)}>
         { background }
         {
-                    React.cloneElement(scrollElement, {
-                      ref: SCROLLVIEW_REF,
-                      style: [styles.scrollView, scrollElement.props.style],
-                      scrollEventThrottle: 16,
-                      onScroll: this._onScroll.bind(this),
-                    },
-                        foreground,
-                        bodyComponent,
-                        footerSpacer,
-                    )
-                }
+          React.cloneElement(scrollElement, {
+              ref: SCROLLVIEW_REF,
+              style: [styles.scrollView, scrollElement.props.style],
+              scrollEventThrottle: 16,
+              onScroll: this._onScroll.bind(this),
+            },
+            foreground,
+            bodyComponent,
+            footerSpacer,
+          )
+        }
         { maybeStickyHeader }
       </View>
     );
   }
 
-    /*
-     * Expose `ScrollView` API so this component is composable with any component that expects a `ScrollView`.
-     */
+  /*
+   * Expose `ScrollView` API so this component is composable with any component that expects a `ScrollView`.
+   */
   getScrollResponder() {
     return this.refs[SCROLLVIEW_REF].getScrollResponder();
   }
@@ -159,18 +160,18 @@ class ParallaxView extends Component {
     this.refs[SCROLLVIEW_REF].setNativeProps(props);
   }
 
-    /*
-     * Private helpers
-     */
+  /*
+   * Private helpers
+   */
 
   _onScroll(e) {
     const {
-            parallaxHeaderHeight,
-            stickyHeaderHeight,
-            onChangeHeaderVisibility,
-            onScroll: prevOnScroll = () => {
-            },
-        } = this.props;
+      parallaxHeaderHeight,
+      stickyHeaderHeight,
+      onChangeHeaderVisibility,
+      onScroll: prevOnScroll = () => {
+      },
+    } = this.props;
 
     const p = pivotPoint(parallaxHeaderHeight, stickyHeaderHeight);
 
@@ -185,8 +186,8 @@ class ParallaxView extends Component {
     prevOnScroll(e);
   }
 
-    // This optimizes the state update of current scrollY since we don't need to
-    // perform any updates when user has scrolled past the pivot point.
+  // This optimizes the state update of current scrollY since we don't need to
+  // perform any updates when user has scrolled past the pivot point.
   _maybeUpdateScrollPosition(e) {
     const { parallaxHeaderHeight, stickyHeaderHeight } = this.props;
     const { scrollY } = this.state;
@@ -298,7 +299,7 @@ class ParallaxView extends Component {
 
   _renderFooterSpacer({ contentBackgroundColor }) {
     return (
-      <View ref={ref => this._footerComponent = ref} style={{ backgroundColor: contentBackgroundColor }} />
+      <View ref={ref => this._footerComponent = ref} style={{ backgroundColor: contentBackgroundColor }}/>
     );
   }
 
@@ -310,34 +311,34 @@ class ParallaxView extends Component {
         <View
           style={[styles.stickyHeader, { width: viewWidth, ...(stickyHeaderHeight ? { height: stickyHeaderHeight } : null) }]}>
           {
-                        renderStickyHeader
-                            ? (
-                              <Animated.View
-                                style={{
-                                  backgroundColor,
-                                  height: stickyHeaderHeight,
-                                  opacity: interpolate(scrollY, {
-                                    inputRange: [0, p],
-                                    outputRange: [0, 1],
-                                    extrapolate: 'clamp',
-                                  }),
-                                }}>
-                                <Animated.View
-                                  style={{
-                                    transform: [{
-                                      translateY: interpolate(scrollY, {
-                                        inputRange: [0, p],
-                                        outputRange: [stickyHeaderHeight, 0],
-                                        extrapolate: 'clamp',
-                                      }),
-                                    }],
-                                  }}>
-                                  { renderStickyHeader() }
-                                </Animated.View>
-                              </Animated.View>
-                            )
-                            : null
-                    }
+            renderStickyHeader
+              ? (
+              <Animated.View
+                style={{
+                  backgroundColor,
+                  height: stickyHeaderHeight,
+                  opacity: interpolate(scrollY, {
+                    inputRange: [0, p],
+                    outputRange: [0, 1],
+                    extrapolate: 'clamp',
+                  }),
+                }}>
+                <Animated.View
+                  style={{
+                    transform: [{
+                      translateY: interpolate(scrollY, {
+                        inputRange: [0, p],
+                        outputRange: [stickyHeaderHeight, 0],
+                        extrapolate: 'clamp',
+                      }),
+                    }],
+                  }}>
+                  { renderStickyHeader() }
+                </Animated.View>
+              </Animated.View>
+            )
+              : null
+          }
           { renderFixedHeader && renderFixedHeader() }
         </View>
       );

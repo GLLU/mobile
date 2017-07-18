@@ -9,7 +9,7 @@ configure(() => {
   require('./stories');
 }, module);
 
-const StorybookUI = getStorybookUI({ port: 7007, host: '192.168.0.25' });
+const StorybookUI = getStorybookUI({ port: 7007, host: '192.168.1.23' });
 const appRegistryName = Platform.OS === 'ios' ? 'gllu' : 'infash'
 AppRegistry.registerComponent(appRegistryName, () => StorybookUI);
 export default StorybookUI;
