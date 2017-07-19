@@ -21,8 +21,11 @@ export function serializeLook(look) {
     height: cover ? cover.height : null,
     coverType: look.cover.type,
     preview: look.cover.thumbnail_url || '',
+    likes: look.likes,
+    comments: look.comments,
+    id: look.id,
+    items: look.items,
     ...userMapper.map(look.user),
-    ...look,
   }
 }
 

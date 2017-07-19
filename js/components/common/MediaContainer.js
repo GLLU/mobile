@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, TouchableHighlight, Image, View } from 'react-native';
 import LikeView from '../feedscreen/items/LikeView';
-import CommentsView from '../feedscreen/items/CommentsView';
+import FeedCommentsView from '../feedscreen/items/FeedCommentsView';
 import VolumeButton from './VolumeButton';
 import Utils from '../../utils';
 import VideoWithCaching from "./media/VideoWithCaching";
@@ -194,7 +194,7 @@ class MediaContainer extends Component {
             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.goToProfile()}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{userName}</Text>
             </TouchableOpacity>
-            <CommentsView item={look} onPress={this._handleCommentPress} lookId={look.id}/>
+            <FeedCommentsView comments={look.comments} onPress={this._handleCommentPress} lookId={look.id}/>
           </View>
         </View>
       )

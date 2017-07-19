@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { StyleSheet, Image, Platform, View, Text, TouchableWithoutFeedback } from 'react-native';
+import { formatNumberAsString } from "../../../utils/FormatUtils";
 
 const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
 
@@ -28,12 +29,11 @@ const styles = StyleSheet.create({
   },
 });
 
-class CommentsView extends PureComponent {
+class FeedCommentsView extends PureComponent {
 
   static propTypes = {
-    item: React.PropTypes.object,
+    comments: React.PropTypes.number,
     onPress: React.PropTypes.func,
-    onLikesNumberPress: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -50,7 +50,7 @@ class CommentsView extends PureComponent {
     return comments;
   }
 
-  renderCommentsAmount(comments) {
+  renderCommentsAmount(comments: string) {
     return (
       <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', marginLeft: 3 }}>
         <View>
@@ -61,11 +61,11 @@ class CommentsView extends PureComponent {
   }
 
   render() {
-    const { comments } = this.props.item;
-    const commentsAmount = this.getCommentsAmountStringFeedView(comments);
+    const { comments, onPress } = this.props;
+    const commentsAmount = formatNumberAsString(comments);
     return (
       <View style={[styles.likeContainer]}>
-        <TouchableWithoutFeedback transparent onPress={() => this.props.onPress()} style={styles.btnWithImage}>
+        <TouchableWithoutFeedback transparent onPress={onPress} style={styles.btnWithImage}>
           <View style={{ flex: 1, flexDirection: 'row', alignSelf: 'flex-end', justifyContent: 'space-between', marginRight: 5 }}>
             <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <Image source={bubbleIcon} style={styles.iconBubbleWithImage} />
@@ -78,5 +78,5 @@ class CommentsView extends PureComponent {
   }
 }
 
-export default CommentsView;
+export default FeedCommentsView;
 
