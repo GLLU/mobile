@@ -29,7 +29,7 @@ export function getFeed(query, retryCount = 0) {
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (data) {
         const { looks, meta } = data;
-        const normalizedLooksData = normalize(looks, [ lookSchema] );
+        const normalizedLooksData = normalize(looks, [lookSchema]);
         dispatch(setLooksData({ flatLooksData: normalizedLooksData.entities.looks, query: newState }));
         dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState }));
         dispatch(loadMore());
@@ -68,7 +68,7 @@ export function loadMore(retryCount = 0) {
           const normalizedLooksData = normalize(looks, [ lookSchema] );
           const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
           dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-          const flatLooksIdData = state.flatLooksData.concat(normalizedLooksData.result)
+          const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result)
           dispatch(setFeedData({ flatLooksIdData, meta, query: newState }));
           resolve(data.looks);
         } else if (retryCount < 5) {
