@@ -29,5 +29,5 @@ export const formatNumberAsString = (value: number,config=formatNumberAsStringCo
     .filter(entry=>stringValue.length > entry.length)
     .maxBy(entry=>entry.length)
     .value();
-  return entry ? Math.round(value / Math.pow(10, entry.length)) + entry.suffix : stringValue;
+  return entry ? Math.floor(value / Math.pow(10, entry.length)) + entry.suffix : stringValue;
 };
