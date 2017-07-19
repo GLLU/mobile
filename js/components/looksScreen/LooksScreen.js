@@ -14,7 +14,6 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
-import { likeUpdate, unlikeUpdate, loadMore, getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
@@ -24,7 +23,6 @@ import ImageWrapper from '../common/media/ImageWrapper';
 import asScreen from '../common/containers/Screen';
 import Spinner from '../loaders/Spinner';
 import { editNewLook } from '../../actions/uploadLook';
-import { getLooksById }from '../../utils/FeedUtils';
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
 
@@ -409,28 +407,4 @@ class LooksScreen extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    editNewLook: id => dispatch(editNewLook(id)),
-    likeUpdate: id => dispatch(likeUpdate(id)),
-    unlikeUpdate: id => dispatch(unlikeUpdate(id)),
-    getLookLikes: id => dispatch(getLookLikes(id)),
-    reportAbuse: lookId => dispatch(reportAbuse(lookId)),
-    loadMore: () => dispatch(loadMore()),
-  };
-}
-
-const mapStateToProps = (state) => {
-  const flatLooksFeedData = getLooksById(state.feed.flatLooksIdData, state.looks.flatLooksData);
-
-  return {
-    isLoading: state.loader.loading,
-    flatLooksData: flatLooksFeedData,
-    meta: state.feed.meta,
-    query: state.feed.query,
-    userLooks: state.userLooks.userLooksData,
-    cardNavigation: state.cardNavigation
-  };
-};
-
-export default connect(mapStateToProps, bindAction)(asScreen(LooksScreen));
+export default LooksScreen;

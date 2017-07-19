@@ -8,7 +8,7 @@ import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
-import LooksScreen from './components/looksScreen';
+import LooksScreen from './components/looksScreen/LooksSreenContainer';
 import ProfileScreen from './components/profileScreen';
 import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
