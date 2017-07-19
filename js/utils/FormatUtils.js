@@ -1,3 +1,5 @@
+// @flow
+
 import * as selfRef from './FormatUtils'
 import * as _ from "lodash";
 
@@ -18,11 +20,14 @@ const formatNumberAsStringConfig=[
   }
 ];
 
-export const formatNumberAsString = (value,config=formatNumberAsStringConfig) => {
+export const formatNumberAsString = (value: number,config=formatNumberAsStringConfig) => {
+  if(!value || value < 0){
+    return '0';
+  }
   const stringValue = value.toString();
   const entry=_.chain(config)
     .filter(entry=>stringValue.length > entry.length)
     .maxBy(entry=>entry.length)
     .value();
-  return entry ? Math.floor(value / Math.pow(10, entry.length)) + entry.suffix : stringValue;
+  return entry ? Math.round(value / Math.pow(10, entry.length)) + entry.suffix : stringValue;
 };

@@ -4,6 +4,38 @@ import { formatNumberAsString } from '../FormatUtils';
 
 describe('fomatNumberAsString util', () => {
 
+  test('null', () => {
+    expect(formatNumberAsString(null)).toBe('0');
+  });
+
+  test('undefined', () => {
+    expect(formatNumberAsString(undefined)).toBe('0');
+  });
+
+  test('empty string', () => {
+    expect(formatNumberAsString('')).toBe('0');
+  });
+
+  test('negative one digit number', () => {
+    expect(formatNumberAsString(-1)).toBe('0');
+  });
+
+  test('negative 4 digit number', () => {
+    expect(formatNumberAsString(-1440)).toBe('0');
+  });
+
+  test('negative 5 digit number', () => {
+    expect(formatNumberAsString(-18750)).toBe('0');
+  });
+
+  test('negative 6 digit number', () => {
+    expect(formatNumberAsString(-321897)).toBe('0');
+  });
+
+  test('negative 7 digit number', () => {
+    expect(formatNumberAsString(-6530289)).toBe('0');
+  });
+
   test('zero', () => {
     expect(formatNumberAsString(0)).toBe('0');
   });
