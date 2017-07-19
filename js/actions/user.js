@@ -1,19 +1,22 @@
-import {showError, hideError, showFatalError, hideFatalError} from './index';
+// @flow
+
+import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
 import i18n from 'react-native-i18n';
 import LoginService from '../services/loginService';
 import NetworkManager from '../network/NetworkManager';
+import UsersService from '../services/usersService';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
-export const SET_INVITATION_TOKEN = 'SET_INVITATION_TOKEN';
-export const SET_INVITATION_IS_USED = 'SET_INVITATION_IS_USED';
-export const SET_INVITATION_SHARE_TOKEN = 'SET_INVITATION_SHARE_TOKEN';
+export const USER_BLOCKED = 'USER_BLOCKED';
+export const USER_UNBLOCKED = 'USER_UNBLOCKED';
+export const SET_BLOCKED_USERS = 'SET_BLOCKED_USERS';
 
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
@@ -35,7 +38,7 @@ const setRestOptions = function (dispatch, rest, user) {
   });
 };
 
-const signInFromRest = function (dispatch, data, invitation_token, invitationTokenIsUsed) {
+const signInFromRest = function (dispatch, data) {
   return new Promise((resolve, reject) => {
     if (!data || _.isEmpty(data)) {
       reject();
@@ -44,11 +47,6 @@ const signInFromRest = function (dispatch, data, invitation_token, invitationTok
       NetworkManager.setToken(data.user.api_key);
       setRestOptions(dispatch, rest, data.user);
       dispatch(setUser(data.user));
-      if (invitationTokenIsUsed === false) {
-        dispatch(useInvitationCode(invitation_token));
-        dispatch(setInvitationTokenIsUsed());
-      }
-      dispatch(createInvitationCode());
       resolve(data.user);
     });
   });
@@ -61,31 +59,8 @@ export function setUser(user: string) {
   };
 }
 
-export function setInvitationToken(token) {
-  return {
-    type: SET_INVITATION_TOKEN,
-    payload: token,
-  };
-}
-
-export function setInvitationTokenIsUsed() {
-  return {
-    type: SET_INVITATION_IS_USED,
-    payload: true,
-  };
-}
-
-export function setInvitationInvitationShareToken(shareToken) {
-  return {
-    type: SET_INVITATION_SHARE_TOKEN,
-    payload: shareToken,
-  };
-}
-
 export function loginViaFacebook(data) {
   return (dispatch, getState) => new Promise((resolve, reject) => {
-    const user = getState().user;
-    const invitation_is_used = user.invitation_is_used;
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
     const body = {
@@ -97,70 +72,12 @@ export function loginViaFacebook(data) {
 
     dispatch(rest.actions.facebook_auth.post(body, (err, data) => {
       if (!err && data) {
-        signInFromRest(dispatch, data, user.invitation_token, invitation_is_used).then(resolve).catch(reject);
+        signInFromRest(dispatch, data).then(resolve).catch(reject);
       } else {
         reject('Unable to login via Facebook');
       }
     }));
   });
-}
-
-export function useInvitationCode(token) {
-  return dispatch => dispatch(rest.actions.invitation.post({}, {body: JSON.stringify({token})}, (err, data) => {
-    if (!err && !_.isEmpty(data)) {
-      console.log('invitation token passed and approved: ', data);
-    } else {
-      alert('Unable to use invitation code');
-    }
-  }));
-}
-
-export function requestInvitation(data) {
-  return (dispatch) => {
-    console.log('data', data);
-    return dispatch(rest.actions.invitation_request.post({}, {
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email
-      })
-    }, (err, data) => {
-      if (!err && !_.isEmpty(data)) {
-        console.log('invitation request has been created: ', data);
-      } else {
-        alert('Unable to create an invitation request');
-      }
-    }));
-  };
-}
-
-export function createInvitationCode() {
-  return dispatch => dispatch(rest.actions.invitation_create.post({}, {body: JSON.stringify({limit_by_days: 999})}, (err, data) => {
-    if (!err && !_.isEmpty(data)) {
-      dispatch(setInvitationInvitationShareToken(data.invitation.token));
-    } else {
-      console.log('Unable to create invitation code ', err);
-    }
-  }));
-}
-
-export function invitationCheckExistance(token) {
-  return dispatch => new Promise((resolve, reject) => dispatch(rest.actions.invitation_check_if_exists.get({token}, (err, data) => {
-    if (!err && !_.isEmpty(data)) {
-      if (data.invitation.is_valid) {
-        dispatch(hideError());
-        dispatch(setInvitationToken(data.invitation.token));
-        resolve();
-      } else {
-        const error = '*Code is wrong or expired';
-        dispatch(showError(error));
-        resolve();
-      }
-    } else {
-      const error = '*Code is wrong or expired';
-      dispatch(showError(error));
-      reject(error);
-    }
-  })));
 }
 
 const signUp = function (dispatch, data) {
@@ -196,10 +113,7 @@ export function emailSignUp(data) {
     dispatch(hideFatalError());
     if (data) {
       signUp(dispatch, data).then((data) => {
-        const user = getState().user;
-        const invitation_is_used = user.invitation_is_used;
-        const invitation_token = user.invitation_token;
-        signInFromRest(dispatch, data, invitation_token, invitation_is_used).then(resolve).catch(reject);
+        signInFromRest(dispatch, data).then(resolve).catch(reject);
       }).catch((err) => {
         if (err.errors && err.errors.length > 0) {
           const pointers = [];
@@ -338,6 +252,78 @@ export function changeUserAvatar(data) {
       reject('Authorization error');
     }
   });
+}
+
+export function getBlockedUsers() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const userId = state.user.id;
+    const nextPage = 1;
+    UsersService.getBlockedUsers(userId, nextPage).then((data) => {
+      const {blockedUsers} = getState().blockedUsers;
+      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      dispatch({
+        type: SET_BLOCKED_USERS,
+        blockedUsers: blockedUsersUnion,
+        meta: {
+          currentPage: nextPage,
+          total: data.meta.total
+        }
+      });
+    })
+  };
+}
+
+export function getMoreBlockedUsers() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const userId = state.user.id;
+    const {meta} = state.blockedUsers;
+    const nextPage = meta.currentPage + 1;
+    UsersService.getBlockedUsers(userId, nextPage).then((data) => {
+      const {blockedUsers} = getState().blockedUsers;
+      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      dispatch({
+        type: SET_BLOCKED_USERS,
+        blockedUsers: blockedUsersUnion,
+        meta: {
+          currentPage: nextPage,
+          total: data.meta.total
+        }
+      });
+    })
+  }
+}
+
+export function blockUser(blockedUserId) {
+  return (dispatch, getState) => {
+    const userId = getState().user.id;
+    UsersService.block(userId, blockedUserId).then(() => {
+      dispatch({
+        type: USER_BLOCKED,
+        userId,
+        blockedUserId,
+      });
+    })
+  };
+}
+
+export function unblockUser(blockedUserId) {
+  return (dispatch, getState) => {
+    const userId = getState().user.id;
+    UsersService.unblock(userId, blockedUserId)
+      .catch(err => ({}));//mute error
+    const {blockedUsers, meta} = getState().blockedUsers;
+    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.id !== blockedUserId);
+    dispatch({
+      type: SET_BLOCKED_USERS,
+      blockedUsers: blockedUsersWithoutUnblocked,
+      meta: {
+        currentPage: meta.currentPage,
+        total: meta.total - 1
+      }
+    });
+  };
 }
 
 export function logout() {

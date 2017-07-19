@@ -112,7 +112,7 @@ class FeedPage extends Component {
           </View>
           <MainView navigateTo={this.props.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal animationType='slide' visible={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
-            <BodyTypePicker onPick={this._onPickBodyType}/>
+            <BodyTypePicker goBack={this.props.hideBodyTypeModal} onPick={this._onPickBodyType}/>
           </Modal>
       </View>
     );

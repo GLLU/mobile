@@ -10,7 +10,7 @@ import { emailRule } from '../../validators';
 import styles from './styles';
 
 import { forgotPassword } from '../../actions/user';
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 import SolidButton from "../common/buttons/SolidButton";
 const background = require('../../../images/backgrounds/forgot-password-background.png');
 import asScreen from "../common/containers/Screen"
@@ -58,7 +58,7 @@ class forgotPasswordPage extends Component {
 
   renderEmailSent() {
     return (
-      <Content scrollEnabled={false}>
+      <Content scrollEnabled={true}>
         <View style={styles.instuctionsContainer}>
           <Text style={styles.instuctions}>You will get an email shortly to recover your password</Text>
         </View>
@@ -68,7 +68,7 @@ class forgotPasswordPage extends Component {
 
   renderBeforeEmailSent() {
     return (
-      <Content scrollEnabled={false}>
+      <Content scrollEnabled={true}>
         <View style={styles.instuctionsContainer}>
           <Text style={styles.instuctions}>Please insert your email and we will send you details on reseting your
             password</Text>

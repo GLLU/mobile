@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import {
   View,
@@ -11,7 +13,7 @@ import {
 } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
-import BottomLookContainer from './BottomLookContainer';
+import LookOverlay from './LookOverlay';
 import { likeUpdate, unlikeUpdate, loadMore, getLookLikes } from '../../actions';
 import { reportAbuse } from '../../actions/looks';
 import { connect } from 'react-redux';
@@ -33,24 +35,23 @@ const config = {
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const width = Dimensions.get('window').width;
 
-class LooksScreen extends Component {
-  static propTypes = {
-    flatLook: React.PropTypes.oneOfType([
-      React.PropTypes.object,
-      React.PropTypes.number,
-    ]),
-    flatLooksData: React.PropTypes.array,
-    navigation: React.PropTypes.object,
-    meta: React.PropTypes.object,
-    query: React.PropTypes.object,
-    navigateTo: React.PropTypes.func,
-    likeUpdate: React.PropTypes.func,
-    unlikeUpdate: React.PropTypes.func,
-    reportAbuse: React.PropTypes.func,
-    loadMore: React.PropTypes.func,
-  }
+type Props = {
+  flatLook: object | number,
+  flatLooksData: Array<object>,
+  navigation: object,
+  meta: object,
+  query: object,
+  navigateTo: void,
+  likeUpdate: void,
+  unlikeUpdate: void,
+  reportAbuse: void,
+  loadMore: void,
+};
 
-  constructor(props) {
+class LooksScreen extends Component {
+  props: Props;
+
+  constructor(props: Props) {
     super(props);
     this._goToProfile = this._goToProfile.bind(this);
     this._goToEdit = this._goToEdit.bind(this);
@@ -58,8 +59,7 @@ class LooksScreen extends Component {
     this._toggleLike = this._toggleLike.bind(this);
     this.renderUpArrow = this.renderUpArrow.bind(this);
     this.renderDownArrow = this.renderDownArrow.bind(this);
-    const flatLook = this.props.navigation.state.params;
-    console.log('flatLookLookScreen', flatLook);
+    const flatLook = this.props.navigation.state.params
     this.state = {
       flatLook: this.props.navigation.state.params,
       fadeAnim: new Animated.Value(0.35),
@@ -82,7 +82,7 @@ class LooksScreen extends Component {
       switch (Platform.OS) {
         case 'ios':
           if (total === 2) {
-            this._scrollView.scrollTo({ x: 0, y: this.state.currScrollIndex * height, animated: false });
+            this._scrollView.scrollTo({x: 0, y: this.state.currScrollIndex * height, animated: false});
             break;
           } else {
             this._scrollView.scrollTo({ x: 0, y: height, animated: false });
@@ -93,17 +93,17 @@ class LooksScreen extends Component {
             _.delay(() => this._scrollView.scrollTo({
               x: 0,
               y: this.state.currScrollIndex * height,
-              animated: false,
+              animated: false
             }), 0);
-            _.delay(() => this.setState({ loader: false }), 0);
-            this.setState({ loader: false });
+            _.delay(() => this.setState({loader: false}), 0);
+            this.setState({loader: false})
           } else {
             _.delay(() => this._scrollView.scrollTo({
               x: 0,
               y: height,
-              animated: false,
+              animated: false
             }), 0);
-            _.delay(() => this.setState({ loader: false }), 0);
+            _.delay(() => this.setState({loader: false}), 0);
           }
 
           break;
@@ -111,33 +111,35 @@ class LooksScreen extends Component {
       this.setState({ mountedOnce: true }); // because comments are re-open when you this.goBack
     }
     if (this.state.currScrollIndex === this.props.flatLooksData.length - 1) {
-      this.loadMore();
+      this.loadMore()
     }
   }
 
-  _toggleLike(shouldLiked) {
-    this.props.logEvent('LookScreen', { name: 'Like click', liked: `${shouldLiked}` });
-    const { flatLook } = this.state;
-    const { id } = flatLook;
+  _toggleLike(shouldLiked: boolean, lookId: number) {
+    this.props.logEvent('LookScreen', {name: 'Like click', liked: `${shouldLiked}`});
     if (shouldLiked) {
-      this.props.likeUpdate(id);
+      this.props.likeUpdate(lookId);
     } else {
-      this.props.unlikeUpdate(id);
+      this.props.unlikeUpdate(lookId);
     }
   }
 
-  _goToProfile(look) {
+  _goToProfile(look: object) {
     this.props.navigateTo('profileScreen', look);
   }
 
-  _goToEdit(look) {
+  _goToEdit(look: object) {
     this.props.editNewLook(look.id).then(() => {
-      this.props.navigateTo('addItemScreen', { mode: 'edit' });
+      this.props.navigateTo('addItemScreen', {mode: 'edit'});
     });
   }
 
-  onToggleDrawer(shouldOpen) {
-    this.setState({ isBottomDrawerOpen: shouldOpen });
+  goToLikes(look: object) {
+    this.props.navigateTo('likesscreen', {lookId: look.id, count: look.likes})
+  }
+
+  onToggleDrawer(shouldOpen: boolean) {
+    this.setState({isBottomDrawerOpen: shouldOpen})
   }
 
   loadMore() {
@@ -163,16 +165,16 @@ class LooksScreen extends Component {
     }
   }
 
-  onSwipe(gestureName) {
-    this.props.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}` });
-    const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+  onSwipe(gestureName: string) {
+    this.props.logEvent('LookScreen', {name: `user swiped! type: ${gestureName}`});
+    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
-        const { meta: { total } } = this.props;
+        const {meta: {total}} = this.props;
         if (this.state.currScrollIndex !== this.props.flatLooksData.length - 1) {
-          this._scrollView.scrollTo({ x: 0, y: 0, animated: false });
-          this._scrollView.scrollTo({ x: 0, y: height, animated: true });
-          this.setState({ currScrollIndex: this.state.currScrollIndex + 1 });
+          this._scrollView.scrollTo({x: 0, y: 0, animated: false});
+          this._scrollView.scrollTo({x: 0, y: height, animated: true});
+          this.setState({currScrollIndex: this.state.currScrollIndex + 1})
         }
         if (this.state.currScrollIndex % 5 === 0 || this.state.currScrollIndex === total - 1) {
           this.loadMoreAsync();
@@ -203,8 +205,8 @@ class LooksScreen extends Component {
 
   shouldRenderArrows() {
     if (this.state.showAsFeed) {
-      const { meta: { total } } = this.props;
-      return total > 2;
+      const {meta: {total}} = this.props;
+      return total > 2
     } else {
       return false;
     }
@@ -213,9 +215,9 @@ class LooksScreen extends Component {
   renderUpArrow() {
     if (this.state.currScrollIndex !== 0) {
       return (
-        <View style={{ position: 'absolute', top: 0, width, height: 30 }}>
-          <TouchableOpacity onPress={() => this.onSwipe('SWIPE_DOWN')} style={{ width: 50, alignSelf: 'center' }}>
-            <Image source={arrowUp} resizeMode={'contain'} style={{ width: 25, height: 40, alignSelf: 'center' }} />
+        <View style={{position: 'absolute', top: 0, width: width, height: 30}}>
+          <TouchableOpacity onPress={() => this.onSwipe('SWIPE_DOWN')} style={{width: 50, alignSelf: 'center'}}>
+            <Image source={arrowUp} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
           </TouchableOpacity>
         </View>
       );
@@ -224,25 +226,26 @@ class LooksScreen extends Component {
 
   renderDownArrow() {
     return (
-      <View style={{ position: 'absolute', bottom: 0, width, height: 30 }}>
-        <TouchableOpacity onPress={() => this.onSwipe('SWIPE_UP')} style={{ width: 50, alignSelf: 'center' }}>
-          <Image source={arrowDown} resizeMode={'contain'} style={{ width: 25, height: 40, alignSelf: 'center' }} />
+      <View style={{position: 'absolute', bottom: 0, width: width, height: 30}}>
+        <TouchableOpacity onPress={() => this.onSwipe('SWIPE_UP')} style={{width: 50, alignSelf: 'center'}}>
+          <Image source={arrowDown} resizeMode={'contain'} style={{width: 25, height: 40, alignSelf: 'center'}}/>
         </TouchableOpacity>
       </View>
     );
   }
 
-  openCommentsInAdvance(look) {
+  openCommentsInAdvance(look: object) {
+
     if (!this.state.mountedOnce && this.state.flatLook.openComments && look.id === this.state.flatLook.id) {
-      this.opennedComments = !this.opennedComments;
-      return this.opennedComments;
+      this.opennedComments = !this.opennedComments
+      return this.opennedComments
     }
-    return false;
+    return false
   }
 
-  renderVideo(look, index) {
-    const showShowArrow = this.shouldRenderArrows();
-    const openComments = this.openCommentsInAdvance(look);
+  renderVideo(look: object, index: number) {
+    const showShowArrow = this.shouldRenderArrows()
+    const openComments = this.openCommentsInAdvance(look)
     return (
       <GestureRecognizer
         key={look.originalIndex !== undefined ? look.originalIndex : -1}
@@ -262,20 +265,21 @@ class LooksScreen extends Component {
           repeat
           navigation={this.props.cardNavigation}
         />
-        <BottomLookContainer
+        <LookOverlay
           width={width}
+          shouldShowLike={this.state.showAsFeed}
           height={height}
           look={look}
           goBack={this.props.goBack}
           goToProfile={this._goToProfile}
           goToEdit={this._goToEdit}
-          toggleLike={this._toggleLike}
+          toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
           isMenuOpen={this.state.isMenuOpen}
           onBottomDrawerOpen={this.onToggleDrawer}
           openComments={openComments}
-          reportAbuse={lookId => this.props.reportAbuse(lookId)}
-          lookType={'video'}
-          onLikesNumberPress={() => this.props.navigateTo('likesscreen', { lookId: look.id, count: look.likes })}
+          reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
+          lookType={"video"}
+          goToLikes={this.goToLikes}
         />
         {showShowArrow ? this.renderUpArrow() : null}
         {showShowArrow ? this.renderDownArrow() : null}
@@ -283,9 +287,9 @@ class LooksScreen extends Component {
     );
   }
 
-  renderImage(look, index) {
-    const showShowArrow = this.shouldRenderArrows();
-    const openComments = this.openCommentsInAdvance(look);
+  renderImage(look: object, index: boolean) {
+    const showShowArrow = this.shouldRenderArrows()
+    const openComments = this.openCommentsInAdvance(look)
     return (
       <GestureRecognizer
         key={look.originalIndex !== undefined ? look.originalIndex : -1}
@@ -298,22 +302,23 @@ class LooksScreen extends Component {
         <ImageWrapper
           resizeMode={'stretch'}
           style={styles.itemImage}
-          source={{ uri: look.uri }}
+          source={{uri: look.uri}}
           navigation={this.props.cardNavigation}>
-          <BottomLookContainer
+          <LookOverlay
             width={width}
+            shouldShowLike={this.state.showAsFeed}
             height={height}
             look={look}
             goBack={this.props.goBack}
-            goToProfile={look => this._goToProfile(look)}
-            toggleLike={this._toggleLike}
+            goToProfile={(look) => this._goToProfile(look)}
+            toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
             isMenuOpen={this.state.isMenuOpen}
             openComments={openComments}
             onBottomDrawerOpen={this.onToggleDrawer}
             shareToken={this.props.shareToken}
             reportAbuse={this.props.reportAbuse}
-            onLikesNumberPress={() => this.props.navigateTo('likesscreen', { lookId: look.id, count: look.likes })}
-              />
+            goToLikes={this.goToLikes}
+          />
           {showShowArrow ? this.renderUpArrow() : null}
           {showShowArrow ? this.renderDownArrow() : null}
         </ImageWrapper>
@@ -322,23 +327,23 @@ class LooksScreen extends Component {
   }
 
   getFlatFeed() {
-    let looksArr = '';
-    const { meta: { total } } = this.props;
+    let looksArr = ''
+    const {meta: {total}} = this.props;
 
     if (total === 1) {
       return looksArr = [
-        this.props.flatLooksData[this.state.currScrollIndex],
-      ];
+        this.props.flatLooksData[this.state.currScrollIndex]
+      ]
     }
     switch (this.state.currScrollIndex) {
 
       case 0:
-        const fictionalLook = _.cloneDeep(this.props.flatLooksData[this.state.currScrollIndex]);
-        fictionalLook.originalIndex = 999;
+        let fictionalLook = _.cloneDeep(this.props.flatLooksData[this.state.currScrollIndex])
+        fictionalLook.originalIndex = 999
         return looksArr = [
           fictionalLook, // fictional
           this.props.flatLooksData[this.state.currScrollIndex],
-          this.props.flatLooksData[this.state.currScrollIndex + 1],
+          this.props.flatLooksData[this.state.currScrollIndex + 1]
         ];
       case this.props.flatLooksData.length - 1:
         looksArr = [
@@ -350,7 +355,7 @@ class LooksScreen extends Component {
         return looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex - 1],
           this.props.flatLooksData[this.state.currScrollIndex],
-          this.props.flatLooksData[this.state.currScrollIndex + 1],
+          this.props.flatLooksData[this.state.currScrollIndex + 1]
         ];
     }
   }
@@ -381,25 +386,26 @@ class LooksScreen extends Component {
   render() {
     let looksArr = '';
     if (this.state.showAsFeed) {
-      looksArr = this.getFlatFeed();
+      looksArr = this.getFlatFeed()
     } else {
       looksArr = [this.state.flatLook];
     }
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
 
-        <ScrollView
-          pagingEnabled={false}
-          ref={(c) => {
-            this._scrollView = c;
-          }}
-          scrollEventThrottle={100}
-          scrollEnabled={false}>
-          {looksArr.map((look, index) => look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index))}
+        <ScrollView pagingEnabled={false}
+                    ref={(c) => {
+                      this._scrollView = c;
+                    }}
+                    scrollEventThrottle={100}
+                    scrollEnabled={false}>
+          {looksArr.map((look, index) => {
+            return look.coverType === 'video' ? this.renderVideo(look, index) : this.renderImage(look, index)
+          })}
         </ScrollView>
         {this.state.loader ? this.renderLoader() : null}
       </View>
-    );
+    )
   }
 }
 
@@ -423,8 +429,7 @@ const mapStateToProps = (state) => {
     meta: state.feed.meta,
     query: state.feed.query,
     userLooks: state.userLooks.userLooksData,
-    shareToken: state.user.invitation_share_token,
-    cardNavigation: state.cardNavigation,
+    cardNavigation: state.cardNavigation
   };
 };
 

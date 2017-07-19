@@ -10,7 +10,7 @@ import BodyMeasureView from './bodyMeasureView';
 import InformationTextIcon from '../common/informationTextIcon';
 import asScreen from "../common/containers/Screen"
 import { showBodyTypeModal } from "../../actions/myBodyType";
-import Header from "../common/containers/ModalHeader";
+import Header from "../common/headers/ModalHeader";
 import SolidButton from "../common/buttons/SolidButton";
 
 const h = Dimensions.get('window').height;

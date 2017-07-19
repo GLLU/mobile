@@ -14,6 +14,8 @@ import Welcome from './Welcome';
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')}/>);
 
 require('../../js/components/common/commonComponents.stories');
+require('../../js/components/looksScreen/lookscreenComponents.stories');
+require('../../js/components/blockedUsersScreen/blockedUsersScreenComponents.stories');
 
 
 storiesOf('button', module)
