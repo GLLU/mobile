@@ -5,35 +5,35 @@ import { formatNumberAsString } from '../FormatUtils';
 describe('fomatNumberAsString util', () => {
 
   test('null', () => {
-    expect(formatNumberAsString(null)).toBe('0');
+    expect(formatNumberAsString(null)).toBe('N/A');
   });
 
   test('undefined', () => {
-    expect(formatNumberAsString(undefined)).toBe('0');
+    expect(formatNumberAsString(undefined)).toBe('N/A');
   });
 
   test('empty string', () => {
-    expect(formatNumberAsString('')).toBe('0');
+    expect(formatNumberAsString('')).toBe('N/A');
   });
 
   test('negative one digit number', () => {
-    expect(formatNumberAsString(-1)).toBe('0');
+    expect(formatNumberAsString(-1)).toBe('N/A');
   });
 
   test('negative 4 digit number', () => {
-    expect(formatNumberAsString(-1440)).toBe('0');
+    expect(formatNumberAsString(-1440)).toBe('N/A');
   });
 
   test('negative 5 digit number', () => {
-    expect(formatNumberAsString(-18750)).toBe('0');
+    expect(formatNumberAsString(-18750)).toBe('N/A');
   });
 
   test('negative 6 digit number', () => {
-    expect(formatNumberAsString(-321897)).toBe('0');
+    expect(formatNumberAsString(-321897)).toBe('N/A');
   });
 
   test('negative 7 digit number', () => {
-    expect(formatNumberAsString(-6530289)).toBe('0');
+    expect(formatNumberAsString(-6530289)).toBe('N/A');
   });
 
   test('zero', () => {

@@ -21,8 +21,8 @@ const formatNumberAsStringConfig=[
 ];
 
 export const formatNumberAsString = (value: number,config=formatNumberAsStringConfig) => {
-  if(!value || value < 0){
-    return '0';
+  if(value < 0 || value!==0 && !value){
+    return 'N/A';
   }
   const stringValue = value.toString();
   const entry=_.chain(config)
