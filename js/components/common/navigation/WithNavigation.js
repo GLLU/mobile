@@ -35,7 +35,14 @@ export default function withNavigation(WrappedComponent) {
       });
     }
 
+    _getNavigationRouteNameFromPayload(payload){
+      const {index,actions} = payload;
+      const route=actions[index];
+      return route ? route.routeName : _.last(actions).routeName;
+    }
+
     resetWithPayload(payload){
+      this.props.logEvent(`reseting navigation to ${this._getNavigationRouteNameFromPayload(payload)}`);
       this.props.navigation.dispatch(new NavigationActions.reset(payload))
     }
 
@@ -43,6 +50,7 @@ export default function withNavigation(WrappedComponent) {
       const {routes,index}=this.props.cardNavigation;
       const currentRoute= routes[index].routeName;
       if(currentRoute!==route){
+        this.props.logEvent(`navigating to ${route}`);
         this.props.navigation.navigate(route, params)
       }
     }

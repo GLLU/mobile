@@ -1,3 +1,5 @@
+// @flow
+
 import * as selfRef from './FormatUtils'
 import * as _ from "lodash";
 
@@ -18,7 +20,10 @@ const formatNumberAsStringConfig=[
   }
 ];
 
-export const formatNumberAsString = (value,config=formatNumberAsStringConfig) => {
+export const formatNumberAsString = (value: number,config=formatNumberAsStringConfig) => {
+  if(value < 0 || value!==0 && !value){
+    return 'N/A';
+  }
   const stringValue = value.toString();
   const entry=_.chain(config)
     .filter(entry=>stringValue.length > entry.length)
