@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import LooksScreen from './LooksScreen';
 import { likeUpdate, unlikeUpdate, loadMore, getLookLikes } from '../../actions';
 import { getLooksById } from '../../utils/FeedUtils';
+import { reportAbuse } from '../../actions/looks';
+import { editNewLook } from '../../actions/uploadLook';
 
 
 function mapDispatchToProps(dispatch) {

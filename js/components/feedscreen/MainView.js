@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { getFeed, loadMore, clearFeed } from '../../actions';
-import TabContent from './TabContent';
+import TabContent from './TabContentContainer';
 import SearchView from './SearchView'
 import _ from 'lodash';
 import VisibilityContainer from "../common/VisibilityContainer";

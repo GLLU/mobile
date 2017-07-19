@@ -14,15 +14,11 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
-import { reportAbuse } from '../../actions/looks';
-import { connect } from 'react-redux';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from 'lodash';
 import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
-import asScreen from '../common/containers/Screen';
 import Spinner from '../loaders/Spinner';
-import { editNewLook } from '../../actions/uploadLook';
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
 
