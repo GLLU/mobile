@@ -9,25 +9,23 @@ export const format_measurement = (value, measurements_scale) => `${format_numbe
 
 export const format_number = (value) => Math.round(value * 100) / 100;
 
-const formatNumberAsStringConfig=[
-  {
-    length:6,
-    suffix:'M'
-  },
-  {
-    length:3,
-    suffix:'K'
-  }
-];
-
-export const formatNumberAsString = (value: number,config=formatNumberAsStringConfig) => {
+export const formatNumberAsString = (value: number) => {
   if(value < 0 || value!==0 && !value){
     return 'N/A';
   }
-  const stringValue = value.toString();
-  const entry=_.chain(config)
-    .filter(entry=>stringValue.length > entry.length)
-    .maxBy(entry=>entry.length)
-    .value();
-  return entry ? Math.floor(value / Math.pow(10, entry.length)) + entry.suffix : stringValue;
+  if(value<1000){
+    return `${value}`
+  }
+  if(value<100000){
+    return `${Math.floor(value/100)/10}K`
+  }
+  if(value<1000000){
+    return `${Math.floor(value/1000)}K`
+  }
+  if(value<10000000){
+    return `${Math.floor(value/100000)/10}M`
+  }
+  else {
+    return `${Math.floor(value/1000000)}M`
+  }
 };
