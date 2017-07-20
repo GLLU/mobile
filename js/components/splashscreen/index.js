@@ -50,7 +50,6 @@ class SplashPage extends Component {
 
   componentWillMount(){
     const {user}=this.props;
-    console.log(`user`,user);
     if(user!==undefined&&user.id!==-1){
       this.checkLogin(user);
     }

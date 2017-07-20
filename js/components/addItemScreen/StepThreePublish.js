@@ -163,7 +163,6 @@ class StepThreePublish extends BaseComponent {
   checkUrlOk() {
     const { items } = this.props;
     let missingItemUrl = _.findIndex(items, function(item) { return !!item.url });
-    console.log('missingItemUrl',missingItemUrl)
     // it is ok if it is not empty and not the same as item brand url (means no change made)
     if (missingItemUrl) {
       return false;

@@ -354,7 +354,6 @@ export function hideTutorial() {
 }
 
 export function clearBodyModal() {
-  console.log('clear action');
   return (dispatch, getState) => {
     dispatch(hideBodyModal());
   };

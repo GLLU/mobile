@@ -19,7 +19,6 @@ const downloadFile = (uri) => {
         overwrite: true
       }).fetch('GET', uri)
       .then((res => {
-        console.log('res.respInfo.status',res.respInfo.status)
         if (Math.floor(res.respInfo.status / 100) !== 2) {
           throw new Error('Failed to successfully download video');
         }

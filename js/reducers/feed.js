@@ -33,7 +33,6 @@ export default function (state = initialState, action) {
       };
     }
     case CLEAR_FEED_DATA: {
-      console.log('bam')
       return {
         ...initialState,
       };
