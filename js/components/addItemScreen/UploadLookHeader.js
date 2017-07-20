@@ -155,7 +155,6 @@ class UploadLookHeader extends BaseComponent {
   }
 
   getItemIconUrl(item) { //Temp function until we will receive it from the server
-    console.log('itemmm',item)
     return _.find(this.props.categories, category => category.name === item.name);
   }
 

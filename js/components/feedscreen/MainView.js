@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { getFeed, loadMore, clearFeed } from '../../actions';
-import TabContent from './TabContent';
+import TabContent from './TabContentContainer';
 import SearchView from './SearchView'
 import _ from 'lodash';
 import VisibilityContainer from "../common/VisibilityContainer";
@@ -110,7 +110,7 @@ class MainView extends Component {
   renderEmptyContent() {
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
-        <Image source={profileBackground} style={{resizeMode: 'contain', width: deviceWidth, height: deviceHeight-80, alignSelf: 'flex-start'}} >
+        <Image source={profileBackground} style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight-80, alignSelf: 'flex-start'}} >
           <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
                           style={[myStyles.linearGradient, {opacity: 0.7}]}/>
           <View style={{marginTop: 100}}>

@@ -19,7 +19,7 @@ import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
-import Header from "../common/containers/Header";
+import Header from "../common/headers/Header";
 
 const logo = require('../../../images/logo/inFashLogo.png');
 
@@ -139,7 +139,7 @@ class SignInPage extends Component {
           <Image source={background} style={styles.shadow} blurRadius={5}>
             <Image source={backgroundShadow} style={styles.bgShadow} />
             <Header title='Sign In' goBack={this.props.goBack}/>
-            <Content scrollEnabled={false}>
+            <Content scrollEnabled={true}>
               <View style={StyleSheet.flatten(styles.logoContainer)}>
                 <Image source={logo} style={StyleSheet.flatten(styles.logo)} />
               </View>

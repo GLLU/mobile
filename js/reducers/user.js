@@ -1,4 +1,4 @@
-import { SET_USER, RESET_STATE, SET_INVITATION_TOKEN, SET_INVITATION_IS_USED, SET_INVITATION_SHARE_TOKEN, HIDE_TUTORIAL, HIDE_BODY_MODAL } from '../actions/user';
+import { SET_USER, RESET_STATE, HIDE_TUTORIAL, HIDE_BODY_MODAL } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -13,9 +13,6 @@ const initialState = {
   avatar: null,
   can_simple_login: null,
   api_key: null,
-  invitation_token: -1,
-  invitation_is_used: false,
-  invitation_share_token: -1,
   showTutorial: false,
   showBodyModal: true,
 };
@@ -32,26 +29,11 @@ const ACTION_HANDLERS = {
   }),
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
-    NetworkManager.setToken(user.api_key);
-
-    delete user.api_key;
     return {
       ...state,
       ...user,
     };
   },
-  [SET_INVITATION_TOKEN]: (state, action) => ({
-    ...state,
-    invitation_token: action.payload,
-  }),
-  [SET_INVITATION_IS_USED]: (state, action) => ({
-    ...state,
-    invitation_is_used: true,
-  }),
-  [SET_INVITATION_SHARE_TOKEN]: (state, action) => ({
-    ...state,
-    invitation_share_token: action.payload,
-  }),
   [COMPLETE_EDIT_BODY_MEASURE]: (state, action) => ({
     ...state,
     user_size: action.payload,
@@ -62,8 +44,6 @@ const ACTION_HANDLERS = {
   }),
   [RESET_STATE]: (state, action) => ({
     ...initialState,
-    invitation_token: state.invitation_token,
-    invitation_is_used: state.invitation_is_used,
     showTutorial: state.showTutorial,
     showBodyModal: state.showBodyModal,
   }),

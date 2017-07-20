@@ -1,10 +1,7 @@
-/**
- * Created by martingordon on 7/11/17.
- */
-import { StyleSheet } from 'react-native';
-
-const FontStyles = {
+const fonts = {
   regularFont: 'Montserrat-Regular',
+  boldFont: 'Montserrat-Regular',
+  mediumFont: 'Montserrat-Regular',
 };
 
-export default FontStyles;
+export default fonts;
