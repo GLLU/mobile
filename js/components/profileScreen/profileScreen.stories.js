@@ -4,6 +4,7 @@ import {storiesOf} from '@storybook/react-native';
 
 import ProfileScreenHeader from './ProfileScreenHeader';
 import ProfileScreen from './ProfileScreen';
+import WalletScreen from './WalletScreen';
 
 storiesOf('profile screen', module)
   .add('profile header without user image', () =>
@@ -11,5 +12,7 @@ storiesOf('profile screen', module)
   )
   .add('main profile screen', () =>
     <ProfileScreen />
-  );
+  )
+  .add('wallet screen', () => <WalletScreen />)
+;
 

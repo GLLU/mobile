@@ -10,6 +10,7 @@ import Colors from '../../styles/Colors.styles';
 type Props = {
   number: string,
   title: string,
+  style: any,
   onClick: () => void
 };
 
@@ -17,11 +18,11 @@ class ProfileScreenStat extends Component {
   props: Props;
 
   render(): React.Element<any> {
-    const { number, title, onClick } = this.props;
+    const { number, title, onClick, style } = this.props;
 
     return (
 
-      <TouchableOpacity onPress={onClick}>
+      <TouchableOpacity onPress={onClick} style={style}>
         <View style={{ alignItems: 'center' }}>
           {number >= 0 ? <Text style={styles.number}>{formatNumberAsString(number)}</Text> :
           <ActivityIndicator animating style={{ height: 50 }} color={Colors.highlightColor} />}

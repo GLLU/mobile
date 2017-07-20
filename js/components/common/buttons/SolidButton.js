@@ -6,7 +6,6 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   center: {
-    flex: 1,
     flexDirection:'column',
     justifyContent: 'center',
   },
@@ -37,12 +36,12 @@ class SolidButton extends Component {
 
   render() {
     return (
-      <TouchableHighlight style={[styles.center, this.props.style]} onPress={this.props.onPress}>
+      <TouchableOpacity style={[styles.center, this.props.style]} onPress={this.props.onPress}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text style={styles.text}>{this.props.label}</Text>
           {this.props.loaderElement}
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }

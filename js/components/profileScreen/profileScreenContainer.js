@@ -15,6 +15,8 @@ import {
 } from '../../actions';
 
 import {editNewLook} from '../../actions/uploadLook';
+import {followUpdate, unFollowUpdate} from '../../actions/follows';
+
 import asScreen from '../common/containers/Screen';
 
 import ProfileScreen from './ProfileScreen';
@@ -31,6 +33,9 @@ function bindAction(dispatch: any, ownProps: any): void {
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
     likeUpdate: id => dispatch(likeUpdate(id)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),
+    onFollowClicked: (id: number, isFollowing: boolean) => {
+      isFollowing ? dispatch(unFollowUpdate(id)) : followUpdate(followUpdate(id));
+    },
     onStatClicked: (screen, user, isMyProfile, type, count) => {
       ownProps.navigation.navigate(screen, {
         user,
@@ -43,7 +48,6 @@ function bindAction(dispatch: any, ownProps: any): void {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userData = ownProps.navigation.state.params;
   const isMyProfile = userData.is_me;

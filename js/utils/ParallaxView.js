@@ -12,7 +12,7 @@ const window = Dimensions.get('window');
 
 const SCROLLVIEW_REF = 'ScrollView';
 
-const pivotPoint = (a, b) => (a - b);
+const pivotPoint = (a, b) => (a-b);
 
 const renderEmpty = () => <View />;
 

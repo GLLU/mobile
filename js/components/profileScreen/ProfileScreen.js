@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Text,
   View,
@@ -12,13 +12,14 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar } from 'react-native-tab-view';
+import {TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar} from 'react-native-tab-view';
 import I18n from 'react-native-i18n';
 
 import ParallaxView from '../../utils/ParallaxView';
 import ProfileScreenHeader from './ProfileScreenHeader';
-import ScalableText, { generateAdjustedSize } from '../../utils/AdjustedFontSize';
+import ScalableText, {generateAdjustedSize} from '../../utils/AdjustedFontSize';
 import UserLooks from './UserLooks';
+import WalletScreen from './WalletScreen';
 import SettingsScreen from '../settingsScreen/SettingsContainer';
 import Spinner from '../loaders/Spinner';
 
@@ -43,7 +44,8 @@ type Props = {
   onStatClicked: () => void,
   stats: any,
   goBack: () => void,
-  logEvent: () => void
+  logEvent: () => void,
+  onFollowClicked: ()=> void
 };
 
 class ProfileScreen extends Component {
@@ -137,20 +139,34 @@ class ProfileScreen extends Component {
     );
   };
 
+  _renderLabel2 = props => {
+    const inputRange = props.routes.map((x, i) => i);
+    const outputRange = inputRange.map(inputIndex => inputIndex === props.index ? Colors.highlightColor : '#5a6f88');
+    const color =
+      outputRange
+    ;
+
+    return (
+      <Animated.Text numberOfLines={1} style={[styles.label, { color }]}>
+        {props.routes[props.index].title}
+      </Animated.Text>
+    );
+  };
+
   _renderScene = ({ route }) => {
-    const { navigation } = this.props;
+    const { navigation, balance } = this.props;
 
     switch (route.key) {
       case 'looks':
         return this._renderUserLooks();
       case 'wallet':
-        return <View style={{ height: 200, width: 450, backgroundColor: 'yellow' }} />;
+        return <WalletScreen balance={balance}/>;
       case 'closet':
-        return <View style={{ height: 200, width: 450, backgroundColor: 'blue' }} />;
+        return <View style={{ height: 200, width: 450, backgroundColor: 'blue' }}/>;
       case 'settings':
-        return <SettingsScreen navigation={navigation} />;
+        return <SettingsScreen navigation={navigation}/>;
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }}/>
           ;
     }
   };
@@ -181,7 +197,7 @@ class ProfileScreen extends Component {
     scrollEventThrottle={100}
     onScroll={this._handleScrollUserLooks}
     style={{ backgroundColor: 'purple' }}
-    pagingEnabled />
+    pagingEnabled/>
 
   _loadMoreUserLooks() {
     if (this.state.loadingMore) {
@@ -199,8 +215,8 @@ class ProfileScreen extends Component {
       // if (pageSize * pageNumber < total_count) {
       this.setState({ loadingMore: true }, () => {
         this.props.loadMoreUserLooks(data).then(() => {
-          this.setState({ loadingMore: false });
-        }
+            this.setState({ loadingMore: false });
+          }
         ).catch((err) => {
           console.log('error', err);
           this.setState({ loadingMore: false });
@@ -220,10 +236,10 @@ class ProfileScreen extends Component {
             return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)" />;
+            return <Spinner color="rgb(230,230,230)"/>;
           }
           if (this.state.loadingMore) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
           return null;
         })()}
@@ -244,24 +260,25 @@ class ProfileScreen extends Component {
           likeUpdate={likeUpdate}
           unlikeUpdate={unlikeUpdate}
           meta={meta}
-          isLoading={this.state.isLoading} />
+          isLoading={this.state.isLoading}/>
         {this._renderLoadMore()}
       </View>
     );
   }
 
   _renderPager = props => (
-    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false} />
+    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false}/>
   );
 
   _configureTransition = () => null;
 
   _renderParallaxHeader = () => {
-    const { balance, userData, isFollowing, userId, isMyProfile, stats, onStatClicked } = this.props;
+    const { balance, userData, isFollowing, userId, isMyProfile, stats, onStatClicked, onFollowClicked } = this.props;
 
     return (<ProfileScreenHeader
       balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username} stats={stats}
       isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}
+      onFollowClicked={() => onFollowClicked(userId, isFollowing)}
       onBalanceClicked={() => this.setState({ index: 1 })}
       onLooksClicked={() => this.setState({ index: 0 })}
     />);
@@ -272,18 +289,18 @@ class ProfileScreen extends Component {
 
     return (<View style={styles.container}>
 
-      {!isMyProfile ? this._renderUserLooks() :
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        configureTransition={this._configureTransition}
-        renderScene={this._renderScene}
-        renderPager={this._renderPager}
-        renderHeader={this._renderHeader}
-        onRequestChangeTab={this._handleChangeTab}
+        {!isMyProfile ? this._renderUserLooks() :
+          <TabViewAnimated
+            style={styles.container}
+            navigationState={this.state}
+            configureTransition={this._configureTransition}
+            renderScene={this._renderScene}
+            renderPager={this._renderPager}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleChangeTab}
           />
         }
-    </View>
+      </View>
     );
   };
 
@@ -295,9 +312,9 @@ class ProfileScreen extends Component {
       onPress={this._handleBackToFeedPress}>
       <Image
         style={{ width: 18, height: 18 }} resizeMode={'contain'}
-        source={require('../../../images/icons/backArrow.png')} />
+        source={require('../../../images/icons/backArrow.png')}/>
     </TouchableHighlight>
-  )
+  );
 
   _handleBackToFeedPress = () => {
     this.props.logEvent('ProfileScreen', { name: 'Back to Feed click' });
@@ -308,19 +325,51 @@ class ProfileScreen extends Component {
     const { username } = this.props.userData;
 
     return (
-      <View style={{ height: stickyHeaderHeight, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ height: stickyHeaderHeight * 2 }}>
         <ScalableText
           style={{
             alignSelf: 'center',
             textAlign: 'center',
             fontSize: 14,
+            height: 20,
             fontFamily: Fonts.regularFont,
             color: Colors.highlightColor,
-            marginTop: Platform.OS === 'ios' ? 20 : 0,
+            marginTop: Platform.OS === 'ios' ? 20 : 12,
           }}>
           {username}
         </ScalableText>
 
+
+{/*
+        <View style={{ justifyContent: 'center', marginTop: 8, height: 50, backgroundColor: 'white' }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{height:50, justifyContent: 'center'}}>
+            <Animated.Text numberOfLines={1}
+                           style={[styles.label, { color: this.state.index === 0 ? Colors.highlightColor : '#5a6f88'}, styles.headerTab]}>
+              {this.state.routes[0].title}
+            </Animated.Text>
+              <View style={[styles.indicator, {    position: 'absolute',
+                left: 0,
+                bottom: 0,
+                right: 0,
+                height: 2,
+              }]} />
+            </View>
+            <Animated.Text numberOfLines={1}
+                           style={[styles.label, { color: this.state.index === 1 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
+              {this.state.routes[1].title}
+            </Animated.Text>
+            <Animated.Text numberOfLines={1}
+                           style={[styles.label, { color: this.state.index === 2 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
+              {this.state.routes[2].title}
+            </Animated.Text>
+            <Animated.Text numberOfLines={1}
+                           style={[styles.label, { color: this.state.index === 3 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
+              {this.state.routes[3].title}
+            </Animated.Text>
+          </View>
+        </View>
+*/}
       </View>
     );
   }
@@ -338,6 +387,8 @@ const styles = StyleSheet.create({
   label: {
     fontSize: generateAdjustedSize(12),
     fontFamily: Fonts.regularFont,
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   tabbar: {
     backgroundColor: '#fff',
@@ -345,6 +396,10 @@ const styles = StyleSheet.create({
   tab: {
     opacity: 1,
     height: 50,
+    width: Dimensions.get('window').width / 4,
+  },
+  headerTab: {
+    opacity: 1,
     width: Dimensions.get('window').width / 4,
   },
 
