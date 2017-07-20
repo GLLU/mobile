@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, TouchableHighlight, Image, View } from 'react-native';
-import LikeView from '../feedscreen/items/LikeView';
+import LikeView from '../feedscreen/items/FeedLikesView';
 import FeedCommentsView from '../feedscreen/items/FeedCommentsView';
 import VolumeButton from './VolumeButton';
 import Utils from '../../utils';
@@ -190,7 +190,7 @@ class MediaContainer extends Component {
             {look.coverType === 'video' ? this.renderVolumButton(look) : null}
           </View>
           <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', height: 30,  bottom: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
-            <LikeView item={look} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookId={look.id}/>
+            <LikeView isLiked={look.liked} likes={look.likes} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookId={look.id}/>
             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.goToProfile()}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{userName}</Text>
             </TouchableOpacity>
