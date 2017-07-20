@@ -1,8 +1,8 @@
 // @flow
 
-import React, { Component } from 'react';
-import { TouchableOpacity, Image, Text, View, StyleSheet, Dimensions } from 'react-native';
-//import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+import React, {Component} from 'react';
+import {TouchableOpacity, Image, Text, View, StyleSheet, Dimensions} from 'react-native';
+import Menu, {MenuContext, MenuOptions, MenuOption, MenuTrigger} from 'react-native-menu';
 import I18n from 'react-native-i18n';
 
 import Fonts from '../../styles/Fonts.styles';
@@ -10,6 +10,7 @@ import Colors from '../../styles/Colors.styles';
 import ProfileScreenStat from './ProfileScreenStat';
 import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import SolidButton from '../common/buttons/SolidButton';
+import FollowView from './follows/FollowView';
 
 type Props = {
   profilePic: string,
@@ -23,7 +24,7 @@ type Props = {
   onStatClicked: () => void,
   onBalanceClicked: () => void,
   onLooksClicked: () => void,
-  onFollowClicked: () => void,
+  onFollowClicked: () => void
 };
 
 const screenWidth = Dimensions.get('window').width;
@@ -43,20 +44,44 @@ class ProfileScreenHeader extends Component {
 
     return (
       <View style={{ height: 300 }}>
-        <Image
-          resizeMode={'stretch'} source={defaultBackground}
-          style={styles.backgroundImage} />
-        <View style={styles.backgroundImage} />
-        <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
-          <ProfileAvatar avatarUrl={profilePic} />
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.username}>@{username}</Text>
-          {isMyProfile ? null : <SolidButton style={styles.followButton} label={'Follow'} onPress={onFollowClicked} />}
-        </View>
-        {this._renderStats()}
+        <MenuContext style={{ flex: 1 }}>
+
+          <Image
+            resizeMode={'stretch'} source={defaultBackground}
+            style={styles.backgroundImage}/>
+          <View style={styles.backgroundImage}/>
+
+          <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
+            <ProfileAvatar avatarUrl={profilePic}/>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.username}>@{username}</Text>
+            <FollowView onPress={onFollowClicked} user={{ isFollowing }} style={styles.followButton}/>
+          </View>
+          {this._renderStats()}
+        </MenuContext>
+
+
       </View>
     );
   }
+
+  _renderMenu = () => (
+    <View style={{ padding: 10, flexDirection: 'row' }}>
+      <Menu style={{ flex: 1, alignItems: 'flex-end' }} onSelect={value => alert(`User selected the number ${value}`)}>
+        <MenuTrigger>
+          <Text style={{ fontSize: 24, color: 'white' }}>&#8942;</Text>
+        </MenuTrigger>
+        <MenuOptions style={{height:100, width: 300}}>
+          <MenuOption value={1}>
+            <Text style={{ fontSize: 20, marginTop: 6, marginBottom: 6 }}>One</Text>
+          </MenuOption>
+          <MenuOption value={2}>
+            <Text style={{ fontSize: 20, marginTop: 6, marginBottom: 6 }}>Two</Text>
+          </MenuOption>
+        </MenuOptions>
+      </Menu>
+    </View>
+  )
 
   _renderStats(): React.Element<any> {
     const { following, followers, looks_count } = this.props.stats;
@@ -71,23 +96,23 @@ class ProfileScreenHeader extends Component {
         {isMyProfile ? <ProfileScreenStat
           title={I18n.t('BALANCE')} number={balance}
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={this._handleBalanceClicked} />
+          onClick={this._handleBalanceClicked}/>
           : null}
 
         <ProfileScreenStat
           title={I18n.t('FOLLOWERS')} number={followers}
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={() => this._handleStatClick('followerScreen', 'followers', followers)} />
+          onClick={() => this._handleStatClick('followerScreen', 'followers', followers)}/>
 
         <ProfileScreenStat
           title={I18n.t('FOLLOWING')} number={following}
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={() => this._handleStatClick('followScreen', 'following', following)} />
+          onClick={() => this._handleStatClick('followScreen', 'following', following)}/>
 
         <ProfileScreenStat
           title={I18n.t('LOOKS')} number={looks_count}
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={this._handleLooksClicked} />
+          onClick={this._handleLooksClicked}/>
 
       </View>
     );
@@ -134,7 +159,6 @@ const styles = StyleSheet.create({
   },
   followButton: {
     marginTop: 8,
-    backgroundColor: Colors.highlightColor,
     height: 35,
     width: 135,
   },

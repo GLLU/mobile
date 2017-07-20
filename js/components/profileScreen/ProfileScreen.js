@@ -45,7 +45,7 @@ type Props = {
   stats: any,
   goBack: () => void,
   logEvent: () => void,
-  onFollowClicked: ()=> void
+  onFollowClicked: () => void
 };
 
 class ProfileScreen extends Component {
@@ -62,6 +62,7 @@ class ProfileScreen extends Component {
         { key: 'closet', title: I18n.t('CLOSET'), index: 2 },
         { key: 'settings', title: I18n.t('SETTINGS'), index: 3 },
       ],
+      isFollowing: props.isFollowing,
     };
   }
 
@@ -84,6 +85,7 @@ class ProfileScreen extends Component {
   render(): React.Element<any> {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
+
         <ParallaxView
           stickyHeaderHeight={stickyHeaderHeight}
           backgroundSpeed={10}
@@ -101,8 +103,8 @@ class ProfileScreen extends Component {
           {this._renderBody()}
 
         </ParallaxView>
-      </View>
 
+      </View>
     );
   }
 
@@ -139,7 +141,7 @@ class ProfileScreen extends Component {
     );
   };
 
-  _renderLabel2 = props => {
+  _renderLabel2 = (props) => {
     const inputRange = props.routes.map((x, i) => i);
     const outputRange = inputRange.map(inputIndex => inputIndex === props.index ? Colors.highlightColor : '#5a6f88');
     const color =
@@ -273,12 +275,16 @@ class ProfileScreen extends Component {
   _configureTransition = () => null;
 
   _renderParallaxHeader = () => {
-    const { balance, userData, isFollowing, userId, isMyProfile, stats, onStatClicked, onFollowClicked } = this.props;
+    const { balance, userData, userId, isMyProfile, stats, onStatClicked, onFollowClicked } = this.props;
+    const { isFollowing } = this.state;
 
     return (<ProfileScreenHeader
       balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username} stats={stats}
       isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}
-      onFollowClicked={() => onFollowClicked(userId, isFollowing)}
+      onFollowClicked={() => {
+        onFollowClicked(userId, isFollowing);
+        this.setState({ isFollowing: !isFollowing });
+      }}
       onBalanceClicked={() => this.setState({ index: 1 })}
       onLooksClicked={() => this.setState({ index: 0 })}
     />);
@@ -305,9 +311,10 @@ class ProfileScreen extends Component {
   };
 
   _renderFixedHeader = () => (
+
     <TouchableHighlight
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-      style={{ position: 'absolute', top: Platform.OS === 'ios' ? 36 : 12, left: 12.5 }}
+      style={{ position: 'absolute', top: Platform.OS === 'ios' ? 32 : 12, left: 12.5 }}
       underlayColor={'transparent'}
       onPress={this._handleBackToFeedPress}>
       <Image
@@ -334,42 +341,42 @@ class ProfileScreen extends Component {
             height: 20,
             fontFamily: Fonts.regularFont,
             color: Colors.highlightColor,
-            marginTop: Platform.OS === 'ios' ? 20 : 12,
+            marginTop: Platform.OS === 'ios' ? 32 : 12,
           }}>
           {username}
         </ScalableText>
 
 
-{/*
-        <View style={{ justifyContent: 'center', marginTop: 8, height: 50, backgroundColor: 'white' }}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{height:50, justifyContent: 'center'}}>
-            <Animated.Text numberOfLines={1}
-                           style={[styles.label, { color: this.state.index === 0 ? Colors.highlightColor : '#5a6f88'}, styles.headerTab]}>
-              {this.state.routes[0].title}
-            </Animated.Text>
-              <View style={[styles.indicator, {    position: 'absolute',
-                left: 0,
-                bottom: 0,
-                right: 0,
-                height: 2,
-              }]} />
-            </View>
-            <Animated.Text numberOfLines={1}
-                           style={[styles.label, { color: this.state.index === 1 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
-              {this.state.routes[1].title}
-            </Animated.Text>
-            <Animated.Text numberOfLines={1}
-                           style={[styles.label, { color: this.state.index === 2 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
-              {this.state.routes[2].title}
-            </Animated.Text>
-            <Animated.Text numberOfLines={1}
-                           style={[styles.label, { color: this.state.index === 3 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
-              {this.state.routes[3].title}
-            </Animated.Text>
-          </View>
-        </View>
-*/}
+        {/*
+         <View style={{ justifyContent: 'center', marginTop: 8, height: 50, backgroundColor: 'white' }}>
+         <View style={{ flexDirection: 'row' }}>
+         <View style={{height:50, justifyContent: 'center'}}>
+         <Animated.Text numberOfLines={1}
+         style={[styles.label, { color: this.state.index === 0 ? Colors.highlightColor : '#5a6f88'}, styles.headerTab]}>
+         {this.state.routes[0].title}
+         </Animated.Text>
+         <View style={[styles.indicator, {    position: 'absolute',
+         left: 0,
+         bottom: 0,
+         right: 0,
+         height: 2,
+         }]} />
+         </View>
+         <Animated.Text numberOfLines={1}
+         style={[styles.label, { color: this.state.index === 1 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
+         {this.state.routes[1].title}
+         </Animated.Text>
+         <Animated.Text numberOfLines={1}
+         style={[styles.label, { color: this.state.index === 2 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
+         {this.state.routes[2].title}
+         </Animated.Text>
+         <Animated.Text numberOfLines={1}
+         style={[styles.label, { color: this.state.index === 3 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
+         {this.state.routes[3].title}
+         </Animated.Text>
+         </View>
+         </View>
+         */}
       </View>
     );
   }

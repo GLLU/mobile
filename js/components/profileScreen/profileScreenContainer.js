@@ -1,6 +1,6 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import {
   getStats,
@@ -14,8 +14,8 @@ import {
   getUserBalance,
 } from '../../actions';
 
-import {editNewLook} from '../../actions/uploadLook';
-import {followUpdate, unFollowUpdate} from '../../actions/follows';
+import { editNewLook } from '../../actions/uploadLook';
+import { followUpdate, unFollowUpdate } from '../../actions/follows';
 
 import asScreen from '../common/containers/Screen';
 
@@ -34,7 +34,7 @@ function bindAction(dispatch: any, ownProps: any): void {
     likeUpdate: id => dispatch(likeUpdate(id)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),
     onFollowClicked: (id: number, isFollowing: boolean) => {
-      isFollowing ? dispatch(unFollowUpdate(id)) : followUpdate(followUpdate(id));
+      isFollowing ? dispatch(unFollowUpdate(id)): dispatch(followUpdate(id));
     },
     onStatClicked: (screen, user, isMyProfile, type, count) => {
       ownProps.navigation.navigate(screen, {

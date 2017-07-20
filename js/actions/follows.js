@@ -1,18 +1,21 @@
+// @flow
+
 import rest from '../api/rest';
 
 // Actions
 export const SET_USER_FOLLOWS_DATA = 'SET_USER_FOLLOWS_DATA';
 export const INIT_USER_FOLLOWS = 'INIT_USER_FOLLOWS';
 
-export function followUpdate(data) {
+export function followUpdate(id) {
+  debugger;
   return (dispatch) => {
-    dispatch(follow(data.id));
+    dispatch(follow(id));
   };
 }
 
-export function unFollowUpdate(data) {
+export function unFollowUpdate(id) {
   return (dispatch) => {
-    dispatch(unfollow(data.id));
+    dispatch(unfollow(id));
   };
 }
 
@@ -22,7 +25,7 @@ export function follow(id) {
   };
 }
 
-export function unfollow(id) {
+export function unfollow(id: number) {
   return (dispatch) => {
     dispatch(rest.actions.follows.delete({ user_id: id }));
   };
