@@ -261,19 +261,19 @@ class LooksScreen extends Component {
         />
         <LookOverlay
           width={width}
-          shouldShowLike={this.state.showAsFeed}
           height={height}
           look={look}
+          lookType={"video"}
+          shouldShowLike={this.state.showAsFeed}
+          isMenuOpen={this.state.isMenuOpen}
+          openComments={openComments}
+          onBottomDrawerOpen={this.onToggleDrawer}
           goBack={this.props.goBack}
           goToProfile={this._goToProfile}
+          goToLikes={this.goToLikes}
           goToEdit={this._goToEdit}
           toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
-          isMenuOpen={this.state.isMenuOpen}
-          onBottomDrawerOpen={this.onToggleDrawer}
-          openComments={openComments}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
-          lookType={"video"}
-          goToLikes={this.goToLikes}
         />
         {showShowArrow ? this.renderUpArrow() : null}
         {showShowArrow ? this.renderDownArrow() : null}
@@ -300,18 +300,18 @@ class LooksScreen extends Component {
           navigation={this.props.cardNavigation}>
           <LookOverlay
             width={width}
-            shouldShowLike={this.state.showAsFeed}
             height={height}
             look={look}
-            goBack={this.props.goBack}
-            goToProfile={(look) => this._goToProfile(look)}
-            toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
+            shouldShowLike={this.state.showAsFeed}
             isMenuOpen={this.state.isMenuOpen}
             openComments={openComments}
             onBottomDrawerOpen={this.onToggleDrawer}
-            shareToken={this.props.shareToken}
-            reportAbuse={this.props.reportAbuse}
+            goBack={this.props.goBack}
+            goToProfile={this._goToProfile}
             goToLikes={this.goToLikes}
+            goToEdit={this._goToEdit}
+            toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
+            reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
           />
           {showShowArrow ? this.renderUpArrow() : null}
           {showShowArrow ? this.renderDownArrow() : null}
