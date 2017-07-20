@@ -1,7 +1,7 @@
-'use strict';
+// @flow
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, View, Text ,TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Image, Platform, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { Col, Grid } from "react-native-easy-grid";
 import { formatNumberAsString } from "../../../utils/FormatUtils";
 
@@ -30,31 +30,46 @@ const styles = StyleSheet.create({
   },
 });
 
-class LikeView extends Component {
+type Props = {
+  item:object,
+  onPress: void,
+  onLikesNumberPress: void
+}
 
-  static propTypes = {
-    item: React.PropTypes.object,
-    onPress: React.PropTypes.func,
-    onLikesNumberPress: React.PropTypes.func
-  }
+class FeedLikesView extends Component {
 
-  constructor(props) {
+  props: Props;
+
+  constructor(props:Props) {
     super(props);
-    this.handleLikePress=this.handleLikePress.bind(this);
-    this.handleLikesNumberPress=this.handleLikesNumberPress.bind(this);
+    this.handleLikePress = this.handleLikePress.bind(this);
+    this.handleLikesNumberPress = this.handleLikesNumberPress.bind(this);
   }
 
   handleLikePress() {
-    const { item } = this.props;
+    const {item} = this.props;
     const shouldActive = !item.liked;
     this.props.onPress(shouldActive);
   }
 
   handleLikesNumberPress() {
     const {item} = this.props;
-    if(item.likes > 0) {
+    if (item.likes > 0) {
       this.props.onLikesNumberPress();
     }
+  }
+
+  renderLikesAmount(likes: number) {
+    const likesAmount = formatNumberAsString(likes);
+    return (
+      <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', marginLeft: 3}}>
+        <TouchableWithoutFeedback onPress={this.handleLikesNumberPress} style={{width: 20, backgroundColor: 'red'}}>
+          <View>
+            <Text style={styles.countLikeLabel}>{`${likesAmount}`}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    );
   }
 
   render() {
@@ -62,27 +77,26 @@ class LikeView extends Component {
     const {item} = this.props;
 
     const likeIconView = item.liked ? likedIcon : likeIcon;
-    const likes = formatNumberAsString(item.likes);
     return (
       <View style={[styles.likeContainer]}>
-        <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', justifyContent: 'space-between', marginRight: 5}}>
-          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
+        <View style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignSelf: 'flex-start',
+          justifyContent: 'space-between',
+          marginRight: 5
+        }}>
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
             <TouchableWithoutFeedback transparent onPress={this.handleLikePress} style={styles.btnWithImage}>
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
           </View>
-          <View style={{flexDirection: 'column', justifyContent: 'center', alignItems:'flex-start'}}>
-            <TouchableWithoutFeedback onPress={this.handleLikesNumberPress} style={{width: 20, backgroundColor: 'red'}}>
-              <View>
-                <Text style={styles.countLikeLabel}>{`${likes}`}</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+          {this.renderLikesAmount(item.likes)}
         </View>
       </View>
     )
   }
 }
 
-export default LikeView
+export default FeedLikesView
 

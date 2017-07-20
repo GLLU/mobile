@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, TouchableHighlight, Image, View } from 'react-native';
-import LikeView from '../feedscreen/items/LikeView';
+import LikeView from '../feedscreen/items/FeedLikesView';
 import FeedCommentsView from '../feedscreen/items/FeedCommentsView';
 import VolumeButton from './VolumeButton';
 import Utils from '../../utils';

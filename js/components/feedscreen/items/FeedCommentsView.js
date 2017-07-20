@@ -29,48 +29,40 @@ const styles = StyleSheet.create({
   },
 });
 
+type Props = {
+  comments: number,
+  onPress: void
+}
+
 class FeedCommentsView extends PureComponent {
 
-  static propTypes = {
-    comments: React.PropTypes.number,
-    onPress: React.PropTypes.func,
-  }
+  props: Props;
 
-  constructor(props) {
-    super(props);
-  }
-
-  getCommentsAmountStringFeedView(comments = 0) {
-    comments = comments.toString();
-    if (comments.length > 4 && comments.length < 7) {
-      comments = `${Math.floor(comments / 1000)}K`;
-    } else if (comments.length === 7) {
-      comments = `${Math.floor(comments / 1000000)}M`;
-    }
-    return comments;
-  }
-
-  renderCommentsAmount(comments: string) {
+  renderCommentsAmount(comments: number) {
+    const commentsAmount = formatNumberAsString(comments);
     return (
-      <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', marginLeft: 3 }}>
-        <View>
-          <Text style={styles.countLikeLabel}>{`${comments}`}</Text>
-        </View>
+      <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', marginLeft: 3}}>
+        <Text style={styles.countLikeLabel}>{`${commentsAmount}`}</Text>
       </View>
     );
   }
 
   render() {
-    const { comments, onPress } = this.props;
-    const commentsAmount = formatNumberAsString(comments);
+    const {comments, onPress} = this.props;
     return (
       <View style={[styles.likeContainer]}>
         <TouchableWithoutFeedback transparent onPress={onPress} style={styles.btnWithImage}>
-          <View style={{ flex: 1, flexDirection: 'row', alignSelf: 'flex-end', justifyContent: 'space-between', marginRight: 5 }}>
-            <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <Image source={bubbleIcon} style={styles.iconBubbleWithImage} />
+          <View style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignSelf: 'flex-end',
+            justifyContent: 'space-between',
+            marginRight: 5
+          }}>
+            <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+              <Image source={bubbleIcon} style={styles.iconBubbleWithImage}/>
             </View>
-            {comments > 0 ? this.renderCommentsAmount(commentsAmount) : <View />}
+            {comments > 0 ? this.renderCommentsAmount(comments) : <View/>}
           </View>
         </TouchableWithoutFeedback>
       </View>
