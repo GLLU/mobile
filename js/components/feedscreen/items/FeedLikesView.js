@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  item:object,
+  likes:number,
+  isLiked:boolean,
   onPress: void,
   onLikesNumberPress: void
 }
@@ -47,14 +48,14 @@ class FeedLikesView extends Component {
   }
 
   handleLikePress() {
-    const {item} = this.props;
-    const shouldActive = !item.liked;
+    const {isLiked} = this.props;
+    const shouldActive = !isLiked;
     this.props.onPress(shouldActive);
   }
 
   handleLikesNumberPress() {
-    const {item} = this.props;
-    if (item.likes > 0) {
+    const {likes} = this.props;
+    if (likes > 0) {
       this.props.onLikesNumberPress();
     }
   }
@@ -74,11 +75,11 @@ class FeedLikesView extends Component {
 
   render() {
 
-    const {item} = this.props;
+    const {likes,isLiked} = this.props;
 
-    const likeIconView = item.liked ? likedIcon : likeIcon;
+    const likeIconView = isLiked ? likedIcon : likeIcon;
     return (
-      <View style={[styles.likeContainer]}>
+      <View style={styles.likeContainer}>
         <View style={{
           flex: 1,
           flexDirection: 'row',
@@ -91,7 +92,7 @@ class FeedLikesView extends Component {
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
           </View>
-          {this.renderLikesAmount(item.likes)}
+          {this.renderLikesAmount(likes)}
         </View>
       </View>
     )
