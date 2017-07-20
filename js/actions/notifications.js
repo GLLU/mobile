@@ -86,7 +86,6 @@ export function goToNotificationSubjectScreen(lookId, notificationId) {
         if (!err && lookData) {
           lookData = feedLookMapper.map(lookData.look);
           lookData.singleItem = true;
-          console.log('notificationId', notificationId)
           dispatch(markAsReadNotifications(notificationId))
           resolve(lookData);
         }

@@ -6,6 +6,7 @@ import rest from '../api/rest';
 import _ from 'lodash';
 import i18n from 'react-native-i18n';
 import LoginService from '../services/loginService';
+import NetworkManager from '../network/NetworkManager';
 import UsersService from '../services/usersService';
 
 export const SET_USER = 'SET_USER';
@@ -43,6 +44,7 @@ const signInFromRest = function (dispatch, data) {
       reject();
     }
     Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+      NetworkManager.setToken(data.user.api_key);
       setRestOptions(dispatch, rest, data.user);
       dispatch(setUser(data.user));
       resolve(data.user);
@@ -203,6 +205,7 @@ export function checkLogin(user) {
     if (user && user.id != -1) {
       Utils.getKeychainData().then((credentials) => {
         if (credentials) {
+          NetworkManager.setToken(user.api_key);
           setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
           dispatch(rest.actions.auth.get({}, (err, data) => {
             if (!err) {
@@ -351,7 +354,6 @@ export function hideTutorial() {
 }
 
 export function clearBodyModal() {
-  console.log('clear action');
   return (dispatch, getState) => {
     dispatch(hideBodyModal());
   };

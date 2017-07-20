@@ -1,7 +1,7 @@
-import React,{PureComponent} from 'react';
+import React,{Component} from 'react';
 import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, TouchableHighlight, Image, View } from 'react-native';
 import LikeView from '../feedscreen/items/LikeView';
-import CommentsView from '../feedscreen/items/CommentsView';
+import FeedCommentsView from '../feedscreen/items/FeedCommentsView';
 import VolumeButton from './VolumeButton';
 import Utils from '../../utils';
 import VideoWithCaching from "./media/VideoWithCaching";
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 const likeSentences = ["Wow, it will look amazing on you!", 'Nice Look, she looks poppy!', 'I liked it also, pretty nice!', 'That girl is on fire!', 'Very nice! can look perfect on you!']
 
-class MediaContainer extends PureComponent {
+class MediaContainer extends Component {
   static propTypes = {
     handleSearchInput: React.PropTypes.func,
     likeUpdate: React.PropTypes.func,
@@ -194,7 +194,7 @@ class MediaContainer extends PureComponent {
             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.goToProfile()}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{userName}</Text>
             </TouchableOpacity>
-            <CommentsView item={look} onPress={this._handleCommentPress} lookId={look.id}/>
+            <FeedCommentsView comments={look.comments} onPress={this._handleCommentPress} lookId={look.id}/>
           </View>
         </View>
       )
@@ -223,6 +223,6 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, bindActions)(withAnalytics(MediaContainer));

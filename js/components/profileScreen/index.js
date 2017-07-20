@@ -211,7 +211,7 @@ class ProfileScreen extends Component {
     }
     const {meta: {total_count}, query} = this.props;
     const pageSize = query.page.size;
-    const pageNumber = query.page.number;
+    const pageNumber = query["page[number]"];
     if (pageSize * pageNumber < total_count) {
     // if (pageSize * pageNumber < total_count) {
       this.setState({isLoading: true}, () => {

@@ -118,8 +118,8 @@ class LookOverlay extends Component {
     return (
       <MenuView
         lookId={look.id}
-        userId={look.user.id}
-        isMyLook={look.user.is_me}
+        userId={look.userId}
+        isMyLook={look.isMe}
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}
         onEditPress={() => this.goToEdit(look)}

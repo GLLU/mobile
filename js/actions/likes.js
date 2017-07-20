@@ -1,3 +1,5 @@
+// @flow
+
 import rest from '../api/rest';
 
 // Actions
@@ -9,17 +11,17 @@ export function likeUpdate(id) {
   return (dispatch) => {
     dispatch({
       type: LOOK_LIKE,
-      lookId:id
+      lookId: id,
     });
     dispatch(like(id));
   };
 }
 
-export function unlikeUpdate(id) {
+export function unlikeUpdate(id: number) {
   return (dispatch) => {
     dispatch({
       type: LOOK_UNLIKE,
-      lookId:id
+      lookId: id,
     });
     dispatch(unlike(id));
   };
