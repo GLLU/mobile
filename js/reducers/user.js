@@ -29,9 +29,6 @@ const ACTION_HANDLERS = {
   }),
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
-    NetworkManager.setToken(user.api_key);
-
-    delete user.api_key;
     return {
       ...state,
       ...user,

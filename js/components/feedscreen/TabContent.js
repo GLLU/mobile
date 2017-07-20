@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+// @flow
+
+import React from 'react';
 import {
   Image,
   ScrollView,
@@ -11,15 +12,14 @@ import {
   Animated,
   RefreshControl,
   View,
-  NetInfo
+  NetInfo,
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import { showBodyTypeModal, getFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
-import { formatInvitationMessage } from "../../lib/messages/index";
+import { formatInvitationMessage } from '../../lib/messages/index';
 const deviceWidth = Dimensions.get('window').width;
 const LOADER_HEIGHT = 30;
 
@@ -39,22 +39,22 @@ class TabContent extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this._renderRefreshControl = this._renderRefreshControl.bind(this)
-    this.onRefresh = this.onRefresh.bind(this)
-    this.handleScroll = this.handleScroll.bind(this)
-    this.loadMore = this.loadMore.bind(this)
+    this._renderRefreshControl = this._renderRefreshControl.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+    this.loadMore = this.loadMore.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
       isRefreshing: false,
       currentScrollPosition: 0,
-      flatLooksLeft: _.filter(props.flatLooks,(look,index)=>index%2===0),
-      flatLooksRight: _.filter(props.flatLooks,(look,index)=>index%2===1),
-      loadingMore: false
+      flatLooksLeft: _.filter(props.flatLooks, (look, index) => index % 2 === 0),
+      flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
+      loadingMore: false,
     };
-    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100)
+    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100);
     this.showBodyModal = _.once(this._showBodyModal);
-    this.currPosition = 0
+    this.currPosition = 0;
   }
 
   _onInviteFriendsClick() {
@@ -64,32 +64,33 @@ class TabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    let that = this
-    setInterval(function(){ that.handleScrollPositionForVideo(); }, 1000);
+    const that = this;
+    setInterval(() => { that.handleScrollPositionForVideo(); }, 1000);
     NetInfo.isConnected.fetch().done(
-      (isConnected) => { isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null }
+      (isConnected) => { isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null; }
     );
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.flatLooks !== this.props.flatLooks){
-      this.setState({flatLooksLeft: _.filter(nextProps.flatLooks,(look,index)=>index%2===0), flatLooksRight: _.filter(nextProps.flatLooks,(look,index)=>index%2===1), loadingMore: false})
+    if (nextProps.flatLooks !== this.props.flatLooks) {
+      this.setState({
+        flatLooksLeft: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 0),
+        flatLooksRight: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 1),
+        loadingMore: false });
     }
 
-    if(this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
-
+    if (this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
       // show modal after done loading for 3 seconds
       if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
         if (!this.props.hasUserSize) {
-          setTimeout(() => {this.showBodyModal();}, 3000);
+          setTimeout(() => { this.showBodyModal(); }, 3000);
         }
       }
     }
-    if(nextProps.clearedField){
-      this.currPosition = 0
-      this.setState({noMoreData: false})
+    if (nextProps.clearedField) {
+      this.currPosition = 0;
+      this.setState({ noMoreData: false });
     }
-
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -105,53 +106,53 @@ class TabContent extends BaseComponent {
   // }
 
   handleScroll(event) {
-    if(this.props.cardNavigationStack.index === 0) {
+    if (this.props.cardNavigationStack.index === 0) {
       if (this.props.showBodyModal) {
         this.scrollCallAsync(event);
-        this.props.clearBodyModal()
+        this.props.clearBodyModal();
       } else {
         const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
         const contentSizeHeight = event.nativeEvent.contentSize.height;
-        const currentScroll = event.nativeEvent.contentOffset.y
-        if (currentScroll + layoutMeasurementHeight > contentSizeHeight-250) {//currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
-          if(!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({loadingMore: true}, this.loadMore)
+        const currentScroll = event.nativeEvent.contentOffset.y;
+        if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+          if (!this.state.loadingMore && !this.state.isLoading) {
+            this.setState({ loadingMore: true }, this.loadMore);
           }
         } else {
         }
       }
       this.currPosition = event.nativeEvent.contentOffset.y;
     }
-
   }
 
 
   handleScrollPositionForVideo() {
-    if(this.state.currentScrollPosition !== this.currPosition) {
-      this.setState({currentScrollPosition: this.currPosition})
+    if (this.state.currentScrollPosition !== this.currPosition) {
+      this.setState({ currentScrollPosition: this.currPosition });
     }
   }
 
   loadMore() {
     if (this.state.isLoading) {
-      console.log('already isLoading')
+      console.log('already isLoading');
       return;
     }
-    const {meta: {total}, query} = this.props;
+    const { meta: { total }, query } = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({isLoading: true}, () => {
+      this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-          this.setState({isLoading: false})}
-        ).catch(err => {
+          this.setState({ isLoading: false });
+        }
+        ).catch((err) => {
           console.log('error', err);
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
         });
       });
     } else {
-      this.setState({noMoreData: true})
+      this.setState({ noMoreData: true });
       console.log('end of feed');
     }
   }
@@ -164,19 +165,18 @@ class TabContent extends BaseComponent {
     this.showBodyModal();
   }
 
-  _renderLooks(looks) {
-    return _.map(looks, (look) => {
-      return (
-          <MediaContainer look={look}
-                          currScroll={this.state.currentScrollPosition}
-                          navigateTo={this.props.navigateTo}
-                          sendParisMessage={this.props.showParisBottomMessage}
-                          key={look.id}
-                          shouldOptimize={this.state.flatLooksLeft.length>10}
-                          showMediaGrid={true}
-                          fromScreen={'Feedscreen'}/>
-      );
-    });
+  _renderLooks(looks: array) {
+    return _.map(looks, look => (
+      <MediaContainer
+        look={look}
+        currScroll={this.state.currentScrollPosition}
+        navigateTo={this.props.navigateTo}
+        sendParisMessage={this.props.showParisBottomMessage}
+        key={look.id}
+        shouldOptimize={this.state.flatLooksLeft.length > 10}
+        showMediaGrid
+        fromScreen={'Feedscreen'} />
+      ));
   }
 
   _renderLoadMore() {
@@ -184,14 +184,13 @@ class TabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>
+            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color='rgb(230,230,230)'/>;
+            return <Spinner color="rgb(230,230,230)" />;
           }
-          if(this.props.flatLooks.length > 2) {
+          if (this.props.flatLooks.length > 2) {
             return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
-
           }
           return null;
         })()}
@@ -202,7 +201,7 @@ class TabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color='#666666'/>
+          <Spinner color="#666666" />
         </View>
       );
     }
@@ -211,8 +210,8 @@ class TabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover}/>
-    )
+      <View style={styles.refreshingCover} />
+    );
   }
 
   _renderRefreshControl() {
@@ -224,65 +223,66 @@ class TabContent extends BaseComponent {
         colors={['#666666']}
         progressBackgroundColor="#fff"
       />
-    )
+    );
   }
 
   onRefresh() {
-    this.setState({isRefreshing: true})
-    const {getFeed, query} = this.props;
+    this.setState({ isRefreshing: true });
+    const { getFeed, query } = this.props;
     // reset the first page
     query.page.number = 1;
     getFeed(query)
       .then(() => {
-        this.setState({isRefreshing: false})
+        this.setState({ isRefreshing: false });
       })
-      .catch(error => {
-        console.log('Error when preload image', error)
-        this.setState({isRefreshing: false})
+      .catch((error) => {
+        console.log('Error when preload image', error);
+        this.setState({ isRefreshing: false });
       });
   }
 
   renderInviteFriend() {
     return (
-      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
-        <Image source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-               style={{width: deviceWidth / 2-6, height: deviceWidth / 4}}
-               resizeMode={'stretch'}/>
+      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
+        <Image
+          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
+          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
+          resizeMode={'stretch'} />
       </View>
-    )
+    );
   }
 
   renderColumns() {
     return (
-      <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end',  alignSelf: 'center', }}>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+      <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end', alignSelf: 'center' }}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin:0}}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
             {this.renderInviteFriend()}
           </TouchableOpacity>
           {this._renderLooks(this.state.flatLooksRight)}
         </View>
       </View>
-    )
+    );
   }
 
   render() {
-      return (
-        <View style={styles.tab}>
-          <ScrollView
-            style={{flex: 1}}
-            scrollEventThrottle={100}
-            onScroll={this.handleScroll}
-            refreshControl={this._renderRefreshControl()}>
-            {this.renderColumns()}
-            {this._renderLoadMore()}
-            {this._renderRefreshingCover()}
-          </ScrollView>
-          {this._renderLoading()}
-        </View>
-      )
+    return (
+      <View style={styles.tab}>
+        <ScrollView
+          style={{ flex: 1 }}
+          scrollEventThrottle={100}
+          onScroll={this.handleScroll}
+          refreshControl={this._renderRefreshControl()}>
+          {this.renderColumns()}
+          {this._renderLoadMore()}
+          {this._renderRefreshingCover()}
+        </ScrollView>
+        {this._renderLoading()}
+      </View>
+    );
   }
 }
 
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   refreshingCover: {
     position: 'absolute',
@@ -318,35 +318,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
 });
 
-function bindActions(dispatch) {
-  return {
-    showBodyTypeModal: () => dispatch(showBodyTypeModal()),
-    getFeed: (query) => dispatch(getFeed(query)),
-    loadMore: () => dispatch(loadMore()),
-    clearBodyModal: () => dispatch(clearBodyModal()),
-    showParisBottomMessage: (message) => dispatch(showParisBottomMessage(message)),
-  };
-}
-
-const mapStateToProps = state => {
-  const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const user_size = hasUserSize ? state.user.user_size : '';
-  return {
-    modalShowing: state.myBodyType.modalShowing,
-    flatLooks: state.feed.flatLooksData,
-    meta: state.feed.meta,
-    query: state.feed.query,
-    hasUserSize,
-    user_size: user_size,
-    user_gender: state.user.gender,
-    cardNavigationStack: state.cardNavigation,
-    userName: state.user.name,
-    showBodyModal: state.user.showBodyModal
-  }
-};
-
-export default connect(mapStateToProps, bindActions)(TabContent);
+export default TabContent;
