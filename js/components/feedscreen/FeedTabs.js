@@ -18,7 +18,7 @@ export default class FeedTabs extends PureComponent {
 
   _handleIndexChange = index => this.setState({ index });
 
-  _renderHeader = props => <TabBar style={{ backgroundColor: Colors.separatorGray }} labelStyle={{ color: Colors.black, fontWeight: '600' }} indicatorStyle={{backgroundColor: Colors.secondaryColor}} {...props} />;
+  _renderHeader = props => <TabBar tabStyle={{height: 41.5}} style={{ backgroundColor: Colors.backgroundGrey }} labelStyle={{ color: Colors.black, fontWeight: '600' }} indicatorStyle={{backgroundColor: Colors.secondaryColor}} {...props} />;
 
   _renderScene = SceneMap({
     1: ()=><FollowingTabContent navigateTo={this.props.navigateTo} />,
