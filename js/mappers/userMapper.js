@@ -1,5 +1,4 @@
 export function map(user) {
-  console.log('user',user)
   return {
     userId: user.id,
     avatar: user.avatar,
@@ -8,5 +7,5 @@ export function map(user) {
     isFollowing: user.is_following,
     aboutMe: user.about_me,
     isMe: user.is_me,
-  }
+  };
 }

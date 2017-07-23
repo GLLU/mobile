@@ -62,7 +62,7 @@ class UserActionRow extends Component {
     this.renderFollowView = this.renderFollowView.bind(this);
     this.onFollowPress = this.onFollowPress.bind(this);
     this.state = {
-      isFollowing: props.is_following
+      isFollowing: props.isFollowing
     }
   }
 
