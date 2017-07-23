@@ -12,7 +12,6 @@ function bindAction(dispatch, ownProps) {
   return {
     logout: () => {
 
-      debugger;
       Analytics.logEvent('SettingsScreen', { name: 'logout' });
       dispatch(logout());
       ownProps.navigation.dispatch(new NavigationActions.reset({

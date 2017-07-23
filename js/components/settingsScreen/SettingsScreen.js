@@ -11,7 +11,6 @@ import {
 } from '../../constants';
 
 import {formatInvitationMessage} from '../../lib/messages/index';
-import Header from '../common/containers/ModalHeader';
 import FullscreenView from '../common/containers/FullscreenView';
 
 const iconShare = require('../../../images/icons/share.png');
@@ -125,13 +124,9 @@ class SettingsScreen extends Component {
     const { onBack } = this.props;
 
     return (
-      <FullscreenView style={{ backgroundColor: 'white' }}>
-        <FlatList
-          data={this.state.settings}
-          keyExtractor={(item, index) => index}
-          renderItem={this.renderListItem}
-        />
-      </FullscreenView>
+    <View>
+      {this.state.settings.map(item => this.renderListItem({item}))}
+    </View>
     );
   }
 }

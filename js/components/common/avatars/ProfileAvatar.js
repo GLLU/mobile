@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
   avatarImg: {
     width: 100,
     height: 100,
-    borderRadius: 50,
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'white',
@@ -24,6 +23,9 @@ const styles = StyleSheet.create({
   profilePicBtn: {
     width: 30,
     height: 20,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   /*
    editProfileAvatarImg: {
@@ -67,32 +69,41 @@ class ProfileAvatar extends PureComponent {
 
   renderAvatar() {
     const { avatarUrl, isEditable, isLoading, style } = this.props;
+
+    let borderRadius = 50;
+
+    if (style && style.width) {
+      borderRadius = style.width / 2;
+    }
     return (
-      <Image source={{ uri: avatarUrl }} style={[this.getContainerStyle(), style]} borderRadius={50}>
-        {this.renderOverlay(isEditable, isLoading)}
+      <Image source={{ uri: avatarUrl }} style={[this.getContainerStyle(), style]} borderRadius={borderRadius}>
+        {this.renderOverlay(isEditable, isLoading, style)}
       </Image>
     );
   }
 
   renderWhiteCircle() {
     const { isEditable, isLoading, style } = this.props;
+
+    let borderRadius = 50;
+
+    if (style && style.width) {
+      borderRadius = style.width / 2;
+    }
+
     return (
-      <View style={[this.getContainerStyle(), style]} borderRadius={50}>
-        {this.renderOverlay(isEditable, isLoading)}
+      <View style={[this.getContainerStyle(), style]} borderRadius={borderRadius}>
+        {this.renderOverlay(isEditable, isLoading, style)}
       </View>
     );
   }
 
-  renderOverlay(isEditable, isLoading) {
-    return isEditable ? (
-      <View style={[styles.changeImageIconContainer, (Platform.OS === 'ios') ? null : styles.editAvatarImage]}>
-        {
-          isLoading ?
-            <Spinner color="white" style={styles.profilePicBtn}/> :
-            <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'}/>
-        }
-      </View>
-    ) : null;
+  renderOverlay(isEditable, isLoading, style) {
+    return isEditable ? isLoading ?
+      <Spinner color="white" style={styles.profilePicBtn}/> :
+      <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'}/>
+
+      : null;
   }
 
   render() {

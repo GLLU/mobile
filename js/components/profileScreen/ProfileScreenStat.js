@@ -6,6 +6,7 @@ import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'rea
 import { formatNumberAsString } from '../../utils/FormatUtils';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
+import {generateAdjustedSize} from '../../utils/AdjustedFontSize';
 
 type Props = {
   number: string,
@@ -25,7 +26,7 @@ class ProfileScreenStat extends Component {
       <TouchableOpacity onPress={onClick} style={style}>
         <View style={{ alignItems: 'center' }}>
           {number >= 0 ? <Text style={styles.number}>{formatNumberAsString(number)}</Text> :
-          <ActivityIndicator animating style={{ height: 50 }} color={Colors.highlightColor} />}
+          <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />}
           <Text style={styles.text}>{title}</Text>
         </View>
       </TouchableOpacity>
@@ -35,13 +36,13 @@ class ProfileScreenStat extends Component {
 
 const styles = StyleSheet.create({
   number: {
-    fontSize: 37,
+    fontSize: generateAdjustedSize(37),
     fontFamily: Fonts.regularFont,
-    color: Colors.highlightColor,
+    color: Colors.secondaryColor,
   },
   text: {
     color: Colors.white,
-    fontSize: 14,
+    fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.regularFont,
   },
 });

@@ -1,11 +1,18 @@
+import {normalize, arrayOf} from 'normalizr';
+
 import rest from '../api/rest';
+import usersService from '../services/usersService';
+import {unifyLooks} from '../utils/FeedUtils';
+import {setLooksData, parseQueryFromState} from './feed';
+import {lookSchema, lookListSchema} from '../schemas/schemas';
+
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
 export const SET_USER_LOOKS_FEED_DATA_QUEUE = 'SET_USER_LOOKS_FEED_DATA_QUEUE';
 import _ from 'lodash';
 
 export function getUserLooks(looksCall, query, retryCount = 0) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const query = Object.assign({}, query, {
       page: {
         size: 10,
@@ -13,21 +20,23 @@ export function getUserLooks(looksCall, query, retryCount = 0) {
       },
       id: looksCall.id,
     });
-    return new Promise((resolve, reject) => {
-      return dispatch(rest.actions.user_looks(query, {}, (err, data) => {
-        if (!err && !_.isEmpty(data)) {
-          data.currId = looksCall.id;
-          dispatch(setUserLooks({data, query: query}));
-          dispatch(loadMoreUserLooks(looksCall))
-          resolve(data.looks);
-        } else {
-          if(retryCount < 5) {
-            dispatch(getUserLooks(looksCall,query, retryCount+1))
-          } else {
-            reject();
-          }
-        }
-      }));
+
+    return usersService.getUserLooks(looksCall.id, { ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
+      if (data) {
+        const { looks, meta } = data;
+        const normalizedLooksData = normalize(looks, [lookSchema]);
+        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query }));
+        dispatch(setUserLooks({ flatLooksIdData: normalizedLooksData.result, meta, query, currId: looksCall.id }));
+        dispatch(loadMoreUserLooks(looksCall));
+        Promise.resolve(data);
+      } else if (retryCount < 5) {
+        dispatch(getUserLooks(looksCall, query, retryCount + 1));
+      } else {
+        Promise.reject();
+      }
+    }).catch((error) => {
+      Promise.reject(error);
     });
   };
 }
@@ -35,9 +44,11 @@ export function getUserLooks(looksCall, query, retryCount = 0) {
 export function loadMoreUserLooks(looksCall, retryCount = 0) {
   return (dispatch, getState) => {
     const state = getState().userLooks;
-    const currPage = state.query.page.number
+    const currPage = state.query.page.number;
     const nextPageNumber = currPage + 1;
-    const newState = _.merge(state.query, {page: { number: nextPageNumber }});
+    const newState = _.merge(state.query, { page: { number: nextPageNumber } });
+    const params = parseQueryFromState(newState);
+
     const query = {
       page: {
         size: 10,
@@ -45,73 +56,67 @@ export function loadMoreUserLooks(looksCall, retryCount = 0) {
       },
       id: looksCall.id,
     };
-    return new Promise((resolve, reject) => {
-      if(state.userLooksDataQueue.length > 0 && currPage > 1) {
-        const data = {looks: state.userLooksDataQueue, meta: state.meta}
-        console.log('user looks', data);
-        dispatch(setUserLooks({data, query: newState, loadMore: true}));
-      }
-      return dispatch(rest.actions.user_looks(newState, (err, data) => {
-        if (!err && !_.isEmpty(data)) {
-          data.currId = looksCall.id;
-          console.log('user looks data  queue', data);
-          dispatch(setUserLooksDataQueue({data, query, loadMore: true}));
-          resolve(data.looks);
-        } else {
-          if(retryCount < 5) {
-            dispatch(loadMoreUserLooks(looksCall, query, retryCount+1))
-          } else {
-            reject();
-          }
 
-        }
-      }));
+    return usersService.getUserLooks(looksCall.id, params).then((data) => {
+      if (data) {
+        const { looks, meta } = data;
+        const normalizedLooksData = normalize(looks, [lookSchema]);
+        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
+        const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result);
+        dispatch(setUserLooks({ flatLooksIdData, meta, query: newState, currId: looksCall.id }));
+        Promise.resolve(data.looks);
+      } else if (retryCount < 5) {
+        dispatch(loadMoreUserLooks(looksCall, params, retryCount + 1));
+      } else {
+        Promise.reject();
+      }
+    }).catch((error) => {
+      Promise.reject(error);
     });
   };
 }
 
 export function getUserLooksData(data) {
   return (dispatch) => {
-    let looksData = {
+    const looksData = {
       currId: data.id,
       name: data.name,
       looksCount: data.looksCount,
-      isMyProfile: data.isMyProfile
-    }
+      isMyProfile: data.isMyProfile,
+    };
     dispatch(setUserLooksData(looksData));
   };
 }
 
 export function reportAbuse(look_id) {
   const data = { look_id };
-  return (dispatch) => {
-    return dispatch(rest.actions.report_abuse.post({} ,{ body: JSON.stringify(data) } , (err, data) => {
-      if (!err && data) {
-        console.log('abuse Reported:', data)
-      } else {
-        console.log('abuse Reported Failed', err)
-      }
-    }));
-  };
+  return dispatch => dispatch(rest.actions.report_abuse.post({}, { body: JSON.stringify(data) }, (err, data) => {
+    if (!err && data) {
+      console.log('abuse Reported:', data);
+    } else {
+      console.log('abuse Reported Failed', err);
+    }
+  }));
 }
 
 export function setUserLooksData(data) {
   return {
     type: SET_USER_LOOKS_DATA,
-    payload: data
+    payload: data,
   };
 }
 
 export function setUserLooks(data) {
   return {
     type: SET_USER_LOOKS,
-    payload: data
+    payload: data,
   };
 }
 
 export function setUserLooksDataQueue(data) {
   return {
     type: SET_USER_LOOKS_FEED_DATA_QUEUE,
-    payload: data
+    payload: data,
   };
 }

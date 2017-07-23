@@ -24,7 +24,8 @@ type Props = {
   onStatClicked: () => void,
   onBalanceClicked: () => void,
   onLooksClicked: () => void,
-  onFollowClicked: () => void
+  onFollowClicked: () => void,
+  onProfileEdit: () => void
 };
 
 const screenWidth = Dimensions.get('window').width;
@@ -40,27 +41,23 @@ class ProfileScreenHeader extends Component {
   }
 
   render(): React.Element<any> {
-    const { profilePic, name, username, isFollowing, userid, isMyProfile, onFollowClicked } = this.props;
+    const { profilePic, name, username, isFollowing, userid, isMyProfile, onFollowClicked, onProfileEdit } = this.props;
 
     return (
-      <View style={{ height: 300 }}>
-        <MenuContext style={{ flex: 1 }}>
+      <View style={{ height: 280 }}>
+        <Image
+          resizeMode={'stretch'} source={defaultBackground}
+          style={styles.backgroundImage}/>
+        <View style={styles.backgroundImage}/>
 
-          <Image
-            resizeMode={'stretch'} source={defaultBackground}
-            style={styles.backgroundImage}/>
-          <View style={styles.backgroundImage}/>
-
-          <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
-            <ProfileAvatar avatarUrl={profilePic}/>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.username}>@{username}</Text>
-            <FollowView onPress={onFollowClicked} user={{ isFollowing }} style={styles.followButton}/>
-          </View>
-          {this._renderStats()}
-        </MenuContext>
-
-
+        <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
+          <ProfileAvatar style={{ width: 60, height: 60 }} avatarUrl={profilePic}/>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.username}>@{username}</Text>
+          {isMyProfile ? null :
+            <FollowView onPress={onFollowClicked} user={{ isFollowing }} style={styles.followButton}/>}
+        </View>
+        {this._renderStats()}
       </View>
     );
   }
@@ -71,7 +68,7 @@ class ProfileScreenHeader extends Component {
         <MenuTrigger>
           <Text style={{ fontSize: 24, color: 'white' }}>&#8942;</Text>
         </MenuTrigger>
-        <MenuOptions style={{height:100, width: 300}}>
+        <MenuOptions style={{ height: 100, width: 300 }}>
           <MenuOption value={1}>
             <Text style={{ fontSize: 20, marginTop: 6, marginBottom: 6 }}>One</Text>
           </MenuOption>
@@ -163,7 +160,7 @@ const styles = StyleSheet.create({
     width: 135,
   },
   username: {
-    color: Colors.highlightColor,
+    color: Colors.secondaryColor,
     fontSize: 15,
     fontFamily: Fonts.regularFont,
   },
@@ -174,12 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 5,
     borderWidth: 2,
-    color: Colors.highlightColor,
+    color: Colors.secondaryColor,
   },
   editText: {
     textAlign: 'center',
     fontFamily: Fonts.regularFont,
-    color: Colors.highlightColor,
+    color: Colors.secondaryColor,
   },
 
 });

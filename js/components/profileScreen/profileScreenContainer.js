@@ -16,6 +16,7 @@ import {
 
 import { editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
+import { getLooksById } from '../../utils/FeedUtils';
 
 import asScreen from '../common/containers/Screen';
 
@@ -36,6 +37,9 @@ function bindAction(dispatch: any, ownProps: any): void {
     onFollowClicked: (id: number, isFollowing: boolean) => {
       isFollowing ? dispatch(unFollowUpdate(id)): dispatch(followUpdate(id));
     },
+    onProfileEdit: (user) => {
+      ownProps.navigation.navigate('editProfileScreen');
+    },
     onStatClicked: (screen, user, isMyProfile, type, count) => {
       ownProps.navigation.navigate(screen, {
         user,
@@ -51,21 +55,23 @@ const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userData = ownProps.navigation.state.params;
   const isMyProfile = userData.is_me;
-  const userId = isMyProfile ? userData.id : userData.user_id;
+  const userId = isMyProfile ? userData.id : userData.userId;
   const userSize = hasUserSize ? state.user.user_size : {};
+
   return {
     userData,
     stats: state.stats,
     balance: state.wallet.balance,
     hasUserSize,
     userSize,
+    userGender: state.user.gender,
     isMyProfile,
     userId,
     navigation: ownProps.navigation,
     isFollowing: userData.is_following,
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
-    userLooks: userId === state.userLooks.currId ? state.userLooks.userLooksData : [],
+    userLooks: userId === state.userLooks.currId ? getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData) : [],
     cardNavigation: state.cardNavigation,
     meta: userId === state.userLooks.currId ? state.userLooks.meta : { total_count: 0 },
     query: state.userLooks.query,

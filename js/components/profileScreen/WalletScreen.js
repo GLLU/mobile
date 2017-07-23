@@ -1,16 +1,18 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import {Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Image} from 'react-native';
+import I18n from 'react-native-i18n';
 
-import { generateAdjustedSize } from '../../utils/AdjustedFontSize';
+import {generateAdjustedSize} from '../../utils/AdjustedFontSize';
 import SolidButton from '../common/buttons/SolidButton';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 
-const deviceWidth = Dimensions.get('window').width;
+const cardLogo = require('../../../images/logo/cardLogo.png');
+const cardBG = require('../../../images/backgrounds/cardBG.png');
 
 class WalletScreen extends Component {
 
@@ -30,21 +32,23 @@ class WalletScreen extends Component {
     return (
       <View style={styles.container}>
         <View>
-          <LinearGradient
-            style={styles.card} colors={['#000000', '#000000', '#000000']} />
-          <Text style={styles.logo}>inFash</Text>
+          <Image
+            style={styles.card} source={cardBG}/>
+          <Image style={styles.logo} resizeMode={'contain'} source={cardLogo}/>
           <View style={{ position: 'absolute', top: 53, left: 16 }}>
-            <Text style={styles.balanceTitle}>Current Balance</Text>
-            <Text style={styles.balanceAmount}>{balance}<Text style={styles.dolarSign}>USD</Text></Text>
+            <Text style={styles.balanceTitle}>{I18n.t('CURRENT_BALANCE')}</Text>
+            <Text style={styles.balanceAmount}>{balance}<Text style={styles.dolarSign}>{I18n.t('USD')}</Text></Text>
             <Text style={styles.lastUpdate}>Last update: 06.06.17</Text>
           </View>
         </View>
 
         <Text style={[styles.lastUpdate, { alignSelf: 'center' }]}>13.30 USD pending confirmation</Text>
 
-        <SolidButton label="Withdraw" style={styles.withdrawButton} />
+        <SolidButton label="Withdraw" style={styles.withdrawButton}/>
 
-        <Text style={styles.transactionDetails}>Transaction details</Text>
+        {/*
+         <Text style={styles.transactionDetails}>Transaction details</Text>
+         */}
 
       </View>
     );
@@ -67,21 +71,26 @@ const styles = StyleSheet.create({
   logo: {
     position: 'absolute',
     top: 16,
+    width: 50,
+    height:22.5,
     right: 16,
     color: 'white',
   },
   balanceTitle: {
     fontFamily: Fonts.regularFont,
-    color: 'white',
+    backgroundColor: 'transparent',
+    color: Colors.white,
     fontSize: generateAdjustedSize(13),
   },
   balanceAmount: {
     fontFamily: Fonts.regularFont,
-    color: 'white',
+    backgroundColor: 'transparent',
+    color: Colors.white,
     fontSize: generateAdjustedSize(40),
   },
   lastUpdate: {
     fontFamily: Fonts.regularFont,
+    backgroundColor: 'transparent',
     fontSize: generateAdjustedSize(13),
     color: 'rgb(154, 154, 154)',
     marginTop: generateAdjustedSize(8),
@@ -89,19 +98,21 @@ const styles = StyleSheet.create({
   withdrawButton: {
     width: generateAdjustedSize(265),
     height: generateAdjustedSize(45),
-    backgroundColor: '#ff3a7d',
+    backgroundColor: Colors.highlightColor,
     marginTop: generateAdjustedSize(25),
   },
   transactionDetails: {
     fontFamily: Fonts.regularFont,
     fontSize: generateAdjustedSize(16),
     color: 'rgb(104,104,104)',
+    backgroundColor: 'transparent',
     marginTop: generateAdjustedSize(24.5),
   },
   dolarSign: {
     fontFamily: Fonts.regularFont,
+    backgroundColor: 'transparent',
     fontSize: generateAdjustedSize(11.5),
-    color: 'white',
+    color: Colors.white,
   },
 });
 

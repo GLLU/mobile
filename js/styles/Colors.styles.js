@@ -1,7 +1,7 @@
 const Colors = {
   primaryColor: '#00D7B2',
-  secondaryColor: '',
-  highlightColor: '#00D7B2',
+  secondaryColor: '#00D7B2',
+  highlightColor: '#ff3a7d',
   disabled: '',
   background: '#F2F2F2',
   white: '#FFFFFF',

@@ -6,7 +6,7 @@ import {
   View,
   StyleSheet,
   Platform,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
   Animated,
   Dimensions,
@@ -63,11 +63,14 @@ class ProfileScreen extends Component {
         { key: 'settings', title: I18n.t('SETTINGS'), index: 3 },
       ],
       isFollowing: props.isFollowing,
+      userLooks: props.userLooks,
+      stats: props.stats,
+      userId: props.userId,
     };
   }
 
   componentWillMount() {
-    const { getStats, userId, isMyProfile, getUserBalance, getUserLooks } = this.props;
+    const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getUserBodyType, hasUserSize, userSize, userGender } = this.props;
 
     getStats(userId);
 
@@ -75,11 +78,28 @@ class ProfileScreen extends Component {
       getUserBalance(userId);
     }
 
+    if (hasUserSize) {
+      const data = {
+        gender: userGender,
+        bodyType: userSize.body_type,
+      };
+      getUserBodyType(data);
+    }
+
     this.setState({ isLoading: true }, () => {
       getUserLooks({ id: userId, all: isMyProfile }).then(() => {
         this.setState({ isLoading: false });
       });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.userId === nextProps.currLookScreenId) {
+      this.setState({
+        userLooks: nextProps.userLooks,
+        stats: this.state.userId === nextProps.stats.user_id ? nextProps.stats : this.state.stats,
+      });
+    }
   }
 
   render(): React.Element<any> {
@@ -128,7 +148,7 @@ class ProfileScreen extends Component {
 
   _renderLabel = props => ({ route, index }) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
-    const outputRange = inputRange.map(inputIndex => inputIndex === index ? Colors.highlightColor : '#5a6f88');
+    const outputRange = inputRange.map(inputIndex => inputIndex === index ? Colors.secondaryColor : '#5a6f88');
     const color = props.position.interpolate({
       inputRange,
       outputRange,
@@ -143,7 +163,7 @@ class ProfileScreen extends Component {
 
   _renderLabel2 = (props) => {
     const inputRange = props.routes.map((x, i) => i);
-    const outputRange = inputRange.map(inputIndex => inputIndex === props.index ? Colors.highlightColor : '#5a6f88');
+    const outputRange = inputRange.map(inputIndex => inputIndex === props.index ? Colors.secondaryColor : '#5a6f88');
     const color =
       outputRange
     ;
@@ -249,7 +269,8 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const { userId, navigateTo, isMyProfile, meta, userLooks, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
+    const { userId, navigateTo, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
+    const { stats, userLooks } = this.state;
     return (
       <View>
         <UserLooks
@@ -275,19 +296,25 @@ class ProfileScreen extends Component {
   _configureTransition = () => null;
 
   _renderParallaxHeader = () => {
-    const { balance, userData, userId, isMyProfile, stats, onStatClicked, onFollowClicked } = this.props;
-    const { isFollowing } = this.state;
+    const { balance, userData, userId, isMyProfile, onStatClicked, onFollowClicked, onProfileEdit } = this.props;
+    const { isFollowing, stats } = this.state;
 
-    return (<ProfileScreenHeader
-      balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username} stats={stats}
-      isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}
-      onFollowClicked={() => {
-        onFollowClicked(userId, isFollowing);
-        this.setState({ isFollowing: !isFollowing });
-      }}
-      onBalanceClicked={() => this.setState({ index: 1 })}
-      onLooksClicked={() => this.setState({ index: 0 })}
-    />);
+    return (
+
+      <View style={{ marginTop: 20 }}>
+        <ProfileScreenHeader
+          balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username}
+          stats={stats} onProfileEdit={onProfileEdit}
+          isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}
+          onFollowClicked={() => {
+            onFollowClicked(userId, isFollowing);
+            this.setState({ isFollowing: !isFollowing });
+          }}
+          onBalanceClicked={() => this.setState({ index: 1 })}
+          onLooksClicked={() => this.setState({ index: 0 })}
+        />
+      </View>
+    );
   }
 
   _renderBody = () => {
@@ -310,18 +337,41 @@ class ProfileScreen extends Component {
     );
   };
 
-  _renderFixedHeader = () => (
+  _renderFixedHeader = () => {
+    const { onProfileEdit, isMyProfile } = this.props;
 
-    <TouchableHighlight
-      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-      style={{ position: 'absolute', top: Platform.OS === 'ios' ? 32 : 12, left: 12.5 }}
-      underlayColor={'transparent'}
-      onPress={this._handleBackToFeedPress}>
-      <Image
-        style={{ width: 18, height: 18 }} resizeMode={'contain'}
-        source={require('../../../images/icons/backArrow.png')}/>
-    </TouchableHighlight>
-  );
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          flexDirection: 'row',
+          height: stickyHeaderHeight,
+          top: Platform.OS === 'ios' ? 32 : 12,
+          left: 12.5,
+          width: Dimensions.get('window').width,
+          justifyContent: 'space-between',
+        }}>
+        <TouchableOpacity
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          underlayColor={'transparent'}
+          onPress={this._handleBackToFeedPress}>
+          <Image
+            style={{ width: 18, height: 18 }} resizeMode={'contain'}
+            source={require('../../../images/icons/backArrow.png')}/>
+        </TouchableOpacity>
+
+        {!isMyProfile ? null :
+          <TouchableOpacity onPress={onProfileEdit} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+            <Image
+              source={require('../../../images/icons/edit.png')}
+              style={{ width: 18, height: 18, right: 18.5 }}
+              resizeMode={'contain'}/>
+          </TouchableOpacity>
+        }
+
+      </View>
+    );
+  };
 
   _handleBackToFeedPress = () => {
     this.props.logEvent('ProfileScreen', { name: 'Back to Feed click' });
@@ -340,7 +390,7 @@ class ProfileScreen extends Component {
             fontSize: 14,
             height: 20,
             fontFamily: Fonts.regularFont,
-            color: Colors.highlightColor,
+            color: Colors.secondaryColor,
             marginTop: Platform.OS === 'ios' ? 32 : 12,
           }}>
           {username}
@@ -388,7 +438,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   indicator: {
-    backgroundColor: Colors.highlightColor,
+    backgroundColor: Colors.secondaryColor,
     height: 2,
   },
   label: {
