@@ -4,20 +4,21 @@ import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
+import Colors from '../../styles/Colors.styles'
 
 export default class FeedTabs extends PureComponent {
   state = {
     index: 0,
     routes: [
       { key: '1', title: 'Following' },
-      { key: '2', title: 'Best Match' },
+      { key: '2', title: 'My Size' },
       { key: '3', title: "What's Hot" },
     ],
   };
 
   _handleIndexChange = index => this.setState({ index });
 
-  _renderHeader = props => <TabBar {...props} />;
+  _renderHeader = props => <TabBar style={{ backgroundColor: Colors.separatorGray }} labelStyle={{ color: Colors.black, fontWeight: '600' }} indicatorStyle={{backgroundColor: Colors.secondaryColor}} {...props} />;
 
   _renderScene = SceneMap({
     1: ()=><FollowingTabContent navigateTo={this.props.navigateTo} />,
@@ -41,5 +42,6 @@ export default class FeedTabs extends PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.primaryColor
   },
 });
