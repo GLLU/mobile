@@ -62,7 +62,6 @@ class BlockedUsersScreen extends Component {
   }
 
   render() {
-    console.log('blockedUser', this.props.blockedUsers)
     const {totalBlockedUsersCount, blockedUsers, goBack, unblockUser, getMoreBlockedUsers} = this.props;
     const header = {title: 'Blocked Users', count: totalBlockedUsersCount};
     return (
