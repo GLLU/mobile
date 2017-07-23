@@ -54,10 +54,10 @@ function bindAction(dispatch: any, ownProps: any): void {
 const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userData = ownProps.navigation.state.params;
-  const isMyProfile = userData.is_me;
+  const isMyProfile = userData.isMe ? userData.isMe : userData.is_me;
   const userId = isMyProfile ? userData.id : userData.userId;
   const userSize = hasUserSize ? state.user.user_size : {};
-
+  
   return {
     userData,
     stats: state.stats,
@@ -68,7 +68,7 @@ const mapStateToProps = (state, ownProps) => {
     isMyProfile,
     userId,
     navigation: ownProps.navigation,
-    isFollowing: userData.is_following,
+    isFollowing: userData.isFollowing ? userData.isFollowing : userData.is_following,
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
     userLooks: userId === state.userLooks.currId ? getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData) : [],
