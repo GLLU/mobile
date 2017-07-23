@@ -5,11 +5,13 @@ import TabContent from './TabContent';
 import { showBodyTypeModal, getBestMatchFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import { getLooksById } from '../../utils/FeedUtils';
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+  const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenBestMatch', params);
   return {
+    navigateToLooksScreen,
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getBestMatchFeed(query)),
-    loadMore: () => dispatch(loadMore('BestMatch')),
+    loadMore: () => dispatch(loadMore('bestMatch')),
     clearBodyModal: () => dispatch(clearBodyModal()),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
   };

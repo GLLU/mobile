@@ -5,18 +5,20 @@ import TabContent from './TabContent';
 import { showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
 import { getLooksById } from '../../utils/FeedUtils';
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+  const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenFollwing', params);
   return {
+    navigateToLooksScreen,
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getFollowingFeed(query)),
-    loadMore: () => dispatch(loadMore('Following')),
+    loadMore: () => dispatch(loadMore('following')),
     clearBodyModal: () => dispatch(clearBodyModal()),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
   };
 }
 
 const mapStateToProps = (state) => {
-  let defaultFilters = {
+  const defaultFilters = {
     gender: '',
     body_type: '',
     followings: true,
@@ -24,7 +26,6 @@ const mapStateToProps = (state) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.following.flatLooksIdData, state.looks.flatLooksData);
-  console.log('meta',state.feed.following)
   return {
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
@@ -37,7 +38,6 @@ const mapStateToProps = (state) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
-    navigateToLooks: 'lookScreenFollwing',
   };
 };
 

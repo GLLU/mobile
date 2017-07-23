@@ -75,7 +75,7 @@ class MediaContainer extends Component {
       item.singleItem = true
     }
     let that = this
-    setTimeout(()=>that.props.navigateTo(this.props.NavigateToLooks, item), 0);
+    setTimeout(()=>that.props.navigateToLooksScreen(item), 0);
   }
 
   toggleLikeAction() {
@@ -109,7 +109,7 @@ class MediaContainer extends Component {
     this.props.logEvent(this.props.fromScreen, {name: 'Image click trough comment button'});
     const item = {...this.props.look,openComments:true};
     let that = this
-    setTimeout(()=>that.props.navigateTo(that.props.NavigateToLooks, item), 0);
+    setTimeout(()=>that.props.navigateToLooksScreen(item), 0);
   }
 
   shouldShowMedia() {

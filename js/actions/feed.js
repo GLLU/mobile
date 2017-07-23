@@ -70,7 +70,7 @@ export function clearFeed() {
 
 export function loadMore(feedType = 'bestMatch', retryCount = 0) {
   return (dispatch, getState) => {
-    const state = getState().feed;
+    const state = getState().feed[feedType];
     const currPage = state.query.page.number;
     const nextPageNumber = currPage + 1;
     const newState = _.merge(state.query, { page: { number: nextPageNumber } });
@@ -81,7 +81,7 @@ export function loadMore(feedType = 'bestMatch', retryCount = 0) {
         const normalizedLooksData = normalize(looks, [ lookSchema] );
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-        const flatLooksIdData = state[feedType].flatLooksIdData.concat(normalizedLooksData.result)
+        const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result)
         dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
