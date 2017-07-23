@@ -41,8 +41,8 @@ class EditProfile extends Component {
     this._saveChanges = this._saveChanges.bind(this);
     this._changeUserAvatar = this._changeUserAvatar.bind(this);
     this.state = {
-      about_me: props.user.about_me || '',
-      modalShowing: false,
+      aboutMe: props.user.about_me || '',
+      modalShowing:false,
       isUpdating: false,
       isChangingAvatar: false,
     };
@@ -66,8 +66,8 @@ class EditProfile extends Component {
     };
     this.setState({ isUpdating: true }, () => {
       Promise.all([
-        this.props.changeUserAboutMe({ id: this.props.user.id, about_me: this.state.about_me }),
-        this.props.saveUserSize(measurements),
+        this.props.changeUserAboutMe({id: this.props.user.id, about_me: this.state.aboutMe}),
+        this.props.saveUserSize(measurements)
       ]).then(this.props.goBack)
         .catch(err => console.log(err));
     });
@@ -91,7 +91,7 @@ class EditProfile extends Component {
   }
 
   _handleAboutMeTextInput(text) {
-    this.setState({ about_me: text });
+    this.setState({aboutMe: text})
   }
 
   _handleAboutMeEndEding() {
@@ -131,7 +131,7 @@ class EditProfile extends Component {
         >
           <EditProfileName name={this.props.user.name} username={this.props.user.username} />
           <ExpandableTextArea
-            text={this.state.about_me}
+            text={this.state.aboutMe}
             onEndEditing={this._handleAboutMeEndEding.bind(this)}
             handleTextInput={text => this._handleAboutMeTextInput(text)}
           />
