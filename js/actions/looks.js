@@ -18,7 +18,7 @@ export function getUserLooks(looksCall, query, retryCount = 0) {
         if (!err && !_.isEmpty(data)) {
           data.currId = looksCall.id;
           dispatch(setUserLooks({data, query: query}));
-          dispatch(loadMoreUserLooks(looksCall))
+          //dispatch(loadMoreUserLooks(looksCall))
           resolve(data.looks);
         } else {
           if(retryCount < 5) {

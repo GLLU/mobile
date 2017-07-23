@@ -69,7 +69,7 @@ class FollowRow extends Component {
     avatar: React.PropTypes.object,
     onFollowPress: React.PropTypes.func,
     onUserPress: React.PropTypes.func,
-    userid: React.PropTypes.number,
+    userId: React.PropTypes.number,
     isFollowing: React.PropTypes.bool
   };
 
@@ -130,7 +130,7 @@ class FollowRow extends Component {
 
   renderFollowView() {
     return <View onPress={this.onFollowPress} style={styles.followView}
-                       user={{id:this.props.user_id, isFollowing: this.state.isFollowing}}/>
+                       user={{id:this.props.userId, isFollowing: this.state.isFollowing}}/>
   }
 
   render() {

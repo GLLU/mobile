@@ -86,6 +86,7 @@ class BlockedUserRow extends PureComponent {
   }
 
   render() {
+    console.log('this.props',this.props)
     const {avatar, style} = this.props;
     return (
       <View style={[styles.container, style]}>

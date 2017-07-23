@@ -24,7 +24,7 @@ export default class ListScreen extends Component {
   };
 
   static defaultProps={
-    keyExtractor:(item,index)=>item.id!==-1?item.id:index,
+    keyExtractor:(item,index)=>item.userId!==-1?item.userId:index,
   };
 
   constructor(props) {

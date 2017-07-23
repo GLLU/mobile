@@ -1,4 +1,4 @@
-import {map as userLookMap} from './lookMapper'
+import {serializeLook as userLookMap} from './lookMapper'
 
 
 export function map(look) {
