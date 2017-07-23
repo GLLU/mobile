@@ -24,6 +24,7 @@ const mapStateToProps = (state) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.following.flatLooksIdData, state.looks.flatLooksData);
+  console.log('meta',state.feed.following)
   return {
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
@@ -36,6 +37,7 @@ const mapStateToProps = (state) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
+    navigateToLooks: 'lookScreenFollwing',
   };
 };
 

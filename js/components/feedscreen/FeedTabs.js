@@ -20,7 +20,7 @@ export default class FeedTabs extends PureComponent {
   _renderHeader = props => <TabBar {...props} />;
 
   _renderScene = SceneMap({
-    1: ()=><FollowingTabContent />,
+    1: ()=><FollowingTabContent navigateTo={this.props.navigateTo} />,
     2: ()=><BestMatchTabContent navigateTo={this.props.navigateTo} />,
     3: ()=><WhatsHotTabContent navigateTo={this.props.navigateTo} />,
   });

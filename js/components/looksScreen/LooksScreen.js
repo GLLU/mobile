@@ -322,6 +322,7 @@ class LooksScreen extends Component {
 
   getFlatFeed() {
     let looksArr = ''
+    console.log('props1',this.props)
     const {meta: {total}} = this.props;
 
     if (total === 1) {

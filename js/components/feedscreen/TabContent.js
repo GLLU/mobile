@@ -177,11 +177,13 @@ class TabContent extends BaseComponent {
   }
 
   _renderLooks(looks: array) {
+    console.log('navigateToLooks', this.props.navigateToLooks)
     return _.map(looks, look => (
       <MediaContainer
         look={look}
         currScroll={this.state.currentScrollPosition}
         navigateTo={this.props.navigateTo}
+        NavigateToLooks={this.props.navigateToLooks}
         sendParisMessage={this.props.showParisBottomMessage}
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}

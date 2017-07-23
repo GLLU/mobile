@@ -44,6 +44,7 @@ const mapStateToProps = (state) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
+    navigateToLooks: 'lookScreenBestMatch',
   };
 };
 
