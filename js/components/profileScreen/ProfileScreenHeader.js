@@ -21,11 +21,10 @@ type Props = {
   isMyProfile: string,
   balance: number,
   stats: any,
-  onStatClicked: () => void,
+  onStatClicked: (string, any, boolean, string, number) => void,
   onBalanceClicked: () => void,
   onLooksClicked: () => void,
-  onFollowClicked: () => void,
-  onProfileEdit: () => void
+  onFollowClicked: () => void
 };
 
 const screenWidth = Dimensions.get('window').width;
@@ -41,7 +40,7 @@ class ProfileScreenHeader extends Component {
   }
 
   render(): React.Element<any> {
-    const { profilePic, name, username, isFollowing, userid, isMyProfile, onFollowClicked, onProfileEdit } = this.props;
+    const { profilePic, name, username, isFollowing, isMyProfile, onFollowClicked } = this.props;
 
     return (
       <View style={{ height: 280 }}>

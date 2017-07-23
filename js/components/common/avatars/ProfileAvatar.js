@@ -1,11 +1,13 @@
-import React, {PureComponent} from 'react';
-import {Image, TouchableOpacity, TextInput, Platform, View, Dimensions, StyleSheet} from 'react-native';
+// @flow
+
+import React, { PureComponent } from 'react';
+import { Image, TouchableOpacity, TextInput, Platform, View, Dimensions, StyleSheet } from 'react-native';
 import Spinner from '../../loaders/Spinner';
-import {noop} from 'lodash';
+import { noop } from 'lodash';
+
+import Colors from '../../../styles/Colors.styles';
 
 const cameraWhite = require('../../../../images/icons/cameraWhite.png');
-
-const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   avatar: {
@@ -17,7 +19,7 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: Colors.white,
     backgroundColor: 'transparent',
   },
   profilePicBtn: {
@@ -27,16 +29,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  /*
-   editProfileAvatarImg: {
-   position: 'absolute',
-   top: 100,
-   left: w / 2 - 50,
-   },
-   */
   editAvatarImage: {
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: Colors.white,
   },
   changeImageIconContainer: {
     width: 100,
@@ -56,6 +51,7 @@ class ProfileAvatar extends PureComponent {
     isLoading: React.PropTypes.bool,
     avatarUrl: React.PropTypes.string,
     isEditable: React.PropTypes.bool,
+    style: React.PropTypes.Object,
     changeUserAvatar: React.PropTypes.func,
   };
 
@@ -67,7 +63,7 @@ class ProfileAvatar extends PureComponent {
     [styles.avatarImg, styles.editAvatarImage] :
     styles.avatarImg
 
-  renderAvatar() {
+  renderAvatar(): React.Component {
     const { avatarUrl, isEditable, isLoading, style } = this.props;
 
     let borderRadius = 50;
@@ -82,7 +78,7 @@ class ProfileAvatar extends PureComponent {
     );
   }
 
-  renderWhiteCircle() {
+  renderWhiteCircle(): React.Component {
     const { isEditable, isLoading, style } = this.props;
 
     let borderRadius = 50;
@@ -98,15 +94,15 @@ class ProfileAvatar extends PureComponent {
     );
   }
 
-  renderOverlay(isEditable, isLoading, style) {
+  renderOverlay(isEditable: boolean, isLoading: boolean): React.Component {
     return isEditable ? isLoading ?
-      <Spinner color="white" style={styles.profilePicBtn}/> :
-      <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'}/>
+      <Spinner color="white" style={styles.profilePicBtn} /> :
+      <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
 
       : null;
   }
 
-  render() {
+  render(): React.Component {
     const { avatarUrl, changeUserAvatar } = this.props;
     return (
       <TouchableOpacity transparent onPress={changeUserAvatar}>

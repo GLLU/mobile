@@ -7,7 +7,6 @@ export const SET_USER_FOLLOWS_DATA = 'SET_USER_FOLLOWS_DATA';
 export const INIT_USER_FOLLOWS = 'INIT_USER_FOLLOWS';
 
 export function followUpdate(id) {
-  debugger;
   return (dispatch) => {
     dispatch(follow(id));
   };
