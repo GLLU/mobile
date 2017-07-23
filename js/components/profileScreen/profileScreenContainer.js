@@ -57,7 +57,7 @@ const mapStateToProps = (state, ownProps) => {
   const isMyProfile = userData.isMe ? userData.isMe : userData.is_me;
   const userId = isMyProfile ? userData.id : userData.userId;
   const userSize = hasUserSize ? state.user.user_size : {};
-  
+
   return {
     userData,
     stats: state.stats,
