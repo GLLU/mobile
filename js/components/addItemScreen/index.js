@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
-import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition, getUserLooks, getFeed} from '../../actions';
+import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition, getUserLooks, getFeed, clearFeed} from '../../actions';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
 import StepTwoOccasions from './StepTwoOccasions';
@@ -101,11 +101,13 @@ class AddItemPage extends Component {
             this.props.goBack()
           } else {
             const looksCall = {
-              id: this.state.userId,
+              id: this.props.userId,
               all: true
             }
+            const query = _.cloneDeep(this.props.currentFeedQuery)
+            console.log('this.props.currentFeedQuery',this.props.currentFeedQuery)
             this.props.getUserLooks(looksCall)
-            this.props.getFeed(this.props.currentFeedQuery)
+            this.props.clearFeed().then(() => { this.props.getFeed(query) })
             this.props.navigateTo('finishLookScreen');
           }
         });
@@ -263,6 +265,7 @@ function bindActions(dispatch) {
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     setTagPosition: (position) => dispatch(setTagPosition(position)),
     getFeed: (query) => dispatch(getFeed(query)),
+    clearFeed: () => dispatch(clearFeed()),
     getUserLooks: data => dispatch(getUserLooks(data)),
   };
 }

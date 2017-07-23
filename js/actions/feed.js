@@ -26,6 +26,7 @@ export function getFeed(query: object, retryCount = 0) {
         number: 1,
       },
     });
+    delete query.page
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (data) {
         const { looks, meta } = data;
