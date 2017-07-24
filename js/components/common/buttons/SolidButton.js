@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
-import {generateAdjustedSize} from '../../../utils/AdjustedFontSize';
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Colors from '../../../styles/Colors.styles';
 
 const styles = StyleSheet.create({

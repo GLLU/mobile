@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Text,
   View,
@@ -11,20 +11,20 @@ import {
   Animated,
   Dimensions,
   ScrollView,
+  TouchableWithoutFeedback,
+  Modal,
 } from 'react-native';
-import { TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar } from 'react-native-tab-view';
+import {TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar} from 'react-native-tab-view';
+import Menu, {MenuContext, MenuOptions, MenuOption, MenuTrigger} from 'react-native-menu';
 import I18n from 'react-native-i18n';
 
 import ParallaxView from '../../utils/ParallaxView';
 import ProfileScreenHeader from './ProfileScreenHeader';
-import ScalableText, { generateAdjustedSize } from '../../utils/AdjustedFontSize';
-import EmptyStateScreen from '../common/EmptyStateScreen';
+import ScalableText, {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 import UserLooks from './UserLooks';
 import WalletScreen from './WalletScreen';
 import SettingsScreen from '../settingsScreen/SettingsContainer';
 import Spinner from '../loaders/Spinner';
-import { openCamera } from '../../lib/camera/CameraUtils';
-import { formatLook } from '../../utils/UploadUtils';
 
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
@@ -57,19 +57,17 @@ class ProfileScreen extends Component {
   constructor(props: Props) {
     super(props);
 
-    this._uploadLook = this._uploadLook.bind(this);
-
     this.state = {
+      modalVisible: false,
       index: 0,
       routes: [
         { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
         { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
-        { key: 'closet', title: I18n.t('CLOSET'), index: 2 },
-        { key: 'settings', title: I18n.t('SETTINGS'), index: 3 },
+        { key: 'settings', title: I18n.t('SETTINGS'), index: 2 },
       ],
       isFollowing: props.isFollowing,
       userLooks: props.userLooks,
-      stats: props.stats,
+      stats: props.userId === props.currLookScreenId ? props.stats : {},
       userId: props.userId,
     };
   }
@@ -110,24 +108,27 @@ class ProfileScreen extends Component {
   render(): React.Element<any> {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <MenuContext style={{ flex: 1 }}>
 
-        <ParallaxView
-          stickyHeaderHeight={stickyHeaderHeight}
-          backgroundSpeed={10}
-          backgroundColor={'#3e3e3e'}
-          parallaxHeaderHeight={parallaxHeaderHeight}
-          renderForeground={() => this._renderParallaxHeader()}
-          renderFixedHeader={() => this._renderFixedHeader()}
-          renderStickyHeader={() => this._renderStickyHeader()}
-          onScroll={this._handleScrollUserLooks}
-          contentContainerStyle={{
-            flex: 1,
-            backgroundColor: 'white',
-          }}>
+          <ParallaxView
+            stickyHeaderHeight={stickyHeaderHeight}
+            backgroundSpeed={10}
+            backgroundColor={'#3e3e3e'}
+            parallaxHeaderHeight={parallaxHeaderHeight}
+            renderForeground={() => this._renderParallaxHeader()}
+            renderFixedHeader={() => this._renderFixedHeader()}
+            renderStickyHeader={() => this._renderStickyHeader()}
+            onScroll={this._handleScrollUserLooks}
+            contentContainerStyle={{
+              flex: 1,
+              backgroundColor: 'white',
+            }}>
 
-          {this._renderBody()}
+            {this._renderBody()}
 
-        </ParallaxView>
+          </ParallaxView>
+
+        </MenuContext>
 
       </View>
     );
@@ -187,16 +188,19 @@ class ProfileScreen extends Component {
       case 'looks':
         return this._renderUserLooks();
       case 'wallet':
-        return <WalletScreen balance={balance} onAddNewLook={this._uploadLook} />;
-      case 'closet':
-        return <View style={{ height: 200, width: 450, backgroundColor: 'blue' }} />;
+        return <WalletScreen balance={balance} onWithdrawPressed={this._handleWithdraw}/>;
       case 'settings':
-        return <SettingsScreen navigation={navigation} />;
+        return <SettingsScreen navigation={navigation}/>;
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }}/>
           ;
     }
   };
+
+  _handleWithdraw = (balance) => {
+    const { showParisBottomMessage } = this.props;
+    showParisBottomMessage(balance);
+  }
 
   _navigateToTab(tabIndex: number) {
     this.setState({ index: tabIndex });
@@ -224,7 +228,7 @@ class ProfileScreen extends Component {
     scrollEventThrottle={100}
     onScroll={this._handleScrollUserLooks}
     style={{ backgroundColor: 'purple' }}
-    pagingEnabled />
+    pagingEnabled/>
 
   _loadMoreUserLooks() {
     if (this.state.loadingMore) {
@@ -242,8 +246,8 @@ class ProfileScreen extends Component {
       // if (pageSize * pageNumber < total_count) {
       this.setState({ loadingMore: true }, () => {
         this.props.loadMoreUserLooks(data).then(() => {
-          this.setState({ loadingMore: false });
-        }
+            this.setState({ loadingMore: false });
+          }
         ).catch((err) => {
           console.log('error', err);
           this.setState({ loadingMore: false });
@@ -263,10 +267,10 @@ class ProfileScreen extends Component {
             return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)" />;
+            return <Spinner color="rgb(230,230,230)"/>;
           }
           if (this.state.loadingMore) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
           return null;
         })()}
@@ -276,18 +280,6 @@ class ProfileScreen extends Component {
   _renderUserLooks = () => {
     const { userId, navigateTo, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
     const { stats, userLooks } = this.state;
-
-    const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
-    const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : I18n.t('NO_LOOKS_UPLOADED_LEGEND');
-    const emptyStateButtonText = isMyProfile ? I18n.t('POST_NOW') : null;
-
-    if ((!userLooks || userLooks.length === 0) && !this.state.isLoading) {
-      return (<EmptyStateScreen
-        title={emptyStateTitle} subtitle={emptyStateSubtitle}
-        icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
-        onButtonClicked={this._uploadLook} />);
-    }
-
     return (
       <View>
         <UserLooks
@@ -300,14 +292,14 @@ class ProfileScreen extends Component {
           likeUpdate={likeUpdate}
           unlikeUpdate={unlikeUpdate}
           meta={meta}
-          isLoading={this.state.isLoading} />
+          isLoading={this.state.isLoading}/>
         {this._renderLoadMore()}
       </View>
     );
   }
 
   _renderPager = props => (
-    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false} />
+    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false}/>
   );
 
   _configureTransition = () => null;
@@ -339,18 +331,18 @@ class ProfileScreen extends Component {
 
     return (<View style={styles.container}>
 
-      {!isMyProfile ? this._renderUserLooks() :
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        configureTransition={this._configureTransition}
-        renderScene={this._renderScene}
-        renderPager={this._renderPager}
-        renderHeader={this._renderHeader}
-        onRequestChangeTab={this._handleChangeTab}
+        {!isMyProfile ? this._renderUserLooks() :
+          <TabViewAnimated
+            style={styles.container}
+            navigationState={this.state}
+            configureTransition={this._configureTransition}
+            renderScene={this._renderScene}
+            renderPager={this._renderPager}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleChangeTab}
           />
         }
-    </View>
+      </View>
     );
   };
 
@@ -374,21 +366,49 @@ class ProfileScreen extends Component {
           onPress={this._handleBackToFeedPress}>
           <Image
             style={{ width: 18, height: 18 }} resizeMode={'contain'}
-            source={require('../../../images/icons/backArrow.png')} />
+            source={require('../../../images/icons/backArrow.png')}/>
         </TouchableOpacity>
 
-        {!isMyProfile ? null :
-        <TouchableOpacity onPress={onProfileEdit} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
-          <Image
-            source={require('../../../images/icons/edit.png')}
-            style={{ width: 18, height: 18, right: 18.5 }}
-            resizeMode={'contain'} />
-        </TouchableOpacity>
+        {!isMyProfile ? this._renderMenu() :
+          <TouchableOpacity onPress={onProfileEdit} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+            <Image
+              source={require('../../../images/icons/edit.png')}
+              style={{ width: 18, height: 18, right: 18.5 }}
+              resizeMode={'contain'}/>
+          </TouchableOpacity>
         }
 
       </View>
     );
   };
+  _renderMenu = () => (
+    <TouchableOpacity onPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
+                      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+      <Image
+        source={require('../../../images/icons/more.png')}
+        style={{ width: 18, height: 18, right: 18.5 }}
+        resizeMode={'contain'}/>
+      {this._renderModal()}
+    </TouchableOpacity>
+  )
+
+  _renderModal = () => {
+
+    const { blockUser, userId } = this.props;
+    return (
+      <Modal
+        visible={this.state.modalVisible} transparent style={{ flex: 1 }}
+        onRequestClose={() => this.setState({ modalVisible: false })}>
+        <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ modalVisible: false })}>
+          <View style={{ backgroundColor: 'white', position: 'absolute', right: 32, top: 48 }}>
+            <TouchableOpacity onPress={() => blockUser(userId)}>
+              <Text style={styles.modalOption}>Block User</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    );
+  }
 
   _handleBackToFeedPress = () => {
     this.props.logEvent('ProfileScreen', { name: 'Back to Feed click' });
@@ -448,16 +468,6 @@ class ProfileScreen extends Component {
     );
   }
 
-  async _uploadLook(): void {
-    const { addNewLook } = this.props;
-
-    this.props.logEvent('ProfileScreen', { name: 'Open Camera click', source: 'wallet empty state' });
-    const path = await openCamera(true);
-    const file = formatLook(path);
-    if (file) {
-      addNewLook(file);
-    }
-  }
 }
 
 const styles = StyleSheet.create({
@@ -480,11 +490,15 @@ const styles = StyleSheet.create({
   tab: {
     opacity: 1,
     height: 50,
-    width: Dimensions.get('window').width / 4,
+    width: Dimensions.get('window').width / 3,
   },
   headerTab: {
     opacity: 1,
     width: Dimensions.get('window').width / 4,
+  },
+  modalOption: {
+    fontSize: 12,
+    padding: 10,
   },
 
 });

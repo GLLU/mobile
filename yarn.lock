@@ -4615,6 +4615,10 @@ hyphenate-style-name@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
 
+"i18n-js@github:fnando/i18n-js#v3.0.0":
+  version "0.0.0"
+  resolved "https://codeload.github.com/fnando/i18n-js/tar.gz/b8fb918c827a2d3bbe187372e47bbe1a7a6c4c19"
+
 iconv-lite@0.4.11:
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.11.tgz#2ecb42fd294744922209a2e7c404dac8793d8ade"
@@ -7604,9 +7608,11 @@ react-native-google-analytics-bridge@^5.0.1:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-native-google-analytics-bridge/-/react-native-google-analytics-bridge-5.1.0.tgz#28ec19a13f132a9161b53d7ede2957a6c6ffee84"
 
-react-native-i18n@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-i18n/-/react-native-i18n-1.0.0.tgz#0c407d9ebb846aae1aa5e05de6503008553f02fd"
+react-native-i18n@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-i18n/-/react-native-i18n-2.0.2.tgz#4793f7b86bd86ad8c8f95792ba51a3464f95bc1b"
+  dependencies:
+    i18n-js "github:fnando/i18n-js#v3.0.0"
 
 react-native-joi@0.0.5:
   version "0.0.5"

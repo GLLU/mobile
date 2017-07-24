@@ -6,7 +6,7 @@ import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'rea
 import { formatNumberAsString } from '../../utils/FormatUtils';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
-import {generateAdjustedSize} from '../../utils/AdjustedFontSize';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 
 type Props = {
   number: string,

@@ -1,6 +1,6 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import {
   getStats,
@@ -14,9 +14,11 @@ import {
   getUserBalance,
 } from '../../actions';
 
-import {editNewLook} from '../../actions/uploadLook';
-import {followUpdate, unFollowUpdate} from '../../actions/follows';
-import {getLooksById} from '../../utils/FeedUtils';
+import { editNewLook } from '../../actions/uploadLook';
+import { followUpdate, unFollowUpdate } from '../../actions/follows';
+import { getLooksById } from '../../utils/FeedUtils';
+import { blockUser } from '../../actions/user';
+
 
 import asScreen from '../common/containers/Screen';
 
@@ -27,23 +29,26 @@ function bindAction(dispatch: any, ownProps: any): void {
     getStats: id => dispatch(getStats(id)),
     getUserBalance: id => dispatch(getUserBalance(id)),
     getUserBodyType: data => dispatch(getUserBodyType(data)),
-    addNewLook: (imagePath) => {
-      dispatch(addNewLook(imagePath)).then(() => ownProps.navigateTo('addItemScreen', { mode: 'create' }));
-    },
+    addNewLook: imagePath => dispatch(addNewLook(imagePath)),
+    blockUser: userId => dispatch(blockUser(userId)),
     editNewLook: id => dispatch(editNewLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),
     loadMoreUserLooks: looksCall => dispatch(loadMoreUserLooks(looksCall)),
-    showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
+    showParisBottomMessage: (balance) => {
+      ownProps.logEvent('ProfileScreen', { name: 'Wallet Pressed' });
+      const parisMessage = balance < 50 ? 'Hey, you can withdraw the reward once you reach at least US$50.00' : 'Hey, to withdraw please Contact us';
+      dispatch(showParisBottomMessage(parisMessage));
+    },
     likeUpdate: id => dispatch(likeUpdate(id)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),
     onFollowClicked: (id: number, isFollowing: boolean) => {
       isFollowing ? dispatch(unFollowUpdate(id)) : dispatch(followUpdate(id));
     },
     onProfileEdit: (user) => {
-      ownProps.navigateTo('editProfileScreen');
+      ownProps.navigation.navigate('editProfileScreen');
     },
     onStatClicked: (screen, user, isMyProfile, type, count) => {
-      ownProps.navigateTo(screen, {
+      ownProps.navigation.navigate(screen, {
         user,
         isMyProfile,
         mode: type,
@@ -69,7 +74,6 @@ const mapStateToProps = (state, ownProps) => {
     userGender: state.user.gender,
     isMyProfile,
     userId,
-    navigateTo: ownProps.navigateTo,
     navigation: ownProps.navigation,
     isFollowing: userData.isFollowing ? userData.isFollowing : userData.is_following,
     currLookScreenId: state.userLooks.currId,
@@ -81,4 +85,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default (asScreen(connect(mapStateToProps, bindAction)(ProfileScreen)));
+export default (asScreen(connect(mapStateToProps, bindAction)(asScreen(ProfileScreen))));
