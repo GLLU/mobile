@@ -10,6 +10,9 @@ import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import ProfileScreen from './components/profileScreen/profileScreenContainer';
 import LooksScreen from './components/looksScreen/LooksSreenContainer';
+import FollowingLooks from './components/looksScreen/LooksFollowingContainer';
+import BestMatchLooks from './components/looksScreen/LooksBestMatchContainer';
+import WhatsHotLooks from './components/looksScreen/LooksWhatsHotContainer';
 import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
 import NotificationsScreen from './components/notificationsscreen';
@@ -60,6 +63,15 @@ const routes = {
   },
   looksScreen: {
     screen: LooksScreen,
+  },
+  lookScreenFollwing: {
+    screen: FollowingLooks,
+  },
+  lookScreenBestMatch: {
+    screen: BestMatchLooks,
+  },
+  lookScreenWhatsHot: {
+    screen: WhatsHotLooks,
   },
   profileScreen: {
     screen: ProfileScreen,

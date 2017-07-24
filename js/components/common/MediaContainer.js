@@ -37,6 +37,7 @@ class MediaContainer extends Component {
     logEvent: React.PropTypes.func,
     sendParisMessage: React.PropTypes.func,
     clearText: React.PropTypes.string,
+    NavigateToLooks: React.PropTypes.string,
     look: React.PropTypes.object,
     showMediaGrid: React.PropTypes.bool,
     shouldOptimize: React.PropTypes.bool,
@@ -74,7 +75,7 @@ class MediaContainer extends Component {
       item.singleItem = true
     }
     let that = this
-    setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
+    setTimeout(()=>that.props.navigateToLooksScreen(item), 0);
   }
 
   toggleLikeAction() {
@@ -108,7 +109,7 @@ class MediaContainer extends Component {
     this.props.logEvent(this.props.fromScreen, {name: 'Image click trough comment button'});
     const item = {...this.props.look,openComments:true};
     let that = this
-    setTimeout(()=>that.props.navigateTo('looksScreen', item), 0);
+    setTimeout(()=>that.props.navigateToLooksScreen(item), 0);
   }
 
   shouldShowMedia() {

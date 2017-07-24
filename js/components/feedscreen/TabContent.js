@@ -20,7 +20,13 @@ import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { formatInvitationMessage } from '../../lib/messages/index';
+import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
+import LinearGradient from 'react-native-linear-gradient';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+
+const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
 
 class TabContent extends BaseComponent {
@@ -58,17 +64,22 @@ class TabContent extends BaseComponent {
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
-    const message=SocialShare.generateShareMessage(formatInvitationMessage());
+    this.logEvent('Feedscreen', { name: 'Invite your friends click' });
+    const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
   componentDidMount() {
+    this.getFeed(this.props.defaultFilters);
     const that = this;
     setInterval(() => { that.handleScrollPositionForVideo(); }, 1000);
     NetInfo.isConnected.fetch().done(
       (isConnected) => { isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null; }
     );
+  }
+
+  getFeed(query) {
+      this.props.getFeed(query)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -171,6 +182,8 @@ class TabContent extends BaseComponent {
         look={look}
         currScroll={this.state.currentScrollPosition}
         navigateTo={this.props.navigateTo}
+        navigateToLooksScreen={this.props.navigateToLooksScreen}
+        NavigateToLooks={this.props.navigateToLooks}
         sendParisMessage={this.props.showParisBottomMessage}
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
@@ -230,8 +243,9 @@ class TabContent extends BaseComponent {
     this.setState({ isRefreshing: true });
     const { getFeed, query } = this.props;
     // reset the first page
-    query.page.number = 1;
-    getFeed(query)
+    const cleanQuery = _.cloneDeep(query);
+    delete cleanQuery.page;
+    getFeed(cleanQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
       })
@@ -268,7 +282,22 @@ class TabContent extends BaseComponent {
     );
   }
 
-  render() {
+  renderEmptyContent() {
+    return (
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        <Image source={profileBackground} style={{ resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start' }} >
+          <LinearGradient
+            colors={['#0C0C0C', '#4C4C4C']}
+            style={[styles.linearGradient, { opacity: 0.7 }]} />
+          <View style={{ marginTop: 100 }}>
+            <ParisAdjustableMessage text={'Sorry, we could not find any relevant results'} />
+          </View>
+        </Image>
+      </View>
+    );
+  }
+
+  renderScrollView() {
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -281,6 +310,14 @@ class TabContent extends BaseComponent {
           {this._renderRefreshingCover()}
         </ScrollView>
         {this._renderLoading()}
+      </View>
+    );
+  }
+
+  render() {
+    return (
+      <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+        { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
       </View>
     );
   }
@@ -319,6 +356,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+  },
+  linearGradient: {
+    width: deviceWidth,
+    position: 'absolute',
+    top: 0
   },
 });
 

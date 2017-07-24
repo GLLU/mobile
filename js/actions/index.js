@@ -12,7 +12,7 @@ import { getNotifications, goToNotificationSubjectScreen, markAsReadNotification
 import { getUserFollowersData, initUserFollowers }  from './followers';
 import { getLookCommentsData, initLookComments, addLookComment } from './comments';
 import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
-import { getFeed, loadMore, clearFeed } from './feed';
+import { getFeed, loadMore, clearFeed, getFollowingFeed, getBestMatchFeed, getWhatsHotFeed } from './feed';
 import {
   addNewLook,
   editNewLook,
@@ -73,6 +73,9 @@ export {
   checkLogin,
   logout,
   clearFeed,
+  getFollowingFeed,
+  getWhatsHotFeed,
+  getBestMatchFeed,
   loginViaFacebook,
   addItemType,
   createBrandName,

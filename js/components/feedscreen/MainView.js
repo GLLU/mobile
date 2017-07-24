@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { getFeed, loadMore, clearFeed } from '../../actions';
-import TabContent from './TabContentContainer';
+import FeedTabs from './FeedTabs';
 import SearchView from './SearchView'
 import _ from 'lodash';
 import VisibilityContainer from "../common/VisibilityContainer";
-const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
-import LinearGradient from 'react-native-linear-gradient';
 const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT')
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
-
 const myStyles = StyleSheet.create({
   mainView: {
     backgroundColor: '#FFFFFF',
@@ -51,7 +45,7 @@ class MainView extends Component {
   }
 
   componentWillMount() {
-    this.getFeed(this.props.defaultFilters);
+    //this.getFeed(this.props.defaultFilters);
   }
 
   handleSwipeTab(locked) {
@@ -75,20 +69,14 @@ class MainView extends Component {
 
   _filterFeed(query) {
     if (!_.isEqual(query, this.props.query)) {
-      this.getFeed(query);
+      //this.getFeed(query);
     }
   }
 
   _renderFeed() {
-    const {reloading, clearedField} = this.state;
-    const tabLabel = this.props.query.type === 'relevant' ? 'BEST MATCH' : 'RECENT';
+    const {reloading, clearedField} = this.props;
     return (
-      <TabContent
-        navigateTo={this.props.navigateTo}
-        reloading={reloading}
-        handleSwipeTab={this.handleSwipeTab}
-        tabLabel={tabLabel}
-        clearedField={clearedField}/>
+      <FeedTabs reloading={reloading} clearedField={clearedField} navigateTo={this.props.navigateTo} />
     );
   }
 
@@ -107,20 +95,7 @@ class MainView extends Component {
     );
   }
 
-  renderEmptyContent() {
-    return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        <Image source={profileBackground} style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight-80, alignSelf: 'flex-start'}} >
-          <LinearGradient colors={['#0C0C0C', '#4C4C4C']}
-                          style={[myStyles.linearGradient, {opacity: 0.7}]}/>
-          <View style={{marginTop: 100}}>
-            <ParisAdjustableMessage text={'Sorry, we could not find any relevant results'}/>
-          </View>
-        </Image>
 
-      </View>
-    )
-  }
 
   render() {
     return (
@@ -157,8 +132,8 @@ const mapStateToProps = state => {
   }
   return {
     defaultFilters: defaultFilters,
-    query: state.feed.query,
-    totalLooks: state.feed.meta.total
+    query: state.feed.bestMatch.query,
+    totalLooks: state.feed.bestMatch.meta.total,
   };
 }
 
