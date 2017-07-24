@@ -64,7 +64,7 @@ class ProfileScreen extends Component {
       ],
       isFollowing: props.isFollowing,
       userLooks: props.userLooks,
-      stats: props.stats,
+      stats: props.userId === props.currLookScreenId ? props.stats : {},
       userId: props.userId,
     };
   }
