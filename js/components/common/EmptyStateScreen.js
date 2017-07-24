@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, Platform, TouchableOpacity, View, Text } from 'react-native';
 
-import { generateAdjustedSize } from '../../utils/AdjustedFontSize';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import Colors from '../../styles/Colors.styles';
 import Fonts from '../../styles/Fonts.styles';
 import SolidButton from './buttons/SolidButton';
