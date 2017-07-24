@@ -133,7 +133,7 @@ const mapStateToProps = state => {
   return {
     defaultFilters: defaultFilters,
     query: state.feed.bestMatch.query,
-    totalLooks: state.feed.bestMatch.meta.total
+    totalLooks: state.feed.bestMatch.meta.total,
   };
 }
 

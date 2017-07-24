@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Dimensions, BackAndroid, View, StyleSheet,Modal } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './styles';
-import NavigationBarView from './NavigationBarView';
-import SearchBarView from './SearchBarView';
+import MainBarView from './NavigationBarView';
+import SearchBarView from './MainBarView';
 import MainView from './MainView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
@@ -102,13 +102,13 @@ class FeedPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-          <View style={[styles.mainNavHeader, {height: this.state.searchStatus ? 62.5 : 100}]}>
-            <SearchBarView searchStatus={this.state.searchStatus} handleSearchStatus={this._handleSearchStatus} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
-            {!this.state.searchStatus ?
-              <NavigationBarView navigateTo={this.props.navigateTo} addNewItem={this.goToAddNewItem}/>
-              :
-              null
-            }
+          <View style={[styles.mainNavHeader]}>
+            <SearchBarView user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.goToAddNewItem} gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus} handleSearchStatus={this._handleSearchStatus} handleSearchInput={(term) => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
+            {/*{!this.state.searchStatus ?*/}
+              {/*<NavigationBarView />*/}
+              {/*:*/}
+              {/*null*/}
+            {/*}*/}
           </View>
           <MainView navigateTo={this.props.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm}/>
           <Modal animationType='slide' visible={this.props.modalShowing} style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
@@ -130,7 +130,8 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  modalShowing: state.myBodyType.modalShowing
+  modalShowing: state.myBodyType.modalShowing,
+  gotNewNotifications: state.notifications.newNotifications
 });
 
 export default connect(mapStateToProps, bindActions)(asScreen(FeedPage));
