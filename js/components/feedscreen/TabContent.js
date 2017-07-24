@@ -13,6 +13,7 @@ import {
   RefreshControl,
   View,
   NetInfo,
+  ActivityIndicator
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
@@ -23,7 +24,7 @@ import { formatInvitationMessage } from '../../lib/messages/index';
 import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-
+import Colors from '../../styles/Colors.styles';
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
@@ -316,12 +317,26 @@ class TabContent extends BaseComponent {
     );
   }
 
+  renderLoader() {
+    return(
+    <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight-150 }}>
+      <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
+    </View>
+
+    )
+  }
+
   render() {
-    return (
-      <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
-        { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
-      </View>
-    );
+    if(this.props.isLoading) {
+      return this.renderLoader();
+    } else {
+      return (
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+          { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
+        </View>
+      );
+    }
+
   }
 }
 

@@ -35,6 +35,7 @@ const mapStateToProps = (state) => {
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.whatsHot.flatLooksIdData, state.looks.flatLooksData);
   return {
+    isLoading: state.feed.whatsHot.isLoading,
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: flatLooksFeedData,

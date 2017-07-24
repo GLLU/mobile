@@ -8,6 +8,8 @@ import { lookSchema, lookListSchema } from '../schemas/schemas'
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
+export const START_FETCHING = 'START_FETCHING';
+export const FINISH_FETCHING = 'FINISH_FETCHING';
 
 const parseQueryFromState = function (state: array) {
   const parsedState = { ...state, 'page[size]': state.page.size, 'page[number]': state.page.number };
@@ -27,6 +29,7 @@ export function getFeed(query: object, feedType = 'bestMatch', retryCount = 0) {
       },
     });
     //dispatch(clearFeed())
+    dispatch(startFethcing({ feedType, isLoading: true }))
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (data) {
         const { looks, meta } = data;
@@ -34,6 +37,7 @@ export function getFeed(query: object, feedType = 'bestMatch', retryCount = 0) {
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType }));
+        dispatch(finishFethcing({ feedType }))
         //dispatch(loadMore(feedType));
         Promise.resolve(data);
       } else if (retryCount < 5) {
@@ -106,6 +110,20 @@ export function setLooksData(data: object) {
   return {
     type: SET_FLAT_LOOKS_DATA,
     payload: data,
+  };
+}
+
+export function startFethcing(loadingFeed: object) {
+  return {
+    type: START_FETCHING,
+    loadingFeed,
+  };
+}
+
+export function finishFethcing(loadingFeed: object) {
+  return {
+    type: FINISH_FETCHING,
+    loadingFeed,
   };
 }
 
