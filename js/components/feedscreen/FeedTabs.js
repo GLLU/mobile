@@ -21,9 +21,9 @@ export default class FeedTabs extends PureComponent {
   _renderHeader = props => <TabBar tabStyle={{height: 41.5}} style={{ backgroundColor: Colors.backgroundGrey }} labelStyle={{ color: Colors.black, fontWeight: '600', textAlign: 'center' }} indicatorStyle={{backgroundColor: Colors.secondaryColor}} {...props} />;
 
   _renderScene = SceneMap({
-    1: ()=><FollowingTabContent navigateTo={this.props.navigateTo} />,
-    2: ()=><BestMatchTabContent navigateTo={this.props.navigateTo} />,
-    3: ()=><WhatsHotTabContent navigateTo={this.props.navigateTo} />,
+    1: ()=><FollowingTabContent navigateTo={this.props.navigateTo} showBottomCameraButton={this.props.showBottomCameraButton} />,
+    2: ()=><BestMatchTabContent navigateTo={this.props.navigateTo} showBottomCameraButton={this.props.showBottomCameraButton} />,
+    3: ()=><WhatsHotTabContent navigateTo={this.props.navigateTo} showBottomCameraButton={this.props.showBottomCameraButton} />,
   });
 
   render() {

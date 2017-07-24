@@ -49,6 +49,7 @@ class TabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -139,6 +140,7 @@ class TabContent extends BaseComponent {
 
   handleScrollPositionForVideo() {
     if (this.state.currentScrollPosition !== this.currPosition) {
+      this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
       this.setState({ currentScrollPosition: this.currPosition });
     }
   }

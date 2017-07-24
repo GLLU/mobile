@@ -33,7 +33,8 @@ class MainView extends Component {
       locked: false,
       isOpen: false,
       reloading: false,
-      clearedField: true
+      clearedField: true,
+
     };
   }
 
@@ -76,7 +77,7 @@ class MainView extends Component {
   _renderFeed() {
     const {reloading, clearedField} = this.props;
     return (
-      <FeedTabs reloading={reloading} clearedField={clearedField} navigateTo={this.props.navigateTo} />
+      <FeedTabs reloading={reloading} clearedField={clearedField} navigateTo={this.props.navigateTo} showBottomCameraButton={this.props.showBottomCameraButton} />
     );
   }
 
