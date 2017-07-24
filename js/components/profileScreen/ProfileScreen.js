@@ -59,8 +59,7 @@ class ProfileScreen extends Component {
       routes: [
         { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
         { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
-        { key: 'closet', title: I18n.t('CLOSET'), index: 2 },
-        { key: 'settings', title: I18n.t('SETTINGS'), index: 3 },
+        { key: 'settings', title: I18n.t('SETTINGS'), index: 2 },
       ],
       isFollowing: props.isFollowing,
       userLooks: props.userLooks,
@@ -183,8 +182,6 @@ class ProfileScreen extends Component {
         return this._renderUserLooks();
       case 'wallet':
         return <WalletScreen balance={balance}/>;
-      case 'closet':
-        return <View style={{ height: 200, width: 450, backgroundColor: 'blue' }}/>;
       case 'settings':
         return <SettingsScreen navigation={navigation}/>;
       default:
@@ -453,7 +450,7 @@ const styles = StyleSheet.create({
   tab: {
     opacity: 1,
     height: 50,
-    width: Dimensions.get('window').width / 4,
+    width: Dimensions.get('window').width / 3,
   },
   headerTab: {
     opacity: 1,
