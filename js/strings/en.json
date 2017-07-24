@@ -25,5 +25,15 @@
   "EDIT_SHAPE": "EDIT BODY SHAPE",
   "PRIVATE_INFO": "This information is private to you only",
   "CURRENT_BALANCE":"Current Balance",
-  "USD": "usd"
+  "USD": "usd",
+  "NO_INTENET_LEGEND": "We can’t provide our service without internet.\n Please check your internet connectivity.",
+  "NO_CLOSET_LOOKS_LEGEND": "We couldn’t find any saved look that you loved.",
+  "NO_CLOSET_ITEMS_LEGEND": "We couldn’t find any saved items that you liked.",
+  "NO_BLOCKED_USERS_LEGEND": "We know you’re full of love.\n Keep up with the good spirit and find the fashion you love.",
+  "NO_LOOKS_UPLOADED_LEGEND": "Don't worry!\nYou can post images and videos quickly to help people find out how fashionable you are",
+  "NO_LOOKS_UPLOADED_TITLE": "OHH..\n YOU DIDN'T POST ANY CONTENT",
+  "EMPTY_BALANCE_TITLE": "YOUR BALANCE IS EMPTY",
+  "POST_NOW": "POST NOW",
+  "EMPTY_BALANCE_LEGEND": "Post your fashionable looks to get people to buy the items you're wearing and start making money."
+
 }
