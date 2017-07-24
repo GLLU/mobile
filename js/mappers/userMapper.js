@@ -4,10 +4,8 @@ export function map(user) {
     avatar: user.avatar,
     name: user.name,
     username: user.username,
-    is_following: user.is_following,
-    about_me: user.about_me,
-    isMe: user.is_me
-  }
+    isFollowing: user.is_following,
+    aboutMe: user.about_me,
+    isMe: user.is_me,
+  };
 }
-
-

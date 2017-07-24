@@ -314,7 +314,7 @@ export function unblockUser(blockedUserId) {
     UsersService.unblock(userId, blockedUserId)
       .catch(err => ({}));//mute error
     const {blockedUsers, meta} = getState().blockedUsers;
-    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.id !== blockedUserId);
+    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.userId !== blockedUserId);
     dispatch({
       type: SET_BLOCKED_USERS,
       blockedUsers: blockedUsersWithoutUnblocked,

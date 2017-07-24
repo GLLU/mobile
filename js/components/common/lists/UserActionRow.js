@@ -47,7 +47,7 @@ class UserActionRow extends Component {
     username: React.PropTypes.string,
     aboutMe: React.PropTypes.string,
     avatar: React.PropTypes.object,
-    userid: React.PropTypes.number,
+    userId: React.PropTypes.number,
     is_following: React.PropTypes.bool,
     navigateTo:React.PropTypes.func
   };
@@ -62,7 +62,7 @@ class UserActionRow extends Component {
     this.renderFollowView = this.renderFollowView.bind(this);
     this.onFollowPress = this.onFollowPress.bind(this);
     this.state = {
-      isFollowing: props.is_following
+      isFollowing: props.isFollowing
     }
   }
 
@@ -95,7 +95,7 @@ class UserActionRow extends Component {
       return <View name="can't follow me" style={styles.followView}/>;
     }
     return <FollowView onPress={this.onFollowPress} style={styles.followView}
-                       user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>
+                       user={{id:this.props.userId, isFollowing:this.state.isFollowing}}/>
   }
 
   render() {

@@ -69,7 +69,7 @@ class BlockedUsersScreen extends Component {
         renderEmpty={this.renderEmptyView}
         renderItem={(user) => <BlockedUserRow
           {...user}
-          userId={user.id}
+          userId={user.userId}
           onUnblockPress={unblockUser}/>}
         headerData={header}
         data={blockedUsers}
