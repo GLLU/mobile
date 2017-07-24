@@ -1,5 +1,12 @@
 {
   "INVALID_LOGIN": "Email/Password are incorrect",
+  "BALANCE": "BALANCE",
+  "FOLLOWING": "FOLLOWING",
+  "FOLLOWERS": "FOLLOWERS",
+  "LOOKS": "LOOKS",
+  "WALLET": "WALLET",
+  "CLOSET": "CLOSET",
+  "SETTINGS": "SETTINGS",
   "INFORMATION": "Information",
   "BLOCK": "Block",
   "UNBLOCK": "Unblock",
@@ -15,5 +22,8 @@
   "EMPTY_BLOCKED_USERS":"You haven't blocked anyone yet.",
   "NO":"No",
   "YES":"Yes",
-
+  "EDIT_SHAPE": "EDIT BODY SHAPE",
+  "PRIVATE_INFO": "This information is private to you only",
+  "CURRENT_BALANCE":"Current Balance",
+  "USD": "usd"
 }

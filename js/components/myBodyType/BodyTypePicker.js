@@ -1,19 +1,16 @@
 import React, {Component} from 'react';
 import withAnalytics from '../common/analytics/WithAnalytics'
-import {Container, Content, Button, Icon, Title,StyleProvider, getTheme } from 'native-base';
 import {Text, View, StyleSheet} from 'react-native';
 import styles from './styles';
-import glluTheme from '../../themes/gllu-theme';
 
-import { connect } from 'react-redux';
-import { changeBodyType } from '../../actions/myBodyType';
+import {connect} from 'react-redux';
+import {changeBodyType} from '../../actions/myBodyType';
 
 import HorizontalCarousel from './horizontalCarousel/horizontalCarousel';
 import CarouselItem from './horizontalCarousel/carouselItem';
 import ArrowTextBox from './arrowTextBox';
 import * as _ from "lodash";
-import Header from "../common/headers/ModalHeader";
-
+import SolidButton from '../common/buttons/SolidButton';
 
 class BodyTypePicker extends Component {
   constructor(props) {
@@ -42,7 +39,7 @@ class BodyTypePicker extends Component {
     const { gender, bodyTypes } = this.props;
     const bodyType = bodyTypes[gender][index];
     this.props.logEvent('ChooseBodyTypeScreen', { name: 'Select bodyType', bodyType: bodyType.name });
-    setTimeout(()=> {
+    setTimeout(() => {
       let data = {
         index,
         gender
@@ -52,9 +49,9 @@ class BodyTypePicker extends Component {
   }
 
   _changeTitleAndDescription(type) {
-    setTimeout(()=> {
-      if(this.state.currBodyType !== type.name){
-        this.setState({currBodyType: type.name, currDescription: type.description})
+    setTimeout(() => {
+      if (this.state.currBodyType !== type.name) {
+        this.setState({ currBodyType: type.name, currDescription: type.description })
       }
     }, 0);
   }
@@ -66,31 +63,22 @@ class BodyTypePicker extends Component {
 
   render() {
     return (
-      <Container theme={glluTheme}>
-        <Header title='My Body Shape' goBack={this.props.goBack}/>
-        <StyleProvider style={getTheme(glluTheme)}>
-        <Content>
-          <View style={styles.container}>
-            <HorizontalCarousel pageStyle={ {backgroundColor: "white", borderRadius: 5}}
-                                sneak={100} initialPage={this.props.currentIndex ? this.props.currentIndex : 3}
-                                currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
-              {this.props.bodyTypes[this.props.gender].map((img, i) => {
-                const isActive = i === this.props.currentIndex;
-                isActive ? this._changeTitleAndDescription(img) : null
-                return (
-                  <CarouselItem key={i} item={img} itemActive={isActive}/>
-                )
-              })}
-            </HorizontalCarousel>
-            <ArrowTextBox title={this.state.currBodyType} description={this.state.currDescription} />
-          </View>
-          <Button block primary style={StyleSheet.flatten(styles.continueButton)}
-                  onPress={this.handleContinuePress.bind(this)}>
-            <Text style={{color:'white'}}>Choose</Text>
-          </Button>
-        </Content>
-        </StyleProvider>
-      </Container>
+      <View>
+        <View style={styles.container}>
+          <HorizontalCarousel pageStyle={ { backgroundColor: "white", borderRadius: 5 }}
+                              sneak={100} initialPage={this.props.currentIndex ? this.props.currentIndex : 3}
+                              currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
+            {this.props.bodyTypes[this.props.gender].map((img, i) => {
+              const isActive = i === this.props.currentIndex;
+              isActive ? this._changeTitleAndDescription(img) : null
+              return (
+                <CarouselItem key={i} item={img} itemActive={isActive}/>
+              )
+            })}
+          </HorizontalCarousel>
+          <ArrowTextBox title={this.state.currBodyType} description={this.state.currDescription}/>
+        </View>
+      </View>
     )
   }
 }
