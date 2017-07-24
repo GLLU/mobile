@@ -13,8 +13,8 @@
     "run-android": "react-native run-android",
     "run-ios": "react-native run-ios --scheme infash-debug",
     "storybook": "storybook start -p 7007",
-    "code-push-ios":"code-push release-react infash ios --plistFile \"ios/gllu/Info.plist\" --outputDir ./sourceMap/ios",
-    "code-push-android":"code-push release-react infash android --outputDir ./sourceMap/android"
+    "code-push-ios": "code-push release-react infash ios --plistFile \"ios/gllu/Info.plist\" --outputDir ./sourceMap/ios",
+    "code-push-android": "code-push release-react infash android --outputDir ./sourceMap/android"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -47,7 +47,7 @@
     "react-native-fetch-blob": "^0.10.5",
     "react-native-flurry-analytics": "2.1.0",
     "react-native-google-analytics-bridge": "^5.0.1",
-    "react-native-i18n": "^1.0.0",
+    "react-native-i18n": "^2.0.2",
     "react-native-joi": "0.0.5",
     "react-native-keychain": "^1.2.0",
     "react-native-linear-gradient": "^2.0.0",
@@ -74,6 +74,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "@storybook/react-native": "3.1.7",
     "babel-eslint": "^6.1.2",
     "babel-jest": "^17.0.2",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
@@ -92,18 +93,17 @@
     "eslint-plugin-react": "^6.2.0",
     "eslint-plugin-react-native": "^2.0.0",
     "eslint-plugin-standard": "^2.0.1",
-    "react-native-tab-view": "0.0.65",
     "flow-bin": "^0.37.0",
     "jest": "^17.0.3",
     "jest-react-native": "18.0.0",
     "mocha": "^2.5.3",
+    "react-dom": "16.0.0-alpha.6",
     "react-native-debugger-open": "^0.3.10",
+    "react-native-tab-view": "0.0.65",
     "react-test-renderer": "15.3.2",
     "remotedev-server": "^0.2.2",
     "why-did-you-update": "0.0.8",
-    "yarn": "^0.19.1",
-    "@storybook/react-native": "3.1.7",
-    "react-dom": "16.0.0-alpha.6"
+    "yarn": "^0.19.1"
   },
   "keywords": [
     "android",

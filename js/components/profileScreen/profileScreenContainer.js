@@ -17,6 +17,9 @@ import {
 import { editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';
+import { reportAbuse } from '../../actions/looks';
+import { blockUser } from '../../actions/user';
+
 
 import asScreen from '../common/containers/Screen';
 
@@ -28,6 +31,7 @@ function bindAction(dispatch: any, ownProps: any): void {
     getUserBalance: id => dispatch(getUserBalance(id)),
     getUserBodyType: data => dispatch(getUserBodyType(data)),
     addNewLook: imagePath => dispatch(addNewLook(imagePath)),
+    blockUser: userId => dispatch(blockUser(userId)),
     editNewLook: id => dispatch(editNewLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),
     loadMoreUserLooks: looksCall => dispatch(loadMoreUserLooks(looksCall)),

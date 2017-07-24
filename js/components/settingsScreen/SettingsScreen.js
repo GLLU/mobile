@@ -20,6 +20,7 @@ const iconPrivacy = require('../../../images/icons/privacy.png');
 const iconCopyright = require('../../../images/icons/copyright.png');
 const iconLogout = require('../../../images/icons/logout.png');
 const iconRateUs = require('../../../images/icons/rate_us.png');
+const iconBlockedUsers = require('../../../images/icons/blocked-users-green.png');
 
 class SettingsScreen extends Component {
   static propTypes = {
@@ -31,6 +32,7 @@ class SettingsScreen extends Component {
     super(props);
     this.renderListItem = this.renderListItem.bind(this);
     this.getSettingsConfiguration = this.getSettingsConfiguration.bind(this);
+    this._navigateToBlockedUsers = this._navigateToBlockedUsers.bind(this);
     this.state = {
       settings: this.getSettingsConfiguration(),
     };
@@ -70,12 +72,22 @@ class SettingsScreen extends Component {
         onPress: this.handleOpenLink.bind(this, RATE_US_URL),
       },
       {
+        text: 'Blocked Users',
+        icon: iconBlockedUsers,
+        onPress: this._navigateToBlockedUsers
+      },
+      {
         text: 'Log Out',
         icon: iconLogout,
         onPress: logout,
       },
 
     ];
+  }
+  _navigateToBlockedUsers() {
+    const {logEvent, navigateTo} = this.props;
+    logEvent('SettingsScreen', {name: 'Blocked Users click'});
+    navigateTo('blockedUsersScreen')
   }
 
   _onInviteFriendsClick = () => {
