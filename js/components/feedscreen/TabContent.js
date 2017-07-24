@@ -230,8 +230,9 @@ class TabContent extends BaseComponent {
     this.setState({ isRefreshing: true });
     const { getFeed, query } = this.props;
     // reset the first page
-    query.page.number = 1;
-    getFeed(query)
+    const cleanQuery = _.cloneDeep(query);
+    delete cleanQuery.page;
+    getFeed(cleanQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
       })
