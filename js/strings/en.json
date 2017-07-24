@@ -25,5 +25,7 @@
   "EDIT_SHAPE": "EDIT BODY SHAPE",
   "PRIVATE_INFO": "This information is private to you only",
   "CURRENT_BALANCE":"Current Balance",
-  "USD": "usd"
+  "USD": "usd",
+  "SHOP_NOW":"SHOP NOW",
+  "VISIT_RETAILER": "VISIT RETAILER’S WEBSITE"
 }

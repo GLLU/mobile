@@ -27,6 +27,7 @@ import ProfileScreen from './ProfileScreen';
 
 function bindAction(dispatch: any, ownProps: any): void {
   return {
+    navigateToLooksScreen: params => ownProps.navigateTo('lookScreenWhatsHot', params),
     getStats: id => dispatch(getStats(id)),
     getUserBalance: id => dispatch(getUserBalance(id)),
     getUserBodyType: data => dispatch(getUserBodyType(data)),
