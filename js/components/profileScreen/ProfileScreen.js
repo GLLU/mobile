@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   View,
@@ -12,12 +12,12 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar} from 'react-native-tab-view';
+import { TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar } from 'react-native-tab-view';
 import I18n from 'react-native-i18n';
 
 import ParallaxView from '../../utils/ParallaxView';
 import ProfileScreenHeader from './ProfileScreenHeader';
-import ScalableText, {generateAdjustedSize} from '../../utils/AdjustedFontSize';
+import ScalableText, { generateAdjustedSize } from '../../utils/AdjustedFontSize';
 import UserLooks from './UserLooks';
 import WalletScreen from './WalletScreen';
 import SettingsScreen from '../settingsScreen/SettingsContainer';
@@ -181,14 +181,19 @@ class ProfileScreen extends Component {
       case 'looks':
         return this._renderUserLooks();
       case 'wallet':
-        return <WalletScreen balance={balance}/>;
+        return <WalletScreen balance={balance} onWithdrawPressed={this._handleWithdraw} />;
       case 'settings':
-        return <SettingsScreen navigation={navigation}/>;
+        return <SettingsScreen navigation={navigation} />;
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }}/>
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
           ;
     }
   };
+
+  _handleWithdraw = (balance) => {
+    const {  showParisBottomMessage } = this.props;
+    showParisBottomMessage(balance);
+  }
 
   _navigateToTab(tabIndex: number) {
     this.setState({ index: tabIndex });
@@ -216,7 +221,7 @@ class ProfileScreen extends Component {
     scrollEventThrottle={100}
     onScroll={this._handleScrollUserLooks}
     style={{ backgroundColor: 'purple' }}
-    pagingEnabled/>
+    pagingEnabled />
 
   _loadMoreUserLooks() {
     if (this.state.loadingMore) {
@@ -234,8 +239,8 @@ class ProfileScreen extends Component {
       // if (pageSize * pageNumber < total_count) {
       this.setState({ loadingMore: true }, () => {
         this.props.loadMoreUserLooks(data).then(() => {
-            this.setState({ loadingMore: false });
-          }
+          this.setState({ loadingMore: false });
+        }
         ).catch((err) => {
           console.log('error', err);
           this.setState({ loadingMore: false });
@@ -255,10 +260,10 @@ class ProfileScreen extends Component {
             return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)"/>;
+            return <Spinner color="rgb(230,230,230)" />;
           }
           if (this.state.loadingMore) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
           }
           return null;
         })()}
@@ -280,14 +285,14 @@ class ProfileScreen extends Component {
           likeUpdate={likeUpdate}
           unlikeUpdate={unlikeUpdate}
           meta={meta}
-          isLoading={this.state.isLoading}/>
+          isLoading={this.state.isLoading} />
         {this._renderLoadMore()}
       </View>
     );
   }
 
   _renderPager = props => (
-    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false}/>
+    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false} />
   );
 
   _configureTransition = () => null;
@@ -319,18 +324,18 @@ class ProfileScreen extends Component {
 
     return (<View style={styles.container}>
 
-        {!isMyProfile ? this._renderUserLooks() :
-          <TabViewAnimated
-            style={styles.container}
-            navigationState={this.state}
-            configureTransition={this._configureTransition}
-            renderScene={this._renderScene}
-            renderPager={this._renderPager}
-            renderHeader={this._renderHeader}
-            onRequestChangeTab={this._handleChangeTab}
+      {!isMyProfile ? this._renderUserLooks() :
+      <TabViewAnimated
+        style={styles.container}
+        navigationState={this.state}
+        configureTransition={this._configureTransition}
+        renderScene={this._renderScene}
+        renderPager={this._renderPager}
+        renderHeader={this._renderHeader}
+        onRequestChangeTab={this._handleChangeTab}
           />
         }
-      </View>
+    </View>
     );
   };
 
@@ -354,16 +359,16 @@ class ProfileScreen extends Component {
           onPress={this._handleBackToFeedPress}>
           <Image
             style={{ width: 18, height: 18 }} resizeMode={'contain'}
-            source={require('../../../images/icons/backArrow.png')}/>
+            source={require('../../../images/icons/backArrow.png')} />
         </TouchableOpacity>
 
         {!isMyProfile ? null :
-          <TouchableOpacity onPress={onProfileEdit} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
-            <Image
-              source={require('../../../images/icons/edit.png')}
-              style={{ width: 18, height: 18, right: 18.5 }}
-              resizeMode={'contain'}/>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={onProfileEdit} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+          <Image
+            source={require('../../../images/icons/edit.png')}
+            style={{ width: 18, height: 18, right: 18.5 }}
+            resizeMode={'contain'} />
+        </TouchableOpacity>
         }
 
       </View>

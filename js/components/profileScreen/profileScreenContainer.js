@@ -31,11 +31,15 @@ function bindAction(dispatch: any, ownProps: any): void {
     editNewLook: id => dispatch(editNewLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),
     loadMoreUserLooks: looksCall => dispatch(loadMoreUserLooks(looksCall)),
-    showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
+    showParisBottomMessage: (balance) => {
+      ownProps.logEvent('ProfileScreen', { name: 'Wallet Pressed' });
+      const parisMessage = balance < 50 ? 'Hey, you can withdraw the reward once you reach at least US$50.00' : 'Hey, to withdraw please Contact us';
+      dispatch(showParisBottomMessage(parisMessage));
+    },
     likeUpdate: id => dispatch(likeUpdate(id)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),
     onFollowClicked: (id: number, isFollowing: boolean) => {
-      isFollowing ? dispatch(unFollowUpdate(id)): dispatch(followUpdate(id));
+      isFollowing ? dispatch(unFollowUpdate(id)) : dispatch(followUpdate(id));
     },
     onProfileEdit: (user) => {
       ownProps.navigation.navigate('editProfileScreen');
@@ -78,4 +82,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, bindAction)(asScreen(ProfileScreen));
+export default (asScreen(connect(mapStateToProps, bindAction)(asScreen(ProfileScreen))));

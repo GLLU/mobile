@@ -1,12 +1,12 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import * as _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
-import {Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Image} from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Image } from 'react-native';
 import I18n from 'react-native-i18n';
 
-import {generateAdjustedSize} from '../../utils/AdjustedFontSize';
+import { generateAdjustedSize } from '../../utils/AdjustedFontSize';
 import SolidButton from '../common/buttons/SolidButton';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
@@ -33,8 +33,8 @@ class WalletScreen extends Component {
       <View style={styles.container}>
         <View>
           <Image
-            style={styles.card} source={cardBG}/>
-          <Image style={styles.logo} resizeMode={'contain'} source={cardLogo}/>
+            style={styles.card} source={cardBG} />
+          <Image style={styles.logo} resizeMode={'contain'} source={cardLogo} />
           <View style={{ position: 'absolute', top: 53, left: 16 }}>
             <Text style={styles.balanceTitle}>{I18n.t('CURRENT_BALANCE')}</Text>
             <Text style={styles.balanceAmount}>{balance}<Text style={styles.dolarSign}>{I18n.t('USD')}</Text></Text>
@@ -44,7 +44,7 @@ class WalletScreen extends Component {
 
         <Text style={[styles.lastUpdate, { alignSelf: 'center' }]}>13.30 USD pending confirmation</Text>
 
-        <SolidButton label="Withdraw" style={styles.withdrawButton}/>
+        <SolidButton label="Withdraw" style={styles.withdrawButton} onPress={this._handleWithdrawPressed} />
 
         {/*
          <Text style={styles.transactionDetails}>Transaction details</Text>
@@ -52,6 +52,12 @@ class WalletScreen extends Component {
 
       </View>
     );
+  }
+
+  _handleWithdrawPressed = () => {
+    const { balance, onWithdrawPressed } = this.props;
+
+    onWithdrawPressed(balance);
   }
 }
 
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 16,
     width: 50,
-    height:22.5,
+    height: 22.5,
     right: 16,
     color: 'white',
   },
