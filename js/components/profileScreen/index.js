@@ -31,8 +31,9 @@ class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     const userData = props.navigation.state.params;
-    const isMyProfile = userData.id === this.props.myUser.id || userData.user_id === this.props.myUser.id;
-    const currUserId = isMyProfile ? props.myUser.id : userData.user_id||userData.id;
+    const isMyProfile = userData.id === this.props.myUser.id || userData.userId === this.props.myUser.id;
+    const currUserId = isMyProfile ? props.myUser.id : userData.userId||userData.id;
+    const isFollowing = userData.is_following ? userData.is_following : userData.isFollowing
     this.goToAddNewItem = this.goToAddNewItem.bind(this);
     this.handleFollowersPress = this.handleFollowersPress.bind(this);
     this.handleFollowingPress = this.handleFollowingPress.bind(this);
@@ -44,9 +45,9 @@ class ProfileScreen extends Component {
       isMyProfile,
       userId: currUserId,
       noMoreData: false,
-      isFollowing: userData.is_following,
+      isFollowing,
       isLoadingLooks: true,
-      stats: currUserId === props.stats.user_id ? props.stats : {},
+      stats: currUserId === props.stats.userId ? props.stats : {},
       userLooks: currUserId === props.currLookScreenId ? props.userLooks : [],
       meta: currUserId === props.currLookScreenId ? props.meta : {total_count: 0},
       isLoading: currUserId === props.currLookScreenId,
@@ -211,7 +212,7 @@ class ProfileScreen extends Component {
     }
     const {meta: {total_count}, query} = this.props;
     const pageSize = query.page.size;
-    const pageNumber = query["page[number]"];
+    const pageNumber = query.page.number;
     if (pageSize * pageNumber < total_count) {
     // if (pageSize * pageNumber < total_count) {
       this.setState({isLoading: true}, () => {
@@ -290,7 +291,8 @@ class ProfileScreen extends Component {
     const userData = this.props.navigation.state.params;
     const {myUser} = this.props;
     const user = isMyProfile ? myUser : userData;
-    const {about_me,avatar} = user;
+    const {avatar} = user;
+    const aboutMe = user.about_me ? user.about_me : user.aboutMe
     if (!_.isEmpty(user)) {
       let avatarUrl = avatar ? avatar.url : null;
       return (
@@ -316,7 +318,7 @@ class ProfileScreen extends Component {
                     { this._renderRightBtn() }
                 </View>
                 <View style={styles.description}>
-                  <Text ellipsizeMode="middle" style={styles.descriptionText}>{about_me}</Text>
+                  <Text ellipsizeMode="middle" style={styles.descriptionText}>{aboutMe}</Text>
                 </View>
                 { this._renderStats() }
               </Image>
