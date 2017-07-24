@@ -19,7 +19,7 @@ const parseQueryFromState = function (state: array) {
 };
 
 export function getFeed(query: object, retryCount = 0) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const newState = Object.assign({}, query, {
       page: {
         size: 10,
@@ -30,7 +30,8 @@ export function getFeed(query: object, retryCount = 0) {
       if (data) {
         const { looks, meta } = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
-        dispatch(setLooksData({ flatLooksData: normalizedLooksData.entities.looks, query: newState }));
+        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState }));
         dispatch(loadMore());
         Promise.resolve(data);
