@@ -277,10 +277,14 @@ class ProfileScreen extends Component {
     const { userId, navigateTo, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
     const { stats, userLooks } = this.state;
 
+    const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
+    const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : I18n.t('NO_LOOKS_UPLOADED_LEGEND');
+    const emptyStateButtonText = isMyProfile ? I18n.t('POST_NOW') : null;
+
     if ((!userLooks || userLooks.length === 0) && !this.state.isLoading) {
       return (<EmptyStateScreen
-        title={I18n.t('NO_LOOKS_UPLOADED_TITLE')} subtitle={I18n.t('NO_LOOKS_UPLOADED_LEGEND')}
-        icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={I18n.t('POST_NOW')}
+        title={emptyStateTitle} subtitle={emptyStateSubtitle}
+        icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
         onButtonClicked={this._uploadLook} />);
     }
 
