@@ -3,8 +3,7 @@ import { StyleSheet, Image, Platform, View, TouchableWithoutFeedback, TouchableO
 import { Icon } from 'native-base';
 import BaseComponent from '../common/base/BaseComponent';
 import withAnalytics from '../common/analytics/WithAnalytics';
-import { openCamera } from '../../lib/camera/CameraUtils';
-import { formatLook } from '../../utils/UploadUtils';
+
 
 const homeIcon = require('../../../images/logo/inFASH-header.png');
 const userIcon = require('../../../images/icons/Profile_black.png');
@@ -94,7 +93,6 @@ class MainBarView extends BaseComponent {
     super(props);
     this.openSearch = this.openSearch.bind(this);
     this.handleNotificationsPress = this.handleNotificationsPress.bind(this);
-    this.uploadLook = this.uploadLook.bind(this);
     this.goToProfile = this.goToProfile.bind(this);
     this.state = {
       hasNotify: false,
@@ -123,14 +121,7 @@ class MainBarView extends BaseComponent {
     this.props.navigateTo('notificationsScreen');
   }
 
-  async uploadLook() {
-    this.props.logEvent('Feedscreen', { name: 'Open Camera click' });
-    const path = await openCamera(true);
-    const file = formatLook(path);
-    if (file) {
-      this.props.addNewItem(file);
-    }
-  }
+
 
   renderNavigationButton(icon, onPress, iconStyle, containerStyle) {
     return (
