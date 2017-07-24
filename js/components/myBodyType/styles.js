@@ -17,8 +17,6 @@ export default StyleSheet.create({
     color: fontColor
   },
   container: {
-    height: h - h/2.5  ,
-    paddingTop: 5,
     paddingHorizontal: 10,
     backgroundColor: '#ffffff'
   },
@@ -35,7 +33,7 @@ export default StyleSheet.create({
     borderColor: '#EBEBEB',
     backgroundColor: '#FFFFFF',
     padding: 15,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     marginVertical: 10,
     height: 120,
   },

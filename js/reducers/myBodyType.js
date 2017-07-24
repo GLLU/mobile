@@ -1,5 +1,10 @@
 import _ from 'lodash';
-import { BODY_TYPE_CHANGE_SLIDING, BODY_TYPE_SHOW_MODAL, BODY_TYPE_HIDE_MODAL, GET_CURRENT_USER_BODY_TYPE } from '../actions/myBodyType';
+import {
+  BODY_TYPE_CHANGE_SLIDING,
+  BODY_TYPE_SHOW_MODAL,
+  BODY_TYPE_HIDE_MODAL,
+  GET_CURRENT_USER_BODY_TYPE
+} from '../actions/myBodyType';
 
 // Data sample
 const bodyTypeList = {
@@ -85,26 +90,29 @@ const initialState = {
   gender: 'female',
   modalShowing: false,
   bodyTypes: bodyTypeList,
-  currentBodyType:  Object.assign({},bodyTypeList['female'][2]),
+  currentBodyType: Object.assign({}, bodyTypeList['female'][2]),
   currentIndex: 2
 }
 
 // Action Handlers
 const ACTION_HANDLERS = {
   [BODY_TYPE_CHANGE_SLIDING]: (state, action) => {
-    const bodyTypesOfMyGender=bodyTypeList[action.payload.gender];
-    const pickedBodyType=bodyTypesOfMyGender[action.payload.index];
-    return { ...state
+    const bodyTypesOfMyGender = bodyTypeList[action.payload.gender];
+    const pickedBodyType = bodyTypesOfMyGender[action.payload.index];
+    return {
+      ...state
       , currentBodyType: pickedBodyType
       , currentIndex: action.payload.index
     }
   },
   [GET_CURRENT_USER_BODY_TYPE]: (state, action) => {
-    const bodyTypesOfMyGender=bodyTypeList[action.payload.gender];
-    const userBodyType=_.find(bodyTypesOfMyGender, {body_type: action.payload.bodyType});
-    return { ...state
+    const bodyTypesOfMyGender = bodyTypeList[action.payload.gender];
+    const bodyTypeIndex = _.findIndex(bodyTypesOfMyGender, (item => item.body_type === action.payload.bodyType));
+    const userBodyType = bodyTypesOfMyGender[bodyTypeIndex];
+    return {
+      ...state
       , currentBodyType: userBodyType
-      , currentIndex: action.payload.selectedIndex
+      , currentIndex: bodyTypeIndex
     }
   },
   [BODY_TYPE_SHOW_MODAL]: (state) => {
@@ -121,7 +129,7 @@ const ACTION_HANDLERS = {
   }
 }
 
-export default function mybodyTypeReducer (state = initialState, action) {
+export default function mybodyTypeReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
   return handler ? handler(state, action) : state
 }

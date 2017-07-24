@@ -1,9 +1,5 @@
-import React, { Component } from 'react';
-import {
-  StyleSheet, Alert, Linking, Text, View, Image, FlatList, TouchableOpacity,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { logout } from '../../actions';
+import React, {Component} from 'react';
+import {StyleSheet, Alert, Linking, Text, View, Image, FlatList, TouchableOpacity} from 'react-native';
 import SocialShare from '../../lib/social';
 import {
   SUPPORT_EMAIL,
@@ -11,54 +7,11 @@ import {
   TERMS_URL,
   PRIVACY_URL,
   COPYRIGHT_URL,
-  RATE_US_URL
+  RATE_US_URL,
 } from '../../constants';
-import { formatInvitationMessage } from "../../lib/messages/index";
-import asScreen from "../common/containers/Screen"
-import Header from "../common/headers/ModalHeader";
-import FullscreenView from "../common/containers/FullscreenView";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF'
-  },
-  header: {
-    backgroundColor: 'transparent',
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: '300',
-    fontFamily: 'Times New Roman',
-    color: '#000',
-    textAlign: 'left'
-  },
-  headerArrow: {
-    color: '#000'
-  },
-  backIcon: {
-    color: '#000'
-  },
-  listItem: {
-    flexDirection: 'row',
-    height: 60,
-    alignItems: 'center',
-    paddingLeft: 10
-  },
-  listItemThumbnail: {
-    marginHorizontal: 10,
-    width: 25,
-    height: 25,
-  },
-  listItemText: {
-    fontSize: 16,
-    fontFamily: 'Montserrat-Regular',
-    fontWeight: '400',
-  }
-});
+import {formatInvitationMessage} from '../../lib/messages/index';
+import FullscreenView from '../common/containers/FullscreenView';
 
 const iconShare = require('../../../images/icons/share.png');
 const iconContact = require('../../../images/icons/contact.png');
@@ -81,41 +34,42 @@ class SettingsScreen extends Component {
     this.getSettingsConfiguration = this.getSettingsConfiguration.bind(this);
     this._navigateToBlockedUsers = this._navigateToBlockedUsers.bind(this);
     this.state = {
-      settings: this.getSettingsConfiguration()
-    }
+      settings: this.getSettingsConfiguration(),
+    };
   }
 
-  getSettingsConfiguration() {
+  getSettingsConfiguration = () => {
+    const { logout } = this.props;
     return [
       {
         text: 'Invite your Friends',
         icon: iconShare,
-        onPress: this._onInviteFriendsClick.bind(this)
+        onPress: this._onInviteFriendsClick,
       },
       {
         text: 'Contact Us',
         icon: iconContact,
-        onPress: this.handleOpenLink.bind(this, EMAIL_URL, 'email')
+        onPress: this.handleOpenLink.bind(this, EMAIL_URL, 'email'),
       },
       {
         text: 'Terms of Service',
         icon: iconTerms,
-        onPress: this.handleOpenLink.bind(this, TERMS_URL)
+        onPress: this.handleOpenLink.bind(this, TERMS_URL),
       },
       {
         text: 'Privacy Policy',
         icon: iconPrivacy,
-        onPress: this.handleOpenLink.bind(this, PRIVACY_URL)
+        onPress: this.handleOpenLink.bind(this, PRIVACY_URL),
       },
       {
         text: 'Copyrights',
         icon: iconCopyright,
-        onPress: this.handleOpenLink.bind(this, COPYRIGHT_URL)
+        onPress: this.handleOpenLink.bind(this, COPYRIGHT_URL),
       },
       {
         text: 'Rate Us',
         icon: iconRateUs,
-        onPress: this.handleOpenLink.bind(this, RATE_US_URL)
+        onPress: this.handleOpenLink.bind(this, RATE_US_URL),
       },
       {
         text: 'Blocked Users',
@@ -125,29 +79,28 @@ class SettingsScreen extends Component {
       {
         text: 'Log Out',
         icon: iconLogout,
-        onPress: this.handleLogout.bind(this)
+        onPress: logout,
       },
 
-    ]
+    ];
   }
-
   _navigateToBlockedUsers() {
     const {logEvent, navigateTo} = this.props;
     logEvent('SettingsScreen', {name: 'Blocked Users click'});
     navigateTo('blockedUsersScreen')
   }
 
-  _onInviteFriendsClick() {
-    this.props.logEvent('SettingsScreen', {name: 'Invite your friends click'});
-    const message = SocialShare.generateShareMessage(formatInvitationMessage());
+  _onInviteFriendsClick = () => {
+    this.props.logEvent('SettingsScreen', { name: 'Invite your friends click' });
+    const message = SocialShare.generateShareMessage(formatInvitationMessage(this.props.shareToken));
     SocialShare.nativeShare(message);
   }
 
   handleOpenLink(url, type = 'link') {
-    this.props.logEvent('SettingsScreen', {name: 'Link click', url});
-    Linking.canOpenURL(url).then(supported => {
+    this.props.logEvent('SettingsScreen', { name: 'Link click', url });
+    Linking.canOpenURL(url).then((supported) => {
       if (!supported) {
-        console.log('Can\'t handle url: ' + url);
+        console.log(`Can't handle url: ${url}`);
         if (type === 'email') {
           Alert.alert(
             '',
@@ -157,8 +110,8 @@ class SettingsScreen extends Component {
                 text: 'OK',
                 onPress: () => {
                   console.log('Alert OK pressed');
-                }
-              }
+                },
+              },
             ]
           );
         }
@@ -168,14 +121,7 @@ class SettingsScreen extends Component {
     }).catch(err => console.error('An error occurred', err));
   }
 
-  handleLogout() {
-    this.props.logEvent('SettingsScreen', {name: 'Logout click'});
-    this.props.logout()
-      .then(() => this.props.resetTo('splashscreen'))
-      .catch((err) => console.log(err));
-  }
-
-  renderListItem({item}) {
+  renderListItem({ item }) {
     return (
       <TouchableOpacity onPress={item.onPress}>
         <View style={styles.listItem}>
@@ -187,27 +133,57 @@ class SettingsScreen extends Component {
   }
 
   render() {
+    const { onBack } = this.props;
+
     return (
-      <FullscreenView style={{backgroundColor: 'white'}}>
-        <Header title='Settings' goBack={this.props.goBack}/>
-        <FlatList
-          data={this.state.settings}
-          keyExtractor={(item, index) => index}
-          renderItem={this.renderListItem}
-        />
-      </FullscreenView>
+    <View>
+      {this.state.settings.map(item => this.renderListItem({item}))}
+    </View>
     );
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    logout: () => dispatch(logout()),
-  };
-}
+export default SettingsScreen;
 
-const mapStateToProps = state => {
-  return {};
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    backgroundColor: 'transparent',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '300',
+    fontFamily: 'Times New Roman',
+    color: '#000',
+    textAlign: 'left',
+  },
+  headerArrow: {
+    color: '#000',
+  },
+  backIcon: {
+    color: '#000',
+  },
+  listItem: {
+    flexDirection: 'row',
+    height: 60,
+    alignItems: 'center',
+    paddingLeft: 10,
+  },
+  listItemThumbnail: {
+    marginHorizontal: 10,
+    width: 25,
+    height: 25,
+  },
+  listItemText: {
+    fontSize: 16,
+    fontFamily: 'Montserrat-Regular',
+    fontWeight: '400',
+  },
+});
 
-export default connect(mapStateToProps, bindAction)(asScreen(SettingsScreen));

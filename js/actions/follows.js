@@ -1,39 +1,32 @@
+// @flow
+
 import rest from '../api/rest';
 
 // Actions
-export const SET_USER_FOLLOW_STATE = 'SET_USER_FOLLOW_STATE';
 export const SET_USER_FOLLOWS_DATA = 'SET_USER_FOLLOWS_DATA';
 export const INIT_USER_FOLLOWS = 'INIT_USER_FOLLOWS';
 
-export function followUpdate(data) {
+export function followUpdate(id) {
   return (dispatch) => {
-    dispatch({
-      type: SET_USER_FOLLOW_STATE,
-      payload: data
-    });
-    dispatch(follow(data.id));
+    dispatch(follow(id));
   };
 }
 
-export function unFollowUpdate(data) {
+export function unFollowUpdate(id) {
   return (dispatch) => {
-    dispatch({
-      type: SET_USER_FOLLOW_STATE,
-      payload: data
-    });
-    dispatch(unfollow(data.id));
+    dispatch(unfollow(id));
   };
 }
 
 export function follow(id) {
   return (dispatch) => {
-    dispatch(rest.actions.follows.post({user_id: id}, {}));
+    dispatch(rest.actions.follows.post({ user_id: id }, {}));
   };
 }
 
-export function unfollow(id) {
+export function unfollow(id: number) {
   return (dispatch) => {
-    dispatch(rest.actions.follows.delete({user_id: id}));
+    dispatch(rest.actions.follows.delete({ user_id: id }));
   };
 }
 

@@ -9,7 +9,7 @@ export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
 
-const parseQueryFromState = function (state: array) {
+export const parseQueryFromState = function (state: array) {
   const parsedState = { ...state, 'page[size]': state.page.size, 'page[number]': state.page.number };
   if (state.category) {
     parsedState.category = state.category;

@@ -3,10 +3,11 @@ import * as _ from 'lodash';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import Colors from '../../../styles/Colors.styles';
 
 const styles = StyleSheet.create({
   center: {
-    flex: 1,
     flexDirection:'column',
     justifyContent: 'center',
   },
@@ -16,9 +17,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-
-
+  },
+  basicStyle:{
+    width: generateAdjustedSize(265),
+    height: generateAdjustedSize(45),
+    alignSelf: 'center',
+    backgroundColor: Colors.secondaryColor,
   }
+  ,
 });
 
 class SolidButton extends Component {
@@ -37,12 +43,12 @@ class SolidButton extends Component {
 
   render() {
     return (
-      <TouchableHighlight style={[styles.center, this.props.style]} onPress={this.props.onPress}>
+      <TouchableOpacity style={[styles.center, styles.basicStyle ,this.props.style]} onPress={this.props.onPress}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text style={styles.text}>{this.props.label}</Text>
           {this.props.loaderElement}
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }
