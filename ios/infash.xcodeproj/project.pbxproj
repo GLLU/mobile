@@ -76,6 +76,7 @@
 		63A439441E544DC9002CD308 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A4392B1E544D89002CD308 /* libRCTAnimation.a */; };
 		63C7ABFF48504A59A789AF3D /* libBugsnagReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA21D50A5F8140E18526196E /* libBugsnagReactNative.a */; };
 		64C34B1020F44AC9A466E2F4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FDFABFC19A34E9E8EC2AF8A /* FontAwesome.ttf */; };
+		6585EA231F25BD2900514CA4 /* FreightSansMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6585EA221F25BD2900514CA4 /* FreightSansMedium.ttf */; };
 		6B767161E3424E8DA25DC601 /* libRNMixpanel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BF71EA21694A08A9BA2E32 /* libRNMixpanel.a */; };
 		6D2AC0A7EE61433E9C850A88 /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E936F3E326F44EA96579D63 /* Rubik-MediumItalic.ttf */; };
 		77CC25145EAD4DABA136676C /* SF-UI-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F010170E6FB4AC494C7E102 /* SF-UI-Text-Regular.otf */; };
@@ -523,6 +524,7 @@
 		63A00FAE1EB5E53200749D54 /* libQBImagePickerController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libQBImagePickerController.a; path = "../../../../../Library/Developer/Xcode/DerivedData/gllu-cllcymnvvwrifnemamkbgmfnvusp/Build/Products/Release-iphoneos/QBImagePickerController/libQBImagePickerController.a"; sourceTree = "<group>"; };
 		63A439211E544D88002CD308 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		653AFBC91F164427006DE9DF /* RNI18n.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/RNI18n.xcodeproj"; sourceTree = "<group>"; };
+		6585EA221F25BD2900514CA4 /* FreightSansMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreightSansMedium.ttf; sourceTree = "<group>"; };
 		65DD188C568749D9AC549134 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-infash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-infash/Pods-infash.debug.xcconfig"; sourceTree = "<group>"; };
 		693C7585FBCC441F89EF29A0 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
@@ -853,6 +855,7 @@
 			isa = PBXGroup;
 			children = (
 				D03B93D01E13D5AF00DDE832 /* Montserrat-Bold.ttf */,
+				6585EA221F25BD2900514CA4 /* FreightSansMedium.ttf */,
 				D03B93D11E13D5AF00DDE832 /* Montserrat-Regular.ttf */,
 				D03B93D21E13D5AF00DDE832 /* PlayfairDisplay-Black.ttf */,
 				D03B93D31E13D5AF00DDE832 /* PlayfairDisplay-BlackItalic.ttf */,
@@ -1626,6 +1629,7 @@
 				D03B93DA1E13D5AF00DDE832 /* PlayfairDisplay-Black.ttf in Resources */,
 				64C34B1020F44AC9A466E2F4 /* FontAwesome.ttf in Resources */,
 				E1F82379AF874C81A759EF9E /* Foundation.ttf in Resources */,
+				6585EA231F25BD2900514CA4 /* FreightSansMedium.ttf in Resources */,
 				9A156E7A1C6340C8843C0D34 /* Ionicons.ttf in Resources */,
 				00EE382FE39D42E48D6B5928 /* MaterialIcons.ttf in Resources */,
 				D03B93D81E13D5AF00DDE832 /* Montserrat-Bold.ttf in Resources */,
