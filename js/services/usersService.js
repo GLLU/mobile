@@ -13,7 +13,7 @@ class usersService {
     const data = await AppAPI.get(`${blockRoute(userId)}`, {'page[number]': pageNumber});
     const blockedUsers = _.map(data.users, user => {
       const mappedUser = userMapper.map(user);
-      mappedUser.id = mappedUser.user_id;
+      mappedUser.id = mappedUser.userId;
       return mappedUser;
     });
     const meta = metaMapper.map(data.meta);
