@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Image } from 'react-native';
 import I18n from 'react-native-i18n';
 
-import { generateAdjustedSize } from '../../utils/AdjustedFontSize';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import SolidButton from '../common/buttons/SolidButton';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 22.5,
     right: 16,
-    color: 'white',
   },
   balanceTitle: {
     fontFamily: Fonts.regularFont,

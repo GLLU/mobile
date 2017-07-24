@@ -17,7 +17,7 @@ import I18n from 'react-native-i18n';
 
 import ParallaxView from '../../utils/ParallaxView';
 import ProfileScreenHeader from './ProfileScreenHeader';
-import ScalableText, { generateAdjustedSize } from '../../utils/AdjustedFontSize';
+import ScalableText, { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import UserLooks from './UserLooks';
 import WalletScreen from './WalletScreen';
 import SettingsScreen from '../settingsScreen/SettingsContainer';
