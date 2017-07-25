@@ -15,7 +15,6 @@ import {
   Modal,
 } from 'react-native';
 import {TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar} from 'react-native-tab-view';
-import Menu, {MenuContext, MenuOptions, MenuOption, MenuTrigger} from 'react-native-menu';
 import I18n from 'react-native-i18n';
 
 import ParallaxView from '../../utils/ParallaxView';
@@ -62,9 +61,9 @@ class ProfileScreen extends Component {
       modalVisible: false,
       index: 0,
       routes: [
-        { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
-        { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
-        { key: 'settings', title: I18n.t('SETTINGS'), index: 2 },
+        {key: 'looks', title: I18n.t('LOOKS'), index: 0},
+        {key: 'wallet', title: I18n.t('WALLET'), index: 1},
+        {key: 'settings', title: I18n.t('SETTINGS'), index: 2},
       ],
       isFollowing: props.isFollowing,
       userLooks: props.userLooks,
@@ -74,7 +73,7 @@ class ProfileScreen extends Component {
   }
 
   componentWillMount() {
-    const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getUserBodyType, hasUserSize, userSize, userGender } = this.props;
+    const {getStats, userId, isMyProfile, getUserBalance, getUserLooks, getUserBodyType, hasUserSize, userSize, userGender} = this.props;
 
     getStats(userId);
 
@@ -90,9 +89,9 @@ class ProfileScreen extends Component {
       getUserBodyType(data);
     }
 
-    this.setState({ isLoading: true }, () => {
-      getUserLooks({ id: userId, all: isMyProfile }).then(() => {
-        this.setState({ isLoading: false });
+    this.setState({isLoading: true}, () => {
+      getUserLooks({id: userId, all: isMyProfile}).then(() => {
+        this.setState({isLoading: false});
       });
     });
   }
@@ -108,8 +107,8 @@ class ProfileScreen extends Component {
 
   render(): React.Element<any> {
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <MenuContext style={{ flex: 1 }}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+        <MenuContext style={{flex: 1}}>
 
           <ParallaxView
             stickyHeaderHeight={stickyHeaderHeight}
@@ -153,7 +152,7 @@ class ProfileScreen extends Component {
     />
   );
 
-  _renderLabel = props => ({ route, index }) => {
+  _renderLabel = props => ({route, index}) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
     const outputRange = inputRange.map(inputIndex => inputIndex === index ? Colors.secondaryColor : '#5a6f88');
     const color = props.position.interpolate({
@@ -162,7 +161,7 @@ class ProfileScreen extends Component {
     });
 
     return (
-      <Animated.Text numberOfLines={1} style={[styles.label, { color }]}>
+      <Animated.Text numberOfLines={1} style={[styles.label, {color}]}>
         {route.title}
       </Animated.Text>
     );
@@ -176,14 +175,14 @@ class ProfileScreen extends Component {
     ;
 
     return (
-      <Animated.Text numberOfLines={1} style={[styles.label, { color }]}>
+      <Animated.Text numberOfLines={1} style={[styles.label, {color}]}>
         {props.routes[props.index].title}
       </Animated.Text>
     );
   };
 
-  _renderScene = ({ route }) => {
-    const { navigation, balance } = this.props;
+  _renderScene = ({route}) => {
+    const {navigation, balance} = this.props;
 
     switch (route.key) {
       case 'looks':
@@ -193,18 +192,18 @@ class ProfileScreen extends Component {
       case 'settings':
         return <SettingsScreen navigation={navigation}/>;
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }}/>
+        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
           ;
     }
   };
 
   _handleWithdraw = (balance) => {
-    const { showParisBottomMessage } = this.props;
+    const {showParisBottomMessage} = this.props;
     showParisBottomMessage(balance);
   }
 
   _navigateToTab(tabIndex: number) {
-    this.setState({ index: tabIndex });
+    this.setState({index: tabIndex});
   }
 
   _handleScrollUserLooks = (event: any) => {
@@ -228,7 +227,7 @@ class ProfileScreen extends Component {
   _renderScrollableComponent = () => <ScrollView
     scrollEventThrottle={100}
     onScroll={this._handleScrollUserLooks}
-    style={{ backgroundColor: 'purple' }}
+    style={{backgroundColor: 'purple'}}
     pagingEnabled/>
 
   _loadMoreUserLooks() {
@@ -240,22 +239,22 @@ class ProfileScreen extends Component {
       id: this.state.userId,
       all: this.state.isMyProfile,
     };
-    const { meta: { total_count }, query } = this.props;
+    const {meta: {total_count}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
     if (pageSize * pageNumber < total_count) {
       // if (pageSize * pageNumber < total_count) {
-      this.setState({ loadingMore: true }, () => {
+      this.setState({loadingMore: true}, () => {
         this.props.loadMoreUserLooks(data).then(() => {
-            this.setState({ loadingMore: false });
+            this.setState({loadingMore: false});
           }
         ).catch((err) => {
           console.log('error', err);
-          this.setState({ loadingMore: false });
+          this.setState({loadingMore: false});
         });
       });
     } else {
-      this.setState({ noMoreData: true });
+      this.setState({noMoreData: true});
       console.log('end of LooksScreen');
     }
   }
@@ -265,7 +264,7 @@ class ProfileScreen extends Component {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
+            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
             return <Spinner color="rgb(230,230,230)"/>;
@@ -279,8 +278,8 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
-    const { stats, userLooks } = this.state;
+    const {userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate} = this.props;
+    const {stats, userLooks} = this.state;
 
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
     const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
@@ -290,7 +289,7 @@ class ProfileScreen extends Component {
       return (<EmptyStateScreen
         title={emptyStateTitle} subtitle={emptyStateSubtitle}
         icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
-        onButtonClicked={this._uploadLook} />);
+        onButtonClicked={this._uploadLook}/>);
     }
 
     return (
@@ -318,29 +317,29 @@ class ProfileScreen extends Component {
   _configureTransition = () => null;
 
   _renderParallaxHeader = () => {
-    const { balance, userData, userId, isMyProfile, onStatClicked, onFollowClicked, onProfileEdit } = this.props;
-    const { isFollowing, stats } = this.state;
+    const {balance, userData, userId, isMyProfile, onStatClicked, onFollowClicked, onProfileEdit} = this.props;
+    const {isFollowing, stats} = this.state;
 
     return (
 
-      <View style={{ marginTop: 20 }}>
+      <View style={{marginTop: 20}}>
         <ProfileScreenHeader
           balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username}
           stats={stats} onProfileEdit={onProfileEdit}
           isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}
           onFollowClicked={() => {
             onFollowClicked(userId, isFollowing);
-            this.setState({ isFollowing: !isFollowing });
+            this.setState({isFollowing: !isFollowing});
           }}
-          onBalanceClicked={() => this.setState({ index: 1 })}
-          onLooksClicked={() => this.setState({ index: 0 })}
+          onBalanceClicked={() => this.setState({index: 1})}
+          onLooksClicked={() => this.setState({index: 0})}
         />
       </View>
     );
   }
 
   _renderBody = () => {
-    const { isMyProfile } = this.props;
+    const {isMyProfile} = this.props;
 
     return (<View style={styles.container}>
 
@@ -360,7 +359,7 @@ class ProfileScreen extends Component {
   };
 
   _renderFixedHeader = () => {
-    const { onProfileEdit, isMyProfile } = this.props;
+    const {onProfileEdit, isMyProfile} = this.props;
 
     return (
       <View
@@ -374,19 +373,19 @@ class ProfileScreen extends Component {
           justifyContent: 'space-between',
         }}>
         <TouchableOpacity
-          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
           underlayColor={'transparent'}
           onPress={this._handleBackToFeedPress}>
           <Image
-            style={{ width: 18, height: 18 }} resizeMode={'contain'}
+            style={{width: 18, height: 18}} resizeMode={'contain'}
             source={require('../../../images/icons/backArrow.png')}/>
         </TouchableOpacity>
 
         {!isMyProfile ? this._renderMenu() :
-          <TouchableOpacity onPress={onProfileEdit} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+          <TouchableOpacity onPress={onProfileEdit} hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
             <Image
               source={require('../../../images/icons/edit.png')}
-              style={{ width: 18, height: 18, right: 18.5 }}
+              style={{width: 18, height: 18, right: 18.5}}
               resizeMode={'contain'}/>
           </TouchableOpacity>
         }
@@ -395,11 +394,11 @@ class ProfileScreen extends Component {
     );
   };
   _renderMenu = () => (
-    <TouchableOpacity onPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
-                      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+    <TouchableOpacity onPress={() => this.setState({modalVisible: !this.state.modalVisible})}
+                      hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
       <Image
         source={require('../../../images/icons/more.png')}
-        style={{ width: 18, height: 18, right: 18.5 }}
+        style={{width: 18, height: 18, right: 18.5}}
         resizeMode={'contain'}/>
       {this._renderModal()}
     </TouchableOpacity>
@@ -407,13 +406,13 @@ class ProfileScreen extends Component {
 
   _renderModal = () => {
 
-    const { blockUser, userId } = this.props;
+    const {blockUser, userId} = this.props;
     return (
       <Modal
-        visible={this.state.modalVisible} transparent style={{ flex: 1 }}
-        onRequestClose={() => this.setState({ modalVisible: false })}>
-        <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ modalVisible: false })}>
-          <View style={{ backgroundColor: 'white', position: 'absolute', right: 32, top: 48 }}>
+        visible={this.state.modalVisible} transparent style={{flex: 1}}
+        onRequestClose={() => this.setState({modalVisible: false})}>
+        <TouchableOpacity style={{flex: 1}} onPress={() => this.setState({modalVisible: false})}>
+          <View style={{backgroundColor: 'white', position: 'absolute', right: 32, top: 48}}>
             <TouchableOpacity onPress={() => blockUser(userId)}>
               <Text style={styles.modalOption}>Block User</Text>
             </TouchableOpacity>
@@ -424,15 +423,15 @@ class ProfileScreen extends Component {
   }
 
   _handleBackToFeedPress = () => {
-    this.props.logEvent('ProfileScreen', { name: 'Back to Feed click' });
+    this.props.logEvent('ProfileScreen', {name: 'Back to Feed click'});
     this.props.goBack();
   }
 
   _renderStickyHeader = () => {
-    const { username } = this.props.userData;
+    const {username} = this.props.userData;
 
     return (
-      <View style={{ height: stickyHeaderHeight * 2 }}>
+      <View style={{height: stickyHeaderHeight * 2}}>
         <ScalableText
           style={{
             alignSelf: 'center',

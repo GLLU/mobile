@@ -5,7 +5,6 @@ import {storiesOf} from '@storybook/react-native';
 import ProfileScreenHeader from './ProfileScreenHeader';
 import ProfileScreen from './ProfileScreen';
 import WalletScreen from './WalletScreen';
-import Menu, {MenuContext, MenuOptions, MenuOption, MenuTrigger} from 'react-native-menu';
 
 storiesOf('profile screen', module)
   .add('profile header without user image', () =>

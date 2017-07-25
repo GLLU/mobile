@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {TouchableOpacity, Image, Text, View, StyleSheet, Dimensions} from 'react-native';
-import Menu, {MenuContext, MenuOptions, MenuOption, MenuTrigger} from 'react-native-menu';
 import I18n from 'react-native-i18n';
 
 import Fonts from '../../styles/Fonts.styles';
