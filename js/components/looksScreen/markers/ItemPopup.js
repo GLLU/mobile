@@ -15,6 +15,9 @@ import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 import SolidButton from '../../common/buttons/SolidButton';
 
+export const POPUP_WIDTH = 280;
+export const POPUP_HEIGHT = 100;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
