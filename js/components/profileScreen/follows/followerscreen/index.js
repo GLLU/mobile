@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import {ListView, Image, TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { ListView, Image, TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
+import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import EmptyView from './EmptyView';
-import {addNewLook, getUserFollowersData} from '../../../../actions';
+import { addNewLook, getUserFollowersData } from '../../../../actions';
 import asScreen from '../../../common/containers/Screen';
 import ListScreen from '../../../common/lists/ListScreen';
 import UserActionRow from '../../../common/lists/UserActionRow';
-import {openCamera} from '../../../../lib/camera/CameraUtils';
-import {formatLook} from '../../../../utils/UploadUtils';
+import { openCamera } from '../../../../lib/camera/CameraUtils';
+import { formatLook } from '../../../../utils/UploadUtils';
 import EmptyStateScreen from '../../../common/EmptyStateScreen';
 
 class FollowerScreen extends Component {
@@ -75,7 +75,7 @@ class FollowerScreen extends Component {
   _renderOnEmpty() {
     const userData = this.props.navigation.state.params;
 
-    const emptyStateTitle = userData.isMyProfile ? I18n.t('ME_NO_FOLLOWERS_TITLE') : `${userData.user.name} ${I18n.t('NO_FOLLOWERS_TITLE')}`;
+    const emptyStateTitle = userData.isMyProfile ? I18n.t('ME_NO_FOLLOWERS_TITLE') : `${userData.user.name} ${I18n.t('NO_FOLLOWING_TITLE')}`;
     const emptyStateSubtitle = userData.isMyProfile ? I18n.t('ME_NO_FOLLOWERS_LEGEND') : null;
     const emptyStateButtonText = userData.isMyProfile ? I18n.t('POST_NOW') : null;
 
@@ -85,7 +85,7 @@ class FollowerScreen extends Component {
           title={emptyStateTitle} subtitle={emptyStateSubtitle}
           icon={require('../../../../../images/emptyStates/users.png')}
           buttonText={emptyStateButtonText}
-          onButtonClicked={this.handleUploadPress}/>
+          onButtonClicked={this.handleUploadPress} />
       </View>
     );
   }
@@ -108,12 +108,12 @@ class FollowerScreen extends Component {
       <View style={{ flex: 1 }}>
         <ListScreen
           renderEmpty={this._renderOnEmpty}
-          renderItem={item => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+          renderItem={item => <UserActionRow {...item} navigateTo={this.props.navigateTo} />}
           headerData={headerData}
           data={this.state.followers}
           navigateTo={this.props.navigateTo}
           goBack={this.props.goBack}
-          onEndReached={this.getFollowersData}/>
+          onEndReached={this.getFollowersData} />
       </View>
     );
   }
