@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Image,
@@ -14,7 +14,7 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as _ from 'lodash';
 import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
@@ -49,7 +49,6 @@ class LooksScreen extends Component {
     super(props);
     this._goToProfile = this._goToProfile.bind(this);
     this._goToEdit = this._goToEdit.bind(this);
-    this._goToLikes = this._goToLikes.bind(this);
     this.onToggleDrawer = this.onToggleDrawer.bind(this);
     this._toggleLike = this._toggleLike.bind(this);
     this.renderUpArrow = this.renderUpArrow.bind(this);
@@ -72,7 +71,7 @@ class LooksScreen extends Component {
   }
 
   componentDidMount() {
-    const {meta: {total}} = this.props;
+    const { meta: { total } } = this.props;
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
@@ -80,7 +79,7 @@ class LooksScreen extends Component {
             this._scrollView.scrollTo({x: 0, y: this.state.currScrollIndex * height, animated: false});
             break;
           } else {
-            this._scrollView.scrollTo({x: 0, y: height, animated: false});
+            this._scrollView.scrollTo({ x: 0, y: height, animated: false });
             break;
           }
         case 'android':
@@ -103,7 +102,7 @@ class LooksScreen extends Component {
 
           break;
       }
-      this.setState({mountedOnce: true}); // because comments are re-open when you this.goBack
+      this.setState({ mountedOnce: true }); // because comments are re-open when you this.goBack
     }
     if (this.state.currScrollIndex === this.props.flatLooksData.length - 1) {
       this.loadMore()
@@ -129,7 +128,7 @@ class LooksScreen extends Component {
     });
   }
 
-  _goToLikes(look: object) {
+  goToLikes(look: object) {
     this.props.navigateTo('likesscreen', {lookId: look.id, count: look.likes})
   }
 
@@ -142,20 +141,20 @@ class LooksScreen extends Component {
     if (this.state.isLoading) {
       return;
     }
-    const {meta: {total}, query} = this.props;
+    const { meta: { total }, query } = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
     if (pageSize * pageNumber < total) {
-      this.setState({isLoading: true}, () => {
+      this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
         }).catch((err) => {
           console.log('error', err);
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
         });
       });
     } else {
-      this.setState({noMoreData: true});
+      this.setState({ noMoreData: true });
       console.log('end of feed');
     }
   }
@@ -178,9 +177,9 @@ class LooksScreen extends Component {
       }
       case SWIPE_DOWN: {
         if (this.state.currScrollIndex !== 0) {
-          this._scrollView.scrollTo({x: 0, y: height + height, animated: false});
-          this._scrollView.scrollTo({x: 0, y: height, animated: true});
-          this.setState({currScrollIndex: this.state.currScrollIndex - 1});
+          this._scrollView.scrollTo({ x: 0, y: height + height, animated: false });
+          this._scrollView.scrollTo({ x: 0, y: height, animated: true });
+          this.setState({ currScrollIndex: this.state.currScrollIndex - 1 });
         }
         if (this.state.currScrollIndex % 5 === 0) {
           this.loadMoreAsync();
@@ -253,7 +252,7 @@ class LooksScreen extends Component {
           height,
         }}>
         <VideoWithCaching
-          source={{uri: look.uri, mainVer: 1, patchVer: 0}}
+          source={{ uri: look.uri, mainVer: 1, patchVer: 0 }}
           resizeMode={'contain'}
           muted={this.state.currScrollIndex !== look.originalIndex}
           style={styles.videoBackground}
@@ -271,7 +270,7 @@ class LooksScreen extends Component {
           onBottomDrawerOpen={this.onToggleDrawer}
           goBack={this.props.goBack}
           goToProfile={this._goToProfile}
-          goToLikes={this._goToLikes}
+          goToLikes={this.goToLikes}
           goToEdit={this._goToEdit}
           toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
           reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
@@ -309,7 +308,7 @@ class LooksScreen extends Component {
             onBottomDrawerOpen={this.onToggleDrawer}
             goBack={this.props.goBack}
             goToProfile={this._goToProfile}
-            goToLikes={this._goToLikes}
+            goToLikes={this.goToLikes}
             goToEdit={this._goToEdit}
             toggleLike={(shouldLike) => this._toggleLike(shouldLike, look.id)}
             reportAbuse={(lookId) => this.props.reportAbuse(lookId)}
@@ -323,7 +322,6 @@ class LooksScreen extends Component {
 
   getFlatFeed() {
     let looksArr = ''
-    console.log('props1', this.props)
     const {meta: {total}} = this.props;
 
     if (total === 1) {
@@ -358,22 +356,22 @@ class LooksScreen extends Component {
 
   renderLoader() {
     const navigationPropLook = this.props.navigation.state.params;
-    const {preview, coverType, uri, avatar} = navigationPropLook;
+    const { preview, coverType, uri, avatar } = navigationPropLook;
     const previewUri = coverType === 'video' ?
       preview || avatar.url :
       uri;
     return (
-      <View style={{position: 'absolute', top: 0, height, width}}>
+      <View style={{ position: 'absolute', top: 0, height, width }}>
         <Image
-          resizeMode={'contain'} source={{uri: previewUri}} style={{
-          position: 'absolute',
-          top: 0,
-          height,
-          width,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          <Spinner color="grey"/>
+          resizeMode={'contain'} source={{ uri: previewUri }} style={{
+            position: 'absolute',
+            top: 0,
+            height,
+            width,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Spinner color="grey" />
         </Image>
       </View>
     );

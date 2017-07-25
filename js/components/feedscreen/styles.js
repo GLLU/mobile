@@ -59,13 +59,5 @@ module.exports = StyleSheet.create({
   smallBtn: {
     fontSize: new FontSizeCalculator(24).getSize(),
     color: 'grey'
-  },
-  btnImage: {
-    height: 75,
-    width: 75,
-    marginBottom: 2,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    resizeMode: 'contain',
-  },
+  }
 });
