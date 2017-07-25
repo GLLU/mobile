@@ -5,6 +5,7 @@ import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
 import Colors from '../../styles/Colors.styles'
+import FontSizeCalculator from './../../calculators/FontSize';
 
 export default class FeedTabs extends PureComponent {
   state = {
@@ -18,7 +19,7 @@ export default class FeedTabs extends PureComponent {
 
   _handleIndexChange = index => this.setState({ index });
 
-  _renderHeader = props => <TabBar tabStyle={{height: 41.5}} style={{ backgroundColor: Colors.backgroundGrey }} labelStyle={{ color: Colors.black, fontWeight: '600', textAlign: 'center' }} indicatorStyle={{backgroundColor: Colors.secondaryColor}} {...props} />;
+  _renderHeader = props => <TabBar tabStyle={{height: 41.5}} style={{ backgroundColor: Colors.backgroundGrey }} labelStyle={ styles.labelStyle } indicatorStyle={{backgroundColor: Colors.secondaryColor}} {...props} />;
 
   _renderScene = SceneMap({
     1: ()=><FollowingTabContent navigateTo={this.props.navigateTo} />,
@@ -42,6 +43,12 @@ export default class FeedTabs extends PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primaryColor
+    backgroundColor: Colors.primaryColor,
   },
+  labelStyle: {
+    color: Colors.black,
+    fontWeight: '600',
+    textAlign: 'center',
+    fontSize: new FontSizeCalculator(13).getSize()
+  }
 });
