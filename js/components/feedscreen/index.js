@@ -147,12 +147,12 @@ class FeedPage extends Component {
   }
 
   _renderFeed() {
-    const {reloading, clearedField, navigateTo, showBottomCameraButton} = this.props;
+    const {reloading, clearedField, navigateTo} = this.props;
     return (
       <FeedTabs reloading={reloading}
                 clearedField={clearedField}
                 navigateTo={navigateTo}
-                showBottomCameraButton={showBottomCameraButton}/>
+                showBottomCameraButton={this.showBottomCameraButton}/>
     );
   }
 
