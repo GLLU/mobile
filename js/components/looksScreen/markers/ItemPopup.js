@@ -14,13 +14,15 @@ import { showInfo } from '../../../actions';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 import SolidButton from '../../common/buttons/SolidButton';
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 
-export const POPUP_WIDTH = 280;
+export const POPUP_WIDTH = 240;
 export const POPUP_HEIGHT = 100;
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
+    width: POPUP_WIDTH,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.black,
@@ -43,8 +45,8 @@ const styles = StyleSheet.create({
   category: {
     fontSize: 16,
     color: Colors.white,
-    fontFamily: Fonts.contentFont,
     marginBottom: 4,
+    fontFamily: Fonts.contentFont,
   },
 
   row: {

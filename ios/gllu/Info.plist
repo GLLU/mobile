@@ -125,6 +125,7 @@
 		<string>Montserrat-Regular.ttf</string>
 		<string>PlayfairDisplay-Regular.ttf</string>
 		<string>PlayfairDisplay-Bold.ttf</string>
+		<string>FreightSansMedium.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
