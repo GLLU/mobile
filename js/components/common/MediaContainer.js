@@ -173,17 +173,8 @@ class MediaContainer extends Component {
     this.props.navigateTo('profileScreen',user);
   }
 
-  getUsernameStringFeedView(username) {
-    if(username.length > 12){
-      return username.substring(0,11) + '..'
-    } else {
-      return username
-    }
-  }
-
   renderFeedMediaGrid(look) {
     const { lookHeight, lookWidth } = this.state.dimensions;
-    const userName = this.getUsernameStringFeedView(look.username)
     if(this.props.showMediaGrid) {
       return (
         <View style={[styles.videoGridIos, {flex: 1,  width:lookWidth, height: lookHeight, alignItems: 'stretch'}]}>
@@ -192,8 +183,8 @@ class MediaContainer extends Component {
           </View>
           <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', height: 30,  bottom: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
             <LikeView isLiked={look.liked} likes={look.likes} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookId={look.id}/>
-            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.goToProfile()}>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{userName}</Text>
+            <TouchableOpacity style={{justifyContent: 'center', flex:1}} onPress={() => this.goToProfile()}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={{color: 'white', alignSelf: 'center',textAlign: 'center', justifyContent: 'center', fontSize: 11}}>{look.username}</Text>
             </TouchableOpacity>
             <FeedCommentsView comments={look.comments} onPress={this._handleCommentPress} lookId={look.id}/>
           </View>
@@ -208,7 +199,7 @@ class MediaContainer extends Component {
     const { look } = this.props;
     return(
       <View onLayout={(e) => this.setLookPosition(e)} style={{margin: 3}}>
-        <TouchableOpacity onPress={this._handleItemPress}>
+        <TouchableOpacity activeOpacity={0.8} onPress={this._handleItemPress}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look)}
           {this.renderFeedMediaGrid(look)}
         </TouchableOpacity>

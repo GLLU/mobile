@@ -169,11 +169,9 @@ export default StyleSheet.create({
     borderColor: 'white'
   },
   bodyMeasureContainer: {
-    flexBasis: 1,
     backgroundColor: '#ffffff',
-    paddingTop: 25,
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   editName: {
     textAlign: 'center',

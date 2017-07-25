@@ -1,30 +1,27 @@
 import React, {Component} from 'react';
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
-import {Grid, Col} from 'native-base';
-import { connect } from 'react-redux';
-import CMInchRangeView from './edit/cmInchRangeView';
-import myStyles from './styles';
-import convert from 'convert-units';
-import { completeEdit } from '../../actions/myBodyMeasure';
+import {View, Text, Image, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {connect} from 'react-redux';
+import {completeEdit} from '../../actions/myBodyMeasure';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
-import SizePicker from "./SizePicker";
+
+import Colors from '../../styles/Colors.styles';
 
 class BodyMeasureView extends BaseComponent {
   constructor(props) {
     super(props);
-    this.onSizeChange=this.onSizeChange.bind(this);
+    this.onSizeChange = this.onSizeChange.bind(this);
     this.state = {
       isInchSelect: false,
-      currentSize: Object.assign({} , this.props.userSize && !_.isEmpty(this.props.userSize) ? this.props.userSize : this.props.sizeList[this.props.gender][this.props.bodyType.body_type]),
+      currentSize: Object.assign({}, this.props.userSize && !_.isEmpty(this.props.userSize) ? this.props.userSize : this.props.sizeList[this.props.gender][this.props.bodyType.body_type]),
       sizeList: this.props.sizeList[this.props.gender][this.props.bodyType.body_type],
-    }
+    };
   }
 
   static propTypes = {
     gender: React.PropTypes.string,
     bodyType: React.PropTypes.object,
-    onBodyTypePress:React.PropTypes.func,
+    onBodyTypePress: React.PropTypes.func,
     // redux
     sizeList: React.PropTypes.object,
     sizeTypes: React.PropTypes.array,
@@ -32,84 +29,58 @@ class BodyMeasureView extends BaseComponent {
   }
 
   static defaultProps = {
-    onBodyTypePress:_.noop
+    onBodyTypePress: _.noop,
   }
 
   componentDidMount() {
-    let { currentSize } = this.state;
+    const { currentSize } = this.state;
     this.props.completeEdit(currentSize);
   }
 
-  convertCmAndInch(obj, fromScale, toScale) {
-    this.props.sizeTypes.map((sizeType) => {
-      let value = obj[sizeType];
-      obj[sizeType] = Math.round(convert(value).from(fromScale).to(toScale));
+  onSizeChange(sizeType, value, unit) {
+    this.logEvent('BodyMeasureScreen', {
+      name: 'Increase Size click',
+      measurement: sizeType,
+      value: `${value}`,
+      unit,
     });
-    obj.measurements_scale = toScale;
-
-    return obj;
-  }
-
-  _toggleCMInch(inchSelected) {
-    this.logEvent('BodyMeasureScreen', { name: 'CM/IN toggle' });
-    let fromScale = inchSelected ? 'in' :'cm';
-    let toScale = inchSelected ? 'cm' :'in';
-    let currentSizeConverted = this.state.currentSize;
-    if(toScale !== currentSizeConverted.measurements_scale) {
-        currentSizeConverted = this.convertCmAndInch(this.state.currentSize, fromScale, toScale);
-        this.setState({isInchSelect: inchSelected, currentSize: currentSizeConverted});
+    const { currentSize } = this.state;
+    if (this.state.currentSize[sizeType] < 300 && this.state.currentSize[sizeType] > 0) {
+      currentSize[sizeType] = value;
+      this.setState({ currentSize });
     }
-  }
-
-  onSizeChange(sizeType,value,unit){
-    this.logEvent('BodyMeasureScreen', { name: `Increase Size click`, measurement: sizeType, value:`${value}`, unit:unit });
-    let {currentSize} = this.state;
-    if(this.state.currentSize[sizeType] < 300&&this.state.currentSize[sizeType] > 0) {
-      currentSize[sizeType]=value;
-      this.setState({currentSize});
-    }
-  }
-
-  _renderMainView() {
-    return (
-      <View>
-        <View style={myStyles.scaleRadioContainer}>
-          <CMInchRangeView toggleCMInch={(inchSelected) => this._toggleCMInch(inchSelected)}/>
-        </View>
-        {this.props.sizeTypes.map((sizeType, i) => {
-          const value=this.state.currentSize[sizeType];
-          const unit =this.state.currentSize['measurements_scale'];
-          return <SizePicker key={i} sizeType={sizeType} value={Number(value)} unit={unit} onValueChange={this.onSizeChange}/>
-        })}
-      </View>
-    )
   }
 
   render() {
     return (
-      <Grid>
-        <Col style={{flex: 0.8}}>
-          <View style={myStyles.bodyType}>
-            <Text style={myStyles.bodyTypeText}>{this.props.bodyType.name}</Text>
-          </View>
-          <View style={myStyles.bodyTypeImageContainer}>
-            <TouchableWithoutFeedback onPress={this.props.onBodyTypePress}>
-            <Image style={myStyles.bodyTypeImage}
-               source={this.props.bodyType.imageUrl} resizeMode={'contain'}/>
-            </TouchableWithoutFeedback>
-          </View>
-        </Col>
-        <Col style={myStyles.sizeListContainer}>
-          {this._renderMainView()}
-        </Col>
-      </Grid>
-    )
+      <View style={{ alignItems: 'center' }}>
+        <Text style={styles.bodyTypeText}>{this.props.bodyType.name}</Text>
+        <TouchableWithoutFeedback onPress={this.props.onBodyTypePress}>
+          <Image
+            style={styles.bodyTypeImage}
+            source={this.props.bodyType.imageUrl} resizeMode={'contain'}/>
+        </TouchableWithoutFeedback>
+      </View>
+    );
   }
 }
 
+const styles = StyleSheet.create({
+  bodyTypeText: {
+    fontSize: 17,
+    color: Colors.black,
+    marginBottom: 15,
+    fontFamily: 'PlayfairDisplay-Bold',
+  },
+  bodyTypeImage: {
+    width: 160,
+    height: 240,
+  },
+});
+
 function bindAction(dispatch) {
   return {
-    completeEdit: (sizeInfo) => dispatch(completeEdit(sizeInfo)),
+    completeEdit: sizeInfo => dispatch(completeEdit(sizeInfo)),
   };
 }
 

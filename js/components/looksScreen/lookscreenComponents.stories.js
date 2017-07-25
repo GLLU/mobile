@@ -6,6 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
 
 import ItemBrand from './information/ItemBrand';
+import ItemPopup from './markers/ItemPopup';
 import ItemBrandsView from "./information/ItemBrandsView";
 import InformationView from "./information/InformationView";
 import InformationViewFooter from "./information/InformationViewFooter";
@@ -17,7 +18,13 @@ storiesOf('look screen components', module)
     <View style={{backgroundColor: 'red', flex: 1, flexDirection: 'column'}}>
       <ItemBrand brand={{name: 'a beautiful life'}}/>
     </View>
-  ).add('brands view', () => {
+  )
+  .add('item popup', () =>
+    <View style={{backgroundColor: 'red',marginTop: 100, flexDirection: 'column'}}>
+      <ItemPopup brand={{name:'my brand'}} dimensions={{width: 120, height: 60}} url={'invalid url'}/>
+    </View>
+  )
+  .add('brands view', () => {
     const brands = [
       {id: 1, name: 'a beautiful Life'},
       {id: 2, name: 'zara'},
