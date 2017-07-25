@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     fontSize: generateAdjustedSize(20),
     textAlign: 'center',
     color: Colors.black,
+    marginHorizontal: 24,
     fontFamily: Fonts.regular,
   },
   subtitle: {
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.black,
     fontFamily: Fonts.contentFont,
+    marginHorizontal: 24,
     marginBottom: 18,
   },
   actionButton: {

@@ -4,6 +4,7 @@ import rest from '../api/rest';
 
 // Actions
 export const SET_USER_FOLLOWS_DATA = 'SET_USER_FOLLOWS_DATA';
+export const START_FETCHING_FOLLOWING = 'following.START_FETCHING_FOLLOWING';
 export const INIT_USER_FOLLOWS = 'INIT_USER_FOLLOWS';
 
 export function followUpdate(id) {
@@ -46,6 +47,11 @@ export function setUserFollowsData(data) {
 
 export function getUserFollowsData(id, pageNumber = 1, pageSize = 25) {
   return (dispatch) => {
+
+    if (pageNumber === 1) {
+      dispatch({ type: START_FETCHING_FOLLOWING });
+    }
+
     return dispatch(rest.actions.follows({
       user_id: id,
       page: {
