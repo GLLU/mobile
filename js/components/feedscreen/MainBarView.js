@@ -93,6 +93,7 @@ type Props = {
   handleSearchStatus: void,
   navigateTo: void,
   logEvent: void,
+  addNewItem: void,
   searchStatus: bool,
 
 }
@@ -145,12 +146,12 @@ class MainBarView extends BaseComponent {
   }
 
   render() {
-    const {gotNewNotifications} = this.props;
+    const {gotNewNotifications, addNewItem} = this.props;
     const notificationsIcon = gotNewNotifications ? gotNotification : emptyNotification;
     return (
       <View style={styles.navigationBar}>
         <View style={{flexDirection: 'row', flex: 1}}>
-          {this.renderNavigationButton(cameraIcon, this.uploadLook, styles.btnImage, styles.centerEdges)}
+          {this.renderNavigationButton(cameraIcon, addNewItem, styles.btnImage, styles.centerEdges)}
           {this.renderNavigationButton(userIcon, this.goToProfile, styles.btnImage)}
         </View>
         <View style={{flex: 3, flexDirection: 'row', justifyContent: 'center'}}>
@@ -158,7 +159,7 @@ class MainBarView extends BaseComponent {
         </View>
         <View style={{flexDirection: 'row', flex: 1}}>
           {this.renderNavigationButton(notificationsIcon, this.handleNotificationsPress, styles.btnImageHanger)}
-          {this.renderNavigationButton(search, this.uploadLook, styles.btnImage, styles.centerEdges)}
+          {this.renderNavigationButton(search, addNewItem, styles.btnImage, styles.centerEdges)}
         </View>
       </View>
     );

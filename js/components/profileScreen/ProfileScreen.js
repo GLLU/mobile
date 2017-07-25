@@ -108,27 +108,24 @@ class ProfileScreen extends Component {
   render(): React.Element<any> {
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
-        <MenuContext style={{flex: 1}}>
 
-          <ParallaxView
-            stickyHeaderHeight={stickyHeaderHeight}
-            backgroundSpeed={10}
-            backgroundColor={'#3e3e3e'}
-            parallaxHeaderHeight={parallaxHeaderHeight}
-            renderForeground={() => this._renderParallaxHeader()}
-            renderFixedHeader={() => this._renderFixedHeader()}
-            renderStickyHeader={() => this._renderStickyHeader()}
-            onScroll={this._handleScrollUserLooks}
-            contentContainerStyle={{
-              flex: 1,
-              backgroundColor: 'white',
-            }}>
+        <ParallaxView
+          stickyHeaderHeight={stickyHeaderHeight}
+          backgroundSpeed={10}
+          backgroundColor={'#3e3e3e'}
+          parallaxHeaderHeight={parallaxHeaderHeight}
+          renderForeground={() => this._renderParallaxHeader()}
+          renderFixedHeader={() => this._renderFixedHeader()}
+          renderStickyHeader={() => this._renderStickyHeader()}
+          onScroll={this._handleScrollUserLooks}
+          contentContainerStyle={{
+            flex: 1,
+            backgroundColor: 'white',
+          }}>
 
-            {this._renderBody()}
+          {this._renderBody()}
 
-          </ParallaxView>
-
-        </MenuContext>
+        </ParallaxView>
 
       </View>
     );
