@@ -1,16 +1,16 @@
 // @flow
 
 import asScreen from '../common/containers/Screen';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import LooksScreen from './LooksScreen';
-import { likeUpdate, unlikeUpdate, loadMore, getLookLikes } from '../../actions';
-import { getLooksById } from '../../utils/FeedUtils';
-import { reportAbuse } from '../../actions/looks';
-import { editNewLook } from '../../actions/uploadLook';
+import {likeUpdate, unlikeUpdate, loadMore, getLookLikes} from '../../actions';
+import {getLooksById} from '../../utils/FeedUtils';
+import {reportAbuse} from '../../actions/looks';
+import {editNewLook} from '../../actions/uploadLook';
 
-
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
+    navigateToLooksScreen: params => ownProps.navigateTo('lookScreenWhatsHot', params),
     editNewLook: id => dispatch(editNewLook(id)),
     likeUpdate: id => dispatch(likeUpdate(id)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),

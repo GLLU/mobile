@@ -279,7 +279,7 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const { userId, navigateTo, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
+    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
     const { stats, userLooks } = this.state;
 
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
@@ -298,7 +298,7 @@ class ProfileScreen extends Component {
         <UserLooks
           myUserId={userId}
           userLooks={userLooks}
-          navigateTo={navigateTo}
+          navigateToLooksScreen={navigateToLooksScreen}
           isMyProfile={isMyProfile}
           editNewLook={editNewLook}
           addNewLook={addNewLook}
