@@ -13,8 +13,8 @@
     "run-android": "react-native run-android",
     "run-ios": "react-native run-ios --scheme infash-debug",
     "storybook": "storybook start -p 7007",
-    "code-push-ios":"code-push release-react infash ios --plistFile \"ios/gllu/Info.plist\" --outputDir ./sourceMap/ios",
-    "code-push-android":"code-push release-react infash android --outputDir ./sourceMap/android"
+    "code-push-ios": "code-push release-react infash ios --plistFile \"ios/gllu/Info.plist\" --outputDir ./sourceMap/ios",
+    "code-push-android": "code-push release-react infash android --outputDir ./sourceMap/android"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -55,6 +55,7 @@
     "react-native-modalbox": "^1.3.9",
     "react-native-radio-buttons": "^0.14.0",
     "react-native-swipe-gestures": "^1.0.2",
+    "react-native-tab-view": "0.0.67",
     "react-native-timeago": "^0.3.0",
     "react-native-vector-icons": "^4.1.1",
     "react-native-video": "git+https://github.com/gllu/react-native-video.git",
