@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
-import {StyleSheet, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
-import {setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition, getUserLooks, getFeed} from '../../actions';
+import React, { Component } from 'react';
+import { StyleSheet, Dimensions, Platform, View, TouchableOpacity, Image } from 'react-native';
+import { setUser, updateLookItem, publishLookItem, createLookItem, setTagPosition, getUserLooks, getFeed, clearFeed } from '../../actions';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
 import StepTwoOccasions from './StepTwoOccasions';
 import StepThreePublish from './StepThreePublish';
 import UploadLookHeader from './UploadLookHeader';
-import {LOOK_STATES} from '../../constants';
+import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
 import Utils from '../../utils';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import VideoWithTags from '../common/VideoWithTags';
-import asScreen from "../common/containers/Screen"
-import {connect} from 'react-redux';
-import SpinnerSwitch from "../loaders/SpinnerSwitch";
-import { BackAndroid } from "react-native";
+import asScreen from '../common/containers/Screen';
+import { connect } from 'react-redux';
+import SpinnerSwitch from '../loaders/SpinnerSwitch';
+import { BackAndroid } from 'react-native';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
@@ -44,19 +44,18 @@ class AddItemPage extends Component {
       mode: props.mode,
       allowContinue: false,
       currMode: 'tagging',
-      currItem: props.navigation.state.params.mode === "edit" ? { ...props.items[0]} : {id: -1},
-      isPublishing:false
+      currItem: props.navigation.state.params.mode === 'edit' ? { ...props.items[0] } : { id: -1 },
+      isPublishing: false,
     };
-
   }
 
   setCurrentItem(item) {
-    this.setState({currItem: item})
+    this.setState({ currItem: item });
   }
 
   componentWillMount() {
     BackAndroid.addEventListener('uploadBackPress', () => {
-      this.handleBackButton()
+      this.handleBackButton();
       return true;
     });
   }
@@ -66,7 +65,7 @@ class AddItemPage extends Component {
   }
 
   componentDidMount() {
-    this.props.logEvent('UploadLookScreen', { name: `User started uploading a look`, mediaType: this.state.isVideo? 'Video':'Image' });
+    this.props.logEvent('UploadLookScreen', { name: 'User started uploading a look', mediaType: this.state.isVideo ? 'Video' : 'Image' });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,16 +74,14 @@ class AddItemPage extends Component {
     }
     if (nextProps.items !== this.props.items) {
       const item = _.find(nextProps.items, item => item.id === this.state.currItem.id);
-      this.setState({currItem: item})
+      this.setState({ currItem: item });
     }
-
-
   }
 
   handleContinue() {
-    const {currentStep} = this.state;
+    const { currentStep } = this.state;
     if (currentStep < 1) {
-      this.setState({currentStep: this.state.currentStep + 1});
+      this.setState({ currentStep: this.state.currentStep + 1 });
     }
   }
 
@@ -93,25 +90,26 @@ class AddItemPage extends Component {
   }
 
   publishAction() {
-    this.props.logEvent('UploadLookScreen', {name: 'Publish click'});
-    this.setState({isPublishing:true},()=>{
-      this.props.publishLookItem().then(() => {
-        this.setState({isPublishing:false},()=> {
-          if (this.props.state === LOOK_STATES.PUBLISHED) {
-            this.props.goBack()
+    const { publishLookItem, logEvent, state, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo } = this.props;
+    logEvent('UploadLookScreen', { name: 'Publish click' });
+    this.setState({ isPublishing: true }, () => {
+      publishLookItem().then(() => {
+        this.setState({ isPublishing: false }, () => {
+          if (state === LOOK_STATES.PUBLISHED) {
+            goBack();
           } else {
             const looksCall = {
-              id: this.state.userId,
-              all: true
-            }
-            this.props.getUserLooks(looksCall)
-            this.props.getFeed(this.props.currentFeedQuery)
-            this.props.navigateTo('finishLookScreen');
+              id: userId,
+              all: true,
+            };
+            const query = _.cloneDeep(currentFeedQuery);
+            getUserLooks(looksCall);
+            clearFeed().then(() => { getFeed(query); });
+            navigateTo('finishLookScreen');
           }
         });
       });
-    })
-
+    });
   }
 
   handleBackButton() {
@@ -119,7 +117,7 @@ class AddItemPage extends Component {
       this.props.goBack();
     }
     if (this.state.currentStep > -1) {
-      this.setState({currentStep: this.state.currentStep - 1});
+      this.setState({ currentStep: this.state.currentStep - 1 });
     } else {
       this.props.goBack();
     }
@@ -133,16 +131,16 @@ class AddItemPage extends Component {
   }
 
   createLookItemForVideo(position) {
-    this.props.logEvent('UploadLookScreen', {name: 'Marker add video'});
+    this.props.logEvent('UploadLookScreen', { name: 'Marker add video' });
     this.props.createLookItem(position).then(() => {
-      this.setState({mode: 'view'})
+      this.setState({ mode: 'view' });
     });
   }
 
   handleAddItem(position) {
-    this.props.logEvent('UploadLookScreen', {name: 'Marker add'});
+    this.props.logEvent('UploadLookScreen', { name: 'Marker add' });
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep})
+      this.setState({ currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep });
     });
   }
 
@@ -151,9 +149,9 @@ class AddItemPage extends Component {
     const locationY = h / 2;
     const left = locationX / w;
     const top = locationY / h;
-    const position = {locationX: left, locationY: top};
+    const position = { locationX: left, locationY: top };
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1})
+      this.setState({ currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1 });
     });
   }
 
@@ -163,16 +161,16 @@ class AddItemPage extends Component {
   }
 
   renderImageWithTags() {
-    const {items, image} = this.props;
+    const { items, image } = this.props;
     const mode = this.getCurrentMode();
     return (
       <ImageWithTags
         mode={mode}
         items={items}
         image={image}
-        setCurrentItem={(item) => this.setCurrentItem(item)}
+        setCurrentItem={item => this.setCurrentItem(item)}
         onMarkerCreate={this.handleAddItem.bind(this)}
-        onDragEnd={(position) => this.handleOnDragEnd(position)}
+        onDragEnd={position => this.handleOnDragEnd(position)}
         currStep={this.state.currentStep}
         currItem={this.state.currItem}>
         {this.renderActions()}
@@ -196,36 +194,36 @@ class AddItemPage extends Component {
 
   renderActions() {
     return (
-      <View style={{ height: h, width: w}}>
+      <View style={{ height: h, width: w }}>
         {this.renderHeader()}
         {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
 
       </View>
-    )
+    );
   }
 
   renderThreeSteps() {
-    const {currItem} = this.state
+    const { currItem } = this.state;
     return (
-      <View style={{flexDirection: 'column', justifyContent: 'space-between', flex: 1}}>
-        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row'}}>
+      <View style={{ flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row' }}>
           <StepTwoOccasions item={currItem} />
           <StepOneCategory item={currItem} />
         </View>
 
-          <StepZeroBrand item={currItem}/>
+        <StepZeroBrand item={currItem} />
 
       </View>
-    )
+    );
   }
 
   renderContent() {
     if (this.state.currentStep !== 1) {
-      return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()
+      return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags();
     }
     return (
       <View>
-          {this.renderHeader()}
+        {this.renderHeader()}
         <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)} />
       </View>);
   }
@@ -240,16 +238,16 @@ class AddItemPage extends Component {
         handleBackButton={this.handleBackButton.bind(this)}
         handleContinue={this.handleContinue}
         handleNewItem={this.handleNewItem.bind(this)}
-        setCurrentItem={(item) => this.setCurrentItem(item)}
-        categories={this.props.categories}/>
-    )
+        setCurrentItem={item => this.setCurrentItem(item)}
+        categories={this.props.categories} />
+    );
   }
 
   render() {
     return (
       <View>
         {this.renderContent()}
-        {this.state.isPublishing?<SpinnerSwitch/>:null}
+        {this.state.isPublishing ? <SpinnerSwitch /> : null}
       </View>
     );
   }
@@ -258,18 +256,19 @@ class AddItemPage extends Component {
 function bindActions(dispatch) {
   return {
     setUser: name => dispatch(setUser(name)),
-    updateLookItem: (look) => dispatch(updateLookItem(look)),
-    publishLookItem: (look) => dispatch(publishLookItem(look)),
+    updateLookItem: look => dispatch(updateLookItem(look)),
+    publishLookItem: look => dispatch(publishLookItem(look)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
-    setTagPosition: (position) => dispatch(setTagPosition(position)),
-    getFeed: (query) => dispatch(getFeed(query)),
+    setTagPosition: position => dispatch(setTagPosition(position)),
+    getFeed: query => dispatch(getFeed(query)),
+    clearFeed: () => dispatch(clearFeed()),
     getUserLooks: data => dispatch(getUserLooks(data)),
   };
 }
 
-const mapStateToProps = state => {
-  const {lookId, image, items, localFilePath} = state.uploadLook;
-  const isVideo = Utils.isVideo(image)
+const mapStateToProps = (state) => {
+  const { lookId, image, items, localFilePath } = state.uploadLook;
+  const isVideo = Utils.isVideo(image);
   return {
     lookId,
     image,
@@ -279,8 +278,8 @@ const mapStateToProps = state => {
     state: state.uploadLook.state,
     categories: state.filters.categories,
     currentFeedQuery: state.feed.query,
-    userId: state.user.id
+    userId: state.user.id,
   };
-}
+};
 
 export default connect(mapStateToProps, bindActions)(asScreen(AddItemPage));

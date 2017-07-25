@@ -29,6 +29,7 @@ export function getFeed(query: object, feedType = 'bestMatch', retryCount = 0) {
       },
     });
     dispatch(startFethcing({ feedType, isLoading: true }))
+    delete query.page
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (data) {
         const { looks, meta } = data;
@@ -40,7 +41,7 @@ export function getFeed(query: object, feedType = 'bestMatch', retryCount = 0) {
         dispatch(loadMore(feedType));
         Promise.resolve(data);
       } else if (retryCount < 5) {
-        dispatch(getFeed(query, retryCount + 1));
+        dispatch(getFeed(query, feedType, retryCount + 1));
       } else {
         Promise.reject();
       }
