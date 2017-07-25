@@ -1,9 +1,10 @@
 // @flow
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import TabContent from './TabContent';
-import { showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
-import { getLooksById } from '../../utils/FeedUtils';
+import {showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage, clearBodyModal} from '../../actions';
+import {getLooksById} from '../../utils/FeedUtils';
+import {FEED_TYPE_FOLLOWING} from '../../actions/feed';
 
 function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenFollwing', params);
@@ -11,7 +12,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     navigateToLooksScreen,
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getFollowingFeed(query)),
-    loadMore: () => dispatch(loadMore('following')),
+    loadMore: () => dispatch(loadMore(FEED_TYPE_FOLLOWING)),
     clearBodyModal: () => dispatch(clearBodyModal()),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
   };

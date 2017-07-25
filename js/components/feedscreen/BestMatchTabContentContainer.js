@@ -1,9 +1,17 @@
 // @flow
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import TabContent from './TabContent';
-import { showBodyTypeModal, getBestMatchFeed, loadMore, showParisBottomMessage, clearBodyModal } from '../../actions';
-import { getLooksById } from '../../utils/FeedUtils';
+import {
+  showBodyTypeModal,
+  getBestMatchFeed,
+  loadMore,
+  showParisBottomMessage,
+  clearBodyModal,
+} from '../../actions';
+
+import {FEED_TYPE_BEST_MATCH} from '../../actions/feed'
+import {getLooksById} from '../../utils/FeedUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenBestMatch', params);
@@ -11,7 +19,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     navigateToLooksScreen,
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getBestMatchFeed(query)),
-    loadMore: () => dispatch(loadMore('bestMatch')),
+    loadMore: () => dispatch(loadMore(FEED_TYPE_BEST_MATCH)),
     clearBodyModal: () => dispatch(clearBodyModal()),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
   };
@@ -28,7 +36,6 @@ const mapStateToProps = (state) => {
     defaultFilters = {
       gender: myGender,
       body_type: myBodyType,
-      following: true
     };
   }
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
@@ -47,7 +54,6 @@ const mapStateToProps = (state) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
-    navigateToLooks: 'lookScreenBestMatch',
   };
 };
 

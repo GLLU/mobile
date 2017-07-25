@@ -1,18 +1,19 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Dimensions, BackAndroid, View, StyleSheet, Modal, TouchableOpacity, Image, Animated } from 'react-native';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {Dimensions, BackAndroid, View, StyleSheet, Modal, TouchableOpacity, Image, Animated} from 'react-native';
+import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
-import MainView from './MainView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import { addNewLook, setUser, getNotifications, createInvitationCode } from '../../actions';
+import {addNewLook, setUser, getNotifications, createInvitationCode} from '../../actions';
 import asScreen from '../common/containers/Screen';
-import { hideBodyTypeModal } from '../../actions/myBodyType';
-import { noop } from 'lodash';
-import { openCamera } from '../../lib/camera/CameraUtils';
-import { formatLook } from '../../utils/UploadUtils';
+import {hideBodyTypeModal} from '../../actions/myBodyType';
+import {noop} from 'lodash';
+import {openCamera} from '../../lib/camera/CameraUtils';
+import {formatLook} from '../../utils/UploadUtils';
+import FeedTabs from './FeedTabs';
+
 const cameraIcon = require('../../../images/icons/camera_green-circle.png');
 
 class FeedPage extends Component {
@@ -27,7 +28,7 @@ class FeedPage extends Component {
     hideBodyTypeModal: React.PropTypes.func,
   }
 
-  static defaultProps= {
+  static defaultProps = {
     hideBodyTypeModal: noop,
     addNewLook: noop,
   }
@@ -41,6 +42,7 @@ class FeedPage extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.uploadLook = this.uploadLook.bind(this);
     this.showBottomCameraButton = this.showBottomCameraButton.bind(this);
+    this._renderFeed = this._renderFeed.bind(this);
     this.state = {
       name: '',
       searchTerm: '',
@@ -51,17 +53,13 @@ class FeedPage extends Component {
     };
   }
 
-  componentDidMount() {
-    // this.props.createInvitationCode() // Will be removed in the future
-  }
-
   componentWillMount() {
     if (!this.props.user || this.props.user.id === -1) {
       this.props.navigateTo('splashscreen');
     }
     BackAndroid.addEventListener('hardwareBackPress', () => {
       if (this.state.photoModal) {
-        this.setState({ photoModal: false });
+        this.setState({photoModal: false});
         return true;
       }
     });
@@ -79,13 +77,13 @@ class FeedPage extends Component {
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath).then(() => {
-      this.props.navigateTo('addItemScreen', { mode: 'create' });
+      this.props.navigateTo('addItemScreen', {mode: 'create'});
     });
   }
 
   showBottomCameraButton(shouldShow: boolean) {
     if (shouldShow !== this.state.showBottomCamera) {
-      this.setState({ showBottomCamera: shouldShow });
+      this.setState({showBottomCamera: shouldShow});
       if (!shouldShow) {
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
@@ -108,15 +106,15 @@ class FeedPage extends Component {
 
   _handleSearchStatus(newStatus) {
     const searchStatus = !this.state.searchStatus;
-    this.setState({ searchStatus });
+    this.setState({searchStatus});
   }
 
   _clearFilter() {
-    this.setState({ searchTerm: '' });
+    this.setState({searchTerm: ''});
   }
 
   _handleSearchInput(term) {
-    this.setState({ searchTerm: term });
+    this.setState({searchTerm: term});
   }
 
   _onPickBodyType() {
@@ -125,12 +123,12 @@ class FeedPage extends Component {
   }
 
   closeModal() {
-    this.props.logEvent('Feedscreen', { name: 'Hard close bodyType modal' });
+    this.props.logEvent('Feedscreen', {name: 'Hard close bodyType modal'});
     this.props.hideBodyTypeModal();
   }
 
   async uploadLook() {
-    this.props.logEvent('Feedscreen', { name: 'Open Camera click' });
+    this.props.logEvent('Feedscreen', {name: 'Open Camera click'});
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
@@ -140,29 +138,43 @@ class FeedPage extends Component {
 
   renderBottomCamera() {
     return (
-      <Animated.View style={{ position: 'absolute', bottom: this.state.fadeAnimContentOnPress, alignSelf: 'center' }}>
+      <Animated.View style={{position: 'absolute', bottom: this.state.fadeAnimContentOnPress, alignSelf: 'center'}}>
         <TouchableOpacity transparent onPress={this.uploadLook}>
-          <Image source={cameraIcon} style={styles.btnImage} />
+          <Image source={cameraIcon} style={styles.btnImage}/>
         </TouchableOpacity>
       </Animated.View>
     )
+  }
+
+  _renderFeed() {
+    const {reloading, clearedField} = this.props;
+    return (
+      <FeedTabs reloading={reloading}
+                clearedField={clearedField}
+                navigateTo={this.props.navigateTo}
+                showBottomCameraButton={this.props.showBottomCameraButton}/>
+    );
   }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
-          <MainBarView user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook} gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus} handleSearchStatus={this._handleSearchStatus} handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter} />
+          <MainBarView user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
+                       gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
+                       handleSearchStatus={this._handleSearchStatus}
+                       handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
           {/* {!this.state.searchStatus ?*/}
           {/* <NavigationBarView />*/}
           {/* :*/}
           {/* null*/}
           {/* }*/}
         </View>
-        <MainView showBottomCameraButton={this.showBottomCameraButton} navigateTo={this.props.navigateTo} searchStatus={this.state.searchStatus} searchTerm={this.state.searchTerm} />
+        {this._renderFeed()}
         {this.renderBottomCamera()}
-        <Modal animationType="slide" visible={this.props.modalShowing} style={{ justifyContent: 'flex-start', alignItems: 'center' }} onRequestClose={this.closeModal}>
-          <BodyTypePicker goBack={this.props.hideBodyTypeModal} onPick={this._onPickBodyType} />
+        <Modal animationType="slide" visible={this.props.modalShowing}
+               style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
+          <BodyTypePicker goBack={this.props.hideBodyTypeModal} onPick={this._onPickBodyType}/>
         </Modal>
       </View>
     );

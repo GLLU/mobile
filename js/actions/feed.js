@@ -2,17 +2,20 @@
 
 import _ from 'lodash';
 import LooksService from '../services/looksService';
-import { normalize, arrayOf } from 'normalizr';
-import { unifyLooks } from '../utils/FeedUtils';
-import { lookSchema, lookListSchema } from '../schemas/schemas'
+import {normalize, arrayOf} from 'normalizr';
+import {unifyLooks} from '../utils/FeedUtils';
+import {lookSchema, lookListSchema} from '../schemas/schemas'
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
 export const START_FETCHING = 'START_FETCHING';
 export const FINISH_FETCHING = 'FINISH_FETCHING';
+export const FEED_TYPE_FOLLOWING = 'following';
+export const FEED_TYPE_BEST_MATCH = 'following';
+export const FEED_TYPE_WHATS_HOT = 'following';
 
 const parseQueryFromState = function (state: array) {
-  const parsedState = { ...state, 'page[size]': state.page.size, 'page[number]': state.page.number };
+  const parsedState = {...state, 'page[size]': state.page.size, 'page[number]': state.page.number};
   if (state.category) {
     parsedState.category = state.category;
   }
@@ -20,7 +23,7 @@ const parseQueryFromState = function (state: array) {
   return parsedState;
 };
 
-export function getFeed(query: object, feedType = 'bestMatch', retryCount = 0) {
+export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   return (dispatch, getState) => {
     const newState = Object.assign({}, query, {
       page: {
@@ -28,16 +31,16 @@ export function getFeed(query: object, feedType = 'bestMatch', retryCount = 0) {
         number: 1,
       },
     });
-    dispatch(startFethcing({ feedType, isLoading: true }))
+    dispatch(startFechting({feedType, isLoading: true}))
     delete query.page
-    return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
+    return LooksService.getLooks({...query, 'page[size]': 10, 'page[number]': 1}).then((data) => {
       if (data) {
-        const { looks, meta } = data;
+        const {looks, meta} = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
-        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-        dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType }));
-        dispatch(finishFethcing({ feedType }))
+        dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
+        dispatch(setFeedData({flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType}));
+        dispatch(finishFechting({feedType}))
         dispatch(loadMore(feedType));
         Promise.resolve(data);
       } else if (retryCount < 5) {
@@ -52,15 +55,15 @@ export function getFeed(query: object, feedType = 'bestMatch', retryCount = 0) {
 }
 
 export function getFollowingFeed(query: object) {
-  return getFeed(query, 'following');
+  return getFeed(query, FEED_TYPE_FOLLOWING);
 }
 
 export function getBestMatchFeed(query: object) {
-  return getFeed(query, 'bestMatch');
+  return getFeed(query, FEED_TYPE_BEST_MATCH);
 }
 
 export function getWhatsHotFeed(query: object) {
-  return getFeed(query, 'whatsHot');
+  return getFeed(query, FEED_TYPE_WHATS_HOT);
 }
 
 export function clearFeed() {
@@ -72,21 +75,21 @@ export function clearFeed() {
   });
 }
 
-export function loadMore(feedType = 'bestMatch', retryCount = 0) {
+export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   return (dispatch, getState) => {
     const state = getState().feed[feedType];
     const currPage = state.query.page.number;
     const nextPageNumber = currPage + 1;
-    const newState = _.merge(state.query, { page: { number: nextPageNumber } });
+    const newState = _.merge(state.query, {page: {number: nextPageNumber}});
     const params = parseQueryFromState(newState);
     return LooksService.getLooks(params).then((data) => {
       if (data) {
-        const { looks, meta } = data;
-        const normalizedLooksData = normalize(looks, [ lookSchema] );
+        const {looks, meta} = data;
+        const normalizedLooksData = normalize(looks, [lookSchema]);
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
-        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
+        dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
         const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result)
-        dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
+        dispatch(setFeedData({flatLooksIdData, meta, query: newState, feedType}));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
         dispatch(loadMore(params, retryCount + 1));
@@ -113,14 +116,14 @@ export function setLooksData(data: object) {
   };
 }
 
-export function startFethcing(loadingFeed: object) {
+export function startFechting(loadingFeed: object) {
   return {
     type: START_FETCHING,
     loadingFeed,
   };
 }
 
-export function finishFethcing(loadingFeed: object) {
+export function finishFechting(loadingFeed: string) {
   return {
     type: FINISH_FETCHING,
     loadingFeed,
