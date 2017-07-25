@@ -1,11 +1,13 @@
 import React, {PureComponent} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
 import Colors from '../../styles/Colors.styles'
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
+const cameraIcon = require('../../../images/icons/Filter_black.png');
+const deviceWidth = Dimensions.get('window').width;
 
 export default class FeedTabs extends PureComponent {
   state = {
@@ -19,10 +21,12 @@ export default class FeedTabs extends PureComponent {
 
   _handleIndexChange = index => this.setState({index});
 
-  _renderHeader = props => <TabBar
-    tabStyle={styles.tabStyle} style={styles.TabBar}
-    labelStyle={styles.labelStyle}
-    indicatorStyle={styles.indicatorStyle} {...props} />;
+  _renderHeader = props => (
+    <TabBar
+      tabStyle={styles.tabStyle} style={styles.TabBar}
+      labelStyle={styles.labelStyle}
+      indicatorStyle={styles.indicatorStyle} {...props} />
+  );
 
 
   _renderScene = SceneMap({
@@ -37,37 +41,76 @@ export default class FeedTabs extends PureComponent {
       showBottomCameraButton={this.props.showBottomCameraButton}/>,
   });
 
+  tempFunc() {
+    console.log('boom')
+  }
+
+  renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
+    return (
+      <View style={containerStyle}>
+        <TouchableOpacity transparent onPress={onPress}>
+          <Image source={icon} style={iconStyle}/>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   render() {
     return (
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onRequestChangeTab={this._handleIndexChange}
-      />
+      <View style={{flex: 1, flexDirection: 'row', backgroundColor: Colors.backgroundGrey}}>
+        <TabViewAnimated
+          style={styles.container}
+          navigationState={this.state}
+          renderScene={this._renderScene}
+          renderHeader={this._renderHeader}
+          onRequestChangeTab={this._handleIndexChange}
+        />
+        {this.renderNavigationButton(cameraIcon, this.tempFunc, styles.btnImage, {
+          justifyContent: 'center',
+          height: 41.5,
+
+          backgroundColor: Colors.backgroundGrey,
+          borderWidth: 0,
+          position: 'absolute',
+          marginRight: 5,
+          paddingRight: 5,
+          right: 0
+        })}
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: deviceWidth,
     backgroundColor: Colors.primaryColor,
   },
   tabStyle: {
     height: 41.5,
+
   },
   TabBar: {
     backgroundColor: Colors.backgroundGrey,
+    height: 41.5,
+    width: deviceWidth - 23
   },
   indicatorStyle: {
     backgroundColor: Colors.secondaryColor,
+    width: (deviceWidth - 23) / 3
   },
   labelStyle: {
     color: Colors.black,
     fontWeight: '600',
     textAlign: 'center',
-    fontSize: generateAdjustedSize(13),
-  }
+    fontSize: generateAdjustedSize(12),
+  },
+  btnImage: {
+    height: 23,
+    width: 23,
+    marginBottom: 2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    resizeMode: 'contain',
+  },
 });
