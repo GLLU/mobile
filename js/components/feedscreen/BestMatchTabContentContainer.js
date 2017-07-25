@@ -10,7 +10,7 @@ import {
   clearBodyModal,
 } from '../../actions';
 
-import {FEED_TYPE_BEST_MATCH} from '../../actions/feed'
+import {FEED_TYPE_BEST_MATCH} from '../../actions/feed';
 import {getLooksById} from '../../utils/FeedUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {

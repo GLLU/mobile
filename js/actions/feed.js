@@ -11,8 +11,8 @@ export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
 export const START_FETCHING = 'START_FETCHING';
 export const FINISH_FETCHING = 'FINISH_FETCHING';
 export const FEED_TYPE_FOLLOWING = 'following';
-export const FEED_TYPE_BEST_MATCH = 'following';
-export const FEED_TYPE_WHATS_HOT = 'following';
+export const FEED_TYPE_BEST_MATCH = 'bestMatch';
+export const FEED_TYPE_WHATS_HOT = 'whatsHot';
 
 const parseQueryFromState = function (state: array) {
   const parsedState = {...state, 'page[size]': state.page.size, 'page[number]': state.page.number};
@@ -24,6 +24,7 @@ const parseQueryFromState = function (state: array) {
 };
 
 export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
+  console.log('feedType', feedType)
   return (dispatch, getState) => {
     const newState = Object.assign({}, query, {
       page: {
