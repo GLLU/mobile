@@ -8,6 +8,7 @@ import I18n from 'react-native-i18n';
 
 import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import SolidButton from '../common/buttons/SolidButton';
+import EmptyStateScreen from '../common/EmptyStateScreen';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 
@@ -17,7 +18,8 @@ const cardBG = require('../../../images/backgrounds/cardBG.png');
 class WalletScreen extends Component {
 
   props: {
-    balance: number
+    balance: number,
+    onAddNewLook: () => void
   };
 
   static defaultProps = {
@@ -27,7 +29,14 @@ class WalletScreen extends Component {
   }
 
   render(): React.Component {
-    const { balance } = this.props;
+    const { balance, onAddNewLook } = this.props;
+
+    if (!balance || balance === 0) {
+      return (<EmptyStateScreen
+        title={I18n.t('EMPTY_BALANCE_TITLE')} subtitle={I18n.t('EMPTY_BALANCE_LEGEND')}
+        icon={require('../../../images/emptyStates/datebase.png')} buttonText={I18n.t('POST_NOW')}
+        onButtonClicked={onAddNewLook}/>);
+    }
 
     return (
       <View style={styles.container}>

@@ -17,7 +17,6 @@ class EmptyView extends Component {
   };
 
   static defaultProps = {
-    isMyProfile: true,
     onUploadButtonPress: noop
   };
 

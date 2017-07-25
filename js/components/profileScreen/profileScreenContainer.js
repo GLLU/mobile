@@ -17,7 +17,6 @@ import {
 import { editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';
-import { reportAbuse } from '../../actions/looks';
 import { blockUser } from '../../actions/user';
 
 
