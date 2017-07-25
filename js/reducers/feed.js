@@ -1,4 +1,4 @@
-import { SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA } from '../actions/feed';
+import { SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA, FINISH_FETCHING, START_FETCHING } from '../actions/feed';
 import { REHYDRATE } from 'redux-persist/constants';
 
 const initialState = {
@@ -17,6 +17,7 @@ const initialState = {
         number: 1,
       },
     },
+    isLoading: true,
   },
   following: {
     flatLooksIdData: [],
@@ -33,6 +34,7 @@ const initialState = {
         number: 1,
       },
     },
+    isLoading: true,
   },
   whatsHot: {
     flatLooksIdData: [],
@@ -49,6 +51,7 @@ const initialState = {
         number: 1,
       },
     },
+    isLoading: true,
   },
 
 
@@ -61,7 +64,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         [feedType]: {
-          ...state.feedType,
+          ...state[feedType],
           flatLooksIdData,
           meta,
           query,
@@ -71,6 +74,26 @@ export default function (state = initialState, action) {
     case CLEAR_FEED_DATA: {
       return {
         ...initialState,
+      };
+    }
+    case START_FETCHING: {
+      const { feedType } = action.loadingFeed
+      return {
+        ...state,
+        [feedType]: {
+          ...state[feedType],
+          isLoading: true,
+        },
+      };
+    }
+    case FINISH_FETCHING: {
+      const { feedType } = action.loadingFeed
+      return {
+        ...state,
+        [feedType]: {
+          ...state[feedType],
+          isLoading: false,
+        },
       };
     }
     case REHYDRATE: {

@@ -1,6 +1,14 @@
-import React, { Component } from 'react';
-import { StyleSheet, Image, Platform, View, TouchableWithoutFeedback, TouchableOpacity, InteractionManager } from 'react-native';
-import { Icon } from 'native-base';
+import React, {Component} from 'react';
+import {
+  StyleSheet,
+  Image,
+  Platform,
+  View,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  InteractionManager
+} from 'react-native';
+import {Icon} from 'native-base';
 import BaseComponent from '../common/base/BaseComponent';
 import withAnalytics from '../common/analytics/WithAnalytics';
 
@@ -26,8 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
   },
-  btnCamera: {
-  },
+  btnCamera: {},
   btnImage: {
     height: 23,
     width: 23,
@@ -81,17 +88,23 @@ const styles = StyleSheet.create({
   },
 });
 
+type Props = {
+  user: object,
+  handleSearchStatus: void,
+  navigateTo: void,
+  logEvent: void,
+  addNewItem: void,
+  searchStatus: bool,
+
+}
+
 class MainBarView extends BaseComponent {
-  static propTypes = {
-    user: React.PropTypes.object,
-    handleSearchStatus: React.PropTypes.func,
-    searchStatus: React.PropTypes.bool,
 
-  }
+  props: Props
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    this.openSearch = this.openSearch.bind(this);
+    this._openSearch = this._openSearch.bind(this);
     this.handleNotificationsPress = this.handleNotificationsPress.bind(this);
     this.goToProfile = this.goToProfile.bind(this);
     this.state = {
@@ -100,8 +113,8 @@ class MainBarView extends BaseComponent {
     };
   }
 
-  openSearch() {
-    this.logEvent('Feedscreen', { name: 'Search click' });
+  _openSearch() {
+    this.logEvent('Feedscreen', {name: 'Search click'});
     // this.setState({searchStatus: !this.state.searchStatus})
     this.props.handleSearchStatus();
   }
@@ -112,46 +125,41 @@ class MainBarView extends BaseComponent {
   }
 
   goToProfile() {
-    this.props.logEvent('Feedscreen', { name: 'Profile click' });
+    this.props.logEvent('Feedscreen', {name: 'Profile click'});
     this.props.navigateTo('profileScreen', this.props.user);
   }
 
   handleNotificationsPress() {
-    this.props.logEvent('Feedscreen', { name: 'Notifications click' });
+    this.props.logEvent('Feedscreen', {name: 'Notifications click'});
     this.props.navigateTo('notificationsScreen');
   }
 
 
-
-  renderNavigationButton(icon, onPress, iconStyle, containerStyle) {
+  renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle} />
+          <Image source={icon} style={iconStyle}/>
         </TouchableOpacity>
       </View>
     );
   }
 
   render() {
-    const { gotNewNotifications } = this.props;
+    const {gotNewNotifications, addNewItem} = this.props;
     const notificationsIcon = gotNewNotifications ? gotNotification : emptyNotification;
     return (
       <View style={styles.navigationBar}>
-        <View style={{ flexDirection: 'row', flex: 1 }}>
-          {this.renderNavigationButton(cameraIcon, this.uploadLook, styles.btnImage, styles.centerEdges)}
+        <View style={{flexDirection: 'row', flex: 1}}>
+          {this.renderNavigationButton(cameraIcon, addNewItem, styles.btnImage, styles.centerEdges)}
           {this.renderNavigationButton(userIcon, this.goToProfile, styles.btnImage)}
         </View>
-        <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'center' }}>
-          <Image source={homeIcon} style={[styles.logo]} />
+        <View style={{flex: 3, flexDirection: 'row', justifyContent: 'center'}}>
+          <Image source={homeIcon} style={[styles.logo]}/>
         </View>
-        {/* <View style={{flexGrow: 10, flexDirection: 'row', justifyContent: 'center', }}>*/}
-        {/* <SearchBar handleSearchInput={(term) => this.props.handleSearchInput(term)}*/}
-        {/* clearText={this.props.clearText} />*/}
-        {/* </View>*/}
-        <View style={{ flexDirection: 'row', flex: 1 }}>
+        <View style={{flexDirection: 'row', flex: 1}}>
           {this.renderNavigationButton(notificationsIcon, this.handleNotificationsPress, styles.btnImageHanger)}
-          {this.renderNavigationButton(search, this.uploadLook, styles.btnImage, styles.centerEdges)}
+          {this.renderNavigationButton(search, addNewItem, styles.btnImage, styles.centerEdges)}
         </View>
       </View>
     );
