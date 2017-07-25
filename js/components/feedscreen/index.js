@@ -147,12 +147,12 @@ class FeedPage extends Component {
   }
 
   _renderFeed() {
-    const {reloading, clearedField} = this.props;
+    const {reloading, clearedField, navigateTo, showBottomCameraButton} = this.props;
     return (
       <FeedTabs reloading={reloading}
                 clearedField={clearedField}
-                navigateTo={this.props.navigateTo}
-                showBottomCameraButton={this.props.showBottomCameraButton}/>
+                navigateTo={navigateTo}
+                showBottomCameraButton={showBottomCameraButton}/>
     );
   }
 
@@ -164,11 +164,6 @@ class FeedPage extends Component {
                        gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
                        handleSearchStatus={this._handleSearchStatus}
                        handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
-          {/* {!this.state.searchStatus ?*/}
-          {/* <NavigationBarView />*/}
-          {/* :*/}
-          {/* null*/}
-          {/* }*/}
         </View>
         {this._renderFeed()}
         {this.renderBottomCamera()}
