@@ -98,14 +98,14 @@ class UserLooks extends Component {
     );
   }
 
-  _renderLooks(looks) {
+  _renderLooks = (looks) => {
     return _.map(looks, look => (
       <MediaContainer
         look={look}
         currScroll={this.props.currentScrollPosition}
         likeUpdate={this.props.likeUpdate}
         unlikeUpdate={this.props.unlikeUpdate}
-        navigateTo={this.props.navigateTo}
+        navigateToLooksScreen={this.props.navigateToLooksScreen}
         sendParisMessage={this.props.showParisBottomMessage}
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 20}
