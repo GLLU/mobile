@@ -155,19 +155,6 @@ export function emailSignIn(data) {
       dispatch(showFatalError(error));
       reject(error);
     });
-
-    /*
-     return dispatch(rest.actions.auth.post(body, (err, data) => {
-     if (!err && !_.isEmpty(data)) {
-     signInFromRest(dispatch, data, access_token, expiration_time).then(resolve).catch(reject);
-     dispatch(hideFatalError())
-     } else {
-     const error='Email/Password are incorrect';
-     dispatch(showFatalError(error))
-     reject(error);
-     }
-     }));
-     */
   });
 }
 
