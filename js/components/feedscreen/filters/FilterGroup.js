@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Image, Dimensions,View, Text } from 'react-native'
+import React, {Component} from 'react';
+import {ScrollView, StyleSheet, Image, Dimensions, View, Text} from 'react-native'
 import FilterButton from './FilterButton'
 import _ from 'lodash'
 
@@ -61,6 +61,7 @@ class FilterGroup extends Component {
   render() {
     const {filters} = this.props;
     const renderer = (filters || []).length > 4 ? this.renderAsScrollView : this.renderAsView;
+    console.log('filters222', filters)
     return renderer(
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
         {_.map(filters, (filter, i) => {

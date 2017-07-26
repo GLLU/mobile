@@ -44,12 +44,13 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
         dispatch(finishFechting({feedType}))
         dispatch(loadMore(feedType));
         Promise.resolve(data);
-      } else if (retryCount < 5) {
-        dispatch(getFeed(query, feedType, retryCount + 1));
       } else {
         Promise.reject();
       }
     }).catch((error) => {
+      if (retryCount < 5) {
+        dispatch(getFeed(query, feedType, retryCount + 1));
+      }
       Promise.reject(error);
     });
   };

@@ -3,25 +3,15 @@
 import {connect} from 'react-redux';
 import FiltersView from './FiltersView';
 import {
-  showBodyTypeModal,
   getBestMatchFeed,
-  loadMore,
-  showParisBottomMessage,
-  clearBodyModal,
+  loadCategories,
 } from '../../actions';
 
-import {FEED_TYPE_BEST_MATCH} from '../../actions/feed';
-import {getLooksById} from '../../utils/FeedUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenBestMatch', params);
   return {
-    navigateToLooksScreen,
-    showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getBestMatchFeed(query)),
-    loadMore: () => dispatch(loadMore(FEED_TYPE_BEST_MATCH)),
-    clearBodyModal: () => dispatch(clearBodyModal()),
-    showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
+    loadCategories: (gender) => dispatch(loadCategories(gender)),
   };
 }
 
@@ -38,22 +28,11 @@ const mapStateToProps = (state) => {
       body_type: myBodyType,
     };
   }
-  const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const userSize = hasUserSize ? state.user.user_size : '';
-  const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
   return {
-    isLoading: state.feed.bestMatch.isLoading,
     defaultFilters,
-    modalShowing: state.myBodyType.modalShowing,
-    flatLooks: flatLooksFeedData,
     meta: state.feed.bestMatch.meta,
     query: state.feed.bestMatch.query,
-    hasUserSize,
-    user_size: userSize,
-    user_gender: state.user.gender,
-    cardNavigationStack: state.cardNavigation,
-    userName: state.user.name,
-    showBodyModal: state.user.showBodyModal,
+    filters: state.filters.categories
   };
 };
 

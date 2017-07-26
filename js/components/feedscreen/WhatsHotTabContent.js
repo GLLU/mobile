@@ -26,14 +26,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
-import FiltersView from './FiltersView';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
 
-class TabContent extends BaseComponent {
+class HotTabContent extends BaseComponent {
 
   static propTypes = {
     hasUserSize: React.PropTypes.bool,
@@ -100,16 +99,6 @@ class TabContent extends BaseComponent {
       });
     }
 
-    if (this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
-      // show modal after done loading for 3 seconds
-      if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
-        if (!this.props.hasUserSize) {
-          setTimeout(() => {
-            this.showBodyModal();
-          }, 3000);
-        }
-      }
-    }
     if (nextProps.clearedField) {
       this.currPosition = 0;
       this.setState({noMoreData: false});
@@ -132,7 +121,6 @@ class TabContent extends BaseComponent {
     if (this.props.cardNavigationStack.index === 0) {
       if (this.props.showBodyModal) {
         this.scrollCallAsync(event);
-        this.props.clearBodyModal();
       } else {
         const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
         const contentSizeHeight = event.nativeEvent.contentSize.height;
@@ -344,21 +332,13 @@ class TabContent extends BaseComponent {
     )
   }
 
-  renderFilterView() {
-    return (
-      <FiltersView />
-    )
-  }
-
   render() {
     if (this.props.isLoading) {
       return this.renderLoader();
     } else {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-
           { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
-          {this.renderFilterView()}
         </View>
       );
     }
@@ -407,4 +387,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TabContent;
+export default HotTabContent;

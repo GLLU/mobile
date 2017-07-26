@@ -43,7 +43,7 @@ import { setUser,
   logout,
   clearTutorial,
   hideTutorial,
-  clearBodyModal
+  onBodyShapeChoosen
   } from './user';
 
 export {
@@ -63,7 +63,7 @@ export {
   createLookItem,
   selectLookItem,
   updateLookItem,
-  clearBodyModal,
+  onBodyShapeChoosen,
   getUserBalance,
   publishLookItem,
   editTag,

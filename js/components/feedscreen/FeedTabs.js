@@ -21,13 +21,14 @@ export default class FeedTabs extends Component {
     this.state = {
       index: 0,
       routes: [
-        {key: '1', title: 'Following'},
-        {key: '2', title: 'My Size'},
-        {key: '3', title: "What's Hot"},
+        {key: 'following', title: 'Following'},
+        {key: 'bestMatch', title: 'My Size'},
+        {key: 'hot', title: "What's Hot"},
       ],
       filterIsOpen: false
     };
   }
+
 
   _handleIndexChange = index => this.setState({index});
 
@@ -38,18 +39,27 @@ export default class FeedTabs extends Component {
       indicatorStyle={styles.indicatorStyle} {...props} />
   );
 
+  _renderScene = ({route}) => {
+    const {navigateTo, showBottomCameraButton} = this.props;
 
-  _renderScene = SceneMap({
-    1: () => <FollowingTabContent
-      navigateTo={this.props.navigateTo}
-      showBottomCameraButton={this.props.showBottomCameraButton}/>,
-    2: () => <BestMatchTabContent
-      navigateTo={this.props.navigateTo}
-      showBottomCameraButton={this.props.showBottomCameraButton}/>,
-    3: () => <WhatsHotTabContent
-      navigateTo={this.props.navigateTo}
-      showBottomCameraButton={this.props.showBottomCameraButton}/>,
-  });
+    switch (route.key) {
+      case 'following':
+        return (<FollowingTabContent
+          navigateTo={navigateTo}
+          showBottomCameraButton={showBottomCameraButton}/>);
+      case 'bestMatch':
+        return (<BestMatchTabContent
+          navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
+          showBottomCameraButton={showBottomCameraButton}/>);
+      case 'hot':
+        return (<WhatsHotTabContent
+          navigateTo={navigateTo}
+          showBottomCameraButton={showBottomCameraButton}/>);
+      default:
+        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
+          ;
+    }
+  };
 
   tempFunc() {
     this.setState({filterIsOpen: !this.state.filterIsOpen})
