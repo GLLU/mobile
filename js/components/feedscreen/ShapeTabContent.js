@@ -29,6 +29,7 @@ import Fonts from '../../styles/Fonts.styles';
 import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from "../common/buttons/SolidButton";
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
@@ -393,7 +394,7 @@ const
       textAlign: 'center',
       fontFamily: Fonts.contentFont,
       color: Colors.black,
-      fontSize: 20,
+      fontSize: generateAdjustedSize(18),
     },
     tab: {
       backgroundColor: '#FFFFFF',
