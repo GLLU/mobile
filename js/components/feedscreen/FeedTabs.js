@@ -57,25 +57,15 @@ export default class FeedTabs extends PureComponent {
 
   render() {
     return (
-      <View style={{flex: 1, flexDirection: 'row', backgroundColor: Colors.backgroundGrey}}>
+      <View style={styles.container}>
         <TabViewAnimated
-          style={styles.container}
+          style={styles.tabViewAnimatedContainer}
           navigationState={this.state}
           renderScene={this._renderScene}
           renderHeader={this._renderHeader}
           onRequestChangeTab={this._handleIndexChange}
         />
-        {this.renderNavigationButton(cameraIcon, this.tempFunc, styles.btnImage, {
-          justifyContent: 'center',
-          height: 41.5,
-
-          backgroundColor: Colors.backgroundGrey,
-          borderWidth: 0,
-          position: 'absolute',
-          marginRight: 5,
-          paddingRight: 5,
-          right: 0
-        })}
+        {this.renderNavigationButton(cameraIcon, this.tempFunc, styles.btnImage, styles.filterButtonContainer)}
       </View>
     );
   }
@@ -83,6 +73,9 @@ export default class FeedTabs extends PureComponent {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1, flexDirection: 'row', backgroundColor: Colors.backgroundGrey
+  },
+  tabViewAnimatedContainer: {
     width: deviceWidth,
     backgroundColor: Colors.primaryColor,
   },
@@ -113,4 +106,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     resizeMode: 'contain',
   },
+  filterButtonContainer: {
+    justifyContent: 'center',
+    height: 41.5,
+    backgroundColor: Colors.backgroundGrey,
+    borderWidth: 0,
+    position: 'absolute',
+    marginRight: 5,
+    paddingRight: 5,
+    right: 0,
+  }
 });
