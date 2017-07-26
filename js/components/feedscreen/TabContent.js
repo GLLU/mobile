@@ -26,6 +26,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
+import FiltersView from './FiltersView';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -343,13 +344,21 @@ class TabContent extends BaseComponent {
     )
   }
 
+  renderFilterView() {
+    return (
+      <FiltersView />
+    )
+  }
+
   render() {
     if (this.props.isLoading) {
       return this.renderLoader();
     } else {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+
           { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
+          {this.renderFilterView()}
         </View>
       );
     }

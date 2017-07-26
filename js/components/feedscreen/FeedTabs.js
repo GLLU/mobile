@@ -1,4 +1,6 @@
-import React, {PureComponent} from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
@@ -9,15 +11,23 @@ import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 const cameraIcon = require('../../../images/icons/Filter_black.png');
 const deviceWidth = Dimensions.get('window').width;
 
-export default class FeedTabs extends PureComponent {
-  state = {
-    index: 0,
-    routes: [
-      {key: '1', title: 'Following'},
-      {key: '2', title: 'My Size'},
-      {key: '3', title: "What's Hot"},
-    ],
-  };
+export default class FeedTabs extends Component {
+  constructor(props: object) {
+    super(props);
+    this._handleIndexChange = this._handleIndexChange.bind(this);
+    this._renderHeader = this._renderHeader.bind(this);
+    this.tempFunc = this.tempFunc.bind(this);
+    this.renderNavigationButton = this.renderNavigationButton.bind(this);
+    this.state = {
+      index: 0,
+      routes: [
+        {key: '1', title: 'Following'},
+        {key: '2', title: 'My Size'},
+        {key: '3', title: "What's Hot"},
+      ],
+      filterIsOpen: false
+    };
+  }
 
   _handleIndexChange = index => this.setState({index});
 
@@ -42,7 +52,7 @@ export default class FeedTabs extends PureComponent {
   });
 
   tempFunc() {
-    console.log('boom')
+    this.setState({filterIsOpen: !this.state.filterIsOpen})
   }
 
   renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
