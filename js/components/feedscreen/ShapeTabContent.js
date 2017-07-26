@@ -25,9 +25,11 @@ import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from "../common/buttons/SolidButton";
+
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -370,8 +372,8 @@ class ShapeTabContent extends BaseComponent {
     const { saveBodyShape } = this.props;
 
     return (
-      <View style={{ alignItems: 'center' }}>
-        <Text>Show your body type...</Text>
+      <View style={{flexGrow:1, backgroundColor:'white', alignItems: 'center' }}>
+        <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
         <ScrollView>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
@@ -385,6 +387,14 @@ class ShapeTabContent extends BaseComponent {
 
 const
   styles = StyleSheet.create({
+    bodyShapeLegend: {
+      marginHorizontal: 16,
+      marginVertical: 12,
+      textAlign: 'center',
+      fontFamily: Fonts.contentFont,
+      color: Colors.black,
+      fontSize: 20,
+    },
     tab: {
       backgroundColor: '#FFFFFF',
       flex: 1,
