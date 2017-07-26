@@ -1,41 +1,50 @@
-import React, {PureComponent} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import React, { PureComponent } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
-import Colors from '../../styles/Colors.styles'
-import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
+import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
 
 export default class FeedTabs extends PureComponent {
   state = {
     index: 0,
     routes: [
-      {key: '1', title: 'Following'},
-      {key: '2', title: 'My Size'},
-      {key: '3', title: "What's Hot"},
+      { key: 'following', title: 'Following' },
+      { key: 'shape', title: 'My Size' },
+      { key: 'hot', title: "What's Hot" },
     ],
   };
 
-  _handleIndexChange = index => this.setState({index});
+  _handleIndexChange = index => this.setState({ index });
 
   _renderHeader = props => <TabBar
     tabStyle={styles.tabStyle} style={styles.TabBar}
     labelStyle={styles.labelStyle}
     indicatorStyle={styles.indicatorStyle} {...props} />;
 
+  _renderScene = ({ route }) => {
+    const { navigateTo, showBottomCameraButton } = this.props;
 
-  _renderScene = SceneMap({
-    1: () => <FollowingTabContent
-      navigateTo={this.props.navigateTo}
-      showBottomCameraButton={this.props.showBottomCameraButton}/>,
-    2: () => <BestMatchTabContent
-      navigateTo={this.props.navigateTo}
-      showBottomCameraButton={this.props.showBottomCameraButton}/>,
-    3: () => <WhatsHotTabContent
-      navigateTo={this.props.navigateTo}
-      showBottomCameraButton={this.props.showBottomCameraButton}/>,
-  });
+    switch (route.key) {
+      case 'following':
+        return (<FollowingTabContent
+          navigateTo={navigateTo}
+          showBottomCameraButton={showBottomCameraButton} />);
+      case 'shape':
+        return (<BestMatchTabContent
+          navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
+          showBottomCameraButton={showBottomCameraButton} />);
+      case 'hot':
+        return (<WhatsHotTabContent
+          navigateTo={navigateTo}
+          showBottomCameraButton={showBottomCameraButton} />);
+      default:
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
+          ;
+    }
+  };
 
   render() {
     return (
@@ -69,5 +78,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     fontSize: generateAdjustedSize(13),
-  }
+  },
 });

@@ -187,7 +187,7 @@ function bindActions(dispatch) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  modalShowing: state.myBodyType.modalShowing,
+  modalShowing: false,
   gotNewNotifications: state.notifications.newNotifications,
 });
 
