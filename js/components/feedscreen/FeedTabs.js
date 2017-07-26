@@ -12,7 +12,7 @@ export default class FeedTabs extends PureComponent {
     index: 0,
     routes: [
       { key: 'following', title: 'Following' },
-      { key: 'shape', title: 'My Size' },
+      { key: 'bestMatch', title: 'My Size' },
       { key: 'hot', title: "What's Hot" },
     ],
   };
@@ -32,7 +32,7 @@ export default class FeedTabs extends PureComponent {
         return (<FollowingTabContent
           navigateTo={navigateTo}
           showBottomCameraButton={showBottomCameraButton} />);
-      case 'shape':
+      case 'bestMatch':
         return (<BestMatchTabContent
           navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
           showBottomCameraButton={showBottomCameraButton} />);

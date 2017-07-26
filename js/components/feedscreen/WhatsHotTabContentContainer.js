@@ -1,7 +1,7 @@
 // @flow
 
 import {connect} from 'react-redux';
-import HotTabContent from './HotTabContent';
+import WhatsHotTabContent from './WhatsHotTabContent';
 import {showBodyTypeModal, getWhatsHotFeed, loadMore, showParisBottomMessage} from '../../actions';
 import {FEED_TYPE_WHATS_HOT} from '../../actions/feed';
 import {getLooksById} from '../../utils/FeedUtils';
@@ -50,4 +50,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HotTabContent);
+export default connect(mapStateToProps, mapDispatchToProps)(WhatsHotTabContent);
