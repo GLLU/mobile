@@ -376,8 +376,8 @@ class ShapeTabContent extends BaseComponent {
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
             onPick={() => this.toggleBodyTypeModal(false)}/>
+          <SolidButton label="CHOOSE" onPress={saveBodyShape}/>
         </ScrollView>
-        <SolidButton label="CHOOSE" onPress={saveBodyShape}/>
       </View>
     );
   }
