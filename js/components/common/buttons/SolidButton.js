@@ -31,19 +31,21 @@ class SolidButton extends Component {
 
   static propTypes = {
     label: React.PropTypes.string.isRequired,
+    disabled: React.PropTypes.bool,
     onPress: React.PropTypes.func,
     showLoader: React.PropTypes.bool,
   }
 
   static defaultProps = {
     onPress: _.noop,
+    disabled: false,
     showLoader: false,
     loaderElement: null
   }
 
   render() {
     return (
-      <TouchableOpacity style={[styles.center, styles.basicStyle ,this.props.style]} onPress={this.props.onPress}>
+      <TouchableOpacity style={[styles.center, styles.basicStyle ,this.props.style]} disabled={this.props.disabled} onPress={this.props.onPress}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text style={styles.text}>{this.props.label}</Text>
           {this.props.loaderElement}

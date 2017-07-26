@@ -119,7 +119,7 @@ module.exports = StyleSheet.create({
     marginBottom: (Platform.OS === 'ios') ? 20 : 10,
     width: 280,
     height: 40,
-    backgroundColor: '#ADADAD',
+    backgroundColor: '#6f9689',
     borderRadius: 0,
     opacity: 0.8
   },

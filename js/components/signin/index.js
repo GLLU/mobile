@@ -187,6 +187,7 @@ render()
               <SolidButton
                 showLoader={this.state.isSigningIn}
                 label="Let's infash"
+                disabled={!allValid}
                 style={[styles.formBtn, allValid ? styles.validationPassed : null]}
                 onPress={this.handleSigninPress}
                 loaderElement={<Spinner animating={this.state.isSigningIn} size={'small'} style={{ left: 10 }}/>}
