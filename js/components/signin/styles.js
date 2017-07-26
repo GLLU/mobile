@@ -128,6 +128,8 @@ module.exports = StyleSheet.create({
   },
   alreadyBox: {
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     flexDirection:'row',
   },
   alreadyTxt: {
