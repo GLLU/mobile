@@ -88,16 +88,16 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     height: 41.5,
-
+    width: (deviceWidth - 23) / 3,
   },
   TabBar: {
     backgroundColor: Colors.backgroundGrey,
     height: 41.5,
-    width: deviceWidth - 23
+    width: deviceWidth - 23,
   },
   indicatorStyle: {
     backgroundColor: Colors.secondaryColor,
-    width: (deviceWidth - 23) / 3
+    width: (deviceWidth - 23) / 3,
   },
   labelStyle: {
     color: Colors.black,
