@@ -1,4 +1,4 @@
-import { SET_USER, RESET_STATE, HIDE_TUTORIAL, HIDE_BODY_MODAL } from '../actions/user';
+import { SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -15,6 +15,7 @@ const initialState = {
   api_key: null,
   showTutorial: false,
   showBodyModal: true,
+  hasChoosenBodyShape: false,
 };
 
 // Action Handlers
@@ -23,9 +24,9 @@ const ACTION_HANDLERS = {
     ...state,
     showTutorial: false,
   }),
-  [HIDE_BODY_MODAL]: (state, action) => ({
+  [BODY_SHAPE_CHOOSEN]: (state, action) => ({
     ...state,
-    showBodyModal: false,
+    hasChoosenBodyShape: true,
   }),
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);

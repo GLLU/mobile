@@ -13,7 +13,7 @@ import {
   RefreshControl,
   View,
   NetInfo,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
@@ -26,13 +26,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
+import BodyTypePicker from '../myBodyType/BodyTypePicker';
+import SolidButton from "../common/buttons/SolidButton";
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
 
-class TabContent extends BaseComponent {
+class ShapeTabContent extends BaseComponent {
 
   static propTypes = {
     hasUserSize: React.PropTypes.bool,
@@ -68,7 +70,7 @@ class TabContent extends BaseComponent {
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
+    this.logEvent('Feedscreen', { name: 'Invite your friends click' });
     const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
@@ -87,31 +89,35 @@ class TabContent extends BaseComponent {
   }
 
   getFeed(query) {
-    this.props.getFeed(query)
+    this.props.getFeed(query);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isTabOnFocus && this.props.isTabOnFocus) {
+      this.props.showBottomCameraButton(false);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.isTabOnFocus && !this.props.isTabOnFocus && !nextProps.hasUserSize) {
+      this.props.showBottomCameraButton(false);
+    }
+
+    if (!this.props.hasUserSize && nextProps.hasUserSize) {
+      this.getFeed(this.props.defaultFilters);
+    }
+
     if (nextProps.flatLooks !== this.props.flatLooks) {
       this.setState({
         flatLooksLeft: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 0),
         flatLooksRight: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 1),
-        loadingMore: false
+        loadingMore: false,
       });
     }
 
-    if (this.props.cardNavigationStack.routes[this.props.cardNavigationStack.index].routeName === 'feedscreen') {
-      // show modal after done loading for 3 seconds
-      if (this.props.reloading && this.props.reloading !== nextProps.reloading) {
-        if (!this.props.hasUserSize) {
-          setTimeout(() => {
-            this.showBodyModal();
-          }, 3000);
-        }
-      }
-    }
     if (nextProps.clearedField) {
       this.currPosition = 0;
-      this.setState({noMoreData: false});
+      this.setState({ noMoreData: false });
     }
   }
 
@@ -131,14 +137,13 @@ class TabContent extends BaseComponent {
     if (this.props.cardNavigationStack.index === 0) {
       if (this.props.showBodyModal) {
         this.scrollCallAsync(event);
-        this.props.clearBodyModal();
       } else {
         const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
         const contentSizeHeight = event.nativeEvent.contentSize.height;
         const currentScroll = event.nativeEvent.contentOffset.y;
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if (!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({loadingMore: true}, this.loadMore);
+            this.setState({ loadingMore: true }, this.loadMore);
           }
         } else {
         }
@@ -147,11 +152,10 @@ class TabContent extends BaseComponent {
     }
   }
 
-
   handleScrollPositionForVideo() {
     if (this.state.currentScrollPosition !== this.currPosition) {
       this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
-      this.setState({currentScrollPosition: this.currPosition});
+      this.setState({ currentScrollPosition: this.currPosition });
     }
   }
 
@@ -160,22 +164,22 @@ class TabContent extends BaseComponent {
       console.log('already isLoading');
       return;
     }
-    const {meta: {total}, query} = this.props;
+    const { meta: { total }, query } = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({isLoading: true}, () => {
+      this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-            this.setState({isLoading: false});
+            this.setState({ isLoading: false });
           }
         ).catch((err) => {
           console.log('error', err);
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
         });
       });
     } else {
-      this.setState({noMoreData: true});
+      this.setState({ noMoreData: true });
       console.log('end of feed');
     }
   }
@@ -209,7 +213,7 @@ class TabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
+            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
             return <Spinner color="rgb(230,230,230)"/>;
@@ -252,27 +256,27 @@ class TabContent extends BaseComponent {
   }
 
   onRefresh() {
-    this.setState({isRefreshing: true});
-    const {getFeed, query} = this.props;
+    this.setState({ isRefreshing: true });
+    const { getFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
     getFeed(cleanQuery)
       .then(() => {
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       })
       .catch((error) => {
         console.log('Error when preload image', error);
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       });
   }
 
   renderInviteFriend() {
     return (
-      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
+      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
         <Image
-          source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-          style={{width: deviceWidth / 2 - 6, height: deviceWidth / 4}}
+          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
+          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
           resizeMode={'stretch'}/>
       </View>
     );
@@ -280,18 +284,19 @@ class TabContent extends BaseComponent {
 
   renderColumns() {
     return (
-      <View style={{
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: deviceWidth,
-        justifyContent: 'flex-end',
-        alignSelf: 'center'
-      }}>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          width: deviceWidth,
+          justifyContent: 'flex-end',
+          alignSelf: 'center',
+        }}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
             {this.renderInviteFriend()}
           </TouchableOpacity>
@@ -303,13 +308,14 @@ class TabContent extends BaseComponent {
 
   renderEmptyContent() {
     return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        <Image source={profileBackground}
-               style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start'}}>
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        <Image
+          source={profileBackground}
+          style={{ resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start' }}>
           <LinearGradient
             colors={['#0C0C0C', '#4C4C4C']}
-            style={[styles.linearGradient, {opacity: 0.7}]}/>
-          <View style={{marginTop: 100}}>
+            style={[styles.linearGradient, { opacity: 0.7 }]}/>
+          <View style={{ marginTop: 100 }}>
             <ParisAdjustableMessage text={i18n.t('PARIS_NO_FEED_RESULTS')}/>
           </View>
         </Image>
@@ -321,7 +327,7 @@ class TabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
@@ -336,66 +342,89 @@ class TabContent extends BaseComponent {
 
   renderLoader() {
     return (
-      <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
-        <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
+      <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor}/>
       </View>
 
-    )
+    );
   }
 
   render() {
-    if (this.props.isLoading) {
+    const { hasUserSize } = this.props;
+
+    if (!hasUserSize) {
+      return this._renderChooseBodyShape();
+    } else if (this.props.isLoading) {
       return this.renderLoader();
     } else {
       return (
-        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
         </View>
       );
     }
+  }
 
+  _renderChooseBodyShape = () => {
+
+    const { saveBodyShape } = this.props;
+
+    return (
+      <View style={{ alignItems: 'center' }}>
+        <Text>Show your body type...</Text>
+        <ScrollView>
+          <BodyTypePicker
+            goBack={() => this.toggleBodyTypeModal(false)}
+            onPick={() => this.toggleBodyTypeModal(false)}/>
+        </ScrollView>
+        <SolidButton label="CHOOSE" onPress={saveBodyShape}/>
+      </View>
+    );
   }
 }
 
-const styles = StyleSheet.create({
-  tab: {
-    backgroundColor: '#FFFFFF',
-    flex: 1,
-  },
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
-    height: LOADER_HEIGHT,
-    alignItems: 'center',
-    padding: 5,
-  },
-  spinnerContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-  },
-  refreshingCover: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  linearGradient: {
-    width: deviceWidth,
-    position: 'absolute',
-    top: 0
-  },
-});
+const
+  styles = StyleSheet.create({
+    tab: {
+      backgroundColor: '#FFFFFF',
+      flex: 1,
+    },
+    loader: {
+      flex: 1,
+      justifyContent: 'center',
+      height: LOADER_HEIGHT,
+      alignItems: 'center',
+      padding: 5,
+    },
+    spinnerContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent',
+    },
+    refreshingCover: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#fff',
+    },
+    linearGradient: {
+      width: deviceWidth,
+      position: 'absolute',
+      top: 0,
+    },
+  });
 
-export default TabContent;
+export
+default
+ShapeTabContent;

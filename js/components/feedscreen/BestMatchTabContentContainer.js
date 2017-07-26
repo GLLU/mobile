@@ -1,16 +1,16 @@
 // @flow
 
 import {connect} from 'react-redux';
-import TabContent from './TabContent';
+import ShapeTabContent from './ShapeTabContent';
 import {
   showBodyTypeModal,
   getBestMatchFeed,
   loadMore,
   showParisBottomMessage,
-  clearBodyModal,
 } from '../../actions';
 
 import {FEED_TYPE_BEST_MATCH} from '../../actions/feed';
+import { saveUserBodyShape } from '../../actions/myBodyMeasure';
 import {getLooksById} from '../../utils/FeedUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
@@ -20,12 +20,12 @@ function mapDispatchToProps(dispatch, ownProps) {
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getBestMatchFeed(query)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_BEST_MATCH)),
-    clearBodyModal: () => dispatch(clearBodyModal()),
+    saveBodyShape: () => dispatch(saveUserBodyShape()),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
   };
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   let defaultFilters = {
     gender: '',
     body_type: ''
@@ -38,11 +38,12 @@ const mapStateToProps = (state) => {
       body_type: myBodyType,
     };
   }
-  const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
+  const hasUserSize = state.user.hasChoosenBodyShape;
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
   return {
     isLoading: state.feed.bestMatch.isLoading,
+    isTabOnFocus: ownProps.isTabOnFocus,
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
     flatLooks: flatLooksFeedData,
@@ -57,4 +58,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabContent);
+export default connect(mapStateToProps, mapDispatchToProps)(ShapeTabContent);

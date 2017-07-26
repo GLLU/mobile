@@ -1,8 +1,8 @@
 // @flow
 
 import {connect} from 'react-redux';
-import TabContent from './TabContent';
-import {showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage, clearBodyModal} from '../../actions';
+import FollowingTabContent from './FollowingTabContent';
+import {showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage} from '../../actions';
 import {getLooksById} from '../../utils/FeedUtils';
 import {FEED_TYPE_FOLLOWING} from '../../actions/feed';
 
@@ -13,7 +13,6 @@ function mapDispatchToProps(dispatch, ownProps) {
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getFollowingFeed(query)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_FOLLOWING)),
-    clearBodyModal: () => dispatch(clearBodyModal()),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
   };
 }
@@ -43,4 +42,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabContent);
+export default connect(mapStateToProps, mapDispatchToProps)(FollowingTabContent);

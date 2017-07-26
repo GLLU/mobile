@@ -1,6 +1,6 @@
 // @flow
 
-import { showError, hideError, showFatalError, hideFatalError } from './index';
+import {showError, hideError, showFatalError, hideFatalError} from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
@@ -12,6 +12,7 @@ import UsersService from '../services/usersService';
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
+export const BODY_SHAPE_CHOOSEN = 'user.BODY_SHAPE_CHOOSEN';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const USER_BLOCKED = 'USER_BLOCKED';
@@ -96,8 +97,8 @@ const signUp = function (dispatch, data) {
       Utils.postMultipartForm('', '/users', formData, 'user[avatar]', avatar).then(resolve, reject);
     } else {
       // normal rest
-      const body = {user: data};
-      dispatch(rest.actions.users.post({}, {body: JSON.stringify(body)}, (err, data) => {
+      const body = { user: data };
+      dispatch(rest.actions.users.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (err) {
           reject(err);
         } else {
@@ -140,7 +141,7 @@ export function emailSignUp(data) {
 
 export function emailSignIn(data) {
   return dispatch => new Promise((resolve, reject) => {
-    const body = {auth: data};
+    const body = { auth: data };
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
 
@@ -171,8 +172,8 @@ export function emailSignIn(data) {
 }
 
 export function forgotPassword(email) {
-  const data = {email};
-  return dispatch => dispatch(rest.actions.password_recovery.post({}, {body: JSON.stringify(data)}, (err, data) => {
+  const data = { email };
+  return dispatch => dispatch(rest.actions.password_recovery.post({}, { body: JSON.stringify(data) }, (err, data) => {
     if (!err && data) {
       console.log('PASSWORD RECOVERY:', data);
     } else {
@@ -192,7 +193,7 @@ export function statsUpdate(data) {
 
 export function getStats(id) {
   return (dispatch) => {
-    dispatch(rest.actions.stats({id}, (err, data) => {
+    dispatch(rest.actions.stats({ id }, (err, data) => {
       if (!err) {
         dispatch(statsUpdate(data));
       }
@@ -206,7 +207,7 @@ export function checkLogin(user) {
       Utils.getKeychainData().then((credentials) => {
         if (credentials) {
           NetworkManager.setToken(user.api_key);
-          setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
+          setRestOptions(dispatch, rest, _.merge(user, { api_key: credentials.password }));
           dispatch(rest.actions.auth.get({}, (err, data) => {
             if (!err) {
               dispatch(setUser(data.user));
@@ -228,7 +229,7 @@ export function checkLogin(user) {
 
 export function changeUserAboutMe(data) {
   return dispatch => new Promise((resolve, reject) => {
-    dispatch(rest.actions.changeUserAboutMe.put({id: data.id}, {body: JSON.stringify(data)}, (err, data) => {
+    dispatch(rest.actions.changeUserAboutMe.put({ id: data.id }, { body: JSON.stringify(data) }, (err, data) => {
       if (!err && data) {
         dispatch(setUser(data.user));
         resolve(data.user);
@@ -260,7 +261,7 @@ export function getBlockedUsers() {
     const userId = state.user.id;
     const nextPage = 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
-      const {blockedUsers} = getState().blockedUsers;
+      const { blockedUsers } = getState().blockedUsers;
       const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
       dispatch({
         type: SET_BLOCKED_USERS,
@@ -278,10 +279,10 @@ export function getMoreBlockedUsers() {
   return (dispatch, getState) => {
     const state = getState();
     const userId = state.user.id;
-    const {meta} = state.blockedUsers;
+    const { meta } = state.blockedUsers;
     const nextPage = meta.currentPage + 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
-      const {blockedUsers} = getState().blockedUsers;
+      const { blockedUsers } = getState().blockedUsers;
       const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
       dispatch({
         type: SET_BLOCKED_USERS,
@@ -313,7 +314,7 @@ export function unblockUser(blockedUserId) {
     const userId = getState().user.id;
     UsersService.unblock(userId, blockedUserId)
       .catch(err => ({}));//mute error
-    const {blockedUsers, meta} = getState().blockedUsers;
+    const { blockedUsers, meta } = getState().blockedUsers;
     const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.userId !== blockedUserId);
     dispatch({
       type: SET_BLOCKED_USERS,
@@ -353,16 +354,10 @@ export function hideTutorial() {
   };
 }
 
-export function clearBodyModal() {
+export function onBodyShapeChoosen() {
   return (dispatch, getState) => {
-    dispatch(hideBodyModal());
-  };
-}
-
-export function hideBodyModal() {
-  return (dispatch) => {
     dispatch({
-      type: HIDE_BODY_MODAL,
+      type: BODY_SHAPE_CHOOSEN,
     });
   };
 }
