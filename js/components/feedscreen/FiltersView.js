@@ -58,6 +58,7 @@ class FiltersView extends BaseComponent {
 
   getFeed() {
     this.props.getFeed(this.state.currentFilter);
+    this.props.toggleFiltersMenues();
   }
 
   componentDidMount() {
