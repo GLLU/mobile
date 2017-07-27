@@ -8,6 +8,7 @@ import {
   getFollowingFeed,
   loadCategories,
   loadOccasionTags,
+  toggleFiltersMenues
 } from '../../actions';
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
 
@@ -17,6 +18,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     getFeed: query => dispatch(getFeedActionSwitchByFeedType(ownProps.currentFeedTab)(query, ownProps.currentFeedTab)),
     loadCategories: gender => dispatch(loadCategories(gender)),
     loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
+    toggleFiltersMenues: feedType => dispatch(toggleFiltersMenues(ownProps.currentFeedTab)),
   };
 }
 

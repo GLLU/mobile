@@ -1,16 +1,16 @@
 // @flow
 
-import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
-import Colors from '../../styles/Colors.styles'
-import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
+import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
 const cameraIcon = require('../../../images/icons/Filter_black.png');
 const deviceWidth = Dimensions.get('window').width;
-import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
+import { FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT } from '../../actions/feed';
 
 
 export default class FeedTabs extends Component {
@@ -23,16 +23,16 @@ export default class FeedTabs extends Component {
     this.state = {
       index: 0,
       routes: [
-        {key: FEED_TYPE_FOLLOWING, title: 'Following'},
-        {key: FEED_TYPE_BEST_MATCH, title: 'My Size'},
-        {key: FEED_TYPE_WHATS_HOT, title: "What's Hot"},
+        { key: FEED_TYPE_FOLLOWING, title: 'Following' },
+        { key: FEED_TYPE_BEST_MATCH, title: 'My Size' },
+        { key: FEED_TYPE_WHATS_HOT, title: "What's Hot" },
       ],
-      filterIsOpen: false
+      filterIsOpen: false,
     };
   }
 
 
-  _handleIndexChange = index => this.setState({index});
+  _handleIndexChange = index => this.setState({ index });
 
   _renderHeader = props => (
     <TabBar
@@ -41,37 +41,37 @@ export default class FeedTabs extends Component {
       indicatorStyle={styles.indicatorStyle} {...props} />
   );
 
-  _renderScene = ({route}) => {
-    const {navigateTo, showBottomCameraButton} = this.props;
+  _renderScene = ({ route }) => {
+    const { navigateTo, showBottomCameraButton } = this.props;
 
     switch (route.key) {
       case FEED_TYPE_FOLLOWING:
         return (<FollowingTabContent
           navigateTo={navigateTo}
-          showBottomCameraButton={showBottomCameraButton}/>);
+          showBottomCameraButton={showBottomCameraButton} />);
       case FEED_TYPE_BEST_MATCH:
         return (<BestMatchTabContent
           navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
-          showBottomCameraButton={showBottomCameraButton}/>);
+          showBottomCameraButton={showBottomCameraButton} />);
       case FEED_TYPE_WHATS_HOT:
         return (<WhatsHotTabContent
           navigateTo={navigateTo}
-          showBottomCameraButton={showBottomCameraButton}/>);
+          showBottomCameraButton={showBottomCameraButton} />);
       default:
-        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
           ;
     }
   };
 
   toggleFilterMenu() {
-    this.props.toggleFilterMenues(this.state.routes[this.state.index].key)
+    this.props.toggleFilterMenues(this.state.routes[this.state.index].key);
   }
 
   renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle}/>
+          <Image source={icon} style={iconStyle} />
         </TouchableOpacity>
       </View>
     );
@@ -95,7 +95,7 @@ export default class FeedTabs extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, flexDirection: 'row', backgroundColor: Colors.backgroundGrey
+    flex: 1, flexDirection: 'row', backgroundColor: Colors.backgroundGrey,
   },
   tabViewAnimatedContainer: {
     width: deviceWidth,
@@ -137,5 +137,5 @@ const styles = StyleSheet.create({
     marginRight: 5,
     paddingRight: 5,
     right: 0,
-  }
+  },
 });

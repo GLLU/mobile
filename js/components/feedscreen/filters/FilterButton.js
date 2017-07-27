@@ -64,6 +64,7 @@ class FilterButton extends BaseComponent {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.filter.selected !== this.state.selected) {
+
       this.setState({
         selected: nextProps.filter.selected
       })
@@ -82,9 +83,7 @@ class FilterButton extends BaseComponent {
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
     this.logEvent('Feedscreen', {name: `filter ${this.props.filter.name} was clicked!`, selected: `${shouldSelect}`});
-    this.setState({selected: shouldSelect}, () => {
-      this.props.onPress(filter);
-    });
+    this.props.onPress(filter);
   }
 
   render() {

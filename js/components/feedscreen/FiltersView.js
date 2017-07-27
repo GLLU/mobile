@@ -7,7 +7,7 @@ import {
   Platform,
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
@@ -22,23 +22,30 @@ class FiltersView extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this.toggleFilterRow = this.toggleFilterRow.bind(this)
-    this.updateCurrentFilter = this.updateCurrentFilter.bind(this)
-    this.getFeed = this.getFeed.bind(this)
-    console.log('props.defaultFilter', props.defaultFilters)
+    this.toggleFilterRow = this.toggleFilterRow.bind(this);
+    this.updateCurrentFilter = this.updateCurrentFilter.bind(this);
+    this.getFeed = this.getFeed.bind(this);
+    this.resetFilters = this.resetFilters.bind(this);
+    this.cancelFilter = this.cancelFilter.bind(this);
     this.state = {
       isLoading: false,
       openFilter: false,
-      currentFilter: props.defaultFilters
+      currentFilter: props.defaultFilters,
     };
   }
 
   updateCurrentFilter(filter) {
-    this.setState({currentFilter: {...this.state.currentFilter, [filter.kind]: filter.name}});
+    const currentFilterState = this.state.currentFilter;
+    if (this.state.currentFilter[filter.kind] && this.state.currentFilter[filter.kind] === filter.name) {
+      delete currentFilterState[filter.kind];
+      this.setState({currentFilter: currentFilterState});
+    } else {
+      this.setState({currentFilter: {...this.state.currentFilter, [filter.kind]: filter.name}});
+    }
   }
 
   getFeed() {
-    this.props.getFeed(this.state.currentFilter)
+    this.props.getFeed(this.state.currentFilter);
   }
 
   componentDidMount() {
@@ -47,7 +54,7 @@ class FiltersView extends BaseComponent {
   }
 
   toggleFilterRow() {
-    this.setState({openFilter: !this.state.openFilter})
+    this.setState({openFilter: !this.state.openFilter});
   }
 
   getFilterTitle(filtersArray) {
@@ -58,26 +65,32 @@ class FiltersView extends BaseComponent {
         case 'occasion':
           return 'EVENTS';
         default:
-          return 'FILTER'
+          return 'FILTER';
       }
     }
-
   }
 
   _renderFilterRows() {
-    const {filters} = this.props
-    const {currentFilter} = this.state
-    console.log('currentFilter', currentFilter)
+    const {filters} = this.props;
+    const {currentFilter} = this.state;
     if (filters.length > 0) {
       return _.map(filters, (filter, i) => {
-        const title = this.getFilterTitle(filter)
+        const title = this.getFilterTitle(filter);
         return (
-          <FilterRow key={i} title={title} currentFilter={currentFilter} filters={filter}
-                     updateCurrentFilter={this.updateCurrentFilter}/>
+          <FilterRow
+            key={i} title={title} currentFilter={currentFilter} filters={filter}
+            updateCurrentFilter={this.updateCurrentFilter}/>
         );
       });
     }
+  }
 
+  resetFilters() {
+    this.setState({currentFilter: this.props.defaultFilters})
+  }
+
+  cancelFilter() {
+    this.props.toggleFiltersMenues();
   }
 
   render() {
@@ -86,11 +99,11 @@ class FiltersView extends BaseComponent {
         <View style={styles.TopRow}>
           <Text style={styles.filterByText}>Filter By</Text>
           <View style={styles.clearRow}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.resetFilters}>
               <Text style={styles.cleaResetText}>RESET FILTERS</Text>
             </TouchableOpacity>
             <Text style={styles.seperator}>/</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.cancelFilter}>
               <Text style={styles.cleaResetText}>CANCEL</Text>
             </TouchableOpacity>
           </View>
@@ -121,36 +134,36 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
     width: deviceWidth,
     justifyContent: 'space-between',
-    padding: 10
+    padding: 10,
   },
   clearRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
   cleaResetText: {
-    fontSize: 12
+    fontSize: 12,
   },
   filterByText: {
-    fontWeight: '600'
+    fontWeight: '600',
   },
   seperator: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   applyBtn: {
     width: deviceWidth - 100,
     height: 45,
     backgroundColor: Colors.highlightColor,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   applyBtnContainer: {
     alignSelf: 'center',
     backgroundColor: Colors.primaryColor,
-    paddingTop: 20
+    paddingTop: 20,
   },
   applyText: {
     textAlign: 'center',
     color: 'white',
-    fontWeight: '600'
+    fontWeight: '600',
   },
 });
 
