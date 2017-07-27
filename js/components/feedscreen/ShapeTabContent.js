@@ -375,7 +375,7 @@ class ShapeTabContent extends BaseComponent {
     return (
       <View style={{flexGrow:1, backgroundColor:'white', alignItems: 'center' }}>
         <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
-        <ScrollView>
+        <ScrollView contentOffset={20}>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
             onPick={() => this.toggleBodyTypeModal(false)}/>
@@ -394,7 +394,7 @@ const
       textAlign: 'center',
       fontFamily: Fonts.contentFont,
       color: Colors.black,
-      fontSize: generateAdjustedSize(18),
+      fontSize: generateAdjustedSize(16),
     },
     tab: {
       backgroundColor: '#FFFFFF',

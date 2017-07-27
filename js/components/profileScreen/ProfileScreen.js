@@ -332,7 +332,7 @@ class ProfileScreen extends Component {
 
     return (
 
-      <View style={{ marginTop: 20 }}>
+      <View>
         <ProfileScreenHeader
           balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username}
           stats={stats} onProfileEdit={onProfileEdit}
@@ -395,7 +395,7 @@ class ProfileScreen extends Component {
         <TouchableOpacity onPress={onProfileEdit} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
           <Image
             source={require('../../../images/icons/edit.png')}
-            style={{ width: 18, height: 18, right: 18.5 }}
+            style={{ width: 18, height: 18, marginRight: 18.5 }}
             resizeMode={'contain'} />
         </TouchableOpacity>
         }
@@ -409,7 +409,7 @@ class ProfileScreen extends Component {
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
       <Image
         source={require('../../../images/icons/more.png')}
-        style={{ width: 18, height: 18, right: 18.5 }}
+        style={{ width: 18, height: 18, marginRight: 18.5 }}
         resizeMode={'contain'} />
       {this._renderModal()}
     </TouchableOpacity>
