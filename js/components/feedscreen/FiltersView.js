@@ -2,26 +2,21 @@
 
 import React from 'react';
 import {
-  Image,
   Dimensions,
   StyleSheet,
-  TouchableOpacity,
-  Text,
   Platform,
-  Animated,
   View,
-  ActivityIndicator
+  Text,
+  TouchableOpacity
 } from 'react-native';
+import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
-import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import i18n from 'react-native-i18n';
-import Colors from '../../styles/Colors.styles'
 import FilterRow from './filters/FilterRow';
-const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-import {Icon} from 'native-base';
+import Colors from '../../styles/Colors.styles';
 
 class FiltersView extends BaseComponent {
 
@@ -39,52 +34,63 @@ class FiltersView extends BaseComponent {
   }
 
   componentDidMount() {
-    console.log('proips2323', this.props)
     this.props.loadCategories(this.props.defaultFilters.gender);
-    //this.props.loadOccasionTags(this.props.defaultFilters.gender);
-  }
-
-
-  renderEmptyContent() {
-    return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        <Image source={profileBackground}
-               style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start'}}>
-          <LinearGradient
-            colors={['#0C0C0C', '#4C4C4C']}
-            style={[styles.linearGradient, {opacity: 0.7}]}/>
-          <View style={{marginTop: 100}}>
-            <ParisAdjustableMessage text={i18n.t('PARIS_NO_FEED_RESULTS')}/>
-          </View>
-        </Image>
-      </View>
-    );
-  }
-
-  _setFilters(filters) {
-    console.log('filters', filters)
-    const openFilter = _.find(filters, filter => filter.selected) || {};
-    this.setState({filters: filters, openFilter: openFilter})
+    this.props.loadOccasionTags(this.props.defaultFilters.gender);
   }
 
   toggleFilterRow() {
     this.setState({openFilter: !this.state.openFilter})
   }
 
-  _renderFilterRow() {
+  getFilterTitle(filtersArray) {
+    if (filtersArray[0]) {
+      switch (filtersArray[0].kind) {
+        case 'category':
+          return 'CATEGORIES';
+        case 'occasion':
+          return 'EVENTS';
+        default:
+          return 'FILTER'
+      }
+    }
 
-    const arrowIcon = this.state.openFilter ? "ios-arrow-forward" : "ios-arrow-down";
-    return (
-      <FilterRow title={'CATEGORIES'} filters={this.props.filters}/>
-    )
   }
 
+  _renderFilterRows() {
+    if (this.props.filters.length > 0) {
+      return _.map(this.props.filters, (filter, i) => {
+        const title = this.getFilterTitle(filter)
+        return (
+          <FilterRow key={i} title={title} filters={filter}/>
+        );
+      });
+    }
+
+  }
 
   render() {
-
     return (
       <View style={styles.container}>
-        {this._renderFilterRow()}
+        <View style={styles.TopRow}>
+          <Text style={styles.filterByText}>Filter By</Text>
+          <View style={styles.clearRow}>
+            <TouchableOpacity>
+              <Text style={styles.cleaResetText}>RESET FILTERS</Text>
+            </TouchableOpacity>
+            <Text style={styles.seperator}>/</Text>
+            <TouchableOpacity>
+              <Text style={styles.cleaResetText}>CANCEL</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        {this._renderFilterRows()}
+        <View style={styles.applyBtnContainer}>
+          <TouchableOpacity>
+            <View style={styles.applyBtn}>
+              <Text style={styles.applyText}>APPLY</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -92,26 +98,48 @@ class FiltersView extends BaseComponent {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.primaryColor,
     position: 'absolute',
     height: deviceHeight,
     width: deviceWidth,
     top: 0,
   },
-  linearGradient: {
+  TopRow: {
+    flexDirection: 'row',
+    backgroundColor: Colors.primaryColor,
     width: deviceWidth,
-    position: 'absolute',
-    top: 0,
+    justifyContent: 'space-between',
+    padding: 10
   },
-  filterActions: {
-    marginTop: 12,
-    backgroundColor: '#F5F5F5',
-    height: 60,
+  clearRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
-  filterActionsGrid: {
-    backgroundColor: '#FFFFFF',
-    height: 100
-  }
+  cleaResetText: {
+    fontSize: 12
+  },
+  filterByText: {
+    fontWeight: '600'
+  },
+  seperator: {
+    paddingHorizontal: 10
+  },
+  applyBtn: {
+    width: deviceWidth - 100,
+    height: 45,
+    backgroundColor: 'red',
+    justifyContent: 'center'
+  },
+  applyBtnContainer: {
+    alignSelf: 'center',
+    backgroundColor: Colors.primaryColor,
+    paddingTop: 20
+  },
+  applyText: {
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: '600'
+  },
 });
 
 export default FiltersView;

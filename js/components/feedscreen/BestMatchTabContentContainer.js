@@ -55,6 +55,7 @@ const mapStateToProps = (state, ownProps) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
+    isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_BEST_MATCH],
   };
 };
 

@@ -26,6 +26,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
+import FiltersView from './FilterContainer';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -332,13 +333,21 @@ class HotTabContent extends BaseComponent {
     )
   }
 
+  renderFilterView() {
+    return (
+      <FiltersView />
+    )
+  }
+
   render() {
-    if (this.props.isLoading) {
+    const {isFilterMenuOpen, flatLooks, isLoading} = this.props
+    if (isLoading) {
       return this.renderLoader();
     } else {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-          { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
+          { flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
+          { isFilterMenuOpen ? this.renderFilterView() : null}
         </View>
       );
     }

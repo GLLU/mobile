@@ -16,7 +16,7 @@ import {Icon} from 'native-base';
 const deviceWidth = Dimensions.get('window').width;
 
 
-class FiltersView extends Component {
+class FilterRow extends Component {
 
   constructor(props) {
     super(props);
@@ -24,14 +24,14 @@ class FiltersView extends Component {
     this._setFilters = this._setFilters.bind(this)
     this.state = {
       openFilter: false,
-      filtersAnimHeight: new Animated.Value(0),
+      filtersAnimHeight: new Animated.Value(70),
+      selectedFilter: {}
     };
   }
 
-  _setFilters(filters) {
-    console.log('filtersaaaa', filters)
-    const openFilter = _.find(filters, filter => filter.selected) || {};
-    this.setState({filters: filters, openFilter: openFilter})
+  _setFilters(filter) {
+    console.log('filtersaaaa', filter)
+
   }
 
   toggleFilterRow() {
@@ -48,7 +48,7 @@ class FiltersView extends Component {
       Animated.timing(          // Uses easing functions
         this.state.filtersAnimHeight,    // The value to drive
         {
-          toValue: 50,
+          toValue: 70,
           duration: 250
         }            // Configuration
       ).start();
@@ -62,7 +62,7 @@ class FiltersView extends Component {
     };
     const arrowIcon = this.state.openFilter ? "ios-arrow-down" : "ios-arrow-forward";
     return (
-      <View style={{width: deviceWidth}}>
+      <View style={{width: deviceWidth, borderBottomColor: 'white', borderBottomWidth: 3}}>
         <TouchableOpacity onPress={this.toggleFilterRow}>
           <View style={{
             width: deviceWidth,
@@ -78,9 +78,19 @@ class FiltersView extends Component {
             <Icon style={StyleSheet.flatten(styles.backBtn)} name={arrowIcon}/>
           </View>
         </TouchableOpacity>
-        <Animated.View style={{height: this.state.filtersAnimHeight}}>
+        <Animated.View style={{
+          height: this.state.filtersAnimHeight,
+          backgroundColor: 'white',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexDirection: 'row'
+        }}>
+          <Animated.View
+            style={[styles.rowEdgeShadow, {height: this.state.filtersAnimHeight, left: 0}]}/>
           <FilterGroup mode='single' activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
                        filters={this.props.filters}/>
+          <Animated.View
+            style={[styles.rowEdgeShadow, {height: this.state.filtersAnimHeight, right: 0}]}/>
         </Animated.View>
       </View>
     );
@@ -88,16 +98,12 @@ class FiltersView extends Component {
 }
 
 const styles = StyleSheet.create({
-
-  filterActions: {
-    marginTop: 12,
-    backgroundColor: '#F5F5F5',
-    height: 60,
-  },
-  filterActionsGrid: {
-    backgroundColor: '#FFFFFF',
-    height: 100
+  rowEdgeShadow: {
+    position: 'absolute',
+    width: 15,
+    backgroundColor: 'white',
+    opacity: 0.8,
   }
 });
 
-export default FiltersView;
+export default FilterRow;

@@ -1,7 +1,7 @@
 import { showProcessing, hideProcessing } from './loader';
 import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
 import { showParisBottomMessage, hideParisBottomMessage } from './paris';
-import { loadCategories, loadBrands, loadOccasionTags } from './filters';
+import { loadCategories, loadBrands, loadOccasionTags, toggleFiltersMenues } from './filters';
 import { completeEdit, saveUserSize } from './myBodyMeasure';
 import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
 import { likeUpdate, unlikeUpdate } from './likes';
@@ -124,4 +124,5 @@ export {
   goToNotificationSubjectScreen,
   markAsReadNotifications,
   clearNewNotifications,
+  toggleFiltersMenues,
 };

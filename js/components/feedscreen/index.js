@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import {addNewLook, setUser, getNotifications, createInvitationCode} from '../../actions';
+import {addNewLook, setUser, getNotifications, toggleFiltersMenues} from '../../actions';
 import asScreen from '../common/containers/Screen';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
@@ -26,6 +26,7 @@ class FeedPage extends Component {
     setUser: React.PropTypes.func,
     addNewLook: React.PropTypes.func,
     hideBodyTypeModal: React.PropTypes.func,
+    toggleFiltersMenues: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -43,6 +44,7 @@ class FeedPage extends Component {
     this.uploadLook = this.uploadLook.bind(this);
     this.showBottomCameraButton = this.showBottomCameraButton.bind(this);
     this._renderFeed = this._renderFeed.bind(this);
+    this.toggleFilterMenues = this.toggleFilterMenues.bind(this);
     this.state = {
       name: '',
       searchTerm: '',
@@ -146,13 +148,20 @@ class FeedPage extends Component {
     )
   }
 
+  toggleFilterMenues(feedType: string) {
+    console.log('feedTypefeedType', feedType)
+    this.props.toggleFiltersMenues(feedType)
+  }
+
   _renderFeed() {
     const {reloading, clearedField, navigateTo} = this.props;
     return (
       <FeedTabs reloading={reloading}
                 clearedField={clearedField}
                 navigateTo={navigateTo}
-                showBottomCameraButton={this.showBottomCameraButton}/>
+                showBottomCameraButton={this.showBottomCameraButton}
+                toggleFilterMenues={this.toggleFilterMenues}
+      />
     );
   }
 
@@ -182,6 +191,7 @@ function bindActions(dispatch) {
     hideBodyTypeModal: () => dispatch(hideBodyTypeModal()),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
+    toggleFiltersMenues: feedType => dispatch(toggleFiltersMenues(feedType)),
   };
 }
 

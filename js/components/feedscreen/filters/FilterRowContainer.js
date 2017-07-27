@@ -5,9 +5,7 @@ import FiltersView from './FiltersView';
 import {
   getBestMatchFeed,
   loadCategories,
-  loadOccasionTags,
-  openFilterFeedMenu,
-  closeFilterFeedMenu
+  loadOccasionTags
 } from '../../actions';
 
 

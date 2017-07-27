@@ -37,7 +37,7 @@ class FilterGroup extends Component {
       return item;
     });
 
-    this.props.onSelectionChange(filters)
+    this.props.onSelectionChange(filter)
   }
 
   onMultipleSelectValue(filter) {
@@ -61,9 +61,14 @@ class FilterGroup extends Component {
   render() {
     const {filters} = this.props;
     const renderer = (filters || []).length > 4 ? this.renderAsScrollView : this.renderAsView;
-    console.log('filters222', filters)
     return renderer(
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignSelf: 'center',
+        paddingHorizontal: 10
+      }}>
         {_.map(filters, (filter, i) => {
           return (
             <FilterButton activeStyle={this.props.activeStyle}

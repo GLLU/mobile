@@ -39,6 +39,7 @@ const mapStateToProps = (state) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
+    isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_FOLLOWING],
   };
 };
 

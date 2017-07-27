@@ -10,6 +10,8 @@ import Colors from '../../styles/Colors.styles'
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 const cameraIcon = require('../../../images/icons/Filter_black.png');
 const deviceWidth = Dimensions.get('window').width;
+import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
+
 
 export default class FeedTabs extends Component {
   constructor(props: object) {
@@ -21,9 +23,9 @@ export default class FeedTabs extends Component {
     this.state = {
       index: 0,
       routes: [
-        {key: 'following', title: 'Following'},
-        {key: 'bestMatch', title: 'My Size'},
-        {key: 'hot', title: "What's Hot"},
+        {key: FEED_TYPE_FOLLOWING, title: 'Following'},
+        {key: FEED_TYPE_BEST_MATCH, title: 'My Size'},
+        {key: FEED_TYPE_WHATS_HOT, title: "What's Hot"},
       ],
       filterIsOpen: false
     };
@@ -43,15 +45,15 @@ export default class FeedTabs extends Component {
     const {navigateTo, showBottomCameraButton} = this.props;
 
     switch (route.key) {
-      case 'following':
+      case FEED_TYPE_FOLLOWING:
         return (<FollowingTabContent
           navigateTo={navigateTo}
           showBottomCameraButton={showBottomCameraButton}/>);
-      case 'bestMatch':
+      case FEED_TYPE_BEST_MATCH:
         return (<BestMatchTabContent
           navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
           showBottomCameraButton={showBottomCameraButton}/>);
-      case 'hot':
+      case FEED_TYPE_WHATS_HOT:
         return (<WhatsHotTabContent
           navigateTo={navigateTo}
           showBottomCameraButton={showBottomCameraButton}/>);
@@ -62,7 +64,7 @@ export default class FeedTabs extends Component {
   };
 
   tempFunc() {
-    this.setState({filterIsOpen: !this.state.filterIsOpen})
+    this.props.toggleFilterMenues(this.state.routes[this.state.index].key)
   }
 
   renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {

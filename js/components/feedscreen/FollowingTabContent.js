@@ -336,13 +336,14 @@ class FollowingTabContent extends BaseComponent {
   }
 
   render() {
-    if (this.props.isLoading) {
+    const {isFilterMenuOpen, flatLooks, isLoading} = this.props
+    if (isLoading) {
       return this.renderLoader();
     } else {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-          { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
-          {this.renderFilterView()}
+          { flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
+          { isFilterMenuOpen ? this.renderFilterView() : null}
         </View>
       );
     }
