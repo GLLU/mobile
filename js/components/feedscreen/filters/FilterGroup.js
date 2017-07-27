@@ -1,53 +1,46 @@
+// @flow
+
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Image, Dimensions, View, Text} from 'react-native'
-import FilterButton from './FilterButton'
-import _ from 'lodash'
+import {ScrollView, StyleSheet, View} from 'react-native';
+import FilterButton from './FilterButton';
+import _ from 'lodash';
+
+type Props = {
+  filters: array,
+  onSelectionChange: void,
+  mode: string,
+  activeStyle: object
+};
 
 class FilterGroup extends Component {
-  static propTypes = {
-    filters: React.PropTypes.array,
-    onSelectionChange: React.PropTypes.func,
-    activeStyle: React.PropTypes.object,
-    mode: React.PropTypes.oneOf(['single', 'multi'])
-  };
+
+  props: Props
 
   static defaultProps = {
     onSelectionChange: _.noop,
     filters: [],
-    mode: 'multi'
+    mode: 'multi',
   }
 
   constructor(props) {
     super(props);
     this.onSingleSelectValue = this.onSingleSelectValue.bind(this);
     this.onMultipleSelectValue = this.onMultipleSelectValue.bind(this);
-    this.checkSelectedQuery = this.checkSelectedQuery.bind(this);
-  }
-
-  checkSelectedQuery(filter) {
-    const {currentFilter} = this.props;
-    const clonedFilter = _.cloneDeep(filter)
-    if (currentFilter[filter.kind]) {
-      const filterName = filter['name'].toLowerCase();
-      const filterKind = currentFilter[filter.kind].toLowerCase();
-      clonedFilter.selected = filterKind === filterName;
-    }
-    return clonedFilter;
   }
 
   onSingleSelectValue(filter) {
-    this.props.onSelectionChange(filter)
+    this.props.onSelectionChange(filter);
   }
 
   onMultipleSelectValue(filter) {
     const iteratee = (filter1, filter2) => filter1.id === filter2.id;
     const filters = _.map(this.props.filters, item => iteratee(item, filter) ? filter : item);
-    this.props.onSelectionChange(filters)
+    this.props.onSelectionChange(filters);
   }
 
   renderAsScrollView(content) {
     return (
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal>
         {content}
       </ScrollView>
     );
@@ -61,23 +54,27 @@ class FilterGroup extends Component {
     const {filters} = this.props;
     const renderer = (filters || []).length > 4 ? this.renderAsScrollView : this.renderAsView;
     return renderer(
-      <View style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignSelf: 'center',
-        paddingHorizontal: 10
-      }}>
-        {_.map(filters, (filter, i) => {
-          return (
-            <FilterButton activeStyle={this.props.activeStyle}
-                          onPress={this.props.mode === 'multi' ? this.onMultipleSelectValue : this.onSingleSelectValue}
-                          key={i} filter={filter}/>
-          );
-        })}
+      <View style={styles.container}>
+        {_.map(filters, (filter, i) => (
+          <FilterButton
+            activeStyle={this.props.activeStyle}
+            onPress={this.props.mode === 'multi' ? this.onMultipleSelectValue : this.onSingleSelectValue}
+            key={i} filter={filter}/>
+        ))}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignSelf: 'center',
+    paddingHorizontal: 10,
+  },
+
+});
 
 export default FilterGroup;

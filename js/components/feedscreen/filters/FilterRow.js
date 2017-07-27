@@ -13,10 +13,20 @@ import {
 import Colors from '../../../styles/Colors.styles';
 import FilterGroup from './FilterGroup';
 import {Icon} from 'native-base';
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+
 const deviceWidth = Dimensions.get('window').width;
 
+type Props = {
+  updateCurrentFilter: void,
+  filters: array,
+  currentFilter: object,
+  title: string
+}
 
 class FilterRow extends Component {
+
+  props: Props
 
   constructor(props) {
     super(props);
@@ -96,7 +106,6 @@ class FilterRow extends Component {
             </View>
             <Icon style={StyleSheet.flatten(styles.backBtn)} name={arrowIcon}/>
           </View>
-
         </TouchableOpacity>
         <Animated.View
           style={[styles.filtersGroupContainer, {height: this.state.filtersAnimHeight,}]}>
@@ -125,7 +134,7 @@ const styles = StyleSheet.create({
   },
   selectedFilter: {
     fontWeight: '600',
-    fontSize: 12,
+    fontSize: generateAdjustedSize(12),
     color: Colors.secondaryColor,
   },
   rowHeaderContainer: {

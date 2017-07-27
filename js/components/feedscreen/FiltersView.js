@@ -17,8 +17,20 @@ import FilterRow from './filters/FilterRow';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 import Colors from '../../styles/Colors.styles';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+
+type Props = {
+  defaultFilters: object,
+  getFeed: void,
+  loadCategories: void,
+  loadOccasionTags: void,
+  toggleFiltersMenues: void,
+  filters: array,
+}
 
 class FiltersView extends BaseComponent {
+
+  props: Props
 
   constructor(props) {
     super(props);
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   cleaResetText: {
-    fontSize: 12,
+    fontSize: generateAdjustedSize(12),
   },
   filterByText: {
     fontWeight: '600',
@@ -162,7 +174,7 @@ const styles = StyleSheet.create({
   },
   applyText: {
     textAlign: 'center',
-    color: 'white',
+    color: Colors.white,
     fontWeight: '600',
   },
 });
