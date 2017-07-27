@@ -18,7 +18,7 @@ export default class FeedTabs extends Component {
     super(props);
     this._handleIndexChange = this._handleIndexChange.bind(this);
     this._renderHeader = this._renderHeader.bind(this);
-    this.tempFunc = this.tempFunc.bind(this);
+    this.toggleFilterMenu = this.toggleFilterMenu.bind(this);
     this.renderNavigationButton = this.renderNavigationButton.bind(this);
     this.state = {
       index: 0,
@@ -63,7 +63,7 @@ export default class FeedTabs extends Component {
     }
   };
 
-  tempFunc() {
+  toggleFilterMenu() {
     this.props.toggleFilterMenues(this.state.routes[this.state.index].key)
   }
 
@@ -87,7 +87,7 @@ export default class FeedTabs extends Component {
           renderHeader={this._renderHeader}
           onRequestChangeTab={this._handleIndexChange}
         />
-        {this.renderNavigationButton(cameraIcon, this.tempFunc, styles.btnImage, styles.filterButtonContainer)}
+        {this.renderNavigationButton(cameraIcon, this.toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
       </View>
     );
   }

@@ -105,6 +105,10 @@ class FollowingTabContent extends BaseComponent {
       this.currPosition = 0;
       this.setState({noMoreData: false});
     }
+
+    if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
+      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen)
+    }
   }
 
   // shouldComponentUpdate(nextProps) {

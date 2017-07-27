@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   applyBtn: {
     width: deviceWidth - 100,
     height: 45,
-    backgroundColor: 'red',
+    backgroundColor: Colors.highlightColor,
     justifyContent: 'center'
   },
   applyBtnContainer: {
