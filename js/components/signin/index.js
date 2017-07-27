@@ -165,6 +165,7 @@ render()
                     blurOnSubmit={false}
                     onSubmitEditing={() => this.focusNext('passwordInput')}
                     returnKeyType='next'
+                    autoCorrect={false}
                     style={[styles.formInput]}
                     onChangeText={(email) => this.validateEmailInput(email)}/>
                   {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid}
