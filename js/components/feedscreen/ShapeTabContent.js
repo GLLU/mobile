@@ -107,7 +107,7 @@ class ShapeTabContent extends BaseComponent {
     }
 
     if (!this.props.hasUserSize && nextProps.hasUserSize) {
-      this.getFeed(this.props.defaultFilters);
+      this.getFeed({ gender:this.props.defaultFilters.gender, body_type: nextProps.currentBodyType });
     }
 
     if (nextProps.flatLooks !== this.props.flatLooks) {
