@@ -34,7 +34,7 @@ class FilterRow extends Component {
     this.checkSelectedQuery = this.checkSelectedQuery.bind(this);
     this.state = {
       openFilter: false,
-      filtersAnimHeight: new Animated.Value(70),
+      filtersAnimHeight: new Animated.Value(0),
       currentFilterRowName: ''
     };
   }
