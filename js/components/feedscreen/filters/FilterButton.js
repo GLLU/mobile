@@ -82,23 +82,10 @@ class FilterButton extends BaseComponent {
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
     this.logEvent('Feedscreen', {name: `filter ${this.props.filter.name} was clicked!`, selected: `${shouldSelect}`});
-
     this.setState({selected: shouldSelect}, () => {
-      this.props.filter.selected = shouldSelect;
       this.props.onPress(filter);
     });
   }
-
-  getHiglight(shouldHighlight) {
-    if (shouldHighlight) {
-      return {
-        borderBottomColor: this.props.activeStyle.color,
-        borderBottomWidth: 3
-      }
-    }
-    return null
-  }
-
 
   render() {
     const {filter} = this.props;

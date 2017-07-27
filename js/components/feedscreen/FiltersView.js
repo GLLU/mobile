@@ -65,11 +65,14 @@ class FiltersView extends BaseComponent {
   }
 
   _renderFilterRows() {
-    if (this.props.filters.length > 0) {
-      return _.map(this.props.filters, (filter, i) => {
+    const {filters} = this.props
+    const {currentFilter} = this.state
+    if (filters.length > 0) {
+      return _.map(filters, (filter, i) => {
         const title = this.getFilterTitle(filter)
         return (
-          <FilterRow key={i} title={title} filters={filter} updateCurrentFilter={this.updateCurrentFilter}/>
+          <FilterRow key={i} title={title} currentFilter={currentFilter} filters={filter}
+                     updateCurrentFilter={this.updateCurrentFilter}/>
         );
       });
     }

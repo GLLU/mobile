@@ -89,7 +89,7 @@ class FilterRow extends Component {
             style={[styles.rowEdgeShadow, {height: this.state.filtersAnimHeight, left: 0}]}/>
           <FilterGroup
             mode="single" activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
-            filters={this.props.filters}/>
+            filters={this.props.filters} currentFilter={this.props.currentFilter}/>
           <Animated.View
             style={[styles.rowEdgeShadow, {height: this.state.filtersAnimHeight, right: 0}]}/>
         </Animated.View>

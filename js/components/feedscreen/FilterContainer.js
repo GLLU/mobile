@@ -11,7 +11,7 @@ import {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
-    getFeed: query => dispatch(getBestMatchFeed(query)),
+    getFeed: query => dispatch(getBestMatchFeed(ownProps.currentFeedTab, query)),
     loadCategories: (gender) => dispatch(loadCategories(gender)),
     loadOccasionTags: (gender) => dispatch(loadOccasionTags(gender)),
   };

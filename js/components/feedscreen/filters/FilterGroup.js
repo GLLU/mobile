@@ -21,22 +21,21 @@ class FilterGroup extends Component {
     super(props);
     this.onSingleSelectValue = this.onSingleSelectValue.bind(this);
     this.onMultipleSelectValue = this.onMultipleSelectValue.bind(this);
+    this.checkSelectedQuery = this.checkSelectedQuery.bind(this);
   }
 
-  componentWillUpdate() {
+  checkSelectedQuery(filter) {
+    const {currentFilter} = this.props;
+    const clonedFilter = _.cloneDeep(filter)
+    if (currentFilter[filter.kind]) {
+      const filterName = filter['name'].toLowerCase();
+      const filterKind = currentFilter[filter.kind].toLowerCase();
+      clonedFilter.selected = filterKind === filterName;
+    }
+    return clonedFilter;
   }
 
   onSingleSelectValue(filter) {
-    let iteratee = () => false;
-    if (filter.selected === true) {
-      iteratee = (filter1, filter2) => filter1.id === filter2.id;
-    }
-
-    const filters = _.map(this.props.filters, item => {
-      item.selected = iteratee(item, filter);
-      return item;
-    });
-
     this.props.onSelectionChange(filter)
   }
 
@@ -70,10 +69,11 @@ class FilterGroup extends Component {
         paddingHorizontal: 10
       }}>
         {_.map(filters, (filter, i) => {
+          const checkedFilter = this.checkSelectedQuery(filter)
           return (
             <FilterButton activeStyle={this.props.activeStyle}
                           onPress={this.props.mode === 'multi' ? this.onMultipleSelectValue : this.onSingleSelectValue}
-                          key={i} filter={filter}/>
+                          key={i} filter={checkedFilter}/>
           );
         })}
       </View>
