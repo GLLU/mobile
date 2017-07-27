@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Platform,
   Animated,
   View,
 } from 'react-native';
@@ -40,6 +39,19 @@ class FilterRow extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const currentFilter = _.find(nextProps.filters, function (filter) {
+      if (nextProps.currentFilter[filter.kind] === filter.name) {
+        return filter.name
+      }
+    });
+    if (currentFilter) {
+      this.setState({currentFilterRowName: currentFilter.name})
+    } else {
+      this.setState({currentFilterRowName: ''})
+    }
+  }
+
   _setFilters(filter) {
     if (filter.name === this.state.currentFilterRowName) {
       this.setState({currentFilterRowName: ''})
@@ -69,7 +81,6 @@ class FilterRow extends Component {
   }
 
   checkSelectedQuery() {
-
     const checkedFilters = _.map(this.props.filters, (filter, i) => {
       const {currentFilter} = this.props;
       const clonedFilter = _.cloneDeep(filter)
@@ -78,9 +89,6 @@ class FilterRow extends Component {
         const filterKind = currentFilter[filter.kind].toLowerCase();
         if (filterKind === filterName) {
           clonedFilter.selected = true;
-          if (this.state.currentFilterRowName !== filter.name) {
-            this.setState({currentFilterRowName: filter.name});
-          }
         }
       }
       return clonedFilter;
