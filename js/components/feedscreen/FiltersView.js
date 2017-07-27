@@ -67,6 +67,7 @@ class FiltersView extends BaseComponent {
   _renderFilterRows() {
     const {filters} = this.props
     const {currentFilter} = this.state
+    console.log('currentFilter', currentFilter)
     if (filters.length > 0) {
       return _.map(filters, (filter, i) => {
         const title = this.getFilterTitle(filter)

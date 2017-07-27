@@ -348,7 +348,7 @@ class FollowingTabContent extends BaseComponent {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
           { flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
-          { true ? this.renderFilterView() : null}
+          { isFilterMenuOpen ? this.renderFilterView() : null}
         </View>
       );
     }

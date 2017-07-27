@@ -25,6 +25,7 @@ export const parseQueryFromState = function (state: array) {
 };
 
 export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
+  console.log('feedType', feedType)
   return (dispatch, getState) => {
     const newState = Object.assign({}, query, {
       page: {
