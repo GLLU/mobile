@@ -338,8 +338,9 @@ class HotTabContent extends BaseComponent {
   }
 
   renderFilterView() {
+    const {myFeedType} = this.props;
     return (
-      <FiltersView />
+      <FiltersView currentFeedTab={myFeedType}/>
     )
   }
 

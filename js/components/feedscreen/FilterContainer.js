@@ -6,8 +6,6 @@ import {
   getBestMatchFeed,
   loadCategories,
   loadOccasionTags,
-  openFilterFeedMenu,
-  closeFilterFeedMenu
 } from '../../actions';
 
 
@@ -19,26 +17,12 @@ function mapDispatchToProps(dispatch, ownProps) {
   };
 }
 
-const mapStateToProps = (state) => {
-  let defaultFilters = {
-    gender: '',
-    body_type: ''
-  };
-  if (state.user.user_size) {
-    const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
-    const myGender = state.user.gender ? state.user.gender : '';
-    defaultFilters = {
-      gender: myGender,
-      body_type: myBodyType,
-    };
-  }
+const mapStateToProps = (state, ownProps) => {
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
   bodyTypes = mapBodyTypes(bodyTypes);
-
+  const gender = state.user.gender
   return {
-    defaultFilters,
-    meta: state.feed.bestMatch.meta,
-    query: state.feed.bestMatch.query,
+    defaultFilters: {...state.feed[ownProps.currentFeedTab].query, gender},
     filters: [state.filters.categories, state.filters.occasion_tags, bodyTypes],
   };
 };

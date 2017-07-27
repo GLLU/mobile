@@ -72,9 +72,6 @@ class FilterButton extends BaseComponent {
   }
 
   _renderIcon(icon, selected) {
-    if (selected) {
-      console.log('icon', icon)
-    }
     let uri = this.props.filter.highlight || (selected) ? icon['url_hover'] : icon['url'];
     if (!_.isNumber(uri)) {
       uri = {uri: uri};

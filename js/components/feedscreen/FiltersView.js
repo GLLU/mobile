@@ -23,14 +23,22 @@ class FiltersView extends BaseComponent {
   constructor(props) {
     super(props);
     this.toggleFilterRow = this.toggleFilterRow.bind(this)
+    this.updateCurrentFilter = this.updateCurrentFilter.bind(this)
+    this.getFeed = this.getFeed.bind(this)
+    console.log('props.defaultFilter', props.defaultFilters)
     this.state = {
       isLoading: false,
-      openFilter: false
+      openFilter: false,
+      currentFilter: props.defaultFilters
     };
   }
 
-  getFeed(query) {
-    this.props.getFeed(query)
+  updateCurrentFilter(filter) {
+    this.setState({currentFilter: {...this.state.currentFilter, [filter.kind]: filter.name}});
+  }
+
+  getFeed() {
+    this.props.getFeed(this.state.currentFilter)
   }
 
   componentDidMount() {
@@ -61,7 +69,7 @@ class FiltersView extends BaseComponent {
       return _.map(this.props.filters, (filter, i) => {
         const title = this.getFilterTitle(filter)
         return (
-          <FilterRow key={i} title={title} filters={filter}/>
+          <FilterRow key={i} title={title} filters={filter} updateCurrentFilter={this.updateCurrentFilter}/>
         );
       });
     }
@@ -85,7 +93,7 @@ class FiltersView extends BaseComponent {
         </View>
         {this._renderFilterRows()}
         <View style={styles.applyBtnContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.getFeed}>
             <View style={styles.applyBtn}>
               <Text style={styles.applyText}>APPLY</Text>
             </View>

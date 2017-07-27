@@ -334,8 +334,9 @@ class FollowingTabContent extends BaseComponent {
   }
 
   renderFilterView() {
+    const {myFeedType} = this.props;
     return (
-      <FiltersView />
+      <FiltersView currentFeedTab={myFeedType}/>
     )
   }
 
@@ -347,7 +348,7 @@ class FollowingTabContent extends BaseComponent {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
           { flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
-          { isFilterMenuOpen ? this.renderFilterView() : null}
+          { true ? this.renderFilterView() : null}
         </View>
       );
     }
