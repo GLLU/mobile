@@ -69,11 +69,10 @@ class FilterGroup extends Component {
         paddingHorizontal: 10
       }}>
         {_.map(filters, (filter, i) => {
-          const checkedFilter = this.checkSelectedQuery(filter)
           return (
             <FilterButton activeStyle={this.props.activeStyle}
                           onPress={this.props.mode === 'multi' ? this.onMultipleSelectValue : this.onSingleSelectValue}
-                          key={i} filter={checkedFilter}/>
+                          key={i} filter={filter}/>
           );
         })}
       </View>
