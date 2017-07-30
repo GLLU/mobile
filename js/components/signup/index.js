@@ -13,6 +13,7 @@ import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
 import {emailRule, passwordRule, textInput} from '../../validators';
 import {changeUserAvatar} from '../../actions/user';
+import { showFatalError } from '../../actions/errorHandler';
 import ProfileAvatar from '../common/avatars/ProfileAvatar'
 import SolidButton from '../common/buttons/SolidButton'
 import {openCamera} from '../../lib/camera/CameraUtils'
@@ -40,19 +41,14 @@ class SignUpPage extends Component {
     this.focusNext = this.focusNext.bind(this);
     this.state = {
       isSigningUp: false,
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      name: '',
+      username: { value: '', isValid: true },
+      email: { value: '', isValid: true },
+      password: { value: '', isValid: true },
+      confirmPassword: { value: '', isValid: true },
+      name: { value: '', isValid: true },
       avatar: '',
       avatarIcon: 'camera',
       gender: props.navigation.state.params.gender,
-      usernameValid: 'times',
-      nameValid: 'times',
-      passwordValid: 'times',
-      confirmPasswordValid: 'times',
-      emailValid: 'times',
     };
   }
 
@@ -69,7 +65,9 @@ class SignUpPage extends Component {
       avatar,
       gender
     } = this.state;
-    if (this.checkValidations()) {
+
+    const errorMessage = this.checkValidations();
+    if (!errorMessage) {
       let data = {
         email,
         username,
@@ -91,26 +89,41 @@ class SignUpPage extends Component {
           .catch(err => console.log(err));
       })
     }
+    else {
+      this.props.onInvalidSignup(errorMessage);
+    }
   }
 
   checkValidations() {
     let {
-      usernameValid,
-      passwordValid,
-      emailValid,
-      nameValid
+      name,
+      password,
+      email,
+      username
     } = this.state;
 
-    let validationArray = [usernameValid, passwordValid, emailValid, nameValid];
-    return (validationArray.indexOf('times') === -1)
+    let validationArray = [username, password, email, name];
+
+    let errorMessage;
+
+    for (i = 0; i < validationArray.length; i++) {
+
+      let currentField = validationArray[i];
+      if (!currentField.isValid || currentField.length === 0) {
+        return currentField.errorMessage;
+      }
+    }
+
+    return errorMessage;
+
   }
 
   validateTextInput(value, type) {
     textInput.validate(value, (err) => {
       if (!err) {
-        this.setState({ [type]: value, [type + 'Valid']: 'check' });
+        this.setState({ [type]: { value: value, isValid: true }});
       } else {
-        this.setState({ [type]: value, [type + 'Valid']: 'times' });
+        this.setState({ [type]: { value: value, isValid: false, errorMessage: 'invalid text' }});
       }
     })
 
@@ -119,9 +132,9 @@ class SignUpPage extends Component {
   validateEmailInput(email) {
     emailRule.validate(email, (err) => {
       if (!err) {
-        this.setState({ email, emailValid: 'check' });
+        this.setState({ email: { value: email, isValid: true } });
       } else {
-        this.setState({ email, emailValid: 'times' });
+        this.setState({ email: { value: email, isValid: false, errorMessage: 'invalid email' } });
       }
     });
   }
@@ -129,9 +142,9 @@ class SignUpPage extends Component {
   validatePasswordInput(password) {
     passwordRule.validate(password, (err) => {
       if (!err) {
-        this.setState({ password, passwordValid: 'check' });
+        this.setState({ password: { value: password, isValid: true }});
       } else {
-        this.setState({ password, passwordValid: 'times' });
+        this.setState({ password: { value: password, isValid: false, errorMessage: 'invalid password' }});
       }
     });
   }
@@ -185,7 +198,7 @@ class SignUpPage extends Component {
   }
 
   render() {
-    let allValid = this.checkValidations()
+    const allValid = !this.checkValidations();
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>
@@ -210,8 +223,8 @@ class SignUpPage extends Component {
                       returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(username) => this.validateTextInput(username, 'username')}/>
-                    {this.state.username.length !== 0 ?
-                      <IconB size={20} color={'#009688'} name={this.state.usernameValid}
+                    {this.state.username.value.length !== 0 ?
+                      <IconB size={20} color={'#009688'} name={this.state.username.isValid ? 'check' : 'times'}
                              style={styles.uploadImgIcon}/> : null}
                   </Row>
                   <Row style={styles.formItem}>
@@ -224,8 +237,9 @@ class SignUpPage extends Component {
                       returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(name) => this.validateTextInput(name, 'name')}/>
-                    {this.state.name.length !== 0 ? <IconB size={20} color={'#009688'} name={this.state.nameValid}
-                                                           style={styles.uploadImgIcon}/> : null}
+                    {this.state.name.value.length !== 0 ?
+                      <IconB size={20} color={'#009688'} name={this.state.name.isValid ? 'check' : 'times'}
+                             style={styles.uploadImgIcon}/> : null}
                   </Row>
                   <Row style={styles.formItem}>
                     <TextInput
@@ -238,8 +252,9 @@ class SignUpPage extends Component {
                       returnKeyType='next'
                       style={[styles.formInput]}
                       onChangeText={(email) => this.validateEmailInput(email)}/>
-                    {this.state.email.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.emailValid}
-                                                          style={styles.uploadImgIcon}/> : null}
+                    {this.state.email.value.length > 0 ?
+                      <IconB size={20} color={'#009688'} name={this.state.email.isValid ? 'check' : 'times'}
+                             style={styles.uploadImgIcon}/> : null}
                   </Row>
                   <Row style={styles.formItem}>
                     <TextInput
@@ -249,8 +264,9 @@ class SignUpPage extends Component {
                       secureTextEntry={true}
                       style={[styles.formInput]}
                       onChangeText={(password) => this.validatePasswordInput(password)}/>
-                    {this.state.password.length > 0 ? <IconB size={20} color={'#009688'} name={this.state.passwordValid}
-                                                             style={styles.uploadImgIcon}/> : null}
+                    {this.state.password.value.length > 0 ?
+                      <IconB size={20} color={'#009688'} name={this.state.password.isValid ? 'check' : 'times'}
+                             style={styles.uploadImgIcon}/> : null}
                   </Row>
                 </Grid>
                 <SolidButton
@@ -284,6 +300,7 @@ function bindAction(dispatch) {
   return {
     emailSignUp: (data) => dispatch(emailSignUp(data)),
     changeUserAvatar: (data) => dispatch(changeUserAvatar(data)),
+    onInvalidSignup: errorMessage => dispatch(showFatalError(errorMessage)),
   };
 }
 const mapStateToProps = state => ({
