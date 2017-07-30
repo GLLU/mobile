@@ -43,6 +43,7 @@ class FeedFilters extends Component {
     const parsedQuery = _.cloneDeep(query);
     delete parsedQuery.page;
     delete parsedQuery.followings;
+    delete parsedQuery['sort[field]'];
     delete parsedQuery.gender;
     return _.valuesIn(parsedQuery)
   }
