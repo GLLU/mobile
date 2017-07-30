@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import FilterGroup from './FilterGroup';
-import {Icon} from 'native-base';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 
 const arrowRight = require('../../../../images/icons/collapsed-filterButton.png');
