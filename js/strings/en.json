@@ -52,6 +52,8 @@
   "NO_NOTIFICATIONS_TITLE": "YOU HAVE NO NOTIFICATIONS",
   "NO_NOTIFICATIONS_LEGEND": "Post a fashionable look to get people to like, follow and adore your looks.",
   "FEMALE": "Female",
-  "MALE": "Male"
+  "MALE": "Male",
+  "RESET_PASSWORD": "Reset My Password",
+  "PASSWORD_INSTRUCTIONS": "Please insert your email and we will send you details on reseting your password"
 }
 
