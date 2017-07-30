@@ -34,6 +34,7 @@ class FilterRow extends Component {
     this.toggleFilterRow = this.toggleFilterRow.bind(this);
     this._setFilters = this._setFilters.bind(this);
     this.checkSelectedQuery = this.checkSelectedQuery.bind(this);
+    this.checkSelectedFilter = this.checkSelectedFilter.bind(this);
     this.state = {
       openFilter: false,
       filtersAnimHeight: new Animated.Value(0),
@@ -41,9 +42,13 @@ class FilterRow extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const currentFilter = _.find(nextProps.filters, (filter) => {
-      if (nextProps.currentFilter[filter.kind] === filter.name) {
+  componentDidMount() {
+    this.checkSelectedFilter(this.props.filters, this.props.currentFilter)
+  }
+
+  checkSelectedFilter(filters, currentFilterProp) {
+    const currentFilter = _.find(filters, (filter) => {
+      if (currentFilterProp[filter.kind] === filter.name) {
         return filter.name;
       }
     });
@@ -52,6 +57,10 @@ class FilterRow extends Component {
     } else {
       this.setState({currentFilterRowName: ''});
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.checkSelectedFilter(nextProps.filters, nextProps.currentFilter)
   }
 
   _setFilters(filter) {
@@ -102,6 +111,7 @@ class FilterRow extends Component {
     const arrowIcon = this.state.openFilter ? arrowDown : arrowRight;
     const {currentFilterRowName, filtersAnimHeight} = this.state;
     const {currentFilter, title} = this.props;
+    console.log('current filter', currentFilter)
     return (
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={this.toggleFilterRow}>

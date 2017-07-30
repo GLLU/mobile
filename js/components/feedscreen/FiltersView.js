@@ -40,6 +40,7 @@ class FiltersView extends BaseComponent {
     this._getFeed = this._getFeed.bind(this);
     this._resetFilters = this._resetFilters.bind(this);
     this._cancelFilter = this._cancelFilter.bind(this);
+    console.log('props.defaultFilters', props.defaultFilters)
     this.state = {
       isLoading: false,
       openFilter: false,
@@ -99,7 +100,11 @@ class FiltersView extends BaseComponent {
   }
 
   _resetFilters() {
-    this.setState({currentFilter: this.props.defaultFilters});
+    const clearedFiltersState = _.cloneDeep(this.state.currentFilter)
+    delete clearedFiltersState.body_type;
+    delete clearedFiltersState.category;
+    delete clearedFiltersState.occasion;
+    this.setState({currentFilter: clearedFiltersState});
   }
 
   _cancelFilter() {
