@@ -6,7 +6,8 @@ import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import {addNewLook, setUser, getNotifications, toggleFiltersMenues} from '../../actions';
+import {addNewLook, setUser, getNotifications} from '../../actions';
+import {toggleFiltersMenus} from '../../actions/filters';
 import asScreen from '../common/containers/Screen';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
@@ -26,7 +27,7 @@ class FeedPage extends Component {
     setUser: React.PropTypes.func,
     addNewLook: React.PropTypes.func,
     hideBodyTypeModal: React.PropTypes.func,
-    toggleFiltersMenues: React.PropTypes.func,
+    toggleFiltersMenus: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -51,7 +52,7 @@ class FeedPage extends Component {
       searchStatus: false,
       contentHeight: null,
       showBottomCamera: true,
-      fadeAnimContentOnPress: new Animated.Value(10)
+      fadeAnimContentOnPress: new Animated.Value(10),
     };
   }
 
@@ -102,8 +103,6 @@ class FeedPage extends Component {
         ).start();
       }
     }
-
-
   }
 
   _handleSearchStatus(newStatus) {
@@ -145,22 +144,23 @@ class FeedPage extends Component {
           <Image source={cameraIcon} style={styles.btnImage}/>
         </TouchableOpacity>
       </Animated.View>
-    )
+    );
   }
 
   toggleFilterMenues(feedType: string) {
-    console.log('feedTypefeedType', feedType)
-    this.props.toggleFiltersMenues(feedType)
+    this.props.toggleFiltersMenus(feedType);
   }
 
   _renderFeed() {
-    const {reloading, clearedField, navigateTo} = this.props;
+    const {reloading, clearedField, navigateTo, hasUserSize} = this.props;
     return (
-      <FeedTabs reloading={reloading}
-                clearedField={clearedField}
-                navigateTo={navigateTo}
-                showBottomCameraButton={this.showBottomCameraButton}
-                toggleFilterMenues={this.toggleFilterMenues}
+      <FeedTabs
+        reloading={reloading}
+        clearedField={clearedField}
+        navigateTo={navigateTo}
+        showBottomCameraButton={this.showBottomCameraButton}
+        toggleFilterMenues={this.toggleFilterMenues}
+        hasUserSize={hasUserSize}
       />
     );
   }
@@ -169,15 +169,17 @@ class FeedPage extends Component {
     return (
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
-          <MainBarView user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
-                       gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
-                       handleSearchStatus={this._handleSearchStatus}
-                       handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
+          <MainBarView
+            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
+            gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
+            handleSearchStatus={this._handleSearchStatus}
+            handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
         </View>
         {this._renderFeed()}
         {this.renderBottomCamera()}
-        <Modal animationType="slide" visible={this.props.modalShowing}
-               style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
+        <Modal
+          animationType="slide" visible={this.props.modalShowing}
+          style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
           <BodyTypePicker goBack={this.props.hideBodyTypeModal} onPick={this._onPickBodyType}/>
         </Modal>
       </View>
@@ -191,11 +193,13 @@ function bindActions(dispatch) {
     hideBodyTypeModal: () => dispatch(hideBodyTypeModal()),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
-    toggleFiltersMenues: feedType => dispatch(toggleFiltersMenues(feedType)),
+    toggleFiltersMenus: feedType => dispatch(toggleFiltersMenus(feedType)),
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => (
+  {
+  hasUserSize: state.user.hasChoosenBodyShape,
   user: state.user,
   modalShowing: false,
   gotNewNotifications: state.notifications.newNotifications,

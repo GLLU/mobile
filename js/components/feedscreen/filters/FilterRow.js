@@ -8,12 +8,15 @@ import {
   Text,
   Animated,
   View,
+  Image
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import FilterGroup from './FilterGroup';
 import {Icon} from 'native-base';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 
+const arrowRight = require('../../../../images/icons/collapsed-filterButton.png');
+const arrowDown = require('../../../../images/icons/expand-filterButton.png');
 const deviceWidth = Dimensions.get('window').width;
 
 type Props = {
@@ -21,7 +24,7 @@ type Props = {
   filters: array,
   currentFilter: object,
   title: string
-}
+};
 
 class FilterRow extends Component {
 
@@ -35,28 +38,28 @@ class FilterRow extends Component {
     this.state = {
       openFilter: false,
       filtersAnimHeight: new Animated.Value(0),
-      currentFilterRowName: ''
+      currentFilterRowName: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const currentFilter = _.find(nextProps.filters, function (filter) {
+    const currentFilter = _.find(nextProps.filters, (filter) => {
       if (nextProps.currentFilter[filter.kind] === filter.name) {
-        return filter.name
+        return filter.name;
       }
     });
     if (currentFilter) {
-      this.setState({currentFilterRowName: currentFilter.name})
+      this.setState({currentFilterRowName: currentFilter.name});
     } else {
-      this.setState({currentFilterRowName: ''})
+      this.setState({currentFilterRowName: ''});
     }
   }
 
   _setFilters(filter) {
     if (filter.name === this.state.currentFilterRowName) {
-      this.setState({currentFilterRowName: ''})
+      this.setState({currentFilterRowName: ''});
     }
-    this.props.updateCurrentFilter(filter)
+    this.props.updateCurrentFilter(filter);
   }
 
   toggleFilterRow() {
@@ -83,47 +86,45 @@ class FilterRow extends Component {
   checkSelectedQuery() {
     const checkedFilters = _.map(this.props.filters, (filter, i) => {
       const {currentFilter} = this.props;
-      const clonedFilter = _.cloneDeep(filter)
+      const clonedFilter = _.cloneDeep(filter);
       if (currentFilter[filter.kind]) {
-        const filterName = filter['name'].toLowerCase();
+        const filterName = filter.name.toLowerCase();
         const filterKind = currentFilter[filter.kind].toLowerCase();
         if (filterKind === filterName) {
           clonedFilter.selected = true;
         }
       }
       return clonedFilter;
-    })
-    return checkedFilters
-
+    });
+    return checkedFilters;
   }
 
   render() {
-    const activeFilter = {
-      color: '#757575',
-      underline: true,
-    };
-    const arrowIcon = this.state.openFilter ? 'ios-arrow-down' : 'ios-arrow-forward';
+    const arrowIcon = this.state.openFilter ? arrowDown : arrowRight;
+    const {currentFilterRowName, filtersAnimHeight} = this.state;
+    const {currentFilter, title} = this.props;
     return (
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={this.toggleFilterRow}>
           <View
             style={styles.rowHeaderContainer}>
             <View style={{flexDirection: 'column'}}>
-              <Text style={styles.rowTitle}>{this.props.title}</Text>
-              <Text style={styles.selectedFilter}>{this.state.currentFilterRowName}</Text>
+              <Text style={styles.rowTitle}>{title}</Text>
+              <Text style={styles.selectedFilter}>{currentFilterRowName}</Text>
             </View>
-            <Icon style={StyleSheet.flatten(styles.backBtn)} name={arrowIcon}/>
+            <Image style={styles.arrows} source={arrowIcon}/>
           </View>
         </TouchableOpacity>
         <Animated.View
-          style={[styles.filtersGroupContainer, {height: this.state.filtersAnimHeight,}]}>
-          <Animated.View
-            style={[styles.rowEdgeShadow, {height: this.state.filtersAnimHeight, left: 0}]}/>
+          style={[styles.filtersGroupContainer, {height: filtersAnimHeight}]}>
+
           <FilterGroup
-            mode="single" activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
-            filters={this.checkSelectedQuery()} currentFilter={this.props.currentFilter}/>
+            mode="single" onSelectionChange={this._setFilters.bind(this)}
+            filters={this.checkSelectedQuery()} currentFilter={currentFilter}/>
           <Animated.View
-            style={[styles.rowEdgeShadow, {height: this.state.filtersAnimHeight, right: 0}]}/>
+            style={[styles.rowEdgeShadow, {height: filtersAnimHeight, right: 0}]}/>
+          <Animated.View
+            style={[styles.rowEdgeShadow, {height: filtersAnimHeight, left: 0}]}/>
         </Animated.View>
       </View>
     );
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   rowTitle: {
-    fontWeight: '600'
+    fontWeight: '600',
   },
   selectedFilter: {
     fontWeight: '600',
@@ -165,7 +166,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-  }
+  },
+  arrows: {
+    width: 20,
+    height: 20
+  },
 });
 
 export default FilterRow;

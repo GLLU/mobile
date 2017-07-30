@@ -1,16 +1,16 @@
 // @flow
 
-import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import React, {Component} from 'react';
+import {View, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
+import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
 import Colors from '../../styles/Colors.styles';
-import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
+import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 const cameraIcon = require('../../../images/icons/Filter_black.png');
 const deviceWidth = Dimensions.get('window').width;
-import { FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT } from '../../actions/feed';
+import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
 
 
 export default class FeedTabs extends Component {
@@ -18,21 +18,21 @@ export default class FeedTabs extends Component {
     super(props);
     this._handleIndexChange = this._handleIndexChange.bind(this);
     this._renderHeader = this._renderHeader.bind(this);
-    this.toggleFilterMenu = this.toggleFilterMenu.bind(this);
-    this.renderNavigationButton = this.renderNavigationButton.bind(this);
+    this._toggleFilterMenu = this._toggleFilterMenu.bind(this);
+    this._renderNavigationButton = this._renderNavigationButton.bind(this);
     this.state = {
       index: 0,
       routes: [
-        { key: FEED_TYPE_FOLLOWING, title: 'Following' },
-        { key: FEED_TYPE_BEST_MATCH, title: 'My Size' },
-        { key: FEED_TYPE_WHATS_HOT, title: "What's Hot" },
+        {key: FEED_TYPE_FOLLOWING, title: 'Following'},
+        {key: FEED_TYPE_BEST_MATCH, title: 'My Size'},
+        {key: FEED_TYPE_WHATS_HOT, title: "What's Hot"},
       ],
       filterIsOpen: false,
     };
   }
 
 
-  _handleIndexChange = index => this.setState({ index });
+  _handleIndexChange = index => this.setState({index});
 
   _renderHeader = props => (
     <TabBar
@@ -41,43 +41,44 @@ export default class FeedTabs extends Component {
       indicatorStyle={styles.indicatorStyle} {...props} />
   );
 
-  _renderScene = ({ route }) => {
-    const { navigateTo, showBottomCameraButton } = this.props;
+  _renderScene = ({route}) => {
+    const {navigateTo, showBottomCameraButton} = this.props;
 
     switch (route.key) {
       case FEED_TYPE_FOLLOWING:
         return (<FollowingTabContent
           navigateTo={navigateTo}
-          showBottomCameraButton={showBottomCameraButton} />);
+          showBottomCameraButton={showBottomCameraButton}/>);
       case FEED_TYPE_BEST_MATCH:
         return (<BestMatchTabContent
           navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
-          showBottomCameraButton={showBottomCameraButton} />);
+          showBottomCameraButton={showBottomCameraButton}/>);
       case FEED_TYPE_WHATS_HOT:
         return (<WhatsHotTabContent
           navigateTo={navigateTo}
-          showBottomCameraButton={showBottomCameraButton} />);
+          showBottomCameraButton={showBottomCameraButton}/>);
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
+        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
           ;
     }
   };
 
-  toggleFilterMenu() {
+  _toggleFilterMenu() {
     this.props.toggleFilterMenues(this.state.routes[this.state.index].key);
   }
 
-  renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
+  _renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle} />
+          <Image source={icon} style={iconStyle}/>
         </TouchableOpacity>
       </View>
     );
   }
 
   render() {
+    const {hasUserSize} = this.props;
     return (
       <View style={styles.container}>
         <TabViewAnimated
@@ -87,7 +88,7 @@ export default class FeedTabs extends Component {
           renderHeader={this._renderHeader}
           onRequestChangeTab={this._handleIndexChange}
         />
-        {this.renderNavigationButton(cameraIcon, this.toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
+        { this.state.index === 1 && !hasUserSize ? null : this._renderNavigationButton(cameraIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
       </View>
     );
   }
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
   TabBar: {
     backgroundColor: Colors.backgroundGrey,
     height: 41.5,
-    width: deviceWidth - 23,
   },
   indicatorStyle: {
     backgroundColor: Colors.secondaryColor,

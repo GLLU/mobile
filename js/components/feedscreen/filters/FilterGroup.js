@@ -8,8 +8,7 @@ import _ from 'lodash';
 type Props = {
   filters: array,
   onSelectionChange: void,
-  mode: string,
-  activeStyle: object
+  mode: string
 };
 
 class FilterGroup extends Component {
@@ -38,39 +37,24 @@ class FilterGroup extends Component {
     this.props.onSelectionChange(filters);
   }
 
-  renderAsScrollView(content) {
-    return (
-      <ScrollView horizontal>
-        {content}
-      </ScrollView>
-    );
-  }
-
-  renderAsView(content) {
-    return content;
-  }
-
   render() {
     const {filters} = this.props;
-    const renderer = (filters || []).length > 4 ? this.renderAsScrollView : this.renderAsView;
-    return renderer(
-      <View style={styles.container}>
+    return (
+      <ScrollView horizontal style={styles.container}
+                  contentContainerStyle={[filters.length < 7 ? {flex: 1, justifyContent: 'space-around'} : null]}>
         {_.map(filters, (filter, i) => (
           <FilterButton
-            activeStyle={this.props.activeStyle}
             onPress={this.props.mode === 'multi' ? this.onMultipleSelectValue : this.onSingleSelectValue}
             key={i} filter={filter}/>
         ))}
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignSelf: 'center',
     paddingHorizontal: 10,
   },

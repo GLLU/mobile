@@ -9,24 +9,26 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import I18n from 'react-native-i18n';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import i18n from 'react-native-i18n';
 import FilterRow from './filters/FilterRow';
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
+const deviceDimensions = Dimensions.get('window');
+const deviceWidth = deviceDimensions.width;
+const deviceHeight = Platform.os === 'ios' ? deviceDimensions.height : deviceDimensions.height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 
 type Props = {
   defaultFilters: object,
-  getFeed: void,
-  loadCategories: void,
-  loadOccasionTags: void,
-  toggleFiltersMenues: void,
-  filters: array,
-}
+  getFeed: (object) => void,
+  loadCategories: (string) => void,
+  loadOccasionTags: (string) => void,
+  toggleFiltersMenus: (boolean) => void,
+  filters: array
+};
 
 class FiltersView extends BaseComponent {
 
@@ -34,11 +36,10 @@ class FiltersView extends BaseComponent {
 
   constructor(props) {
     super(props);
-    this.toggleFilterRow = this.toggleFilterRow.bind(this);
-    this.updateCurrentFilter = this.updateCurrentFilter.bind(this);
-    this.getFeed = this.getFeed.bind(this);
-    this.resetFilters = this.resetFilters.bind(this);
-    this.cancelFilter = this.cancelFilter.bind(this);
+    this._updateCurrentFilter = this._updateCurrentFilter.bind(this);
+    this._getFeed = this._getFeed.bind(this);
+    this._resetFilters = this._resetFilters.bind(this);
+    this._cancelFilter = this._cancelFilter.bind(this);
     this.state = {
       isLoading: false,
       openFilter: false,
@@ -46,7 +47,7 @@ class FiltersView extends BaseComponent {
     };
   }
 
-  updateCurrentFilter(filter) {
+  _updateCurrentFilter(filter: object) {
     const currentFilterState = this.state.currentFilter;
     if (this.state.currentFilter[filter.kind] && this.state.currentFilter[filter.kind] === filter.name) {
       delete currentFilterState[filter.kind];
@@ -56,29 +57,28 @@ class FiltersView extends BaseComponent {
     }
   }
 
-  getFeed() {
+  _getFeed() {
     this.props.getFeed(this.state.currentFilter);
-    this.props.toggleFiltersMenues();
+    this.props.toggleFiltersMenus();
   }
 
   componentDidMount() {
-    this.props.loadCategories(this.props.defaultFilters.gender);
-    this.props.loadOccasionTags(this.props.defaultFilters.gender);
+    this.props.loadCategories();
+    this.props.loadOccasionTags();
   }
 
-  toggleFilterRow() {
-    this.setState({openFilter: !this.state.openFilter});
-  }
-
-  getFilterTitle(filtersArray) {
+  _getFilterTitle(filtersArray: array) {
     if (filtersArray[0]) {
       switch (filtersArray[0].kind) {
         case 'category':
-          return 'CATEGORIES';
+          return I18n.t('CATEGORIES');
         case 'occasion':
-          return 'EVENTS';
+          return I18n.t('EVENTS');
+        case 'body_type':
+          return I18n.t('BODY SHAPES');
         default:
-          return 'FILTER';
+          return I18n.t('FILTER');
+
       }
     }
   }
@@ -88,47 +88,45 @@ class FiltersView extends BaseComponent {
     const {currentFilter} = this.state;
     if (filters.length > 0) {
       return _.map(filters, (filter, i) => {
-        const title = this.getFilterTitle(filter);
+        const title = this._getFilterTitle(filter);
         return (
           <FilterRow
             key={i} title={title} currentFilter={currentFilter} filters={filter}
-            updateCurrentFilter={this.updateCurrentFilter}/>
+            updateCurrentFilter={this._updateCurrentFilter}/>
         );
       });
     }
   }
 
-  resetFilters() {
-    this.setState({currentFilter: this.props.defaultFilters})
+  _resetFilters() {
+    this.setState({currentFilter: this.props.defaultFilters});
   }
 
-  cancelFilter() {
-    this.props.toggleFiltersMenues();
+  _cancelFilter() {
+    this.props.toggleFiltersMenus();
   }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.TopRow}>
-          <Text style={styles.filterByText}>Filter By</Text>
+          <Text style={styles.filterByText}>{I18n.t('Filter By')}</Text>
           <View style={styles.clearRow}>
-            <TouchableOpacity onPress={this.resetFilters}>
-              <Text style={styles.cleaResetText}>RESET FILTERS</Text>
+            <TouchableOpacity onPress={this._resetFilters}>
+              <Text style={styles.cleaResetText}>{I18n.t('RESET FILTERS')}</Text>
             </TouchableOpacity>
             <Text style={styles.seperator}>/</Text>
-            <TouchableOpacity onPress={this.cancelFilter}>
-              <Text style={styles.cleaResetText}>CANCEL</Text>
+            <TouchableOpacity onPress={this._cancelFilter}>
+              <Text style={styles.cleaResetText}>{I18n.t('CANCEL')}</Text>
             </TouchableOpacity>
           </View>
         </View>
         {this._renderFilterRows()}
-        <View style={styles.applyBtnContainer}>
-          <TouchableOpacity onPress={this.getFeed}>
-            <View style={styles.applyBtn}>
-              <Text style={styles.applyText}>APPLY</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={this._getFeed} style={styles.applyBtnContainer}>
+          <View style={styles.applyBtn}>
+            <Text style={styles.applyText}>{I18n.t('APPLY')}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }

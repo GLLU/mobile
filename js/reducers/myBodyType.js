@@ -10,7 +10,7 @@ import {
 const bodyTypeList = {
   female: [
     {
-      name: 'Inverted triangle',
+      name: 'invertedTriangle',
       body_type: 'invertedTriangle',
       description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
       imageUrl: require('../../images/bodytypes/female/inverted-triangle.png'),
@@ -18,7 +18,7 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-inverted-triangle.png')
     },
     {
-      name: 'Rectangle',
+      name: 'rectangle',
       body_type: 'rectangle',
       description: 'Also known as H or straight body shape due to the similar width of the shoulders, hips and waistline.',
       imageUrl: require('../../images/bodytypes/female/rectangle.png'),
@@ -26,7 +26,7 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-rectangle.png')
     },
     {
-      name: 'Apple',
+      name: 'apple',
       body_type: 'apple',
       description: 'Your shoulders and hip line are about the same, and your waistline is the same or wider than your shoulders and hips.',
       imageUrl: require('../../images/bodytypes/female/apple.png'),
@@ -34,7 +34,7 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-apple.png')
     },
     {
-      name: 'Pear',
+      name: 'pear',
       body_type: 'pear',
       description: 'Your body is defined by hips that are wider than shoulders, relatively defined waist, full hips or thighs, and bust and small upper body.',
       imageUrl: require('../../images/bodytypes/female/pear.png'),
@@ -42,7 +42,7 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-pear.png')
     },
     {
-      name: 'Hourglass',
+      name: 'hourglass',
       body_type: 'hourglass',
       description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
       imageUrl: require('../../images/bodytypes/female/hourglass.png'),
@@ -52,7 +52,7 @@ const bodyTypeList = {
   ],
   male: [
     {
-      name: 'Inverted Triangle',
+      name: 'invertedTriangle',
       body_type: 'invertedTriangle',
       description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
       imageUrl: require('../../images/bodytypes/male/invert.png'),
@@ -60,7 +60,7 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/male-inverted-triangle.png')
     },
     {
-      name: 'Rectangle',
+      name: 'rectangle',
       body_type: 'rectangle',
       description: 'Your shoulders are roughly the same width as your waist and hips. Chances are that you’re also tall and thin.',
       imageUrl: require('../../images/bodytypes/male/rectangle.png'),
@@ -68,7 +68,7 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/male-rectangle.png')
     },
     {
-      name: 'Triangle',
+      name: 'triangle',
       body_type: 'triangle',
       description: 'Your midsection is more pronounced with a narrower top and larger waist and hips.',
       imageUrl: require('../../images/bodytypes/male/triangle.png'),
@@ -76,7 +76,7 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/male-triangle.png')
     },
     {
-      name: 'Oval',
+      name: 'oval',
       body_type: 'oval',
       description: 'Your shoulders and lower legs look slimmer compared to your more rounded center of the body.',
       imageUrl: require('../../images/bodytypes/male/oval.png'),

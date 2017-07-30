@@ -29,6 +29,7 @@ import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from "../common/buttons/SolidButton";
 import FiltersView from './FilterContainer';
+import FeedFilters from './FeedFilters';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -56,6 +57,8 @@ class BestMatchTabContent extends BaseComponent {
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
+    this._renderFeedFilters = this._renderFeedFilters.bind(this);
+    this._getFeed = this._getFeed.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -77,7 +80,7 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    this.getFeed(this.props.defaultFilters);
+    this._getFeed(this.props.defaultFilters);
     const that = this;
     setInterval(() => {
       that.handleScrollPositionForVideo();
@@ -89,7 +92,7 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
-  getFeed(query) {
+  _getFeed(query) {
     this.props.getFeed(query);
   }
 
@@ -105,7 +108,7 @@ class BestMatchTabContent extends BaseComponent {
     }
 
     if (!this.props.hasUserSize && nextProps.hasUserSize) {
-      this.getFeed(this.props.defaultFilters);
+      this._getFeed(this.props.defaultFilters);
     }
 
     if (nextProps.flatLooks !== this.props.flatLooks) {
@@ -311,7 +314,7 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
-  renderEmptyContent() {
+  _renderEmptyContent() {
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
         <Image
@@ -328,7 +331,7 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
-  renderScrollView() {
+  _renderScrollView() {
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -345,7 +348,7 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
-  renderLoader() {
+  _renderLoader() {
     return (
       <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
         <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
@@ -354,10 +357,17 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
-  renderFilterView() {
+  _renderFilterView() {
     const {myFeedType} = this.props;
     return (
       <FiltersView currentFeedTab={myFeedType}/>
+    )
+  }
+
+  _renderFeedFilters() {
+    const {query} = this.props;
+    return (
+      <FeedFilters query={query} getFeed={this._getFeed}/>
     )
   }
 
@@ -366,12 +376,13 @@ class BestMatchTabContent extends BaseComponent {
     if (!hasUserSize) {
       return this._renderChooseBodyShape();
     } else if (isLoading) {
-      return this.renderLoader();
+      return this._renderLoader();
     } else {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-          { flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
-          { isFilterMenuOpen ? this.renderFilterView() : null}
+          {this._renderFeedFilters()}
+          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+          { isFilterMenuOpen ? this._renderFilterView() : null}
         </View>
       );
     }

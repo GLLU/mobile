@@ -3,49 +3,45 @@
 import {connect} from 'react-redux';
 import FiltersView from './FiltersView';
 import {
+  toggleFiltersMenus,
+  loadCategories,
+  loadOccasionTags,
+} from '../../actions/filters';
+
+import {
+  FEED_TYPE_BEST_MATCH,
+  FEED_TYPE_FOLLOWING,
+  FEED_TYPE_WHATS_HOT,
   getBestMatchFeed,
   getWhatsHotFeed,
   getFollowingFeed,
-  loadCategories,
-  loadOccasionTags,
-  toggleFiltersMenues
-} from '../../actions';
-import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
+} from '../../actions/feed';
+
+import {bodyTypesMapper} from '../../mappers/filterMapper';
 
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  const {dispatch} = dispatchProps;
   return {
+    ...stateProps,
     getFeed: query => dispatch(getFeedActionSwitchByFeedType(ownProps.currentFeedTab)(query, ownProps.currentFeedTab)),
-    loadCategories: gender => dispatch(loadCategories(gender)),
-    loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
-    toggleFiltersMenues: feedType => dispatch(toggleFiltersMenues(ownProps.currentFeedTab)),
+    loadCategories: () => dispatch(loadCategories(stateProps.gender)),
+    loadOccasionTags: () => dispatch(loadOccasionTags(stateProps.gender)),
+    toggleFiltersMenus: () => dispatch(toggleFiltersMenus(ownProps.currentFeedTab)),
   };
 }
 
-const mapStateToProps = (state, ownProps) => {
+function mapStateToProps(state, ownProps) {
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
-  bodyTypes = mapBodyTypes(bodyTypes);
+  bodyTypes = bodyTypesMapper(bodyTypes);
   const gender = state.user.gender;
+  const filteredBodytypes = _.filter(bodyTypes, (bodyType) => bodyType.gender === gender)
   return {
+    gender,
     defaultFilters: {...state.feed[ownProps.currentFeedTab].query, gender},
-    filters: [state.filters.categories, state.filters.occasion_tags, bodyTypes],
+    filters: [state.filters.categories, state.filters.occasion_tags, filteredBodytypes],
   };
-};
-
-const mapBodyTypes = bodytypes => _.chain(Object.keys(bodytypes))
-  .map(key =>
-    _.map(bodytypes[key], bodyType => ({
-      id: bodyType.body_type,
-      name: bodyType.name,
-      gender: key,
-      kind: 'body_type',
-      icon: {
-        url: bodyType.filterImageUrl,
-        url_hover: bodyType.filterImageUrlActive,
-      },
-    })))
-  .flatten()
-  .value();
+}
 
 const getFeedActionSwitchByFeedType = (feedType) => {
   switch (feedType) {
@@ -63,4 +59,4 @@ const getFeedActionSwitchByFeedType = (feedType) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FiltersView);
+export default connect(mapStateToProps, null, mergeProps)(FiltersView);

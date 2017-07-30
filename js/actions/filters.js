@@ -8,7 +8,7 @@ export const OPEN_FEED_FILTER = 'OPEN_FEED_FILTER';
 export const CLOSE_FEED_FILTER = 'CLOSE_FEED_FILTER';
 
 export function loadCategories(gender) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       const query = {
         gender,
@@ -17,20 +17,22 @@ export function loadCategories(gender) {
           number: 1
         }
       };
-      dispatch(rest.actions.category_tags(query, (err, data) => {
-        if (!err && data) {
+      if (getState().filters.categories.length === 0) {
+        dispatch(rest.actions.category_tags(query, (err, data) => {
+          if (!err && data) {
 
-          resolve(dispatch({
-            type: SET_CATEGORIES,
-            payload: {
-              tags: data.tags,
-              meta: data.meta
-            }
-          }));
-        } else {
-          reject(err);
-        }
-      }));
+            resolve(dispatch({
+              type: SET_CATEGORIES,
+              payload: {
+                tags: data.tags,
+                meta: data.meta
+              }
+            }));
+          } else {
+            reject(err);
+          }
+        }));
+      }
     });
   };
 }
@@ -60,7 +62,7 @@ export function loadBrands(term) {
 }
 
 export function loadOccasionTags(gender) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       const query = {
         gender,
@@ -69,24 +71,26 @@ export function loadOccasionTags(gender) {
           number: 1
         }
       };
-      dispatch(rest.actions.occasion_tags(query, (err, data) => {
-        if (!err && data) {
-          resolve(dispatch({
-            type: SET_OCCASION_TAGS,
-            payload: {
-              tags: data.tags,
-              meta: data.meta
-            }
-          }));
-        } else {
-          reject(err);
-        }
-      }));
+      if (getState().filters.occasion_tags.length === 0) {
+        dispatch(rest.actions.occasion_tags(query, (err, data) => {
+          if (!err && data) {
+            resolve(dispatch({
+              type: SET_OCCASION_TAGS,
+              payload: {
+                tags: data.tags,
+                meta: data.meta
+              }
+            }));
+          } else {
+            reject(err);
+          }
+        }));
+      }
     });
   };
 }
 
-export function toggleFiltersMenues(feedType) {
+export function toggleFiltersMenus(feedType) {
   return (dispatch, getState) => {
     const menuStatus = getState().filters.filterMenuStatus[feedType]
     if (menuStatus) {
