@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   username: {
     color: Colors.secondaryColor,
     fontSize: 15,
-    fontFamily: Fonts.regularFont,
+    fontFamily: Fonts.subHeaderFont,
   },
   editBtn: {
     backgroundColor: 'transparent',

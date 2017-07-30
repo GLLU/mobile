@@ -86,7 +86,7 @@ export default class CommentRow extends Component {
               </Text>
             </TouchableOpacity>
             <Text style={styles.createdAt} name="created_at">
-              {moment(this.props.created_at).calendar()}
+              {moment(this.props.created_at).fromNow()}
             </Text>
           </View>
           <Text style={styles.commentText} name="body">
