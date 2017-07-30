@@ -54,6 +54,8 @@
   "FEMALE": "Female",
   "MALE": "Male",
   "RESET_PASSWORD": "Reset My Password",
-  "PASSWORD_INSTRUCTIONS": "Please insert your email and we will send you details on reseting your password"
+  "PASSWORD_INSTRUCTIONS": "Please insert your email and we will send you details on reseting your password",
+  "EMAIL_INVALID": "Please insert a valid email adress",
+  "PASSWORD_INVALID": "Password length should be at least 3 characters"
 }
 
