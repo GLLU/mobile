@@ -3,8 +3,11 @@ const React = require('react-native');
 import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
+
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import FontSizeCalculator from './../../calculators/FontSize';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
 
 module.exports = StyleSheet.create({
   header: {
@@ -58,14 +61,22 @@ module.exports = StyleSheet.create({
   },
   text: {
     color: '#E0E0E0',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    fontSize: new FontSizeCalculator(14).getSize(),
     fontWeight: 'normal',
+    fontFamily: Fonts.contentFont,
   },
   link: {
-    color: 'white',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    color: Colors.white,
+    fontSize: new FontSizeCalculator(14).getSize(),
     fontWeight: 'normal',
+    fontFamily: Fonts.contentFont,
 
+  },
+  clickHere: {
+    color: Colors.darkGreen,
+    fontSize: 13,
+    paddingLeft: 5,
+    fontFamily: Fonts.contentFont,
   },
   uploadImgBtn: {
    borderRadius: 50,
@@ -108,8 +119,9 @@ module.exports = StyleSheet.create({
     paddingLeft: 20,
     lineHeight: 20,
     marginTop: (Platform.OS === 'ios') ? 22 : 0,
+    fontFamily: Fonts.contentFont,
     alignItems: 'stretch',
-    color: '#FFFFFF',
+    color: Colors.white,
     marginLeft: 10,
     top: (Platform.OS === 'ios') ? 0 : 13,
   },
@@ -133,7 +145,8 @@ module.exports = StyleSheet.create({
     flexDirection:'row',
   },
   alreadyTxt: {
-    color: '#FFFFFF',
+    color: Colors.white,
+    fontFamily: Fonts.contentFont,
     fontSize: 16,
     opacity: 0.8
   },

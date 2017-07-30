@@ -263,7 +263,7 @@ class SignUpPage extends Component {
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text
-                    style={{ color: '#009688', fontSize: 13, paddingLeft: 5 }}>Click Here</Text></TouchableOpacity>
+                    style={styles.clickHere}>Click Here</Text></TouchableOpacity>
                 </View>
               </KeyboardAvoidingView>
 

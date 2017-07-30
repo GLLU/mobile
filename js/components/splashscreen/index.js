@@ -127,7 +127,7 @@ class SplashPage extends Component {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <TouchableOpacity onPress={this.handleEmailSigninPress }><Text style={{color:'#009688', fontSize:13, paddingLeft:5}}>Login Here</Text></TouchableOpacity>
+            <TouchableOpacity onPress={this.handleEmailSigninPress }><Text style={styles.loginTxt}>Login Here</Text></TouchableOpacity>
           </View>
         </View>
     )

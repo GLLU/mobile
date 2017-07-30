@@ -5,6 +5,7 @@ import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, Vie
 const deviceWidth = Dimensions.get('window').width;
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Colors from '../../../styles/Colors.styles';
+import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   center: {
@@ -12,11 +13,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'white',
+    color: Colors.white,
     fontWeight: '600',
     textAlign: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
+    fontFamily: Fonts.regularFont,
   },
   basicStyle:{
     width: generateAdjustedSize(265),

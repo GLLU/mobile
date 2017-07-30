@@ -1,16 +1,18 @@
-
 const React = require('react-native');
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import FontSizeCalculator from './../../calculators/FontSize';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 
 module.exports = StyleSheet.create({
   header: {
     backgroundColor: 'transparent',
-    flex:1,
-    flexDirection:'row',
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center'
   },
   headerTitle: {
@@ -59,9 +61,9 @@ module.exports = StyleSheet.create({
   uploadImgBtn: {
     borderRadius: 50,
     backgroundColor: '#FFFFFF',
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   uploadImgIcon: {
     backgroundColor: 'transparent',
@@ -91,12 +93,12 @@ module.exports = StyleSheet.create({
     width: 100,
   },
   addOpacity: {
-      opacity: 0.8
+    opacity: 0.8
   },
   confirmPass: {
     paddingBottom: 10
   },
-  genderSelectContainer:{
+  genderSelectContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -109,7 +111,8 @@ module.exports = StyleSheet.create({
     lineHeight: 20,
     marginTop: (Platform.OS === 'ios') ? 20 : 0,
     alignItems: 'stretch',
-    color: '#FFFFFF',
+    fontFamily: Fonts.contentFont,
+    color: Colors.white,
     marginLeft: 10,
     top: (Platform.OS === 'ios') ? 0 : 13,
   },
@@ -124,16 +127,25 @@ module.exports = StyleSheet.create({
     opacity: 0.8
   },
   validationPassed: {
-    backgroundColor: '#009688'
+    backgroundColor: Colors.darkGreen,
   },
   alreadyBox: {
     alignSelf: 'center',
-    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   alreadyTxt: {
-    color: '#FFFFFF',
-    fontSize: 16,
+    color: Colors.white,
+    fontFamily: Fonts.contentFont,
+    fontSize: generateAdjustedSize(18),
     opacity: 0.8
+  },
+  clickHere: {
+    color: Colors.darkGreen,
+    fontSize: generateAdjustedSize(16),
+    paddingLeft: 5,
+    fontFamily: Fonts.contentFont,
   },
   alreadyBtn: {
     backgroundColor: 'transparent',
@@ -141,25 +153,27 @@ module.exports = StyleSheet.create({
     paddingHorizontal: 5,
     alignItems: 'flex-start',
     shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0,
-      paddingTop: (Platform.OS === 'ios') ? 0 : 5,
+    shadowRadius: 0,
+    elevation: 0,
+    paddingTop: (Platform.OS === 'ios') ? 0 : 5,
   },
-  genderBtnContainer:{
-      flex: 1,
-      alignItems: 'center',
-      marginTop: deviceHeight/4
+  genderBtnContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: deviceHeight / 4
   },
-  genderImage:{
-      width: 130,
-      height: 130,
-      borderRadius: 65
+  genderImage: {
+    width: 130,
+    height: 130,
+    borderRadius: 65
   },
-  genderLabel:{
-      color: '#FFFFFF',
-      alignSelf: 'center',
-      marginTop: 15,
-      opacity: 0.8
+  genderLabel: {
+    color: Colors.white,
+    alignSelf: 'center',
+    fontSize: generateAdjustedSize(18),
+    marginTop: 15,
+    opacity: 0.8,
+    fontFamily: Fonts.regularFont,
   },
   bottomContainerContent: {
     justifyContent: 'center',
@@ -170,12 +184,12 @@ module.exports = StyleSheet.create({
   },
   text: {
     color: '#E0E0E0',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    fontSize: generateAdjustedSize(14),
     fontWeight: 'normal',
   },
   link: {
-    color: 'white',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    color: Colors.white,
+    fontSize: generateAdjustedSize(14),
     fontWeight: 'normal',
 
   },

@@ -196,7 +196,7 @@ render()
               <View style={styles.alreadyBox}>
                 <Text style={styles.alreadyTxt}>Forgot your password?</Text>
                 <TouchableOpacity onPress={this.handleForgotPasswordPress.bind(this)}><Text
-                  style={{ color: '#009688', fontSize: 13, paddingLeft: 5 }}>Click Here</Text></TouchableOpacity>
+                  style={styles.clickHere}>Click Here</Text></TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
           </Content>
