@@ -32,7 +32,7 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
         number: 1,
       },
     });
-    dispatch(startFechting({feedType, isLoading: true}));
+    dispatch(startFechting(feedType));
     delete query.page;
     return LooksService.getLooks({...query, 'page[size]': 10, 'page[number]': 1}).then((data) => {
       if (data) {
@@ -41,7 +41,7 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
         dispatch(setFeedData({flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType}));
-        dispatch(finishFechting({feedType}));
+        dispatch(finishFechting(feedType));
         dispatch(loadMore(feedType));
         Promise.resolve(data);
       } else {
@@ -118,17 +118,17 @@ export function setLooksData(data: object) {
   };
 }
 
-export function startFechting(loadingFeed: object) {
+export function startFechting(feedType: string) {
   return {
     type: START_FETCHING,
-    loadingFeed,
+    feedType: feedType,
   };
 }
 
-export function finishFechting(loadingFeed: string) {
+export function finishFechting(feedType: string) {
   return {
     type: FINISH_FETCHING,
-    loadingFeed,
+    feedType: feedType,
   };
 }
 

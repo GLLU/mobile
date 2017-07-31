@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Image, View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import Colors from '../../styles/Colors.styles';
-import FeedActiveFilter from './items/FeedActiveFilter';
+import FilterTag from './items/FilterTag';
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -34,7 +34,7 @@ class FeedFilters extends Component {
 
   getFilters() {
     return _.map(this._getFilterParameters(), (filter, index) => {
-      return <FeedActiveFilter key={index} title={filter} removeFilter={this._removeFeedFilter}/>
+      return <FilterTag key={index} title={filter} onRemove={this._removeFeedFilter}/>
     })
   }
 
@@ -51,10 +51,10 @@ class FeedFilters extends Component {
   _removeFeedFilter(filter: string) {
     const {query, getFeed} = this.props
     const clonedQuery = _.cloneDeep(query);
-    const boom = _.findKey(this.props.query, (value) => {
+    const deletedFilter = _.findKey(this.props.query, (value) => {
       return value === filter;
     })
-    delete clonedQuery[boom];
+    delete clonedQuery[deletedFilter];
     getFeed(clonedQuery);
   }
 

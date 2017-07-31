@@ -1,5 +1,5 @@
-import { SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA, FINISH_FETCHING, START_FETCHING } from '../actions/feed';
-import { REHYDRATE } from 'redux-persist/constants';
+import {SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA, FINISH_FETCHING, START_FETCHING} from '../actions/feed';
+import {REHYDRATE} from 'redux-persist/constants';
 
 const initialState = {
   bestMatch: {
@@ -60,7 +60,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_FLAT_LOOKS_FEED_DATA: {
-      const { query, meta, flatLooksIdData, feedType } = action.payload
+      const {query, meta, flatLooksIdData, feedType} = action.payload
       return {
         ...state,
         [feedType]: {
@@ -77,7 +77,7 @@ export default function (state = initialState, action) {
       };
     }
     case START_FETCHING: {
-      const { feedType } = action.loadingFeed
+      const feedType = action.feedType
       return {
         ...state,
         [feedType]: {
@@ -87,7 +87,7 @@ export default function (state = initialState, action) {
       };
     }
     case FINISH_FETCHING: {
-      const { feedType } = action.loadingFeed
+      const feedType = action.feedType
       return {
         ...state,
         [feedType]: {

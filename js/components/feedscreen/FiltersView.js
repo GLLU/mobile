@@ -115,7 +115,7 @@ class FiltersView extends BaseComponent {
     return (
       <View style={styles.container}>
         <View style={styles.TopRow}>
-          <Text style={styles.filterByText}>{I18n.t('Filter By')}</Text>
+          <Text style={styles.filterByText}>{I18n.t('FILTER_BY')}</Text>
           <View style={styles.clearRow}>
             <TouchableOpacity onPress={this._resetFilters}>
               <Text style={styles.cleaResetText}>{I18n.t('RESET FILTERS')}</Text>

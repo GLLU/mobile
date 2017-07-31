@@ -30,35 +30,30 @@ const styles = StyleSheet.create({
 
 type Props = {
   title: string,
-  removeFilter: (string) => void
+  onRemove: (string) => void
 };
 
-class FeedActiveFilter extends Component {
+class FilterTag extends Component {
 
   props: Props;
 
   constructor(props: Props) {
     super(props);
-    this._removeFilter = this._removeFilter.bind(this);
-  }
-
-  _removeFilter() {
-
   }
 
   render() {
-    const {title, removeFilter} = this.props;
+    const {title, onRemove} = this.props;
     if (title.length > 0) {
       return (
         <View style={styles.container}>
           <Text style={styles.filterName}>{title}</Text>
           <TouchableOpacity
             activeOpacity={0.5} style={{paddingHorizontal: 5, justifyContent: 'center'}}
-            onPress={() => removeFilter(this.props.title)}>
+            onPress={() => onRemove(this.props.title)}>
             <Image source={removeIcon} resizeMode={'contain'}
                    style={{
-                     width: 10,
-                     height: 10,
+                     width: generateAdjustedSize(12),
+                     height: generateAdjustedSize(12),
                    }}/>
           </TouchableOpacity>
         </View>
@@ -69,5 +64,5 @@ class FeedActiveFilter extends Component {
   }
 }
 
-export default FeedActiveFilter;
+export default FilterTag;
 

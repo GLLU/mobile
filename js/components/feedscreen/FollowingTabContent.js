@@ -29,7 +29,7 @@ import Colors from '../../styles/Colors.styles';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
-import FeedActiveFilter from './items/FeedActiveFilter';
+import FeedActiveFilter from './items/FilterTag';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
