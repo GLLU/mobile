@@ -1,14 +1,17 @@
 'use strict';
 
 import {connect} from 'react-redux';
-import {getLookLikes, initLookLikes} from '../../actions';
+import {getBestMatchFeed} from '../../actions/feed';
+import {addSearchTermHistoryToLooks, addSearchTermHistoryToPeople, getUsers} from '../../actions/search';
 import asScreen from "../common/containers/Screen"
 import SearchScreen from "./SearchScreen"
 
 function bindAction(dispatch) {
   return {
-    getLookLikes: (id, pageNumber, pageSize) => dispatch(getLookLikes(id, pageNumber, pageSize)),
-    initLookLikes: () => dispatch(initLookLikes()),
+    getFeed: query => dispatch(getBestMatchFeed(query)),
+    addSearchTermHistoryToLooks: query => dispatch(addSearchTermHistoryToLooks(query)),
+    addSearchTermHistoryToPeople: query => dispatch(addSearchTermHistoryToPeople(query)),
+    getUsers: query => dispatch(getUsers(query)),
   };
 }
 

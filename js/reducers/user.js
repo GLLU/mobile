@@ -1,6 +1,6 @@
-import { SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN } from '../actions/user';
-import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
-import { REHYDRATE } from 'redux-persist/constants';
+import {SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN} from '../actions/user';
+import {COMPLETE_EDIT_BODY_MEASURE} from '../actions/myBodyMeasure';
+import {REHYDRATE} from 'redux-persist/constants';
 
 import NetworkManager from '../network/NetworkManager';
 
@@ -42,6 +42,7 @@ const ACTION_HANDLERS = {
   [REHYDRATE]: (state, action) => ({
     ...state,
     ...action.payload.user,
+    ...action.payload.search,
   }),
   [RESET_STATE]: (state, action) => ({
     ...initialState,

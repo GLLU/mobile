@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, Platform, View, TouchableHighlight } from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, TextInput, Text, Platform, View, TouchableOpacity, Image} from 'react-native';
 import withAnalytics from '../common/analytics/WithAnalytics';
 import _ from 'lodash';
 import FontSizeCalculator from './../../calculators/FontSize';
+const searchIcon = require('../../../images/icons/search-black.png');
+const clear = require('../../../images/icons/cancel-clear-x.png');
 
 const styles = StyleSheet.create({
   searchBar: {
@@ -11,13 +13,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexGrow: 1,
-    borderRadius: 10,
   },
   searchInput: {
     borderBottomWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingLeft:10,
+    paddingLeft: 10,
     flex: 1,
     backgroundColor: 'white',
     fontFamily: 'PlayfairDisplay-Regular',
@@ -37,11 +38,23 @@ const styles = StyleSheet.create({
     height: 20,
     width: 65
   },
-  clearText: {
-    color: '#757575',
-    fontSize: new FontSizeCalculator(12).getSize(),
-
+  clearContainer: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
+  clearText: {
+    height: 10,
+    width: 10,
+    alignSelf: 'center',
+  },
+  searchIcon: {
+    height: 20,
+    width: 20,
+    padding: 5,
+    marginLeft: 10
+  }
 });
 
 class SearchBar extends Component {
@@ -52,8 +65,9 @@ class SearchBar extends Component {
 
   constructor(props) {
     super(props);
-    this.clearSearch=this.clearSearch.bind(this);
-    this.handleTextInput=this.handleTextInput.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
+    this.handleTextInput = this.handleTextInput.bind(this);
+    this._getFeed = this._getFeed.bind(this);
     this.doSearch = _.debounce(this._doSearch, 500);
     this.state = {
       text: ''
@@ -89,18 +103,27 @@ class SearchBar extends Component {
     this.props.handleSearchInput('')
   }
 
+  _getFeed() {
+    this.props.handleSearch();
+    //this.props.toggleFiltersMenus();
+  }
+
   render() {
     return (
       <View style={styles.searchBar}>
+        <TouchableOpacity onPress={this._getFeed}>
+          <Image style={styles.searchIcon} resizeMode={'contain'} source={searchIcon}/>
+        </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
           placeholder='Search'
           underlineColorAndroid='transparent'
           onChangeText={this.handleTextInput}
           value={this.state.text}/>
-        <TouchableHighlight onPress={this.clearSearch} style={styles.btnCloseFilter}>
-          <Text style={styles.clearText}>Clear</Text>
-        </TouchableHighlight>
+        <TouchableOpacity onPress={this.clearSearch}
+                          style={styles.clearContainer}>
+          <Image source={clear} style={styles.clearText}/>
+        </TouchableOpacity>
       </View>
     )
   }
