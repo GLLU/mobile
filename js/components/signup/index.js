@@ -281,7 +281,7 @@ class SignUpPage extends Component {
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text
-                    style={styles.clickHere}>Click Here</Text></TouchableOpacity>
+                    style={styles.clickHere}>{i18n.t('CLICK_HERE')}</Text></TouchableOpacity>
                 </View>
               </KeyboardAvoidingView>
 

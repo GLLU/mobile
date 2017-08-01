@@ -5,6 +5,7 @@ import listenToAppState from '../common/eventListeners/AppStateListener'
 import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Container, Content, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import i18n from 'react-native-i18n';
 import Utils from '../../utils'
 import { connect } from 'react-redux';
 import styles from './styles';
@@ -127,7 +128,7 @@ class SplashPage extends Component {
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
-            <TouchableOpacity onPress={this.handleEmailSigninPress }><Text style={styles.loginTxt}>Login Here</Text></TouchableOpacity>
+            <TouchableOpacity onPress={this.handleEmailSigninPress }><Text style={styles.loginTxt}>{i18n.t('LOGIN')}</Text></TouchableOpacity>
           </View>
         </View>
     )
