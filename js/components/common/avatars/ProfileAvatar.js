@@ -72,7 +72,7 @@ class ProfileAvatar extends PureComponent {
       borderRadius = style.width / 2;
     }
     return (
-      <Image source={{ uri: avatarUrl }} style={[this.getContainerStyle(), style]} borderRadius={borderRadius}>
+      <Image source={{ uri: avatarUrl }} style={[this.getContainerStyle(), style, {borderRadius}]} borderRadius={borderRadius}>
         {this.renderOverlay(isEditable, isLoading, style)}
       </Image>
     );
@@ -98,7 +98,6 @@ class ProfileAvatar extends PureComponent {
     return isEditable ? isLoading ?
       <Spinner color="white" style={styles.profilePicBtn} /> :
       <Image source={cameraWhite} style={styles.profilePicBtn} resizeMode={'contain'} />
-
       : null;
   }
 

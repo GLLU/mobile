@@ -15,7 +15,7 @@ import BestMatchLooks from './components/looksScreen/LooksBestMatchContainer';
 import WhatsHotLooks from './components/looksScreen/LooksWhatsHotContainer';
 import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
-import NotificationsScreen from './components/notificationsscreen';
+import NotificationsScreen from './components/notificationsscreen/NotificationsContainer';
 import SettingsScreen from './components/settingsScreen/SettingsContainer';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import FinishLookScreen from './components/finishLookScreen';

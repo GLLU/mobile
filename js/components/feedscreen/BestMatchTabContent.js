@@ -25,11 +25,13 @@ import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from "../common/buttons/SolidButton";
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -393,14 +395,14 @@ class BestMatchTabContent extends BaseComponent {
     const {saveBodyShape} = this.props;
 
     return (
-      <View style={{alignItems: 'center'}}>
-        <Text>Show your body type...</Text>
-        <ScrollView>
+      <View style={{flexGrow: 1, backgroundColor: 'white', alignItems: 'center'}}>
+        <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
+        <ScrollView contentOffset={20}>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
             onPick={() => this.toggleBodyTypeModal(false)}/>
+          <SolidButton label="CHOOSE" onPress={saveBodyShape}/>
         </ScrollView>
-        <SolidButton label="CHOOSE" onPress={saveBodyShape}/>
       </View>
     );
   }
@@ -408,6 +410,14 @@ class BestMatchTabContent extends BaseComponent {
 
 const
   styles = StyleSheet.create({
+    bodyShapeLegend: {
+      marginHorizontal: 16,
+      marginVertical: 12,
+      textAlign: 'center',
+      fontFamily: Fonts.contentFont,
+      color: Colors.black,
+      fontSize: generateAdjustedSize(16),
+    },
     tab: {
       backgroundColor: '#FFFFFF',
       flex: 1,
@@ -448,6 +458,4 @@ const
     },
   });
 
-export
-default
-BestMatchTabContent;
+export default BestMatchTabContent;

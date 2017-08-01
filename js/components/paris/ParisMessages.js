@@ -5,6 +5,7 @@ import { TouchableOpacity, Image,View, Text, StyleSheet, Dimensions, Platform  }
 import { connect } from 'react-redux';
 import { hideParisBottomMessage } from '../../actions/paris';
 import FontSizeCalculator from './../../calculators/FontSize';
+import Fonts from '../../styles/Fonts.styles';
 const w = Dimensions.get('window').width;
 const ParisHead = require('../../../images/paris/Paris.png');
 
@@ -12,13 +13,10 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 0,
-    width: w - 20,
-    marginLeft: 10,
-    marginRight: 10,
-    borderRadius: 5,
     padding: 5,
     flexDirection: 'row',
-    minHeight: 35
+    minHeight: 35,
+    opacity: 0.9,
   },
   headerBtn: {
     backgroundColor: 'transparent',
@@ -28,10 +26,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textStyle: {
-    color: 'grey',
+    color: 'white',
     padding: 3,
     textAlign: 'center',
     fontSize: new FontSizeCalculator(16).getSize(),
+    fontFamily: Fonts.contentFont,
     flex: 9
 
   },
@@ -62,7 +61,7 @@ class ParisMessages extends Component {
   render() {
     let text = this.props.message.length > 0 ? `${this.props.message}` : ''
     return (
-      <View style={[styles.container, {backgroundColor: 'white'}]}>
+      <View style={[styles.container, {backgroundColor: 'black'}]}>
         <View style={styles.headerBtn}>
           <Image source={ParisHead} style={styles.cancelEdit}/>
         </View>

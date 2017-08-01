@@ -116,12 +116,16 @@ class ItemPopup extends Component {
   }
 
   render() {
+
+    const { category, brand, is_verified } = this.props;
+
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>
-          <Text style={styles.brand}>{this.getTitle(this.props.brand)}</Text>
+          <Text style={styles.brand}>{this.getTitle(brand)}</Text>
+          { category ? <Text style={styles.category}>{category.name}</Text> : null }
           <SolidButton
-            label={this.props.is_verified ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
+            label={is_verified ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
             style={{ backgroundColor: Colors.black, marginHorizontal: 8, width: 200 }} onPress={this.handleOpenLink} />
         </View>
       </View>

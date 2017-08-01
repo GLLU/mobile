@@ -43,6 +43,7 @@ const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
   return {
     isLoading: state.feed.bestMatch.isLoading,
+    currentBodyType: state.myBodyType.currentBodyType.body_type,
     isTabOnFocus: ownProps.isTabOnFocus,
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,

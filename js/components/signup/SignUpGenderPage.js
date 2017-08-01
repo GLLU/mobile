@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
 import { Container, Content, StyleProvider, getTheme } from 'native-base';
+import i18n from 'react-native-i18n';
 import asScreen from '../common/containers/Screen'
 import styles from './styles'
 import glluTheme from '../../themes/gllu-theme';
@@ -40,7 +41,7 @@ class SignUpGenderPage extends Component {
                       source={require('../../../images/genders/female.png')}
                       style={styles.genderImage}
                     />
-                    <Text style={styles.genderLabel}>Female</Text>
+                    <Text style={styles.genderLabel}>{i18n.t('FEMALE')}</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.handleGenderPress.bind(this, 'male')}>
@@ -49,7 +50,7 @@ class SignUpGenderPage extends Component {
                       source={require('../../../images/genders/male.png')}
                       style={styles.genderImage}
                     />
-                    <Text style={styles.genderLabel}>Male</Text>
+                    <Text style={styles.genderLabel}>{i18n.t('MALE')}</Text>
                   </View>
                 </TouchableOpacity>
                </View>

@@ -125,7 +125,7 @@ class MenuAction extends Component {
     const {label, postActionMessage, areYouSureMessage} = this.props;
     const {isPressed, isDone} = this.state;
     if (!isPressed || !postActionMessage) {
-      return <SolidButton style={{backgroundColor: Colors.primaryColor}} label={label} onPress={this._onPress}/>
+      return <SolidButton label={label} onPress={this._onPress}/>
     }
     if (isDone) {
       return this.renderPostActionMessage(postActionMessage);

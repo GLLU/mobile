@@ -22,8 +22,12 @@ export default function (state = initialState, action) {
         ...state,
         allNotifications,
         page: action.payload.page,
-        newNotifications
+        newNotifications,
+        isLoading: false,
       };
+    }
+    case actions.START_FETCHING_NOTIFICATIONS: {
+      return { ...state, isLoading: true, allNotifications: [] };
     }
     case actions.ADD_USER_NOTIFICATION: {
       let existNotifications = state.allNotifications;

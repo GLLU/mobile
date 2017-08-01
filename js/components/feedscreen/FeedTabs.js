@@ -8,6 +8,7 @@ import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
+import Fonts from '../../styles/Fonts.styles';
 const filterIcon = require('../../../images/icons/Filter_black.png');
 const deviceWidth = Dimensions.get('window').width;
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
@@ -31,7 +32,6 @@ class FeedTabs extends Component {
       filterIsOpen: false,
     };
   }
-
 
   _handleIndexChange = index => this.setState({index});
 
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   labelStyle: {
     color: Colors.black,
-    fontWeight: '600',
+    fontFamily: Fonts.regularFont,
     textAlign: 'center',
     fontSize: generateAdjustedSize(12),
   },
@@ -142,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withAnalytics(FeedTabs)
+export default withAnalytics(FeedTabs);

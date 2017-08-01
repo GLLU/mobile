@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import FollowView from '../../profileScreen/follows/FollowView'
 import { connect } from "react-redux";
-import { followUpdate, unFollowUpdate } from "../../../actions/follows";
 import { noop } from "lodash";
+import { followUpdate, unFollowUpdate } from "../../../actions/follows";
+import FollowView from '../../profileScreen/follows/FollowView'
+import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,12 +20,13 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   followName: {
-    flex: 0.5,
-    color: 'black',
+    fontFamily: Fonts.boldContentFont,
+    fontSize: 16,
   },
   followUsername: {
     flex: 0.5,
-    color: '#00a9ff'
+    fontFamily: Fonts.contentFont,
+    fontSize: 14,
   },
   photoContainer: {
     flex: 2,

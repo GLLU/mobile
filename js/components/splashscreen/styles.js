@@ -1,10 +1,11 @@
-
-import React , { Platform } from 'react-native';
+import React, {Platform} from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import FontSizeCalculator from './../../calculators/FontSize';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
 
 module.exports = StyleSheet.create({
   container: {
@@ -117,34 +118,42 @@ module.exports = StyleSheet.create({
   },
   text: {
     color: '#E0E0E0',
-    fontSize: new FontSizeCalculator(12).getSize(),
-    fontWeight: 'normal',
+    fontSize: new FontSizeCalculator(14).getSize(),
+    fontFamily: Fonts.contentFont,
   },
   link: {
-    color: 'white',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    color: Colors.white,
+    fontSize: new FontSizeCalculator(14).getSize(),
     fontWeight: 'normal',
+    fontFamily: Fonts.contentFont,
 
   },
   alreadyBox: {
-      alignSelf: 'center',
-      flexDirection:'row',
-      height: 25,
-      marginTop: 5
+    alignSelf: 'center',
+    flexDirection: 'row',
+    height: 25,
+    marginTop: 5,
   },
   alreadyTxt: {
-      color: '#FFFFFF',
-      fontSize: 13,
-      opacity: 1,
+    color: Colors.white,
+    fontFamily: Fonts.contentFont,
+    fontSize: 16,
+    opacity: 1,
+  },
+  loginTxt: {
+    color: Colors.darkGreen,
+    fontSize: 16,
+    paddingLeft: 5,
+    fontFamily: Fonts.contentFont,
   },
   alreadyBtn: {
-      backgroundColor: 'transparent',
-      paddingVertical: 5,
-      paddingHorizontal: 5,
-      alignItems: 'flex-start',
-      shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0,
-      paddingTop: (Platform.OS === 'ios') ? 1 : 7,
+    backgroundColor: 'transparent',
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    alignItems: 'flex-start',
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+    paddingTop: (Platform.OS === 'ios') ? 1 : 7,
   },
 });
