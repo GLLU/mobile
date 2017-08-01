@@ -43,13 +43,22 @@ class FeedPage extends Component {
     this.uploadLook = this.uploadLook.bind(this);
     this.showBottomCameraButton = this.showBottomCameraButton.bind(this);
     this._renderFeed = this._renderFeed.bind(this);
+    this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
     this.state = {
       name: '',
       searchTerm: '',
       searchStatus: false,
       contentHeight: null,
       showBottomCamera: true,
-      fadeAnimContentOnPress: new Animated.Value(10)
+      fadeAnimContentOnPress: new Animated.Value(10),
+      feedsRoute: {
+        index: 0,
+        routes: [
+          {key: 'following', title: 'Following'},
+          {key: 'bestMatch', title: 'Best Match'},
+          {key: 'hot', title: "What's Hot"},
+        ],
+      },
     };
   }
 
@@ -100,8 +109,6 @@ class FeedPage extends Component {
         ).start();
       }
     }
-
-
   }
 
   _handleSearchStatus(newStatus) {
@@ -143,32 +150,42 @@ class FeedPage extends Component {
           <Image source={cameraIcon} style={styles.btnImage}/>
         </TouchableOpacity>
       </Animated.View>
-    )
+    );
   }
 
   _renderFeed() {
     const {reloading, clearedField, navigateTo} = this.props;
     return (
-      <FeedTabs reloading={reloading}
-                clearedField={clearedField}
-                navigateTo={navigateTo}
-                showBottomCameraButton={this.showBottomCameraButton}/>
+      <FeedTabs
+        reloading={reloading}
+        clearedField={clearedField}
+        navigateTo={navigateTo}
+        showBottomCameraButton={this.showBottomCameraButton}
+        feedsRoute={this.state.feedsRoute}
+        handleIndexChange={this._handleTabsIndexChange}/>
     );
   }
+
+  _handleTabsIndexChange = (index) => {
+    this.setState({feedsRoute: {...this.state.feedsRoute, index}});
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
-          <MainBarView user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
-                       gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
-                       handleSearchStatus={this._handleSearchStatus}
-                       handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
+          <MainBarView
+            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
+            gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
+            handleSearchStatus={this._handleSearchStatus}
+            handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}
+            handleIndexChange={this._handleTabsIndexChange}/>
         </View>
         {this._renderFeed()}
         {this.renderBottomCamera()}
-        <Modal animationType="slide" visible={this.props.modalShowing}
-               style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
+        <Modal
+          animationType="slide" visible={this.props.modalShowing}
+          style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
           <BodyTypePicker goBack={this.props.hideBodyTypeModal} onPick={this._onPickBodyType}/>
         </Modal>
       </View>

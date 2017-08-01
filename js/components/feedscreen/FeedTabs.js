@@ -1,47 +1,38 @@
-import React, { PureComponent } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import React, {PureComponent} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
 import Colors from '../../styles/Colors.styles';
-import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
+import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 
 export default class FeedTabs extends PureComponent {
-  state = {
-    index: 0,
-    routes: [
-      { key: 'following', title: 'Following' },
-      { key: 'bestMatch', title: 'My Size' },
-      { key: 'hot', title: "What's Hot" },
-    ],
-  };
 
-  _handleIndexChange = index => this.setState({ index });
 
   _renderHeader = props => <TabBar
     tabStyle={styles.tabStyle} style={styles.TabBar}
     labelStyle={styles.labelStyle}
     indicatorStyle={styles.indicatorStyle} {...props} />;
 
-  _renderScene = ({ route }) => {
-    const { navigateTo, showBottomCameraButton } = this.props;
+  _renderScene = ({route}) => {
+    const {navigateTo, showBottomCameraButton} = this.props;
 
     switch (route.key) {
       case 'following':
         return (<FollowingTabContent
           navigateTo={navigateTo}
-          showBottomCameraButton={showBottomCameraButton} />);
+          showBottomCameraButton={showBottomCameraButton}/>);
       case 'bestMatch':
         return (<BestMatchTabContent
-          navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
-          showBottomCameraButton={showBottomCameraButton} />);
+          navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 1}
+          showBottomCameraButton={showBottomCameraButton}/>);
       case 'hot':
         return (<WhatsHotTabContent
           navigateTo={navigateTo}
-          showBottomCameraButton={showBottomCameraButton} />);
+          showBottomCameraButton={showBottomCameraButton}/>);
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
+        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
           ;
     }
   };
@@ -50,10 +41,10 @@ export default class FeedTabs extends PureComponent {
     return (
       <TabViewAnimated
         style={styles.container}
-        navigationState={this.state}
+        navigationState={this.props.feedsRoute}
         renderScene={this._renderScene}
         renderHeader={this._renderHeader}
-        onRequestChangeTab={this._handleIndexChange}
+        onRequestChangeTab={this.props.handleIndexChange}
       />
     );
   }
