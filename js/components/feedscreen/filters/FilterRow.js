@@ -111,15 +111,15 @@ class FilterRow extends Component {
     const arrowIcon = this.state.openFilter ? arrowDown : arrowRight;
     const {currentFilterRowName, filtersAnimHeight} = this.state;
     const {currentFilter, title} = this.props;
-    console.log('current filter', currentFilter)
     return (
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={this.toggleFilterRow}>
           <View
             style={styles.rowHeaderContainer}>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{flexDirection: 'column', alignSelf: 'center'}}>
               <Text style={styles.rowTitle}>{title}</Text>
-              <Text style={styles.selectedFilter}>{currentFilterRowName}</Text>
+              {currentFilterRowName.length > 1 ?
+                <Text style={styles.selectedFilter}>{currentFilterRowName}</Text> : null}
             </View>
             <Image style={styles.arrows} source={arrowIcon}/>
           </View>

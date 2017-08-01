@@ -7,7 +7,7 @@ import {
   loadCategories,
   loadOccasionTags,
 } from '../../actions/filters';
-
+import I18n from 'react-native-i18n';
 import {
   FEED_TYPE_BEST_MATCH,
   FEED_TYPE_FOLLOWING,
@@ -16,6 +16,7 @@ import {
   getWhatsHotFeed,
   getFollowingFeed,
 } from '../../actions/feed';
+
 
 import {bodyTypesMapper} from '../../mappers/filterMapper';
 
@@ -32,6 +33,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 }
 
 function mapStateToProps(state, ownProps) {
+  const CATEGORIES = I18n.t('CATEGORIES');
+  const EVENTS = I18n.t('EVENTS');
+  const BODY_SHAPES = I18n.t('BODY_SHAPES');
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
   bodyTypes = bodyTypesMapper(bodyTypes);
   const gender = state.user.gender;
@@ -39,7 +43,10 @@ function mapStateToProps(state, ownProps) {
   return {
     gender,
     defaultFilters: {...state.feed[ownProps.currentFeedTab].query, gender},
-    filters: [state.filters.categories, state.filters.occasion_tags, filteredBodytypes],
+    filters: [{title: CATEGORIES, filters: state.filters.categories}, {
+      title: EVENTS,
+      filters: state.filters.occasion_tags
+    }, {title: BODY_SHAPES, filters: filteredBodytypes}],
     currentFeedTab: ownProps.currentFeedTab
   };
 }
