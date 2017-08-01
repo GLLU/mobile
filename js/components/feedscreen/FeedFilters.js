@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Image, View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import Colors from '../../styles/Colors.styles';
-import TagStringButton from '../common/TagStringButton';
+import TagStringButton from '../common/buttons/TagStringButton';
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
