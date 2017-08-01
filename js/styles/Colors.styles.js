@@ -8,6 +8,7 @@ const Colors = {
   white: '#FFFFFF',
   black: '#000000',
   lightGray: '#c0c0c0',
+  darkGreen: '#009688',
   separatorGray: '#d6d6d6',
   usernameColor: '#00a9ff',
   transparent: 'transparent',

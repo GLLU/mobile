@@ -1,12 +1,12 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image,View, Text  } from 'react-native';
-import styles from './styles';
+import { TouchableOpacity, Image,View, Text, StyleSheet, Dimensions, Platform  } from 'react-native';
 import { connect } from 'react-redux';
-import { hideError, hideWarning, hideInfo, hideFatalError } from '../../actions/errorHandler';
 
-const cancelEdit = require('../../../images/icons/cancelEdit.png');
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
+import { hideError, hideWarning, hideInfo, hideFatalError } from '../../actions/errorHandler';
 
 class ErrorHandler extends Component {
 
@@ -33,7 +33,7 @@ class ErrorHandler extends Component {
   }
 
   componentDidMount(){
-    setTimeout(()=>this.hide(),3000);
+    setTimeout(()=>this.hide(),2000);
   }
 
   render() {
@@ -43,14 +43,27 @@ class ErrorHandler extends Component {
     let color = this.props.error.length > 0 ? '#993333' : this.props.fatalError.length > 0 ? '#993333' :  this.props.warning.length > 0 ? '#cc9900' : '#3C997E';
     return (
       <View style={[styles.container, {backgroundColor: color}]}>
-        <Text style={styles.textStyle}>{text}</Text>
-        <TouchableOpacity transparent onPress={() => this.hide()} style={styles.headerBtn}>
-          <Image source={cancelEdit} style={styles.cancelEdit}/>
-        </TouchableOpacity>
+        <Text style={styles.messageText}>{text}</Text>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    width: Dimensions.get('window').width,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: Platform.OS === 'ios' ? 20 : 0,
+  },
+  messageText: {
+    fontFamily: Fonts.contentFont,
+    fontSize:14,
+    color:'white'
+  },
+});
 
 
 function bindActions(dispatch) {

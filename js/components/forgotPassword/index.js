@@ -4,6 +4,7 @@ import { Container, Content, StyleProvider, getTheme } from 'native-base';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { Row, Grid } from "react-native-easy-grid";
+import i18n from 'react-native-i18n';
 
 import glluTheme from '../../themes/gllu-theme';
 import { emailRule } from '../../validators';
@@ -70,8 +71,7 @@ class forgotPasswordPage extends Component {
     return (
       <Content scrollEnabled={true}>
         <View style={styles.instuctionsContainer}>
-          <Text style={styles.instuctions}>Please insert your email and we will send you details on reseting your
-            password</Text>
+          <Text style={styles.instuctions}>{i18n.t('PASSWORD_INSTRUCTIONS')}</Text>
         </View>
         <Grid>
           <Row style={styles.formItem}>
@@ -80,13 +80,13 @@ class forgotPasswordPage extends Component {
               keyboardType='email-address'
               placeholderTextColor='lightgrey'
               autoFocus={true}
-              style={[styles.formInput]}
+              style={styles.formInput}
               onChangeText={this.validateEmailInput}/>
             {this.state.email.length > 0 ?
               <IconB size={20} color={'#009688'} name={this.state.emailValid} style={styles.uploadImgIcon}/> : null}
           </Row>
         </Grid>
-        <SolidButton label='Reset My Password'
+        <SolidButton label={i18n.t('RESET_PASSWORD')}
                      style={[styles.formBtn, this.checkValidations() ? styles.validationPassed : null]}
                      onPress={this.forgotPasswordEmail}/>
       </Content>

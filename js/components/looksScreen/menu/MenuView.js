@@ -58,7 +58,7 @@ class MenuView extends Component {
     this._onRequestClose = this._onRequestClose.bind(this);
   }
 
-  renderSeparator = ({key}) => <View key={key} style={{height: 5, backgroundColor: 'black'}}/>;
+  renderSeparator = ({key}) => <View key={key} style={{height: 1, backgroundColor: Colors.lightGray}}/>;
 
   renderShare = () =>
     <MenuAction

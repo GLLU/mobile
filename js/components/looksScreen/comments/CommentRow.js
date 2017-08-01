@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import moment from 'moment'
-import { noop } from 'lodash'
+import moment from 'moment';
+import { noop } from 'lodash';
+import Fonts from '../../../styles/Fonts.styles';
+import Colors from '../../../styles/Colors.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,8 +15,24 @@ const styles = StyleSheet.create({
   photo: {
     width: 40,
     height: 40,
-    borderRadius: 20
+    borderRadius: 20,
   },
+  userName: {
+    fontFamily: Fonts.boldContentFont,
+    fontSize:16,
+  },
+  commentText: {
+    fontFamily: Fonts.contentFont,
+    fontSize:14,
+    flex: 1,
+  },
+  createdAt: {
+    fontFamily: Fonts.regularFont,
+    fontSize: 10,
+    flex: 2,
+    textAlign: 'right',
+    color: Colors.lightGray,
+  }
 });
 
 export default class CommentRow extends Component {
@@ -63,15 +81,15 @@ export default class CommentRow extends Component {
         <View style={{flex:13, flexDirection:'column'}}>
           <View style={{flex:1, flexDirection:'row'}}>
             <TouchableOpacity style={{flex:3}} onPress={this._onUserPress}>
-              <Text style={{fontWeight:'bold'}} name="name">
+              <Text style={styles.userName} name="name">
                 {name}
               </Text>
             </TouchableOpacity>
-            <Text style={{flex:2, fontSize:10, textAlign:'right'}} name="created_at">
-              {moment(this.props.created_at).calendar()}
+            <Text style={styles.createdAt} name="created_at">
+              {moment(this.props.created_at).fromNow()}
             </Text>
           </View>
-          <Text style={{flex:1}} name="body">
+          <Text style={styles.commentText} name="body">
             {this.props.body}
           </Text>
         </View>

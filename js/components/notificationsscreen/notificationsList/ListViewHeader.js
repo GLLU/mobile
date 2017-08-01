@@ -5,6 +5,7 @@ import { ListView, Image, StyleSheet, TouchableOpacity, View, Text, Platform } f
 import { Icon } from 'native-base';
 import * as _ from 'lodash'
 import FontSizeCalculator from './../../../calculators/FontSize';
+import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +15,8 @@ const styles = StyleSheet.create({
     height:60
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   header: {
     flex: 0.5
@@ -23,15 +25,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   notificationsTitle: {
-    fontSize: new FontSizeCalculator(26).getSize(),
+    fontSize: new FontSizeCalculator(18).getSize(),
     color: 'black',
-    fontFamily: 'Times New Roman',
+    fontFamily: Fonts.regularFont,
     flex: 9,
     textAlign: 'center'
   },
   notificationsCount: {
-    fontSize: new FontSizeCalculator(26).getSize(),
-    fontWeight: 'bold',
+    fontSize: new FontSizeCalculator(18).getSize(),
+    fontFamily: Fonts.regularFont,
     color: '#00D7B2',
     textAlign: 'right',
     flex: 2,

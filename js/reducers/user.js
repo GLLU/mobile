@@ -47,6 +47,7 @@ const ACTION_HANDLERS = {
     ...initialState,
     showTutorial: state.showTutorial,
     showBodyModal: state.showBodyModal,
+    hasChoosenBodyShape: state.hasChoosenBodyShape,
   }),
 };
 

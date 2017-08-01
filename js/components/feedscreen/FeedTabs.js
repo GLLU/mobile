@@ -5,6 +5,7 @@ import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
 
 export default class FeedTabs extends PureComponent {
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   },
   labelStyle: {
     color: Colors.black,
-    fontWeight: '600',
+    fontFamily: Fonts.regularFont,
     textAlign: 'center',
     fontSize: generateAdjustedSize(13),
   },

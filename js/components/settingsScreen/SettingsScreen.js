@@ -11,7 +11,9 @@ import {
 } from '../../constants';
 
 import {formatInvitationMessage} from '../../lib/messages/index';
-import FullscreenView from '../common/containers/FullscreenView';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 
 const iconShare = require('../../../images/icons/share.png');
 const iconContact = require('../../../images/icons/contact.png');
@@ -148,26 +150,7 @@ export default SettingsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  header: {
-    backgroundColor: 'transparent',
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: '300',
-    fontFamily: 'Times New Roman',
-    color: '#000',
-    textAlign: 'left',
-  },
-  headerArrow: {
-    color: '#000',
-  },
-  backIcon: {
-    color: '#000',
+    backgroundColor: Colors.white,
   },
   listItem: {
     flexDirection: 'row',
@@ -181,9 +164,8 @@ const styles = StyleSheet.create({
     height: 25,
   },
   listItemText: {
-    fontSize: 16,
-    fontFamily: 'Montserrat-Regular',
-    fontWeight: '400',
+    fontSize: generateAdjustedSize(16),
+    fontFamily: Fonts.subHeaderFont,
   },
 });
 

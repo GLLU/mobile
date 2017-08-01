@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
-
+import Fonts from '../../../styles/Fonts.styles';
+import Colors from '../../../styles/Colors.styles';
 const styles = StyleSheet.create({
   followBtn: {
-    backgroundColor: '#00D7B2',
+    backgroundColor: Colors.secondaryColor,
     height: 25,
     justifyContent: 'center',
     margin: 5,
   },
   followText: {
     textAlign: 'center',
-    color: 'white'
+    fontFamily: Fonts.contentFont,
+    color: Colors.white,
   },
   unfollowBtn: {
     backgroundColor: 'transparent',
@@ -19,11 +21,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 5,
     borderWidth: 2,
-    borderColor: '#00D7B2',
+    borderColor: Colors.secondaryColor,
   },
   unfollowText: {
     textAlign: 'center',
-    color: '#00D7B2'
+    fontFamily: Fonts.contentFont,
+    color: Colors.secondaryColor,
   },
 });
 
