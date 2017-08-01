@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Image, View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import Colors from '../../styles/Colors.styles';
-import FilterTag from './items/FilterTag';
+import TagStringButton from '../common/TagStringButton';
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -34,7 +34,7 @@ class FeedFilters extends Component {
 
   getFilters() {
     return _.map(this._getFilterParameters(), (filter, index) => {
-      return <FilterTag key={index} title={filter} onRemove={this._removeFeedFilter}/>
+      return <TagStringButton key={index} title={filter} onRemove={this._removeFeedFilter}/>
     })
   }
 

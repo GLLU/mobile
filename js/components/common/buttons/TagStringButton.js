@@ -2,10 +2,10 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
-import Colors from '../../../styles/Colors.styles';
-import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import Colors from '../../styles/Colors.styles';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 
-const removeIcon = require('../../../../images/icons/remove_filter_x.png');
+const removeIcon = require('../../../images/icons/remove_filter_x.png');
 
 
 const styles = StyleSheet.create({
@@ -33,7 +33,7 @@ type Props = {
   onRemove: (string) => void
 };
 
-class FilterTag extends Component {
+class TagStringButton extends Component {
 
   props: Props;
 
@@ -64,5 +64,5 @@ class FilterTag extends Component {
   }
 }
 
-export default FilterTag;
+export default TagStringButton;
 
