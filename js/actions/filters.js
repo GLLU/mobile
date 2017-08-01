@@ -1,34 +1,38 @@
 import rest from '../api/rest';
-import { chain } from "lodash";
+import {chain} from "lodash";
 
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_BRANDS = 'SET_BRANDS';
 export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
+export const OPEN_FEED_FILTER = 'OPEN_FEED_FILTER';
+export const CLOSE_FEED_FILTER = 'CLOSE_FEED_FILTER';
 
 export function loadCategories(gender) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      const query= {
+      const query = {
         gender,
         page: {
           size: 200,
           number: 1
         }
       };
-      dispatch(rest.actions.category_tags(query, (err, data) => {
-        if (!err && data) {
+      if (getState().filters.categories.length === 0) {
+        dispatch(rest.actions.category_tags(query, (err, data) => {
+          if (!err && data) {
 
-          resolve(dispatch({
-            type: SET_CATEGORIES,
-            payload: {
-              tags:data.tags,
-              meta:data.meta
-            }
-          }));
-        } else {
-          reject(err);
-        }
-      }));
+            resolve(dispatch({
+              type: SET_CATEGORIES,
+              payload: {
+                tags: data.tags,
+                meta: data.meta
+              }
+            }));
+          } else {
+            reject(err);
+          }
+        }));
+      }
     });
   };
 }
@@ -58,28 +62,55 @@ export function loadBrands(term) {
 }
 
 export function loadOccasionTags(gender) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      const query= {
+      const query = {
         gender,
         page: {
           size: 200,
           number: 1
         }
       };
-      dispatch(rest.actions.occasion_tags(query, (err, data) => {
-        if (!err && data) {
-          resolve(dispatch({
-            type: SET_OCCASION_TAGS,
-            payload: {
-              tags:data.tags,
-              meta:data.meta
-            }
-          }));
-        } else {
-          reject(err);
-        }
-      }));
+      if (getState().filters.occasion_tags.length === 0) {
+        dispatch(rest.actions.occasion_tags(query, (err, data) => {
+          if (!err && data) {
+            resolve(dispatch({
+              type: SET_OCCASION_TAGS,
+              payload: {
+                tags: data.tags,
+                meta: data.meta
+              }
+            }));
+          } else {
+            reject(err);
+          }
+        }));
+      }
     });
+  };
+}
+
+export function toggleFiltersMenus(feedType) {
+  return (dispatch, getState) => {
+    const menuStatus = getState().filters.filterMenuStatus[feedType]
+    if (menuStatus) {
+      dispatch(closeFilterFeedMenu(feedType));
+    } else {
+      dispatch(openFilterFeedMenu(feedType));
+    }
+  };
+}
+
+function openFilterFeedMenu(feedType: string) {
+  return {
+    type: OPEN_FEED_FILTER,
+    feedType,
+  };
+}
+
+function closeFilterFeedMenu(feedType: string) {
+  return {
+    type: CLOSE_FEED_FILTER,
+    feedType,
   };
 }

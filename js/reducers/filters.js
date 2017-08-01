@@ -1,10 +1,16 @@
 import _ from 'lodash';
-import { SET_BRANDS, SET_CATEGORIES, SET_OCCASION_TAGS } from '../actions/filters';
+import {SET_BRANDS, SET_CATEGORIES, SET_OCCASION_TAGS, OPEN_FEED_FILTER, CLOSE_FEED_FILTER} from '../actions/filters';
+import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../actions/feed';
 
 const initialState = {
   occasion_tags: [],
   categories: [],
   brands: [],
+  filterMenuStatus: {
+    [FEED_TYPE_BEST_MATCH]: false,
+    [FEED_TYPE_FOLLOWING]: false,
+    [FEED_TYPE_WHATS_HOT]: false,
+  },
 };
 
 // Action Handlers
@@ -24,15 +30,33 @@ const ACTION_HANDLERS = {
     }
   },
   [SET_BRANDS]: (state, action) => {
-    const brands = _.map(action.payload.brands,brand => _.pick(brand,['id','name']));
+    const brands = _.map(action.payload.brands, brand => _.pick(brand, ['id', 'name']));
     return {
       ...state,
       brands
     }
-  }
+  },
+  [OPEN_FEED_FILTER]: (state, action) => {
+    return {
+      ...state,
+      filterMenuStatus: {
+        ...state.filterMenuStatus,
+        [action.feedType]: true,
+      },
+    };
+  },
+  [CLOSE_FEED_FILTER]: (state, action) => {
+    return {
+      ...state,
+      filterMenuStatus: {
+        ...state.filterMenuStatus,
+        [action.feedType]: false,
+      },
+    };
+  },
 }
 
-export default function reducers (state = initialState, action) {
+export default function reducers(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
   return handler ? handler(state, action) : state
 }

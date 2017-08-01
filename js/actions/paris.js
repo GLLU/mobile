@@ -3,7 +3,7 @@ export const HIDE_PARIS_BOTTOM_MESSAGE = 'HIDE_PARIS_BOTTOM_MESSAGE';
 // export const SHOW_PARIS_ADJUSTABLE_MESSAGE = 'SHOW_PARIS_ADJUSTABLE_MESSAGE';
 // export const HIDE_PARIS_ADJUSTABLE_MESSAGE = 'HIDE_PARIS_ADJUSTABLE_MESSAGE';
 
-export function showParisBottomMessage(message, time = 3) {
+export function showParisBottomMessage(message, time = 5) {
   const payload = {message, time}
   return {
     type: SHOW_PARIS_BOTTOM_MESSAGE,
