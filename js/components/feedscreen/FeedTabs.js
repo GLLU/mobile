@@ -8,12 +8,13 @@ import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
-const cameraIcon = require('../../../images/icons/Filter_black.png');
+const filterIcon = require('../../../images/icons/Filter_black.png');
 const deviceWidth = Dimensions.get('window').width;
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
+import withAnalytics from '../common/analytics/WithAnalytics';
 
 
-export default class FeedTabs extends Component {
+class FeedTabs extends Component {
   constructor(props: object) {
     super(props);
     this._handleIndexChange = this._handleIndexChange.bind(this);
@@ -64,6 +65,7 @@ export default class FeedTabs extends Component {
   };
 
   _toggleFilterMenu() {
+    this.props.logEvent('filterFeed', {feed: this.state.routes[this.state.index].key});
     this.props.toggleFilterMenues(this.state.routes[this.state.index].key);
   }
 
@@ -88,7 +90,7 @@ export default class FeedTabs extends Component {
           renderHeader={this._renderHeader}
           onRequestChangeTab={this._handleIndexChange}
         />
-        { this.state.index === 1 && !hasUserSize ? null : this._renderNavigationButton(cameraIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
+        { this.state.index === 1 && !hasUserSize ? null : this._renderNavigationButton(filterIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
       </View>
     );
   }
@@ -139,3 +141,5 @@ const styles = StyleSheet.create({
     right: 0,
   },
 });
+
+export default withAnalytics(FeedTabs)

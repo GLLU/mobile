@@ -40,6 +40,7 @@ function mapStateToProps(state, ownProps) {
     gender,
     defaultFilters: {...state.feed[ownProps.currentFeedTab].query, gender},
     filters: [state.filters.categories, state.filters.occasion_tags, filteredBodytypes],
+    currentFeedTab: ownProps.currentFeedTab
   };
 }
 

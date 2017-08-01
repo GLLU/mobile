@@ -20,6 +20,7 @@ const deviceWidth = deviceDimensions.width;
 const deviceHeight = Platform.os === 'ios' ? deviceDimensions.height : deviceDimensions.height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import withAnalytics from '../common/analytics/WithAnalytics';
 
 type Props = {
   defaultFilters: object,
@@ -59,7 +60,14 @@ class FiltersView extends BaseComponent {
   }
 
   _getFeed() {
-    this.props.getFeed(this.state.currentFilter);
+    const {currentFilter} = this.state;
+    this.props.logEvent('filterView', {
+      feed: this.props.currentFeedTab,
+      category: currentFilter.category ? currentFilter.category : 'empty',
+      body_type: currentFilter.category ? currentFilter.body_type : 'empty',
+      occasion: currentFilter.category ? currentFilter.occasion : 'empty',
+    });
+    this.props.getFeed(currentFilter);
     this.props.toggleFiltersMenus();
   }
 
@@ -108,6 +116,7 @@ class FiltersView extends BaseComponent {
   }
 
   _cancelFilter() {
+    this.props.logEvent('filterView', 'cancel filtering');
     this.props.toggleFiltersMenus();
   }
 
@@ -183,4 +192,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FiltersView;
+export default withAnalytics(FiltersView);
