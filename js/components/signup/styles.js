@@ -70,14 +70,8 @@ module.exports = StyleSheet.create({
     marginBottom: 5
   },
   formItem: {
-    flex: 1,
-    marginLeft: 20,
-    marginRight: 20,
-    borderBottomWidth: 2,
-    borderColor: 'rgba(192,192,192, .3)',
-    height: 55,
-    paddingLeft: 0,
-    alignItems: 'flex-end'
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   formGroup: {
     flex: 1,
@@ -107,14 +101,21 @@ module.exports = StyleSheet.create({
   },
   formInput: {
     flex: 1,
-    paddingLeft: 20,
-    lineHeight: 20,
-    marginTop: (Platform.OS === 'ios') ? 20 : 0,
+    height: 25,
+    backgroundColor: 'transparent',
     alignItems: 'stretch',
     fontFamily: Fonts.contentFont,
     color: Colors.white,
-    marginLeft: 10,
-    top: (Platform.OS === 'ios') ? 0 : 13,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'white',
+    marginBottom: 16,
+  },
+  inputTitle: {
+    color: Colors.lightGray,
+    fontSize: 14,
+    fontFamily: Fonts.contentFont,
   },
   formBtn: {
     alignSelf: 'center',
