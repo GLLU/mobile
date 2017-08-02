@@ -21,6 +21,21 @@ export const floorWithPrecision = (number: number, precision: number = 0) => {
   }
 };
 
+export const formatNumberAsAmount = (value: number) => {
+  const moneyParts = value.toString().split('.');
+  let dolars = moneyParts[0];
+  let cents = '0';
+  if (parseInt(moneyParts[0]) < 10){
+    dolars = `${moneyParts[0]}`;
+  }
+  debugger;
+  if (parseInt(moneyParts[1]) < 10){
+    cents = `${moneyParts[1]}0`;
+  }
+
+  return `${dolars}.${cents} US$`;
+}
+
 export const formatNumberAsString = (value: number) => {
   if (value < 0 || value !== 0 && !value) {
     return 'N/A';

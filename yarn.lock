@@ -399,6 +399,18 @@ assertion-error@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.0.2.tgz#13ca515d86206da0bac66e834dd397d87581094c"
 
+assign-deep@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/assign-deep/-/assign-deep-0.4.5.tgz#d7c76caa123020114f550c66f0823c559f39af13"
+  dependencies:
+    assign-symbols "^0.1.1"
+    is-primitive "^2.0.0"
+    kind-of "^3.0.2"
+
+assign-symbols@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-0.1.1.tgz#cb025944ef4ec8a3693f086e9e112c74e3a0fed9"
+
 ast-query@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ast-query/-/ast-query-2.0.0.tgz#3588e79ad8de07ce50df1e781cc2bda1fd69a453"
@@ -7521,6 +7533,13 @@ react-modal@^1.7.6:
     prop-types "^15.5.7"
     react-dom-factories "^1.0.0"
 
+react-native-app-intro@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-app-intro/-/react-native-app-intro-1.1.5.tgz#34a2d2265b2d654d31bae743c404856c37448692"
+  dependencies:
+    assign-deep "^0.4.5"
+    react-native-swiper "git+https://github.com/FuYaoDe/react-native-swiper.git"
+
 react-native-autocomplete-input@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-3.3.0.tgz#48cd29163b60405553794529d2f7ca2e9477424b"
@@ -7667,6 +7686,12 @@ react-native-scrollable-tab-view@^0.7.1:
 react-native-swipe-gestures@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.2.tgz#914e1a72a94bc55b322b4622a01103ab879296dd"
+
+"react-native-swiper@git+https://github.com/FuYaoDe/react-native-swiper.git":
+  version "1.4.4"
+  resolved "git+https://github.com/FuYaoDe/react-native-swiper.git#a6417ff41a8b2d490bdcc4541015ab35736d4595"
+  dependencies:
+    react-timer-mixin "^0.13.3"
 
 react-native-tab-view@0.0.67:
   version "0.0.67"

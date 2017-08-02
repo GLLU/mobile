@@ -19,6 +19,7 @@ import I18n from 'react-native-i18n';
 
 import ParallaxView from '../../utils/ParallaxView';
 import ProfileScreenHeader from './ProfileScreenHeader';
+import WalletWalkthrough from './WalletWalkthrough';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import ScalableText, { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import UserLooks from './UserLooks';
@@ -40,6 +41,11 @@ type Props = {
   getStats: () => void,
   userId: number,
   isMyProfile: boolean,
+  getUserBodyType: () => void,
+  hasUserSize: boolean,
+  userSize: any,
+  userGender: string,
+  hideWalletBadge: () => void,
   getUserBalance: () => void,
   getUserLooks: () => void,
   navigateTo: () => void,
@@ -63,7 +69,8 @@ class ProfileScreen extends Component {
 
     this.state = {
       modalVisible: false,
-      index: 0,
+      showWalletWizard: false,
+      index: 1,
       routes: [
         { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
         { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
@@ -77,7 +84,9 @@ class ProfileScreen extends Component {
   }
 
   componentWillMount() {
-    const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getUserBodyType, hasUserSize, userSize, userGender } = this.props;
+    const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getUserBodyType, hasUserSize, userSize, userGender, hideWalletBadge } = this.props;
+
+    hideWalletBadge();
 
     getStats(userId);
 
@@ -130,6 +139,8 @@ class ProfileScreen extends Component {
           {this._renderBody()}
 
         </ParallaxView>
+
+        {this._renderWalletWizardModal()}
 
       </View>
     );
@@ -189,7 +200,10 @@ class ProfileScreen extends Component {
       case 'looks':
         return this._renderUserLooks();
       case 'wallet':
-        return <WalletScreen balance={balance} onWithdrawPressed={this._handleWithdraw} onAddNewLook={this._handleNewPost} />;
+        return (<WalletScreen
+          balance={balance} onWithdrawPressed={this._handleWithdraw}
+          onShowWalletWizard={() => this.setState({ showWalletWizard: true })}
+          onAddNewLook={this._handleNewPost} />);
       case 'settings':
         return <SettingsScreen navigation={navigation} />;
       default:
@@ -403,6 +417,15 @@ class ProfileScreen extends Component {
       </View>
     );
   };
+
+  _renderWalletWizardModal = () => (
+    <Modal
+      visible={this.state.showWalletWizard} transparent style={{ flex: 1 }}
+      onRequestClose={() => this.setState({ modalVisible: false })}>
+      <WalletWalkthrough onClose={() => this.setState({ showWalletWizard: false })} />
+    </Modal>
+  )
+
   _renderMenu = () => (
     <TouchableOpacity
       onPress={() => this.setState({ modalVisible: !this.state.modalVisible })}

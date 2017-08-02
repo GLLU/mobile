@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+// @flow
+
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Image,
@@ -6,12 +8,16 @@ import {
   View,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  InteractionManager
+  Text,
+  InteractionManager,
 } from 'react-native';
-import {Icon} from 'native-base';
+import { Icon } from 'native-base';
 import BaseComponent from '../common/base/BaseComponent';
 import withAnalytics from '../common/analytics/WithAnalytics';
 
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
+import { formatNumberAsAmount } from '../../utils/FormatUtils';
 
 const homeIcon = require('../../../images/logo/inFASH-header.png');
 const userIcon = require('../../../images/icons/Profile_black.png');
@@ -43,6 +49,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     resizeMode: 'contain',
   },
+  walletBalance: {
+    fontSize: 16,
+    lineHeight: 16,
+    color: Colors.black,
+    marginLeft: 8,
+    fontFamily: Fonts.regularFont,
+  },
   logo: {
     height: 40,
     width: 80,
@@ -64,11 +77,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     flexDirection: 'row',
     paddingBottom: 5,
+    marginLeft: 8,
+    marginRight: 8,
     alignItems: 'center',
   },
   btnImageHanger: {
     height: 23,
     width: 23,
+    marginRight: 8,
     resizeMode: 'contain',
   },
   hangerBtnContainer: {
@@ -86,6 +102,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
+  badge: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    borderRadius: 100,
+    width: 8,
+    height: 8,
+    backgroundColor: Colors.secondaryColor,
+  },
 });
 
 type Props = {
@@ -94,9 +119,10 @@ type Props = {
   navigateTo: void,
   logEvent: void,
   addNewItem: void,
-  searchStatus: bool,
-
-}
+  searchStatus: boolean,
+  balance: number,
+  showBalanceBadge: boolean
+};
 
 class MainBarView extends BaseComponent {
 
@@ -114,7 +140,7 @@ class MainBarView extends BaseComponent {
   }
 
   _openSearch() {
-    this.logEvent('Feedscreen', {name: 'Search click'});
+    this.logEvent('Feedscreen', { name: 'Search click' });
     // this.setState({searchStatus: !this.state.searchStatus})
     this.props.handleSearchStatus();
   }
@@ -124,42 +150,52 @@ class MainBarView extends BaseComponent {
     }
   }
 
-  goToProfile() {
-    this.props.logEvent('Feedscreen', {name: 'Profile click'});
-    this.props.navigateTo('profileScreen', this.props.user);
+  goToProfile(cameFromBallance: boolean = false) {
+    this.props.logEvent('Feedscreen', { name: `${cameFromBallance ? 'Balance' : 'Profile'} click` });
+    this.props.navigateTo('profileScreen', { user: this.props.user, cameFromBallance });
   }
 
   handleNotificationsPress() {
-    this.props.logEvent('Feedscreen', {name: 'Notifications click'});
+    this.props.logEvent('Feedscreen', { name: 'Notifications click' });
     this.props.navigateTo('notificationsScreen');
   }
-
 
   renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle}/>
+          <Image source={icon} style={iconStyle} />
         </TouchableOpacity>
       </View>
     );
   }
 
+  _renderNavigationText(text: string, onPress: void, textStyle: object, shouldShowBadge: boolean) {
+    return (
+      <View>
+        <TouchableOpacity transparent onPress={onPress}>
+          <Text style={textStyle}>{text}</Text>
+        </TouchableOpacity>
+        {shouldShowBadge ? <View style={styles.badge} /> : null}
+      </View>
+    );
+  }
+
   render() {
-    const {gotNewNotifications, addNewItem} = this.props;
+    const { gotNewNotifications, addNewItem, balance, showBalanceBadge } = this.props;
     const notificationsIcon = gotNewNotifications ? gotNotification : emptyNotification;
     return (
       <View style={styles.navigationBar}>
-        <View style={{flexDirection: 'row', flex: 1}}>
-          {this.renderNavigationButton(cameraIcon, addNewItem, styles.btnImage, styles.centerEdges)}
+        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end' }}>
           {this.renderNavigationButton(userIcon, this.goToProfile, styles.btnImage)}
+          {this._renderNavigationText(balance !== -1 ? formatNumberAsAmount(balance) : '0.0 US$', () => this.goToProfile(true), styles.walletBalance, showBalanceBadge)}
         </View>
-        <View style={{flex: 3, flexDirection: 'row', justifyContent: 'center'}}>
-          <Image source={homeIcon} style={[styles.logo]}/>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+          <Image source={homeIcon} style={[styles.logo]} />
         </View>
-        <View style={{flexDirection: 'row', flex: 1}}>
+        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
           {this.renderNavigationButton(notificationsIcon, this.handleNotificationsPress, styles.btnImageHanger)}
-          {this.renderNavigationButton(search, addNewItem, styles.btnImage, styles.centerEdges)}
+          {this.renderNavigationButton(search, addNewItem, styles.btnImage)}
         </View>
       </View>
     );
