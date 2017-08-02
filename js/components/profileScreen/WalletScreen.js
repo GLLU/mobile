@@ -39,7 +39,7 @@ class WalletScreen extends Component {
         icon={require('../../../images/emptyStates/datebase.png')} buttonText={I18n.t('POST_NOW')}
         onButtonClicked={onAddNewLook}/>
           <TouchableOpacity onPress={this._showWizard}>
-            <Text style={{alignSelf: 'center'}}>Teach me how to make money</Text>
+            <Text style={styles.teachMe}>{I18n.t('TEACH_ME_MONEY')}</Text>
           </TouchableOpacity>
         </View>
           );
@@ -87,6 +87,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  teachMe:{
+    alignSelf: 'center',
+    fontFamily: Fonts.contentFont,
+    marginTop: 4,
+    color: Colors.link,
   },
   card: {
     width: generateAdjustedSize(265),
