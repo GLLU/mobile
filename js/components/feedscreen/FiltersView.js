@@ -15,6 +15,7 @@ import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import i18n from 'react-native-i18n';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 import withAnalytics from '../common/analytics/WithAnalytics';
 import FilterRow from './filters/FilterRow';
@@ -150,6 +151,7 @@ const styles = StyleSheet.create({
   },
   cleaResetText: {
     fontSize: generateAdjustedSize(12),
+    fontFamily: Fonts.regularFont,
   },
   filterByText: {
     fontWeight: '600',

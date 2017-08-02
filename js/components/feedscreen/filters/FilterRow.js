@@ -11,6 +11,7 @@ import {
   Image
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
+import Fonts from '../../../styles/Fonts.styles';
 import FilterGroup from './FilterGroup';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import I18n from 'react-native-i18n';
@@ -150,11 +151,11 @@ const styles = StyleSheet.create({
   },
   rowTitle: {
     fontSize: generateAdjustedSize(16),
-    fontWeight: '600',
+    fontFamily: Fonts.regularFont,
   },
   selectedFilter: {
-    fontWeight: '600',
     fontSize: generateAdjustedSize(12),
+    fontFamily: Fonts.subHeaderFont,
     color: Colors.secondaryColor,
   },
   rowHeaderContainer: {
