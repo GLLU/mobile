@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
-import SearchTab from './SearchTab';
+import PeopleSearchTab from './PeopleSearchTabContainer';
+import LooksSearchTab from './LooksSearchTabContainer';
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 
@@ -9,6 +10,7 @@ export default class SearchTabs extends PureComponent {
   constructor(props) {
     super(props);
     this._handleIndexChange = this._handleIndexChange.bind(this)
+    this._renderScene = this._renderScene.bind(this)
     this.state = {
       index: 0,
       routes: [
@@ -33,16 +35,18 @@ export default class SearchTabs extends PureComponent {
     indicatorStyle={styles.indicatorStyle} {...props} />;
 
   _renderScene = ({route}) => {
-    const {navigateTo} = this.props;
+    console.log('propsss222', this.props.peopleSearchResults)
+    const {navigateTo, peopleSearchResults} = this.props;
 
     switch (route.key) {
       case 'looks':
-        return (<SearchTab
+        return (<LooksSearchTab
           navigateTo={navigateTo}
           isTabOnFocus={this.state.index === 1}/>);
       case 'people':
-        return (<SearchTab
-          navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}/>);
+        return (<PeopleSearchTab
+          navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
+        />);
       default:
         return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
           ;

@@ -66,7 +66,7 @@ class SearchScreen extends Component {
                        handleSearch={this._handleSearch}/>
           </View>
         </View>
-        <SearchTabs navigateTo={navigateTo} setCurrentTab={this._setCurrentTab}/>
+        <SearchTabs navigateTo={navigateTo} setCurrentTab={this._setCurrentTab} peopleSearchResults={this.props.peopleSearchResults}/>
       </View>
     );
   }

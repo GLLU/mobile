@@ -42,7 +42,6 @@ const ACTION_HANDLERS = {
   [REHYDRATE]: (state, action) => ({
     ...state,
     ...action.payload.user,
-    ...action.payload.search,
   }),
   [RESET_STATE]: (state, action) => ({
     ...initialState,

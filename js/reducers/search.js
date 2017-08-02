@@ -43,6 +43,13 @@ export default function (state = initialState, action) {
         },
       };
     }
+    case REHYDRATE: {
+      console.log('booooom!')
+      return {
+        ...state,
+        ...action.searchData
+      }
+    }
     default:
       return state;
   }

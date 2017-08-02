@@ -16,8 +16,9 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
+  console.log('state', state)
   return {
-    likes: state.lookLikes.lookLikesData,
+    peopleSearchResults: state.search.people.data.users,
   }
 };
 

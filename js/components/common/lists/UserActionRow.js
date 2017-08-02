@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import FollowView from '../../profileScreen/follows/FollowView'
-import { connect } from "react-redux";
-import { followUpdate, unFollowUpdate } from "../../../actions/follows";
-import { noop } from "lodash";
+import {connect} from "react-redux";
+import {followUpdate, unFollowUpdate} from "../../../actions/follows";
+import {noop} from "lodash";
 
 const styles = StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor:'white'
+    backgroundColor: 'white'
   },
   textContainer: {
     flex: 7,
@@ -49,11 +49,11 @@ class UserActionRow extends Component {
     avatar: React.PropTypes.object,
     userId: React.PropTypes.number,
     is_following: React.PropTypes.bool,
-    navigateTo:React.PropTypes.func
+    navigateTo: React.PropTypes.func
   };
 
-  static defaultProps={
-    navigateTo:noop
+  static defaultProps = {
+    navigateTo: noop
   }
 
   constructor(props) {
@@ -91,18 +91,18 @@ class UserActionRow extends Component {
   }
 
   renderFollowView() {
-    if (this.props.is_me) {
+    if (this.props.isMe) {
       return <View name="can't follow me" style={styles.followView}/>;
     }
     return <FollowView onPress={this.onFollowPress} style={styles.followView}
-                       user={{id:this.props.userId, isFollowing:this.state.isFollowing}}/>
+                       user={{id: this.props.userId, isFollowing: this.state.isFollowing}}/>
   }
 
   render() {
     return (
-      <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
+      <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container, this.props.style]}>
         <View style={styles.photoContainer}>
-          <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo}/>
+          <Image resizeMode='cover' source={{uri: this.props.avatar.url}} style={styles.photo}/>
         </View>
         {this.renderFollowText()}
         {this.renderFollowView()}
