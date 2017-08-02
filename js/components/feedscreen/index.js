@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import {addNewLook, setUser, getNotifications} from '../../actions';
+import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {toggleFiltersMenus} from '../../actions/filters';
 import asScreen from '../common/containers/Screen';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
@@ -28,6 +28,8 @@ class FeedPage extends Component {
     addNewLook: React.PropTypes.func,
     hideBodyTypeModal: React.PropTypes.func,
     toggleFiltersMenus: React.PropTypes.func,
+    loadCategories: React.PropTypes.func,
+    loadOccasionTags: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -54,6 +56,12 @@ class FeedPage extends Component {
       showBottomCamera: true,
       fadeAnimContentOnPress: new Animated.Value(10),
     };
+  }
+
+  componentDidMount() {
+    const {gender} = this.props.user
+    this.props.loadCategories(gender);
+    this.props.loadOccasionTags(gender);
   }
 
   componentWillMount() {
@@ -194,15 +202,17 @@ function bindActions(dispatch) {
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
     toggleFiltersMenus: feedType => dispatch(toggleFiltersMenus(feedType)),
+    loadCategories: gender => dispatch(loadCategories(gender)),
+    loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
   };
 }
 
 const mapStateToProps = state => (
   {
-  hasUserSize: state.user.hasChoosenBodyShape,
-  user: state.user,
-  modalShowing: false,
-  gotNewNotifications: state.notifications.newNotifications,
-});
+    hasUserSize: state.user.hasChoosenBodyShape,
+    user: state.user,
+    modalShowing: false,
+    gotNewNotifications: state.notifications.newNotifications,
+  });
 
 export default connect(mapStateToProps, bindActions)(asScreen(FeedPage));
