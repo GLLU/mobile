@@ -17,6 +17,7 @@ import {
   getFollowingFeed,
 } from '../../actions/feed';
 
+import {BODY_SHAPES, CATEGORIES, EVENTS} from '../../reducers/filters';
 
 import {bodyTypesMapper} from '../../mappers/filterMapper';
 
@@ -33,22 +34,26 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 }
 
 function mapStateToProps(state, ownProps) {
-  const CATEGORIES = I18n.t('CATEGORIES');
-  const EVENTS = I18n.t('EVENTS');
-  const BODY_SHAPES = I18n.t('BODY_SHAPES');
+
   let bodyTypes = state.myBodyType.bodyTypes ? state.myBodyType.bodyTypes : [];
   bodyTypes = bodyTypesMapper(bodyTypes);
   const gender = state.user.gender;
+  const {showFilters = [CATEGORIES, EVENTS, BODY_SHAPES]} = ownProps
   const filteredBodytypes = _.filter(bodyTypes, (bodyType) => bodyType.gender === gender)
+  const filtersArray = [
+    {title: CATEGORIES, filters: state.filters.categories},
+    {title: EVENTS, filters: state.filters.occasion_tags},
+    {title: BODY_SHAPES, filters: filteredBodytypes}
+  ];
+  const filters = _.map(showFilters, (showFilter) => {
+    return _.find(filtersArray, (filter) => filter.title === showFilter)
+  })
   return {
     gender,
     defaultFilters: {...state.feed[ownProps.currentFeedTab].query, gender},
-    filters: [{title: CATEGORIES, filters: state.filters.categories}, {
-      title: EVENTS,
-      filters: state.filters.occasion_tags
-    }, {title: BODY_SHAPES, filters: filteredBodytypes}],
-    currentFeedTab: ownProps.currentFeedTab
-  };
+    filters
+
+  }
 }
 
 const getFeedActionSwitchByFeedType = (feedType) => {

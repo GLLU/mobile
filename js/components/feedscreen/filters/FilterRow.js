@@ -13,6 +13,7 @@ import {
 import Colors from '../../../styles/Colors.styles';
 import FilterGroup from './FilterGroup';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import I18n from 'react-native-i18n';
 
 const arrowRight = require('../../../../images/icons/collapsed-filterButton.png');
 const arrowDown = require('../../../../images/icons/expand-filterButton.png');
@@ -84,7 +85,7 @@ class FilterRow extends Component {
       Animated.timing(          // Uses easing functions
         this.state.filtersAnimHeight,    // The value to drive
         {
-          toValue: 70,
+          toValue: generateAdjustedSize(80),
           duration: 250,
         }            // Configuration
       ).start();
@@ -117,7 +118,7 @@ class FilterRow extends Component {
           <View
             style={styles.rowHeaderContainer}>
             <View style={{flexDirection: 'column', alignSelf: 'center'}}>
-              <Text style={styles.rowTitle}>{title}</Text>
+              <Text style={styles.rowTitle}>{I18n.t(title)}</Text>
               {currentFilterRowName.length > 1 ?
                 <Text style={styles.selectedFilter}>{currentFilterRowName}</Text> : null}
             </View>
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   rowTitle: {
+    fontSize: generateAdjustedSize(16),
     fontWeight: '600',
   },
   selectedFilter: {
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
   },
   rowHeaderContainer: {
     width: deviceWidth,
-    height: 55,
+    height: generateAdjustedSize(55),
     justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
