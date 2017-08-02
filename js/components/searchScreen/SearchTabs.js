@@ -35,17 +35,19 @@ export default class SearchTabs extends PureComponent {
     indicatorStyle={styles.indicatorStyle} {...props} />;
 
   _renderScene = ({route}) => {
-    console.log('propsss222', this.props.peopleSearchResults)
-    const {navigateTo, peopleSearchResults} = this.props;
+    const {navigateTo, searchFromHistory} = this.props;
 
     switch (route.key) {
       case 'looks':
         return (<LooksSearchTab
           navigateTo={navigateTo}
-          isTabOnFocus={this.state.index === 1}/>);
+          isTabOnFocus={this.state.index === 1}
+          searchFromHistory={searchFromHistory}/>);
       case 'people':
         return (<PeopleSearchTab
-          navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
+          navigateTo={navigateTo}
+          isTabOnFocus={this.state.index === 1}
+          searchFromHistory={searchFromHistory}
         />);
       default:
         return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>

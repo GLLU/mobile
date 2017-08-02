@@ -18,18 +18,23 @@ class SearchScreen extends Component {
 
   constructor(props) {
     super(props);
-    this._clearText = this._clearText.bind(this)
+    this._clearSearchBar = this._clearSearchBar.bind(this)
     this._handleSearchInput = this._handleSearchInput.bind(this)
+    this.handleSearchInput = _.debounce(this._handleSearchInput)
     this._handleSearch = this._handleSearch.bind(this)
     this._setCurrentTab = this._setCurrentTab.bind(this)
+    this._seachFromHistory = this._seachFromHistory.bind(this)
     this.state = {
       searchTerm: '',
       currentTab: {key: 'looks', title: ''},
     }
   }
 
-  _clearText() {
-    console.log('clear search')
+  _clearSearchBar() {
+    this.props.clearSearchResults(this.state.currentTab.key)
+    this.setState({
+      searchTerm: ''
+    })
   }
 
   _setCurrentTab(currentTab) {
@@ -38,19 +43,31 @@ class SearchScreen extends Component {
 
   _handleSearchInput(value) {
     console.log('clear search', value)
-    this.setState({searchTerm: value})
+    this.setState({
+      searchTerm: value
+    }, () => {
+    });
   }
 
   _handleSearch() {
-    if (this.state.currentTab.key === 'looks') {
-      this.props.getFeed({term: this.state.searchTerm});
-      this.props.addSearchTermHistoryToLooks(this.state.searchTerm);
-      this.props.goBack();
+    console.log('this.state.searchTerm', this.state.searchTerm.length)
+    if (this.state.searchTerm.length > 2) { // currently sever-side doesnt return results for less then 3 digits
+      if (this.state.currentTab.key === 'looks') {
+        this.props.getFeed({term: this.state.searchTerm});
+        this.props.addSearchTermHistoryToLooks(this.state.searchTerm);
+        this.props.goBack();
+      }
+      else {
+        this.props.getUsers(this.state.searchTerm);
+        this.props.addSearchTermHistoryToPeople(this.state.searchTerm);
+      }
     }
-    else {
-      this.props.getUsers(this.state.searchTerm);
-      this.props.addSearchTermHistoryToPeople(this.state.searchTerm);
-    }
+  }
+
+  _seachFromHistory(value) {
+    this.setState({searchTerm: value}, () => {
+      this._handleSearch()
+    })
   }
 
   render() {
@@ -62,11 +79,13 @@ class SearchScreen extends Component {
             <Image style={{width: 20, height: 20, alignSelf: 'center'}} source={leftLongArrow}/>
           </TouchableOpacity>
           <View style={{flex: 1}}>
-            <SearchBar clearText={'boom'} handleSearchInput={this._handleSearchInput}
-                       handleSearch={this._handleSearch}/>
+            <SearchBar handleSearchInput={this.handleSearchInput}
+                       handleSearch={this._handleSearch} searchTerm={this.state.searchTerm}
+                       clearSearchBar={this._clearSearchBar}/>
           </View>
         </View>
-        <SearchTabs navigateTo={navigateTo} setCurrentTab={this._setCurrentTab} peopleSearchResults={this.props.peopleSearchResults}/>
+        <SearchTabs navigateTo={navigateTo} setCurrentTab={this._setCurrentTab}
+                    peopleSearchResults={this.props.peopleSearchResults} searchFromHistory={this._seachFromHistory}/>
       </View>
     );
   }

@@ -9,6 +9,7 @@ const route = '/users';
 
 const blockRoute = userId => `${route}/${userId}/blocked_users`;
 const getUsersRoute = userId => `${route}`;
+const getUsersSuggestionRoute = () => `${route}/suggestions`;
 
 class usersService {
 
@@ -37,6 +38,18 @@ class usersService {
     return {
       users,
       meta,
+    };
+  };
+
+  static getSuggestionsUsers = async () => {
+    const data = await AppAPI.get(`${getUsersSuggestionRoute()}`);
+    const users = _.map(data.users, (user) => {
+      const mappedUser = userMapper.map(user);
+      mappedUser.id = mappedUser.userId;
+      return mappedUser;
+    });
+    return {
+      users,
     };
   };
 

@@ -2,9 +2,14 @@
 
 import {connect} from 'react-redux';
 import {getBestMatchFeed} from '../../actions/feed';
-import {addSearchTermHistoryToLooks, addSearchTermHistoryToPeople, getUsers} from '../../actions/search';
-import asScreen from "../common/containers/Screen"
-import SearchTab from "./SearchTab"
+import {clearSearchHistory} from '../../actions/search';
+import LooksSearchTab from "./LooksSearchTab"
+
+function bindAction(dispatch) {
+  return {
+    clearSearchHistory: () => dispatch(clearSearchHistory('looks')),
+  };
+}
 
 const mapStateToProps = state => {
   return {
@@ -13,4 +18,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps)(SearchTab);
+export default connect(mapStateToProps, bindAction)(LooksSearchTab);

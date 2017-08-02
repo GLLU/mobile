@@ -65,21 +65,9 @@ class SearchBar extends Component {
 
   constructor(props) {
     super(props);
-    this.clearSearch = this.clearSearch.bind(this);
-    this.handleTextInput = this.handleTextInput.bind(this);
+    this._clearSearch = this._clearSearch.bind(this);
     this._getFeed = this._getFeed.bind(this);
-    this.doSearch = _.debounce(this._doSearch, 500);
-    this.state = {
-      text: ''
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.clearText === '') {
-      this.setState({
-        text: ''
-      })
-    }
+    this._doSearch = this._doSearch.bind(this);
   }
 
   _doSearch(text) {
@@ -87,20 +75,9 @@ class SearchBar extends Component {
     this.props.handleSearchInput(text)
   }
 
-  handleTextInput(text) {
-    this.setState({
-      text: text
-    }, () => {
-      this.doSearch(text);
-    });
-  }
-
-  clearSearch() {
+  _clearSearch() {
     this.props.logEvent('Feedscreen', {name: 'Clear search'});
-    this.setState({
-      text: ''
-    })
-    this.props.handleSearchInput('')
+    this.props.clearSearchBar()
   }
 
   _getFeed() {
@@ -118,9 +95,12 @@ class SearchBar extends Component {
           style={styles.searchInput}
           placeholder='Search'
           underlineColorAndroid='transparent'
-          onChangeText={this.handleTextInput}
-          value={this.state.text}/>
-        <TouchableOpacity onPress={this.clearSearch}
+          onChangeText={this._doSearch}
+          value={this.props.searchTerm}
+          returnKeyType={'search'}
+          onSubmitEditing={this._getFeed}
+        />
+        <TouchableOpacity onPress={this._clearSearch}
                           style={styles.clearContainer}>
           <Image source={clear} style={styles.clearText}/>
         </TouchableOpacity>

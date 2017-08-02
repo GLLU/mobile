@@ -1,15 +1,22 @@
 'use strict';
 
 import {connect} from 'react-redux';
-import asScreen from "../common/containers/Screen"
-import SearchTab from "./SearchTab"
+import {clearSearchHistory, getUsersSuggestions} from '../../actions/search';
+import PeopleSearchTab from "./PeopleSearchTab"
+
+function bindAction(dispatch) {
+  return {
+    clearSearchHistory: () => dispatch(clearSearchHistory('people')),
+    getUsersSuggestions: () => dispatch(getUsersSuggestions()),
+  };
+}
 
 const mapStateToProps = state => {
-  console.log('state', state)
   return {
     results: state.search.people.data.users,
-    searchHistory: state.search.people.history
+    searchHistory: state.search.people.history,
+    suggestions: state.search.suggestions.users,
   }
 };
 
-export default connect(mapStateToProps)(SearchTab);
+export default connect(mapStateToProps, bindAction)(PeopleSearchTab);
