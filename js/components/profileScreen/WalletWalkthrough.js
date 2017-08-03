@@ -24,15 +24,21 @@ class WalletWalkthrough extends Component {
   render(): React.Component {
     const { onClose } = this.props;
 
+    const customStyle = {
+      nextButtonText: styles.bottomControllsText,
+      controllText: styles.bottomContainer,
+      dotStyle: { width: 8, height: 8 },
+    };
+
     return (
-      <AppIntro onSkipBtnClick={onClose} onDoneBtnClick={onClose} skipBtnLabel={'Close'} nextBtnLabel={'Next'}>
+      <AppIntro onSkipBtnClick={onClose} customStyles={customStyle} onDoneBtnClick={onClose} skipBtnLabel={'Close'} nextBtnLabel={'Next'}>
         <View style={styles.slide}>
           <Image
-            style={styles.background} resizeMode={'contain'}
+            style={styles.background} resizeMode={'stretch'}
             source={walkthroughBG} />
           <Image
             source={uploadLook} resizeMode={'contain'}
-            style={{flex:5, marginTop: 8 }} />
+            style={{ flex: 5, marginTop: 8 }} />
           <View style={styles.bottomContainer}>
             <View level={-10}><Text style={styles.title}>{I18n.t('UPLOAD_POST_WIZARD')}</Text></View>
             <View level={70}><Text style={styles.subtitle}>{I18n.t('UPLOAD_POST_LEGEND_WIZARD')}</Text></View>
@@ -40,11 +46,11 @@ class WalletWalkthrough extends Component {
         </View>
         <View style={styles.slide}>
           <Image
-            style={styles.background} resizeMode={'contain'}
+            style={styles.background} resizeMode={'stretch'}
             source={walkthroughBG} />
           <Image
             source={lookBuy} resizeMode={'contain'}
-            style={{flex:5, marginTop: 8 }} />
+            style={{ flex: 5, marginTop: 8 }} />
           <View style={styles.bottomContainer}>
             <View level={-10}><Text style={styles.title}>{I18n.t('LOOK_BUY_WIZARD')}</Text></View>
             <View level={70}><Text style={styles.subtitle}>{I18n.t('LOOK_BUY_LEGEND_WIZARD')}</Text></View>
@@ -52,7 +58,7 @@ class WalletWalkthrough extends Component {
         </View>
         <View style={styles.slide}>
           <Image
-            style={styles.background} resizeMode={'contain'}
+            style={styles.background} resizeMode={'stretch'}
             source={walkthroughBG} />
           <Image source={require('../../../images/tutorial/lines.png')} style={{ height: height / 3 }} />
           <Image
@@ -74,6 +80,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 15,
+  },
+  bottomControllsText: {
+    fontFamily: Fonts.regularFont,
+    fontSize: generateAdjustedSize(18),
   },
   background: {
     position: 'absolute',

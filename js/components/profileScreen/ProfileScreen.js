@@ -420,7 +420,7 @@ class ProfileScreen extends Component {
 
   _renderWalletWizardModal = () => (
     <Modal
-      visible={this.state.showWalletWizard} transparent style={{ flex: 1 }}
+      visible={this.state.showWalletWizard} transparent style={{ flex: 1 }} animationType={'fade'}
       onRequestClose={() => this.setState({ modalVisible: false })}>
       <WalletWalkthrough onClose={() => this.setState({ showWalletWizard: false })} />
     </Modal>
