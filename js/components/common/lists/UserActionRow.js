@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   followUsername: {
     flex: 0.5,
     color: '#00a9ff',
-    fontSize: generateAdjustedSize(14)
+    fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
   },
   photoContainer: {
