@@ -6,7 +6,8 @@ import {
   addSearchTermHistoryToLooks,
   addSearchTermHistoryToPeople,
   getUsers,
-  clearSearchResults
+  clearPeopleSearchResults,
+  getUsersSuggestions
 } from '../../actions/search';
 import asScreen from "../common/containers/Screen"
 import SearchScreen from "./SearchScreen"
@@ -16,13 +17,13 @@ function bindAction(dispatch) {
     getFeed: query => dispatch(getWhatsHotFeed(query)),
     addSearchTermHistoryToLooks: query => dispatch(addSearchTermHistoryToLooks(query)),
     addSearchTermHistoryToPeople: query => dispatch(addSearchTermHistoryToPeople(query)),
-    clearSearchResults: query => dispatch(clearSearchResults(query)),
+    clearPeopleSearchResults: query => dispatch(clearPeopleSearchResults(query)),
     getUsers: query => dispatch(getUsers(query)),
+    getUsersSuggestions: () => dispatch(getUsersSuggestions()),
   };
 }
 
 const mapStateToProps = state => {
-  console.log('state', state)
   return {
     peopleSearchResults: state.search.people.data.users,
   }

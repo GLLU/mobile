@@ -7,8 +7,10 @@ import UsersService from '../services/usersService';
 export const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM';
 export const SET_USERS = 'SET_USERS';
 export const CLEAR_SEARCH_HISTORY = 'CLEAR_SEARCH_HISTORY';
-export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
+export const CLEAR_PEOPLE_SEARCH_RESULTS = 'CLEAR_PEOPLE_SEARCH_RESULTS';
 export const SET_SUGGESTIONS_USERS = 'SET_SUGGESTIONS_USERS';
+export const START_FETCHING_USERS = 'START_FETCHING_USERS';
+export const FINISH_FETCHING_USERS = 'FINISH_FETCHING_USERS';
 
 export function addSearchTermToHistory(term, searchType) {
   return (dispatch, getState) => {
@@ -29,18 +31,15 @@ export function addSearchTermToHistory(term, searchType) {
 }
 
 export function clearSearchHistory(searchType: string) {
-  console.log('searchType', searchType)
   return {
     type: CLEAR_SEARCH_HISTORY,
     searchType,
   };
 }
 
-export function clearSearchResults(searchType: string) {
-  console.log('searchType', searchType)
+export function clearPeopleSearchResults() {
   return {
-    type: CLEAR_SEARCH_RESULTS,
-    searchType,
+    type: CLEAR_PEOPLE_SEARCH_RESULTS,
   };
 }
 
@@ -49,6 +48,7 @@ export function getUsers(term) {
     const state = getState();
     const userId = state.user.id;
     const nextPage = 1;
+    dispatch(startFetchingUsers())
     UsersService.getUsers(userId, nextPage, term).then((data) => {
       dispatch({
         type: SET_USERS,
@@ -59,8 +59,8 @@ export function getUsers(term) {
             total: data.meta.total
           },
         },
-
       });
+      dispatch(finishFetchingUsers())
     })
   };
 }
@@ -89,13 +89,24 @@ export function getMoreUsers() {
 export function getUsersSuggestions() {
   return (dispatch) => {
     UsersService.getSuggestionsUsers().then((data) => {
-      console.log('dataSuggestion:', data)
       dispatch({
         type: SET_SUGGESTIONS_USERS,
         users: data.users
 
       });
     })
+  };
+}
+
+export function startFetchingUsers() {
+  return {
+    type: START_FETCHING_USERS,
+  };
+}
+
+export function finishFetchingUsers() {
+  return {
+    type: FINISH_FETCHING_USERS,
   };
 }
 

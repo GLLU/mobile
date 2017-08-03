@@ -1,29 +1,32 @@
-import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React, {Component} from 'react';
+import {Image, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 
 const styles = StyleSheet.create({
   followBtn: {
     backgroundColor: '#00D7B2',
-    height: 25,
+    height: generateAdjustedSize(25),
     justifyContent: 'center',
-    margin: 5,
+    margin: generateAdjustedSize(5),
   },
   followText: {
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+    fontSize: generateAdjustedSize(14),
   },
   unfollowBtn: {
     backgroundColor: 'transparent',
-    width: 75,
-    height: 25,
+    width: generateAdjustedSize(75),
+    height: generateAdjustedSize(25),
     justifyContent: 'center',
-    margin: 5,
+    margin: generateAdjustedSize(5),
     borderWidth: 2,
     borderColor: '#00D7B2',
   },
   unfollowText: {
     textAlign: 'center',
-    color: '#00D7B2'
+    color: '#00D7B2',
+    fontSize: generateAdjustedSize(14),
   },
 });
 
@@ -44,7 +47,7 @@ class FollowView extends Component {
 
   renderUnfollowButton() {
     return (
-      <TouchableOpacity style={[styles.unfollowBtn,this.props.style]} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.unfollowBtn, this.props.style]} onPress={this.handleFollowPress}>
         <Text style={styles.unfollowText}>Unfollow</Text>
       </TouchableOpacity>
     )
@@ -52,7 +55,7 @@ class FollowView extends Component {
 
   renderFollowButton() {
     return (
-      <TouchableOpacity style={[styles.followBtn ,this.props.style]} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.followBtn, this.props.style]} onPress={this.handleFollowPress}>
         <Text style={styles.followText}>Follow</Text>
       </TouchableOpacity>
     )

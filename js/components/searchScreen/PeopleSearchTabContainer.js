@@ -7,7 +7,6 @@ import PeopleSearchTab from "./PeopleSearchTab"
 function bindAction(dispatch) {
   return {
     clearSearchHistory: () => dispatch(clearSearchHistory('people')),
-    getUsersSuggestions: () => dispatch(getUsersSuggestions()),
   };
 }
 
@@ -16,6 +15,8 @@ const mapStateToProps = state => {
     results: state.search.people.data.users,
     searchHistory: state.search.people.history,
     suggestions: state.search.suggestions.users,
+    isLoading: state.search.people.isLoading,
+    canShowEmptyView: state.search.people.data.meta.currentPage !== 0
   }
 };
 

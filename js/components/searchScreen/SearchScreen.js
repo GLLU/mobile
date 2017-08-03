@@ -1,13 +1,10 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {Dimensions, Image, TouchableOpacity, Text, View, Platform} from 'react-native';
+import {Dimensions, Image, TouchableOpacity, View, Platform} from 'react-native';
 import SearchBar from '../feedscreen/SearchBar'
 import SearchTabs from './SearchTabs'
 const leftLongArrow = require('../../../images/icons/left-long-arrow.png');
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-const deviceWidth = Dimensions.get('window').width;
 import Colors from "../../styles/Colors.styles";
 
 class SearchScreen extends Component {
@@ -31,10 +28,18 @@ class SearchScreen extends Component {
   }
 
   _clearSearchBar() {
-    this.props.clearSearchResults(this.state.currentTab.key)
+    this.props.clearPeopleSearchResults()
     this.setState({
       searchTerm: ''
     })
+  }
+
+  componentWillMount() {
+    this.props.getUsersSuggestions()
+  }
+
+  componentWillUnmount() {
+    this.props.clearPeopleSearchResults()
   }
 
   _setCurrentTab(currentTab) {
@@ -42,7 +47,6 @@ class SearchScreen extends Component {
   }
 
   _handleSearchInput(value) {
-    console.log('clear search', value)
     this.setState({
       searchTerm: value
     }, () => {
@@ -50,7 +54,6 @@ class SearchScreen extends Component {
   }
 
   _handleSearch() {
-    console.log('this.state.searchTerm', this.state.searchTerm.length)
     if (this.state.searchTerm.length > 2) { // currently sever-side doesnt return results for less then 3 digits
       if (this.state.currentTab.key === 'looks') {
         this.props.getFeed({term: this.state.searchTerm});
@@ -85,7 +88,7 @@ class SearchScreen extends Component {
           </View>
         </View>
         <SearchTabs navigateTo={navigateTo} setCurrentTab={this._setCurrentTab}
-                    peopleSearchResults={this.props.peopleSearchResults} searchFromHistory={this._seachFromHistory}/>
+                    searchFromHistory={this._seachFromHistory}/>
       </View>
     );
   }

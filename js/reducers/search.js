@@ -2,8 +2,10 @@ import {
   ADD_SEARCH_TERM,
   SET_USERS,
   CLEAR_SEARCH_HISTORY,
-  CLEAR_SEARCH_RESULTS,
-  SET_SUGGESTIONS_USERS
+  CLEAR_PEOPLE_SEARCH_RESULTS,
+  SET_SUGGESTIONS_USERS,
+  START_FETCHING_USERS,
+  FINISH_FETCHING_USERS
 } from '../actions/search';
 import {REHYDRATE} from 'redux-persist/constants';
 
@@ -11,6 +13,7 @@ const initialState = {
   looks: {
     history: [],
     data: [],
+    isLoading: false,
   },
   people: {
     history: [],
@@ -21,6 +24,7 @@ const initialState = {
         total: 0,
       },
     },
+    isLoading: false,
   },
   suggestions: {
     users: []
@@ -62,12 +66,11 @@ export default function (state = initialState, action) {
         },
       };
     }
-    case CLEAR_SEARCH_RESULTS: {
-      const {searchType} = action
+    case CLEAR_PEOPLE_SEARCH_RESULTS: {
       return {
         ...state,
-        [searchType]: {
-          ...state[searchType],
+        people: {
+          ...state.people,
           data: {
             users: [],
             meta: {
@@ -87,17 +90,28 @@ export default function (state = initialState, action) {
         },
       };
     }
-    case REHYDRATE: {
+    case START_FETCHING_USERS: {
       return {
         ...state,
         people: {
           ...state.people,
-          history: action.payload.search.people.history,
+          isLoading: true,
         },
-        looks: {
-          ...state.looks,
-          history: action.payload.search.looks.history,
+      };
+    }
+    case FINISH_FETCHING_USERS: {
+      return {
+        ...state,
+        people: {
+          ...state.people,
+          isLoading: false,
         },
+      };
+    }
+    case REHYDRATE: {
+      return {
+        ...state,
+        ...action.payload.search,
       };
     }
     default:

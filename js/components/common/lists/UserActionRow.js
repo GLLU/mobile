@@ -4,11 +4,12 @@ import FollowView from '../../profileScreen/follows/FollowView'
 import {connect} from "react-redux";
 import {followUpdate, unFollowUpdate} from "../../../actions/follows";
 import {noop} from "lodash";
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 12,
+    padding: generateAdjustedSize(12),
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white'
@@ -16,24 +17,26 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 7,
     flexDirection: 'column',
-    marginLeft: 12
+    marginLeft: generateAdjustedSize(12)
   },
   followName: {
     flex: 0.5,
     color: 'black',
+    fontSize: generateAdjustedSize(14)
   },
   followUsername: {
     flex: 0.5,
-    color: '#00a9ff'
+    color: '#00a9ff',
+    fontSize: generateAdjustedSize(14)
   },
   photoContainer: {
     flex: 2,
   },
   photo: {
     flex: 1,
-    width: 40,
-    height: 40,
-    borderRadius: 20
+    width: generateAdjustedSize(40),
+    height: generateAdjustedSize(40),
+    borderRadius: generateAdjustedSize(20)
   },
   followView: {
     flex: 3

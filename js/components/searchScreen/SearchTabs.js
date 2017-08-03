@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import PeopleSearchTab from './PeopleSearchTabContainer';
@@ -6,7 +6,7 @@ import LooksSearchTab from './LooksSearchTabContainer';
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 
-export default class SearchTabs extends PureComponent {
+export default class SearchTabs extends Component {
   constructor(props) {
     super(props);
     this._handleIndexChange = this._handleIndexChange.bind(this)
@@ -36,7 +36,6 @@ export default class SearchTabs extends PureComponent {
 
   _renderScene = ({route}) => {
     const {navigateTo, searchFromHistory} = this.props;
-
     switch (route.key) {
       case 'looks':
         return (<LooksSearchTab

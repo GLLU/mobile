@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
-import {Dimensions, Image, TouchableOpacity, Text, View, Platform, FlatList, StyleSheet} from 'react-native';
-import SearchBar from '../feedscreen/SearchBar';
-const backBtn = require('../../../images/icons/arrow_down.png');
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
+import {Dimensions, TouchableOpacity, Text, View, StyleSheet} from 'react-native';
 const deviceWidth = Dimensions.get('window').width;
-import Separator from '../common/lists/Separator';
-import UserActionRow from '../common/lists/UserActionRow';
 import Colors from '../../styles/Colors.styles'
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import i18n from 'react-native-i18n';
 
 const styles = StyleSheet.create({
   separator: {
@@ -17,38 +13,40 @@ const styles = StyleSheet.create({
   },
   RowTitle: {
     color: Colors.gray,
-    backgroundColor: Colors.backgroundGrey,
     fontFamily: 'Montserrat-Regular',
     fontWeight: '300',
+    fontSize: generateAdjustedSize(14),
   },
   historyRowContainer: {
-    height: 50,
+    height: generateAdjustedSize(60),
     backgroundColor: Colors.white,
     justifyContent: 'center',
+    borderBottomWidth: generateAdjustedSize(1),
+    borderBottomColor: Colors.separatorGray
   },
   historyRowText: {
     fontWeight: '600',
-    marginLeft: 15
+    marginLeft: 15,
+    fontSize: generateAdjustedSize(14),
   },
   historyListContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: deviceWidth,
     backgroundColor: Colors.backgroundGrey,
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+    padding: generateAdjustedSize(15),
   },
   clearText: {
     color: 'red',
     fontWeight: '300',
     fontFamily: 'Montserrat-Regular',
-    fontSize: 12,
+    fontSize: generateAdjustedSize(12),
   },
   rowTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: deviceWidth,
-    padding: 15,
+    padding: generateAdjustedSize(15),
   },
 });
 
@@ -62,16 +60,15 @@ class LooksSearchTab extends Component {
   constructor(props) {
     super(props);
     this._searchFromHistory = this._searchFromHistory.bind(this);
-    this.state = {
-      isTrueEndReached: false,
-    };
+    this._renderSearchHistoryList = this._renderSearchHistoryList.bind(this);
+    this._renderHistoryList = this._renderHistoryList.bind(this);
   }
 
   _searchFromHistory(item) {
     this.props.searchFromHistory(item)
   }
 
-  renderHistoryRow(item) {
+  _renderHistoryRow(item) {
     return (
       <TouchableOpacity onPress={() => this._searchFromHistory(item)} style={styles.historyRowContainer}>
         <Text style={styles.historyRowText}>{item}</Text>
@@ -80,33 +77,28 @@ class LooksSearchTab extends Component {
   }
 
   _renderSearchHistoryList() {
-    return (
-      <FlatList
-        style={styles.container}
-        data={this.props.searchHistory}
-        keyExtractor={(item, index) => index}
-        ItemSeparatorComponent={() => <Separator />}
-        renderItem={({item}) => this.renderHistoryRow(item)}
-      />
-    )
+    return _.map(this.props.searchHistory, (item, index) => (
+      <View key={index} style={styles.historyRowContainer}>
+        {this._renderHistoryRow(item)}
+      </View>
+    ));
   }
 
   _renderEmptySearchHistory() {
     return (
       <View style={styles.historyRowContainer}>
-        <Text style={styles.historyRowText}>Try searching for people</Text>
+        <Text style={styles.historyRowText}>{i18n.t('TRY_SEARCHING_FOR_ITEMS')}</Text>
       </View>
     );
   }
 
-  renderHistoryList = () => (
+  _renderHistoryList = () => (
     <View>
       <View style={styles.rowTitleContainer}>
-        <Text style={styles.RowTitle}>Recent
-          searches</Text>
+        <Text style={styles.RowTitle}>{i18n.t('RECENT_SEARCHES')}</Text>
         <TouchableOpacity>
           <Text style={styles.clearText}
-                onPress={this.props.clearSearchHistory}>CLEAR</Text>
+                onPress={this.props.clearSearchHistory}>{i18n.t('CLEAR')}</Text>
         </TouchableOpacity>
       </View>
       {this.props.searchHistory.length > 0 ? this._renderSearchHistoryList() : this._renderEmptySearchHistory()}
@@ -116,7 +108,7 @@ class LooksSearchTab extends Component {
   render() {
     return (
       <View style={{backgroundColor: Colors.backgroundGrey, flex: 1}}>
-        {this.renderHistoryList()}
+        {this._renderHistoryList()}
       </View>
     );
   }
