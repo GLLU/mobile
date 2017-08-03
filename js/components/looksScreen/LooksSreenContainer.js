@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import LooksScreen from './LooksScreen';
 import {likeUpdate, unlikeUpdate, loadMore, getLookLikes} from '../../actions';
 import {getLooksById} from '../../utils/FeedUtils';
+import {hideSwipeWizard} from '../../actions/user';
 import {reportAbuse} from '../../actions/looks';
 import {editNewLook} from '../../actions/uploadLook';
 
@@ -17,6 +18,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     getLookLikes: id => dispatch(getLookLikes(id)),
     reportAbuse: lookId => dispatch(reportAbuse(lookId)),
     loadMore: () => dispatch(loadMore()),
+    onHideSwipeWizard: () => dispatch(hideSwipeWizard()),
   };
 }
 
@@ -24,6 +26,7 @@ const mapStateToProps = (state) => {
   const flatLooksFeedData = getLooksById(state.feed.flatLooksIdData, state.looks.flatLooksData);
   return {
     isLoading: state.loader.loading,
+    showSwipeWizard: state.user.showSwipeWizard,
     flatLooksData: flatLooksFeedData,
     meta: state.feed.meta,
     query: state.feed.query,

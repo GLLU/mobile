@@ -68,6 +68,7 @@
   "PASSWORD_INVALID": "Password length should be at least 3 characters",
   "TOO_SHORT": "Field should be at least 3 characters",
   "LOGIN": "Login Here",
-  "CLICK_HERE": "Click Here"
+  "CLICK_HERE": "Click Here",
+  "SWIPE_WIZARD": "SWIPE UP AND DOWN TO SEE MORE LOOKS!"
 }
 
