@@ -42,7 +42,7 @@ class ProfileScreenHeader extends Component {
     const { profilePic, name, username, isFollowing, isMyProfile, onFollowClicked } = this.props;
 
     return (
-      <View style={{ height: 280 }}>
+      <View style={{ height: 250 }}>
         <Image
           resizeMode={'stretch'} source={defaultBackground}
           style={styles.backgroundImage}/>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   username: {
     color: Colors.secondaryColor,
     fontSize: 15,
-    fontFamily: Fonts.regularFont,
+    fontFamily: Fonts.subHeaderFont,
   },
   editBtn: {
     backgroundColor: 'transparent',

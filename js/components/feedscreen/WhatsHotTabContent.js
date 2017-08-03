@@ -26,6 +26,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
+import FiltersView from './FilterContainer';
+import FeedFilters from './FeedFilters';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -53,6 +55,8 @@ class HotTabContent extends BaseComponent {
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
+    this._renderFeedFilters = this._renderFeedFilters.bind(this);
+    this._getFeed = this._getFeed.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -74,7 +78,7 @@ class HotTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    this.getFeed(this.props.defaultFilters);
+    this._getFeed(this.props.defaultFilters);
     const that = this;
     setInterval(() => {
       that.handleScrollPositionForVideo();
@@ -86,7 +90,7 @@ class HotTabContent extends BaseComponent {
     );
   }
 
-  getFeed(query) {
+  _getFeed(query) {
     this.props.getFeed(query)
   }
 
@@ -102,6 +106,10 @@ class HotTabContent extends BaseComponent {
     if (nextProps.clearedField) {
       this.currPosition = 0;
       this.setState({noMoreData: false});
+    }
+
+    if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
+      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen)
     }
   }
 
@@ -290,7 +298,7 @@ class HotTabContent extends BaseComponent {
     );
   }
 
-  renderEmptyContent() {
+  _renderEmptyContent() {
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
         <Image source={profileBackground}
@@ -306,7 +314,7 @@ class HotTabContent extends BaseComponent {
     );
   }
 
-  renderScrollView() {
+  _renderScrollView() {
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -323,7 +331,7 @@ class HotTabContent extends BaseComponent {
     );
   }
 
-  renderLoader() {
+  _renderLoader() {
     return (
       <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
         <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
@@ -332,13 +340,30 @@ class HotTabContent extends BaseComponent {
     )
   }
 
+  _renderFilterView() {
+    const {myFeedType} = this.props;
+    return (
+      <FiltersView currentFeedTab={myFeedType}/>
+    )
+  }
+
+  _renderFeedFilters() {
+    const {query} = this.props;
+    return (
+      <FeedFilters query={query} getFeed={this._getFeed}/>
+    )
+  }
+
   render() {
-    if (this.props.isLoading) {
-      return this.renderLoader();
+    const {isFilterMenuOpen, flatLooks, isLoading} = this.props
+    if (isLoading) {
+      return this._renderLoader();
     } else {
       return (
         <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-          { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
+          {this._renderFeedFilters()}
+          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+          { isFilterMenuOpen ? this._renderFilterView() : null}
         </View>
       );
     }

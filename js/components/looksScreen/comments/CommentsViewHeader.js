@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import i18n from 'react-native-i18n';
+import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,16 +21,18 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: Fonts.regularFont,
   },
   viewTitle: {
     paddingLeft: 12,
     flex: 9,
     paddingTop: 6,
     paddingBottom: 6,
-    fontWeight: 'bold',
     fontSize: 16,
-    textAlign: 'left'
+    fontFamily: Fonts.regularFont,
+    textAlign: 'left',
+    alignSelf: 'center',
   }
 });
 
@@ -55,7 +59,7 @@ export default class CommentsViewHeader extends Component {
             {this.props.count}
           </Text>
         </TouchableHighlight>
-        <Text style={styles.viewTitle}>COMMENTS</Text>
+        <Text style={styles.viewTitle}>{i18n.t('COMMENTS')}</Text>
       </View>
     );
   }

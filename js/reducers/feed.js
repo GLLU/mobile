@@ -77,7 +77,7 @@ export default function (state = initialState, action) {
       };
     }
     case START_FETCHING: {
-      const {feedType} = action.loadingFeed
+      const feedType = action.feedType
       return {
         ...state,
         [feedType]: {
@@ -87,7 +87,7 @@ export default function (state = initialState, action) {
       };
     }
     case FINISH_FETCHING: {
-      const {feedType} = action.loadingFeed
+      const feedType = action.feedType
       return {
         ...state,
         [feedType]: {

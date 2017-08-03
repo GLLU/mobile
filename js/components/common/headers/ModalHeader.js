@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import { Button, Icon } from 'native-base';
+import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: '300',
-    fontFamily: 'Times New Roman',
+    fontFamily: Fonts.regularFont,
     color: '#000000',
     textAlign: 'left'
   },

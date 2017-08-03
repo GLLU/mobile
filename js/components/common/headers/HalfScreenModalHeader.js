@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 10,
     textAlign: 'left',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: Fonts.boldFont
+    fontFamily: Fonts.regularFont,
   },
 });
 

@@ -140,6 +140,7 @@ export default reduxApi({
     };
   }).use("responseHandler", (err, data) => {
     if (err) {
+      throw (err)
       console.log("ERROR", err);
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {

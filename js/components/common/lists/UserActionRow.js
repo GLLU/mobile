@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {followUpdate, unFollowUpdate} from "../../../actions/follows";
 import {noop} from "lodash";
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,12 +23,14 @@ const styles = StyleSheet.create({
   followName: {
     flex: 0.5,
     color: 'black',
-    fontSize: generateAdjustedSize(14)
+    fontSize: generateAdjustedSize(14),
+    fontFamily: Fonts.contentFont,
   },
   followUsername: {
     flex: 0.5,
     color: '#00a9ff',
     fontSize: generateAdjustedSize(14)
+    fontFamily: Fonts.contentFont,
   },
   photoContainer: {
     flex: 2,

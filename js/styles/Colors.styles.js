@@ -9,6 +9,7 @@ const Colors = {
   black: '#000000',
   lightGray: '#c0c0c0',
   gray: '#7a7a7a',
+  darkGreen: '#009688',
   separatorGray: '#d6d6d6',
   usernameColor: '#00a9ff',
   transparent: 'transparent',
