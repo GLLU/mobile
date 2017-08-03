@@ -169,7 +169,7 @@ class FeedPage extends Component {
         navigateTo={navigateTo}
         showBottomCameraButton={this.showBottomCameraButton}
         feedsRoute={this.state.feedsRoute}
-        handleIndexChange={this._handleTabsIndexChange}/>
+        handleIndexChange={this._handleTabsIndexChange}
         toggleFilterMenues={this.toggleFilterMenues}
         hasUserSize={hasUserSize}
       />
