@@ -1,5 +1,3 @@
-'use strict';
-
 import {connect} from 'react-redux';
 import {getWhatsHotFeed} from '../../actions/feed';
 import {
@@ -7,26 +5,28 @@ import {
   addSearchTermHistoryToPeople,
   getUsers,
   clearPeopleSearchResults,
-  getUsersSuggestions
+  getUsersSuggestions,
 } from '../../actions/search';
-import asScreen from "../common/containers/Screen"
-import SearchScreen from "./SearchScreen"
+import asScreen from '../common/containers/Screen';
+import SearchScreen from './SearchScreen';
 
 function bindAction(dispatch) {
   return {
-    getFeed: query => dispatch(getWhatsHotFeed(query)),
-    addSearchTermHistoryToLooks: query => dispatch(addSearchTermHistoryToLooks(query)),
-    addSearchTermHistoryToPeople: query => dispatch(addSearchTermHistoryToPeople(query)),
+    getFeed: (query) => {
+      dispatch(getWhatsHotFeed(query));
+      dispatch(addSearchTermHistoryToLooks(query.term));
+    },
     clearPeopleSearchResults: query => dispatch(clearPeopleSearchResults(query)),
-    getUsers: query => dispatch(getUsers(query)),
+    getUsers: (query) => {
+      dispatch(getUsers(query));
+      dispatch(addSearchTermHistoryToPeople(query));
+    },
     getUsersSuggestions: () => dispatch(getUsersSuggestions()),
   };
 }
 
-const mapStateToProps = state => {
-  return {
-    peopleSearchResults: state.search.people.data.users,
-  }
-};
+const mapStateToProps = state => ({
+  peopleSearchResults: state.search.people.data.users,
+});
 
 export default asScreen(connect(mapStateToProps, bindAction)(asScreen(SearchScreen)));

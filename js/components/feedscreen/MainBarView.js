@@ -126,19 +126,22 @@ class MainBarView extends BaseComponent {
   }
 
   goToProfile() {
-    this.props.logEvent('Feedscreen', {name: 'Profile click'});
-    this.props.navigateTo('profileScreen', this.props.user);
+    const {logEvent, navigateTo} = this.props
+    logEvent('Feedscreen', {name: 'Profile click'});
+    navigateTo('profileScreen', this.props.user);
   }
 
   goToSearch() {
-    this.props.logEvent('Feedscreen', {name: 'Profile click'});
-    this.props.navigateTo('searchScreen');
-    this.props.handleIndexChange(2)
+    const {logEvent, navigateTo, handleIndexChange} = this.props
+    logEvent('Feedscreen', {name: 'Profile click'});
+    navigateTo('searchScreen');
+    handleIndexChange(2)
   }
 
   handleNotificationsPress() {
-    this.props.logEvent('Feedscreen', {name: 'Notifications click'});
-    this.props.navigateTo('notificationsScreen');
+    const {logEvent, navigateTo} = this.props
+    logEvent('Feedscreen', {name: 'Notifications click'});
+    navigateTo('notificationsScreen');
   }
 
 

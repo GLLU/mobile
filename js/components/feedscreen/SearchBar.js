@@ -71,18 +71,19 @@ class SearchBar extends Component {
   }
 
   _doSearch(text) {
-    this.props.logEvent('Feedscreen', {name: 'Search'});
-    this.props.handleSearchInput(text)
+    const {logEvent, handleSearchInput} = this.props
+    logEvent('Feedscreen', {name: 'Search'});
+    handleSearchInput(text);
   }
 
   _clearSearch() {
-    this.props.logEvent('Feedscreen', {name: 'Clear search'});
-    this.props.clearSearchBar()
+    const {logEvent, clearSearchBar} = this.props
+    logEvent('Feedscreen', {name: 'Clear search'});
+    clearSearchBar();
   }
 
   _getFeed() {
     this.props.handleSearch();
-    //this.props.toggleFiltersMenus();
   }
 
   render() {

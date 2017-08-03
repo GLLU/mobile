@@ -1,22 +1,19 @@
+// @flow
 import React, {Component} from 'react';
 import {Dimensions, TouchableOpacity, Text, View, FlatList, StyleSheet} from 'react-native';
 import i18n from 'react-native-i18n';
 const deviceWidth = Dimensions.get('window').width;
 import Separator from '../common/lists/Separator';
 import UserActionRow from '../common/lists/UserActionRow';
-import Colors from '../../styles/Colors.styles'
+import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
-import EmptyStateScreen from '../common/EmptyStateScreen'
-const emptyUser = require('../../../images/emptyStates/user-woman.png')
+import EmptyStateScreen from '../common/EmptyStateScreen';
+import Fonts from '../../styles/Fonts.styles';
+const emptyUser = require('../../../images/emptyStates/user-woman.png');
 const styles = StyleSheet.create({
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e6e6e6',
-  },
   RowTitle: {
     color: Colors.gray,
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Fonts.regularFont,
     fontWeight: '300',
     fontSize: generateAdjustedSize(14),
   },
@@ -25,7 +22,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     justifyContent: 'center',
     borderBottomWidth: generateAdjustedSize(1),
-    borderBottomColor: Colors.separatorGray
+    borderBottomColor: Colors.separatorGray,
   },
   historyRowText: {
     fontWeight: '600',
@@ -42,7 +39,7 @@ const styles = StyleSheet.create({
   clearText: {
     color: 'red',
     fontWeight: '300',
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Fonts.regularFont,
     fontSize: generateAdjustedSize(12),
   },
   rowTitleContainer: {
@@ -53,19 +50,25 @@ const styles = StyleSheet.create({
   },
   emptyViewContainer: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 
-class PeopleSearchTab extends Component {
+type Props = {
+  results: array,
+  suggestions: array,
+  searchHistory: array,
+  canShowEmptyView: boolean,
+  navigateTo: () => void,
+  searchFromHistory: () => void,
+  clearSearchHistory: () => void
+};
 
-  static propTypes = {
-    mode: React.PropTypes.string,
-  };
+class PeopleSearchTab extends Component {
+  props: Props;
 
   constructor(props) {
     super(props);
-    this._searchFromHistory = this._searchFromHistory.bind(this);
     this._renderSuggestionUserActionRow = this._renderSuggestionUserActionRow.bind(this);
     this.renderResultsList = this.renderResultsList.bind(this);
     this._renderSearchHistoryList = this._renderSearchHistoryList.bind(this);
@@ -89,20 +92,18 @@ class PeopleSearchTab extends Component {
     </View>
   );
 
-  _searchFromHistory(item) {
-    this.props.searchFromHistory(item)
-  }
-
   renderHistoryRow(item) {
+    const {searchFromHistory} = this.props;
     return (
-      <TouchableOpacity onPress={() => this._searchFromHistory(item)} style={styles.historyRowContainer}>
+      <TouchableOpacity onPress={() => searchFromHistory(item)} style={styles.historyRowContainer}>
         <Text style={styles.historyRowText}>{item}</Text>
       </TouchableOpacity>
     );
   }
 
   _renderSearchHistoryList() {
-    return _.map(this.props.searchHistory, (item, index) => (
+    const {searchHistory} = this.props;
+    return _.map(searchHistory, (item, index) => (
       <View key={index} style={styles.historyRowContainer}>
         {this.renderHistoryRow(item)}
       </View>
@@ -118,12 +119,13 @@ class PeopleSearchTab extends Component {
   }
 
   _renderEmptyView() {
-    const emptyTitle = i18n.t('EMPTY_USER_SEARCH_TITLE')
-    const emptySubtitle = i18n.t('EMPTY_USER_SEARCH_SUBTITLE')
+    const emptyTitle = i18n.t('EMPTY_USER_SEARCH_TITLE');
+    const emptySubtitle = i18n.t('EMPTY_USER_SEARCH_SUBTITLE');
     return (
       <View style={styles.emptyViewContainer}>
-        <EmptyStateScreen title={emptyTitle}
-                          subtitle={emptySubtitle} icon={emptyUser}/>
+        <EmptyStateScreen
+          title={emptyTitle}
+          subtitle={emptySubtitle} icon={emptyUser}/>
       </View>
     );
   }
@@ -134,14 +136,15 @@ class PeopleSearchTab extends Component {
         {this._renderHistoryList() }
         {this.renderSuggestionsList()}
       </View>
-    )
+    );
   }
 
   emptyOrInit() {
-    if (this.props.canShowEmptyView) {
-      return this.props.results.length > 0 ? this.renderResultsList() : this._renderEmptyView()
+    const {canShowEmptyView, results} = this.props;
+    if (canShowEmptyView) {
+      return results.length > 0 ? this.renderResultsList() : this._renderEmptyView();
     } else {
-      return this._renderInitView()
+      return this._renderInitView();
     }
   }
 
@@ -150,8 +153,9 @@ class PeopleSearchTab extends Component {
       <View style={styles.rowTitleContainer}>
         <Text style={styles.RowTitle}>{i18n.t('RECENT_SEARCHES')}</Text>
         <TouchableOpacity>
-          <Text style={styles.clearText}
-                onPress={this.props.clearSearchHistory}>{i18n.t('CLEAR')}</Text>
+          <Text
+            style={styles.clearText}
+            onPress={this.props.clearSearchHistory}>{i18n.t('CLEAR')}</Text>
         </TouchableOpacity>
       </View>
       {this.props.searchHistory.length > 0 ? this._renderSearchHistoryList() : this._renderEmptySearchHistory()}
@@ -168,9 +172,10 @@ class PeopleSearchTab extends Component {
   );
 
   _renderSuggestionUserActionRow() {
-    return _.map(this.props.suggestions, (item, index) => (
+    const {suggestions, navigateTo} = this.props;
+    return _.map(suggestions, (item, index) => (
       <View key={index} style={styles.historyRowContainer}>
-        <UserActionRow {...item} navigateTo={this.props.navigateTo}/>
+        <UserActionRow {...item} navigateTo={navigateTo}/>
       </View>
     ));
   }

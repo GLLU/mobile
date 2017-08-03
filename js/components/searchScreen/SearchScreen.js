@@ -57,12 +57,10 @@ class SearchScreen extends Component {
     if (this.state.searchTerm.length > 2) { // currently sever-side doesnt return results for less then 3 digits
       if (this.state.currentTab.key === 'looks') {
         this.props.getFeed({term: this.state.searchTerm});
-        this.props.addSearchTermHistoryToLooks(this.state.searchTerm);
         this.props.goBack();
       }
       else {
         this.props.getUsers(this.state.searchTerm);
-        this.props.addSearchTermHistoryToPeople(this.state.searchTerm);
       }
     }
   }

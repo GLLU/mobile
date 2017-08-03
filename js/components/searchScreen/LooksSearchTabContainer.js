@@ -13,7 +13,6 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => {
   return {
-    results: [],
     searchHistory: state.search.looks.history
   }
 };
