@@ -1,41 +1,45 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { connect } from "react-redux";
-import { noop } from "lodash";
-import { followUpdate, unFollowUpdate } from "../../../actions/follows";
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import FollowView from '../../profileScreen/follows/FollowView'
+import {connect} from "react-redux";
+import {followUpdate, unFollowUpdate} from "../../../actions/follows";
+import {noop} from "lodash";
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 12,
+    padding: generateAdjustedSize(12),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor:'white'
+    backgroundColor: 'white'
   },
   textContainer: {
     flex: 7,
     flexDirection: 'column',
-    marginLeft: 12
+    marginLeft: generateAdjustedSize(12)
   },
   followName: {
-    fontFamily: Fonts.boldContentFont,
-    fontSize: 16,
+    flex: 0.5,
+    color: 'black',
+    fontSize: generateAdjustedSize(14),
+    fontFamily: Fonts.contentFont,
   },
   followUsername: {
     flex: 0.5,
+    color: '#00a9ff',
+    fontSize: generateAdjustedSize(14)
     fontFamily: Fonts.contentFont,
-    fontSize: 14,
   },
   photoContainer: {
     flex: 2,
   },
   photo: {
     flex: 1,
-    width: 40,
-    height: 40,
-    borderRadius: 20
+    width: generateAdjustedSize(40),
+    height: generateAdjustedSize(40),
+    borderRadius: generateAdjustedSize(20)
   },
   followView: {
     flex: 3
@@ -51,11 +55,11 @@ class UserActionRow extends Component {
     avatar: React.PropTypes.object,
     userId: React.PropTypes.number,
     is_following: React.PropTypes.bool,
-    navigateTo:React.PropTypes.func
+    navigateTo: React.PropTypes.func
   };
 
-  static defaultProps={
-    navigateTo:noop
+  static defaultProps = {
+    navigateTo: noop
   }
 
   constructor(props) {
@@ -93,18 +97,18 @@ class UserActionRow extends Component {
   }
 
   renderFollowView() {
-    if (this.props.is_me) {
+    if (this.props.isMe) {
       return <View name="can't follow me" style={styles.followView}/>;
     }
     return <FollowView onPress={this.onFollowPress} style={styles.followView}
-                       user={{id:this.props.userId, isFollowing:this.state.isFollowing}}/>
+                       user={{id: this.props.userId, isFollowing: this.state.isFollowing}}/>
   }
 
   render() {
     return (
-      <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
+      <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container, this.props.style]}>
         <View style={styles.photoContainer}>
-          <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo}/>
+          <Image resizeMode='cover' source={{uri: this.props.avatar.url}} style={styles.photo}/>
         </View>
         {this.renderFollowText()}
         {this.renderFollowView()}

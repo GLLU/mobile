@@ -1,4 +1,4 @@
-import { StackNavigator } from 'react-navigation'
+import {StackNavigator} from 'react-navigation'
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
 import AddItemPage from './components/addItemScreen';
@@ -23,6 +23,7 @@ import TutorialScreen from './components/tutorialScreen'
 import BadNavigationScreen from './components/badNavigationScreen'
 import likesScreen from './components/likesScreen'
 import BlockedUsersScreen from './components/blockedUsersScreen'
+import SearchScreen from './components/searchScreen/SearchScreenContainer'
 
 const stackNavigatorConfig = {
   initialRouteName: 'splashscreen',
@@ -54,6 +55,9 @@ const routes = {
   },
   finishLookScreen: {
     screen: FinishLookScreen,
+  },
+  searchScreen: {
+    screen: SearchScreen,
   },
   myBodyType: {
     screen: MyBodyType,

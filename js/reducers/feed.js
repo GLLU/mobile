@@ -96,12 +96,6 @@ export default function (state = initialState, action) {
         },
       };
     }
-    case REHYDRATE: {
-      return {
-        ...state,
-        ...action.payload.user,
-      };
-    }
     default:
       return state;
   }
