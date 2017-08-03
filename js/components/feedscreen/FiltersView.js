@@ -108,24 +108,18 @@ class FiltersView extends BaseComponent {
   render() {
     return (
       <View style={styles.filterViewContainer}>
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.TopRow}>
-            <TouchableOpacity onPress={this._resetFilters}>
-              <Text style={styles.cleaResetText}>{I18n.t('RESET FILTERS')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this._cancelFilter}>
-              <Text style={styles.cleaResetText}>{I18n.t('CANCEL')}</Text>
-            </TouchableOpacity>
-          </View>
-          {this._renderFilterRows()}
-        </View>
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-          <TouchableOpacity onPress={this._getFeed} style={styles.applyBtnContainer}>
-            <View style={styles.applyBtn}>
-              <Text style={styles.applyText}>{I18n.t('APPLY')}</Text>
-            </View>
+        <View style={styles.TopRow}>
+          <TouchableOpacity onPress={this._resetFilters}>
+            <Text style={styles.cleaResetText}>{I18n.t('RESET FILTERS')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._cancelFilter}>
+            <Text style={styles.cleaResetText}>{I18n.t('CANCEL')}</Text>
           </TouchableOpacity>
         </View>
+        {this._renderFilterRows()}
+        <TouchableOpacity onPress={this._getFeed} style={styles.applyBtnContainer}>
+          <Text style={styles.applyText}>{I18n.t('APPLY')}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -137,6 +131,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: deviceHeight,
     top: 0,
+    flexDirection: 'column',
   },
   TopRow: {
     flexDirection: 'row',
@@ -159,16 +154,16 @@ const styles = StyleSheet.create({
   seperator: {
     paddingHorizontal: 10,
   },
-  applyBtn: {
+  applyBtn: {},
+  applyBtnContainer: {
     width: deviceWidth - 90,
     height: 45,
     backgroundColor: Colors.highlightColor,
-    justifyContent: 'center',
-    bottom: 150,
-  },
-  applyBtnContainer: {
     alignSelf: 'center',
-    backgroundColor: Colors.primaryColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 150
   },
   applyText: {
     textAlign: 'center',
