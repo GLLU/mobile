@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     alignSelf: 'center',
     justifyContent: 'center',
+    marginHorizontal: 6,
     resizeMode: 'contain',
   },
   walletBalance: {
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: Colors.black,
     marginLeft: 8,
-    marginHorizontal: 8,
     fontFamily: Fonts.regularFont,
   },
   logo: {
@@ -204,7 +204,7 @@ class MainBarView extends BaseComponent {
         </View>
         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
           {this.renderNavigationButton(notificationsIcon, this.handleNotificationsPress, styles.btnImageHanger)}
-          {this.renderNavigationButton(search, this.goToSearch, styles.btnImage, styles.centerEdges)}
+          {this.renderNavigationButton(search, this.goToSearch, styles.btnImage)}
         </View>
       </View>
     );

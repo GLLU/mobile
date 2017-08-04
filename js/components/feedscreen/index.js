@@ -228,6 +228,7 @@ const mapStateToProps = state => (
     hasUserSize: state.user.hasChoosenBodyShape,
     user: state.user,
     modalShowing: false,
+    balance: state.wallet.balance,
     showWalletBadge: state.user.showWalletBadge,
     gotNewNotifications: state.notifications.newNotifications,
   });
