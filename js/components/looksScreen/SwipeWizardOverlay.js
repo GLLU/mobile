@@ -18,7 +18,20 @@ class SwipeWizardOverlay extends Component {
     this.animatedValue = new Animated.Value(0);
   }
 
-  animate(easing) {
+  componentDidMount() {
+    const marginTop = this.animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [100, 1],
+    });
+    const marginBottom = this.animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [100, 1],
+    });
+
+    this._animate(Easing.bounce);
+  }
+
+  _animate(easing) {
     this.animatedValue.setValue(0);
     Animated.timing(
       this.animatedValue,
@@ -33,16 +46,6 @@ class SwipeWizardOverlay extends Component {
   render() {
     const { onClose } = this.props;
 
-    const marginTop = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [100, 1],
-    });
-    const marginBottom = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [100, 1],
-    });
-
-    this.animate(Easing.bounce);
 
     return (
 

@@ -47,6 +47,7 @@ class FeedPage extends Component {
     this.uploadLook = this.uploadLook.bind(this);
     this.showBottomCameraButton = this.showBottomCameraButton.bind(this);
     this._renderFeed = this._renderFeed.bind(this);
+    this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
     this.toggleFilterMenues = this.toggleFilterMenues.bind(this);
     this.state = {
       name: '',
@@ -167,11 +168,17 @@ class FeedPage extends Component {
         clearedField={clearedField}
         navigateTo={navigateTo}
         showBottomCameraButton={this.showBottomCameraButton}
+        feedsRoute={this.state.feedsRoute}
+        handleIndexChange={this._handleTabsIndexChange}
         toggleFilterMenues={this.toggleFilterMenues}
         hasUserSize={hasUserSize}
       />
     );
   }
+
+  _handleTabsIndexChange = (index) => {
+    this.setState({feedsRoute: {...this.state.feedsRoute, index}});
+  };
 
   render() {
     return (
@@ -181,7 +188,8 @@ class FeedPage extends Component {
             user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
             gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
             handleSearchStatus={this._handleSearchStatus}
-            handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
+            handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}
+            handleIndexChange={this._handleTabsIndexChange}/>
         </View>
         {this._renderFeed()}
         {this.renderBottomCamera()}

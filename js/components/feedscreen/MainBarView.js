@@ -107,6 +107,7 @@ class MainBarView extends BaseComponent {
     this._openSearch = this._openSearch.bind(this);
     this.handleNotificationsPress = this.handleNotificationsPress.bind(this);
     this.goToProfile = this.goToProfile.bind(this);
+    this.goToSearch = this.goToSearch.bind(this);
     this.state = {
       hasNotify: false,
       searchStatus: false,
@@ -125,13 +126,22 @@ class MainBarView extends BaseComponent {
   }
 
   goToProfile() {
-    this.props.logEvent('Feedscreen', {name: 'Profile click'});
-    this.props.navigateTo('profileScreen', this.props.user);
+    const {logEvent, navigateTo} = this.props
+    logEvent('Feedscreen', {name: 'Profile click'});
+    navigateTo('profileScreen', this.props.user);
+  }
+
+  goToSearch() {
+    const {logEvent, navigateTo, handleIndexChange} = this.props
+    logEvent('Feedscreen', {name: 'Profile click'});
+    navigateTo('searchScreen');
+    handleIndexChange(2)
   }
 
   handleNotificationsPress() {
-    this.props.logEvent('Feedscreen', {name: 'Notifications click'});
-    this.props.navigateTo('notificationsScreen');
+    const {logEvent, navigateTo} = this.props
+    logEvent('Feedscreen', {name: 'Notifications click'});
+    navigateTo('notificationsScreen');
   }
 
 
@@ -159,7 +169,7 @@ class MainBarView extends BaseComponent {
         </View>
         <View style={{flexDirection: 'row', flex: 1}}>
           {this.renderNavigationButton(notificationsIcon, this.handleNotificationsPress, styles.btnImageHanger)}
-          {this.renderNavigationButton(search, addNewItem, styles.btnImage, styles.centerEdges)}
+          {this.renderNavigationButton(search, this.goToSearch, styles.btnImage, styles.centerEdges)}
         </View>
       </View>
     );
