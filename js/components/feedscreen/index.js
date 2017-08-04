@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import {addNewLook, setUser, getNotifications} from '../../actions';
+import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {toggleFiltersMenus} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
@@ -31,6 +31,8 @@ class FeedPage extends Component {
     addNewLook: React.PropTypes.func,
     hideBodyTypeModal: React.PropTypes.func,
     toggleFiltersMenus: React.PropTypes.func,
+    loadCategories: React.PropTypes.func,
+    loadOccasionTags: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -48,6 +50,7 @@ class FeedPage extends Component {
     this.uploadLook = this.uploadLook.bind(this);
     this.showBottomCameraButton = this.showBottomCameraButton.bind(this);
     this._renderFeed = this._renderFeed.bind(this);
+    this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
     this.toggleFilterMenues = this.toggleFilterMenues.bind(this);
     this.state = {
       name: '',
@@ -57,6 +60,12 @@ class FeedPage extends Component {
       showBottomCamera: true,
       fadeAnimContentOnPress: new Animated.Value(10),
     };
+  }
+
+  componentDidMount() {
+    const {gender} = this.props.user
+    this.props.loadCategories(gender);
+    this.props.loadOccasionTags(gender);
   }
 
   componentWillMount() {
@@ -163,11 +172,17 @@ class FeedPage extends Component {
         clearedField={clearedField}
         navigateTo={navigateTo}
         showBottomCameraButton={this.showBottomCameraButton}
+        feedsRoute={this.state.feedsRoute}
+        handleIndexChange={this._handleTabsIndexChange}
         toggleFilterMenues={this.toggleFilterMenues}
         hasUserSize={hasUserSize}
       />
     );
   }
+
+  _handleTabsIndexChange = (index) => {
+    this.setState({feedsRoute: {...this.state.feedsRoute, index}});
+  };
 
   render() {
 
@@ -177,10 +192,11 @@ class FeedPage extends Component {
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
           <MainBarView
-            user={user} navigateTo={navigateTo} addNewItem={this.uploadLook}
-            gotNewNotifications={gotNewNotifications} searchStatus={this.state.searchStatus}
+            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
+            gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
             handleSearchStatus={this._handleSearchStatus} balance={balance} showBalanceBadge={showWalletBadge}
-            handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}/>
+            handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}
+            handleIndexChange={this._handleTabsIndexChange}/>
         </View>
         {this._renderFeed()}
         {this.renderBottomCamera()}
@@ -202,17 +218,18 @@ function bindActions(dispatch) {
     getNotifications: name => dispatch(getNotifications(name)),
     getUserBalance: (id) => dispatch(getUserBalance(id)),
     toggleFiltersMenus: feedType => dispatch(toggleFiltersMenus(feedType)),
+    loadCategories: gender => dispatch(loadCategories(gender)),
+    loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
   };
 }
 
 const mapStateToProps = state => (
   {
-  hasUserSize: state.user.hasChoosenBodyShape,
-  user: state.user,
-  balance: state.wallet.balance,
-  showWalletBadge: state.user.showWalletBadge,
-  modalShowing: false,
-  gotNewNotifications: state.notifications.newNotifications,
-});
+    hasUserSize: state.user.hasChoosenBodyShape,
+    user: state.user,
+    modalShowing: false,
+    showWalletBadge: state.user.showWalletBadge,
+    gotNewNotifications: state.notifications.newNotifications,
+  });
 
 export default connect(mapStateToProps, bindActions)(asScreen(FeedPage));

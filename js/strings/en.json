@@ -49,8 +49,9 @@
   "VISIT_RETAILER": "VISIT RETAILER’S WEBSITE",
   "CATEGORIES": "CATEGORIES",
   "EVENTS": "EVENTS",
-  "BODY SHAPES": "BODY SHAPES",
+  "BODY_SHAPES": "BODY SHAPES",
   "FILTER": "FILTER",
+  "BODY_SHAPE": "BODY SHAPE",
   "RESET FILTERS": "RESET FILTERS",
   "CANCEL": "CANCEL",
   "FILTER_BY": "Filter By",
@@ -59,6 +60,14 @@
   "COMMENTS": "COMMENTS",
   "NO_NOTIFICATIONS_TITLE": "YOU HAVE NO NOTIFICATIONS",
   "NO_NOTIFICATIONS_LEGEND": "Post a fashionable look to get people to like, follow and adore your looks.",
+  "EMPTY_USER_SEARCH_TITLE": "OOOPS... \n NO USER WAS FOUND IN THIS SEARCH",
+  "EMPTY_USER_SEARCH_SUBTITLE": "Take another shot \n searching a different stylish user",
+  "RESULTS": "Results",
+  "TRY_SEARCH_FOR_PEOPLE": "Try searching for people",
+  "CLEAR": "CLEAR",
+  "FISHIONISTAS_YOU_WANNA_CHECK": "Fashionistas you wanna check",
+  "TRY_SEARCHING_FOR_ITEMS": "Try searching for Items",
+  "RECENT_SEARCHES": "Recent searches",
   "FEMALE": "Female",
   "MALE": "Male",
   "RESET_PASSWORD": "Reset My Password",
@@ -74,6 +83,7 @@
   "LOOK_BUY_LEGEND_WIZARD": "FOR EACH SALE OF  ANY ITEM IN YOUR LOOK",
   "WITHDRAW_WIZARD": "WITHDRAW YOUR MONEY",
   "WITHDRAW_LEGEND_WIZARD": "THROUGH PAYPAL OR WITH OUR SECURED SYSTEM",
-  "TEACH_ME_MONEY": "Teach me how to make money"
+  "TEACH_ME_MONEY": "Teach me how to make money",
+  "SWIPE_WIZARD": "SWIPE UP AND DOWN TO SEE MORE LOOKS!"
 }
 

@@ -1,7 +1,10 @@
 import _ from 'lodash';
+import i18n from 'react-native-i18n';
 import {SET_BRANDS, SET_CATEGORIES, SET_OCCASION_TAGS, OPEN_FEED_FILTER, CLOSE_FEED_FILTER} from '../actions/filters';
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../actions/feed';
-
+export const CATEGORIES = 'CATEGORIES';
+export const EVENTS = 'EVENTS';
+export const BODY_SHAPES = 'BODY_SHAPES';
 const initialState = {
   occasion_tags: [],
   categories: [],

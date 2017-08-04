@@ -32,7 +32,7 @@ import { formatLook } from '../../utils/UploadUtils';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 
-const parallaxHeaderHeight = 300;
+const parallaxHeaderHeight = 270;
 const stickyHeaderHeight = Platform.OS === 'ios' ? 66 : 46;
 
 type Props = {

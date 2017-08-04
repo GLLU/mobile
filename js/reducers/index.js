@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import loader from './loader';
 import errorHandler from './errorHandler';
 import cardNavigation from './cardNavigation';
@@ -19,6 +19,7 @@ import paris from './paris';
 import lookLikes from './lookLikes';
 import looks from './looks';
 import blockedUsers from './blockedUsers';
+import search from './search'
 
 export default combineReducers({
   loader,
@@ -40,5 +41,6 @@ export default combineReducers({
   paris,
   lookLikes,
   looks,
-  blockedUsers
+  blockedUsers,
+  search,
 });

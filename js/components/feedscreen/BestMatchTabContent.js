@@ -37,6 +37,7 @@ const profileBackground = require('../../../images/backgrounds/profile-screen-ba
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
+import {CATEGORIES, EVENTS} from '../../reducers/filters';
 
 class BestMatchTabContent extends BaseComponent {
 
@@ -362,14 +363,16 @@ class BestMatchTabContent extends BaseComponent {
   _renderFilterView() {
     const {myFeedType} = this.props;
     return (
-      <FiltersView currentFeedTab={myFeedType}/>
+      <FiltersView currentFeedTab={myFeedType} showFilters={[CATEGORIES, EVENTS]}/>
     )
   }
 
   _renderFeedFilters() {
     const {query} = this.props;
+    const clonedQuery = _.cloneDeep(query);
+    delete clonedQuery.body_type
     return (
-      <FeedFilters query={query} getFeed={this._getFeed}/>
+      <FeedFilters query={clonedQuery} getFeed={this._getFeed}/>
     )
   }
 
@@ -397,7 +400,7 @@ class BestMatchTabContent extends BaseComponent {
     return (
       <View style={{flexGrow: 1, backgroundColor: 'white', alignItems: 'center'}}>
         <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
-        <ScrollView contentOffset={20}>
+        <ScrollView>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
             onPick={() => this.toggleBodyTypeModal(false)}/>

@@ -134,6 +134,7 @@ class MainBarView extends BaseComponent {
     this._openSearch = this._openSearch.bind(this);
     this.handleNotificationsPress = this.handleNotificationsPress.bind(this);
     this.goToProfile = this.goToProfile.bind(this);
+    this.goToSearch = this.goToSearch.bind(this);
     this.state = {
       hasNotify: false,
       searchStatus: false,
@@ -159,6 +160,13 @@ class MainBarView extends BaseComponent {
   handleNotificationsPress() {
     this.props.logEvent('Feedscreen', { name: 'Notifications click' });
     this.props.navigateTo('notificationsScreen');
+
+  }
+  goToSearch() {
+    const {logEvent, navigateTo, handleIndexChange} = this.props
+    logEvent('Feedscreen', {name: 'Profile click'});
+    navigateTo('searchScreen');
+    handleIndexChange(2)
   }
 
   renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
@@ -196,7 +204,7 @@ class MainBarView extends BaseComponent {
         </View>
         <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
           {this.renderNavigationButton(notificationsIcon, this.handleNotificationsPress, styles.btnImageHanger)}
-          {this.renderNavigationButton(search, addNewItem, styles.btnImage)}
+          {this.renderNavigationButton(search, this.goToSearch, styles.btnImage, styles.centerEdges)}
         </View>
       </View>
     );

@@ -42,7 +42,7 @@ class ProfileScreenHeader extends Component {
     const { profilePic, name, username, isFollowing, isMyProfile, onFollowClicked } = this.props;
 
     return (
-      <View style={{ height: 280 }}>
+      <View style={{ height: 250 }}>
         <Image
           resizeMode={'stretch'} source={defaultBackground}
           style={styles.backgroundImage}/>

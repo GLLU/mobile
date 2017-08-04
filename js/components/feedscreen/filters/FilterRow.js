@@ -11,8 +11,10 @@ import {
   Image
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
+import Fonts from '../../../styles/Fonts.styles';
 import FilterGroup from './FilterGroup';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import I18n from 'react-native-i18n';
 
 const arrowRight = require('../../../../images/icons/collapsed-filterButton.png');
 const arrowDown = require('../../../../images/icons/expand-filterButton.png');
@@ -84,7 +86,7 @@ class FilterRow extends Component {
       Animated.timing(          // Uses easing functions
         this.state.filtersAnimHeight,    // The value to drive
         {
-          toValue: 70,
+          toValue: generateAdjustedSize(80),
           duration: 250,
         }            // Configuration
       ).start();
@@ -111,15 +113,15 @@ class FilterRow extends Component {
     const arrowIcon = this.state.openFilter ? arrowDown : arrowRight;
     const {currentFilterRowName, filtersAnimHeight} = this.state;
     const {currentFilter, title} = this.props;
-    console.log('current filter', currentFilter)
     return (
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={this.toggleFilterRow}>
           <View
             style={styles.rowHeaderContainer}>
-            <View style={{flexDirection: 'column'}}>
-              <Text style={styles.rowTitle}>{title}</Text>
-              <Text style={styles.selectedFilter}>{currentFilterRowName}</Text>
+            <View style={{flexDirection: 'column', alignSelf: 'center'}}>
+              <Text style={styles.rowTitle}>{I18n.t(title)}</Text>
+              {currentFilterRowName.length > 1 ?
+                <Text style={styles.selectedFilter}>{currentFilterRowName}</Text> : null}
             </View>
             <Image style={styles.arrows} source={arrowIcon}/>
           </View>
@@ -148,16 +150,17 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   rowTitle: {
-    fontWeight: '600',
+    fontSize: generateAdjustedSize(16),
+    fontFamily: Fonts.regularFont,
   },
   selectedFilter: {
-    fontWeight: '600',
     fontSize: generateAdjustedSize(12),
+    fontFamily: Fonts.subHeaderFont,
     color: Colors.secondaryColor,
   },
   rowHeaderContainer: {
     width: deviceWidth,
-    height: 55,
+    height: generateAdjustedSize(55),
     justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',

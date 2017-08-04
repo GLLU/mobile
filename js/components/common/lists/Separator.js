@@ -1,7 +1,7 @@
 // @flow
 
-import React, { PureComponent } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, {PureComponent} from 'react';
+import {View, StyleSheet} from 'react-native';
 import Colors from "../../../styles/Colors.styles";
 
 const styles = StyleSheet.create({

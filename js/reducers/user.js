@@ -1,4 +1,4 @@
-import { SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_BODY_MODAL } from '../actions/user';
+import { SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_BODY_MODAL, HIDE_SWIPE_WIZARD } from '../actions/user';
 import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -17,6 +17,7 @@ const initialState = {
   showBodyModal: true,
   hasChoosenBodyShape: false,
   showWalletBadge: true,
+  showSwipeWizard: true,
 };
 
 // Action Handlers
@@ -33,6 +34,11 @@ const ACTION_HANDLERS = {
     ...state,
     showWalletBadge: false,
   }),
+  [HIDE_SWIPE_WIZARD]: (state, action) => ({
+    ...state,
+    showSwipeWizard: false,
+  }),
+
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
     return {
@@ -54,6 +60,7 @@ const ACTION_HANDLERS = {
     showBodyModal: state.showBodyModal,
     showWalletBadge: state.showWalletBadge,
     hasChoosenBodyShape: state.hasChoosenBodyShape,
+    showSwipeWizard: state.showSwipeWizard,
   }),
 };
 
