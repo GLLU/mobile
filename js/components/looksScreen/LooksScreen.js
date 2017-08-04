@@ -242,6 +242,8 @@ class LooksScreen extends Component {
   renderVideo(look: object, index: number) {
     const showShowArrow = this.shouldRenderArrows();
     const openComments = this.openCommentsInAdvance(look);
+    const { onHideSwipeWizard, showSwipeWizard } = this.props;
+
     return (
       <GestureRecognizer
         key={look.originalIndex !== undefined ? look.originalIndex : -1}
@@ -279,6 +281,8 @@ class LooksScreen extends Component {
         />
         {showShowArrow ? this.renderUpArrow() : null}
         {showShowArrow ? this.renderDownArrow() : null}
+
+        {showSwipeWizard ?  <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
       </GestureRecognizer>
     );
   }
