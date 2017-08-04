@@ -1,6 +1,6 @@
-import {SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN} from '../actions/user';
-import {COMPLETE_EDIT_BODY_MEASURE} from '../actions/myBodyMeasure';
-import {REHYDRATE} from 'redux-persist/constants';
+import { SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_SWIPE_WIZARD } from '../actions/user';
+import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
+import { REHYDRATE } from 'redux-persist/constants';
 
 import NetworkManager from '../network/NetworkManager';
 
@@ -16,6 +16,7 @@ const initialState = {
   showTutorial: false,
   showBodyModal: true,
   hasChoosenBodyShape: false,
+  showSwipeWizard: true,
 };
 
 // Action Handlers
@@ -28,6 +29,11 @@ const ACTION_HANDLERS = {
     ...state,
     hasChoosenBodyShape: true,
   }),
+  [HIDE_SWIPE_WIZARD]: (state, action) => ({
+    ...state,
+    showSwipeWizard: false,
+  }),
+
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
     return {
@@ -48,6 +54,7 @@ const ACTION_HANDLERS = {
     showTutorial: state.showTutorial,
     showBodyModal: state.showBodyModal,
     hasChoosenBodyShape: state.hasChoosenBodyShape,
+    showSwipeWizard: state.showSwipeWizard,
   }),
 };
 

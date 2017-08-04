@@ -15,6 +15,7 @@ export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const BODY_SHAPE_CHOOSEN = 'user.BODY_SHAPE_CHOOSEN';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
+export const HIDE_SWIPE_WIZARD = 'user.HIDE_SWIPE_WIZARD';
 export const USER_BLOCKED = 'USER_BLOCKED';
 export const USER_UNBLOCKED = 'USER_UNBLOCKED';
 export const SET_BLOCKED_USERS = 'SET_BLOCKED_USERS';
@@ -58,6 +59,10 @@ export function setUser(user: string) {
     type: SET_USER,
     payload: user,
   };
+}
+
+export function hideSwipeWizard () {
+  return ({ type: HIDE_SWIPE_WIZARD});
 }
 
 export function loginViaFacebook(data) {
