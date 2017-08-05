@@ -7,6 +7,7 @@ const Colors = {
   backgroundGrey: '#E6E6E6',
   white: '#FFFFFF',
   black: '#000000',
+  link: '#00a9ff',
   lightGray: '#c0c0c0',
   gray: '#7a7a7a',
   darkGreen: '#009688',

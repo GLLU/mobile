@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react';
 import * as _ from 'lodash';
-import LinearGradient from 'react-native-linear-gradient';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Image } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Image, Modal } from 'react-native';
 import I18n from 'react-native-i18n';
 
 import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
@@ -19,7 +18,8 @@ class WalletScreen extends Component {
 
   props: {
     balance: number,
-    onAddNewLook: () => void
+    onAddNewLook: () => void,
+    onShowWalletWizard: () => void
   };
 
   static defaultProps = {
@@ -32,10 +32,17 @@ class WalletScreen extends Component {
     const { balance, onAddNewLook } = this.props;
 
     if (!balance || balance === 0) {
-      return (<EmptyStateScreen
+      return (
+        <View>
+        <EmptyStateScreen
         title={I18n.t('EMPTY_BALANCE_TITLE')} subtitle={I18n.t('EMPTY_BALANCE_LEGEND')}
         icon={require('../../../images/emptyStates/datebase.png')} buttonText={I18n.t('POST_NOW')}
-        onButtonClicked={onAddNewLook}/>);
+        onButtonClicked={onAddNewLook}/>
+          <TouchableOpacity onPress={this._showWizard}>
+            <Text style={styles.teachMe}>{I18n.t('TEACH_ME_MONEY')}</Text>
+          </TouchableOpacity>
+        </View>
+          );
     }
 
     return (
@@ -63,6 +70,10 @@ class WalletScreen extends Component {
     );
   }
 
+  _showWizard = () => {
+    this.props.onShowWalletWizard();
+  }
+
   _handleWithdrawPressed = () => {
     const { balance, onWithdrawPressed } = this.props;
 
@@ -76,6 +87,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  teachMe:{
+    alignSelf: 'center',
+    fontFamily: Fonts.contentFont,
+    marginTop: 4,
+    color: Colors.link,
   },
   card: {
     width: generateAdjustedSize(265),

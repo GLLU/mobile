@@ -1,6 +1,6 @@
 // @flow
 
-import { floorWithPrecision, formatNumberAsString } from '../FormatUtils';
+import { floorWithPrecision, formatNumberAsString, formatNumberAsAmount } from '../FormatUtils';
 
 describe('formatNumberAsString util', () => {
 
@@ -106,6 +106,26 @@ describe('floorWithPrecision util', () => {
 
   test('positive number with 2 precision', () => {
     expect(floorWithPrecision(123123.123,2)).toBe(123123.12);
+  });
+
+});
+
+describe('number to amount string util', () => {
+
+  test('0', () => {
+    expect(formatNumberAsAmount(0)).toBe('00.00$');
+  });
+
+  test('10', () => {
+    expect(formatNumberAsAmount(10)).toBe('10.00$');
+  });
+
+  test('10.30', () => {
+    expect(formatNumberAsAmount(10.30)).toBe('10.30$');
+  });
+
+  test('10.3', () => {
+    expect(formatNumberAsAmount(10.3)).toBe('10.30$');
   });
 
 });

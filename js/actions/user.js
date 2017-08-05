@@ -13,6 +13,7 @@ export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const BODY_SHAPE_CHOOSEN = 'user.BODY_SHAPE_CHOOSEN';
+export const HIDE_WALLET_BADGE = 'user.HIDE_WALLET_BADGE';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const HIDE_SWIPE_WIZARD = 'user.HIDE_SWIPE_WIZARD';
@@ -39,7 +40,9 @@ const setRestOptions = function (dispatch, rest, user) {
     }
   });
 };
-
+export function hideWalletBadge(){
+  return ({ type: HIDE_BODY_MODAL });
+}
 const signInFromRest = function (dispatch, data) {
   return new Promise((resolve, reject) => {
     if (!data || _.isEmpty(data)) {

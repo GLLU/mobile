@@ -8,6 +8,7 @@ import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {toggleFiltersMenus} from '../../actions/filters';
+import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
@@ -22,6 +23,8 @@ class FeedPage extends Component {
 
   static propTypes = {
     user: React.PropTypes.object,
+    balance: React.PropTypes.number,
+    showWalletBadge: React.PropTypes.boolean,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
@@ -86,6 +89,7 @@ class FeedPage extends Component {
     });
 
     this.props.getNotifications(); // can stay here, still thinking about it
+    this.props.getUserBalance(this.props.user.id);
   }
 
   componentWillUnmount() {
@@ -190,13 +194,16 @@ class FeedPage extends Component {
   };
 
   render() {
+
+    const { navigateTo, gotNewNotifications, user, balance, showWalletBadge } = this.props;
+
     return (
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
           <MainBarView
             user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
             gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
-            handleSearchStatus={this._handleSearchStatus}
+            handleSearchStatus={this._handleSearchStatus} balance={balance} showBalanceBadge={showWalletBadge}
             handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}
             handleIndexChange={this._handleTabsIndexChange}/>
         </View>
@@ -218,6 +225,7 @@ function bindActions(dispatch) {
     hideBodyTypeModal: () => dispatch(hideBodyTypeModal()),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
+    getUserBalance: (id) => dispatch(getUserBalance(id)),
     toggleFiltersMenus: feedType => dispatch(toggleFiltersMenus(feedType)),
     loadCategories: gender => dispatch(loadCategories(gender)),
     loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
@@ -229,6 +237,8 @@ const mapStateToProps = state => (
     hasUserSize: state.user.hasChoosenBodyShape,
     user: state.user,
     modalShowing: false,
+    balance: state.wallet.balance,
+    showWalletBadge: state.user.showWalletBadge,
     gotNewNotifications: state.notifications.newNotifications,
   });
 
