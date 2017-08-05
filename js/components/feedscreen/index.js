@@ -14,6 +14,7 @@ import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
 import {formatLook} from '../../utils/UploadUtils';
 import FeedTabs from './FeedTabs';
+import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
 
 const cameraIcon = require('../../../images/icons/camera_green-circle.png');
 
@@ -56,6 +57,14 @@ class FeedPage extends Component {
       contentHeight: null,
       showBottomCamera: true,
       fadeAnimContentOnPress: new Animated.Value(10),
+      feedsRoute: {
+        index: 0,
+        routes: [
+          {key: FEED_TYPE_FOLLOWING, title: 'Following'},
+          {key: FEED_TYPE_BEST_MATCH, title: 'My Shape'},
+          {key: FEED_TYPE_WHATS_HOT, title: "What's Hot"},
+        ],
+      },
     };
   }
 

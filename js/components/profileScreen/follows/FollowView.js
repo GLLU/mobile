@@ -1,10 +1,9 @@
-
-import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React, {Component} from 'react';
+import {Image, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Fonts from '../../../styles/Fonts.styles';
 import Colors from '../../../styles/Colors.styles';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
-                                 
+
 const styles = StyleSheet.create({
   followBtn: {
     backgroundColor: Colors.secondaryColor,

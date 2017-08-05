@@ -1,8 +1,6 @@
-import { SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_SWIPE_WIZARD } from '../actions/user';
-import { COMPLETE_EDIT_BODY_MEASURE } from '../actions/myBodyMeasure';
-import { REHYDRATE } from 'redux-persist/constants';
-
-import NetworkManager from '../network/NetworkManager';
+import {SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_SWIPE_WIZARD} from '../actions/user';
+import {COMPLETE_EDIT_BODY_MEASURE} from '../actions/myBodyMeasure';
+import {REHYDRATE} from 'redux-persist/constants';
 
 const initialState = {
   id: -1,
