@@ -18,22 +18,10 @@ import withAnalytics from '../common/analytics/WithAnalytics';
 class FeedTabs extends Component {
   constructor(props: object) {
     super(props);
-    this._handleIndexChange = this._handleIndexChange.bind(this);
     this._renderHeader = this._renderHeader.bind(this);
     this._toggleFilterMenu = this._toggleFilterMenu.bind(this);
     this._renderNavigationButton = this._renderNavigationButton.bind(this);
-    this.state = {
-      index: 0,
-      routes: [
-        {key: FEED_TYPE_FOLLOWING, title: 'Following'},
-        {key: FEED_TYPE_BEST_MATCH, title: 'My Size'},
-        {key: FEED_TYPE_WHATS_HOT, title: "What's Hot"},
-      ],
-      filterIsOpen: false,
-    };
   }
-
-  _handleIndexChange = index => this.setState({index});
 
   _renderHeader = props => (
     <TabBar
@@ -52,7 +40,7 @@ class FeedTabs extends Component {
           showBottomCameraButton={showBottomCameraButton}/>);
       case FEED_TYPE_BEST_MATCH:
         return (<BestMatchTabContent
-          navigateTo={navigateTo} isTabOnFocus={this.state.index === 1}
+          navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 1}
           showBottomCameraButton={showBottomCameraButton}/>);
       case FEED_TYPE_WHATS_HOT:
         return (<WhatsHotTabContent
@@ -65,8 +53,9 @@ class FeedTabs extends Component {
   };
 
   _toggleFilterMenu() {
-    this.props.logEvent('filterFeed', {feed: this.state.routes[this.state.index].key});
-    this.props.toggleFilterMenues(this.state.routes[this.state.index].key);
+    this.props.logEvent('filterFeed', {feed: this.props.feedsRoute.routes[this.props.feedsRoute.index].key});
+    console.log('route key ', this.props.feedsRoute.routes[this.props.feedsRoute.index].key)
+    this.props.toggleFilterMenues(this.props.feedsRoute.routes[this.props.feedsRoute.index].key);
   }
 
   _renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
@@ -80,17 +69,17 @@ class FeedTabs extends Component {
   }
 
   render() {
-    const {hasUserSize} = this.props;
+    const {hasUserSize, feedsRoute} = this.props;
     return (
       <View style={styles.container}>
         <TabViewAnimated
           style={styles.tabViewAnimatedContainer}
-          navigationState={this.state}
+          navigationState={feedsRoute}
           renderScene={this._renderScene}
           renderHeader={this._renderHeader}
-          onRequestChangeTab={this._handleIndexChange}
+          onRequestChangeTab={this.props.handleIndexChange}
         />
-        { this.state.index === 1 && !hasUserSize ? null : this._renderNavigationButton(filterIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
+        { feedsRoute.index === 1 && !hasUserSize ? null : this._renderNavigationButton(filterIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
       </View>
     );
   }
