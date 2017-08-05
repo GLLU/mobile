@@ -25,16 +25,21 @@ import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from "../common/buttons/SolidButton";
+import FiltersView from './FilterContainer';
+import FeedFilters from './FeedFilters';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
+import {CATEGORIES, EVENTS} from '../../reducers/filters';
 
-class ShapeTabContent extends BaseComponent {
+class BestMatchTabContent extends BaseComponent {
 
   static propTypes = {
     hasUserSize: React.PropTypes.bool,
@@ -55,6 +60,8 @@ class ShapeTabContent extends BaseComponent {
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
+    this._renderFeedFilters = this._renderFeedFilters.bind(this);
+    this._getFeed = this._getFeed.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -70,13 +77,13 @@ class ShapeTabContent extends BaseComponent {
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', { name: 'Invite your friends click' });
+    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
     const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
   componentDidMount() {
-    this.getFeed(this.props.defaultFilters);
+    this._getFeed(this.props.defaultFilters);
     const that = this;
     setInterval(() => {
       that.handleScrollPositionForVideo();
@@ -88,7 +95,7 @@ class ShapeTabContent extends BaseComponent {
     );
   }
 
-  getFeed(query) {
+  _getFeed(query) {
     this.props.getFeed(query);
   }
 
@@ -104,7 +111,7 @@ class ShapeTabContent extends BaseComponent {
     }
 
     if (!this.props.hasUserSize && nextProps.hasUserSize) {
-      this.getFeed(this.props.defaultFilters);
+      this._getFeed(this.props.defaultFilters);
     }
 
     if (nextProps.flatLooks !== this.props.flatLooks) {
@@ -117,7 +124,11 @@ class ShapeTabContent extends BaseComponent {
 
     if (nextProps.clearedField) {
       this.currPosition = 0;
-      this.setState({ noMoreData: false });
+      this.setState({noMoreData: false});
+    }
+
+    if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
+      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen)
     }
   }
 
@@ -143,7 +154,7 @@ class ShapeTabContent extends BaseComponent {
         const currentScroll = event.nativeEvent.contentOffset.y;
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if (!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({ loadingMore: true }, this.loadMore);
+            this.setState({loadingMore: true}, this.loadMore);
           }
         } else {
         }
@@ -155,7 +166,7 @@ class ShapeTabContent extends BaseComponent {
   handleScrollPositionForVideo() {
     if (this.state.currentScrollPosition !== this.currPosition) {
       this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
-      this.setState({ currentScrollPosition: this.currPosition });
+      this.setState({currentScrollPosition: this.currPosition});
     }
   }
 
@@ -164,22 +175,22 @@ class ShapeTabContent extends BaseComponent {
       console.log('already isLoading');
       return;
     }
-    const { meta: { total }, query } = this.props;
+    const {meta: {total}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({ isLoading: true }, () => {
+      this.setState({isLoading: true}, () => {
         this.props.loadMore().then(() => {
-            this.setState({ isLoading: false });
+            this.setState({isLoading: false});
           }
         ).catch((err) => {
           console.log('error', err);
-          this.setState({ isLoading: false });
+          this.setState({isLoading: false});
         });
       });
     } else {
-      this.setState({ noMoreData: true });
+      this.setState({noMoreData: true});
       console.log('end of feed');
     }
   }
@@ -213,7 +224,7 @@ class ShapeTabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
+            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
             return <Spinner color="rgb(230,230,230)"/>;
@@ -256,27 +267,27 @@ class ShapeTabContent extends BaseComponent {
   }
 
   onRefresh() {
-    this.setState({ isRefreshing: true });
-    const { getFeed, query } = this.props;
+    this.setState({isRefreshing: true});
+    const {getFeed, query} = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
     getFeed(cleanQuery)
       .then(() => {
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       })
       .catch((error) => {
         console.log('Error when preload image', error);
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       });
   }
 
   renderInviteFriend() {
     return (
-      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
+      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
         <Image
-          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
-          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
+          source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
+          style={{width: deviceWidth / 2 - 6, height: deviceWidth / 4}}
           resizeMode={'stretch'}/>
       </View>
     );
@@ -293,10 +304,10 @@ class ShapeTabContent extends BaseComponent {
           justifyContent: 'flex-end',
           alignSelf: 'center',
         }}>
-        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
           <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
             {this.renderInviteFriend()}
           </TouchableOpacity>
@@ -306,16 +317,16 @@ class ShapeTabContent extends BaseComponent {
     );
   }
 
-  renderEmptyContent() {
+  _renderEmptyContent() {
     return (
-      <View style={{ flex: 1, flexDirection: 'column' }}>
+      <View style={{flex: 1, flexDirection: 'column'}}>
         <Image
           source={profileBackground}
-          style={{ resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start' }}>
+          style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start'}}>
           <LinearGradient
             colors={['#0C0C0C', '#4C4C4C']}
-            style={[styles.linearGradient, { opacity: 0.7 }]}/>
-          <View style={{ marginTop: 100 }}>
+            style={[styles.linearGradient, {opacity: 0.7}]}/>
+          <View style={{marginTop: 100}}>
             <ParisAdjustableMessage text={i18n.t('PARIS_NO_FEED_RESULTS')}/>
           </View>
         </Image>
@@ -323,11 +334,11 @@ class ShapeTabContent extends BaseComponent {
     );
   }
 
-  renderScrollView() {
+  _renderScrollView() {
     return (
       <View style={styles.tab}>
         <ScrollView
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
@@ -340,26 +351,43 @@ class ShapeTabContent extends BaseComponent {
     );
   }
 
-  renderLoader() {
+  _renderLoader() {
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
-        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor}/>
+      <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
+        <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
       </View>
 
     );
   }
 
-  render() {
-    const { hasUserSize } = this.props;
+  _renderFilterView() {
+    const {myFeedType} = this.props;
+    return (
+      <FiltersView currentFeedTab={myFeedType} showFilters={[CATEGORIES, EVENTS]}/>
+    )
+  }
 
+  _renderFeedFilters() {
+    const {query} = this.props;
+    const clonedQuery = _.cloneDeep(query);
+    delete clonedQuery.body_type
+    return (
+      <FeedFilters query={clonedQuery} getFeed={this._getFeed}/>
+    )
+  }
+
+  render() {
+    const {isFilterMenuOpen, flatLooks, isLoading, hasUserSize} = this.props
     if (!hasUserSize) {
       return this._renderChooseBodyShape();
-    } else if (this.props.isLoading) {
-      return this.renderLoader();
+    } else if (isLoading) {
+      return this._renderLoader();
     } else {
       return (
-        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
-          { this.props.flatLooks.length === 0 ? this.renderEmptyContent() : this.renderScrollView() }
+        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+          {this._renderFeedFilters()}
+          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+          { isFilterMenuOpen ? this._renderFilterView() : null}
         </View>
       );
     }
@@ -367,11 +395,11 @@ class ShapeTabContent extends BaseComponent {
 
   _renderChooseBodyShape = () => {
 
-    const { saveBodyShape } = this.props;
+    const {saveBodyShape} = this.props;
 
     return (
-      <View style={{ alignItems: 'center' }}>
-        <Text>Show your body type...</Text>
+      <View style={{flexGrow: 1, backgroundColor: 'white', alignItems: 'center'}}>
+        <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
         <ScrollView>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
@@ -385,6 +413,14 @@ class ShapeTabContent extends BaseComponent {
 
 const
   styles = StyleSheet.create({
+    bodyShapeLegend: {
+      marginHorizontal: 16,
+      marginVertical: 12,
+      textAlign: 'center',
+      fontFamily: Fonts.contentFont,
+      color: Colors.black,
+      fontSize: generateAdjustedSize(16),
+    },
     tab: {
       backgroundColor: '#FFFFFF',
       flex: 1,
@@ -425,6 +461,4 @@ const
     },
   });
 
-export
-default
-ShapeTabContent;
+export default BestMatchTabContent;

@@ -6,13 +6,15 @@ import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import {addNewLook, setUser, getNotifications, createInvitationCode} from '../../actions';
+import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
+import {toggleFiltersMenus} from '../../actions/filters';
 import asScreen from '../common/containers/Screen';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
 import {formatLook} from '../../utils/UploadUtils';
 import FeedTabs from './FeedTabs';
+import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
 
 const cameraIcon = require('../../../images/icons/camera_green-circle.png');
 
@@ -26,6 +28,9 @@ class FeedPage extends Component {
     setUser: React.PropTypes.func,
     addNewLook: React.PropTypes.func,
     hideBodyTypeModal: React.PropTypes.func,
+    toggleFiltersMenus: React.PropTypes.func,
+    loadCategories: React.PropTypes.func,
+    loadOccasionTags: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -44,6 +49,7 @@ class FeedPage extends Component {
     this.showBottomCameraButton = this.showBottomCameraButton.bind(this);
     this._renderFeed = this._renderFeed.bind(this);
     this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
+    this.toggleFilterMenues = this.toggleFilterMenues.bind(this);
     this.state = {
       name: '',
       searchTerm: '',
@@ -54,12 +60,18 @@ class FeedPage extends Component {
       feedsRoute: {
         index: 0,
         routes: [
-          {key: 'following', title: 'Following'},
-          {key: 'bestMatch', title: 'Best Match'},
-          {key: 'hot', title: "What's Hot"},
+          {key: FEED_TYPE_FOLLOWING, title: 'Following'},
+          {key: FEED_TYPE_BEST_MATCH, title: 'My Shape'},
+          {key: FEED_TYPE_WHATS_HOT, title: "What's Hot"},
         ],
       },
     };
+  }
+
+  componentDidMount() {
+    const {gender} = this.props.user
+    this.props.loadCategories(gender);
+    this.props.loadOccasionTags(gender);
   }
 
   componentWillMount() {
@@ -90,7 +102,7 @@ class FeedPage extends Component {
     });
   }
 
-  showBottomCameraButton(shouldShow: boolean) {
+  showBottomCameraButton(shouldShow = !this.state.showBottomCamera) {
     if (shouldShow !== this.state.showBottomCamera) {
       this.setState({showBottomCamera: shouldShow});
       if (!shouldShow) {
@@ -153,8 +165,12 @@ class FeedPage extends Component {
     );
   }
 
+  toggleFilterMenues(feedType: string) {
+    this.props.toggleFiltersMenus(feedType);
+  }
+
   _renderFeed() {
-    const {reloading, clearedField, navigateTo} = this.props;
+    const {reloading, clearedField, navigateTo, hasUserSize} = this.props;
     return (
       <FeedTabs
         reloading={reloading}
@@ -162,7 +178,10 @@ class FeedPage extends Component {
         navigateTo={navigateTo}
         showBottomCameraButton={this.showBottomCameraButton}
         feedsRoute={this.state.feedsRoute}
-        handleIndexChange={this._handleTabsIndexChange}/>
+        handleIndexChange={this._handleTabsIndexChange}
+        toggleFilterMenues={this.toggleFilterMenues}
+        hasUserSize={hasUserSize}
+      />
     );
   }
 
@@ -199,13 +218,18 @@ function bindActions(dispatch) {
     hideBodyTypeModal: () => dispatch(hideBodyTypeModal()),
     setUser: name => dispatch(setUser(name)),
     getNotifications: name => dispatch(getNotifications(name)),
+    toggleFiltersMenus: feedType => dispatch(toggleFiltersMenus(feedType)),
+    loadCategories: gender => dispatch(loadCategories(gender)),
+    loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
   };
 }
 
-const mapStateToProps = state => ({
-  user: state.user,
-  modalShowing: false,
-  gotNewNotifications: state.notifications.newNotifications,
-});
+const mapStateToProps = state => (
+  {
+    hasUserSize: state.user.hasChoosenBodyShape,
+    user: state.user,
+    modalShowing: false,
+    gotNewNotifications: state.notifications.newNotifications,
+  });
 
 export default connect(mapStateToProps, bindActions)(asScreen(FeedPage));

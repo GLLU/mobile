@@ -49,6 +49,7 @@
     "react-native-google-analytics-bridge": "^5.0.1",
     "react-native-i18n": "^2.0.2",
     "react-native-joi": "0.0.5",
+    "react-native-keyboard-aware-scroll-view": "^0.2.9",
     "react-native-keychain": "^1.2.0",
     "react-native-linear-gradient": "^2.0.0",
     "react-native-mixpanel": "0.0.15",
@@ -74,7 +75,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@storybook/react-native": "3.1.7",
+    "@storybook/react-native": "^3.1.7",
     "babel-eslint": "^6.1.2",
     "babel-jest": "^17.0.2",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",

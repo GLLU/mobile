@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import _ from 'lodash'
+import _ from 'lodash';
 import { Animated, ListView, View, Text, TouchableHighlight, StyleSheet, FlatList } from 'react-native';
-import CommentRow from './CommentRow'
+import CommentRow from './CommentRow';
+import EmptyStateScreen from '../../common/EmptyStateScreen';
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: 300
+    maxHeight: 300,
   },
   separator: {
     flex: 1,
@@ -19,7 +20,7 @@ export default class CommentsListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTrueEndReached: false
+      isTrueEndReached: false,
     };
   }
 
@@ -27,20 +28,20 @@ export default class CommentsListView extends Component {
     style: React.PropTypes.any,
     comments: React.PropTypes.array,
     isEmpty: React.PropTypes.bool,
-    onUserPress: React.PropTypes.func
+    onUserPress: React.PropTypes.func,
   };
 
   static defaultProps = {
     style: {},
     comments: [],
     isEmpty: true,
-    onUserPress: _.noop
+    onUserPress: _.noop,
 
   };
 
   componentWillReceiveProps(nextProps) {
     if (_.isEmpty(nextProps.comments)) {
-      this.setState({isTrueEndReached: true});
+      this.setState({ isTrueEndReached: true });
     }
   }
 
@@ -49,9 +50,9 @@ export default class CommentsListView extends Component {
       <FlatList
         style={styles.container}
         data={this.props.comments}
-        keyExtractor={(comment,index)=>comment.id!==-1?comment.id:index}
-        renderItem={({item}) => <CommentRow onUserPress={this.props.onUserPress} {...item}/>}
-        onEndReached={this.state.isTrueEndReached? _.noop:this.props.onEndReached}
+        keyExtractor={(comment, index) => comment.id !== -1 ? comment.id : index}
+        renderItem={({ item }) => <CommentRow onUserPress={this.props.onUserPress} {...item} />}
+        onEndReached={this.state.isTrueEndReached ? _.noop : this.props.onEndReached}
         onEndReachedThreshold={100}
       />
     );
@@ -59,7 +60,7 @@ export default class CommentsListView extends Component {
 
   _renderEmptyView() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', padding: 10}}>
+      <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
         <Text style={{textAlign: 'center'}}>
           Be the first to comment on this look
         </Text>
@@ -68,6 +69,6 @@ export default class CommentsListView extends Component {
   }
 
   render() {
-    return !this.props.isEmpty ? this._renderListView() : this._renderEmptyView()
+    return !this.props.isEmpty ? this._renderListView() : this._renderEmptyView();
   }
 }

@@ -11,7 +11,7 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.i18n.reactnativei18n.ReactNativeI18n;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.smixx.fabric.FabricPackage;
 import com.infash.customPackages.CameraReactPackage;
@@ -64,7 +64,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
-                            new ReactNativeI18n(),
+                            new RNI18nPackage(),
                             new RNMixpanel(),
                             new FabricPackage(),
                             new CameraReactPackage(),

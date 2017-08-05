@@ -27,7 +27,6 @@ const mapStateToProps = (state) => {
     const myGender = state.user.gender ? state.user.gender : '';
     defaultFilters = {
       gender: myGender,
-      body_type: myBodyType,
       'sort[field]': 'likes_count',
     };
   }
@@ -47,6 +46,8 @@ const mapStateToProps = (state) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
+    isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_WHATS_HOT],
+    myFeedType: FEED_TYPE_WHATS_HOT,
   };
 };
 

@@ -1,48 +1,46 @@
-import React, { Component } from 'react';
-import { StyleSheet, Image, View, TouchableWithoutFeedback } from 'react-native'
+import React, {Component} from 'react';
+import {StyleSheet, Image, View, TouchableWithoutFeedback, Text} from 'react-native';
 import * as _ from 'lodash';
-import BaseComponent from "../../common/base/BaseComponent";
+import BaseComponent from '../../common/base/BaseComponent';
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import Colors from '../../../styles/Colors.styles'
 
 const styles = StyleSheet.create({
   categoryItem: {
-    height: 52.5,
-    marginHorizontal: 4,
+    marginHorizontal: 5,
+    marginVertical: generateAdjustedSize(5),
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-  },
-  categoryItemTitle: {
-    color: '#757575',
-    fontSize: 13,
-    textAlign: 'center',
-    alignSelf: 'center',
-    height: 25,
-    marginBottom: 5,
+    width: generateAdjustedSize(50)
   },
   categoryItemImage: {
-    height: 45,
-    width: 45,
+    height: generateAdjustedSize(45),
+    width: generateAdjustedSize(45),
     alignSelf: 'center',
   },
   btnCategoryItem: {
     alignSelf: 'center',
-    height: 50,
+    height: generateAdjustedSize(50),
     alignItems: 'center',
   },
+  filterName: {
+    fontSize: generateAdjustedSize(12),
+    textAlign: 'center',
+    marginTop: generateAdjustedSize(6),
+    color: Colors.Gray,
+    alignSelf: 'center',
+    flex: 1
+  }
 });
 
 class FilterButton extends BaseComponent {
   static propTypes = {
-    activeStyle: React.PropTypes.object,
     filter: React.PropTypes.object,
     onPress: React.PropTypes.func,
   }
 
   static defaultProps = {
-    activeStyle: {
-      color: '#00D7B2',
-      underline: false
-    },
     onPress: _.noop,
     filter: {
       selected: false,
@@ -50,67 +48,53 @@ class FilterButton extends BaseComponent {
       highlight: false,
       icon: {
         url: require('../../../../images/filters/filter-categories.png'),
-        url_hover: require('../../../../images/filters/filter-categories-active.png')
-      }
-    }
+        url_hover: require('../../../../images/filters/filter-categories-active.png'),
+      },
+    },
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      selected: props.filter.selected
-    }
+      selected: props.filter.selected,
+    };
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.filter.selected !== this.state.selected){
+    if (nextProps.filter.selected !== this.state.selected) {
       this.setState({
-        selected: nextProps.filter.selected
-      })
+        selected: nextProps.filter.selected,
+      });
     }
-
   }
 
   _renderIcon(icon, selected) {
-    let uri = this.props.filter.highlight || (selected && !this.props.activeStyle.underline) ? icon['url_hover'] : icon['url'];
+    let uri = this.props.filter.highlight || (selected) ? icon.url_hover : icon.url;
     if (!_.isNumber(uri)) {
-      uri = {uri: uri};
+      uri = {uri};
     }
     return <Image source={uri} style={styles.categoryItemImage} resizeMode={'contain'}/>;
   }
 
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
-    this.logEvent('Feedscreen', {name: `filter ${this.props.filter.name} was clicked!`,selected:`${shouldSelect}`});
-
-    this.setState({selected: shouldSelect}, () => {
-      this.props.filter.selected = shouldSelect;
-      this.props.onPress(filter);
-    });
+    this.logEvent('Feedscreen', {name: `filter ${this.props.filter.name} was clicked!`, selected: `${shouldSelect}`});
+    this.props.onPress(filter);
   }
-
-  getHiglight(shouldHighlight) {
-    if (shouldHighlight) {
-      return {
-        borderBottomColor: this.props.activeStyle.color,
-        borderBottomWidth: 3
-      }
-    }
-    return null
-  }
-
 
   render() {
     const {filter} = this.props;
     const {selected} = this.state;
-
     return (
-      <View style={[styles.categoryItem, this.getHiglight(selected && this.props.activeStyle.underline)]}>
+      <View style={[styles.categoryItem]}>
         <TouchableWithoutFeedback
           transparent
           onPress={() => this.handlePressItem(filter)}
-          style={StyleSheet.flatten(styles.btnCategoryItem)}>
-          {this._renderIcon(filter.icon, selected)}
+        >
+          <View style={{justifyContent: 'center', alignItems: 'center', flex: -1}}>
+            {this._renderIcon(filter.icon, selected)}
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.filterName}>{filter.name}</Text>
+          </View>
         </TouchableWithoutFeedback>
       </View>
     );

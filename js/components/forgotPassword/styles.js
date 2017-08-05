@@ -3,6 +3,9 @@ const React = require('react-native');
 import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 
 module.exports = StyleSheet.create({
   header: {
@@ -85,7 +88,8 @@ module.exports = StyleSheet.create({
     lineHeight: 20,
     marginTop: (Platform.OS === 'ios') ? 12 : 0,
     alignItems: 'stretch',
-    color: '#FFFFFF',
+    color: Colors.white,
+    fontFamily: Fonts.contentFont,
     marginLeft: 10,
     top: (Platform.OS === 'ios') ? 0 : 8,
   },
@@ -113,11 +117,11 @@ module.exports = StyleSheet.create({
       alignSelf: 'center'
   },
   instuctions: {
-      width: 300,
-      height: (Platform.OS === 'ios') ? 40 : 50,
-      color: '#FFFFFF',
+      color: Colors.white,
       opacity: 0.8,
-      textAlign: 'center'
+      textAlign: 'center',
+    fontFamily: Fonts.subHeaderFont,
+    fontSize: generateAdjustedSize(18),
   },
 
 

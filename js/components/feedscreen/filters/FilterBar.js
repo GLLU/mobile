@@ -261,23 +261,6 @@ const mapStateToProps = state => {
   }
 };
 
-const mapBodyTypes = (bodytypes) => {
-  return _.chain(Object.keys(bodytypes))
-    .map(key =>
-      _.map(bodytypes[key], bodyType => {
-        return {
-          id: bodyType.body_type,
-          name: bodyType.name,
-          gender: key,
-          kind: 'body_type',
-          icon: {
-            url: bodyType.filterImageUrl,
-            url_hover: bodyType.filterImageUrlActive,
-          }
-        };
-      }))
-    .flatten()
-    .value();
-}
+
 
 export default connect(mapStateToProps, bindActions)(FilterBar);

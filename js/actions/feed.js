@@ -4,7 +4,7 @@ import _ from 'lodash';
 import LooksService from '../services/looksService';
 import {normalize, arrayOf} from 'normalizr';
 import {unifyLooks} from '../utils/FeedUtils';
-import {lookSchema, lookListSchema} from '../schemas/schemas'
+import {lookSchema, lookListSchema} from '../schemas/schemas';
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
@@ -32,24 +32,25 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
         number: 1,
       },
     });
-    dispatch(startFechting({feedType, isLoading: true}))
-    delete query.page
+    dispatch(startFechting(feedType));
+    delete query.page;
     return LooksService.getLooks({...query, 'page[size]': 10, 'page[number]': 1}).then((data) => {
       if (data) {
         const {looks, meta} = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
-        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
+        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
         dispatch(setFeedData({flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType}));
-        dispatch(finishFechting({feedType}))
+        dispatch(finishFechting(feedType));
         dispatch(loadMore(feedType));
         Promise.resolve(data);
-      } else if (retryCount < 5) {
-        dispatch(getFeed(query, feedType, retryCount + 1));
       } else {
         Promise.reject();
       }
     }).catch((error) => {
+      if (retryCount < 5) {
+        dispatch(getFeed(query, feedType, retryCount + 1));
+      }
       Promise.reject(error);
     });
   };
@@ -87,9 +88,9 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
       if (data) {
         const {looks, meta} = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
-        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData)
+        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
-        const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result)
+        const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result);
         dispatch(setFeedData({flatLooksIdData, meta, query: newState, feedType}));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
@@ -117,18 +118,17 @@ export function setLooksData(data: object) {
   };
 }
 
-export function startFechting(loadingFeed: object) {
+export function startFechting(feedType: string) {
   return {
     type: START_FETCHING,
-    loadingFeed,
+    feedType: feedType,
   };
 }
 
-export function finishFechting(loadingFeed: string) {
+export function finishFechting(feedType: string) {
   return {
     type: FINISH_FETCHING,
-    loadingFeed,
+    feedType: feedType,
   };
 }
-
 

@@ -1,7 +1,7 @@
 // @flow
 
 import {connect} from 'react-redux';
-import ShapeTabContent from './ShapeTabContent';
+import BestMatchTabContent from './BestMatchTabContent';
 import {
   showBodyTypeModal,
   getBestMatchFeed,
@@ -10,7 +10,7 @@ import {
 } from '../../actions';
 
 import {FEED_TYPE_BEST_MATCH} from '../../actions/feed';
-import { saveUserBodyShape } from '../../actions/myBodyMeasure';
+import {saveUserBodyShape} from '../../actions/myBodyMeasure';
 import {getLooksById} from '../../utils/FeedUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
@@ -43,6 +43,7 @@ const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
   return {
     isLoading: state.feed.bestMatch.isLoading,
+    currentBodyType: state.myBodyType.currentBodyType.body_type,
     isTabOnFocus: ownProps.isTabOnFocus,
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
@@ -55,7 +56,9 @@ const mapStateToProps = (state, ownProps) => {
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
     showBodyModal: state.user.showBodyModal,
+    isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_BEST_MATCH],
+    myFeedType: FEED_TYPE_BEST_MATCH,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShapeTabContent);
+export default connect(mapStateToProps, mapDispatchToProps)(BestMatchTabContent);
