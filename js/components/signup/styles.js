@@ -1,28 +1,28 @@
 const React = require('react-native');
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import FontSizeCalculator from './../../calculators/FontSize';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 
 module.exports = StyleSheet.create({
   header: {
     backgroundColor: 'transparent',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: '300',
     color: '#FFFFFF',
-    textAlign: 'left'
+    textAlign: 'left',
   },
   headerArrow: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
   container: {
     position: 'absolute',
@@ -30,7 +30,7 @@ module.exports = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT'),
   },
   shadow: {
     flex: 1,
@@ -51,7 +51,7 @@ module.exports = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
   },
   uploadImgContainer: {
     marginTop: 15,
@@ -67,17 +67,17 @@ module.exports = StyleSheet.create({
   },
   uploadImgIcon: {
     backgroundColor: 'transparent',
-    marginBottom: 5
+    marginBottom: 5,
   },
   formItem: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   formGroup: {
     flex: 1,
     borderColor: 'transparent',
     alignItems: 'flex-end',
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   label: {
     color: 'lightgrey',
@@ -87,10 +87,10 @@ module.exports = StyleSheet.create({
     width: 100,
   },
   addOpacity: {
-    opacity: 0.8
+    opacity: 0.8,
   },
   confirmPass: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   genderSelectContainer: {
     flex: 1,
@@ -101,7 +101,8 @@ module.exports = StyleSheet.create({
   },
   formInput: {
     flex: 1,
-    height: 25,
+    lineHeight: 15,
+    fontSize: generateAdjustedSize(18),
     backgroundColor: 'transparent',
     alignItems: 'stretch',
     fontFamily: Fonts.contentFont,
@@ -125,7 +126,7 @@ module.exports = StyleSheet.create({
     height: 40,
     backgroundColor: '#ADADAD',
     borderRadius: 0,
-    opacity: 0.8
+    opacity: 0.8,
   },
   validationPassed: {
     backgroundColor: Colors.darkGreen,
@@ -140,7 +141,7 @@ module.exports = StyleSheet.create({
     color: Colors.white,
     fontFamily: Fonts.contentFont,
     fontSize: generateAdjustedSize(18),
-    opacity: 0.8
+    opacity: 0.8,
   },
   clickHere: {
     color: Colors.darkGreen,
@@ -161,12 +162,12 @@ module.exports = StyleSheet.create({
   genderBtnContainer: {
     flex: 1,
     alignItems: 'center',
-    marginTop: deviceHeight / 4
+    marginTop: deviceHeight / 4,
   },
   genderImage: {
     width: 130,
     height: 130,
-    borderRadius: 65
+    borderRadius: 65,
   },
   genderLabel: {
     color: Colors.white,
@@ -181,7 +182,7 @@ module.exports = StyleSheet.create({
     marginBottom: 15,
     opacity: 0.8,
     flexDirection: 'row',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   text: {
     color: '#E0E0E0',

@@ -1,26 +1,26 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import asScreen from '../common/containers/Screen';
 import {
   Image, Linking, TouchableWithoutFeedback, Text, View, StyleSheet, TouchableOpacity,
   TextInput, KeyboardAvoidingView,
 } from 'react-native';
-import {Container, Content} from 'native-base';
-import {connect} from 'react-redux';
+import { Container, Content } from 'native-base';
+import { connect } from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
-import {Row, Grid} from 'react-native-easy-grid';
+import { Row, Grid } from 'react-native-easy-grid';
 import i18n from 'react-native-i18n';
-import {emailSignUp} from '../../actions/user';
+import { emailSignUp } from '../../actions/user';
 import glluTheme from '../../themes/gllu-theme';
 import styles from './styles';
-import {emailRule, passwordRule, textInput} from '../../validators';
-import {changeUserAvatar} from '../../actions/user';
-import {showFatalError} from '../../actions/errorHandler';
+import { emailRule, passwordRule, textInput } from '../../validators';
+import { changeUserAvatar } from '../../actions/user';
+import { showFatalError } from '../../actions/errorHandler';
 import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import SolidButton from '../common/buttons/SolidButton';
-import {openCamera} from '../../lib/camera/CameraUtils';
+import { openCamera } from '../../lib/camera/CameraUtils';
 import Header from '../common/headers/Header';
 import Spinner from '../loaders/Spinner';
-import {formatAvatar} from '../../utils/UploadUtils';
+import { formatAvatar } from '../../utils/UploadUtils';
 
 const background = require('../../../images/backgrounds/hands.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
@@ -86,7 +86,7 @@ class SignUpPage extends Component {
             });
             this.props.resetTo('feedscreen', user);
           })
-          .catch(err => this.setState({isSigningUp: false}));
+          .catch(err => this.setState({ isSigningUp: false }));
       });
     } else {
       this.props.onInvalidSignup(errorMessage);
@@ -198,14 +198,14 @@ class SignUpPage extends Component {
       <Container theme={glluTheme}>
         <View style={styles.container}>
           <Image source={background} style={styles.shadow} blurRadius={5}>
-            <Image source={backgroundShadow} style={styles.bgShadow}/>
-            <Header title="Sign Up" goBack={this.props.goBack}/>
+            <Image source={backgroundShadow} style={styles.bgShadow} />
+            <Header title="Sign Up" goBack={this.props.goBack} />
             <Content scrollEnabled>
 
               <View style={styles.uploadImgContainer}>
                 <ProfileAvatar
                   avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)}
-                  isEditable/>
+                  isEditable />
               </View>
               <KeyboardAvoidingView style={{ marginLeft: 16, marginRight: 16 }} behavior="padding">
                 <Text style={styles.inputTitle}>User Name</Text>
@@ -216,13 +216,13 @@ class SignUpPage extends Component {
                     onSubmitEditing={() => this.focusNext('nameInput')}
                     returnKeyType="next"
                     style={[styles.formInput]}
-                    onChangeText={username => this.validateTextInput(username, 'username')}/>
+                    onChangeText={username => this.validateTextInput(username, 'username')} />
                   {this.state.username.value.length !== 0 ?
                     <IconB
                       size={20} color={'#009688'} name={this.state.username.isValid ? 'check' : 'times'}
-                      style={styles.uploadImgIcon}/> : null}
+                      style={styles.uploadImgIcon} /> : null}
                 </View>
-                <View style={styles.divider}/>
+                <View style={styles.divider} />
                 <Text style={styles.inputTitle}>Name</Text>
                 <View style={styles.formItem}>
                   <TextInput
@@ -231,13 +231,13 @@ class SignUpPage extends Component {
                     onSubmitEditing={() => this.focusNext('emailInput')}
                     returnKeyType="next"
                     style={[styles.formInput]}
-                    onChangeText={name => this.validateTextInput(name, 'name')}/>
+                    onChangeText={name => this.validateTextInput(name, 'name')} />
                   {this.state.name.value.length !== 0 ?
                     <IconB
                       size={20} color={'#009688'} name={this.state.name.isValid ? 'check' : 'times'}
-                      style={styles.uploadImgIcon}/> : null}
+                      style={styles.uploadImgIcon} /> : null}
                 </View>
-                <View style={styles.divider}/>
+                <View style={styles.divider} />
                 <Text style={styles.inputTitle}>Email</Text>
 
                 <View style={styles.formItem}>
@@ -249,13 +249,13 @@ class SignUpPage extends Component {
                     onSubmitEditing={() => this.focusNext('passwordInput')}
                     returnKeyType="next"
                     style={[styles.formInput]}
-                    onChangeText={email => this.validateEmailInput(email)}/>
+                    onChangeText={email => this.validateEmailInput(email)} />
                   {this.state.email.value.length > 0 ?
                     <IconB
                       size={20} color={'#009688'} name={this.state.email.isValid ? 'check' : 'times'}
-                      style={styles.uploadImgIcon}/> : null}
+                      style={styles.uploadImgIcon} /> : null}
                 </View>
-                <View style={styles.divider}/>
+                <View style={styles.divider} />
                 <Text style={styles.inputTitle}>Password</Text>
 
                 <View style={styles.formItem}>
@@ -263,20 +263,20 @@ class SignUpPage extends Component {
                     ref={c => this.passwordInput = c}
                     secureTextEntry
                     style={styles.formInput}
-                    onChangeText={password => this.validatePasswordInput(password)}/>
+                    onChangeText={password => this.validatePasswordInput(password)} />
                   {this.state.password.value.length > 0 ?
                     <IconB
                       size={20} color={'#009688'} name={this.state.password.isValid ? 'check' : 'times'}
-                      style={styles.uploadImgIcon}/> : null}
-                  <View style={{ height: 1, backgroundColor: 'white', marginBottom: 16 }}/>
+                      style={styles.uploadImgIcon} /> : null}
+                  <View style={{ height: 1, backgroundColor: 'white', marginBottom: 16 }} />
                 </View>
-                <View style={{ height: 1, backgroundColor: 'white', marginBottom: 16 }}/>
+                <View style={{ height: 1, backgroundColor: 'white', marginBottom: 16 }} />
                 <SolidButton
                   showLoader={this.state.isSigningUp}
                   label="Let's infash"
                   style={[styles.formBtn, allValid ? styles.validationPassed : null]}
                   onPress={this.handleSignupPress.bind(this)}
-                  loaderElement={<Spinner animating={this.state.isSigningUp} size={'small'} style={{ left: 10 }}/>}
+                  loaderElement={<Spinner animating={this.state.isSigningUp} size={'small'} style={{ left: 10 }} />}
                 />
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
