@@ -6,6 +6,7 @@ import {followUpdate, unFollowUpdate} from "../../../actions/follows";
 import {noop} from "lodash";
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Fonts from '../../../styles/Fonts.styles';
+import Colors from '../../../styles/Colors.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,7 +42,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: generateAdjustedSize(40),
     height: generateAdjustedSize(40),
-    borderRadius: generateAdjustedSize(20)
+    borderRadius: generateAdjustedSize(20),
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
   },
   followView: {
     flex: 3
