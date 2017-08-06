@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16,
     color: Colors.black,
-    marginLeft: 8,
+    marginHorizontal: 8,
     fontFamily: Fonts.regularFont,
   },
   logo: {
