@@ -23,6 +23,7 @@ class Splash extends Component {
   checkLogin() {
     this.props.checkLogin()
       .then(() => {
+      debugger;
         this.props.resetTo('feedscreen')
       })
       .catch(this.props.resetTo('splashscreen'));

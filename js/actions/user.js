@@ -200,6 +200,7 @@ export function checkLogin() {
   return dispatch => new Promise((resolve, reject) => {
    // if (user && user.id != -1) {
       Utils.getKeychainData().then((credentials) => {
+        debugger;
         if (credentials) {
           NetworkManager.setToken(credentials.password);
           setRestOptions(dispatch, rest,{ api_key: credentials.password });

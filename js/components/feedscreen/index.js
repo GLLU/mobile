@@ -24,7 +24,6 @@ class FeedPage extends Component {
   static propTypes = {
     user: React.PropTypes.object,
     balance: React.PropTypes.number,
-    showWalletBadge: React.PropTypes.boolean,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
