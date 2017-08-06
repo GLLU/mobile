@@ -4,6 +4,12 @@ import TimeAgo from 'react-native-timeago';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Fonts from '../../../styles/Fonts.styles';
 import Colors from '../../../styles/Colors.styles';
+
+const notificationIcons = {
+  Like: require('../../../../images/icons/redLike.png'),
+  Comment: (require('../../../../images/icons/chat.png')),
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -41,7 +47,13 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.contentFont,
     fontSize: generateAdjustedSize(16),
   },
-
+  notificationTypeIcon: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: 10,
+    height: 10,
+  },
   timeStamp: {
     flex: 1,
     color: Colors.link,
@@ -125,8 +137,14 @@ class FollowRow extends Component {
   renderNotificationImage() {
     return (
       <View onPress={this.onNotificationPress.bind(this)} style={styles.imageContainer}>
-        {this.props.coverImage ? <Image resizeMode='cover' style={styles.notificationImage}
-                                        source={{ uri: this.props.coverImage.url }}/> : null}
+        {this.props.coverImage ?
+          <View>
+            <Image resizeMode='cover' style={styles.notificationImage}
+                   source={{ uri: this.props.coverImage.url }}/>
+            <Image source={notificationIcons[this.props.action_kind]} style={styles.notificationTypeIcon}
+                   resizeMethod={'contain'}/>
+          </View>
+          : null}
       </View>
     )
   }
