@@ -235,6 +235,8 @@ class ProfileScreen extends Component {
       return;
     }
 
+    event.persist();
+
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const contentSizeHeight = event.nativeEvent.contentSize.height;
     const currentScroll = event.nativeEvent.contentOffset.y;
@@ -302,7 +304,7 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate } = this.props;
+    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate , navigateTo} = this.props;
     const { stats, userLooks } = this.state;
 
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
@@ -319,6 +321,7 @@ class ProfileScreen extends Component {
     return (
       <View>
         <UserLooks
+          navigateTo={navigateTo}
           myUserId={userId}
           userLooks={userLooks}
           navigateToLooksScreen={navigateToLooksScreen}

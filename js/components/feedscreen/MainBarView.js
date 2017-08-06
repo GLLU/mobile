@@ -17,6 +17,7 @@ import withAnalytics from '../common/analytics/WithAnalytics';
 
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import { formatNumberAsAmount } from '../../utils/FormatUtils';
 
 const homeIcon = require('../../../images/logo/inFASH-header.png');
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   walletBalance: {
-    fontSize: 16,
+    fontSize: generateAdjustedSize(16),
     lineHeight: 16,
     color: Colors.black,
     marginHorizontal: 8,

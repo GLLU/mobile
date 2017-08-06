@@ -19,19 +19,21 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 7,
     flexDirection: 'column',
-    marginLeft: generateAdjustedSize(12)
+    marginLeft: generateAdjustedSize(12),
   },
   followName: {
     flex: 0.5,
     color: 'black',
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
+    alignSelf: 'flex-start'
   },
   followUsername: {
     flex: 0.5,
     color: '#00a9ff',
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
+    alignSelf: 'flex-start'
   },
   photoContainer: {
     flex: 2,

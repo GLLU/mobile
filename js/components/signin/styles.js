@@ -8,6 +8,7 @@ import ExtraDimensions from 'react-native-extra-dimensions-android';
 import FontSizeCalculator from './../../calculators/FontSize';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 
 module.exports = StyleSheet.create({
   header: {
@@ -74,7 +75,7 @@ module.exports = StyleSheet.create({
   },
   clickHere: {
     color: Colors.darkGreen,
-    fontSize: 13,
+    fontSize: generateAdjustedSize(13),
     paddingLeft: 5,
     fontFamily: Fonts.contentFont,
   },
@@ -116,6 +117,7 @@ module.exports = StyleSheet.create({
   },
   formInput: {
     flex: 1,
+    fontSize: generateAdjustedSize(18),
     paddingLeft: 20,
     lineHeight: 20,
     marginTop: (Platform.OS === 'ios') ? 22 : 0,
@@ -147,7 +149,7 @@ module.exports = StyleSheet.create({
   alreadyTxt: {
     color: Colors.white,
     fontFamily: Fonts.contentFont,
-    fontSize: 16,
+    fontSize: generateAdjustedSize(16),
     opacity: 0.8
   },
   alreadyBtn: {

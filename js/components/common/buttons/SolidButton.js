@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
+    fontSize: generateAdjustedSize(16),
     fontFamily: Fonts.regularFont,
   },
   basicStyle:{
