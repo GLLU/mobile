@@ -197,7 +197,7 @@ class MainBarView extends BaseComponent {
     return (
       <View style={styles.navigationBar}>
         <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end' }}>
-          {this.renderNavigationButton(userIcon, this.goToProfile, styles.btnImage)}
+          {this.renderNavigationButton(userIcon, () => this.goToProfile(false), styles.btnImage)}
           {this._renderNavigationText(balance !== -1 ? formatNumberAsAmount(balance) : '0.0 US$', () => this.goToProfile(true), styles.walletBalance, showBalanceBadge)}
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>

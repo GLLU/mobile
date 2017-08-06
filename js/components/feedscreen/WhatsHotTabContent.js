@@ -28,8 +28,10 @@ import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
+import EmptyStateScreen from '../common/EmptyStateScreen';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
+const noResultsIcon = require('../../../images/emptyStates/search.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
@@ -299,17 +301,14 @@ class HotTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
+    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
+    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
+
     return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        <Image source={profileBackground}
-               style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start'}}>
-          <LinearGradient
-            colors={['#0C0C0C', '#4C4C4C']}
-            style={[styles.linearGradient, {opacity: 0.7}]}/>
-          <View style={{marginTop: 100}}>
-            <ParisAdjustableMessage text={i18n.t('PARIS_NO_FEED_RESULTS')}/>
-          </View>
-        </Image>
+      <View style={{flex: 1, justifyContent: 'center'}}>
+          <EmptyStateScreen
+            title={emptyTitle}
+            subtitle={emptySubtitle} icon={noResultsIcon}/>
       </View>
     );
   }

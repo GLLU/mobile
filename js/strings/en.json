@@ -84,6 +84,8 @@
   "WITHDRAW_WIZARD": "WITHDRAW YOUR MONEY",
   "WITHDRAW_LEGEND_WIZARD": "THROUGH PAYPAL OR WITH OUR SECURED SYSTEM",
   "TEACH_ME_MONEY": "Teach me how to make money",
-  "SWIPE_WIZARD": "SWIPE UP AND DOWN TO SEE MORE LOOKS!"
+  "SWIPE_WIZARD": "SWIPE UP AND DOWN TO SEE MORE LOOKS!",
+  "EMPTY_FEED_TITLE": "NO LOOK WAS FOUND IN THIS SEARCH",
+  "EMPTY_FEED_LEGEND": "Try to change your search filters.\nWe have a lot of cool looks that will fit to your style! "
 }
 
