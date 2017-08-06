@@ -142,7 +142,7 @@ class FollowRow extends Component {
             <Image resizeMode='cover' style={styles.notificationImage}
                    source={{ uri: this.props.coverImage.url }}/>
             <Image source={notificationIcons[this.props.action_kind]} style={styles.notificationTypeIcon}
-                   resizeMethod={'contain'}/>
+                   resizeMode={'contain'}/>
           </View>
           : null}
       </View>
