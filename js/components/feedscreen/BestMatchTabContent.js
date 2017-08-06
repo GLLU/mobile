@@ -71,8 +71,6 @@ class BestMatchTabContent extends BaseComponent {
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
     };
-    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100);
-    this.showBodyModal = _.once(this._showBodyModal);
     this.currPosition = 0;
   }
 
@@ -146,9 +144,6 @@ class BestMatchTabContent extends BaseComponent {
 
   handleScroll(event) {
     if (this.props.cardNavigationStack.index === 0) {
-      if (this.props.showBodyModal) {
-        this.scrollCallAsync(event);
-      } else {
         const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
         const contentSizeHeight = event.nativeEvent.contentSize.height;
         const currentScroll = event.nativeEvent.contentOffset.y;
@@ -160,7 +155,6 @@ class BestMatchTabContent extends BaseComponent {
         }
       }
       this.currPosition = event.nativeEvent.contentOffset.y;
-    }
   }
 
   handleScrollPositionForVideo() {
@@ -193,14 +187,6 @@ class BestMatchTabContent extends BaseComponent {
       this.setState({noMoreData: true});
       console.log('end of feed');
     }
-  }
-
-  _showBodyModal() {
-    this.props.showBodyTypeModal();
-  }
-
-  scrollDebounced(e) {
-    this.showBodyModal();
   }
 
   _renderLooks(looks: array) {

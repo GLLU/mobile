@@ -68,8 +68,6 @@ class FollowingTabContent extends BaseComponent {
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
     };
-    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100);
-    this.showBodyModal = _.once(this._showBodyModal);
     this.currPosition = 0;
   }
 
@@ -176,14 +174,6 @@ class FollowingTabContent extends BaseComponent {
       this.setState({noMoreData: true});
       console.log('end of feed');
     }
-  }
-
-  _showBodyModal() {
-    this.props.showBodyTypeModal();
-  }
-
-  scrollDebounced(e) {
-    this.showBodyModal();
   }
 
   _renderLooks(looks: array) {
