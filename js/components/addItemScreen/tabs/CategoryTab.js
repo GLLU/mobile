@@ -12,22 +12,19 @@ import {
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
-import FilterGroup from './FilterGroup';
+import FilterGroup from '../../feedscreen/filters/FilterGroup';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import I18n from 'react-native-i18n';
 
-const arrowRight = require('../../../../images/icons/collapsed-filterButton.png');
-const arrowDown = require('../../../../images/icons/expand-filterButton.png');
 const deviceWidth = Dimensions.get('window').width;
 
 type Props = {
   updateCurrentFilter: void,
   filters: array,
   currentFilter: object,
-  title: string
 };
 
-class FilterRow extends Component {
+class CategoryTab extends Component {
 
   props: Props
 
@@ -50,7 +47,7 @@ class FilterRow extends Component {
 
   checkSelectedFilter(filters, currentFilterProp) {
     const currentFilter = _.find(filters, (filter) => {
-      if (currentFilterProp[filter.kind] === filter.name) {
+      if (currentFilterProp.name === filter.name) {
         return filter.name;
       }
     });
@@ -66,10 +63,8 @@ class FilterRow extends Component {
   }
 
   _setFilters(filter) {
-    if (filter.name === this.state.currentFilterRowName) {
-      this.setState({currentFilterRowName: ''});
-    }
     this.props.updateCurrentFilter(filter);
+    this.setState({currentFilterRowName: filter.name})
   }
 
   toggleFilterRow() {
@@ -97,12 +92,8 @@ class FilterRow extends Component {
     const checkedFilters = _.map(this.props.filters, (filter, i) => {
       const {currentFilter} = this.props;
       const clonedFilter = _.cloneDeep(filter);
-      if (currentFilter[filter.kind]) {
-        const filterName = filter.name.toLowerCase();
-        const filterKind = currentFilter[filter.kind].toLowerCase();
-        if (filterKind === filterName) {
-          clonedFilter.selected = true;
-        }
+      if (currentFilter === filter.id) {
+        clonedFilter.selected = true;
       }
       return clonedFilter;
     });
@@ -110,33 +101,18 @@ class FilterRow extends Component {
   }
 
   render() {
-    const arrowIcon = this.state.openFilter ? arrowDown : arrowRight;
-    const {currentFilterRowName, filtersAnimHeight} = this.state;
-    const {currentFilter, title} = this.props;
     return (
       <View style={styles.rowContainer}>
-        <TouchableOpacity onPress={this.toggleFilterRow}>
-          <View
-            style={styles.rowHeaderContainer}>
-            <View style={{flexDirection: 'column', alignSelf: 'center'}}>
-              <Text style={styles.rowTitle}>{I18n.t(title)}</Text>
-              {currentFilterRowName.length > 1 ?
-                <Text style={styles.selectedFilter}>{currentFilterRowName}</Text> : null}
-            </View>
-            <Image style={styles.arrows} source={arrowIcon}/>
-          </View>
-        </TouchableOpacity>
-        <Animated.View
-          style={[styles.filtersGroupContainer, {height: filtersAnimHeight}]}>
-
+        <View
+          style={[styles.filtersGroupContainer]}>
           <FilterGroup
             mode="single" onSelectionChange={this._setFilters.bind(this)}
             filters={this.checkSelectedQuery()}/>
-          <Animated.View
-            style={[styles.rowEdgeShadow, {height: filtersAnimHeight, right: 0}]}/>
-          <Animated.View
-            style={[styles.rowEdgeShadow, {height: filtersAnimHeight, left: 0}]}/>
-        </Animated.View>
+          <View
+            style={[styles.rowEdgeShadow, {right: 0}]}/>
+          <View
+            style={[styles.rowEdgeShadow, {left: 0}]}/>
+        </View>
       </View>
     );
   }
@@ -185,4 +161,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FilterRow;
+export default CategoryTab;

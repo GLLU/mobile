@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { 
+import {
   EDIT_NEW_LOOK,
   EDIT_TAG,
   CREATE_LOOK_ITEM_BY_POSITION,
@@ -19,9 +19,9 @@ import {
   REMOVE_ITEM_OCCASION_TAG,
   REMOVE_BRAND_NAME,
 } from '../actions/uploadLook';
-import { lookMapper, itemMapper } from '../mappers/';
+import {lookMapper, itemMapper} from '../mappers/';
 
-const mutateItem = function(state, key, value, id) {
+const mutateItem = function (state, key, value, id) {
   return state.items.map(item => {
     if (item.id === id) {
       item[key] = value;
@@ -30,7 +30,7 @@ const mutateItem = function(state, key, value, id) {
   })
 }
 
-const findItem = function(state, itemId) {
+const findItem = function (state, itemId) {
   return _.find(state.items, x => x.id === itemId);
 }
 
@@ -42,7 +42,7 @@ const ACTION_HANDLERS = {
       ...lookMapper(action.payload),
     }
   },
-  [SELECT_LOOK_ITEM] :(state, action) => {
+  [SELECT_LOOK_ITEM]: (state, action) => {
     return {
       ...state,
       itemId: action.payload
@@ -77,7 +77,7 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_TYPE]: (state, action) => {
     const category = action.payload.categoryItem;
-    let items = mutateItem(state, 'category', category, action.payload.itemId);
+    let items = mutateItem(state, 'category', category.id, action.payload.itemId);
     items = mutateItem(state, 'category_id', category.id, action.payload.itemId);
     return {
       ...state,
@@ -165,7 +165,7 @@ const ACTION_HANDLERS = {
   [ADD_ITEM_OCCASION_TAG]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
     let occasions = item.occasions;
-    occasions.push(action.payload.tag);
+    occasions.push(action.payload.tagId);
     occasions = _.uniqBy(occasions, 'id');
     return {
       ...state,
@@ -184,7 +184,7 @@ const initialState = {
   video: '',
 }
 
-export default function mybodyTypeReducer (state = initialState, action) {
+export default function mybodyTypeReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
 }

@@ -111,16 +111,16 @@ class UploadLookHeader extends BaseComponent {
         title = 'Additional Info';
         break;
       default:
-        title = 'Place marker to tag an item';
+        title = 'Drag & Place Marker to tag an item';
     }
     return title;
   }
 
   getStepsTitle() {
     const {currItem} = this.props;
-    let title = 'Choose a Category'
+    let title = 'Select Item Category'
     if (currItem.category !== null) {
-      title = 'Now Pick the brand';
+      title = 'Select Item Brand';
     }
     if (currItem.brand) {
       title = 'For which Occasion?';
@@ -240,13 +240,34 @@ class UploadLookHeader extends BaseComponent {
     const allowContinue = this.getAllowContinue();
     const fgColor = '#F2F2F2';
     return (
-      <View style={Platform.OS === 'ios' ? {marginTop: 30} : {marginTop: 20}}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+      <View>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 10,
+          marginTop: 20,
+          backgroundColor: 'white',
+          opacity: 0.7,
+          height: 45,
+          alignItems: 'center'
+        }}>
           <TouchableOpacity transparent onPress={() => this.props.handleBackButton()}
                             style={{width: 30, height: 30, backgroundColor: 'transparent'}}>
-            <Icon style={{color: this.props.currentStep !== 1 ? '#F2F2F2' : '#000'}} name="ios-arrow-back"/>
+            <Icon style={{color: this.props.currentStep !== 1 ? 'black' : '#000'}} name="ios-arrow-back"/>
           </TouchableOpacity>
           {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
+        </View>
+        <View style={{
+          flexDirection: 'row',
+          paddingHorizontal: 10,
+          backgroundColor: 'black',
+          opacity: 0.7,
+          height: 30,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Text
+            style={{fontWeight: '400', color: 'white'}}>{this.getHeadingTitle()}</Text>
         </View>
       </View>
     )

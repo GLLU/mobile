@@ -1,5 +1,16 @@
-import React, { Component } from 'react';
-import { View,Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
+import React, {Component} from 'react';
+import {
+  View,
+  Platform,
+  Image,
+  StyleSheet,
+  Dimensions,
+  PanResponder,
+  Animated,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  TouchableNativeFeedback
+} from 'react-native';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -47,7 +58,6 @@ class ImageWithTags extends Component {
     image: React.PropTypes.string.isRequired,
     items: React.PropTypes.array.isRequired,
     width: React.PropTypes.number,
-    mode: React.PropTypes.string,
     showMarker: React.PropTypes.bool,
     onMarkerCreate: React.PropTypes.func,
     onDragEnd: React.PropTypes.func,
@@ -63,9 +73,9 @@ class ImageWithTags extends Component {
   }
 
   componentDidMount() {
-    if(this.props.items.length < 1) {
-      const locationX = w/2;
-      const locationY = h/2;
+    if (this.props.items.length < 1) {
+      const locationX = w / 2;
+      const locationY = h / 2;
       const left = locationX / w;
       const top = locationY / h;
       this.setState({locationX: left, locationY: top}, () => {
@@ -76,33 +86,31 @@ class ImageWithTags extends Component {
   }
 
   renderTags() {
-    const { items, currItem, currStep } = this.props;
+    const {items, currItem} = this.props;
 
     return items.map((item, i) => {
-        return (
-          <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} dragable={currStep === -1} item={item} onDragEnd={this.props.onDragEnd}/>
-        );
+      return (
+        <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} item={item}
+             onDragEnd={this.props.onDragEnd}/>
+      );
     });
   }
 
   getRenderingDimensions() {
     let width = w;
     let height = h;
-    return { width, height };
+    return {width, height};
   }
 
   _render() {
-
-    if (true) {
-      return (
-        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
-          <View style={[styles.draggableContainer]}>
-            {this.renderTags()}
-            {this.props.children}
-          </View>
-        </Image>
-      );
-    }
+    return (
+      <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
+        <View style={[styles.draggableContainer]}>
+          {this.renderTags()}
+          {this.props.children}
+        </View>
+      </Image>
+    );
   }
 
   render() {
@@ -116,7 +124,6 @@ class ImageWithTags extends Component {
 }
 
 ImageWithTags.defaultProps = {
-  mode: VIEW_MODE,
   showMarker: true,
 };
 

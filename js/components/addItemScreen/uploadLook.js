@@ -21,7 +21,6 @@ import _ from 'lodash';
 import Utils from '../../utils';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import VideoWithTags from '../common/VideoWithTags';
-import EditItemTabs from './editItemTabsContainer';
 import asScreen from '../common/containers/Screen';
 import {connect} from 'react-redux';
 import SpinnerSwitch from '../loaders/SpinnerSwitch';
@@ -29,13 +28,6 @@ import {BackAndroid} from 'react-native';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
-
-export const CATEGORY = 'category'
-export const BRAND = 'brand'
-export const COLOR = 'color'
-export const MOOD = 'mood'
-export const DESCRIPTION = 'description'
-export const LINK = 'link'
 
 class AddItemPage extends Component {
 
@@ -63,7 +55,6 @@ class AddItemPage extends Component {
       currMode: 'tagging',
       currItem: props.navigation.state.params.mode === 'edit' ? {...props.items[0]} : {id: -1},
       isPublishing: false,
-
     };
   }
 
@@ -215,20 +206,12 @@ class AddItemPage extends Component {
 
   renderActions() {
     return (
-      <View style={{height: h, width: w, justifyContent: 'space-between'}}>
+      <View style={{height: h, width: w}}>
         {this.renderHeader()}
-        {this.state.currentStep === -1 ? null : this._renderEditItemTabs()}
+        {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
 
       </View>
     );
-  }
-
-  _renderEditItemTabs() {
-    console.log('isDiff', this.state.currItem)
-    return (
-      <EditItemTabs
-        item={this.state.currItem.id}/>
-    )
   }
 
   renderThreeSteps() {

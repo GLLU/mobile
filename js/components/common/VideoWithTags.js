@@ -42,7 +42,6 @@ class VideoWithTags extends Component {
     image: React.PropTypes.string.isRequired,
     items: React.PropTypes.array,
     width: React.PropTypes.number,
-    mode: React.PropTypes.string,
     showMarker: React.PropTypes.bool,
     onMarkerCreate: React.PropTypes.func,
     onDragEnd: React.PropTypes.func,

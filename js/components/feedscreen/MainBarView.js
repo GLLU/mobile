@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Image,
@@ -11,13 +11,13 @@ import {
   Text,
   InteractionManager,
 } from 'react-native';
-import { Icon } from 'native-base';
+import {Icon} from 'native-base';
 import BaseComponent from '../common/base/BaseComponent';
 import withAnalytics from '../common/analytics/WithAnalytics';
 
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
-import { formatNumberAsAmount } from '../../utils/FormatUtils';
+import {formatNumberAsAmount} from '../../utils/FormatUtils';
 
 const homeIcon = require('../../../images/logo/inFASH-header.png');
 const userIcon = require('../../../images/icons/Profile_black.png');
@@ -142,7 +142,7 @@ class MainBarView extends BaseComponent {
   }
 
   _openSearch() {
-    this.logEvent('Feedscreen', { name: 'Search click' });
+    this.logEvent('Feedscreen', {name: 'Search click'});
     // this.setState({searchStatus: !this.state.searchStatus})
     this.props.handleSearchStatus();
   }
@@ -153,15 +153,16 @@ class MainBarView extends BaseComponent {
   }
 
   goToProfile(cameFromBallance: boolean = false) {
-    this.props.logEvent('Feedscreen', { name: `${cameFromBallance ? 'Balance' : 'Profile'} click` });
-    this.props.navigateTo('profileScreen', { user: this.props.user, cameFromBallance });
+    this.props.logEvent('Feedscreen', {name: `${cameFromBallance ? 'Balance' : 'Profile'} click`});
+    this.props.navigateTo('profileScreen', {user: this.props.user, cameFromBallance});
   }
 
   handleNotificationsPress() {
-    this.props.logEvent('Feedscreen', { name: 'Notifications click' });
+    this.props.logEvent('Feedscreen', {name: 'Notifications click'});
     this.props.navigateTo('notificationsScreen');
 
   }
+
   goToSearch() {
     const {logEvent, navigateTo, handleIndexChange} = this.props
     logEvent('Feedscreen', {name: 'Profile click'});
@@ -173,7 +174,7 @@ class MainBarView extends BaseComponent {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle} />
+          <Image source={icon} style={iconStyle}/>
         </TouchableOpacity>
       </View>
     );
@@ -185,24 +186,24 @@ class MainBarView extends BaseComponent {
         <TouchableOpacity transparent onPress={onPress}>
           <Text style={textStyle}>{text}</Text>
         </TouchableOpacity>
-        {shouldShowBadge ? <View style={styles.badge} /> : null}
+        {shouldShowBadge ? <View style={styles.badge}/> : null}
       </View>
     );
   }
 
   render() {
-    const { gotNewNotifications, addNewItem, balance, showBalanceBadge } = this.props;
+    const {gotNewNotifications, addNewItem, balance, showBalanceBadge} = this.props;
     const notificationsIcon = gotNewNotifications ? gotNotification : emptyNotification;
     return (
       <View style={styles.navigationBar}>
-        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end' }}>
-          {this.renderNavigationButton(userIcon, this.goToProfile, styles.btnImage)}
+        <View style={{flexDirection: 'row', flex: 1, alignItems: 'flex-end'}}>
+          {this.renderNavigationButton(userIcon, () => this.goToProfile(false), styles.btnImage)}
           {this._renderNavigationText(balance !== -1 ? formatNumberAsAmount(balance) : '0.0 US$', () => this.goToProfile(true), styles.walletBalance, showBalanceBadge)}
         </View>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-          <Image source={homeIcon} style={[styles.logo]} />
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+          <Image source={homeIcon} style={[styles.logo]}/>
         </View>
-        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
+        <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
           {this.renderNavigationButton(notificationsIcon, this.handleNotificationsPress, styles.btnImageHanger)}
           {this.renderNavigationButton(search, this.goToSearch, styles.btnImage)}
         </View>

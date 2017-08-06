@@ -1,5 +1,17 @@
-import React, { Component } from 'react';
-import { Text,StyleSheet, Dimensions, TouchableOpacity, Image, UIManager, LayoutAnimation, Platform, Animated, View, PanResponder } from 'react-native'
+import React, {Component} from 'react';
+import {
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+  UIManager,
+  LayoutAnimation,
+  Platform,
+  Animated,
+  View,
+  PanResponder
+} from 'react-native'
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const whiteMarker = require('../../../images/markers/marker-top-right.png');
@@ -47,16 +59,17 @@ class Tag extends Component {
     this._pan.addListener((value) => this._value = value);
     this._pan.setOffset({x: locationX, y: locationY})
     this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder : () => true,
-      onPanResponderMove           : Animated.event([null,{
-        dx : this._pan.x,
-        dy : this._pan.y
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, {
+        dx: this._pan.x,
+        dy: this._pan.y
       }]),
-      onPanResponderGrant: () => { },
+      onPanResponderGrant: () => {
+      },
       onPanResponderRelease: (e, gesture) => {
         this._pan.setOffset(this._value);
         this._setupPanResponder(this._value.x, this._value.y);
-        const { width, height } = this.getRenderingDimensions();
+        const {width, height} = this.getRenderingDimensions();
         const left = this._value.x / width;
         const top = this._value.y / height;
         const nextPosition = {id: itemId, locationX: left, locationY: top};
@@ -70,7 +83,7 @@ class Tag extends Component {
   getRenderingDimensions() {
     let width = w;
     let height = h;
-    return { width, height };
+    return {width, height};
   }
 
   normalizePosition(value) {
@@ -80,12 +93,12 @@ class Tag extends Component {
   componentWillMount() {
     let locationX;
     let locationY;
-    if(this.props.item.locationY === 0.5 && this.props.item.locationX === 0.5) {
-       locationX = w / 2;
-       locationY = h / 2;
+    if (this.props.item.locationY === 0.5 && this.props.item.locationX === 0.5) {
+      locationX = w / 2;
+      locationY = h / 2;
     } else {
-       locationX = this.props.item.locationX * w;
-       locationY = this.props.item.locationY * h;
+      locationX = this.props.item.locationX * w;
+      locationY = this.props.item.locationY * h;
     }
     this._setupPanResponder(locationX, locationY);
   }
@@ -99,39 +112,18 @@ class Tag extends Component {
   }
 
   render() {
-    const { item, currItemId } = this.props
-    const { width, height } = this.getRenderingDimensions();
-    const x = this.normalizePosition(this.props.item.locationX);
-    const y = this.normalizePosition(this.props.item.locationY);
-    const left = parseInt(x * width);
-    const top = parseInt(y * height);
+    const {item, currItemId} = this.props
     const layout = this._pan.getLayout();
     const markerImage = currItemId === item.id ? this.getCurrentItemStatus(item) : this.otherItemStatus(item);
-    if(this.props.dragable) {
-      return (
-        <Animated.View
-
-          {...this.panResponder.panHandlers}
-          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? { zIndex: 1 } : null]}>
-
-          <Image source={markerImage} style={styles.itemBgImage} />
-        </Animated.View>
-      );
-    } else {
-      return (
-
-        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? { zIndex: 1 } : null]}>
-          <TouchableOpacity onPress={() => this.props.setCurrentItem(item)}>
-            <Image source={markerImage} style={[styles.itemBgImage]} />
-          </TouchableOpacity>
-        </View>
-
-      );
-    }
-
+    return (
+      <Animated.View
+        {...this.panResponder.panHandlers}
+        style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? {zIndex: 1} : null]}>
+        <Image source={markerImage} style={styles.itemBgImage}/>
+      </Animated.View>
+    );
   }
 }
-
 
 
 export default Tag;
