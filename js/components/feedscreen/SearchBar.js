@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    fontSize: Platform.OS === 'ios' ? new FontSizeCalculator(12).getSize() : new FontSizeCalculator(14).getSize(),
     fontWeight: '200',
     color: '#757575',
     borderRadius: 10,
-    height: Platform.OS === 'ios' ? 30 : 40
+    height: Platform.OS === 'ios' ? 30 : 50
   },
   btnCloseFilter: {
     marginHorizontal: 5,

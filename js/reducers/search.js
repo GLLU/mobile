@@ -11,7 +11,7 @@ import {REHYDRATE} from 'redux-persist/constants';
 
 const initialState = {
   looks: {
-    history: [],
+    history: ['black', 'jeans', 'dress', 'dinner', 'yellow'],
     data: [],
     isLoading: false,
   },

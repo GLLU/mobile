@@ -11,6 +11,10 @@ import EmptyStateScreen from '../common/EmptyStateScreen';
 import Fonts from '../../styles/Fonts.styles';
 const emptyUser = require('../../../images/emptyStates/user-woman.png');
 const styles = StyleSheet.create({
+  tabContainer: {
+    backgroundColor: Colors.white,
+    flex: 1
+  },
   RowTitle: {
     color: Colors.gray,
     fontFamily: Fonts.regularFont,
@@ -43,6 +47,7 @@ const styles = StyleSheet.create({
     fontSize: generateAdjustedSize(12),
   },
   rowTitleContainer: {
+    backgroundColor: Colors.primaryColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: deviceWidth,
@@ -182,7 +187,7 @@ class PeopleSearchTab extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: Colors.backgroundGrey, flex: 1}}>
+      <View style={styles.tabContainer}>
         {this.emptyOrInit()}
       </View>
     );
