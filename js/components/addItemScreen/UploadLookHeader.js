@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, TouchableOpacity, View, Text, Image, Platform, Dimensions } from 'react-native';
-import { Button, Icon} from 'native-base';
+import React, {Component} from 'react';
+import {Modal, TextInput, StyleSheet, TouchableOpacity, View, Text, Image, Platform, Dimensions} from 'react-native';
+import {Button, Icon} from 'native-base';
 import {
   createBrandName,
 } from '../../actions';
@@ -8,8 +8,11 @@ import IconPlus from 'react-native-vector-icons/EvilIcons';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
-import FontSizeCalculator from './../../calculators/FontSize';
 import BaseComponent from '../common/base/BaseComponent';
+import Colors from '../../styles/Colors.styles';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import i18n from 'react-native-i18n';
+import Fonts from '../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,20 +46,23 @@ const styles = StyleSheet.create({
   nextBtn: {
     color: 'white',
     alignSelf: 'center',
-    fontSize:22
+    fontSize: 22
   },
   nextBtnContainer: {
-    width: 30,
-    height: 30,
     borderRadius: 15,
     justifyContent: 'center',
+    alignSelf: 'center',
     flexDirection: 'row',
-    backgroundColor: '#05d7b2'
+    backgroundColor: 'transparent'
   },
   plusIcon: {
     fontSize: 14,
     color: 'green'
-  }
+  },
+  nextBtnText: {
+    color: Colors.secondaryColor,
+    fontSize: generateAdjustedSize(16),
+  },
 });
 
 
@@ -72,12 +78,12 @@ class UploadLookHeader extends BaseComponent {
   }
 
   getAllowContinue() {
-    const { currItem, currentStep } = this.props;
-    switch(currentStep) {
+    const {currItem, currentStep} = this.props;
+    switch (currentStep) {
       case -1:
         return currItem !== null;
       case 0:
-        return this.getAllowAddAnotherItem() ;
+        return this.getAllowAddAnotherItem();
       case 1:
         return false;
       default:
@@ -86,9 +92,9 @@ class UploadLookHeader extends BaseComponent {
   }
 
   getAllowAddAnotherItem() {
-    const { items, currItem } = this.props;
+    const {items, currItem} = this.props;
     let verifiedItems = '';
-    if(currItem && currItem.brand && currItem.category !== null) {
+    if (currItem && currItem.brand && currItem.category !== null) {
       verifiedItems = _.filter(items, item => item.brand && item.category !== null);
       return verifiedItems.length === items.length
     }
@@ -111,15 +117,15 @@ class UploadLookHeader extends BaseComponent {
   }
 
   getStepsTitle() {
-    const { currItem } = this.props;
+    const {currItem} = this.props;
     let title = 'Choose a Category'
-    if(currItem.category !== null) {
+    if (currItem.category !== null) {
       title = 'Now Pick the brand';
     }
-    if(currItem.brand) {
+    if (currItem.brand) {
       title = 'For which Occasion?';
     }
-    if(currItem.occasions && currItem.occasions.length > 0) {
+    if (currItem.occasions && currItem.occasions.length > 0) {
 
       title = 'Edit or Continue';
     }
@@ -129,24 +135,41 @@ class UploadLookHeader extends BaseComponent {
   renderNext() {
     return (
       <TouchableOpacity style={styles.nextBtnContainer} onPress={() => this.props.handleContinue()}>
-        <Icon style={StyleSheet.flatten(styles.nextBtn)} name="ios-arrow-forward"/>
+        <Text style={styles.nextBtnText}>Next</Text>
       </TouchableOpacity>
     )
   }
 
   renderAddAnotherItemBtn() {
-    if(this.props.isVideo) {
+    if (this.props.isVideo) {
       return (
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <TouchableOpacity onPress={this.props.handleNewItem} style={{height: 30, width: 30, backgroundColor: 'rgba(32, 32, 32, 0.8)', alignItems: 'center', alignSelf: 'center', borderRadius: 3, marginRight: 3 }}>
-            <Icon style={{ color: '#F2F2F2'}} name="ios-add" />
+          <TouchableOpacity onPress={this.props.handleNewItem} style={{
+            height: 30,
+            width: 30,
+            backgroundColor: 'rgba(32, 32, 32, 0.8)',
+            alignItems: 'center',
+            alignSelf: 'center',
+            borderRadius: 3,
+            marginRight: 3
+          }}>
+            <Icon style={{color: '#F2F2F2'}} name="ios-add"/>
           </TouchableOpacity>
           {this.renderVideoItemsBtns()}
         </View>
       )
     } else {
       return (
-        <TouchableOpacity onPress={() => this.props.handleNewItem()} style={{height: 20, width: 100, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+        <TouchableOpacity onPress={() => this.props.handleNewItem()} style={{
+          height: 20,
+          width: 100,
+          backgroundColor: 'rgba(32, 32, 32, 0.8)',
+          justifyContent: 'center',
+          alignSelf: 'center',
+          borderBottomWidth: 2,
+          borderBottomLeftRadius: 8,
+          borderBottomRightRadius: 8
+        }}>
           <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>Tag another Item</Text>
         </TouchableOpacity>
       )
@@ -159,15 +182,34 @@ class UploadLookHeader extends BaseComponent {
   }
 
   renderVideoItemsBtns() {
-    const { items } = this.props
+    const {items} = this.props
 
     return items.map((item, index) => {
       const isSelected = this.props.currItem.id === item.id;
       const isDone = item.brand && item.category !== null
       return (
-        <TouchableOpacity key={index} onPress={() => this.props.setCurrentItem(item)} style={{height: 30, width: 30, backgroundColor: 'rgba(32, 32, 32, 0.8)', justifyContent: 'center', alignSelf: 'center',borderBottomWidth: 2, borderRadius: 3, marginLeft: 3, marginRight: 3 }}>
-          {isDone ? null : <View style={{width: 5, height: 5, borderRadius: 5, backgroundColor: 'red', position: 'absolute', top: 3, right: 3}} />}
-          {item.category ? this.renderItemCategorySmallIcon(item, isSelected) : <Text style={{color: isSelected ? '#009688' : 'white', textAlign: 'center', fontSize: 13}}>{`${index}`}</Text>}
+        <TouchableOpacity key={index} onPress={() => this.props.setCurrentItem(item)} style={{
+          height: 30,
+          width: 30,
+          backgroundColor: 'rgba(32, 32, 32, 0.8)',
+          justifyContent: 'center',
+          alignSelf: 'center',
+          borderBottomWidth: 2,
+          borderRadius: 3,
+          marginLeft: 3,
+          marginRight: 3
+        }}>
+          {isDone ? null : <View style={{
+            width: 5,
+            height: 5,
+            borderRadius: 5,
+            backgroundColor: 'red',
+            position: 'absolute',
+            top: 3,
+            right: 3
+          }}/>}
+          {item.category ? this.renderItemCategorySmallIcon(item, isSelected) : <Text
+            style={{color: isSelected ? '#009688' : 'white', textAlign: 'center', fontSize: 13}}>{`${index}`}</Text>}
         </TouchableOpacity>
       );
     });
@@ -175,19 +217,21 @@ class UploadLookHeader extends BaseComponent {
 
   renderItemCategorySmallIcon(item, isSelected) {
     let categoryIcon;
-    if(item.category.icon) {
+    if (item.category.icon) {
       categoryIcon = isSelected ? item.category.icon.url_hover : item.category.icon.url;
     } else {
-      const iconUrl =  this.getItemIconUrl(item.category);
+      const iconUrl = this.getItemIconUrl(item.category);
       categoryIcon = isSelected ? iconUrl.icon.url_hover : iconUrl.icon.url;
 
     }
 
-    return(
-      <View style={{ flex: 1, padding: 2}}>
-        <Image source={{uri: categoryIcon}} style={[{flex:1, width: 20, backgroundColor: 'transparent',
+    return (
+      <View style={{flex: 1, padding: 2}}>
+        <Image source={{uri: categoryIcon}} style={[{
+          flex: 1, width: 20, backgroundColor: 'transparent',
           resizeMode: 'contain',
-          alignSelf: 'center',}]} />
+          alignSelf: 'center',
+        }]}/>
       </View>
     )
   }
@@ -197,14 +241,13 @@ class UploadLookHeader extends BaseComponent {
     const fgColor = '#F2F2F2';
     return (
       <View style={Platform.OS === 'ios' ? {marginTop: 30} : {marginTop: 20}}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <TouchableOpacity transparent onPress={() => this.props.handleBackButton()} style={{width: 30, height: 30, backgroundColor: 'transparent'}}>
-            <Icon style={{ color: this.props.currentStep !== 1?'#F2F2F2':'#000' }} name="ios-arrow-back" />
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+          <TouchableOpacity transparent onPress={() => this.props.handleBackButton()}
+                            style={{width: 30, height: 30, backgroundColor: 'transparent'}}>
+            <Icon style={{color: this.props.currentStep !== 1 ? '#F2F2F2' : '#000'}} name="ios-arrow-back"/>
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
           {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
         </View>
-        {this.props.currentStep !== 1 ? this.renderAddAnotherItemBtn() : null}
       </View>
     )
   }
