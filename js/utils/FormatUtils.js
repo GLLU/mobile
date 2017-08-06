@@ -28,7 +28,6 @@ export const formatNumberAsAmount = (value: number) => {
   if (parseInt(moneyParts[0]) < 10){
     dolars = `${moneyParts[0]}`;
   }
-  debugger;
   if (parseInt(moneyParts[1]) < 10){
     cents = `${moneyParts[1]}0`;
   }

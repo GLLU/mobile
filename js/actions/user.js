@@ -40,7 +40,7 @@ const setRestOptions = function (dispatch, rest, user) {
     }
   });
 };
-export function hideWalletBadge(){
+export function hideWalletBadge() {
   return ({ type: HIDE_BODY_MODAL });
 }
 const signInFromRest = function (dispatch, data) {
@@ -64,8 +64,8 @@ export function setUser(user: string) {
   };
 }
 
-export function hideSwipeWizard () {
-  return ({ type: HIDE_SWIPE_WIZARD});
+export function hideSwipeWizard() {
+  return ({ type: HIDE_SWIPE_WIZARD });
 }
 
 export function loginViaFacebook(data) {
@@ -198,28 +198,24 @@ export function getStats(id) {
 
 export function checkLogin() {
   return dispatch => new Promise((resolve, reject) => {
-   // if (user && user.id != -1) {
-      Utils.getKeychainData().then((credentials) => {
-        debugger;
-        if (credentials) {
-          NetworkManager.setToken(credentials.password);
-          setRestOptions(dispatch, rest,{ api_key: credentials.password });
-          dispatch(rest.actions.auth.get({}, (err, data) => {
-            if (!err) {
-              dispatch(setUser(data.user));
-            } else {
-              console.log('unable to invalidate user data', err);
-              reject(err);
-            }
-          }));
-          resolve(true);
-        }
-      });
-  //  } else {
-  //    const error = 'user does not exist';
-  //    console.log(error);
-  //    reject(error);
-  //  }
+    Utils.getKeychainData().then((credentials) => {
+      if (credentials) {
+        NetworkManager.setToken(credentials.password);
+        setRestOptions(dispatch, rest, { api_key: credentials.password });
+        dispatch(rest.actions.auth.get({}, (err, data) => {
+          if (!err) {
+            dispatch(setUser(data.user));
+          } else {
+            console.log('unable to invalidate user data', err);
+            reject(err);
+          }
+        }));
+        resolve(true);
+      }
+      else {
+        reject();
+      }
+    });
   });
 }
 

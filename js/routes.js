@@ -1,5 +1,5 @@
 import {StackNavigator} from 'react-navigation'
-import SplashPage from './components/splashscreen/';
+import LoginPage from './components/loginScreen/';
 import FeedPage from './components/feedscreen';
 import AddItemPage from './components/addItemScreen';
 import MyBodyType from './components/myBodyType';
@@ -36,8 +36,8 @@ const routes = {
   splash: {
     screen: Splash,
   },
-  splashscreen: {
-    screen: SplashPage,
+  loginscreen: {
+    screen: LoginPage,
   },
   signupemail: {
     screen: SignUpPage,
