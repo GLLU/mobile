@@ -1,11 +1,31 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {Dimensions, Image, TouchableOpacity, View, Platform} from 'react-native';
+import {Dimensions, Image, TouchableOpacity, View, Platform, StyleSheet} from 'react-native';
 import SearchBar from '../feedscreen/SearchBar'
 import SearchTabs from './SearchTabs'
 const leftLongArrow = require('../../../images/icons/left-long-arrow.png');
 import Colors from "../../styles/Colors.styles";
+
+const styles = StyleSheet.create({
+  searchScreenContainer: {
+    backgroundColor: Colors.primaryColor,
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
+  },
+  searchBarContainer: {
+    flexDirection: 'row',
+  },
+  searchIconContainer: {
+    padding: 5,
+    justifyContent: 'center'
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    alignSelf: 'center'
+  },
+});
 
 class SearchScreen extends Component {
 
@@ -74,10 +94,10 @@ class SearchScreen extends Component {
   render() {
     const {navigateTo} = this.props
     return (// Will remove the marginTop
-      <View style={{backgroundColor: Colors.primaryColor, flex: 1, paddingTop: 30}}>
-        <View style={{flexDirection: 'row', height: 30,}}>
-          <TouchableOpacity onPress={this.props.goBack} style={{padding: 5, justifyContent: 'center'}}>
-            <Image style={{width: 20, height: 20, alignSelf: 'center'}} source={leftLongArrow}/>
+      <View style={styles.searchScreenContainer}>
+        <View style={styles.searchBarContainer}>
+          <TouchableOpacity onPress={this.props.goBack} style={styles.searchIconContainer}>
+            <Image style={styles.searchIcon} source={leftLongArrow}/>
           </TouchableOpacity>
           <View style={{flex: 1}}>
             <SearchBar handleSearchInput={this.handleSearchInput}
