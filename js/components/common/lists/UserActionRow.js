@@ -75,7 +75,7 @@ class UserActionRow extends Component {
   }
 
   onUserPress() {
-    this.props.navigateTo('profileScreen', this.props);
+    this.props.navigateTo('profileScreen', { user: this.props });
   }
 
   onFollowPress(user, shouldFollow) {
