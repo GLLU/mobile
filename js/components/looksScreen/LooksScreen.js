@@ -325,6 +325,7 @@ class LooksScreen extends Component {
           {showShowArrow ? this.renderDownArrow() : null}
 
           {showSwipeWizard ?  <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
+
         </ImageWrapper>
       </GestureRecognizer>
     );
