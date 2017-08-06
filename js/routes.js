@@ -1,5 +1,5 @@
 import {StackNavigator} from 'react-navigation'
-import SplashPage from './components/splashscreen/';
+import LoginPage from './components/loginScreen/';
 import FeedPage from './components/feedscreen';
 import AddItemPage from './components/addItemScreen';
 import MyBodyType from './components/myBodyType';
@@ -24,16 +24,20 @@ import BadNavigationScreen from './components/badNavigationScreen'
 import likesScreen from './components/likesScreen'
 import BlockedUsersScreen from './components/blockedUsersScreen'
 import SearchScreen from './components/searchScreen/SearchScreenContainer'
+import Splash from './components/splashScreen/SplashContainer';
 
 const stackNavigatorConfig = {
-  initialRouteName: 'splashscreen',
+  initialRouteName: 'splash',
   headerMode: 'none',
   gesturesEnabled: true
 };
 
 const routes = {
-  splashscreen: {
-    screen: SplashPage,
+  splash: {
+    screen: Splash,
+  },
+  loginscreen: {
+    screen: LoginPage,
   },
   signupemail: {
     screen: SignUpPage,
