@@ -235,6 +235,8 @@ class ProfileScreen extends Component {
       return;
     }
 
+    event.persist();
+
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const contentSizeHeight = event.nativeEvent.contentSize.height;
     const currentScroll = event.nativeEvent.contentOffset.y;

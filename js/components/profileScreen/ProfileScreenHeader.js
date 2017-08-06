@@ -136,7 +136,7 @@ class ProfileScreenHeader extends Component {
 const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
-    marginTop: 32,
+    marginTop: 8,
     marginBottom: 6,
   },
   backgroundImage: {
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 18,
     fontFamily: Fonts.regularFont,
     marginTop: 5,
   },
