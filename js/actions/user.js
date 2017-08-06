@@ -196,13 +196,13 @@ export function getStats(id) {
   };
 }
 
-export function checkLogin(user) {
+export function checkLogin() {
   return dispatch => new Promise((resolve, reject) => {
-    if (user && user.id != -1) {
+   // if (user && user.id != -1) {
       Utils.getKeychainData().then((credentials) => {
         if (credentials) {
-          NetworkManager.setToken(user.api_key);
-          setRestOptions(dispatch, rest, _.merge(user, { api_key: credentials.password }));
+          NetworkManager.setToken(credentials.password);
+          setRestOptions(dispatch, rest,{ api_key: credentials.password });
           dispatch(rest.actions.auth.get({}, (err, data) => {
             if (!err) {
               dispatch(setUser(data.user));
@@ -211,14 +211,14 @@ export function checkLogin(user) {
               reject(err);
             }
           }));
-          resolve(user);
+          resolve(true);
         }
       });
-    } else {
-      const error = 'user does not exist';
-      console.log(error);
-      reject(error);
-    }
+  //  } else {
+  //    const error = 'user does not exist';
+  //    console.log(error);
+  //    reject(error);
+  //  }
   });
 }
 

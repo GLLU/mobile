@@ -24,14 +24,18 @@ import BadNavigationScreen from './components/badNavigationScreen'
 import likesScreen from './components/likesScreen'
 import BlockedUsersScreen from './components/blockedUsersScreen'
 import SearchScreen from './components/searchScreen/SearchScreenContainer'
+import Splash from './Splash';
 
 const stackNavigatorConfig = {
-  initialRouteName: 'splashscreen',
+  initialRouteName: 'splash',
   headerMode: 'none',
   gesturesEnabled: true
 };
 
 const routes = {
+  splash: {
+    screen: Splash,
+  },
   splashscreen: {
     screen: SplashPage,
   },

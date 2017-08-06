@@ -16,7 +16,7 @@ function bindAction(dispatch, ownProps) {
       dispatch(logout());
       ownProps.navigation.dispatch(new NavigationActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'splashscreen' })]
+        actions: [NavigationActions.navigate({ routeName: 'splash' })]
       }));
     },
     onBack: () => {

@@ -78,9 +78,6 @@ class FeedPage extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.user || this.props.user.id === -1) {
-      this.props.navigateTo('splashscreen');
-    }
     BackAndroid.addEventListener('hardwareBackPress', () => {
       if (this.state.photoModal) {
         this.setState({photoModal: false});
