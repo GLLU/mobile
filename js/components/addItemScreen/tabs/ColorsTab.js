@@ -30,89 +30,43 @@ class CategoryTab extends Component {
 
   constructor(props) {
     super(props);
-    this.toggleFilterRow = this.toggleFilterRow.bind(this);
     this._setFilters = this._setFilters.bind(this);
     this.checkSelectedQuery = this.checkSelectedQuery.bind(this);
-    this.checkSelectedFilter = this.checkSelectedFilter.bind(this);
-    this.state = {
-      openFilter: false,
-      filtersAnimHeight: new Animated.Value(0),
-      currentFilterRowName: '',
-    };
-  }
-
-  componentDidMount() {
-    this.checkSelectedFilter(this.props.filters, this.props.currentFilter)
-  }
-
-  checkSelectedFilter(filters, currentFilterProp) {
-    const currentFilter = _.find(filters, (filter) => {
-      if (currentFilterProp.name === filter.name) {
-        return filter.name;
-      }
-    });
-    if (currentFilter) {
-      this.setState({currentFilterRowName: currentFilter.name});
-    } else {
-      this.setState({currentFilterRowName: ''});
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.checkSelectedFilter(nextProps.filters, nextProps.currentFilter)
   }
 
   _setFilters(filter) {
     this.props.updateCurrentFilter(filter, filter.selected);
-    this.setState({currentFilterRowName: filter.name})
-  }
-
-  toggleFilterRow() {
-    this.setState({openFilter: !this.state.openFilter});
-    if (this.state.openFilter) {
-      Animated.timing(          // Uses easing functions
-        this.state.filtersAnimHeight,    // The value to drive
-        {
-          toValue: 0,
-
-        }            // Configuration
-      ).start();
-    } else {
-      Animated.timing(          // Uses easing functions
-        this.state.filtersAnimHeight,    // The value to drive
-        {
-          toValue: generateAdjustedSize(80),
-          duration: 250,
-        }            // Configuration
-      ).start();
-    }
   }
 
   checkSelectedQuery() {
     const checkedFilters = _.map(this.props.filters, (filter, i) => {
       const {currentFilter} = this.props;
       const clonedFilter = _.cloneDeep(filter);
-      if (currentFilter === filter.id) {
-        clonedFilter.selected = true;
+
+      for (i = 0; i < currentFilter.length; i++) {
+        if (currentFilter[i] === clonedFilter.name) {
+          clonedFilter.selected = true;
+        }
       }
-      return clonedFilter;
-    });
-    return checkedFilters;
+      return clonedFilter
+    })
+    console.log('checkedFilters', checkedFilters)
+    return checkedFilters
+
   }
+
 
   render() {
     return (
-      <View style={styles.rowContainer}>
+      <View
+        style={[styles.filtersGroupContainer, styles.rowContainer]}>
+        <FilterGroup
+          mode="single" onSelectionChange={this._setFilters.bind(this)}
+          filters={this.checkSelectedQuery()}/>
         <View
-          style={[styles.filtersGroupContainer]}>
-          <FilterGroup
-            mode="single" onSelectionChange={this._setFilters.bind(this)}
-            filters={this.checkSelectedQuery()}/>
-          <View
-            style={[styles.rowEdgeShadow, {right: 0}]}/>
-          <View
-            style={[styles.rowEdgeShadow, {left: 0}]}/>
-        </View>
+          style={[styles.rowEdgeShadow, {right: 0}]}/>
+        <View
+          style={[styles.rowEdgeShadow, {left: 0}]}/>
       </View>
     );
   }
@@ -148,6 +102,7 @@ const styles = StyleSheet.create({
     width: deviceWidth,
     borderBottomColor: Colors.white,
     borderBottomWidth: 3,
+    flex: 1
   },
   filtersGroupContainer: {
     backgroundColor: 'white',

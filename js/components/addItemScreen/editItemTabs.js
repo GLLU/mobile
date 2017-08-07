@@ -7,6 +7,7 @@ import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 import {CATEGORY, BRAND, COLOR, MOOD, DESCRIPTION, LINK} from './index'
 import CategoryTab from './tabs/CategoryTab'
 import MoodTab from './tabs/MoodTab'
+import ColorsTab from './tabs/ColorsTab'
 export default class EditItemTabs extends Component {
   constructor(props: object) {
     super(props);
@@ -14,6 +15,7 @@ export default class EditItemTabs extends Component {
     this.updateCategoryItem = this.updateCategoryItem.bind(this);
     this._renderNavigationButton = this._renderNavigationButton.bind(this);
     this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
+    this._addItemTag = this._addItemTag.bind(this);
     this.state = {
       index: 0,
       routes: [
@@ -49,8 +51,17 @@ export default class EditItemTabs extends Component {
 
   }
 
+  _addItemTag(color) {
+    if (color.selected) {
+      this.props.removeItemTag(color.name, color.selected)
+    } else {
+      this.props.addItemTag(color.name, color.selected)
+    }
+
+  }
+
   _renderScene = ({route}) => {
-    const {currentItem, categoryFilters, occasionsFilters, itemCategory, itemOccasions} = this.props
+    const {currentItem, categoryFilters, occasionsFilters, itemCategory, itemOccasions, colorsFilters, itemColors} = this.props
     switch (route.key) {
       case CATEGORY:
         return (<CategoryTab
@@ -59,12 +70,13 @@ export default class EditItemTabs extends Component {
       case BRAND:
         return (<StepZeroBrand item={currentItem}></StepZeroBrand>);
       case COLOR:
-        return (<View></View>);
+        return (<ColorsTab
+          currentFilter={itemColors} filters={colorsFilters}
+          updateCurrentFilter={(name) => this._addItemTag(name)}/>);
       case MOOD:
         return (<MoodTab
           currentFilter={itemOccasions} filters={occasionsFilters}
-          updateCurrentFilter={(occasion, selected) => this.props.toggleOccasionTag(occasion, selected)}
-          mode={'multi'}/>);
+          updateCurrentFilter={(occasion, selected) => this.props.toggleOccasionTag(occasion, selected)}/>);
       case DESCRIPTION:
         return (<View></View>);
       case LINK:
@@ -107,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
   },
   tabStyle: {
-    height: 41.5,
+    flex: 1,
     width: 90,
     paddingHorizontal: 3
   },

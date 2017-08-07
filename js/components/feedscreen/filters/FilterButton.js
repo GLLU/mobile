@@ -76,10 +76,26 @@ class FilterButton extends BaseComponent {
     return <Image source={uri} style={styles.categoryItemImage} resizeMode={'contain'}/>;
   }
 
+  _renderColor(color, selected) {
+    return <View style={[styles.categoryItemImage, {
+      backgroundColor: color,
+      borderWidth: selected ? 3 : 0,
+      borderColor: Colors.secondaryColor,
+      borderRadius: 25
+    }]} resizeMode={'contain'}/>;
+  }
+
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
     this.logEvent('Feedscreen', {name: `filter ${this.props.filter.name} was clicked!`, selected: `${shouldSelect}`});
     this.props.onPress(filter);
+  }
+
+  _renderFilterName(selected, name) {
+    return (
+      <Text numberOfLines={1} ellipsizeMode={'tail'}
+            style={[styles.filterName, {color: selected ? Colors.secondaryColor : Colors.black}]}>{name}</Text>
+    )
   }
 
   render() {
@@ -92,8 +108,8 @@ class FilterButton extends BaseComponent {
           onPress={() => this.handlePressItem(filter)}
         >
           <View style={{justifyContent: 'center', alignItems: 'center', flex: -1}}>
-            {this._renderIcon(filter.icon, selected)}
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.filterName}>{filter.name}</Text>
+            {filter.icon ? this._renderIcon(filter.icon, selected) : this._renderColor(filter.color, selected)}
+            {filter.icon ? this._renderFilterName(selected, filter.name) : null}
           </View>
         </TouchableWithoutFeedback>
       </View>

@@ -5,6 +5,7 @@ import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '..
 export const CATEGORIES = 'CATEGORIES';
 export const EVENTS = 'EVENTS';
 export const BODY_SHAPES = 'BODY_SHAPES';
+import Colors from '../styles/Colors.styles'
 const initialState = {
   occasion_tags: [],
   categories: [],
@@ -14,6 +15,63 @@ const initialState = {
     [FEED_TYPE_FOLLOWING]: false,
     [FEED_TYPE_WHATS_HOT]: false,
   },
+  colors: [
+    {
+      selected: false,
+      name: 'Red',
+      highlight: false,
+      color: 'red'
+    },
+    {
+      selected: false,
+      name: 'Blue',
+      highlight: false,
+      color: 'blue'
+    },
+    {
+      selected: false,
+      name: 'Green',
+      highlight: false,
+      color: 'green'
+    },
+    {
+      selected: false,
+      name: 'Yellow',
+      highlight: false,
+      color: 'yellow'
+    },
+    {
+      selected: false,
+      name: 'Pink',
+      highlight: false,
+      color: 'pink'
+    },
+    {
+      selected: false,
+      name: 'Purple',
+      highlight: false,
+      color: 'purple'
+    },
+    {
+      selected: false,
+      name: 'Lightblue',
+      highlight: false,
+      color: 'lightblue'
+    },
+    {
+      selected: false,
+      name: 'Orange',
+      highlight: false,
+      color: 'orange'
+    },
+    {
+      selected: false,
+      name: 'Black',
+      highlight: false,
+      color: 'black'
+    },
+
+  ],
 };
 
 // Action Handlers
