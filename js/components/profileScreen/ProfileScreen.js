@@ -304,7 +304,7 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate , navigateTo} = this.props;
+    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
     const { stats, userLooks } = this.state;
 
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
@@ -315,7 +315,7 @@ class ProfileScreen extends Component {
       return (<EmptyStateScreen
         title={emptyStateTitle} subtitle={emptyStateSubtitle}
         icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
-        onButtonClicked={this._uploadLook} />);
+        onButtonClicked={this._handleNewPost} />);
     }
 
     return (

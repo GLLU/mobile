@@ -213,6 +213,7 @@ class SignUpPage extends Component {
                   <TextInput
                     ref={c => this.usernameInput = c}
                     blurOnSubmit={false}
+                    underlineColorAndroid="transparent"
                     onSubmitEditing={() => this.focusNext('nameInput')}
                     returnKeyType="next"
                     style={[styles.formInput]}
@@ -228,6 +229,7 @@ class SignUpPage extends Component {
                   <TextInput
                     ref={c => this.nameInput = c}
                     blurOnSubmit={false}
+                    underlineColorAndroid="transparent"
                     onSubmitEditing={() => this.focusNext('emailInput')}
                     returnKeyType="next"
                     style={[styles.formInput]}
@@ -248,6 +250,7 @@ class SignUpPage extends Component {
                     blurOnSubmit={false}
                     onSubmitEditing={() => this.focusNext('passwordInput')}
                     returnKeyType="next"
+                    underlineColorAndroid="transparent"
                     style={[styles.formInput]}
                     onChangeText={email => this.validateEmailInput(email)} />
                   {this.state.email.value.length > 0 ?
@@ -262,6 +265,7 @@ class SignUpPage extends Component {
                   <TextInput
                     ref={c => this.passwordInput = c}
                     secureTextEntry
+                    underlineColorAndroid="transparent"
                     style={styles.formInput}
                     onChangeText={password => this.validatePasswordInput(password)} />
                   {this.state.password.value.length > 0 ?
