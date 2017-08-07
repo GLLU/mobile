@@ -384,9 +384,9 @@ class BestMatchTabContent extends BaseComponent {
     const {saveBodyShape} = this.props;
 
     return (
-      <View style={{flexGrow: 1, backgroundColor: 'white', alignItems: 'center'}}>
-        <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
-        <ScrollView>
+      <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
+        <ScrollView contentContainerStyle={{paddingBottom: 16}}>
+          <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
             onPick={() => this.toggleBodyTypeModal(false)}/>
