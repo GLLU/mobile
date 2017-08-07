@@ -156,7 +156,7 @@ const ACTION_HANDLERS = {
   },
   [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let occasions = _.filter(item.occasions, t => t.id !== action.payload.tag.id);
+    let occasions = _.filter(item.occasions, t => t !== action.payload.tagId);
     return {
       ...state,
       items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
@@ -164,9 +164,8 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_OCCASION_TAG]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let occasions = item.occasions;
+    let occasions = _.cloneDeep(item.occasions);
     occasions.push(action.payload.tagId);
-    occasions = _.uniqBy(occasions, 'id');
     return {
       ...state,
       items: mutateItem(state, 'occasions', occasions, action.payload.itemId)

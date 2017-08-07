@@ -7,7 +7,9 @@ export default function map(item) {
     lookId: item.look_id,
     category: item.category ? item.category.id : -1,
     brand: item.brand ? item.brand : null,
-    occasions: item.occasions ? item.occasions : [],
+    occasions: _.map(item.occasions, (occasion) => {
+      return occasion.id
+    }),
     tags: item.tags ? item.tags : [],
   }
 }

@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {View, StyleSheet} from 'react-native';
+import StepZeroBrand from './StepZeroBrand';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
 import {CATEGORY, BRAND, COLOR, MOOD, DESCRIPTION, LINK} from './index'
 import CategoryTab from './tabs/CategoryTab'
+import MoodTab from './tabs/MoodTab'
 export default class EditItemTabs extends Component {
   constructor(props: object) {
     super(props);
@@ -48,20 +50,21 @@ export default class EditItemTabs extends Component {
   }
 
   _renderScene = ({route}) => {
-    const {categoryFilters, occasionsFilters, itemCategory, itemOccasions} = this.props
+    const {currentItem, categoryFilters, occasionsFilters, itemCategory, itemOccasions} = this.props
     switch (route.key) {
       case CATEGORY:
         return (<CategoryTab
           currentFilter={itemCategory} filters={categoryFilters}
           updateCurrentFilter={(category) => this.props.addItemType(category)}/>);
       case BRAND:
-        return (<View></View>);
+        return (<StepZeroBrand item={currentItem}></StepZeroBrand>);
       case COLOR:
         return (<View></View>);
       case MOOD:
-        return (<CategoryTab
+        return (<MoodTab
           currentFilter={itemOccasions} filters={occasionsFilters}
-          updateCurrentFilter={(occasion, selected) => this.props.toggleOccasionTag(occasion, selected)}/>);
+          updateCurrentFilter={(occasion, selected) => this.props.toggleOccasionTag(occasion, selected)}
+          mode={'multi'}/>);
       case DESCRIPTION:
         return (<View></View>);
       case LINK:
@@ -83,7 +86,6 @@ export default class EditItemTabs extends Component {
   }
 
   render() {
-    const {handleTabsIndexChange} = this.props;
     return (
       <View style={styles.container}>
         <TabViewAnimated

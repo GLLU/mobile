@@ -1,6 +1,18 @@
-import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback, Animated, UIManager, View, Text } from 'react-native';
-import { Icon } from 'native-base';
+import React, {Component} from 'react';
+import {
+  Modal,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Platform,
+  TouchableWithoutFeedback,
+  Animated,
+  UIManager,
+  View,
+  Text
+} from 'react-native';
+import {Icon} from 'native-base';
 import {
   addBrandName,
   createBrandName,
@@ -25,7 +37,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   inputContainer: {
-    height: 35,
+    flex: 1,
+    maxHeight: 40,
+    alignSelf: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -73,15 +87,15 @@ class StepZeroBrand extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { item } = nextProps;
-    const selectedCategory =  item ? item.category : null
-    if(selectedCategory && !item.brand && this.state.fadeAnimContentOnPress._value === 0) {
+    const {item} = nextProps;
+    const selectedCategory = item ? item.category : null
+    if (selectedCategory && !item.brand && this.state.fadeAnimContentOnPress._value === 0) {
       this.toggleBottomContainer()
     }
-    if(this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
+    if (this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
       this.toggleBottomContainer()
     }
-    if(item.id !== this.props.item.id) {
+    if (item.id !== this.props.item.id) {
       this.setState({
         brandName: item.brand ? item.brand.name : null,
       });
@@ -104,28 +118,28 @@ class StepZeroBrand extends BaseComponent {
     this.setState({modalVisible: false, brandName});
 
     if (brand.id) {
-      this.logEvent('UploadLookScreen', { name: 'Brand pick', brand: brandName });
+      this.logEvent('UploadLookScreen', {name: 'Brand pick', brand: brandName});
     } else {
-      this.logEvent('UploadLookScreen', { name: 'Create new brand click', brand: brandName });
+      this.logEvent('UploadLookScreen', {name: 'Create new brand click', brand: brandName});
     }
   }
 
   handleClearBrandName() {
-    this.logEvent('UploadLookScreen', { name: 'Brand cleared' });
+    this.logEvent('UploadLookScreen', {name: 'Brand cleared'});
     this.setState({brandName: null}, () => {
       this.props.removeBrandName(this.props.item.id);
     });
   }
 
   handleTextFocus() {
-    this.logEvent('UploadLookScreen', { name: 'Choose brand click' });
+    this.logEvent('UploadLookScreen', {name: 'Choose brand click'});
     this.setState({
       modalVisible: true
     });
   }
 
   handleBrandCancel() {
-    this.logEvent('UploadLookScreen', { name: 'Choose brand cancel' });
+    this.logEvent('UploadLookScreen', {name: 'Choose brand cancel'});
     this.setState({
       modalVisible: false
     });
@@ -158,7 +172,7 @@ class StepZeroBrand extends BaseComponent {
           style={styles.iconCheckCompleteContainer}
           onPress={this.handleClearBrandName.bind(this)}
         >
-          <Icon name="md-close-circle" style={StyleSheet.flatten(styles.iconCheckComplete)} />
+          <Icon name="md-close-circle" style={StyleSheet.flatten(styles.iconCheckComplete)}/>
         </TouchableOpacity>
       );
     }
@@ -170,31 +184,35 @@ class StepZeroBrand extends BaseComponent {
     const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-        <View style={{ backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center'}}>
-          <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
+        <View style={{backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center'}}>
+          <FontAwesome style={{fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
         </View>
       </TouchableWithoutFeedback>
     )
   }
 
   render() {
-    const { brands, item, items} = this.props;
-    const { modalVisible } = this.state;
+    const {brands, item, items} = this.props;
+    const {modalVisible} = this.state;
     const currItem = _.find(items, listItem => listItem.id === item.id);
     const brandName = currItem.brand ? currItem.brand.name : null;
     return (
-      <View>
-        <View style={{ width: w }}>
-          {this.renderOpenButton(currItem)}
-          <Animated.View style={{borderRadius: 10, alignSelf: 'center', overflow: 'hidden',justifyContent: 'flex-start', bottom: 0, width: w-100, paddingLeft: 25, paddingRight: 25, backgroundColor: 'rgba(32, 32, 32, 0.8)', height: this.state.fadeAnimContentOnPress, }}>
-            <Text style={styles.titleLabelInfo}>Brand Name</Text>
-            <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
-              <Text style={styles.input}>
-                {brandName}
-              </Text>
-              {this.renderClearIcon(currItem)}
-            </TouchableOpacity>
-          </Animated.View>
+      <View style={{flex: 1}}>
+        <View style={{
+          width: w,
+          borderRadius: 10,
+          alignSelf: 'center',
+          overflow: 'hidden',
+          justifyContent: 'center',
+          paddingHorizontal: 25,
+          flex: 1,
+        }}>
+          <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
+            <Text style={styles.input}>
+              {brandName}
+            </Text>
+            {this.renderClearIcon(currItem)}
+          </TouchableOpacity>
         </View>
         <Modal
           animationType={"slide"}
@@ -213,7 +231,7 @@ class StepZeroBrand extends BaseComponent {
   }
 }
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 function bindActions(dispatch) {
   return {
     createBrandName: (name) => dispatch(createBrandName(name)),
@@ -223,7 +241,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => {
-  const { items } = state.uploadLook;
+  const {items} = state.uploadLook;
 
   return {
     items

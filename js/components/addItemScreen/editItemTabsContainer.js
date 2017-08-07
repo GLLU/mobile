@@ -21,7 +21,8 @@ function mapStateToProps(state, ownProps) {
     occasionsFilters: state.filters.occasion_tags,
     itemCategory: currentItem.category,
     itemBrand: currentItem.brand,
-    itemOccasions: currentItem.occasions
+    itemOccasions: currentItem.occasions,
+    currentItem
 
   }
 }
