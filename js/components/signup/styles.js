@@ -102,7 +102,7 @@ module.exports = StyleSheet.create({
   formInput: {
     flex: 1,
     lineHeight: 18,
-    height: 40,
+    height: generateAdjustedSize(45),
     fontSize: generateAdjustedSize(18),
     backgroundColor: 'transparent',
     alignItems: 'stretch',
