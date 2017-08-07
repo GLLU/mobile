@@ -19,7 +19,7 @@
   "REPORT_TEXT": "Thank you for making inFash better! we'll examine your report and will be in touch with you over email.",
   "BLOCK_TEXT": "You will not see any activity from this user anymore.",
   "BLOCK_ARE_YOU_SURE": "Are you sure you want to block this user?",
-  "EMPTY_BLOCKED_USERS": "You haven't blocked anyone yet.",
+  "EMPTY_BLOCKED_USERS": "You haven't blocked anyone.",
   "NO": "No",
   "YES": "Yes",
   "PARIS_NO_FEED_RESULTS": "Sorry, we could not find any relevant results",
@@ -86,6 +86,7 @@
   "TEACH_ME_MONEY": "Teach me how to make money",
   "SWIPE_WIZARD": "SWIPE UP AND DOWN TO SEE MORE LOOKS!",
   "EMPTY_FEED_TITLE": "NO LOOK WAS FOUND IN THIS SEARCH",
-  "EMPTY_FEED_LEGEND": "Try to change your search filters.\nWe have a lot of cool looks that will fit to your style! "
+  "EMPTY_FEED_LEGEND": "Try to change your search filters.\nWe have a lot of cool looks that will fit to your style! ",
+  "EDIT": "EDIT"
 }
 

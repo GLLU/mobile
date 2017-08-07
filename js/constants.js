@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-export const SUPPORT_EMAIL = 'hello@gllu.com';
+export const SUPPORT_EMAIL = 'hello@infash.com';
 export const EMAIL_URL = `mailto:${SUPPORT_EMAIL}`;
 export const TERMS_URL = 'https://www.infash.com/terms';
 export const PRIVACY_URL = 'https://www.infash.com/privacy';
