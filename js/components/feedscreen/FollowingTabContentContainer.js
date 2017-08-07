@@ -10,6 +10,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenFollwing', params);
   return {
     navigateToLooksScreen,
+    onFollowClicked: () => ownProps.navigateTo('searchScreen'),
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getFollowingFeed(query)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_FOLLOWING)),
