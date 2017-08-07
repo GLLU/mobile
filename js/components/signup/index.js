@@ -280,7 +280,6 @@ class SignUpPage extends Component {
                   label="Let's infash"
                   style={[styles.formBtn, allValid ? styles.validationPassed : null]}
                   onPress={this.handleSignupPress.bind(this)}
-                  loaderElement={<Spinner animating={this.state.isSigningUp} size={'small'} style={{ left: 10 }} />}
                 />
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>

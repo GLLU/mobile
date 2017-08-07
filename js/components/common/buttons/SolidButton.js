@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
+import Spinner from '../../loaders/Spinner';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
@@ -51,7 +52,7 @@ class SolidButton extends Component {
       <TouchableOpacity style={[styles.center, styles.basicStyle ,this.props.style]} disabled={this.props.disabled} onPress={this.props.onPress}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text style={styles.text}>{this.props.label}</Text>
-          {this.props.loaderElement}
+          {this.props.showLoader ? <Spinner animating={true} size={'small'} style={{ left: 10 }}/> : null}
         </View>
       </TouchableOpacity>
     );

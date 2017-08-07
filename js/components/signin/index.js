@@ -191,7 +191,6 @@ render()
                 disabled={!allValid}
                 style={[styles.formBtn, allValid ? styles.validationPassed : null]}
                 onPress={this.handleSigninPress}
-                loaderElement={<Spinner animating={this.state.isSigningIn} size={'small'} style={{ left: 10 }}/>}
               />
               <View style={styles.alreadyBox}>
                 <Text style={styles.alreadyTxt}>Forgot your password?</Text>
