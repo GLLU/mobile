@@ -19,7 +19,7 @@ module.exports = StyleSheet.create({
     paddingHorizontal: 0,
     paddingLeft: 0,
     flexDirection: 'column',
-    paddingTop: 25
+    paddingTop: Platform.OS === 'ios' ? 25 : 0,
   },
   Textlabel: {
     paddingTop: 0,

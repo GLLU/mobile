@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
     fontSize: generateAdjustedSize(16),
     lineHeight: 16,
     color: Colors.black,
-    marginHorizontal: 8,
     fontFamily: Fonts.regularFont,
   },
   logo: {
