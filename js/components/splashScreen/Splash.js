@@ -5,7 +5,7 @@ import { View, Image, Linking, Platform, Dimensions, TouchableOpacity } from 're
 
 import Spinner from '../loaders/Spinner';
 
-const background = require('../../../images/backgrounds/iphone-splash_screen.png');
+const background = require('../../../images/backgrounds/splashScreen.png');
 const deviceWidth = Dimensions.get('window').width;
 
 
@@ -28,13 +28,15 @@ class Splash extends Component {
   }
 
   checkLogin() {
-    this.props.checkLogin()
-      .then(() => {
-        this.props.resetTo('feedscreen');
-      })
-      .catch(() => {
-        this.props.resetTo('loginscreen');
-      });
+    setTimeout(() => {
+      this.props.checkLogin()
+        .then(() => {
+          this.props.resetTo('feedscreen');
+        })
+        .catch(() => {
+          this.props.resetTo('loginscreen');
+        });
+    }, 1000);
   }
 
   render() {
