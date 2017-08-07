@@ -11,5 +11,7 @@ export default function map(item) {
       return occasion.id
     }),
     tags: item.tags ? item.tags : [],
+    description: item.description ? item.description : '',
+    url: item.url ? item.url : null,
   }
 }

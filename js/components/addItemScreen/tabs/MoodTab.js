@@ -50,9 +50,7 @@ class CategoryTab extends Component {
       return clonedFilter
     })
     return checkedFilters
-
   }
-
 
   render() {
     return (

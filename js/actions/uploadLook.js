@@ -385,6 +385,7 @@ export function addDescription(description) {
 }
 
 export function addUrl(url, itemId) {
+  console.log('urlll action', url)
   return (dispatch, getState) => {
     const state = getState();
     const {lookId} = state.uploadLook;

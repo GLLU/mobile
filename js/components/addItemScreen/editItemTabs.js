@@ -8,6 +8,8 @@ import {CATEGORY, BRAND, COLOR, MOOD, DESCRIPTION, LINK} from './index'
 import CategoryTab from './tabs/CategoryTab'
 import MoodTab from './tabs/MoodTab'
 import ColorsTab from './tabs/ColorsTab'
+import DescriptionTab from './tabs/descriptionTab'
+import LinkTab from './tabs/linkTab'
 export default class EditItemTabs extends Component {
   constructor(props: object) {
     super(props);
@@ -16,6 +18,7 @@ export default class EditItemTabs extends Component {
     this._renderNavigationButton = this._renderNavigationButton.bind(this);
     this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
     this._addItemTag = this._addItemTag.bind(this);
+    this._addItemCategory = this._addItemCategory.bind(this);
     this.state = {
       index: 0,
       routes: [
@@ -23,7 +26,6 @@ export default class EditItemTabs extends Component {
         {key: BRAND, title: 'BRAND'},
         {key: COLOR, title: 'COLOR'},
         {key: MOOD, title: 'MOOD'},
-        {key: DESCRIPTION, title: 'DESCRIPTION'},
         {key: LINK, title: 'LINK'},
       ],
       loaded: false
@@ -39,12 +41,42 @@ export default class EditItemTabs extends Component {
   }
 
   _renderHeader = props => (
-    <TabBar
-      tabStyle={styles.tabStyle} style={styles.TabBar}
-      labelStyle={styles.labelStyle}
-      indicatorStyle={styles.indicatorStyle} {...props}
-      scrollEnabled/>
+
+    <View style={{flexDirection: 'row'}}>
+      <TabBar
+        tabStyle={styles.tabStyle} style={styles.TabBar}
+        labelStyle={styles.labelStyle}
+        indicatorStyle={styles.indicatorStyle} {...props}
+        scrollEnabled
+        renderIcon={(currTab) => this.renderTabIcon(currTab) }/>
+
+    </View>
   );
+
+  renderTabIcon(currTab) {
+    const {itemCategory, currentItem} = this.props
+    switch (this.state.routes[currTab.index].key) {
+      case CATEGORY:
+        return this.renderTabIndicator(itemCategory !== -1);
+      case BRAND:
+        return this.renderTabIndicator(!!currentItem.brand);
+    }
+  }
+
+  renderTabIndicator(isFine) {
+    if (isFine) {
+      return (
+        <View
+          style={{width: 10, height: 10, backgroundColor: 'green', borderRadius: 5, marginRight: 3}}/>
+      )
+    } else {
+      return (
+        <View
+          style={{width: 10, height: 10, backgroundColor: 'red', borderRadius: 5, marginRight: 3}}/>
+      )
+    }
+
+  }
 
   updateCategoryItem(category) {
     this.props.addItemType(category)
@@ -60,13 +92,22 @@ export default class EditItemTabs extends Component {
 
   }
 
+  _addItemCategory(category) {
+    const {addItemType} = this.props;
+    addItemType(category)
+    let that = this;
+    setTimeout(function () {
+      that._handleTabsIndexChange(that.state.index += 1);
+    }, 2000);
+  }
+
   _renderScene = ({route}) => {
-    const {currentItem, categoryFilters, occasionsFilters, itemCategory, itemOccasions, colorsFilters, itemColors} = this.props
+    const {currentItem, addItemType, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl} = this.props
     switch (route.key) {
       case CATEGORY:
         return (<CategoryTab
           currentFilter={itemCategory} filters={categoryFilters}
-          updateCurrentFilter={(category) => this.props.addItemType(category)}/>);
+          updateCurrentFilter={(category) => this._addItemCategory(category)}/>);
       case BRAND:
         return (<StepZeroBrand item={currentItem}></StepZeroBrand>);
       case COLOR:
@@ -76,11 +117,9 @@ export default class EditItemTabs extends Component {
       case MOOD:
         return (<MoodTab
           currentFilter={itemOccasions} filters={occasionsFilters}
-          updateCurrentFilter={(occasion, selected) => this.props.toggleOccasionTag(occasion, selected)}/>);
-      case DESCRIPTION:
-        return (<View></View>);
+          updateCurrentFilter={(occasion, selected) => toggleOccasionTag(occasion, selected)}/>);
       case LINK:
-        return (<View></View>);
+        return (<LinkTab itemUrl={itemUrl} addUrl={(url) => addUrl(url)}/>);
       default:
         return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
           ;
@@ -121,7 +160,8 @@ const styles = StyleSheet.create({
   tabStyle: {
     flex: 1,
     width: 90,
-    paddingHorizontal: 3
+    paddingHorizontal: 3,
+    flexDirection: 'row'
   },
   TabBar: {
     backgroundColor: Colors.backgroundGrey,
