@@ -16,12 +16,12 @@ import Fonts from '../../../styles/Fonts.styles';
 import SolidButton from '../../common/buttons/SolidButton';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 
-export const POPUP_WIDTH = 240;
-export const POPUP_HEIGHT = 100;
+export const POPUP_WIDTH = 160;
+export const POPUP_HEIGHT = 70;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#ffffff',
     width: POPUP_WIDTH,
     alignItems: 'center',
     borderWidth: 1,
@@ -29,21 +29,20 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     backgroundColor: Colors.lightGray,
-    marginHorizontal: 6,
-    marginVertical: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 6,
+    marginHorizontal: 4,
+    marginVertical: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
     alignItems: 'center',
   },
   brand: {
-    fontSize: 20,
+    fontSize: generateAdjustedSize(16),
     color: Colors.black,
-    fontWeight: '900',
     marginBottom: 4,
     fontFamily: Fonts.contentFont,
   },
   category: {
-    fontSize: 16,
+    fontSize: generateAdjustedSize(14),
     color: Colors.white,
     marginBottom: 4,
     fontFamily: Fonts.contentFont,
@@ -122,11 +121,11 @@ class ItemPopup extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>
-          <Text style={styles.brand}>{this.getTitle(brand)}</Text>
+          <Text style={styles.brand}>{brand.name}</Text>
           { category ? <Text style={styles.category}>{category.name}</Text> : null }
           <SolidButton
             label={is_verified ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
-            style={{ backgroundColor: Colors.black, marginHorizontal: 8, width: 200 }} onPress={this.handleOpenLink} />
+            style={{ backgroundColor: Colors.black, width: 140, height: 30 }} onPress={this.handleOpenLink} />
         </View>
       </View>
     );
