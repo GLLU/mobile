@@ -18,6 +18,7 @@ import {
   ADD_ITEM_OCCASION_TAG,
   REMOVE_ITEM_OCCASION_TAG,
   REMOVE_BRAND_NAME,
+  REMOVE_LOOK_ITEM
 } from '../actions/uploadLook';
 import {lookMapper, itemMapper} from '../mappers/';
 
@@ -65,6 +66,12 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       editingTag: action.payload.editingTag
+    }
+  },
+  [REMOVE_LOOK_ITEM]: (state, action) => {
+    return {
+      ...state,
+      items: action.newItemsArr,
     }
   },
   [SET_TAG_POSITION]: (state, action) => {

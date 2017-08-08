@@ -87,13 +87,18 @@ class ImageWithTags extends Component {
 
   renderTags() {
     const {items, currItem} = this.props;
+    console.log('currItem', currItem)
+    if (currItem) {
+      return items.map((item, i) => {
+        return (
+          <Tag key={item.id} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} item={item}
+               onDragEnd={this.props.onDragEnd}/>
+        );
+      });
+    } else {
+      return null
+    }
 
-    return items.map((item, i) => {
-      return (
-        <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} item={item}
-             onDragEnd={this.props.onDragEnd}/>
-      );
-    });
   }
 
   getRenderingDimensions() {

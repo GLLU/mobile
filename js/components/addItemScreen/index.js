@@ -8,7 +8,8 @@ import {
   setTagPosition,
   getUserLooks,
   getFeed,
-  clearFeed
+  clearFeed,
+  removeLookItem
 } from '../../actions';
 import StepZeroBrand from './StepZeroBrand';
 import StepOneCategory from './StepOneCategory';
@@ -68,6 +69,7 @@ class AddItemPage extends Component {
   }
 
   setCurrentItem(item) {
+    console.log('itemmmm', item)
     this.setState({currItem: item});
   }
 
@@ -92,10 +94,6 @@ class AddItemPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.items && this.state.currentStep === -1 && this.state.isVideo) {
       this.handleContinue();
-    }
-    if (nextProps.items !== this.props.items) {
-      const item = _.find(nextProps.items, item => item.id === this.state.currItem.id);
-      this.setState({currItem: item});
     }
   }
 
@@ -178,6 +176,12 @@ class AddItemPage extends Component {
     });
   }
 
+  handleRemoveItem() {
+    const firstItem = _.find(this.props.items, (item) => item.id !== this.state.currItem.id)
+    this.setCurrentItem(firstItem)
+    this.props.removeLookItem(this.state.currItem.id);
+  }
+
   handleOnDragEnd(position) {
     this.props.setTagPosition(position);
     this.props.updateLookItem(position.id);
@@ -185,6 +189,7 @@ class AddItemPage extends Component {
 
   renderImageWithTags() {
     const {items, image} = this.props;
+    console.log('this.state.currItem', this.state.currItem)
     return (
       <ImageWithTags
         items={items}
@@ -231,21 +236,6 @@ class AddItemPage extends Component {
     )
   }
 
-  renderThreeSteps() {
-    const {currItem} = this.state;
-    return (
-      <View style={{flexDirection: 'column', justifyContent: 'space-between', flex: 1}}>
-        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row'}}>
-          <StepTwoOccasions item={currItem}/>
-          <StepOneCategory item={currItem}/>
-        </View>
-
-        <StepZeroBrand item={currItem}/>
-
-      </View>
-    );
-  }
-
   renderContent() {
     if (this.state.currentStep !== 1) {
       return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags();
@@ -267,12 +257,15 @@ class AddItemPage extends Component {
         handleBackButton={this.handleBackButton.bind(this)}
         handleContinue={this.handleContinue}
         handleNewItem={this.handleNewItem.bind(this)}
+        handleRemoveItem={this.handleRemoveItem.bind(this)}
         setCurrentItem={item => this.setCurrentItem(item)}
-        categories={this.props.categories}/>
+        categories={this.props.categories}
+        publishItem={this.publishAction.bind(this)}/>
     );
   }
 
   render() {
+    console.log('currItemRender:', this.state.currItem)
     return (
       <View>
         {this.renderContent()}
@@ -288,6 +281,7 @@ function bindActions(dispatch) {
     updateLookItem: look => dispatch(updateLookItem(look)),
     publishLookItem: look => dispatch(publishLookItem(look)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
+    removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
     setTagPosition: position => dispatch(setTagPosition(position)),
     getFeed: query => dispatch(getFeed(query)),
     clearFeed: () => dispatch(clearFeed()),

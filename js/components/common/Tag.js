@@ -14,10 +14,10 @@ import {
 } from 'react-native'
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-const whiteMarker = require('../../../images/markers/marker-top-right.png');
-const whiteMarkerWithBorder = require('../../../images/markers/marker-red.png');
-const greenMarkerWithBorder = require('../../../images/markers/marker-green-red.png');
-const greenMarker = require('../../../images/markers/marker-green-1.png');
+const whiteMarker = require('../../../images/markers/tag_white.png');
+const whiteMarkerWithBorder = require('../../../images/markers/tag_white_red.png');
+const greenMarkerWithBorder = require('../../../images/markers/tag_green_Circle.png');
+const greenMarker = require('../../../images/markers/tag_green_Circle.png');
 
 const TAG_WIDTH = 30;
 const BORDER_WIDTH = 5;
@@ -54,7 +54,8 @@ class Tag extends Component {
   }
 
   _setupPanResponder(locationX, locationY) {
-    const itemId = this.props.item.id
+    const {item} = this.props
+    const itemId = item.id
     this._pan = new Animated.ValueXY();
     this._pan.addListener((value) => this._value = value);
     this._pan.setOffset({x: locationX, y: locationY})
@@ -64,18 +65,24 @@ class Tag extends Component {
         dx: this._pan.x,
         dy: this._pan.y
       }]),
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderGrant: () => {
       },
       onPanResponderRelease: (e, gesture) => {
-        this._pan.setOffset(this._value);
-        this._setupPanResponder(this._value.x, this._value.y);
-        const {width, height} = this.getRenderingDimensions();
-        const left = this._value.x / width;
-        const top = this._value.y / height;
-        const nextPosition = {id: itemId, locationX: left, locationY: top};
-        this.setState(nextPosition, () => {
-          this.props.onDragEnd(nextPosition);
-        })
+        console.log('this._value', this._value)
+        if (this._value) {
+          this._pan.setOffset(this._value);
+          this._setupPanResponder(this._value.x, this._value.y);
+          const {width, height} = this.getRenderingDimensions();
+          const left = this._value.x / width;
+          const top = this._value.y / height;
+          const nextPosition = {id: itemId, locationX: left, locationY: top};
+
+          this.setState(nextPosition, () => {
+            this.props.onDragEnd(nextPosition);
+          })
+        }
+        this.props.setCurrentItem(item)
       }
     });
   }
@@ -115,13 +122,16 @@ class Tag extends Component {
     const {item, currItemId} = this.props
     const layout = this._pan.getLayout();
     const markerImage = currItemId === item.id ? this.getCurrentItemStatus(item) : this.otherItemStatus(item);
-    return (
-      <Animated.View
-        {...this.panResponder.panHandlers}
-        style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? {zIndex: 1} : null]}>
-        <Image source={markerImage} style={styles.itemBgImage}/>
-      </Animated.View>
-    );
+    if (item) {
+      return (
+        <Animated.View
+          {...this.panResponder.panHandlers}
+          style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? {zIndex: 1} : null]}>
+          <Image source={markerImage}
+                 style={[styles.itemBgImage]}/>
+        </Animated.View>
+      );
+    }
   }
 }
 

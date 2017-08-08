@@ -13,7 +13,7 @@ import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 import i18n from 'react-native-i18n';
 import Fonts from '../../styles/Fonts.styles';
-
+const trash = require('../../../images/icons/trash.png')
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F2'
@@ -83,15 +83,13 @@ class UploadLookHeader extends BaseComponent {
       case -1:
         return currItem !== null;
       case 0:
-        return this.getAllowAddAnotherItem();
-      case 1:
-        return false;
+        return this.allowPublishBtn();
       default:
         return true;
     }
   }
 
-  getAllowAddAnotherItem() {
+  allowPublishBtn() {
     const {items, currItem} = this.props;
     let verifiedItems = '';
     if (currItem && currItem.brand && currItem.category !== null) {
@@ -132,113 +130,52 @@ class UploadLookHeader extends BaseComponent {
     return title;
   }
 
-  renderNext() {
+  renderNextorPublish() {
+    const {currentStep} = this.props
+    if (currentStep === -1) {
+      return (
+        <TouchableOpacity style={styles.nextBtnContainer} onPress={() => this.props.handleContinue()}>
+          <Text style={styles.nextBtnText}>Next</Text>
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity style={styles.nextBtnContainer} onPress={() => this.props.publishItem()}>
+          <Text style={styles.nextBtnText}>Publish</Text>
+        </TouchableOpacity>
+      )
+    }
+  }
+
+  _renderAddItemBtn() {
     return (
-      <TouchableOpacity style={styles.nextBtnContainer} onPress={() => this.props.handleContinue()}>
-        <Text style={styles.nextBtnText}>Next</Text>
+      <TouchableOpacity onPress={() => this.props.handleNewItem()} style={{
+        height: 15,
+        width: 15,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginRight: 15
+      }}>
+        <Text style={{color: Colors.secondaryColor, textAlign: 'center', fontSize: 16}}>+</Text>
       </TouchableOpacity>
     )
   }
 
-  renderAddAnotherItemBtn() {
-    if (this.props.isVideo) {
-      return (
-        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <TouchableOpacity onPress={this.props.handleNewItem} style={{
-            height: 30,
-            width: 30,
-            backgroundColor: 'rgba(32, 32, 32, 0.8)',
-            alignItems: 'center',
-            alignSelf: 'center',
-            borderRadius: 3,
-            marginRight: 3
-          }}>
-            <Icon style={{color: '#F2F2F2'}} name="ios-add"/>
-          </TouchableOpacity>
-          {this.renderVideoItemsBtns()}
-        </View>
-      )
-    } else {
-      return (
-        <TouchableOpacity onPress={() => this.props.handleNewItem()} style={{
-          height: 20,
-          width: 100,
-          backgroundColor: 'rgba(32, 32, 32, 0.8)',
-          justifyContent: 'center',
-          alignSelf: 'center',
-          borderBottomWidth: 2,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8
-        }}>
-          <Text style={{color: 'white', textAlign: 'center', fontSize: 11}}>Tag another Item</Text>
-        </TouchableOpacity>
-      )
-    }
-
-  }
-
-  getItemIconUrl(item) { //Temp function until we will receive it from the server
-    return _.find(this.props.categories, category => category.name === item.name);
-  }
-
-  renderVideoItemsBtns() {
-    const {items} = this.props
-
-    return items.map((item, index) => {
-      const isSelected = this.props.currItem.id === item.id;
-      const isDone = item.brand && item.category !== null
-      return (
-        <TouchableOpacity key={index} onPress={() => this.props.setCurrentItem(item)} style={{
-          height: 30,
-          width: 30,
-          backgroundColor: 'rgba(32, 32, 32, 0.8)',
-          justifyContent: 'center',
-          alignSelf: 'center',
-          borderBottomWidth: 2,
-          borderRadius: 3,
-          marginLeft: 3,
-          marginRight: 3
-        }}>
-          {isDone ? null : <View style={{
-            width: 5,
-            height: 5,
-            borderRadius: 5,
-            backgroundColor: 'red',
-            position: 'absolute',
-            top: 3,
-            right: 3
-          }}/>}
-          {item.category ? this.renderItemCategorySmallIcon(item, isSelected) : <Text
-            style={{color: isSelected ? '#009688' : 'white', textAlign: 'center', fontSize: 13}}>{`${index}`}</Text>}
-        </TouchableOpacity>
-      );
-    });
-  }
-
-  renderItemCategorySmallIcon(item, isSelected) {
-    let categoryIcon;
-    if (item.category.icon) {
-      categoryIcon = isSelected ? item.category.icon.url_hover : item.category.icon.url;
-    } else {
-      const iconUrl = this.getItemIconUrl(item.category);
-      categoryIcon = isSelected ? iconUrl.icon.url_hover : iconUrl.icon.url;
-
-    }
-
+  _renderRemoveItemBtn() {
     return (
-      <View style={{flex: 1, padding: 2}}>
-        <Image source={{uri: categoryIcon}} style={[{
-          flex: 1, width: 20, backgroundColor: 'transparent',
-          resizeMode: 'contain',
-          alignSelf: 'center',
-        }]}/>
-      </View>
+      <TouchableOpacity onPress={() => this.props.handleRemoveItem()} style={{
+
+        justifyContent: 'center',
+        alignSelf: 'center',
+        flex: 1
+      }}>
+        <Image source={trash} resizeMode={'contain'} style={{width: 22, height: 22, alignSelf: 'center'}}/>
+      </TouchableOpacity>
     )
   }
 
   render() {
     const allowContinue = this.getAllowContinue();
-    const fgColor = '#F2F2F2';
     return (
       <View>
         <View style={{
@@ -252,10 +189,14 @@ class UploadLookHeader extends BaseComponent {
           alignItems: 'center'
         }}>
           <TouchableOpacity transparent onPress={() => this.props.handleBackButton()}
-                            style={{width: 30, height: 30, backgroundColor: 'transparent'}}>
+                            style={{width: 30, height: 30, backgroundColor: 'transparent', flex: 1}}>
             <Icon style={{color: this.props.currentStep !== 1 ? 'black' : '#000'}} name="ios-arrow-back"/>
           </TouchableOpacity>
-          {allowContinue ? this.renderNext(fgColor) : <View style={{width: 30, height: 30}}/>}
+          {this._renderRemoveItemBtn()}
+          <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
+            {this._renderAddItemBtn()}
+            {allowContinue ? this.renderNextorPublish() : null}
+          </View>
         </View>
         <View style={{
           flexDirection: 'row',

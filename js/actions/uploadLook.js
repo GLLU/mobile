@@ -2,6 +2,7 @@ export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
 export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
+export const REMOVE_LOOK_ITEM = 'REMOVE_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
@@ -150,6 +151,31 @@ export function createLookItem(position) {
   }
 }
 
+export function removeLookItem(itemId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const lookItems = _.cloneDeep(state.uploadLook.items)
+    const newItemsArr = _.filter(lookItems, (item) => item.id !== itemId);
+    dispatch({
+      type: REMOVE_LOOK_ITEM,
+      newItemsArr,
+    });
+    // return new Promise((resolve, reject) => {
+    //   dispatch(rest.actions.items.post({look_id: lookId}, {body: JSON.stringify(body)}, (err, data) => {
+    //     if (!err) {
+    //       resolve(dispatch({
+    //           type: CREATE_LOOK_ITEM_BY_POSITION,
+    //           payload: data
+    //         })
+    //       );
+    //     } else {
+    //       reject(err);
+    //     }
+    //   }));
+    // });
+  }
+}
+
 export function selectLookItem(itemId) {
   return {
     type: SELECT_LOOK_ITEM,
@@ -191,6 +217,7 @@ function makeRequest(dispatch, endPoint, endPointParams) {
 }
 
 export function updateLookItem(currItemId) {
+  console.log('currItemId', currItemId)
   return (dispatch, getState) => {
     const state = getState();
     const itemId = currItemId
