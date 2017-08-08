@@ -121,7 +121,7 @@ module.exports = StyleSheet.create({
   },
   formBtn: {
     alignSelf: 'center',
-    marginTop: 70,
+    marginTop: 16,
     marginBottom: (Platform.OS === 'ios') ? 20 : 10,
     width: 280,
     height: 40,
