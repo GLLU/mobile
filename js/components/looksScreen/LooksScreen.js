@@ -258,7 +258,7 @@ class LooksScreen extends Component {
         <VideoWithCaching
           source={{ uri: look.uri, mainVer: 1, patchVer: 0 }}
           resizeMode={'contain'}
-          muted={this.state.currScrollIndex !== look.originalIndex}
+          muted={true}
           style={styles.videoBackground}
           repeat
           navigation={this.props.cardNavigation}
