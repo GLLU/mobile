@@ -90,7 +90,7 @@ class UserLooks extends Component {
 
   renderEditLookBtn(look) {
     return (
-      <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn, look.coverType === 'video' ? { top: 30 } : { top: 15 }, Platform.OS === 'ios' ? { right: 3 } : null]}>
+      <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn]}>
         <Text style={styles.editText}>{i18n.t('EDIT')}</Text>
       </TouchableOpacity>
 
