@@ -60,7 +60,7 @@ class WalletScreen extends Component {
 
         <Text style={[styles.lastUpdate, { alignSelf: 'center' }]}>13.30 USD pending confirmation</Text>
 
-        <SolidButton label="Withdraw" style={styles.withdrawButton} onPress={this._handleWithdrawPressed} />
+        <SolidButton label={I18n.t('WITHDRAW')} style={styles.withdrawButton} onPress={this._handleWithdrawPressed} />
 
         {/*
          <Text style={styles.transactionDetails}>Transaction details</Text>
