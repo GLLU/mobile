@@ -1,7 +1,7 @@
 import {StackNavigator} from 'react-navigation'
 import SplashPage from './components/splashscreen/';
 import FeedPage from './components/feedscreen';
-import AddItemPage from './components/addItemScreen';
+import UploadLookScreen from './components/uploadLookScreen/UploadLookScreenContainer';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
@@ -50,8 +50,8 @@ const routes = {
   feedscreen: {
     screen: FeedPage,
   },
-  addItemScreen: {
-    screen: AddItemPage,
+  uploadLookScreen: {
+    screen: UploadLookScreen,
   },
   finishLookScreen: {
     screen: FinishLookScreen,

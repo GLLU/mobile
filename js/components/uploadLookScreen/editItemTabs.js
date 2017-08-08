@@ -4,7 +4,7 @@ import StepZeroBrand from './StepZeroBrand';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
 import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
-import {CATEGORY, BRAND, COLOR, MOOD, DESCRIPTION, LINK} from './index'
+import {CATEGORY, BRAND, COLOR, MOOD, DESCRIPTION, LINK} from './UploadLookScreen'
 import CategoryTab from './tabs/CategoryTab'
 import MoodTab from './tabs/MoodTab'
 import ColorsTab from './tabs/ColorsTab'

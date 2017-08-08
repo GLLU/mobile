@@ -1,25 +1,14 @@
+// @flow
+
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, Platform, View, TouchableOpacity, Image} from 'react-native';
-import {
-  updateLookItem,
-  publishLookItem,
-  createLookItem,
-  setTagPosition,
-  getUserLooks,
-  getFeed,
-  clearFeed,
-  removeLookItem
-} from '../../actions';
+import {Dimensions, Platform, View, Image} from 'react-native';
 import UploadLookHeader from './UploadLookHeader';
 import {LOOK_STATES} from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
-import Utils from '../../utils';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import VideoWithTags from '../common/VideoWithTags';
 import EditItemTabs from './editItemTabsContainer';
-import asScreen from '../common/containers/Screen';
-import {connect} from 'react-redux';
 import SpinnerSwitch from '../loaders/SpinnerSwitch';
 import {BackAndroid} from 'react-native';
 
@@ -33,15 +22,26 @@ export const MOOD = 'mood'
 export const DESCRIPTION = 'description'
 export const LINK = 'link'
 
-class AddItemPage extends Component {
+type Props = {
+  updateLookItem: () => void,
+  publishLookItem: () => void,
+  createLookItem: () => void,
+  removeLookItem: () => void,
+  setTagPosition: () => void,
+  getFeed: () => void,
+  getUserLooks: () => void,
+  lookId: number,
+  userId: number,
+  items: array,
+  categories: array,
+  image: string,
+  fileLocalPath: string,
+  state: string,
+  currentFeedQuery: object,
+};
 
-  static propTypes = {
-    publishLookItem: React.PropTypes.func,
-    updateLookItem: React.PropTypes.func,
-    look: React.PropTypes.object,
-    item: React.PropTypes.object,
-    state: React.PropTypes.string,
-  }
+class UploadLookScreen extends Component {
+  props: Props;
 
   constructor(props) {
     super(props);
@@ -52,23 +52,11 @@ class AddItemPage extends Component {
       allowContinue: false,
       currItem: {...props.items[0]},
       isPublishing: false,
-
     };
   }
 
   setCurrentItem(item) {
     this.setState({currItem: item});
-  }
-
-  componentWillMount() {
-    BackAndroid.addEventListener('uploadBackPress', () => {
-      this.handleBackButton();
-      return true;
-    });
-  }
-
-  componentWillUnmount() {
-    BackAndroid.removeEventListener('uploadBackPress');
   }
 
   componentDidMount() {
@@ -201,33 +189,4 @@ class AddItemPage extends Component {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    updateLookItem: look => dispatch(updateLookItem(look)),
-    publishLookItem: look => dispatch(publishLookItem(look)),
-    createLookItem: (item, position) => dispatch(createLookItem(item, position)),
-    removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
-    setTagPosition: position => dispatch(setTagPosition(position)),
-    getFeed: query => dispatch(getFeed(query)),
-    clearFeed: () => dispatch(clearFeed()),
-    getUserLooks: data => dispatch(getUserLooks(data)),
-  };
-}
-
-const mapStateToProps = (state) => {
-  const {lookId, image, items, localFilePath} = state.uploadLook;
-  const isVideo = Utils.isVideo(image);
-  return {
-    lookId,
-    image,
-    isVideo,
-    fileLocalPath: localFilePath,
-    items,
-    state: state.uploadLook.state,
-    categories: state.filters.categories,
-    currentFeedQuery: state.feed.query,
-    userId: state.user.id,
-  };
-};
-
-export default connect(mapStateToProps, bindActions)(asScreen(AddItemPage));
+export default UploadLookScreen;

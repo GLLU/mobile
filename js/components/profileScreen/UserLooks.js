@@ -69,7 +69,7 @@ class UserLooks extends Component {
 
   _handleEditPress(look) {
     this.props.editNewLook(look.id).then(() => {
-      this.props.navigateTo('addItemScreen', { mode: 'edit' });
+      this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
     });
   }
 

@@ -66,7 +66,7 @@ class FollowerScreen extends Component {
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath).then(() => {
-      this.props.navigateTo('addItemScreen', { mode: 'create' });
+      this.props.navigateTo('uploadLookScreen', { mode: 'create' });
     }).catch((err) => {
       console.log('addNewLook err', err);
     });

@@ -123,7 +123,6 @@ export function editNewLook(lookId) {
             ...data.look,
             items,
           };
-          console.log('payload items', payload.items)
           dispatch({
             type: EDIT_NEW_LOOK,
             payload,
@@ -183,9 +182,7 @@ export function removeLookItem(itemId) {
   return (dispatch, getState) => {
     const state = getState();
     const lookItems = _.cloneDeep(state.uploadLook.items)
-    console.log('lookItems', lookItems)
     const newItemsArr = _.filter(lookItems, (item) => item.id !== itemId);
-    console.log('newItemsArr', newItemsArr)
     dispatch({
       type: REMOVE_LOOK_ITEM,
       newItemsArr,
@@ -247,7 +244,6 @@ function makeRequest(dispatch, endPoint, endPointParams) {
 }
 
 export function updateLookItem(currItemId) {
-  console.log('currItemId',)
   return (dispatch, getState) => {
     const state = getState();
     const itemId = currItemId
@@ -442,7 +438,6 @@ export function addDescription(description) {
 }
 
 export function addUrl(url, itemId) {
-  console.log('urlll action', url)
   return (dispatch, getState) => {
     const state = getState();
     const {lookId} = state.uploadLook;

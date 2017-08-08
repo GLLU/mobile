@@ -128,7 +128,7 @@ class ProfileScreen extends Component {
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath).then(() => {
-      this.props.navigateTo('addItemScreen');
+      this.props.navigateTo('uploadLookScreen');
     });
   }
 
