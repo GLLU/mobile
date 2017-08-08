@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 });
 
 
-class UploadLookHeader extends BaseComponent {
+class UploadLookHeader extends Component {
 
   constructor(props) {
     super(props);
@@ -117,15 +117,14 @@ class UploadLookHeader extends BaseComponent {
   getStepsTitle() {
     const {currItem} = this.props;
     let title = 'Select Item Category'
-    if (currItem.category !== null) {
+    if (currItem.category && currItem.category !== -1) {
       title = 'Select Item Brand';
     }
     if (currItem.brand) {
-      title = 'For which Occasion?';
+      title = 'Select Colors';
     }
     if (currItem.occasions && currItem.occasions.length > 0) {
-
-      title = 'Edit or Continue';
+      title = 'Add a Link';
     }
     return title;
   }
@@ -174,6 +173,15 @@ class UploadLookHeader extends BaseComponent {
     )
   }
 
+  _renderBackButton() {
+    return (
+      <TouchableOpacity transparent onPress={() => this.props.handleBackButton()}
+                        style={{width: 30, height: 30, backgroundColor: 'transparent', flex: 1}}>
+        <Icon style={{color: this.props.currentStep !== 1 ? 'black' : '#000'}} name="ios-arrow-back"/>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     const allowContinue = this.getAllowContinue();
     return (
@@ -188,11 +196,8 @@ class UploadLookHeader extends BaseComponent {
           height: 45,
           alignItems: 'center'
         }}>
-          <TouchableOpacity transparent onPress={() => this.props.handleBackButton()}
-                            style={{width: 30, height: 30, backgroundColor: 'transparent', flex: 1}}>
-            <Icon style={{color: this.props.currentStep !== 1 ? 'black' : '#000'}} name="ios-arrow-back"/>
-          </TouchableOpacity>
-          {this._renderRemoveItemBtn()}
+          {this._renderBackButton()}
+          {this.props.items.length > 1 ? this._renderRemoveItemBtn() : null}
           <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
             {this._renderAddItemBtn()}
             {allowContinue ? this.renderNextorPublish() : null}

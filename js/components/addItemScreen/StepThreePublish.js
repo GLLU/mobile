@@ -223,7 +223,6 @@ class StepThreePublish extends BaseComponent {
     if (event) {
       const text = event.nativeEvent.text
       this.logEvent('UploadLookScreen', {name: 'Url', url: text});
-      console.log('end edit uri', text)
       this.props.addUrl(text, itemId);
     }
 

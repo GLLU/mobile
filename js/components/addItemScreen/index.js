@@ -38,6 +38,17 @@ export const MOOD = 'mood'
 export const DESCRIPTION = 'description'
 export const LINK = 'link'
 
+const defaultCurrItem = {
+  brand: null,
+  id: -1,
+  category: null,
+  cover_x_pos: 0.5,
+  cover_y_pos: 0.5,
+  look_id: -1,
+  occassions: [],
+  tags: [],
+}
+
 class AddItemPage extends Component {
 
   static propTypes = {
@@ -55,21 +66,20 @@ class AddItemPage extends Component {
     this.handleContinue = this.handleContinue.bind(this);
     this.state = {
       isVideo: this.props.isVideo,
-      currentStep: this.props.isVideo && props.items.length > 0 ? 0 : -1,
+      currentStep: 0,
       locationX: 0,
       locationY: 0,
       imageWidth: 90,
       mode: props.mode,
       allowContinue: false,
       currMode: 'tagging',
-      currItem: props.navigation.state.params.mode === 'edit' ? {...props.items[0]} : {id: -1},
+      currItem: props.navigation.state.params.mode === 'edit' ? {...props.items[0]} : null,
       isPublishing: false,
 
     };
   }
 
   setCurrentItem(item) {
-    console.log('itemmmm', item)
     this.setState({currItem: item});
   }
 
@@ -133,17 +143,6 @@ class AddItemPage extends Component {
     });
   }
 
-  handleBackButton() {
-    if (this.state.currentStep === 0 && this.state.isVideo === true) {
-      this.props.goBack();
-    }
-    if (this.state.currentStep > -1) {
-      this.setState({currentStep: this.state.currentStep - 1});
-    } else {
-      this.props.goBack();
-    }
-  }
-
   getCurrentMode() {
     switch (this.state.currentStep) {
       default:
@@ -161,7 +160,7 @@ class AddItemPage extends Component {
   handleAddItem(position) {
     this.props.logEvent('UploadLookScreen', {name: 'Marker add'});
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? 0 : this.state.currentStep});
+      this.setState({currItem: data.payload.item});
     });
   }
 
@@ -172,7 +171,7 @@ class AddItemPage extends Component {
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1});
+      this.setState({currItem: data.payload.item});
     });
   }
 
@@ -189,7 +188,6 @@ class AddItemPage extends Component {
 
   renderImageWithTags() {
     const {items, image} = this.props;
-    console.log('this.state.currItem', this.state.currItem)
     return (
       <ImageWithTags
         items={items}
@@ -199,7 +197,7 @@ class AddItemPage extends Component {
         onDragEnd={position => this.handleOnDragEnd(position)}
         currStep={this.state.currentStep}
         currItem={this.state.currItem}>
-        {this.renderActions()}
+        {items.length > 0 ? this.renderActions() : null}
       </ImageWithTags>
     );
   }
@@ -229,11 +227,14 @@ class AddItemPage extends Component {
   }
 
   _renderEditItemTabs() {
-    console.log('isDiff', this.state.currItem)
-    return (
-      <EditItemTabs
-        item={this.state.currItem.id}/>
-    )
+    if (this.state.currItem) {
+      return (
+        <EditItemTabs
+          item={this.state.currItem.id}/>
+      )
+    } else {
+      return null
+    }
   }
 
   renderContent() {
@@ -247,6 +248,12 @@ class AddItemPage extends Component {
       </View>);
   }
 
+  handleBackButton() {
+    if (this.state.currentStep === 0) {
+      this.props.goBack();
+    }
+  }
+
   renderHeader() {
     return (
       <UploadLookHeader
@@ -254,10 +261,10 @@ class AddItemPage extends Component {
         currItem={this.state.currItem}
         currentStep={this.state.currentStep}
         items={this.props.items}
-        handleBackButton={this.handleBackButton.bind(this)}
         handleContinue={this.handleContinue}
         handleNewItem={this.handleNewItem.bind(this)}
         handleRemoveItem={this.handleRemoveItem.bind(this)}
+        handleBackButton={this.handleBackButton.bind(this)}
         setCurrentItem={item => this.setCurrentItem(item)}
         categories={this.props.categories}
         publishItem={this.publishAction.bind(this)}/>
@@ -265,7 +272,6 @@ class AddItemPage extends Component {
   }
 
   render() {
-    console.log('currItemRender:', this.state.currItem)
     return (
       <View>
         {this.renderContent()}

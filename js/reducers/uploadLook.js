@@ -182,11 +182,10 @@ const ACTION_HANDLERS = {
 
 // Reducer
 const initialState = {
-  lookId: null,
-  itemId: null,
+  lookId: -1,
   image: null,
   description: '',
-  items: [],
+  items: [{id: -1}],
   video: '',
 }
 

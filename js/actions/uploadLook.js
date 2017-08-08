@@ -41,7 +41,16 @@ export function addNewLook(image) {
                 if (data.look.cover.type !== "image") {
                   const payload = _.merge(data.look, {
                     image: url,
-                    items: [],
+                    items: [{
+                      brand: null,
+                      id: -1,
+                      category: null,
+                      cover_x_pos: 0.5,
+                      cover_y_pos: 0.5,
+                      look_id: -1,
+                      occassions: [],
+                      tags: [],
+                    }],
                     localFilePath: image.localPath
                   });
 
@@ -91,9 +100,19 @@ export function editNewLook(lookId) {
         if (!err) {
           ;
           const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+          const items = data.look.items.length > 0 ? data.look.items.length : [{
+            brand: null,
+            id: -1,
+            category: null,
+            cover_x_pos: 0.5,
+            cover_y_pos: 0.5,
+            look_id: -1,
+            occassions: [],
+            tags: [],
+          }]
           let payload = {
             image: url,
-            items: data.look.items,
+            items: items,
             ...data.look
           };
           dispatch({
@@ -155,7 +174,9 @@ export function removeLookItem(itemId) {
   return (dispatch, getState) => {
     const state = getState();
     const lookItems = _.cloneDeep(state.uploadLook.items)
+    console.log('lookItems', lookItems)
     const newItemsArr = _.filter(lookItems, (item) => item.id !== itemId);
+    console.log('newItemsArr', newItemsArr)
     dispatch({
       type: REMOVE_LOOK_ITEM,
       newItemsArr,
@@ -217,7 +238,7 @@ function makeRequest(dispatch, endPoint, endPointParams) {
 }
 
 export function updateLookItem(currItemId) {
-  console.log('currItemId', currItemId)
+  console.log('currItemId',)
   return (dispatch, getState) => {
     const state = getState();
     const itemId = currItemId

@@ -14,9 +14,9 @@ import {
 } from 'react-native'
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-const whiteMarker = require('../../../images/markers/tag_white.png');
-const whiteMarkerWithBorder = require('../../../images/markers/tag_white_red.png');
-const greenMarkerWithBorder = require('../../../images/markers/tag_green_Circle.png');
+const whiteMarker = require('../../../images/markers/tag_green.png');
+const whiteMarkerWithBorder = require('../../../images/markers/tag_red.png');
+const greenMarkerWithBorder = require('../../../images/markers/tag_red_Circle.png');
 const greenMarker = require('../../../images/markers/tag_green_Circle.png');
 
 const TAG_WIDTH = 30;

@@ -91,12 +91,12 @@ class ImageWithTags extends Component {
     if (currItem) {
       return items.map((item, i) => {
         return (
-          <Tag key={item.id} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} item={item}
+          <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} item={item}
                onDragEnd={this.props.onDragEnd}/>
         );
       });
     } else {
-      return null
+
     }
 
   }
