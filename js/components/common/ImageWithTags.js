@@ -57,37 +57,16 @@ class ImageWithTags extends Component {
   static propTypes = {
     image: React.PropTypes.string.isRequired,
     items: React.PropTypes.array.isRequired,
-    width: React.PropTypes.number,
-    showMarker: React.PropTypes.bool,
-    onMarkerCreate: React.PropTypes.func,
     onDragEnd: React.PropTypes.func,
     setCurrentItem: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      locationX: 0,
-      locationY: 0,
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.items.length < 1) {
-      const locationX = w / 2;
-      const locationY = h / 2;
-      const left = locationX / w;
-      const top = locationY / h;
-      this.setState({locationX: left, locationY: top}, () => {
-        this.props.onMarkerCreate({locationX: left, locationY: top});
-      });
-    }
-
   }
 
   renderTags() {
     const {items, currItem} = this.props;
-    console.log('currItem', currItem)
     if (currItem) {
       return items.map((item, i) => {
         return (
@@ -95,16 +74,7 @@ class ImageWithTags extends Component {
                onDragEnd={this.props.onDragEnd}/>
         );
       });
-    } else {
-
     }
-
-  }
-
-  getRenderingDimensions() {
-    let width = w;
-    let height = h;
-    return {width, height};
   }
 
   _render() {
@@ -127,9 +97,5 @@ class ImageWithTags extends Component {
     );
   }
 }
-
-ImageWithTags.defaultProps = {
-  showMarker: true,
-};
 
 export default ImageWithTags;
