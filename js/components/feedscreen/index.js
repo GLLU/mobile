@@ -10,6 +10,7 @@ import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags}
 import {toggleFiltersMenus} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
+import Analytics from '../../lib/analytics/Analytics';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
@@ -71,7 +72,10 @@ class FeedPage extends Component {
   }
 
   componentDidMount() {
-    const {gender} = this.props.user
+
+    Analytics.setUser(this.props.user);
+
+    const {gender} = this.props.user;
     this.props.loadCategories(gender);
     this.props.loadOccasionTags(gender);
   }

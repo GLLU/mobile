@@ -58,7 +58,6 @@ class AppNavigator extends Component {
       }
     });
 
-    Analytics.setUser(this.props.user);
     Analytics.trackAppLoaded();
     expireCache()
       .then(()=>console.log('removed expired items in cache!'))
