@@ -67,7 +67,7 @@ class UploadLookScreen extends Component {
       currItem: props.items[0].id,
       isPublishing: false,
       modalParams: {
-        modalVisible: true,
+        modalVisible: false,
       },
     };
   }
