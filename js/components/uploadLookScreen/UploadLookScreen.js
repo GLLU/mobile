@@ -1,7 +1,7 @@
 // @flow
 
 import React, {Component} from 'react';
-import {Dimensions, Platform, View, Image} from 'react-native';
+import {Dimensions, Platform, View, Image, StyleSheet} from 'react-native';
 import UploadLookHeader from './UploadLookHeader';
 import {LOOK_STATES} from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
@@ -35,10 +35,18 @@ type Props = {
   items: array,
   categories: array,
   image: string,
-  fileLocalPath: string,
+  filePath: string,
   state: string,
   currentFeedQuery: object,
 };
+
+const styles = StyleSheet.create({
+  renderActionsContainer: {
+    height: h,
+    width: w,
+    justifyContent: 'space-between',
+  },
+});
 
 class UploadLookScreen extends Component {
   props: Props;
@@ -47,22 +55,22 @@ class UploadLookScreen extends Component {
     super(props);
     this.setCurrentItem = this.setCurrentItem.bind(this);
     this.state = {
-      isVideo: props.isVideo,
       currentStep: 0,
       allowContinue: false,
-      currItem: {...props.items[0]},
+      currItem: props.items[0].id,
       isPublishing: false,
     };
   }
 
-  setCurrentItem(item) {
-    this.setState({currItem: item});
+  setCurrentItem(itemId) {
+    this.setState({currItem: itemId});
   }
 
   componentDidMount() {
-    this.props.logEvent('UploadLookScreen', {
+    const {logEvent, isVideo} = this.props
+    logEvent('UploadLookScreen', {
       name: 'User started uploading a look',
-      mediaType: this.state.isVideo ? 'Video' : 'Image'
+      mediaType: isVideo ? 'Video' : 'Image'
     });
   }
 
@@ -91,6 +99,11 @@ class UploadLookScreen extends Component {
     });
   }
 
+  getCurrentItem() {
+    const {currItem} = this.state;
+    return _.find(this.props.items, (item) => item.id === currItem);
+  }
+
   handleNewItem() {
     const locationX = w / 2;
     const locationY = h / 2;
@@ -98,14 +111,14 @@ class UploadLookScreen extends Component {
     const top = locationY / h;
     const position = {locationX: left, locationY: top};
     this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item});
+      this.setState({currItem: data.payload.item.id});
     });
   }
 
   handleRemoveItem() {
-    const firstItem = _.find(this.props.items, (item) => item.id !== this.state.currItem.id)
-    this.setCurrentItem(firstItem)
-    this.props.removeLookItem(this.state.currItem.id);
+    const itemToRemoveById = _.find(this.props.items, (item) => item.id !== this.state.currItem).id
+    this.setCurrentItem(itemToRemoveById)
+    this.props.removeLookItem(this.state.currItem);
   }
 
   handleOnDragEnd(position) {
@@ -114,13 +127,13 @@ class UploadLookScreen extends Component {
   }
 
   renderImageWithTags() {
-    const {items, image} = this.props;
-    const {currItem} = this.state;
+    const {items, filePath} = this.props;
+    const currItem = this.getCurrentItem();
     return (
       <ImageWithTags
         items={items}
-        image={image}
-        setCurrentItem={item => this.setCurrentItem(item)}
+        image={filePath}
+        setCurrentItem={itemId => this.setCurrentItem(itemId)}
         onDragEnd={position => this.handleOnDragEnd(position)}
         currItem={currItem}>
         {this.renderActions()}
@@ -129,11 +142,10 @@ class UploadLookScreen extends Component {
   }
 
   renderVideoWithTags() {
-    const {fileLocalPath, image} = this.props
-    const VidfileLocalPath = fileLocalPath ? fileLocalPath : image;
+    const {filePath} = this.props
     return (
       <VideoWithTags
-        image={VidfileLocalPath}>
+        image={filePath}>
         {this.renderActions()}
       </VideoWithTags>
     );
@@ -141,7 +153,7 @@ class UploadLookScreen extends Component {
 
   renderActions() {
     return (
-      <View style={{height: h, width: w, justifyContent: 'space-between'}}>
+      <View style={styles.renderActionsContainer}>
         { this.renderHeader()}
         { this._renderEditItemTabs()}
       </View>
@@ -151,26 +163,25 @@ class UploadLookScreen extends Component {
   _renderEditItemTabs() {
     return (
       <EditItemTabs
-        item={this.state.currItem.id}/>
+        item={this.state.currItem}/>
     )
   }
 
-  renderContent() {
-    return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags();
-  }
-
   renderHeader() {
+    const {currentStep} = this.state
+    const {isVideo, items, categories} = this.props
+    const currItem = this.getCurrentItem()
     return (
       <UploadLookHeader
-        isVideo={this.state.isVideo}
-        currItem={this.state.currItem}
-        currentStep={this.state.currentStep}
-        items={this.props.items}
+        isVideo={isVideo}
+        currItem={currItem}
+        currentStep={currentStep}
+        items={items}
         handleNewItem={this.handleNewItem.bind(this)}
         handleRemoveItem={this.handleRemoveItem.bind(this)}
         handleBackButton={this.handleBackButton.bind(this)}
-        setCurrentItem={item => this.setCurrentItem(item)}
-        categories={this.props.categories}
+        setCurrentItem={itemId => this.setCurrentItem(itemId)}
+        categories={categories}
         publishItem={this.publishAction.bind(this)}/>
     );
   }
@@ -180,10 +191,12 @@ class UploadLookScreen extends Component {
   }
 
   render() {
+    const {isVideo} = this.props;
+    const {isPublishing} = this.state;
     return (
       <View>
-        {this.renderContent()}
-        {this.state.isPublishing ? <SpinnerSwitch /> : null}
+        {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
+        {isPublishing ? <SpinnerSwitch /> : null}
       </View>
     );
   }

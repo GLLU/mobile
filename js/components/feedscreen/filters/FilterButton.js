@@ -82,7 +82,7 @@ class FilterButton extends BaseComponent {
       borderWidth: selected ? 3 : 0,
       borderColor: Colors.secondaryColor,
       borderRadius: 25
-    }]} resizeMode={'contain'}/>;
+    }]}/>;
   }
 
   handlePressItem(filter) {

@@ -187,19 +187,6 @@ export function removeLookItem(itemId) {
       type: REMOVE_LOOK_ITEM,
       newItemsArr,
     });
-    // return new Promise((resolve, reject) => {
-    //   dispatch(rest.actions.items.post({look_id: lookId}, {body: JSON.stringify(body)}, (err, data) => {
-    //     if (!err) {
-    //       resolve(dispatch({
-    //           type: CREATE_LOOK_ITEM_BY_POSITION,
-    //           payload: data
-    //         })
-    //       );
-    //     } else {
-    //       reject(err);
-    //     }
-    //   }));
-    // });
   }
 }
 
@@ -314,6 +301,7 @@ export function addBrandName(payload) {
     }
     return new Promise((resolve, reject) => {
       return _updateItem(lookId, itemId, params, dispatch).then(data => {
+        console.log('payload',payload)
         dispatch({
           type: ADD_BRAND_NAME,
           payload: payload

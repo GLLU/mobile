@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 });
 
 
-class StepZeroBrand extends BaseComponent {
+class BrandSelector extends BaseComponent {
   static propTypes = {
     brand: React.PropTypes.object,
     brands: React.PropTypes.array,
@@ -249,4 +249,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, bindActions)(StepZeroBrand);
+export default connect(mapStateToProps, bindActions)(BrandSelector);

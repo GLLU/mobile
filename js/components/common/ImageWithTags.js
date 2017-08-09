@@ -66,23 +66,24 @@ class ImageWithTags extends Component {
   }
 
   renderTags() {
-    const {items, currItem} = this.props;
+    const {items, currItem, setCurrentItem, onDragEnd} = this.props;
     if (currItem) {
       return items.map((item, i) => {
         return (
-          <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} item={item}
-               onDragEnd={this.props.onDragEnd}/>
+          <Tag key={item.id} currItemId={currItem.id} setCurrentItem={setCurrentItem} item={item}
+               onDragEnd={onDragEnd}/>
         );
       });
     }
   }
 
   _render() {
+    const {image, children} = this.props
     return (
-      <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
+      <Image source={{uri: image}} style={styles.itemsContainer} resizeMode={'stretch'}>
         <View style={[styles.draggableContainer]}>
           {this.renderTags()}
-          {this.props.children}
+          {children}
         </View>
       </Image>
     );

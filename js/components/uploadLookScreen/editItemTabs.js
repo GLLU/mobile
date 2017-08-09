@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
-import StepZeroBrand from './StepZeroBrand';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import React, { Component } from 'react';
+import { View, StyleSheet, Image } from 'react-native';
+import BrandSelector from './BrandSelector';
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
-import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
-import {CATEGORY, BRAND, COLOR, MOOD, DESCRIPTION, LINK} from './UploadLookScreen'
-import CategoryTab from './tabs/CategoryTab'
-import MoodTab from './tabs/MoodTab'
-import ColorsTab from './tabs/ColorsTab'
-import DescriptionTab from './tabs/descriptionTab'
-import LinkTab from './tabs/linkTab'
+import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
+import { CATEGORY, BRAND, COLOR, MOOD, LINK } from './UploadLookScreen';
+import CategoryTab from './tabs/CategoryTab';
+import MoodTab from './tabs/MoodTab';
+import ColorsTab from './tabs/ColorsTab';
+import DescriptionTab from './tabs/descriptionTab';
+import LinkTab from './tabs/linkTab';
+const vsign = require('../../../images/indicators/v_sign.png')
 export default class EditItemTabs extends Component {
   constructor(props: object) {
     super(props);
@@ -22,39 +23,39 @@ export default class EditItemTabs extends Component {
     this.state = {
       index: 0,
       routes: [
-        {key: CATEGORY, title: 'CATEGORY'},
-        {key: BRAND, title: 'BRAND'},
-        {key: COLOR, title: 'COLOR'},
-        {key: MOOD, title: 'MOOD'},
-        {key: LINK, title: 'LINK'},
+        { key: CATEGORY, title: 'CATEGORY' },
+        { key: BRAND, title: 'BRAND' },
+        { key: COLOR, title: 'COLOR' },
+        { key: MOOD, title: 'MOOD' },
+        { key: LINK, title: 'LINK' },
       ],
-      loaded: false
-    }
+      loaded: false,
+    };
   }
 
   _handleTabsIndexChange = (index) => {
-    this.setState({index});
+    this.setState({ index });
   };
 
   componentWillReceiveProps() {
-    this.setState({loaded: !this.state.loaded})
+    this.setState({ loaded: !this.state.loaded });
   }
 
   _renderHeader = props => (
 
-    <View style={{flexDirection: 'row'}}>
+    <View style={{ flexDirection: 'row' }}>
       <TabBar
         tabStyle={styles.tabStyle} style={styles.TabBar}
         labelStyle={styles.labelStyle}
         indicatorStyle={styles.indicatorStyle} {...props}
         scrollEnabled
-        renderIcon={(currTab) => this.renderTabIcon(currTab) }/>
+        renderIcon={currTab => this.renderTabIcon(currTab)} />
 
     </View>
   );
 
   renderTabIcon(currTab) {
-    const {itemCategory, currentItem} = this.props
+    const { itemCategory, currentItem } = this.props;
     switch (this.state.routes[currTab.index].key) {
       case CATEGORY:
         return this.renderTabIndicator(itemCategory !== -1);
@@ -66,62 +67,59 @@ export default class EditItemTabs extends Component {
   renderTabIndicator(isFine) {
     if (isFine) {
       return (
-        <View
-          style={{width: 10, height: 10, backgroundColor: 'green', borderRadius: 5, marginRight: 3}}/>
-      )
+        <Image source={vsign}
+          style={{ width: 10, height: 10, marginRight: 3 }} />
+      );
     } else {
       return (
         <View
-          style={{width: 10, height: 10, backgroundColor: 'red', borderRadius: 5, marginRight: 3}}/>
-      )
+          style={{ width: 10, height: 10, backgroundColor: 'red', borderRadius: 5, marginRight: 3 }} />
+      );
     }
-
   }
 
   updateCategoryItem(category) {
-    this.props.addItemType(category)
-
+    this.props.addItemType(category);
   }
 
   _addItemTag(color) {
     if (color.selected) {
-      this.props.removeItemTag(color.name, color.selected)
+      this.props.removeItemTag(color.name, color.selected);
     } else {
-      this.props.addItemTag(color.name, color.selected)
+      this.props.addItemTag(color.name, color.selected);
     }
-
   }
 
   _addItemCategory(category) {
-    const {addItemType} = this.props;
-    addItemType(category)
-    let that = this;
-    setTimeout(function () {
+    const { addItemType } = this.props;
+    addItemType(category);
+    const that = this;
+    setTimeout(() => {
       that._handleTabsIndexChange(that.state.index += 1);
     }, 2000);
   }
 
-  _renderScene = ({route}) => {
-    const {currentItem, addItemType, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl} = this.props
+  _renderScene = ({ route }) => {
+    const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl } = this.props;
     switch (route.key) {
       case CATEGORY:
         return (<CategoryTab
           currentFilter={itemCategory} filters={categoryFilters}
-          updateCurrentFilter={(category) => this._addItemCategory(category)}/>);
+          updateCurrentFilter={this._addItemCategory} />);
       case BRAND:
-        return (<StepZeroBrand item={currentItem}></StepZeroBrand>);
+        return (<BrandSelector item={currentItem} />);
       case COLOR:
         return (<ColorsTab
           currentFilter={itemColors} filters={colorsFilters}
-          updateCurrentFilter={(name) => this._addItemTag(name)}/>);
+          updateCurrentFilter={this._addItemTag} />);
       case MOOD:
         return (<MoodTab
           currentFilter={itemOccasions} filters={occasionsFilters}
-          updateCurrentFilter={(occasion, selected) => toggleOccasionTag(occasion, selected)}/>);
+          updateCurrentFilter={(occasion, selected) => toggleOccasionTag(occasion, selected)} />);
       case LINK:
-        return (<LinkTab itemUrl={itemUrl} addUrl={(url) => addUrl(url)}/>);
+        return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:
-        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
           ;
     }
   };
@@ -130,7 +128,7 @@ export default class EditItemTabs extends Component {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle}/>
+          <Image source={icon} style={iconStyle} />
         </TouchableOpacity>
       </View>
     );
@@ -161,7 +159,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 90,
     paddingHorizontal: 3,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   TabBar: {
     backgroundColor: Colors.backgroundGrey,
@@ -174,6 +172,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     fontSize: generateAdjustedSize(12),
-    marginHorizontal: 2
+    marginHorizontal: 2,
   },
 });

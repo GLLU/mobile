@@ -46,6 +46,7 @@ class VideoWithTags extends Component {
   }
 
   render() {
+    console.log('video:',this.props.image)
     return (
       <View style={{flex: 1}}>
         <VideoWithCaching

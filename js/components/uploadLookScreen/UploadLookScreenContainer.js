@@ -9,11 +9,15 @@ import {
   publishLookItem,
   createLookItem,
   setTagPosition,
-  getUserLooks,
+  removeLookItem
+} from '../../actions/uploadLook';
+import {
   getFeed,
   clearFeed,
-  removeLookItem
-} from '../../actions';
+} from '../../actions/feed';
+import {
+  getUserLooks,
+} from '../../actions/looks';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -31,11 +35,11 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
   const {lookId, image, items, localFilePath} = state.uploadLook;
   const isVideo = Utils.isVideo(image);
+  console.log('localFilePath',localFilePath)
   return {
     lookId,
-    image,
     isVideo,
-    fileLocalPath: localFilePath,
+    filePath: isVideo && localFilePath ? localFilePath : image,
     items,
     state: state.uploadLook.state,
     categories: state.filters.categories,

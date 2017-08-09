@@ -69,7 +69,6 @@ class Tag extends Component {
       onPanResponderGrant: () => {
       },
       onPanResponderRelease: (e, gesture) => {
-        console.log('this._value', this._value)
         if (this._value) {
           this._pan.setOffset(this._value);
           this._setupPanResponder(this._value.x, this._value.y);
@@ -82,7 +81,7 @@ class Tag extends Component {
             this.props.onDragEnd(nextPosition);
           })
         }
-        this.props.setCurrentItem(item)
+        this.props.setCurrentItem(item.id)
       }
     });
   }
@@ -128,7 +127,7 @@ class Tag extends Component {
           {...this.panResponder.panHandlers}
           style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? {zIndex: 1} : null]}>
           <Image source={markerImage}
-                 style={[styles.itemBgImage]}/>
+                 style={styles.itemBgImage}/>
         </Animated.View>
       );
     }
