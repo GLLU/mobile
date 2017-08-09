@@ -381,16 +381,17 @@ export function removeItemTag(tag, itemId) {
     const body = {
       tag_name: tag
     }
+    const payload = {data: tag, itemId}
+    dispatch({
+      type: REMOVE_ITEM_TAG,
+      payload
+    });
     return new Promise((resolve, reject) => {
       return makeRequest(dispatch, rest.actions.item_tags.delete, [
         {look_id: lookId, item_id: itemId},
         {body: JSON.stringify(body)}
       ]).then(data => {
-        const payload = {data: tag, itemId}
-        dispatch({
-          type: REMOVE_ITEM_TAG,
-          payload
-        });
+        console.log('remove item tag data', tag)
         resolve();
       }).catch(reject);
     });
