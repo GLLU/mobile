@@ -7,16 +7,13 @@ import {
   Modal,
   Text,
   View,
-  Platform,
   TouchableOpacity,
   Image
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import I18n from 'react-native-i18n';
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 const closeModalIcon = require('../../../../images/icons/cancel-clear-x.png')
 type Props = {
@@ -70,7 +67,6 @@ class ModalQuestion extends Component {
         animationType={"slide"}
         transparent={true}
         visible={this.props.modalVisible}
-        onRequestClose={() => {alert("Modal has been closed.")}}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContentContainer}>
