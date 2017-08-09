@@ -106,17 +106,17 @@ class BrandSelector extends BaseComponent {
   }
 
   findOrCreateBrand(brand) {
+    const {handleTabsIndexChange} = this.props
     const data = {...brand, itemId: this.props.item.id}
     const brandName = brand.name
     const brandFunction = brand.id ? this.props.addBrandName : this.props.createBrandName;
     brandFunction(data).then(() => {
       console.log('brand added')
-
+      handleTabsIndexChange()
     }).catch(err => {
       console.log('error', err);
     })
     this.setState({modalVisible: false, brandName});
-
     if (brand.id) {
       this.logEvent('UploadLookScreen', {name: 'Brand pick', brand: brandName});
     } else {

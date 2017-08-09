@@ -5,6 +5,7 @@ import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import i18n from 'react-native-i18n';
 const trash = require('../../../images/icons/trash.png');
 const leftLongArrow = require('../../../images/icons/left-long-arrow.png');
+import { CATEGORY, BRAND, COLOR, MOOD, LINK } from './UploadLookScreen';
 const styles = StyleSheet.create({
   nextBtnContainer: {
     borderRadius: 15,
@@ -123,7 +124,6 @@ class UploadLookHeader extends Component {
 
   allowPublishBtn() {
     const { items, currItem } = this.props;
-    console.log('currItem', currItem);
     if (currItem && this.checkRequiredItemFields(currItem)) {
       const verifiedItems = _.filter(items, item => this.checkRequiredItemFields(item));
       return verifiedItems.length === items.length;
@@ -134,11 +134,20 @@ class UploadLookHeader extends Component {
   getHeadingTitle() {
     let title = '';
     switch (this.props.currentStep) {
-      case 0:
-        title = this.getStepsTitle();
+      case CATEGORY:
+        title = 'Select Item Category'
         break;
-      case 1:
-        title = 'Additional Info';
+      case BRAND:
+        title = 'Select Item Brand';
+        break;
+      case COLOR:
+        title = 'Select Item Colors';
+        break;
+      case MOOD:
+        title = 'Select Item Moods';
+        break;
+      case LINK:
+        title = 'Add Item Link';
         break;
       default:
         title = 'Drag & Place Marker to tag an item';
@@ -165,18 +174,20 @@ class UploadLookHeader extends Component {
     return item.brand && item.category !== 0;
   }
 
-  renderNextorPublish() {
+  renderPublishBtn() {
+    const allowContinue = this.allowPublishBtn();
     return (
-      <TouchableOpacity style={styles.nextBtnContainer} onPress={() => this.props.publishItem()}>
-        <Text style={styles.nextBtnText}>Publish</Text>
+      <TouchableOpacity style={styles.nextBtnContainer} disabled={!allowContinue} onPress={() => this.props.publishItem()}>
+        <Text style={[styles.nextBtnText, !allowContinue ? {color: Colors.gray} : null ]}>Publish</Text>
       </TouchableOpacity>
     );
   }
 
   _renderAddItemBtn() {
+    const allowContinue = this.allowPublishBtn();
     return (
-      <TouchableOpacity onPress={() => this.props.handleNewItem()} style={styles.addItemContainer}>
-        <Text style={styles.addItemText}>+</Text>
+      <TouchableOpacity onPress={() => this.props.handleNewItem()} disabled={!allowContinue} style={styles.addItemContainer}>
+        <Text style={[styles.addItemText, !allowContinue ? {color: Colors.gray} : null]}>+</Text>
       </TouchableOpacity>
     );
   }
@@ -242,7 +253,6 @@ class UploadLookHeader extends Component {
 
   render() {
     const { isVideo } = this.props;
-    const allowContinue = this.allowPublishBtn();
     return (
       <View>
         <View style={styles.headerContainer}>
@@ -250,7 +260,7 @@ class UploadLookHeader extends Component {
           {this.props.items.length > 1 ? this._renderRemoveItemBtn() : null}
           <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
             {this._renderAddItemBtn()}
-            {allowContinue ? this.renderNextorPublish() : null}
+            {this.renderPublishBtn()}
           </View>
         </View>
         <View style={styles.titleAndAddContainer}>

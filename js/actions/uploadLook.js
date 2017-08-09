@@ -358,16 +358,16 @@ export function addItemTag(tag, itemId) {
     const body = {
       tag_name: tag
     }
+    const payload = {data: tag, itemId}
+    dispatch({
+      type: ADD_ITEM_TAG,
+      payload
+    });
     return new Promise((resolve, reject) => {
       return makeRequest(dispatch, rest.actions.item_tags.post, [
         {look_id: lookId, item_id: itemId},
         {body: JSON.stringify(body)}
       ]).then(data => {
-        const payload = {data: data.item_tag.tag, itemId}
-        dispatch({
-          type: ADD_ITEM_TAG,
-          payload
-        });
         resolve();
       }).catch(reject);
     });

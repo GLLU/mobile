@@ -92,7 +92,6 @@ const ACTION_HANDLERS = {
     }
   },
   [ADD_BRAND_NAME]: (state, action) => {
-    console.log('action.payload.itemId', action.payload.itemId)
     return {
       ...state,
       items: mutateItem(state, 'brand', action.payload, action.payload.itemId)
@@ -114,7 +113,6 @@ const ACTION_HANDLERS = {
     const item = findItem(state, action.payload.itemId);
     let tags = item.tags;
     tags.push(action.payload.data);
-    tags = _.uniqBy(tags, 'id');
     return {
       ...state,
       items: mutateItem(state, 'tags', tags, action.payload.itemId)

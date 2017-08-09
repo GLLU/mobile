@@ -34,6 +34,7 @@ export default class EditItemTabs extends Component {
   }
 
   _handleTabsIndexChange = (index) => {
+    this.props.setCurrentStep(this.state.routes[index].key)
     this.setState({ index });
   };
 
@@ -84,9 +85,9 @@ export default class EditItemTabs extends Component {
 
   _addItemTag(color) {
     if (color.selected) {
-      this.props.removeItemTag(color.name, color.selected);
+      this.props.removeItemTag(color, color.selected);
     } else {
-      this.props.addItemTag(color.name, color.selected);
+      this.props.addItemTag(color, color.selected);
     }
   }
 
@@ -95,11 +96,12 @@ export default class EditItemTabs extends Component {
     addItemType(category);
     const that = this;
     setTimeout(() => {
-      that._handleTabsIndexChange(that.state.index += 1);
-    }, 2000);
+      that._handleTabsIndexChange(that.state.index + 1);
+    }, 500);
   }
 
   _renderScene = ({ route }) => {
+    const {index} = this.state
     const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl } = this.props;
     switch (route.key) {
       case CATEGORY:
@@ -107,7 +109,7 @@ export default class EditItemTabs extends Component {
           currentFilter={itemCategory} filters={categoryFilters}
           updateCurrentFilter={this._addItemCategory} />);
       case BRAND:
-        return (<BrandSelector item={currentItem} />);
+        return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
       case COLOR:
         return (<ColorsTab
           currentFilter={itemColors} filters={colorsFilters}

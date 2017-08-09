@@ -54,12 +54,17 @@ class UploadLookScreen extends Component {
   constructor(props) {
     super(props);
     this.setCurrentItem = this.setCurrentItem.bind(this);
+    this.setCurrentStep = this.setCurrentStep.bind(this);
     this.state = {
-      currentStep: 0,
+      currentStep: CATEGORY,
       allowContinue: false,
       currItem: props.items[0].id,
       isPublishing: false,
     };
+  }
+
+  setCurrentStep(step) {
+    this.setState({currentStep: step})
   }
 
   setCurrentItem(itemId) {
@@ -163,7 +168,8 @@ class UploadLookScreen extends Component {
   _renderEditItemTabs() {
     return (
       <EditItemTabs
-        item={this.state.currItem}/>
+        item={this.state.currItem}
+        setCurrentStep={this.setCurrentStep}/>
     )
   }
 
