@@ -8,7 +8,7 @@ import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScr
 import FilterGroup from '../feedscreen/filters/FilterGroup';
 import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
-const vsign = require('../../../images/indicators/v_sign.png')
+const vsign = require('../../../images/indicators/v_sign.png');
 
 export default class EditItemTabs extends Component {
   constructor(props: object) {
@@ -26,14 +26,14 @@ export default class EditItemTabs extends Component {
       { key: MOOD, title: 'MOOD' },
       { key: DESCRIPTION, title: 'Description' },
       { key: LINK, title: 'LINK' },
-    ]
+    ];
     this.routesNoDescription = [
       { key: CATEGORY, title: 'CATEGORY' },
       { key: BRAND, title: 'BRAND' },
       { key: COLOR, title: 'COLOR' },
       { key: MOOD, title: 'MOOD' },
       { key: LINK, title: 'LINK' },
-    ]
+    ];
     this.state = {
       index: 0,
       routes: this.routes,
@@ -42,18 +42,18 @@ export default class EditItemTabs extends Component {
   }
 
   _handleTabsIndexChange = (index) => {
-    this.props.setCurrentStep(this.state.routes[index].key)
+    this.props.setCurrentStep(this.state.routes[index].key);
     this.setState({ index });
   };
 
   componentWillReceiveProps(nextProps) {
-    const {isFirstItem, currentItem} = this.props
+    const { isFirstItem, currentItem } = this.props;
     this.setState({ loaded: !this.state.loaded });
-    if(nextProps.currentItem !== currentItem) {
-      this._handleTabsIndexChange(0)
+    if (nextProps.currentItem !== currentItem) {
+      this._handleTabsIndexChange(0);
     }
-    if( nextProps.isFirstItem !== isFirstItem) {
-      this.setState({routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription})
+    if (nextProps.isFirstItem !== isFirstItem) {
+      this.setState({ routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription });
     }
   }
 
@@ -74,33 +74,34 @@ export default class EditItemTabs extends Component {
     const { itemCategory, currentItem, itemDescription, itemColors } = this.props;
     switch (this.state.routes[currTab.index].key) {
       case CATEGORY:
-        return this.renderTabIndicator(itemCategory !== -1);
+        return itemCategory !== -1 ? this._renderVSign() : this._renderRequiredSign();
       case BRAND:
-        return this.renderTabIndicator(!!currentItem.brand);
+        return currentItem.brand ? this._renderVSign() : this._renderRequiredSign();
       case MOOD:
-        return this.renderTabIndicator(!!currentItem.occasions.length > 0);
+        return !!currentItem.occasions.length > 0 ? this._renderVSign() : null;
       case COLOR:
-        return this.renderTabIndicator(!!itemColors.length > 0);
+        return !!itemColors.length > 0 ? this._renderVSign() : null;
       case DESCRIPTION:
-        return this.renderTabIndicator(itemDescription.length > 1);
+        return itemDescription.length > 1 ? this._renderVSign() : null;
       case LINK:
-        return this.renderTabIndicator(!!currentItem.url);
+        return currentItem.url ? this._renderVSign() : null;
     }
   }
 
-  renderTabIndicator(isFine) {
-    if (isFine) {
-      return (
-        <Image source={vsign}
-               resizeMode={'contain'}
-          style={{ width: 12, height: 12, marginRight: 3 }} />
-      );
-    } else {
-      return (
-        <View
-          style={{ width: 10, height: 10, backgroundColor: 'red', borderRadius: 5, marginRight: 3 }} />
-      );
-    }
+  _renderVSign() {
+    return (
+      <Image
+        source={vsign}
+        resizeMode={'contain'}
+        style={{ width: 12, height: 12, marginRight: 3 }} />
+    );
+  }
+
+  _renderRequiredSign() {
+    return (
+      <View
+        style={{ width: 10, height: 10, backgroundColor: 'red', borderRadius: 5, marginRight: 3 }} />
+    );
   }
 
   updateCategoryItem(category) {
@@ -108,7 +109,7 @@ export default class EditItemTabs extends Component {
   }
 
   _addItemTag(color) {
-    const {removeItemTag, addItemTag} = this.props
+    const { removeItemTag, addItemTag } = this.props;
     if (color.selected) {
       removeItemTag(color, color.selected);
     } else {
@@ -126,28 +127,28 @@ export default class EditItemTabs extends Component {
   }
 
   _renderScene = ({ route }) => {
-    const {index} = this.state
+    const { index } = this.state;
     const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
     switch (route.key) {
       case CATEGORY:
         return (<FilterGroup
           mode="single" onSelectionChange={this._addItemCategory}
-          filters={categoryFilters} currentFilter={itemCategory}/>);
+          filters={categoryFilters} currentFilter={itemCategory} />);
 
       case BRAND:
         return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
       case COLOR:
         return (<FilterGroup
           mode="multi" onSelectionChange={this._addItemTag}
-          filters={colorsFilters} currentFilter={itemColors}/>);
+          filters={colorsFilters} currentFilter={itemColors} />);
       case MOOD:
         return (<FilterGroup
-          mode="multi" onSelectionChange={(occasion) => toggleOccasionTag(occasion, occasion.selected)}
-          filters={occasionsFilters} currentFilter={itemOccasions}/>);
+          mode="multi" onSelectionChange={occasion => toggleOccasionTag(occasion, occasion.selected)}
+          filters={occasionsFilters} currentFilter={itemOccasions} />);
       case DESCRIPTION:
         return (<DescriptionTab
-            description={itemDescription}
-            addDescription={(description) => addDescription(description)} />)
+          description={itemDescription}
+          addDescription={description => addDescription(description)} />);
       case LINK:
         return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:
