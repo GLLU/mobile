@@ -7,7 +7,7 @@ import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import i18n from 'react-native-i18n';
 const trash = require('../../../images/icons/trash.png');
 const leftLongArrow = require('../../../images/icons/left-long-arrow.png');
-import { CATEGORY, BRAND, COLOR, MOOD, LINK } from './UploadLookScreen';
+import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScreen';
 const styles = StyleSheet.create({
   nextBtnContainer: {
     borderRadius: 15,
@@ -151,6 +151,9 @@ class UploadLookHeader extends Component {
         break;
       case LINK:
         title = 'Add Item Link';
+        break;
+      case DESCRIPTION:
+        title = 'Add Description to your Look';
         break;
       default:
         title = 'Drag & Place Marker to tag an item';
