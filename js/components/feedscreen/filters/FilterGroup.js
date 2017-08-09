@@ -49,8 +49,6 @@ class FilterGroup extends Component {
       const {currentFilter} = this.props;
       const clonedFilter = _.cloneDeep(filter);
       for (i = 0; i < currentFilter.length; i++) {
-        console.log('currentFilter[i]',currentFilter[i])
-        console.log('clonedFilter.id',clonedFilter.id)
         if (currentFilter[i] === clonedFilter.id) {
           clonedFilter.selected = true;
         }

@@ -120,7 +120,7 @@ const ACTION_HANDLERS = {
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let tags = _.filter(item.tags, t => t.name.toLowerCase() != action.payload.data.name.toLowerCase());
+    let tags = _.filter(item.tags, t => t.name.toLowerCase() !== action.payload.data.name.toLowerCase());
     return {
       ...state,
       items: mutateItem(state, 'tags', tags, action.payload.itemId)

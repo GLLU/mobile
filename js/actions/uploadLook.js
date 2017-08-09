@@ -281,7 +281,7 @@ export function addItemType(categoryItem, itemId) {
         type: ADD_ITEM_TYPE,
         payload
       });
-      dispatch(addItemTag(categoryItem.name, itemId)).catch(err => {
+      dispatch(addItemTag(categoryItem, itemId)).catch(err => {
         console.log('do nothing');
       });
     }).catch(err => {
@@ -301,12 +301,11 @@ export function addBrandName(payload) {
     }
     return new Promise((resolve, reject) => {
       return _updateItem(lookId, itemId, params, dispatch).then(data => {
-        console.log('payload',payload)
         dispatch({
           type: ADD_BRAND_NAME,
           payload: payload
         });
-        dispatch(addItemTag(payload.name, itemId)).catch(reject);
+        dispatch(addItemTag(payload, itemId)).catch(reject);
         resolve();
       }).catch(reject);
     });
@@ -356,7 +355,7 @@ export function addItemTag(tag, itemId) {
     const state = getState();
     const {lookId} = state.uploadLook;
     const body = {
-      tag_name: tag
+      tag_name: tag.name
     }
     const payload = {data: tag, itemId}
     dispatch({
@@ -379,7 +378,7 @@ export function removeItemTag(tag, itemId) {
     const state = getState();
     const {lookId} = state.uploadLook;
     const body = {
-      tag_name: tag
+      tag_name: tag.name
     }
     const payload = {data: tag, itemId}
     dispatch({
@@ -415,7 +414,6 @@ export function addDescription(description) {
     const params = {
       description,
     }
-    console.log('params',params)
     return _updateLook(lookId, params, dispatch).then(data => {
       dispatch({
         type: ADD_DESCRIPTION,

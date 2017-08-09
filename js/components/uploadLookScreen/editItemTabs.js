@@ -142,7 +142,7 @@ export default class EditItemTabs extends Component {
           filters={colorsFilters} currentFilter={itemColors}/>);
       case MOOD:
         return (<FilterGroup
-          mode="multi" onSelectionChange={(occasion, selected) => toggleOccasionTag(occasion, selected)}
+          mode="multi" onSelectionChange={(occasion) => toggleOccasionTag(occasion, occasion.selected)}
           filters={occasionsFilters} currentFilter={itemOccasions}/>);
       case DESCRIPTION:
         return (<DescriptionTab
