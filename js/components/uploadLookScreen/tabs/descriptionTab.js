@@ -16,12 +16,11 @@ import I18n from 'react-native-i18n';
 const deviceWidth = Dimensions.get('window').width;
 
 type Props = {
-  updateCurrentFilter: void,
-  filters: array,
-  currentFilter: object,
+  addDescription: () => void,
+  description: string,
 };
 
-class CategoryTab extends Component {
+class DescriptionTab extends Component {
 
   props: Props
 
@@ -40,7 +39,7 @@ class CategoryTab extends Component {
   }
 
   handleDescriptionEndEditing() {
-    this.logEvent('UploadLookScreen', {name: 'Additional Info Description', description: this.props.description});
+    //this.logEvent('UploadLookScreen', {name: 'Additional Info Description', description: this.props.description});
     this.props.addDescription(this.state.description);
   }
 
@@ -74,4 +73,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default CategoryTab;
+export default DescriptionTab;

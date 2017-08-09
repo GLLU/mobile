@@ -4,13 +4,14 @@ import BrandSelector from './BrandSelector';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
-import { CATEGORY, BRAND, COLOR, MOOD, LINK } from './UploadLookScreen';
+import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScreen';
 import CategoryTab from './tabs/CategoryTab';
 import MoodTab from './tabs/MoodTab';
 import ColorsTab from './tabs/ColorsTab';
 import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
 const vsign = require('../../../images/indicators/v_sign.png')
+
 export default class EditItemTabs extends Component {
   constructor(props: object) {
     super(props);
@@ -20,15 +21,24 @@ export default class EditItemTabs extends Component {
     this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
     this._addItemTag = this._addItemTag.bind(this);
     this._addItemCategory = this._addItemCategory.bind(this);
+    this.routes = [
+      { key: CATEGORY, title: 'CATEGORY' },
+      { key: BRAND, title: 'BRAND' },
+      { key: COLOR, title: 'COLOR' },
+      { key: MOOD, title: 'MOOD' },
+      { key: DESCRIPTION, title: 'Description' },
+      { key: LINK, title: 'LINK' },
+    ]
+    this.routesNoDescription = [
+      { key: CATEGORY, title: 'CATEGORY' },
+      { key: BRAND, title: 'BRAND' },
+      { key: COLOR, title: 'COLOR' },
+      { key: MOOD, title: 'MOOD' },
+      { key: LINK, title: 'LINK' },
+    ]
     this.state = {
       index: 0,
-      routes: [
-        { key: CATEGORY, title: 'CATEGORY' },
-        { key: BRAND, title: 'BRAND' },
-        { key: COLOR, title: 'COLOR' },
-        { key: MOOD, title: 'MOOD' },
-        { key: LINK, title: 'LINK' },
-      ],
+      routes: this.routes,
       loaded: false,
     };
   }
@@ -38,8 +48,17 @@ export default class EditItemTabs extends Component {
     this.setState({ index });
   };
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    const {isFirstItem} = this.props
     this.setState({ loaded: !this.state.loaded });
+    if(nextProps.currentItem !== this.props.currentItem) {
+      this._handleTabsIndexChange(0)
+    }
+    if( nextProps.isFirstItem !== isFirstItem && nextProps.isFirstItem) {
+      this.setState({routes: this.routes})
+    } else {
+      this.setState({routes: this.routesNoDescription})
+    }
   }
 
   _renderHeader = props => (
@@ -69,7 +88,8 @@ export default class EditItemTabs extends Component {
     if (isFine) {
       return (
         <Image source={vsign}
-          style={{ width: 10, height: 10, marginRight: 3 }} />
+               resizeMode={'contain'}
+          style={{ width: 12, height: 12, marginRight: 3 }} />
       );
     } else {
       return (
@@ -102,7 +122,7 @@ export default class EditItemTabs extends Component {
 
   _renderScene = ({ route }) => {
     const {index} = this.state
-    const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl } = this.props;
+    const { isFirstItem, currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
     switch (route.key) {
       case CATEGORY:
         return (<CategoryTab
@@ -118,11 +138,18 @@ export default class EditItemTabs extends Component {
         return (<MoodTab
           currentFilter={itemOccasions} filters={occasionsFilters}
           updateCurrentFilter={(occasion, selected) => toggleOccasionTag(occasion, selected)} />);
+      case DESCRIPTION:
+        if(isFirstItem) {
+          return (
+            <DescriptionTab
+              description={itemDescription}
+              addDescription={(description) => addDescription(description)} />
+          );
+        } else {return null}
       case LINK:
         return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
-          ;
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />;
     }
   };
 

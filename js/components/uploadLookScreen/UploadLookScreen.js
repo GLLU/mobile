@@ -166,10 +166,14 @@ class UploadLookScreen extends Component {
   }
 
   _renderEditItemTabs() {
+    const {currItem} = this.state
+    const {items} = this.props
+    const isFirstItem = currItem === items[0].id
     return (
       <EditItemTabs
-        item={this.state.currItem}
-        setCurrentStep={this.setCurrentStep}/>
+        item={currItem}
+        setCurrentStep={this.setCurrentStep}
+        isFirstItem={isFirstItem}/>
     )
   }
 

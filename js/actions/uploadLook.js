@@ -414,6 +414,7 @@ export function addDescription(description) {
     const params = {
       description,
     }
+    console.log('params',params)
     return _updateLook(lookId, params, dispatch).then(data => {
       dispatch({
         type: ADD_DESCRIPTION,
