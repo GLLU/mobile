@@ -37,7 +37,7 @@ class ModalQuestion extends Component {
   static defaultProps = {
     modalVisible: false,
     title: 'Thats a nice Pop Up',
-    subtitle: 'dcdcd',
+    subtitle: '',
     confirmString: 'Confirm',
     cancelString: 'Cancel',
     confirmAction: _.noop,
