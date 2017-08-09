@@ -155,21 +155,6 @@ class UploadLookHeader extends Component {
     return title;
   }
 
-  getStepsTitle() {
-    const { currItem } = this.props;
-    let title = 'Select Item Category';
-    if (currItem.category && currItem.category !== -1) {
-      title = 'Select Item Brand';
-    }
-    if (currItem.brand) {
-      title = 'Select Colors';
-    }
-    if (currItem.occasions && currItem.occasions.length > 0) {
-      title = 'Add a Link';
-    }
-    return title;
-  }
-
   checkRequiredItemFields(item) {
     return item.brand && item.category !== 0;
   }
@@ -178,7 +163,7 @@ class UploadLookHeader extends Component {
     const allowContinue = this.allowPublishBtn();
     return (
       <TouchableOpacity style={styles.nextBtnContainer} disabled={!allowContinue} onPress={() => this.props.publishItem()}>
-        <Text style={[styles.nextBtnText, !allowContinue ? {color: Colors.gray} : null ]}>Publish</Text>
+        <Text style={[styles.nextBtnText, !allowContinue ? {color: Colors.gray} : null ]}>PUBLISH</Text>
       </TouchableOpacity>
     );
   }
