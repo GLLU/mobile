@@ -32,6 +32,7 @@ import { formatLook } from '../../utils/UploadUtils';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 
+const { height } = Dimensions.get('window');
 const parallaxHeaderHeight = 270;
 const stickyHeaderHeight = Platform.OS === 'ios' ? 66 : 46;
 
@@ -338,7 +339,7 @@ class ProfileScreen extends Component {
   }
 
   _renderPager = props => (
-    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false} />
+    <TabViewPagerScroll {...props} style={this.state.index !== 1 ? { height } : null} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false}/>
   );
 
   _configureTransition = () => null;
@@ -370,15 +371,15 @@ class ProfileScreen extends Component {
 
     return (<View style={styles.container}>
 
-      {!isMyProfile ? this._renderUserLooks() :
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        configureTransition={this._configureTransition}
-        renderScene={this._renderScene}
-        renderPager={this._renderPager}
-        renderHeader={this._renderHeader}
-        onRequestChangeTab={this._handleChangeTab}
+        {!isMyProfile ? this._renderUserLooks() :
+          <TabViewAnimated
+            style={[styles.container, this.state.index !== 0 ? { height }  : null]}
+            navigationState={this.state}
+            configureTransition={this._configureTransition}
+            renderScene={this._renderScene}
+            renderPager={this._renderPager}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleChangeTab}
           />
         }
     </View>
