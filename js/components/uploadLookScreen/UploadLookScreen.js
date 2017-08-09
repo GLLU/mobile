@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Dimensions, Platform, View, Text, StyleSheet, Modal, TouchableHighlight } from 'react-native';
+import { Dimensions, Platform, View, StyleSheet } from 'react-native';
 import UploadLookHeader from './UploadLookHeader';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
@@ -11,7 +11,6 @@ import VideoWithTags from '../common/VideoWithTags';
 import EditItemTabs from './editItemTabsContainer';
 import ModalQuestion from './forms/ModalQuestion';
 import SpinnerSwitch from '../loaders/SpinnerSwitch';
-import { BackAndroid } from 'react-native';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;

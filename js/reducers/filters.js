@@ -17,54 +17,63 @@ const initialState = {
   },
   colors: [
     {
+      id: 1,
       selected: false,
       name: 'Red',
       highlight: false,
       color: 'red'
     },
     {
+      id: 2,
       selected: false,
       name: 'Blue',
       highlight: false,
       color: 'blue'
     },
     {
+      id: 3,
       selected: false,
       name: 'Green',
       highlight: false,
       color: 'green'
     },
     {
+      id: 4,
       selected: false,
       name: 'Yellow',
       highlight: false,
       color: 'yellow'
     },
     {
+      id: 5,
       selected: false,
       name: 'Pink',
       highlight: false,
       color: 'pink'
     },
     {
+      id: 6,
       selected: false,
       name: 'Purple',
       highlight: false,
       color: 'purple'
     },
     {
+      id: 7,
       selected: false,
       name: 'Lightblue',
       highlight: false,
       color: 'lightblue'
     },
     {
+      id: 8,
       selected: false,
       name: 'Orange',
       highlight: false,
       color: 'orange'
     },
     {
+      id: 9,
       selected: false,
       name: 'Black',
       highlight: false,

@@ -5,9 +5,7 @@ import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
 import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScreen';
-import CategoryTab from './tabs/CategoryTab';
-import MoodTab from './tabs/MoodTab';
-import ColorsTab from './tabs/ColorsTab';
+import FilterGroup from '../feedscreen/filters/FilterGroup';
 import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
 const vsign = require('../../../images/indicators/v_sign.png')
@@ -49,12 +47,12 @@ export default class EditItemTabs extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const {isFirstItem} = this.props
+    const {isFirstItem, currentItem} = this.props
     this.setState({ loaded: !this.state.loaded });
-    if(nextProps.currentItem !== this.props.currentItem) {
+    if(nextProps.currentItem !== currentItem) {
       this._handleTabsIndexChange(0)
     }
-    if( nextProps.isFirstItem !== this.props.isFirstItem) {
+    if( nextProps.isFirstItem !== isFirstItem) {
       this.setState({routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription})
     }
   }
@@ -73,7 +71,7 @@ export default class EditItemTabs extends Component {
   );
 
   renderTabIcon(currTab) {
-    const { itemCategory, currentItem, itemDescription } = this.props;
+    const { itemCategory, currentItem, itemDescription, itemColors } = this.props;
     switch (this.state.routes[currTab.index].key) {
       case CATEGORY:
         return this.renderTabIndicator(itemCategory !== -1);
@@ -81,6 +79,8 @@ export default class EditItemTabs extends Component {
         return this.renderTabIndicator(!!currentItem.brand);
       case MOOD:
         return this.renderTabIndicator(!!currentItem.occasions.length > 0);
+      case COLOR:
+        return this.renderTabIndicator(!!itemColors.length > 0);
       case DESCRIPTION:
         return this.renderTabIndicator(itemDescription.length > 1);
       case LINK:
@@ -108,10 +108,11 @@ export default class EditItemTabs extends Component {
   }
 
   _addItemTag(color) {
+    const {removeItemTag, addItemTag} = this.props
     if (color.selected) {
-      this.props.removeItemTag(color, color.selected);
+      removeItemTag(color, color.selected);
     } else {
-      this.props.addItemTag(color, color.selected);
+      addItemTag(color, color.selected);
     }
   }
 
@@ -126,30 +127,27 @@ export default class EditItemTabs extends Component {
 
   _renderScene = ({ route }) => {
     const {index} = this.state
-    const { isFirstItem, currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
+    const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
     switch (route.key) {
       case CATEGORY:
-        return (<CategoryTab
-          currentFilter={itemCategory} filters={categoryFilters}
-          updateCurrentFilter={this._addItemCategory} />);
+        return (<FilterGroup
+          mode="single" onSelectionChange={this._addItemCategory}
+          filters={categoryFilters} currentFilter={itemCategory}/>);
+
       case BRAND:
         return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
       case COLOR:
-        return (<ColorsTab
-          currentFilter={itemColors} filters={colorsFilters}
-          updateCurrentFilter={this._addItemTag} />);
+        return (<FilterGroup
+          mode="multi" onSelectionChange={this._addItemTag}
+          filters={colorsFilters} currentFilter={itemColors}/>);
       case MOOD:
-        return (<MoodTab
-          currentFilter={itemOccasions} filters={occasionsFilters}
-          updateCurrentFilter={(occasion, selected) => toggleOccasionTag(occasion, selected)} />);
+        return (<FilterGroup
+          mode="multi" onSelectionChange={(occasion, selected) => toggleOccasionTag(occasion, selected)}
+          filters={occasionsFilters} currentFilter={itemOccasions}/>);
       case DESCRIPTION:
-        if(isFirstItem) {
-          return (
-            <DescriptionTab
-              description={itemDescription}
-              addDescription={(description) => addDescription(description)} />
-          );
-        } else {return null}
+        return (<DescriptionTab
+            description={itemDescription}
+            addDescription={(description) => addDescription(description)} />)
       case LINK:
         return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:

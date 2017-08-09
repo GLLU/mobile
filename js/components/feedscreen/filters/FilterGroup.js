@@ -24,27 +24,49 @@ class FilterGroup extends Component {
   constructor(props) {
     super(props);
     this.onSingleSelectValue = this.onSingleSelectValue.bind(this);
-    this.onMultipleSelectValue = this.onMultipleSelectValue.bind(this);
+    this.checkMultiSelectedQuery = this.checkMultiSelectedQuery.bind(this);
+    this.checkSingleSelectedQuery = this.checkSingleSelectedQuery.bind(this);
   }
 
   onSingleSelectValue(filter) {
     this.props.onSelectionChange(filter);
   }
 
-  onMultipleSelectValue(filter) {
-    const iteratee = (filter1, filter2) => filter1.id === filter2.id;
-    const filters = _.map(this.props.filters, item => iteratee(item, filter) ? filter : item);
-    this.props.onSelectionChange(filters);
+  checkSingleSelectedQuery() {
+    const checkedFilters = _.map(this.props.filters, (filter, i) => {
+      const {currentFilter} = this.props;
+      const clonedFilter = _.cloneDeep(filter);
+      if (currentFilter === filter.id) {
+        clonedFilter.selected = true;
+      }
+      return clonedFilter;
+    });
+    return checkedFilters;
+  }
+
+  checkMultiSelectedQuery() {
+    const checkedFilters = _.map(this.props.filters, (filter, i) => {
+      const {currentFilter} = this.props;
+      const clonedFilter = _.cloneDeep(filter);
+      for (i = 0; i < currentFilter.length; i++) {
+        if (currentFilter[i] === clonedFilter.id) {
+          clonedFilter.selected = true;
+        }
+      }
+      return clonedFilter
+    })
+    return checkedFilters
   }
 
   render() {
-    const {filters} = this.props;
+    const {mode} = this.props
+    const filters = mode === 'single' ? this.checkSingleSelectedQuery() : this.checkMultiSelectedQuery()
     return (
       <ScrollView horizontal style={styles.container}
-                  contentContainerStyle={[filters.length < 7 ? {flex: 1, justifyContent: 'space-around'} : null]}>
+                  contentContainerStyle={[filters.length < 7 ? styles.contentContainerStyle : null]}>
         {_.map(filters, (filter, i) => (
           <FilterButton
-            onPress={this.props.mode === 'multi' ? this.onMultipleSelectValue : this.onSingleSelectValue}
+            onPress={this.onSingleSelectValue}
             key={i} filter={filter}/>
         ))}
       </ScrollView>
@@ -58,7 +80,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 10,
   },
-
+  contentContainerStyle: {
+    flex: 1, justifyContent: 'space-around'
+  },
 });
 
 export default FilterGroup;

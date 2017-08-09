@@ -27,10 +27,10 @@ function mapStateToProps(state, ownProps) {
   let itemColors = _.map(_.filter(currentItem.tags, (tag) => {
     for (let i = 0; i < state.filters.colors.length; i++) {
       if (tag.name === state.filters.colors[i].name) {
-        return tag.name
+        return tag.id
       }
     }
-  }), "name")
+  }), "id")
   return {
     categoryFilters: state.filters.categories,
     occasionsFilters: state.filters.occasion_tags,
