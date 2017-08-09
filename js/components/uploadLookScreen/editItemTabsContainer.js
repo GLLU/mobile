@@ -38,7 +38,7 @@ function mapStateToProps(state, ownProps) {
     itemCategory: currentItem.category,
     itemBrand: currentItem.brand,
     itemOccasions: currentItem.occasions,
-    itemDescription: currentItem.description,
+    itemDescription: state.uploadLook.description,
     itemUrl: currentItem.url,
     itemColors,
     currentItem

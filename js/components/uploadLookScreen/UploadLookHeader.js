@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
+
 import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import i18n from 'react-native-i18n';
 const trash = require('../../../images/icons/trash.png');
@@ -24,9 +26,10 @@ const styles = StyleSheet.create({
     height: 45,
     alignItems: 'center',
   },
-  nextBtnText: {
+  publishBtnText: {
     color: Colors.secondaryColor,
     fontSize: generateAdjustedSize(16),
+    fontFamily: Fonts.regularFont,
   },
   addItemContainer: {
     marginRight: 15,
@@ -156,14 +159,14 @@ class UploadLookHeader extends Component {
   }
 
   checkRequiredItemFields(item) {
-    return item.brand && item.category !== 0;
+    return item.brand && item.category !== -1;
   }
 
   renderPublishBtn() {
     const allowContinue = this.allowPublishBtn();
     return (
       <TouchableOpacity style={styles.nextBtnContainer} disabled={!allowContinue} onPress={() => this.props.publishItem()}>
-        <Text style={[styles.nextBtnText, !allowContinue ? {color: Colors.gray} : null ]}>PUBLISH</Text>
+        <Text style={[styles.publishBtnText, !allowContinue ? {color: Colors.gray} : null ]}>PUBLISH</Text>
       </TouchableOpacity>
     );
   }

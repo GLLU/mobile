@@ -73,12 +73,18 @@ export default class EditItemTabs extends Component {
   );
 
   renderTabIcon(currTab) {
-    const { itemCategory, currentItem } = this.props;
+    const { itemCategory, currentItem, itemDescription } = this.props;
     switch (this.state.routes[currTab.index].key) {
       case CATEGORY:
         return this.renderTabIndicator(itemCategory !== -1);
       case BRAND:
         return this.renderTabIndicator(!!currentItem.brand);
+      case MOOD:
+        return this.renderTabIndicator(!!currentItem.occasions.length > 0);
+      case DESCRIPTION:
+        return this.renderTabIndicator(itemDescription.length > 1);
+      case LINK:
+        return this.renderTabIndicator(!!currentItem.url);
     }
   }
 
