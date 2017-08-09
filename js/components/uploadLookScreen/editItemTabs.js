@@ -54,10 +54,8 @@ export default class EditItemTabs extends Component {
     if(nextProps.currentItem !== this.props.currentItem) {
       this._handleTabsIndexChange(0)
     }
-    if( nextProps.isFirstItem !== isFirstItem && nextProps.isFirstItem) {
-      this.setState({routes: this.routes})
-    } else {
-      this.setState({routes: this.routesNoDescription})
+    if( nextProps.isFirstItem !== this.props.isFirstItem) {
+      this.setState({routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription})
     }
   }
 
