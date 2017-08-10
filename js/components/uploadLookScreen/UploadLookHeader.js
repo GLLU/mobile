@@ -28,8 +28,9 @@ const styles = StyleSheet.create({
   },
   publishBtnText: {
     color: Colors.secondaryColor,
-    fontSize: generateAdjustedSize(16),
-    fontFamily: Fonts.regularFont,
+    textAlign: 'center',
+    fontSize: generateAdjustedSize(18),
+    fontFamily: Fonts.boldContentFont,
   },
   addItemContainer: {
     marginRight: 15,
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
   addItemText: {
     color: Colors.secondaryColor,
     textAlign: 'center',
+    fontFamily: Fonts.boldContentFont,
     fontSize: generateAdjustedSize(20),
   },
   removeBtnContainer: {
@@ -251,7 +253,7 @@ class UploadLookHeader extends Component {
         <View style={styles.headerContainer}>
           {this._renderBackButton()}
           {this.props.items.length > 1 ? this._renderRemoveItemBtn() : null}
-          <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end' }}>
+          <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
             {this._renderAddItemBtn()}
             {this.renderPublishBtn()}
           </View>
