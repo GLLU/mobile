@@ -143,14 +143,14 @@ export default class EditItemTabs extends Component {
         return (
           <View style={{flex: 1}}>
             <ScrollableSelectableList
-              mode="single" onSelectionChange={this._addItemTag} showTexts={false}
+              mode="single" onSelectionChange={this._addItemBrand} showTexts={false}
               filters={brandsFilters} currentFilter={itemBrand} />
             <BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />
           </View>
         );
       case COLOR:
         return (<ScrollableSelectableList
-          mode="multi" onSelectionChange={this._addItemBrand}
+          mode="multi" onSelectionChange={this._addItemTag}
           filters={colorsFilters} currentFilter={itemColors}/>);
       case MOOD:
         return (<ScrollableSelectableList
