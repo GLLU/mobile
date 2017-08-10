@@ -29,6 +29,8 @@ import {loadBrands, showProcessing, hideProcessing} from './index';
 import Utils from '../utils';
 
 let api_key = null;
+let incrementedItemId = 0
+
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
@@ -262,9 +264,16 @@ export function publishLook() {
 
     return new Promise((resolve, reject) => {
       _.forEach(items, (item) => {
-        UploadLookService.createItem(lookId, {body: item}).then((publishedLookData) => {
-          console.log('published item action data',publishedLookData)
-        });
+        const body = {
+          item: {
+            cover_x_pos: item.locationX,
+            cover_y_pos: item.locationY,
+            category: item.category,
+            brand_id: item.brand,
+            colors: item.colors
+          }
+        };
+        UploadLookService.createItem(lookId, body);
       });
       //resolve()
     });

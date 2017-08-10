@@ -18,8 +18,9 @@ class UploadLookService {
   }))
 
   static createItem = (lookId ,body) => {
+    console.log('itemBody',{...body.item});
     AppAPI.post(`${createItemRoute(lookId)}`,
-    {body: JSON.stringify(body)}
+    {...body.item}
   ).then((data => {
     console.log('new item data',data);
     return data

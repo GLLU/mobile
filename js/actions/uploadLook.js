@@ -28,7 +28,6 @@ import Utils from '../utils';
 
 let api_key = null;
 
-let incrementedItemId = 0
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
