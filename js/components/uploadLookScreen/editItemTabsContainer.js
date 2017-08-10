@@ -37,7 +37,7 @@ function mapStateToProps(state, ownProps) {
   return {
     categoryFilters: state.filters.categories,
     occasionsFilters: state.filters.occasion_tags,
-    colorsFilters: state.filters.colors,
+    colorsFilters: state.filters.filterColors,
     itemCategory: currentItem.category,
     itemBrand: currentItem.brand,
     itemOccasions: currentItem.occasions,

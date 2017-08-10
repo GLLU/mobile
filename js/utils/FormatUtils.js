@@ -21,6 +21,16 @@ export const floorWithPrecision = (number: number, precision: number = 0) => {
   }
 };
 
+export const hexToRgb = (value: string) => {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  value = value.replace(shorthandRegex, function(m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
+  return result ? `rgb(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)})` : null;
+}
+
 export const formatNumberAsAmount = (value: number) => {
   const moneyParts = value.toString().split('.');
   let dolars = moneyParts[0];

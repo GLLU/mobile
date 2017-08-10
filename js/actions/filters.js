@@ -1,12 +1,21 @@
 import rest from '../api/rest';
 import {chain} from "lodash";
 
+import ColorsService from '../services/ColorsService';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_BRANDS = 'SET_BRANDS';
 export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
 export const OPEN_FEED_FILTER = 'OPEN_FEED_FILTER';
 export const CLOSE_FEED_FILTER = 'CLOSE_FEED_FILTER';
+export const SET_COLORS = 'filters.SET_COLORS';
 
+export function getColors() {
+  return (dispatch, getState) => {
+    ColorsService.getColors().then((colors) => {
+      dispatch({ type: SET_COLORS, colors });
+    });
+  };
+}
 export function loadCategories(gender) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
