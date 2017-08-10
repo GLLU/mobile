@@ -52,6 +52,9 @@ const routes = {
   },
   uploadLookScreen: {
     screen: UploadLookScreen,
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
   },
   finishLookScreen: {
     screen: FinishLookScreen,
