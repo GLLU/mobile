@@ -7,7 +7,7 @@ import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
-import {toggleFiltersMenus} from '../../actions/filters';
+import {toggleFiltersMenus, getColors} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
@@ -75,6 +75,7 @@ class FeedPage extends Component {
     const {gender} = this.props.user
     this.props.loadCategories(gender);
     this.props.loadOccasionTags(gender);
+    this.props.loadColors();
   }
 
   componentWillMount() {
@@ -229,6 +230,7 @@ function bindActions(dispatch) {
     toggleFiltersMenus: feedType => dispatch(toggleFiltersMenus(feedType)),
     loadCategories: gender => dispatch(loadCategories(gender)),
     loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
+    loadColors: () => dispatch(getColors()),
   };
 }
 
