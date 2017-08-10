@@ -45,10 +45,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  brandName: {
-    fontFamily: Fonts.contentFont,
-    fontSize: generateAdjustedSize(16),
-  },
   iconCheckCompleteContainer: {
     position: 'absolute',
     top: 0,
@@ -162,17 +158,13 @@ class BrandSelector extends BaseComponent {
     }
   }
 
-  renderClearIcon({ brand }) {
-    if (brand) {
+  _renderSearchIcon() {
       return (
         <TouchableOpacity
           onPress={this.handleTextFocus.bind(this)}>
           <Image source={require('../../../images/icons/search-black.png')} style={styles.iconCheckComplete}/>
         </TouchableOpacity>
       );
-    }
-
-    return null;
   }
 
   renderOpenButton({ brand }) {
@@ -194,8 +186,7 @@ class BrandSelector extends BaseComponent {
     return (
       <View style={{ flex: 1, justifyContent: 'center', marginBottom: 3 }}>
         <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
-          <Text style={styles.brandName}> {brandName} </Text>
-          {this.renderClearIcon(currItem)}
+          {this._renderSearchIcon(currItem)}
         </TouchableOpacity>
         <Modal
           animationType={"slide"}
