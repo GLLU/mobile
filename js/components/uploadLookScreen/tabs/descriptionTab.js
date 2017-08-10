@@ -7,7 +7,8 @@ import {
   TextInput,
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
-
+import Fonts from '../../../styles/Fonts.styles';
+import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 type Props = {
   addDescription: () => void,
   description: string,
@@ -56,13 +57,10 @@ class DescriptionTab extends Component {
 }
 
 const styles = StyleSheet.create({
-  rowEdgeShadow: {
-    position: 'absolute',
-    width: 15,
-    backgroundColor: Colors.white,
-    opacity: 0.8,
+  describe: {
+    fontSize: generateAdjustedSize(16),
+    fontFamily: Fonts.regularFont
   },
-
 });
 
 export default DescriptionTab;

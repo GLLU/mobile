@@ -77,11 +77,11 @@ class ScrollableSelectableList extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignSelf: 'center',
-    paddingHorizontal: 10,
+    marginHorizontal: 7
   },
   contentContainerStyle: {
-    flex: 1, justifyContent: 'space-around'
+    flex: 1,
+    alignItems: 'center',
   },
 });
 
