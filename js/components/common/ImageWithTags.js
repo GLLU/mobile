@@ -85,7 +85,7 @@ class ImageWithTags extends Component {
     const {image, children} = this.props
     return (
       <Image source={{uri: image}} style={styles.itemsContainer} resizeMode={'stretch'}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={[[styles.draggableContainer],{flex: 1}]}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={[[styles.draggableContainer]]}>
           <View style={styles.contentContainer}>
             {this.renderTags()}
             {children}
