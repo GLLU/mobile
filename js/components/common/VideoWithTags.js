@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, PanResponder, Animated, View} from 'react-native';
+import {StyleSheet, Dimensions, Keyboard, View, TouchableWithoutFeedback} from 'react-native';
 import _ from 'lodash';
 import glluTheme from '../../themes/gllu-theme';
 import Video from "react-native-video";
@@ -45,6 +45,16 @@ class VideoWithTags extends Component {
     super(props);
   }
 
+  componentWillMount() {
+    this.keyboardDidHideListener =
+      Keyboard
+        .addListener('keyboardDidHide',Keyboard.dismiss);
+  }
+
+  componentWillUnmount(){
+    this.keyboardDidHideListener.remove();
+  }
+
   render() {
     console.log('video:',this.props.image)
     return (
@@ -57,7 +67,9 @@ class VideoWithTags extends Component {
           paused={false}
           repeat={true}
         />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {this.props.children}
+        </TouchableWithoutFeedback>
       </View>
 
     );

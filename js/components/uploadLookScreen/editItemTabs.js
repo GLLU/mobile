@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Platform } from 'react-native';
+import { View, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
 import BrandSelector from './BrandSelector';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
@@ -168,28 +168,31 @@ export default class EditItemTabs extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TabViewAnimated
-          style={styles.tabViewAnimatedContainer}
-          navigationState={this.state}
-          renderScene={this._renderScene}
-          renderHeader={this._renderHeader}
-          onRequestChangeTab={this._handleTabsIndexChange}
-          swipeEnabled={false}
-        />
-      </View>
+      <KeyboardAvoidingView behavior={'padding'}>
+        <View  style={styles.container}>
+          <TabViewAnimated
+            style={styles.tabViewAnimatedContainer}
+            navigationState={this.state}
+            renderScene={this._renderScene}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleTabsIndexChange}
+            swipeEnabled={false}
+          />
+        </View>
+      </KeyboardAvoidingView>
+
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: generateAdjustedSize(130),
+    height: generateAdjustedSize(135),
     backgroundColor: Colors.primaryColor,
   },
   tabStyle: {
     flex: 1,
-    width: 90,
+    width: 100,
     paddingHorizontal: 3,
     flexDirection: 'row',
   },

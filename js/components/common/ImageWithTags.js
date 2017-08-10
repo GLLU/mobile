@@ -5,29 +5,22 @@ import {
   Image,
   StyleSheet,
   Dimensions,
-  PanResponder,
-  Animated,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  TouchableNativeFeedback
+  Keyboard
 } from 'react-native';
-import _ from 'lodash';
-import glluTheme from '../../themes/gllu-theme';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Tag from '../common/Tag';
-export const EDIT_MODE = 'edit';
-export const CREATE_MODE = 'create';
-export const VIEW_MODE = 'view';
 
-const tagMarker = require('../../../images/markers/marker-top-right.png');
 const TAG_WIDTH = 30;
-const BORDER_WIDTH = 5;
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   base: {
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1
   },
   draggableContainer: {
     flex: 1,
@@ -67,6 +60,7 @@ class ImageWithTags extends Component {
 
   renderTags() {
     const {items, currItem, setCurrentItem, onDragEnd} = this.props;
+
     if (currItem) {
       return items.map((item, i) => {
         return (
@@ -77,14 +71,26 @@ class ImageWithTags extends Component {
     }
   }
 
+  componentWillMount() {
+    this.keyboardDidHideListener =
+      Keyboard
+        .addListener('keyboardDidHide',Keyboard.dismiss);
+  }
+
+  componentWillUnmount(){
+    this.keyboardDidHideListener.remove();
+  }
+
   _render() {
     const {image, children} = this.props
     return (
       <Image source={{uri: image}} style={styles.itemsContainer} resizeMode={'stretch'}>
-        <View style={[styles.draggableContainer]}>
-          {this.renderTags()}
-          {children}
-        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={[[styles.draggableContainer],{flex: 1}]}>
+          <View style={styles.contentContainer}>
+            {this.renderTags()}
+            {children}
+          </View>
+        </TouchableWithoutFeedback>
       </Image>
     );
   }
