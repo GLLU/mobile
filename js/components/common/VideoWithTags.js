@@ -1,36 +1,17 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, PanResponder, Animated, View} from 'react-native';
-import _ from 'lodash';
-import glluTheme from '../../themes/gllu-theme';
-import Video from "react-native-video";
+import {StyleSheet, Dimensions, Keyboard, View, TouchableWithoutFeedback} from 'react-native';
 export const VIEW_MODE = 'view';
 const TAG_WIDTH = 100;
-const BORDER_WIDTH = 5;
 const h = Dimensions.get('window').height;
 const w = Dimensions.get('window').width;
 import VideoWithCaching from "./media/VideoWithCaching";
 
 const styles = StyleSheet.create({
-  base: {
+  container: {
     flex: 1,
   },
-  draggableContainer: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    width: 500,
-    height: 500
-  },
-  itemBgImage: {
-    height: 48,
-    width: TAG_WIDTH,
-  },
-  itemsContainer: {
-    backgroundColor: 'transparent',
-  },
-  itemMarker: {
-    position: 'absolute',
-    height: 48,
-    width: TAG_WIDTH,
+  videoWithCaching: {
+    width: w, height: h, overflow: 'hidden'
   },
 
 });
@@ -45,19 +26,31 @@ class VideoWithTags extends Component {
     super(props);
   }
 
+  componentWillMount() {
+    this.keyboardDidHideListener =
+      Keyboard
+        .addListener('keyboardDidHide',Keyboard.dismiss);
+  }
+
+  componentWillUnmount(){
+    this.keyboardDidHideListener.remove();
+  }
+
   render() {
     console.log('video:',this.props.image)
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.container}>
         <VideoWithCaching
           source={{uri: this.props.image, mainVer: 1, patchVer: 0}}
           resizeMode={'stretch'}
           muted={false}
-          style={{width: w, height: h, overflow: 'hidden'}}
+          style={styles.videoWithCaching}
           paused={false}
           repeat={true}
         />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {this.props.children}
+        </TouchableWithoutFeedback>
       </View>
 
     );

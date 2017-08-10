@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
 import {
-  Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
   Image,
-  UIManager,
-  LayoutAnimation,
   Platform,
   Animated,
-  View,
-  PanResponder
+  PanResponder,
 } from 'react-native'
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -90,10 +85,6 @@ class Tag extends Component {
     let width = w;
     let height = h;
     return {width, height};
-  }
-
-  normalizePosition(value) {
-    return Math.min(Math.max(value, 0.1), 0.9);
   }
 
   componentWillMount() {

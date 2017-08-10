@@ -1,14 +1,15 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Image, Platform} from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
 import BrandSelector from './BrandSelector';
-import {TabViewAnimated, TabBar} from 'react-native-tab-view';
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
-import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
-import {CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION} from './UploadLookScreen';
+import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
+import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScreen';
 import ScrollableSelectableList from '../common/itemParams/ScrollableSelectableList';
 import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
 const vsign = require('../../../images/indicators/v_sign.png');
+import i18n from 'react-native-i18n';
 
 export default class EditItemTabs extends Component {
   constructor(props: object) {
@@ -20,12 +21,12 @@ export default class EditItemTabs extends Component {
     this._addItemTag = this._addItemTag.bind(this);
     this._addItemCategory = this._addItemCategory.bind(this);
     this.routes = [
-      { key: CATEGORY, title: 'CATEGORY' },
-      { key: BRAND, title: 'BRAND' },
-      { key: COLOR, title: 'COLOR' },
-      { key: MOOD, title: 'MOOD' },
-      { key: DESCRIPTION, title: 'Description' },
-      { key: LINK, title: 'LINK' },
+      { key: CATEGORY, title: i18n.t('CATEGORY')},
+      { key: BRAND, title: i18n.t('BRAND')},
+      { key: COLOR, title: i18n.t('COLOR')},
+      { key: MOOD, title: i18n.t('MOOD')},
+      { key: DESCRIPTION, title: i18n.t('DESCRIPTION')},
+      { key: LINK, title: i18n.t('LINK')},
     ];
     this.routesNoDescription = [
       { key: CATEGORY, title: 'CATEGORY' },
@@ -65,7 +66,7 @@ export default class EditItemTabs extends Component {
         labelStyle={styles.labelStyle}
         indicatorStyle={styles.indicatorStyle} {...props}
         scrollEnabled
-        renderIcon={currTab => this.renderTabIcon(currTab)}/>
+        renderIcon={currTab => this.renderTabIcon(currTab)} />
 
     </View>
   );
@@ -93,14 +94,14 @@ export default class EditItemTabs extends Component {
       <Image
         source={vsign}
         resizeMode={'contain'}
-        style={styles.vsignImg}/>
+        style={styles.vsignImg} />
     );
   }
 
   _renderRequiredSign() {
     return (
       <View
-        style={styles.requiredSign}/>
+        style={styles.requiredSign} />
     );
   }
 
@@ -117,10 +118,6 @@ export default class EditItemTabs extends Component {
     }
   }
 
-  _addItemBrand = () => {
-
-  }
-
   _addItemCategory(category) {
     const { addItemType } = this.props;
     addItemType(category);
@@ -132,12 +129,12 @@ export default class EditItemTabs extends Component {
 
   _renderScene = ({ route }) => {
     const { index } = this.state;
-    const { currentItem, categoryFilters, occasionsFilters, itemBrand, brandsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
+    const { currentItem, categoryFilters, brandsFilters, itemBrand, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
     switch (route.key) {
       case CATEGORY:
         return (<ScrollableSelectableList
           mode="single" onSelectionChange={this._addItemCategory}
-          filters={categoryFilters} currentFilter={itemCategory}/>);
+          filters={categoryFilters} currentFilter={itemCategory} />);
 
       case BRAND:
         return (
@@ -151,19 +148,19 @@ export default class EditItemTabs extends Component {
       case COLOR:
         return (<ScrollableSelectableList
           mode="multi" onSelectionChange={this._addItemTag}
-          filters={colorsFilters} currentFilter={itemColors}/>);
+          filters={colorsFilters} currentFilter={itemColors} />);
       case MOOD:
         return (<ScrollableSelectableList
           mode="multi" onSelectionChange={occasion => toggleOccasionTag(occasion, occasion.selected)}
-          filters={occasionsFilters} currentFilter={itemOccasions}/>);
+          filters={occasionsFilters} currentFilter={itemOccasions} />);
       case DESCRIPTION:
         return (<DescriptionTab
           description={itemDescription}
-          addDescription={description => addDescription(description)}/>);
+          addDescription={description => addDescription(description)} />);
       case LINK:
-        return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)}/>);
+        return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:
-        return <View style={styles.emptyTab}/>;
+        return <View style={styles.emptyTab} />;
     }
   };
 
@@ -171,7 +168,7 @@ export default class EditItemTabs extends Component {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle}/>
+          <Image source={icon} style={iconStyle} />
         </TouchableOpacity>
       </View>
     );
@@ -179,28 +176,31 @@ export default class EditItemTabs extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TabViewAnimated
-          style={styles.tabViewAnimatedContainer}
-          navigationState={this.state}
-          renderScene={this._renderScene}
-          renderHeader={this._renderHeader}
-          onRequestChangeTab={this._handleTabsIndexChange}
-          swipeEnabled={false}
-        />
-      </View>
+      <KeyboardAvoidingView behavior={'padding'}>
+        <View  style={styles.container}>
+          <TabViewAnimated
+            style={styles.tabViewAnimatedContainer}
+            navigationState={this.state}
+            renderScene={this._renderScene}
+            renderHeader={this._renderHeader}
+            onRequestChangeTab={this._handleTabsIndexChange}
+            swipeEnabled={false}
+          />
+        </View>
+      </KeyboardAvoidingView>
+
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: generateAdjustedSize(140),
-    backgroundColor: Colors.primaryColor,
+    height: generateAdjustedSize(135),
+    backgroundColor: Colors.white,
   },
   tabStyle: {
     flex: 1,
-    width: 90,
+    width: 100,
     paddingHorizontal: 3,
     flexDirection: 'row',
   },

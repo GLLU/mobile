@@ -39,7 +39,7 @@ class ErrorHandler extends Component {
   render() {
     let text = this.props.error.length > 0 ? `Watch out: ${this.props.error}`
       :
-      this.props.warning.length > 0 ? `Watch out: ${this.props.warning}` : this.props.fatalError.length > 0 ? `Watch out: ${this.props.fatalError}` : this.props.info;
+      this.props.warning.length > 0 ? `${this.props.warning}` : this.props.fatalError.length > 0 ? `${this.props.fatalError}` : this.props.info;
     let color = this.props.error.length > 0 ? '#993333' : this.props.fatalError.length > 0 ? '#993333' :  this.props.warning.length > 0 ? '#cc9900' : '#3C997E';
     return (
       <View style={[styles.container, {backgroundColor: color}]}>
@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
   messageText: {
     fontFamily: Fonts.contentFont,
     fontSize:14,
+    textAlign: 'center',
+    marginLeft: 8,
+    marginRight: 8,
     color:'white'
   },
 });

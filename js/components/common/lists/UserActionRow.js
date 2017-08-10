@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import FollowView from '../../profileScreen/follows/FollowView'
-import {connect} from "react-redux";
-import {followUpdate, unFollowUpdate} from "../../../actions/follows";
-import {noop} from "lodash";
-import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import FollowView from '../../profileScreen/follows/FollowView';
+import { connect } from 'react-redux';
+import { followUpdate, unFollowUpdate } from '../../../actions/follows';
+import { noop } from 'lodash';
+import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 import Fonts from '../../../styles/Fonts.styles';
+import Colors from '../../../styles/Colors.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     padding: generateAdjustedSize(12),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   textContainer: {
     flex: 7,
@@ -25,14 +26,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
   },
   followUsername: {
     flex: 0.5,
     color: '#00a9ff',
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
   },
   photoContainer: {
     flex: 2,
@@ -41,11 +42,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: generateAdjustedSize(40),
     height: generateAdjustedSize(40),
-    borderRadius: generateAdjustedSize(20)
+    borderRadius: generateAdjustedSize(20),
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
   },
   followView: {
-    flex: 3
-  }
+    flex: 3,
+  },
 });
 
 class UserActionRow extends Component {
@@ -57,11 +60,11 @@ class UserActionRow extends Component {
     avatar: React.PropTypes.object,
     userId: React.PropTypes.number,
     is_following: React.PropTypes.bool,
-    navigateTo: React.PropTypes.func
+    navigateTo: React.PropTypes.func,
   };
 
   static defaultProps = {
-    navigateTo: noop
+    navigateTo: noop,
   }
 
   constructor(props) {
@@ -70,23 +73,21 @@ class UserActionRow extends Component {
     this.renderFollowView = this.renderFollowView.bind(this);
     this.onFollowPress = this.onFollowPress.bind(this);
     this.state = {
-      isFollowing: props.isFollowing
-    }
+      isFollowing: props.isFollowing,
+    };
   }
 
   onUserPress() {
-    this.props.navigateTo('profileScreen', this.props);
+    this.props.navigateTo('profileScreen', { user: this.props });
   }
 
   onFollowPress(user, shouldFollow) {
-    let data = {id: user.id};
     if (shouldFollow) {
-      this.props.followUpdate(data);
+      this.props.followUpdate(user.id);
+    } else {
+      this.props.unFollowUpdate(user.id);
     }
-    else {
-      this.props.unFollowUpdate(data);
-    }
-    this.setState({isFollowing: shouldFollow})
+    this.setState({ isFollowing: shouldFollow });
   }
 
   renderFollowText() {
@@ -95,34 +96,35 @@ class UserActionRow extends Component {
         <Text style={styles.followName}>{this.props.name}</Text>
         <Text style={styles.followUsername}>@{this.props.username}</Text>
       </View>
-    )
+    );
   }
 
   renderFollowView() {
     if (this.props.isMe) {
-      return <View name="can't follow me" style={styles.followView}/>;
+      return <View name="can't follow me" style={styles.followView} />;
     }
-    return <FollowView onPress={this.onFollowPress} style={styles.followView}
-                       user={{id: this.props.userId, isFollowing: this.state.isFollowing}}/>
+    return (<FollowView
+      onPress={this.onFollowPress} style={styles.followView}
+      user={{ id: this.props.userId, isFollowing: this.state.isFollowing }} />);
   }
 
   render() {
     return (
       <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container, this.props.style]}>
         <View style={styles.photoContainer}>
-          <Image resizeMode='cover' source={{uri: this.props.avatar.url}} style={styles.photo}/>
+          <Image resizeMode="cover" source={{ uri: this.props.avatar.url }} style={styles.photo} />
         </View>
         {this.renderFollowText()}
         {this.renderFollowView()}
       </TouchableOpacity>
-    )
+    );
   }
 }
 
 function bindAction(dispatch) {
   return {
-    followUpdate: (id) => dispatch(followUpdate(id)),
-    unFollowUpdate: (id) => dispatch(unFollowUpdate(id))
+    followUpdate: id => dispatch(followUpdate(id)),
+    unFollowUpdate: id => dispatch(unFollowUpdate(id)),
   };
 }
 

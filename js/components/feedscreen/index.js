@@ -10,6 +10,7 @@ import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags}
 import {toggleFiltersMenus, getFeaturedBrands} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
+import Analytics from '../../lib/analytics/Analytics';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
@@ -24,7 +25,6 @@ class FeedPage extends Component {
   static propTypes = {
     user: React.PropTypes.object,
     balance: React.PropTypes.number,
-    showWalletBadge: React.PropTypes.boolean,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
@@ -73,16 +73,16 @@ class FeedPage extends Component {
   }
 
   componentDidMount() {
-    const {gender} = this.props.user
+
+    Analytics.setUser(this.props.user);
+
+    const {gender} = this.props.user;
     this.props.loadCategories(gender);
     this.props.loadOccasionTags(gender);
     this.props.loadBrands();
   }
 
   componentWillMount() {
-    if (!this.props.user || this.props.user.id === -1) {
-      this.props.navigateTo('splashscreen');
-    }
     BackAndroid.addEventListener('hardwareBackPress', () => {
       if (this.state.photoModal) {
         this.setState({photoModal: false});

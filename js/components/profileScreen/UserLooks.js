@@ -2,10 +2,9 @@
 
 import React, { Component } from 'react';
 import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
-import { Icon } from 'native-base';
+import i18n from 'react-native-i18n';
 import _ from 'lodash';
-import VideoWithCaching from '../common/media/VideoWithCaching';
-import ImageWrapper from '../common/media/ImageWrapper';
+import Fonts from '../../styles/Fonts.styles';
 import MediaContainer from '../common/MediaContainer';
 const deviceWidth = Dimensions.get('window').width;
 import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
@@ -91,8 +90,8 @@ class UserLooks extends Component {
 
   renderEditLookBtn(look) {
     return (
-      <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn, look.coverType === 'video' ? { top: 30 } : { top: 15 }, Platform.OS === 'ios' ? { right: 3 } : null]}>
-        <Icon name="ios-create-outline" style={{ color: '#000' }} size={28} />
+      <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn]}>
+        <Text style={styles.editText}>{i18n.t('EDIT')}</Text>
       </TouchableOpacity>
 
     );
@@ -149,10 +148,16 @@ const styles = StyleSheet.create({
   editLookBtn: {
     position: 'absolute',
     right: 0,
-    width: 30,
     zIndex: 1,
-    backgroundColor: '#00d7b2',
+    backgroundColor: '#000000',
     alignItems: 'center',
+    opacity: 0.6,
+  },
+  editText: {
+    fontSize: 14,
+    padding: 6,
+    fontFamily: Fonts.regularFont,
+    color: 'white',
   },
   columnContainer: {
     flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end', alignSelf: 'center',

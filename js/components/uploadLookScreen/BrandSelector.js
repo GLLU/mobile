@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.transparent,
   },
   iconCheckComplete: {
-    width: generateAdjustedSize(14),
-    height: generateAdjustedSize(14),
+    width: generateAdjustedSize(18),
+    height: generateAdjustedSize(18),
     alignSelf: 'center',
   },
 });

@@ -1,4 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
 
 const w = Dimensions.get('window').width
 const h = Dimensions.get('window').height
@@ -176,12 +178,13 @@ export default StyleSheet.create({
   editName: {
     textAlign: 'center',
     fontSize: 25,
-    fontFamily: 'Times New Roman',
+    fontFamily: Fonts.regularFont,
   },
   editUsername: {
     textAlign: 'center',
-    color: '#00ABED',
+    color: Colors.secondaryColor,
     padding: 20,
+    fontFamily: Fonts.subHeaderFont,
     fontSize: 18
   },
   editNameContainer: {
@@ -203,11 +206,13 @@ export default StyleSheet.create({
   },
   editBodyTypeTitle: {
     textAlign: 'center',
+    fontFamily: Fonts.regularFont,
     fontSize: 20,
-    color: 'grey'
+    color: Colors.gray,
   },
   editAboutMeInput: {
     fontSize: 14,
+    fontFamily: Fonts.contentFont,
     lineHeight: 20
   },
   saveChangesContainer: {

@@ -21,8 +21,6 @@ import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import {formatInvitationMessage} from '../../lib/messages/index';
-import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
-import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
 import Fonts from '../../styles/Fonts.styles';
@@ -30,14 +28,15 @@ import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from "../common/buttons/SolidButton";
 import FiltersView from './FilterContainer';
+import EmptyStateScreen from '../common/EmptyStateScreen';
 import FeedFilters from './FeedFilters';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import {CATEGORIES, EVENTS} from '../../reducers/filters';
 
-const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
+const noResultsIcon = require('../../../images/emptyStates/search.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
-import {CATEGORIES, EVENTS} from '../../reducers/filters';
 
 class BestMatchTabContent extends BaseComponent {
 
@@ -71,8 +70,6 @@ class BestMatchTabContent extends BaseComponent {
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
     };
-    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100);
-    this.showBodyModal = _.once(this._showBodyModal);
     this.currPosition = 0;
   }
 
@@ -146,9 +143,6 @@ class BestMatchTabContent extends BaseComponent {
 
   handleScroll(event) {
     if (this.props.cardNavigationStack.index === 0) {
-      if (this.props.showBodyModal) {
-        this.scrollCallAsync(event);
-      } else {
         const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
         const contentSizeHeight = event.nativeEvent.contentSize.height;
         const currentScroll = event.nativeEvent.contentOffset.y;
@@ -160,7 +154,6 @@ class BestMatchTabContent extends BaseComponent {
         }
       }
       this.currPosition = event.nativeEvent.contentOffset.y;
-    }
   }
 
   handleScrollPositionForVideo() {
@@ -193,14 +186,6 @@ class BestMatchTabContent extends BaseComponent {
       this.setState({noMoreData: true});
       console.log('end of feed');
     }
-  }
-
-  _showBodyModal() {
-    this.props.showBodyTypeModal();
-  }
-
-  scrollDebounced(e) {
-    this.showBodyModal();
   }
 
   _renderLooks(looks: array) {
@@ -318,18 +303,14 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
+    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
+    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
+
     return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        <Image
-          source={profileBackground}
-          style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start'}}>
-          <LinearGradient
-            colors={['#0C0C0C', '#4C4C4C']}
-            style={[styles.linearGradient, {opacity: 0.7}]}/>
-          <View style={{marginTop: 100}}>
-            <ParisAdjustableMessage text={i18n.t('PARIS_NO_FEED_RESULTS')}/>
-          </View>
-        </Image>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <EmptyStateScreen
+          title={emptyTitle}
+          subtitle={emptySubtitle} icon={noResultsIcon}/>
       </View>
     );
   }
@@ -398,9 +379,9 @@ class BestMatchTabContent extends BaseComponent {
     const {saveBodyShape} = this.props;
 
     return (
-      <View style={{flexGrow: 1, backgroundColor: 'white', alignItems: 'center'}}>
-        <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
-        <ScrollView>
+      <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
+        <ScrollView contentContainerStyle={{paddingBottom: 16}}>
+          <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
             onPick={() => this.toggleBodyTypeModal(false)}/>

@@ -26,7 +26,7 @@ const logo = require('../../../images/logo/inFashLogo.png');
 
 let PERMISSIONS = ["email", "public_profile"];
 
-class SplashPage extends Component {
+class LoginPage extends Component {
 
   static propTypes = {
     isLoading: React.PropTypes.number,
@@ -38,7 +38,6 @@ class SplashPage extends Component {
 
   constructor(props) {
     super(props);
-    this.checkLogin=this.checkLogin.bind(this);
     this.handleEmailSigninPress=this.handleEmailSigninPress.bind(this);
     this.state = {
       name: '',
@@ -47,21 +46,6 @@ class SplashPage extends Component {
     if(this.props.showTutorial && Platform !== 'ios'){
       //this.props.navigateTo('tutorialscreen');
     }
-  }
-
-  componentWillMount(){
-    const {user}=this.props;
-    if(user!==undefined&&user.id!==-1){
-      this.checkLogin(user);
-    }
-  }
-
-  checkLogin(user) {
-    this.props.checkLogin(user)
-      .then(() => {
-      this.props.resetTo('feedscreen')
-      })
-      .catch(err => console.log(err));
   }
 
   componentWillReceiveProps(nextProps){
@@ -74,7 +58,7 @@ class SplashPage extends Component {
   }
 
   connectWithFB() {
-    this.props.logEvent('Splashscreen', { name: 'Facebook signup click' });
+    this.props.logEvent('loginscreen', { name: 'Facebook signup click' });
     // Attempt a login using the Facebook login dialog asking for default permissions.
     Utils.loginWithFacebook()
       .then((data) => this.props.loginViaFacebook(data)
@@ -84,12 +68,12 @@ class SplashPage extends Component {
   }
 
   handleEmailSignupPress() {
-    this.props.logEvent('Splashscreen', {name: 'Email signup click'});
+    this.props.logEvent('loginscreen', {name: 'Email signup click'});
     this.props.navigateTo('genderselect');
   }
 
   handleEmailSigninPress() {
-    this.props.logEvent('Splashscreen', {name: 'Email signin click'});
+    this.props.logEvent('loginscreen', {name: 'Email signin click'});
     this.props.navigateTo('signinemail');
   }
 
@@ -102,7 +86,7 @@ class SplashPage extends Component {
   }
 
   handleOpenLink(url) {
-    this.props.logEvent('Splashscreen', { name: 'Link click', url });
+    this.props.logEvent('loginscreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
@@ -179,4 +163,4 @@ const mapStateToProps = state => ({
   showTutorial: state.user.showTutorial
 });
 
-export default connect(mapStateToProps, bindAction)(asScreen(listenToAppState(SplashPage)));
+export default connect(mapStateToProps, bindAction)(asScreen(listenToAppState(LoginPage)));

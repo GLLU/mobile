@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native';
+import i18n from 'react-native-i18n';
 import { Button } from 'native-base';
 import Autocomplete from 'react-native-autocomplete-input';
 import FontSizeCalculator from './../../../calculators/FontSize';
@@ -164,7 +165,7 @@ class CustomAutocomplete extends Autocomplete {
       <View style={styles.autocompleteResults}>
         <View style={styles.btnContainer} >
           <Button transparent onPress={() => this.props.findOrCreateBrand({name: this.props.query})} style={StyleSheet.flatten(styles.btnCreateNew)} >
-            <Text style={styles.btnCreateNewText}>Add a New Brand "{this.props.query}"</Text>
+            <Text style={styles.btnCreateNewText}>{i18n.t('ADD_NEW_BRAND') + '{this.props.query}'}</Text>
           </Button>
         </View>
       </View>

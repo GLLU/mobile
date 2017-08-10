@@ -13,7 +13,7 @@ import {
   RefreshControl,
   View,
   NetInfo,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import i18n from 'react-native-i18n';
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,7 +23,7 @@ import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
-import {formatInvitationMessage} from '../../lib/messages/index';
+import { formatInvitationMessage } from '../../lib/messages/index';
 import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 import Colors from '../../styles/Colors.styles';
 import EmptyStateScreen from '../common/EmptyStateScreen';
@@ -68,13 +68,11 @@ class FollowingTabContent extends BaseComponent {
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
     };
-    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100);
-    this.showBodyModal = _.once(this._showBodyModal);
     this.currPosition = 0;
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
+    this.logEvent('Feedscreen', { name: 'Invite your friends click' });
     const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
@@ -93,7 +91,7 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _getFeed(query) {
-    this.props.getFeed(query)
+    this.props.getFeed(query);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,17 +99,17 @@ class FollowingTabContent extends BaseComponent {
       this.setState({
         flatLooksLeft: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 0),
         flatLooksRight: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 1),
-        loadingMore: false
+        loadingMore: false,
       });
     }
 
     if (nextProps.clearedField) {
       this.currPosition = 0;
-      this.setState({noMoreData: false});
+      this.setState({ noMoreData: false });
     }
 
     if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
-      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen)
+      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen);
     }
   }
 
@@ -137,7 +135,7 @@ class FollowingTabContent extends BaseComponent {
         const currentScroll = event.nativeEvent.contentOffset.y;
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if (!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({loadingMore: true}, this.loadMore);
+            this.setState({ loadingMore: true }, this.loadMore);
           }
         } else {
         }
@@ -149,7 +147,7 @@ class FollowingTabContent extends BaseComponent {
   handleScrollPositionForVideo() {
     if (this.state.currentScrollPosition !== this.currPosition) {
       this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
-      this.setState({currentScrollPosition: this.currPosition});
+      this.setState({ currentScrollPosition: this.currPosition });
     }
   }
 
@@ -158,32 +156,24 @@ class FollowingTabContent extends BaseComponent {
       console.log('already isLoading');
       return;
     }
-    const {meta: {total}, query} = this.props;
+    const { meta: { total }, query } = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({isLoading: true}, () => {
+      this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-            this.setState({isLoading: false});
-          }
+          this.setState({ isLoading: false });
+        }
         ).catch((err) => {
           console.log('error', err);
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
         });
       });
     } else {
-      this.setState({noMoreData: true});
+      this.setState({ noMoreData: true });
       console.log('end of feed');
     }
-  }
-
-  _showBodyModal() {
-    this.props.showBodyTypeModal();
-  }
-
-  scrollDebounced(e) {
-    this.showBodyModal();
   }
 
   _renderLooks(looks: array) {
@@ -198,7 +188,7 @@ class FollowingTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'}/>
+        fromScreen={'Feedscreen'} />
     ));
   }
 
@@ -207,13 +197,13 @@ class FollowingTabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
+            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)"/>;
+            return <Spinner color="rgb(230,230,230)" />;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
           }
           return null;
         })()}
@@ -224,7 +214,7 @@ class FollowingTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666"/>
+          <Spinner color="#666666" />
         </View>
       );
     }
@@ -233,7 +223,7 @@ class FollowingTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover}/>
+      <View style={styles.refreshingCover} />
     );
   }
 
@@ -250,46 +240,47 @@ class FollowingTabContent extends BaseComponent {
   }
 
   onRefresh() {
-    this.setState({isRefreshing: true});
-    const {getFeed, query} = this.props;
+    this.setState({ isRefreshing: true });
+    const { getFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
     getFeed(cleanQuery)
       .then(() => {
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       })
       .catch((error) => {
         console.log('Error when preload image', error);
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       });
   }
 
   renderInviteFriend() {
     return (
-      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
+      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
         <Image
-          source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-          style={{width: deviceWidth / 2 - 6, height: deviceWidth / 4}}
-          resizeMode={'stretch'}/>
+          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
+          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
+          resizeMode={'stretch'} />
       </View>
     );
   }
 
   renderColumns() {
     return (
-      <View style={{
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: deviceWidth,
-        justifyContent: 'flex-end',
-        alignSelf: 'center'
-      }}>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          width: deviceWidth,
+          justifyContent: 'flex-end',
+          alignSelf: 'center',
+        }}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
             {this.renderInviteFriend()}
           </TouchableOpacity>
@@ -300,22 +291,26 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
+    const { onFollowClicked } = this.props;
+
     return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
           title={i18n.t('ME_NO_FOLLOWING_TITLE')} subtitle={i18n.t('ME_NO_FOLLOWING_LEGEND')}
           icon={require('../../../images/emptyStates/user-admin.png')}
           buttonText={i18n.t('START_FOLLOWING')}
+          onButtonClicked={onFollowClicked}
         />
       </View>
     );
   }
 
+
   _renderScrollView() {
     return (
       <View style={styles.tab}>
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
@@ -330,41 +325,40 @@ class FollowingTabContent extends BaseComponent {
 
   _renderLoader() {
     return (
-      <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
-        <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
+      <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
       </View>
 
-    )
+    );
   }
 
   _renderFilterView() {
-    const {myFeedType} = this.props;
+    const { myFeedType } = this.props;
     return (
-      <FiltersView currentFeedTab={myFeedType}/>
-    )
+      <FiltersView currentFeedTab={myFeedType} />
+    );
   }
 
   _renderFeedFilters() {
-    const {query} = this.props;
+    const { query } = this.props;
     return (
-      <FeedFilters query={query} getFeed={this._getFeed}/>
-    )
+      <FeedFilters query={query} getFeed={this._getFeed} />
+    );
   }
 
   render() {
-    const {isFilterMenuOpen, flatLooks, isLoading} = this.props
+    const { isFilterMenuOpen, flatLooks, isLoading } = this.props;
     if (isLoading) {
       return this._renderLoader();
     } else {
       return (
-        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           {this._renderFeedFilters()}
           { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
           { isFilterMenuOpen ? this._renderFilterView() : null}
         </View>
       );
     }
-
   }
 }
 
@@ -405,7 +399,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     width: deviceWidth,
     position: 'absolute',
-    top: 0
+    top: 0,
   },
 });
 

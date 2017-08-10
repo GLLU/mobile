@@ -57,6 +57,7 @@ class FollowScreen extends Component {
           title={emptyStateTitle} subtitle={emptyStateSubtitle}
           icon={require('../../../../../images/emptyStates/user-admin.png')}
           buttonText={emptyStateButtonText}
+          onButtonClicked={()=> this.props.navigateTo('searchScreen')}
           />
       </View>
     );

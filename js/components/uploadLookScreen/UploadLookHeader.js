@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   addItemText: {
     color: Colors.secondaryColor,
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: generateAdjustedSize(20),
   },
   removeBtnContainer: {
     justifyContent: 'center',
@@ -45,7 +45,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   removeBtnImage: {
-    width: 22, height: 22, alignSelf: 'center',
+    width: 22,
+    height: 22,
+    alignSelf: 'center',
   },
   backBtnContainer: {
     width: 30,
@@ -138,25 +140,25 @@ class UploadLookHeader extends Component {
     let title = '';
     switch (this.props.currentStep) {
       case CATEGORY:
-        title = 'Select Item Category'
+        title = i18n.t('SELECT_ITEM_CATEGORY');
         break;
       case BRAND:
-        title = 'Select Item Brand';
+        title = i18n.t('SELECT_ITEM_BRAND');
         break;
       case COLOR:
-        title = 'Select Item Colors';
+        title = i18n.t('SELECT_ITEM_COLORS');
         break;
       case MOOD:
-        title = 'Select Item Moods';
+        title = i18n.t('SELECT_ITEM_MOODS');
         break;
       case LINK:
-        title = 'Add Item Link';
+        title = i18n.t('SELECT_ITEM_LINK');
         break;
       case DESCRIPTION:
-        title = 'Add Description to your Look';
+        title = i18n.t('SELECT_ITEM_DESCRIPTION');
         break;
       default:
-        title = 'Drag & Place Marker to tag an item';
+        title = i18n.t('DRAG_AND_PLACE');
     }
     return title;
   }
@@ -169,7 +171,7 @@ class UploadLookHeader extends Component {
     const allowContinue = this.allowPublishBtn();
     return (
       <TouchableOpacity style={styles.nextBtnContainer} disabled={!allowContinue} onPress={() => this.props.publishItem()}>
-        <Text style={[styles.publishBtnText, !allowContinue ? {color: Colors.gray} : null ]}>PUBLISH</Text>
+        <Text style={[styles.publishBtnText, !allowContinue ? {color: Colors.gray} : null ]}>{i18n.t('PUBLISH')}</Text>
       </TouchableOpacity>
     );
   }

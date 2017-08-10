@@ -32,6 +32,7 @@ import {formatLook} from '../../utils/UploadUtils';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 
+const { height } = Dimensions.get('window');
 const parallaxHeaderHeight = 270;
 const stickyHeaderHeight = Platform.OS === 'ios' ? 66 : 46;
 
@@ -235,6 +236,8 @@ class ProfileScreen extends Component {
       return;
     }
 
+    event.persist();
+
     const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
     const contentSizeHeight = event.nativeEvent.contentSize.height;
     const currentScroll = event.nativeEvent.contentOffset.y;
@@ -302,9 +305,8 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const {userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo} = this.props;
-    const {stats, userLooks} = this.state;
-
+    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
+    const { stats, userLooks } = this.state;
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
     const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
     const emptyStateButtonText = isMyProfile ? I18n.t('POST_NOW') : null;
@@ -313,7 +315,7 @@ class ProfileScreen extends Component {
       return (<EmptyStateScreen
         title={emptyStateTitle} subtitle={emptyStateSubtitle}
         icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
-        onButtonClicked={this._uploadLook}/>);
+        onButtonClicked={this._handleNewPost} />);
     }
 
     return (
@@ -336,7 +338,7 @@ class ProfileScreen extends Component {
   }
 
   _renderPager = props => (
-    <TabViewPagerScroll {...props} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false}/>
+    <TabViewPagerScroll {...props} style={this.state.index !== 1 ? { height } : null} onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false}/>
   );
 
   _configureTransition = () => null;
@@ -370,7 +372,7 @@ class ProfileScreen extends Component {
 
         {!isMyProfile ? this._renderUserLooks() :
           <TabViewAnimated
-            style={styles.container}
+            style={[styles.container, this.state.index !== 0 ? { height }  : null]}
             navigationState={this.state}
             configureTransition={this._configureTransition}
             renderScene={this._renderScene}

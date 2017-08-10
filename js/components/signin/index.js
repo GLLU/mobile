@@ -12,7 +12,7 @@ import SolidButton from '../common/buttons/SolidButton'
 import styles from './styles';
 import glluTheme from '../../themes/gllu-theme';
 import {emailSignIn} from '../../actions/user';
-import Spinner from '../loaders/Spinner'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
   TERMS_URL,
@@ -151,10 +151,10 @@ render()
           <Image source={backgroundShadow} style={styles.bgShadow}/>
           <Header title='Sign In' goBack={this.props.goBack}/>
           <Content scrollEnabled={true}>
+            <KeyboardAwareScrollView extraScrollHeight={100}>
             <View style={StyleSheet.flatten(styles.logoContainer)}>
               <Image source={logo} style={StyleSheet.flatten(styles.logo)}/>
             </View>
-            <KeyboardAvoidingView behavior='padding'>
               <Grid>
                 <Row style={styles.formItem}>
                   <TextInput
@@ -191,14 +191,13 @@ render()
                 disabled={!allValid}
                 style={[styles.formBtn, allValid ? styles.validationPassed : null]}
                 onPress={this.handleSigninPress}
-                loaderElement={<Spinner animating={this.state.isSigningIn} size={'small'} style={{ left: 10 }}/>}
               />
               <View style={styles.alreadyBox}>
                 <Text style={styles.alreadyTxt}>Forgot your password?</Text>
                 <TouchableOpacity onPress={this.handleForgotPasswordPress.bind(this)}><Text
                   style={styles.clickHere}>Click Here</Text></TouchableOpacity>
               </View>
-            </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
           </Content>
           <View style={styles.bottomContainerContent}>
             <Text style={styles.text}>By signing-up I agree to inFash </Text>
