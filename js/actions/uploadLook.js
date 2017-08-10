@@ -25,6 +25,8 @@ import {loadBrands, showProcessing, hideProcessing} from './index';
 import Utils from '../utils';
 
 let api_key = null;
+
+let incrementedItemId = 0
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
@@ -142,51 +144,6 @@ export function editTag(editingTag) {
     payload: {
       editingTag
     }
-  }
-}
-
-export function setTagPosition(payload) {
-  return {
-    type: SET_TAG_POSITION,
-    payload: payload
-  }
-}
-
-export function createLookItem(position) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const lookId = state.uploadLook.lookId;
-    const body = {
-      item: {
-        cover_x_pos: position.locationX,
-        cover_y_pos: position.locationY,
-      }
-    };
-    return new Promise((resolve, reject) => {
-      dispatch(rest.actions.items.post({look_id: lookId}, {body: JSON.stringify(body)}, (err, data) => {
-        if (!err) {
-          resolve(dispatch({
-              type: CREATE_LOOK_ITEM_BY_POSITION,
-              payload: data
-            })
-          );
-        } else {
-          reject(err);
-        }
-      }));
-    });
-  }
-}
-
-export function removeLookItem(itemId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const lookItems = _.cloneDeep(state.uploadLook.items)
-    const newItemsArr = _.filter(lookItems, (item) => item.id !== itemId);
-    dispatch({
-      type: REMOVE_LOOK_ITEM,
-      newItemsArr,
-    });
   }
 }
 

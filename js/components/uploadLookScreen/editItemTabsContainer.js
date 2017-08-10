@@ -3,13 +3,16 @@
 import {connect} from 'react-redux';
 import EditItemTabs from './editItemTabs';
 import {
-  addItemType,
-  toggleOccasionTag,
   addItemTag,
   removeItemTag,
+} from '../../actions';
+
+import {
+  addItemType,
+  toggleOccasionTag,
   addDescription,
   addUrl
-} from '../../actions';
+} from '../../actions/uploadLookB';
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {

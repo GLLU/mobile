@@ -23,7 +23,6 @@ export const DESCRIPTION = 'description';
 export const LINK = 'link';
 
 type Props = {
-  updateLookItem: () => void,
   publishLookItem: () => void,
   createLookItem: () => void,
   removeLookItem: () => void,
@@ -134,13 +133,9 @@ class UploadLookScreen extends Component {
   }
 
   handleNewItem() {
-    const locationX = w / 2;
-    const locationY = h / 2;
-    const left = locationX / w;
-    const top = locationY / h;
-    const position = { locationX: left, locationY: top };
-    this.props.createLookItem(position).then((data) => {
-      this.setState({ currItem: data.payload.item.id });
+    const {items} = this.props
+    this.props.createLookItem().then((data) => {
+      this.setState({ currItem: data });
     });
   }
   showRemoveItemModal() {
@@ -160,7 +155,6 @@ class UploadLookScreen extends Component {
 
   handleOnDragEnd(position) {
     this.props.setTagPosition(position);
-    this.props.updateLookItem(position.id);
   }
 
   _renderModal(confirmString, cancelString, title, subtitle = '', confirmAction, cancelAction) {

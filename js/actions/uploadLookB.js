@@ -17,6 +17,7 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+import UploadLookService from '../services/uploadLookService';
 
 import _ from 'lodash';
 
@@ -26,173 +27,149 @@ import Utils from '../utils';
 
 let api_key = null;
 // Actions
+export function addNewLook(image) {
+  return (dispatch, getState) => {
+    dispatch(showProcessing());
+    return new Promise((resolve, reject) => {
+      const user = getState().user;
+      if (user && user.id !== -1) {
+        Utils.getKeychainData().then(credentials => {
+          api_key = credentials.password;
+          if (api_key) {
+            UploadLookService.createLook().then((emptyLookData) => {
+              console.log('image',image)
+              const payload = _.merge(emptyLookData.look, {
+                image: image.localPath,
+                items: [{
+                  brand: null,
+                  id: 0,
+                  category: null,
+                  cover_x_pos: 0.5,
+                  cover_y_pos: 0.5,
+                  look_id: emptyLookData.id,
+                  occasions: [],
+                  tags: [],
+                }],
+              });
 
-function _updateLook(lookId, params, dispatch, options = {}) {
-  const body = {
-    look: Object.assign({}, params),
-  }
+              dispatch({
+                type: EDIT_NEW_LOOK,
+                payload,
+              });
+              resolve(payload);
+              dispatch(hideProcessing());
+              // Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
+              //   if (data) {
+              //     console.log('looks image data',data)
+              //     const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+              //     if (data.look.cover.type !== "image") {
+              //       const payload = _.merge(data.look, {
+              //         image: url,
+              //         items: [{
+              //           brand: null,
+              //           id: -1,
+              //           category: null,
+              //           cover_x_pos: 0.5,
+              //           cover_y_pos: 0.5,
+              //           look_id: -1,
+              //           occassions: [],
+              //           tags: [],
+              //         }],
+              //         localFilePath: image.localPath
+              //       });
+              //
+              //       dispatch({
+              //         type: EDIT_NEW_LOOK,
+              //         payload,
+              //       });
+              //       resolve(payload);
+              //       dispatch(hideProcessing());
+              //     } else {
+              //       Utils.preloadImages([url]).then(() => {
+              //         const payload = _.merge(data.look, {
+              //           image: url,
+              //           items: [{
+              //             brand: null,
+              //             id: -1,
+              //             category: null,
+              //             cover_x_pos: 0.5,
+              //             cover_y_pos: 0.5,
+              //             look_id: -1,
+              //             occassions: [],
+              //             tags: [],
+              //           }],
+              //         });
+              //         dispatch({
+              //           type: EDIT_NEW_LOOK,
+              //           payload,
+              //         });
+              //         resolve(payload);
+              //         dispatch(hideProcessing());
+              //       }).catch(reject);
+              //     }
+              //   } else {
+              //     reject('Uplaod error');
+              //   }
+              // }).catch(reject);
+            });
 
-  return makeRequest(dispatch, rest.actions.looks.put, [
-    {id: lookId},
-    {body: JSON.stringify(body)}
-  ], options);
-}
+          } else {
+            dispatch(hideProcessing());
+            reject('Authorization error')
+          }
+        }).catch(reject);
 
-function _updateItem(lookId, itemId, params, dispatch) {
-  const body = {
-    item: Object.assign({}, params),
-  }
-  return makeRequest(dispatch, rest.actions.items.put, [
-    {look_id: lookId, id: itemId},
-    {body: JSON.stringify(body)}
-  ]);
-}
-
-function makeRequest(dispatch, endPoint, endPointParams) {
-  return new Promise((resolve, reject) => {
-    dispatch(endPoint(...endPointParams, (err, data) => {
-      if (!err) {
-        resolve(data);
       } else {
-        reject(err);
+        reject('Authorization error')
       }
-    }));
-  });
+    });
+  }
 }
 
-export function updateLookItem(currItemId) {
+export function setTagPosition(payload) {
+  return {
+    type: SET_TAG_POSITION,
+    payload: payload
+  }
+}
+
+export function createLookItem() {
   return (dispatch, getState) => {
-    const state = getState();
-    const itemId = currItemId
-    const {lookId, items} = state.uploadLook;
-    const item = itemId ? _.find(items, item => item.id === itemId) : null;
-    const {brand, category, locationX, locationY} = item;
-    const brand_id = brand ? brand.id : undefined;
-    const category_id = category ? category.id : undefined;
-    const params = {
-      brand_id,
-      category_id,
-      cover_x_pos: locationX,
-      cover_y_pos: locationY,
-    }
-
-    return _updateItem(lookId, itemId, params, dispatch);
-  }
-}
-
-function restAddItemCategory(lookId, itemId, dispatch) {
-  const params = {
-    category_id: categoryItem.id,
-  }
-  return _updateItem(lookId, itemId, params, dispatch).then(data => {
-   console.log('add item category:', data)
-  }).catch(err => {
-    console.log('add item category error', err);
-  });
-}
-
-function restAddItemBrand(lookId, itemId, dispatch) {
-  const params = {
-    brand_id: payload.id,
-  }
-  return _updateItem(lookId, itemId, params, dispatch).then(data => {
-    console.log('add item brand:', data)
-  }).catch(err => {
-    console.log('add item brand error', err);
-  });
-}
-
-export function addItemTag(tag, itemId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const {lookId} = state.uploadLook;
-    const body = {
-      tag_name: tag
-    }
     return new Promise((resolve, reject) => {
-      return makeRequest(dispatch, rest.actions.item_tags.post, [
-        {look_id: lookId, item_id: itemId},
-        {body: JSON.stringify(body)}
-      ]).then(data => {
-        const payload = {data: data.item_tag.tag, itemId}
-        dispatch({
-          type: ADD_ITEM_TAG,
-          payload
-        });
-        resolve();
-      }).catch(reject);
-    });
-  };
-}
-
-export function removeItemTag(tag, itemId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const {lookId} = state.uploadLook;
-    const body = {
-      tag_name: tag
-    }
-    return new Promise((resolve, reject) => {
-      return makeRequest(dispatch, rest.actions.item_tags.delete, [
-        {look_id: lookId, item_id: itemId},
-        {body: JSON.stringify(body)}
-      ]).then(data => {
-        const payload = {data: tag, itemId}
-        dispatch({
-          type: REMOVE_ITEM_TAG,
-          payload
-        });
-        resolve();
-      }).catch(reject);
-    });
-  };
-}
-
-export function addDescription(description) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const {lookId} = state.uploadLook;
-    const params = {
-      description,
-    }
-    return _updateLook(lookId, params, dispatch).then(data => {
+      const newItemId = incrementedItemId += 1
       dispatch({
-        type: ADD_DESCRIPTION,
-        payload: description
+        type: CREATE_LOOK_ITEM_BY_POSITION,
+        itemId: newItemId
       })
-    }).catch(err => {
-      console.log('error', err);
+      resolve(newItemId)
     });
-  };
+  }
 }
 
-export function addUrl(url, itemId) {
-  console.log('urlll action', url)
+export function removeLookItem(itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const {lookId} = state.uploadLook;
-    const params = {
-      url,
-    }
-    return _updateItem(lookId, itemId, params, dispatch).then(data => {
-      const payload = {
-        url,
-        itemId
-      }
-      dispatch({
-        type: ADD_ITEM_URL,
-        payload
-      })
-    }).catch(err => {
-      console.log('error', err);
+    const lookItems = _.cloneDeep(state.uploadLook.items)
+    const newItemsArr = _.filter(lookItems, (item) => item.id !== itemId);
+    dispatch({
+      type: REMOVE_LOOK_ITEM,
+      newItemsArr,
+    });
+  }
+}
+
+export function addItemType(categoryItem, itemId) {
+  return (dispatch) => {
+    const payload = {categoryItem, itemId}
+    dispatch({
+      type: ADD_ITEM_TYPE,
+      payload
     });
   };
 }
 
 export function toggleOccasionTag(tagId, selected, itemId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const {lookId} = state.uploadLook;
+  return (dispatch) => {
     if (selected) {
       // remove
       const payload = {tagId, itemId}
@@ -200,8 +177,7 @@ export function toggleOccasionTag(tagId, selected, itemId) {
         type: REMOVE_ITEM_OCCASION_TAG,
         payload
       });
-    } else {
-      // add
+    } else { // add
       const payload = {tagId, itemId}
       dispatch({
         type: ADD_ITEM_OCCASION_TAG,
@@ -211,25 +187,24 @@ export function toggleOccasionTag(tagId, selected, itemId) {
   };
 }
 
-export function resttoggleOccasionTag(tagId, selected, itemId) {
+export function addDescription(description) {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_DESCRIPTION,
+      payload: description
+    })
+  };
+}
+
+export function addUrl(url, itemId) {
   return (dispatch, getState) => {
-    const state = getState();
-    const {lookId} = state.uploadLook;
-    if (selected) {
-      // remove
-      dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tagId}, (err, data) => {
-        console.log('remove Item Tag', data)
-      }));
-    } else { // add
-      const body = {
-        tag_id: tagId
-      }
-      dispatch(rest.actions.item_occasions.post({
-        look_id: lookId,
-        item_id: itemId
-      }, {body: JSON.stringify(body)}, (err, data) => {
-        console.log('add Item Tag', data)
-      }));
+    const payload = {
+      url,
+      itemId
     }
+    dispatch({
+      type: ADD_ITEM_URL,
+      payload
+    })
   };
 }

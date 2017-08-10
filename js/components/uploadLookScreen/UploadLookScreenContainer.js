@@ -7,10 +7,12 @@ import Utils from '../../utils';
 import {
   updateLookItem,
   publishLookItem,
+} from '../../actions/uploadLook';
+import {
   createLookItem,
   setTagPosition,
   removeLookItem
-} from '../../actions/uploadLook';
+} from '../../actions/uploadLookB';
 import {
   getFeed,
   clearFeed,
@@ -21,7 +23,6 @@ import {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateLookItem: look => dispatch(updateLookItem(look)),
     publishLookItem: look => dispatch(publishLookItem(look)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
@@ -38,7 +39,7 @@ const mapStateToProps = (state) => {
   return {
     lookId,
     isVideo,
-    filePath: isVideo && localFilePath ? localFilePath : image,
+    filePath: image,
     items,
     state: state.uploadLook.state,
     categories: state.filters.categories,

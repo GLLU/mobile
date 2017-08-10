@@ -6,7 +6,8 @@ import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
+import { setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
+import {addNewLook} from '../../actions/uploadLookB'
 import {toggleFiltersMenus} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';

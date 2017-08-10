@@ -14,14 +14,16 @@ const whiteMarkerWithBorder = require('../../../images/markers/tag_red.png');
 const greenMarkerWithBorder = require('../../../images/markers/tag_red_circle.png');
 const greenMarker = require('../../../images/markers/tag_green_Circle.png');
 
-const TAG_WIDTH = 30;
+const TAG_WIDTH = 35;
+const TAG_HEIGHT = 35;
+
 const BORDER_WIDTH = 5;
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   itemBgImage: {
-    height: 30,
+    height: TAG_HEIGHT,
     width: TAG_WIDTH,
     resizeMode: 'contain'
   },
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
   },
   itemMarker: {
     position: 'absolute',
-    height: 30,
+    height: TAG_HEIGHT,
     width: TAG_WIDTH,
   },
 });

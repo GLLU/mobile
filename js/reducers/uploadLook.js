@@ -22,6 +22,17 @@ import {
 } from '../actions/uploadLook';
 import {lookMapper, itemMapper} from '../mappers/';
 
+const newItem = {
+  brand: null,
+  id: -1,
+  category: null,
+  cover_x_pos: 0.5,
+  cover_y_pos: 0.5,
+  look_id: -1,
+  occasions: [],
+  tags: [],
+}
+
 const mutateItem = function (state, key, value, id) {
   return state.items.map(item => {
     if (item.id === id) {
@@ -50,15 +61,14 @@ const ACTION_HANDLERS = {
     }
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
-    const item = action.payload.item;
-    const itemType = action.payload.item.look.cover.type;
-    const itemId = item.id
-    const items = state.items;
+    const { items } = state;
+    let item = newItem;
+    item.id = action.itemId
+    console.log('item.id',item.id)
     items.push(itemMapper(item));
+    console.log('items after',items)
     return {
       ...state,
-      itemId,
-      itemType,
       items,
     }
   },
