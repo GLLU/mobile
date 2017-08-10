@@ -91,7 +91,7 @@ class UserLooks extends Component {
   renderEditLookBtn(look) {
     return (
       <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn]}>
-        <Text style={styles.editText}>{i18n.t('EDIT')}</Text>
+        <Text style={styles.editText}>{i18n.t('EDIT_LARGE')}</Text>
       </TouchableOpacity>
 
     );
