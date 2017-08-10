@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   categoryItemImage: {
     height: generateAdjustedSize(45),
     width: generateAdjustedSize(45),
+    backgroundColor: 'transparent',
     alignSelf: 'center',
   },
   btnCategoryItem: {
@@ -37,11 +38,13 @@ const styles = StyleSheet.create({
 class FilterButton extends BaseComponent {
   static propTypes = {
     filter: React.PropTypes.object,
+    showText: React.PropTypes.boolean,
     onPress: React.PropTypes.func,
   }
 
   static defaultProps = {
     onPress: _.noop,
+    showText: true,
     filter: {
       selected: false,
       name: 'Items',
@@ -99,7 +102,7 @@ class FilterButton extends BaseComponent {
   }
 
   render() {
-    const {filter} = this.props;
+    const {filter, showText} = this.props;
     const {selected} = this.state;
     return (
       <View style={[styles.categoryItem]}>
@@ -109,7 +112,7 @@ class FilterButton extends BaseComponent {
         >
           <View style={{justifyContent: 'center', alignItems: 'center', flex: -1}}>
             {filter.icon ? this._renderIcon(filter.icon, selected) : this._renderColor(filter.color, selected)}
-            {filter.icon ? this._renderFilterName(selected, filter.name) : null}
+            {showText ? this._renderFilterName(selected, filter.name) : null}
           </View>
         </TouchableWithoutFeedback>
       </View>

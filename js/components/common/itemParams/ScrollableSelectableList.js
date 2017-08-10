@@ -8,6 +8,7 @@ import _ from 'lodash';
 type Props = {
   filters: array,
   onSelectionChange: void,
+  showTexts: boolean,
   mode: string
 };
 
@@ -18,6 +19,7 @@ class ScrollableSelectableList extends Component {
   static defaultProps = {
     onSelectionChange: _.noop,
     filters: [],
+    showTexts: true,
     mode: 'multi',
   }
 
@@ -59,7 +61,7 @@ class ScrollableSelectableList extends Component {
   }
 
   render() {
-    const {mode} = this.props
+    const {mode, showTexts} = this.props
     const filters = mode === 'single' ? this.checkSingleSelectedQuery() : this.checkMultiSelectedQuery()
     return (
       <ScrollView horizontal style={styles.container}
@@ -67,6 +69,7 @@ class ScrollableSelectableList extends Component {
         {_.map(filters, (filter, i) => (
           <SelectableItem
             onPress={this.onSingleSelectValue}
+            showText={showTexts}
             key={i} filter={filter}/>
         ))}
       </ScrollView>

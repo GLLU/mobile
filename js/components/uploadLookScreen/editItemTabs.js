@@ -128,7 +128,7 @@ export default class EditItemTabs extends Component {
 
   _renderScene = ({ route }) => {
     const { index } = this.state;
-    const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
+    const { currentItem, categoryFilters, occasionsFilters, itemBrand, brandsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
     switch (route.key) {
       case CATEGORY:
         return (<ScrollableSelectableList
@@ -136,11 +136,14 @@ export default class EditItemTabs extends Component {
           filters={categoryFilters} currentFilter={itemCategory} />);
 
       case BRAND:
-        return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
+        return (<ScrollableSelectableList
+          mode="single" onSelectionChange={this._addItemTag} showTexts={false}
+          filters={brandsFilters} currentFilter={itemColors} />);
+      //return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
       case COLOR:
         return (<ScrollableSelectableList
           mode="multi" onSelectionChange={this._addItemTag}
-          filters={colorsFilters} currentFilter={itemColors} />);
+          filters={colorsFilters} currentFilter={itemBrand} />);
       case MOOD:
         return (<ScrollableSelectableList
           mode="multi" onSelectionChange={occasion => toggleOccasionTag(occasion, occasion.selected)}

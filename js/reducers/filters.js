@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import i18n from 'react-native-i18n';
-import {SET_BRANDS, SET_CATEGORIES, SET_OCCASION_TAGS, OPEN_FEED_FILTER, CLOSE_FEED_FILTER} from '../actions/filters';
+import {SET_BRANDS, SET_CATEGORIES, SET_OCCASION_TAGS, OPEN_FEED_FILTER, CLOSE_FEED_FILTER, SET_FEATURED_BRANDS} from '../actions/filters';
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../actions/feed';
 export const CATEGORIES = 'CATEGORIES';
 export const EVENTS = 'EVENTS';
@@ -10,6 +10,7 @@ const initialState = {
   occasion_tags: [],
   categories: [],
   brands: [],
+  featuredBrands: [],
   filterMenuStatus: {
     [FEED_TYPE_BEST_MATCH]: false,
     [FEED_TYPE_FOLLOWING]: false,
@@ -91,6 +92,12 @@ const ACTION_HANDLERS = {
       ...state,
       categories,
     }
+  },
+  [SET_FEATURED_BRANDS]: (state, action) => {
+    return {
+      ...state,
+      featuredBrands: action.brands,
+    };
   },
   [SET_OCCASION_TAGS]: (state, action) => {
     const occasion_tags = _.filter(action.payload.tags, (item) => item.parent_id === null);

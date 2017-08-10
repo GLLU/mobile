@@ -42,7 +42,7 @@ export function addNewLook(image) {
                   const payload = _.merge(data.look, {
                     image: url,
                     items: [{
-                      brand: null,
+                      brand: -1,
                       id: -1,
                       category: null,
                       cover_x_pos: 0.5,
@@ -65,7 +65,7 @@ export function addNewLook(image) {
                     const payload = _.merge(data.look, {
                       image: url,
                       items: [{
-                        brand: null,
+                        brand: -1,
                         id: -1,
                         category: null,
                         cover_x_pos: 0.5,
