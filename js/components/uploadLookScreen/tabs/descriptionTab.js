@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
-  TextInput
+  TextInput,
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 
@@ -38,7 +38,7 @@ class DescriptionTab extends Component {
 
   render() {
     return (
-      <View style={styles.rowContainer}>
+
         <View
           style={[styles.filtersGroupContainer]}>
           <TextInput
@@ -51,7 +51,6 @@ class DescriptionTab extends Component {
             onEndEditing={this.handleDescriptionEndEditing}
             onChangeText={(text) => this.updateDescription(text)}/>
         </View>
-      </View>
     );
   }
 }

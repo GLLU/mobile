@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Dimensions, Platform, View, StyleSheet } from 'react-native';
+import { Dimensions, Platform, View, StyleSheet, KeyboardAvoidingView, BackAndroid } from 'react-native';
 import UploadLookHeader from './UploadLookHeader';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';
@@ -90,6 +90,17 @@ class UploadLookScreen extends Component {
       name: 'User started uploading a look',
       mediaType: isVideo ? 'Video' : 'Image',
     });
+  }
+
+  componentWillMount() {
+    BackAndroid.addEventListener('uploadBackPress', () => {
+      this.handleBackButton();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('uploadBackPress');
   }
 
   publishAction() {
@@ -200,10 +211,12 @@ class UploadLookScreen extends Component {
     const { items } = this.props;
     const isFirstItem = currItem === items[0].id;
     return (
+    <KeyboardAvoidingView  behavior='padding'>
       <EditItemTabs
         item={currItem}
         setCurrentStep={this.setCurrentStep}
         isFirstItem={isFirstItem} />
+    </KeyboardAvoidingView>
     );
   }
 
