@@ -69,8 +69,10 @@ class ModalQuestion extends Component {
         visible={this.props.modalVisible}
         onRequestClose={() => {closeModal({modalVisible: false})}}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContentContainer}>
+        <TouchableOpacity style={styles.modalContainer} onPress={
+          this._cancelAction
+        }>
+          <View  style={styles.modalContentContainer}>
             <TouchableOpacity onPress={
               this._cancelAction
             } style={styles.closeBtn}>
@@ -91,7 +93,7 @@ class ModalQuestion extends Component {
             </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     );
   }
