@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     marginTop: generateAdjustedSize(6),
     color: Colors.Gray,
     alignSelf: 'center',
-    flex: 1
   }
 });
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text, Image, Platform } from 'react-native';
 import Colors from '../../styles/Colors.styles';
 import Fonts from '../../styles/Fonts.styles';
-
 import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import i18n from 'react-native-i18n';
 const trash = require('../../../images/icons/trash.png');
