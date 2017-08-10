@@ -33,7 +33,7 @@ export const newItem = {
   occasions: [],
   colors: [],
   tags: [],
-  newItem: true,
+  isNew: true,
 }
 
 const mutateItem = function (state, key, value, id) {

@@ -52,59 +52,23 @@ export function addNewLook(image) {
               });
               resolve(payload);
               dispatch(hideProcessing());
-              // Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
-              //   if (data) {
-              //     console.log('looks image data',data)
-              //     const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-              //     if (data.look.cover.type !== "image") {
-              //       const payload = _.merge(data.look, {
-              //         image: url,
-              //         items: [{
-              //           brand: null,
-              //           id: -1,
-              //           category: null,
-              //           cover_x_pos: 0.5,
-              //           cover_y_pos: 0.5,
-              //           look_id: -1,
-              //           occassions: [],
-              //           tags: [],
-              //         }],
-              //         localFilePath: image.localPath
-              //       });
-              //
-              //       dispatch({
-              //         type: EDIT_NEW_LOOK,
-              //         payload,
-              //       });
-              //       resolve(payload);
-              //       dispatch(hideProcessing());
-              //     } else {
-              //       Utils.preloadImages([url]).then(() => {
-              //         const payload = _.merge(data.look, {
-              //           image: url,
-              //           items: [{
-              //             brand: null,
-              //             id: -1,
-              //             category: null,
-              //             cover_x_pos: 0.5,
-              //             cover_y_pos: 0.5,
-              //             look_id: -1,
-              //             occassions: [],
-              //             tags: [],
-              //           }],
-              //         });
-              //         dispatch({
-              //           type: EDIT_NEW_LOOK,
-              //           payload,
-              //         });
-              //         resolve(payload);
-              //         dispatch(hideProcessing());
-              //       }).catch(reject);
-              //     }
-              //   } else {
-              //     reject('Uplaod error');
-              //   }
-              // }).catch(reject);
+              Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
+                if (data) {
+                  console.log('looks image data',data)
+                  const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+                  if (data.look.cover.type !== "image") {
+                    resolve(payload);
+                    dispatch(hideProcessing());
+                  } else {
+                    Utils.preloadImages([url]).then(() => {
+                      resolve(payload);
+                      dispatch(hideProcessing());
+                    }).catch(reject);
+                  }
+                } else {
+                  reject('Uplaod error');
+                }
+              }).catch(reject);
             });
 
           } else {
@@ -201,6 +165,7 @@ export function toggleItemColors(colorId, selected, itemId) {
 }
 
 export function addDescription(description) {
+  console.log('desc action', description)
   return (dispatch) => {
     dispatch({
       type: ADD_DESCRIPTION,
@@ -260,7 +225,7 @@ export function publishLook() {
   return (dispatch, getState) => {
     const state = getState();
 
-    const {lookId, items} = state.uploadLook;
+    const {lookId, items, description} = state.uploadLook;
 
     return new Promise((resolve, reject) => {
       _.forEach(items, (item) => {
@@ -268,14 +233,38 @@ export function publishLook() {
           item: {
             cover_x_pos: item.locationX,
             cover_y_pos: item.locationY,
-            category: item.category,
+            category_id: item.category,
             brand_id: item.brand,
-            colors: item.colors
+            color_ids: item.colors,
+            url: item.url
           }
         };
-        UploadLookService.createItem(lookId, body);
+        const method = item.isNew ? 'post' : 'put'
+        UploadLookService.createOrEditItem(lookId, body, method).then((createdItemData) => {
+          _.forEach(item.occasions, (occasion) => {
+            const occasionBody = {
+              tag_id: occasion
+            }
+            UploadLookService.addItemOccasions(lookId, createdItemData.item.id ,occasionBody).then((occasionData) => {
+              console.log('occasion data:',occasionData);
+            })
+          })
+          UploadLookService.publishLook(lookId).then((newLook) => {
+            if(description.length > 0){
+              const descriptionBody = {
+                description
+              }
+              UploadLookService.updateLook(lookId, descriptionBody).then((updatedLookLook) => {
+                console.log('updatedLookLook data:',updatedLookLook)
+              })
+            }
+          })
+
+        })
       });
       //resolve()
+    }).then(() => {
+
     });
 
     // return new Promise((resolve, reject) => {
