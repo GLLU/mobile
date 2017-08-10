@@ -15,7 +15,6 @@ class BrandUrlInput extends PureComponent {
 
   constructor(props) {
     super(props)
-    this._addUrl = this._addUrl.bind(this)
     const formattedUrl = props.itemUrl.replace('http://', '');
     this.state = {
       url: formattedUrl
@@ -26,16 +25,13 @@ class BrandUrlInput extends PureComponent {
     this.setState({
       url: value
     });
+    this.props.addUrl(value);
   }
 
   _clearUrl() {
     this.setState({
       url: ''
     });
-  }
-
-  _addUrl() {
-    this.props.addUrl(this.state.url)
   }
 
   render() {
@@ -45,7 +41,7 @@ class BrandUrlInput extends PureComponent {
       <View style={styles.brandInputContainer}>
         <Text style={styles.explanationText}>Type the web-link to your item to help people find it:</Text>
         <View style={styles.urlRowContainer}>
-          <Text style={styles.httpText}>Http://www.</Text>
+          <Text style={styles.httpText}>http://www.</Text>
           <View style={styles.textInputContainer}>
             <TextInput
               ref={ref => this.urlText = ref}
@@ -59,9 +55,6 @@ class BrandUrlInput extends PureComponent {
           <TouchableOpacity onPress={this._clearUrl}
                             style={styles.clearContainer}>
             <Image source={clear} style={styles.clearText}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._addUrl}>
-            <Text style={styles.saveText}>Save</Text>
           </TouchableOpacity>
         </View>
       </View>
