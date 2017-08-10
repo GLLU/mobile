@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, TextInput, Text, Platform, View, TouchableOpacity, Image} from 'react-native';
 import withAnalytics from '../common/analytics/WithAnalytics';
 import _ from 'lodash';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
 import FontSizeCalculator from './../../calculators/FontSize';
 const searchIcon = require('../../../images/icons/search-black.png');
 const clear = require('../../../images/icons/cancel-clear-x.png');
@@ -21,19 +23,18 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     flex: 1,
     backgroundColor: 'white',
-    fontFamily: 'PlayfairDisplay-Regular',
     fontSize: Platform.OS === 'ios' ? new FontSizeCalculator(13).getSize() : new FontSizeCalculator(14).getSize(),
-    fontWeight: '200',
-    color: '#757575',
+    fontFamily: Fonts.regularFont,
+    color: Colors.gray,
     borderRadius: 10,
-    height: Platform.OS === 'ios' ? 35 : 50
+    height: Platform.OS === 'ios' ? 35 : 50,
   },
   btnCloseFilter: {
     marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.4,
-    borderColor: '#757575',
+    color: Colors.gray,
     borderRadius: 10,
     height: 20,
     width: 65

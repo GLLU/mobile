@@ -49,7 +49,7 @@ class SwipeWizardOverlay extends Component {
 
     return (
 
-      <TouchableOpacity style={{ flex: 1, position: 'absolute' }} onPress={onClose}>
+      <TouchableOpacity style={{ flex: 1, width, height, position: 'absolute' }} onPress={onClose}>
         <View style={styles.container}>
           <View style={{ position: 'absolute', width, height, backgroundColor: '#343434', opacity: 0.8 }} />
           <Animated.View style={[{ marginTop }]}>

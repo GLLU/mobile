@@ -45,7 +45,6 @@ const mapStateToProps = (state) => {
     user_gender: state.user.gender,
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
-    showBodyModal: state.user.showBodyModal,
     isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_WHATS_HOT],
     myFeedType: FEED_TYPE_WHATS_HOT,
   };

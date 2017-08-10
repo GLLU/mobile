@@ -28,8 +28,10 @@ import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
+import EmptyStateScreen from '../common/EmptyStateScreen';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
+const noResultsIcon = require('../../../images/emptyStates/search.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
@@ -66,13 +68,11 @@ class HotTabContent extends BaseComponent {
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
     };
-    this.scrollCallAsync = _.debounce(this.scrollDebounced, 100);
-    this.showBodyModal = _.once(this._showBodyModal);
     this.currPosition = 0;
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
+    this.logEvent('Feedscreen', { name: 'Invite your friends click' });
     const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
@@ -105,7 +105,7 @@ class HotTabContent extends BaseComponent {
 
     if (nextProps.clearedField) {
       this.currPosition = 0;
-      this.setState({noMoreData: false});
+      this.setState({ noMoreData: false });
     }
 
     if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
@@ -127,28 +127,23 @@ class HotTabContent extends BaseComponent {
 
   handleScroll(event) {
     if (this.props.cardNavigationStack.index === 0) {
-      if (this.props.showBodyModal) {
-        this.scrollCallAsync(event);
-      } else {
-        const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-        const contentSizeHeight = event.nativeEvent.contentSize.height;
-        const currentScroll = event.nativeEvent.contentOffset.y;
-        if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
-          if (!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({loadingMore: true}, this.loadMore);
-          }
-        } else {
+      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+      const contentSizeHeight = event.nativeEvent.contentSize.height;
+      const currentScroll = event.nativeEvent.contentOffset.y;
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+        if (!this.state.loadingMore && !this.state.isLoading) {
+          this.setState({ loadingMore: true }, this.loadMore);
         }
+      } else {
       }
-      this.currPosition = event.nativeEvent.contentOffset.y;
     }
+    this.currPosition = event.nativeEvent.contentOffset.y;
   }
-
 
   handleScrollPositionForVideo() {
     if (this.state.currentScrollPosition !== this.currPosition) {
       this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
-      this.setState({currentScrollPosition: this.currPosition});
+      this.setState({ currentScrollPosition: this.currPosition });
     }
   }
 
@@ -157,32 +152,24 @@ class HotTabContent extends BaseComponent {
       console.log('already isLoading');
       return;
     }
-    const {meta: {total}, query} = this.props;
+    const { meta: { total }, query } = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({isLoading: true}, () => {
+      this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-            this.setState({isLoading: false});
+            this.setState({ isLoading: false });
           }
         ).catch((err) => {
           console.log('error', err);
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
         });
       });
     } else {
-      this.setState({noMoreData: true});
+      this.setState({ noMoreData: true });
       console.log('end of feed');
     }
-  }
-
-  _showBodyModal() {
-    this.props.showBodyTypeModal();
-  }
-
-  scrollDebounced(e) {
-    this.showBodyModal();
   }
 
   _renderLooks(looks: array) {
@@ -206,7 +193,7 @@ class HotTabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
+            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
             return <Spinner color="rgb(230,230,230)"/>;
@@ -249,27 +236,27 @@ class HotTabContent extends BaseComponent {
   }
 
   onRefresh() {
-    this.setState({isRefreshing: true});
-    const {getFeed, query} = this.props;
+    this.setState({ isRefreshing: true });
+    const { getFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
     getFeed(cleanQuery)
       .then(() => {
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       })
       .catch((error) => {
         console.log('Error when preload image', error);
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       });
   }
 
   renderInviteFriend() {
     return (
-      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
+      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
         <Image
-          source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-          style={{width: deviceWidth / 2 - 6, height: deviceWidth / 4}}
+          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
+          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
           resizeMode={'stretch'}/>
       </View>
     );
@@ -285,10 +272,10 @@ class HotTabContent extends BaseComponent {
         justifyContent: 'flex-end',
         alignSelf: 'center'
       }}>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
             {this.renderInviteFriend()}
           </TouchableOpacity>
@@ -299,17 +286,14 @@ class HotTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
+    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
+    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
+
     return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        <Image source={profileBackground}
-               style={{resizeMode: 'stretch', width: deviceWidth, height: deviceHeight - 80, alignSelf: 'flex-start'}}>
-          <LinearGradient
-            colors={['#0C0C0C', '#4C4C4C']}
-            style={[styles.linearGradient, {opacity: 0.7}]}/>
-          <View style={{marginTop: 100}}>
-            <ParisAdjustableMessage text={i18n.t('PARIS_NO_FEED_RESULTS')}/>
-          </View>
-        </Image>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <EmptyStateScreen
+          title={emptyTitle}
+          subtitle={emptySubtitle} icon={noResultsIcon}/>
       </View>
     );
   }
@@ -318,7 +302,7 @@ class HotTabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
@@ -333,34 +317,34 @@ class HotTabContent extends BaseComponent {
 
   _renderLoader() {
     return (
-      <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
-        <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
+      <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor}/>
       </View>
 
     )
   }
 
   _renderFilterView() {
-    const {myFeedType} = this.props;
+    const { myFeedType } = this.props;
     return (
       <FiltersView currentFeedTab={myFeedType}/>
     )
   }
 
   _renderFeedFilters() {
-    const {query} = this.props;
+    const { query } = this.props;
     return (
       <FeedFilters query={query} getFeed={this._getFeed}/>
     )
   }
 
   render() {
-    const {isFilterMenuOpen, flatLooks, isLoading} = this.props
+    const { isFilterMenuOpen, flatLooks, isLoading } = this.props
     if (isLoading) {
       return this._renderLoader();
     } else {
       return (
-        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           {this._renderFeedFilters()}
           { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
           { isFilterMenuOpen ? this._renderFilterView() : null}

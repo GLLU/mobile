@@ -19,7 +19,7 @@
   "REPORT_TEXT": "Thank you for making inFash better! we'll examine your report and will be in touch with you over email.",
   "BLOCK_TEXT": "You will not see any activity from this user anymore.",
   "BLOCK_ARE_YOU_SURE": "Are you sure you want to block this user?",
-  "EMPTY_BLOCKED_USERS": "You haven't blocked anyone yet.",
+  "EMPTY_BLOCKED_USERS": "You haven't blocked anyone.",
   "NO": "No",
   "YES": "Yes",
   "PARIS_NO_FEED_RESULTS": "Sorry, we could not find any relevant results",
@@ -45,8 +45,8 @@
   "EMPTY_BALANCE_TITLE": "YOUR BALANCE IS EMPTY",
   "POST_NOW": "POST NOW",
   "EMPTY_BALANCE_LEGEND": "Post your fashionable looks to get people to buy the items you're wearing and start making money.",
-  "SHOP_NOW": "SHOP NOW",
-  "VISIT_RETAILER": "VISIT RETAILER’S WEBSITE",
+  "SHOP_NOW": "Shop Now",
+  "VISIT_RETAILER": "Retailer's Website",
   "CATEGORIES": "CATEGORIES",
   "EVENTS": "EVENTS",
   "BODY_SHAPES": "BODY SHAPES",
@@ -100,5 +100,8 @@
   "MOOD": "MOOD",
   "DESCRIPTION": "DESCRIPTION",
   "LINK": "LINK",
+  "EMPTY_FEED_TITLE": "NO LOOK WAS FOUND IN THIS SEARCH",
+  "EMPTY_FEED_LEGEND": "Try to change your search filters.\nWe have a lot of cool looks that will fit to your style! ",
+  "WITHDRAW": "WITHDRAW"
 }
 

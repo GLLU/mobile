@@ -12,7 +12,6 @@ const initialState = {
   can_simple_login: null,
   api_key: null,
   showTutorial: false,
-  showBodyModal: true,
   hasChoosenBodyShape: false,
   showSwipeWizard: true,
   showWalletBadge: true,
@@ -55,7 +54,6 @@ const ACTION_HANDLERS = {
   [RESET_STATE]: (state, action) => ({
     ...initialState,
     showTutorial: state.showTutorial,
-    showBodyModal: state.showBodyModal,
     showWalletBadge: state.showWalletBadge,
     hasChoosenBodyShape: state.hasChoosenBodyShape,
     showSwipeWizard: state.showSwipeWizard,

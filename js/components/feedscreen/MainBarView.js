@@ -17,8 +17,8 @@ import withAnalytics from '../common/analytics/WithAnalytics';
 
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
-import {formatNumberAsAmount} from '../../utils/FormatUtils';
-
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import { formatNumberAsAmount } from '../../utils/FormatUtils';
 const homeIcon = require('../../../images/logo/inFASH-header.png');
 const userIcon = require('../../../images/icons/Profile_black.png');
 const emptyNotification = require('../../../images/icons/Bell.png');
@@ -51,10 +51,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   walletBalance: {
-    fontSize: 16,
+    fontSize: generateAdjustedSize(16),
     lineHeight: 16,
     color: Colors.black,
-    marginHorizontal: 8,
     fontFamily: Fonts.regularFont,
   },
   logo: {
@@ -196,7 +195,7 @@ class MainBarView extends BaseComponent {
     const notificationsIcon = gotNewNotifications ? gotNotification : emptyNotification;
     return (
       <View style={styles.navigationBar}>
-        <View style={{flexDirection: 'row', flex: 1, alignItems: 'flex-end'}}>
+        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end' }}>
           {this.renderNavigationButton(userIcon, () => this.goToProfile(false), styles.btnImage)}
           {this._renderNavigationText(balance !== -1 ? formatNumberAsAmount(balance) : '0.0 US$', () => this.goToProfile(true), styles.walletBalance, showBalanceBadge)}
         </View>

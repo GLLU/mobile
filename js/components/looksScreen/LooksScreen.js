@@ -122,7 +122,7 @@ class LooksScreen extends Component {
   }
 
   _goToProfile(look: object) {
-    this.props.navigateTo('profileScreen', look);
+    this.props.navigateTo('profileScreen', { user: look });
   }
 
   _goToEdit(look: object) {
@@ -258,7 +258,7 @@ class LooksScreen extends Component {
         <VideoWithCaching
           source={{ uri: look.uri, mainVer: 1, patchVer: 0 }}
           resizeMode={'contain'}
-          muted={this.state.currScrollIndex !== look.originalIndex}
+          muted={true}
           style={styles.videoBackground}
           repeat
           navigation={this.props.cardNavigation}
@@ -325,6 +325,7 @@ class LooksScreen extends Component {
           {showShowArrow ? this.renderDownArrow() : null}
 
           {showSwipeWizard ?  <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
+
         </ImageWrapper>
       </GestureRecognizer>
     );

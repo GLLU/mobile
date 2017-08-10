@@ -21,6 +21,7 @@ import {openCamera} from '../../lib/camera/CameraUtils';
 import Header from '../common/headers/Header';
 import Spinner from '../loaders/Spinner';
 import {formatAvatar} from '../../utils/UploadUtils';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const background = require('../../../images/backgrounds/hands.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
@@ -86,7 +87,7 @@ class SignUpPage extends Component {
             });
             this.props.resetTo('feedscreen', user);
           })
-          .catch(err => this.setState({isSigningUp: false}));
+          .catch(err => this.setState({ isSigningUp: false }));
       });
     } else {
       this.props.onInvalidSignup(errorMessage);
@@ -201,18 +202,18 @@ class SignUpPage extends Component {
             <Image source={backgroundShadow} style={styles.bgShadow}/>
             <Header title="Sign Up" goBack={this.props.goBack}/>
             <Content scrollEnabled>
-
-              <View style={styles.uploadImgContainer}>
-                <ProfileAvatar
-                  avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)}
-                  isEditable/>
-              </View>
-              <KeyboardAvoidingView style={{ marginLeft: 16, marginRight: 16 }} behavior="padding">
+              <KeyboardAwareScrollView style={{ marginLeft: 16, marginRight: 16 }} extraScrollHeight={50}>
+                <View style={styles.uploadImgContainer}>
+                  <ProfileAvatar
+                    avatarUrl={this.state.avatar.path} changeUserAvatar={this.handleCameraPress.bind(this)}
+                    isEditable/>
+                </View>
                 <Text style={styles.inputTitle}>User Name</Text>
                 <View style={styles.formItem}>
                   <TextInput
                     ref={c => this.usernameInput = c}
                     blurOnSubmit={false}
+                    underlineColorAndroid="transparent"
                     onSubmitEditing={() => this.focusNext('nameInput')}
                     returnKeyType="next"
                     style={[styles.formInput]}
@@ -228,6 +229,7 @@ class SignUpPage extends Component {
                   <TextInput
                     ref={c => this.nameInput = c}
                     blurOnSubmit={false}
+                    underlineColorAndroid="transparent"
                     onSubmitEditing={() => this.focusNext('emailInput')}
                     returnKeyType="next"
                     style={[styles.formInput]}
@@ -248,6 +250,7 @@ class SignUpPage extends Component {
                     blurOnSubmit={false}
                     onSubmitEditing={() => this.focusNext('passwordInput')}
                     returnKeyType="next"
+                    underlineColorAndroid="transparent"
                     style={[styles.formInput]}
                     onChangeText={email => this.validateEmailInput(email)}/>
                   {this.state.email.value.length > 0 ?
@@ -262,6 +265,7 @@ class SignUpPage extends Component {
                   <TextInput
                     ref={c => this.passwordInput = c}
                     secureTextEntry
+                    underlineColorAndroid="transparent"
                     style={styles.formInput}
                     onChangeText={password => this.validatePasswordInput(password)}/>
                   {this.state.password.value.length > 0 ?
@@ -276,14 +280,13 @@ class SignUpPage extends Component {
                   label="Let's infash"
                   style={[styles.formBtn, allValid ? styles.validationPassed : null]}
                   onPress={this.handleSignupPress.bind(this)}
-                  loaderElement={<Spinner animating={this.state.isSigningUp} size={'small'} style={{ left: 10 }}/>}
                 />
                 <View style={styles.alreadyBox}>
                   <Text style={styles.alreadyTxt}>Already a user?</Text>
                   <TouchableOpacity onPress={this.handleLoginPress.bind(this)}><Text
                     style={styles.clickHere}>{i18n.t('CLICK_HERE')}</Text></TouchableOpacity>
                 </View>
-              </KeyboardAvoidingView>
+              </KeyboardAwareScrollView>
 
             </Content>
             <View style={styles.bottomContainerContent}>
