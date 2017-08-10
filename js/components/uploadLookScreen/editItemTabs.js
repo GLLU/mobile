@@ -20,6 +20,7 @@ export default class EditItemTabs extends Component {
     this._handleTabsIndexChange = this._handleTabsIndexChange.bind(this);
     this._addItemTag = this._addItemTag.bind(this);
     this._addItemCategory = this._addItemCategory.bind(this);
+    this._addItemBrand = this._addItemBrand.bind(this);
     this.routes = [
       { key: CATEGORY, title: i18n.t('CATEGORY')},
       { key: BRAND, title: i18n.t('BRAND')},
@@ -127,9 +128,18 @@ export default class EditItemTabs extends Component {
     }, 500);
   }
 
+  _addItemBrand(brand) {
+    const { addBrandName } = this.props;
+    addBrandName(brand.id);
+    const that = this;
+    setTimeout(() => {
+      that._handleTabsIndexChange(that.state.index + 1);
+    }, 500);
+  }
+
   _renderScene = ({ route }) => {
     const { index } = this.state;
-    const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
+    const { currentItem, categoryFilters, toggleItemColors, brandsFilters, itemBrand, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
     switch (route.key) {
       case CATEGORY:
         return (<ScrollableSelectableList
@@ -137,10 +147,17 @@ export default class EditItemTabs extends Component {
           filters={categoryFilters} currentFilter={itemCategory} />);
 
       case BRAND:
-        return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
+        return (
+          <View style={{flex: 1}}>
+            <ScrollableSelectableList
+              mode="single" onSelectionChange={this._addItemBrand} showTexts={false}
+              filters={brandsFilters} currentFilter={itemBrand} />
+            <BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />
+          </View>
+        );
       case COLOR:
         return (<ScrollableSelectableList
-          mode="multi" onSelectionChange={this._addItemTag}
+          mode="multi" onSelectionChange={color => toggleItemColors(color, color.selected)}
           filters={colorsFilters} currentFilter={itemColors} />);
       case MOOD:
         return (<ScrollableSelectableList
@@ -189,7 +206,7 @@ export default class EditItemTabs extends Component {
 const styles = StyleSheet.create({
   container: {
     height: generateAdjustedSize(135),
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: Colors.white,
   },
   tabStyle: {
     flex: 1,

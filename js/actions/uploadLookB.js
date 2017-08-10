@@ -17,11 +17,14 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
+export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
 import UploadLookService from '../services/uploadLookService';
 
 import _ from 'lodash';
 
 import rest from '../api/rest';
+import { newItem } from '../reducers/uploadLook';
 import {loadBrands, showProcessing, hideProcessing} from './index';
 import Utils from '../utils';
 
@@ -37,21 +40,10 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             UploadLookService.createLook().then((emptyLookData) => {
-              console.log('image',image)
               const payload = _.merge(emptyLookData.look, {
                 image: image.localPath,
-                items: [{
-                  brand: null,
-                  id: 0,
-                  category: null,
-                  cover_x_pos: 0.5,
-                  cover_y_pos: 0.5,
-                  look_id: emptyLookData.id,
-                  occasions: [],
-                  tags: [],
-                }],
+                items: [newItem],
               });
-
               dispatch({
                 type: EDIT_NEW_LOOK,
                 payload,
@@ -187,6 +179,25 @@ export function toggleOccasionTag(tagId, selected, itemId) {
   };
 }
 
+export function toggleItemColors(colorId, selected, itemId) {
+  return (dispatch) => {
+    if (selected) {
+      // remove
+      const payload = {colorId, itemId}
+      dispatch({
+        type: REMOVE_ITEM_COLOR,
+        payload
+      });
+    } else { // add
+      const payload = {colorId, itemId}
+      dispatch({
+        type: ADD_ITEM_COLOR,
+        payload
+      });
+    }
+  };
+}
+
 export function addDescription(description) {
   return (dispatch) => {
     dispatch({
@@ -197,7 +208,7 @@ export function addDescription(description) {
 }
 
 export function addUrl(url, itemId) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const payload = {
       url,
       itemId
@@ -207,4 +218,62 @@ export function addUrl(url, itemId) {
       payload
     })
   };
+}
+
+export function addBrandName(brand, itemId) {
+  return (dispatch) => {
+    const payload = {
+      brand,
+      itemId
+    }
+    dispatch({
+      type: ADD_BRAND_NAME,
+      payload: payload
+    });
+  };
+}
+
+export function createBrandName(newBrand) {
+  return (dispatch) => {
+    const body = {
+      brand: {
+        name: newBrand.name
+      }
+    }
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.brands.post({}, {body: JSON.stringify(body)}, (err, data) => {
+        if (!err && !_.isEmpty(data)) {
+          dispatch(loadBrands());
+          dispatch(addBrandName(data.brand.id, newBrand.itemId))
+          resolve()
+        } else {
+          reject(err);
+        }
+      }));
+    });
+  };
+}
+
+export function publishLook() {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const {lookId, items} = state.uploadLook;
+
+    return new Promise((resolve, reject) => {
+      _.forEach(items, (item) => {
+        UploadLookService.createItem(lookId, {body: item}).then((publishedLookData) => {
+          console.log('published item action data',publishedLookData)
+        });
+      });
+      //resolve()
+    });
+
+    // return new Promise((resolve, reject) => {
+    //   UploadLookService.createLook().then((publishedLookData) => {
+    //     console.log('published look data',publishedLookData)
+    //     resolve()
+    //   });
+    // });
+  }
 }

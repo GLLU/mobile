@@ -11,7 +11,8 @@ import {
 import {
   createLookItem,
   setTagPosition,
-  removeLookItem
+  removeLookItem,
+  publishLook
 } from '../../actions/uploadLookB';
 import {
   getFeed,
@@ -23,7 +24,7 @@ import {
 
 function mapDispatchToProps(dispatch) {
   return {
-    publishLookItem: look => dispatch(publishLookItem(look)),
+    publishLookItem: () => dispatch(publishLook()),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
     setTagPosition: position => dispatch(setTagPosition(position)),

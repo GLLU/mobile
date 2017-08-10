@@ -1,4 +1,4 @@
-import {StackNavigator} from 'react-navigation'
+import { StackNavigator } from 'react-navigation';
 import LoginPage from './components/loginScreen/';
 import FeedPage from './components/feedscreen';
 import UploadLookScreen from './components/uploadLookScreen/UploadLookScreenContainer';
@@ -29,7 +29,7 @@ import Splash from './components/splashScreen/SplashContainer';
 const stackNavigatorConfig = {
   initialRouteName: 'splash',
   headerMode: 'none',
-  gesturesEnabled: true
+  gesturesEnabled: true,
 };
 
 const routes = {
@@ -97,23 +97,23 @@ const routes = {
     screen: FollowerScreen,
   },
   notificationsScreen: {
-    screen: NotificationsScreen
+    screen: NotificationsScreen,
   },
   settingsScreen: {
-    screen: SettingsScreen
+    screen: SettingsScreen,
   },
   blockedUsersScreen: {
-    screen: BlockedUsersScreen
+    screen: BlockedUsersScreen,
   },
   editProfileScreen: {
     screen: EditProfile,
   },
   tutorialscreen: {
-    screen: TutorialScreen
+    screen: TutorialScreen,
   },
   badNavigation: {
-    screen: BadNavigationScreen
-  }
+    screen: BadNavigationScreen,
+  },
 };
 
 export default StackNavigator(routes, stackNavigatorConfig);

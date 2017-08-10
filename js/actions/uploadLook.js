@@ -17,6 +17,8 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
+export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
 
 import _ from 'lodash';
 
@@ -44,7 +46,7 @@ export function addNewLook(image) {
                   const payload = _.merge(data.look, {
                     image: url,
                     items: [{
-                      brand: null,
+                      brand: -1,
                       id: -1,
                       category: null,
                       cover_x_pos: 0.5,
@@ -67,7 +69,7 @@ export function addNewLook(image) {
                     const payload = _.merge(data.look, {
                       image: url,
                       items: [{
-                        brand: null,
+                        brand: -1,
                         id: -1,
                         category: null,
                         cover_x_pos: 0.5,
@@ -281,9 +283,7 @@ export function createBrandName(newBrand) {
         if (!err && !_.isEmpty(data)) {
           dispatch(loadBrands());
           dispatch(addBrandName({
-            id: data.brand.id,
-            name: data.brand.name,
-            itemId: newBrand.itemId
+            ...newBrand
           })).then(resolve, reject);
         } else {
           reject(err);

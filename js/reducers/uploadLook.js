@@ -18,19 +18,22 @@ import {
   ADD_ITEM_OCCASION_TAG,
   REMOVE_ITEM_OCCASION_TAG,
   REMOVE_BRAND_NAME,
-  REMOVE_LOOK_ITEM
+  REMOVE_LOOK_ITEM,
+  REMOVE_ITEM_COLOR,
+  ADD_ITEM_COLOR
 } from '../actions/uploadLook';
 import {lookMapper, itemMapper} from '../mappers/';
 
-const newItem = {
+export const newItem = {
   brand: null,
-  id: -1,
+  id: 0,
   category: null,
   cover_x_pos: 0.5,
   cover_y_pos: 0.5,
-  look_id: -1,
   occasions: [],
+  colors: [],
   tags: [],
+  newItem: true,
 }
 
 const mutateItem = function (state, key, value, id) {
@@ -64,9 +67,7 @@ const ACTION_HANDLERS = {
     const { items } = state;
     let item = newItem;
     item.id = action.itemId
-    console.log('item.id',item.id)
     items.push(itemMapper(item));
-    console.log('items after',items)
     return {
       ...state,
       items,
@@ -104,7 +105,7 @@ const ACTION_HANDLERS = {
   [ADD_BRAND_NAME]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'brand', action.payload, action.payload.itemId)
+      items: mutateItem(state, 'brand', action.payload.brand, action.payload.itemId)
     }
   },
   [REMOVE_BRAND_NAME]: (state, action) => {
@@ -185,6 +186,24 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
+    }
+  },
+  [REMOVE_ITEM_COLOR]: (state, action) => {
+    const item = findItem(state, action.payload.itemId);
+    let colors = _.filter(item.colors, t => t !== action.payload.colorId);
+    return {
+      ...state,
+      items: mutateItem(state, 'colors', colors, action.payload.itemId)
+    }
+  },
+  [ADD_ITEM_COLOR]: (state, action) => {
+    console.log('1action add color',action)
+    const item = findItem(state, action.payload.itemId);
+    let colors = _.cloneDeep(item.colors);
+    colors.push(action.payload.colorId);
+    return {
+      ...state,
+      items: mutateItem(state, 'colors', colors, action.payload.itemId)
     }
   },
 }
