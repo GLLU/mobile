@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Image, Platform } from 'react-native';
+import React, {Component} from 'react';
+import {View, StyleSheet, Image, Platform} from 'react-native';
 import BrandSelector from './BrandSelector';
-import { TabViewAnimated, TabBar } from 'react-native-tab-view';
+import {TabViewAnimated, TabBar} from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
-import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
-import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScreen';
+import {generateAdjustedSize} from './../../utils/AdjustabaleContent';
+import {CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION} from './UploadLookScreen';
 import ScrollableSelectableList from '../common/itemParams/ScrollableSelectableList';
 import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
@@ -65,7 +65,7 @@ export default class EditItemTabs extends Component {
         labelStyle={styles.labelStyle}
         indicatorStyle={styles.indicatorStyle} {...props}
         scrollEnabled
-        renderIcon={currTab => this.renderTabIcon(currTab)} />
+        renderIcon={currTab => this.renderTabIcon(currTab)}/>
 
     </View>
   );
@@ -93,14 +93,14 @@ export default class EditItemTabs extends Component {
       <Image
         source={vsign}
         resizeMode={'contain'}
-        style={styles.vsignImg} />
+        style={styles.vsignImg}/>
     );
   }
 
   _renderRequiredSign() {
     return (
       <View
-        style={styles.requiredSign} />
+        style={styles.requiredSign}/>
     );
   }
 
@@ -115,6 +115,10 @@ export default class EditItemTabs extends Component {
     } else {
       addItemTag(color, color.selected);
     }
+  }
+
+  _addItemBrand = () => {
+
   }
 
   _addItemCategory(category) {
@@ -133,29 +137,33 @@ export default class EditItemTabs extends Component {
       case CATEGORY:
         return (<ScrollableSelectableList
           mode="single" onSelectionChange={this._addItemCategory}
-          filters={categoryFilters} currentFilter={itemCategory} />);
+          filters={categoryFilters} currentFilter={itemCategory}/>);
 
       case BRAND:
-        return (<ScrollableSelectableList
-          mode="single" onSelectionChange={this._addItemTag} showTexts={false}
-          filters={brandsFilters} currentFilter={itemColors} />);
-      //return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
+        return (
+          <View style={{flex: 1}}>
+            <ScrollableSelectableList
+              mode="single" onSelectionChange={this._addItemTag} showTexts={false}
+              filters={brandsFilters} currentFilter={itemBrand} />
+            <BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />
+          </View>
+        );
       case COLOR:
         return (<ScrollableSelectableList
-          mode="multi" onSelectionChange={this._addItemTag}
-          filters={colorsFilters} currentFilter={itemBrand} />);
+          mode="multi" onSelectionChange={this._addItemBrand}
+          filters={colorsFilters} currentFilter={itemColors}/>);
       case MOOD:
         return (<ScrollableSelectableList
           mode="multi" onSelectionChange={occasion => toggleOccasionTag(occasion, occasion.selected)}
-          filters={occasionsFilters} currentFilter={itemOccasions} />);
+          filters={occasionsFilters} currentFilter={itemOccasions}/>);
       case DESCRIPTION:
         return (<DescriptionTab
           description={itemDescription}
-          addDescription={description => addDescription(description)} />);
+          addDescription={description => addDescription(description)}/>);
       case LINK:
-        return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
+        return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)}/>);
       default:
-        return <View style={styles.emptyTab} />;
+        return <View style={styles.emptyTab}/>;
     }
   };
 
@@ -163,7 +171,7 @@ export default class EditItemTabs extends Component {
     return (
       <View style={containerStyle}>
         <TouchableOpacity transparent onPress={onPress}>
-          <Image source={icon} style={iconStyle} />
+          <Image source={icon} style={iconStyle}/>
         </TouchableOpacity>
       </View>
     );
@@ -187,7 +195,7 @@ export default class EditItemTabs extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: generateAdjustedSize(130),
+    height: generateAdjustedSize(140),
     backgroundColor: Colors.primaryColor,
   },
   tabStyle: {
