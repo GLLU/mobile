@@ -239,8 +239,8 @@ export function publishLook() {
             url: item.url
           }
         };
-        const method = item.isNew ? 'post' : 'put'
-        UploadLookService.createOrEditItem(lookId, body, method).then((createdItemData) => {
+        const editOrCreate = item.isNew ? {method: 'post'} : {method: 'put', itemId: item.id}
+        UploadLookService.createOrEditItem(lookId, body, editOrCreate).then((createdItemData) => {
           _.forEach(item.occasions, (occasion) => {
             const occasionBody = {
               tag_id: occasion

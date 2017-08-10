@@ -5,6 +5,7 @@ import * as feedLookMapper from '../mappers/lookMapper';
 
 const publishRoute = lookId => `/looks/${lookId}/publish`;
 const createItemRoute = lookId => `/looks/${lookId}/items`;
+const updateItemRoute = (lookId, itemId) => `/looks/${lookId}/items/${itemId}`;
 const updateLookRoute = lookId => `/looks/${lookId}`;
 const addItemOccasionRoute = (lookId, itemId) => `/looks/${lookId}/items/${itemId}/item_occasions`;
 
@@ -25,7 +26,7 @@ class UploadLookService {
   }))
 
   static createOrEditItem = (lookId ,body, editOrCreate) =>
-    AppAPI[method](`${createItemRoute(lookId)}`,
+    AppAPI[editOrCreate.method](editOrCreate.method === 'post' ? `${createItemRoute(lookId)}` : `${updateItemRoute(lookId, editOrCreate.itemId)}`,
     {...body.item}
   ).then((data => {
     console.log('new item data',data);
