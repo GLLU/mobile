@@ -84,6 +84,21 @@
   "WITHDRAW_WIZARD": "WITHDRAW YOUR MONEY",
   "WITHDRAW_LEGEND_WIZARD": "THROUGH PAYPAL OR WITH OUR SECURED SYSTEM",
   "TEACH_ME_MONEY": "Teach me how to make money",
-  "SWIPE_WIZARD": "SWIPE UP AND DOWN TO SEE MORE LOOKS!"
+  "SWIPE_WIZARD": "SWIPE UP AND DOWN TO SEE MORE LOOKS!",
+  "ADD_NEW_BRAND": "Add a New Brand",
+  "TYPE_BRAND_NAME": "Type a brand name",
+  "PUBLISH": "PUBLISH",
+  "SELECT_ITEM_CATEGORY": "Select Item Category",
+  "SELECT_ITEM_BRAND": "Select Item Brand",
+  "SELECT_ITEM_COLORS": "Select Item Colors",
+  "SELECT_ITEM_MOODS": "Select Item Moods",
+  "SELECT_ITEM_LINK": "Add Item Link",
+  "SELECT_ITEM_DESCRIPTION": "Add Description to your Look",
+  "CATEGORY": "CATEGORY",
+  "BRAND": "BRAND",
+  "COLOR": "COLOR",
+  "MOOD": "MOOD",
+  "DESCRIPTION": "DESCRIPTION",
+  "LINK": "LINK",
 }
 

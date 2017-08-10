@@ -9,6 +9,7 @@ import ScrollableSelectableList from '../common/itemParams/ScrollableSelectableL
 import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
 const vsign = require('../../../images/indicators/v_sign.png');
+import i18n from 'react-native-i18n';
 
 export default class EditItemTabs extends Component {
   constructor(props: object) {
@@ -20,12 +21,12 @@ export default class EditItemTabs extends Component {
     this._addItemTag = this._addItemTag.bind(this);
     this._addItemCategory = this._addItemCategory.bind(this);
     this.routes = [
-      { key: CATEGORY, title: 'CATEGORY' },
-      { key: BRAND, title: 'BRAND' },
-      { key: COLOR, title: 'COLOR' },
-      { key: MOOD, title: 'MOOD' },
-      { key: DESCRIPTION, title: 'Description' },
-      { key: LINK, title: 'LINK' },
+      { key: CATEGORY, title: i18n.t('CATEGORY')},
+      { key: BRAND, title: i18n.t('BRAND')},
+      { key: COLOR, title: i18n.t('COLOR')},
+      { key: MOOD, title: i18n.t('MOOD')},
+      { key: DESCRIPTION, title: i18n.t('DESCRIPTION')},
+      { key: LINK, title: i18n.t('LINK')},
     ];
     this.routesNoDescription = [
       { key: CATEGORY, title: 'CATEGORY' },

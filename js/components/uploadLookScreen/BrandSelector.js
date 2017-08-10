@@ -1,14 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
   Modal,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Platform,
-  TouchableWithoutFeedback,
   Animated,
-  UIManager,
   View,
   Text
 } from 'react-native';
@@ -18,17 +14,15 @@ import {
   createBrandName,
   removeBrandName,
 } from '../../actions';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
+import Fonts from '../../styles/Fonts.styles';
 const styles = StyleSheet.create({
   titleLabelInfo: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Fonts.regularFont,
     color: 'white',
     fontWeight: '300',
     fontSize: new FontSizeCalculator(15).getSize(),
@@ -178,17 +172,6 @@ class BrandSelector extends BaseComponent {
     }
 
     return null;
-  }
-
-  renderOpenButton({brand}) {
-    const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
-    return (
-      <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
-        <View style={{backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center'}}>
-          <FontAwesome style={{fontSize: 16, marginTop: 2, textAlign: 'center'}} name="bars"/>
-        </View>
-      </TouchableWithoutFeedback>
-    )
   }
 
   render() {

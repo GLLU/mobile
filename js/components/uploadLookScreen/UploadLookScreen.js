@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Dimensions, Platform, View, Text, StyleSheet, KeyboardAvoidingView, BackAndroid } from 'react-native';
+import { Dimensions, Platform, View, StyleSheet, BackAndroid } from 'react-native';
 import UploadLookHeader from './UploadLookHeader';
 import { LOOK_STATES } from '../../constants';
 import ImageWithTags from '../common/ImageWithTags';

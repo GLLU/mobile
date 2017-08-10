@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native'
 import {connect} from 'react-redux';
-
+import i18n from 'react-native-i18n';
 import Autocomplete from './CustomAutocomplete';
 import {loadBrands} from '../../../actions';
 import _ from 'lodash';
@@ -91,7 +91,7 @@ class BrandNameInput extends Component {
           value={query}
           onChangeText={text => this.onChangeText(text)}
           onEndEditing={e => this.onEndEditing(e)}
-          placeholder="Type a brand name"
+          placeholder={i18n.t("TYPE_BRAND_NAME")}
           findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}
           onCancel={this.props.onCancel}/>
       </View>);
