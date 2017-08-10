@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, Image, Platform } from 'react-native';
 import Colors from '../../styles/Colors.styles';
 import Fonts from '../../styles/Fonts.styles';
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    marginTop: 20,
+    marginTop: Platform.OS === 'ios' ? 22 : 0,
     backgroundColor: 'white',
     opacity: 0.7,
     height: 45,

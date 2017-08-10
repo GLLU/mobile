@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
-import FilterGroup from './FilterGroup';
+import ScrollableSelectableList from '../../common/itemParams/ScrollableSelectableList';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import I18n from 'react-native-i18n';
 const arrowRight = require('../../../../images/icons/collapsed-filterButton.png');
@@ -120,7 +120,7 @@ class FilterRow extends Component {
         </TouchableOpacity>
         <Animated.View
           style={[styles.filtersGroupContainer, {height: filtersAnimHeight}]}>
-          <FilterGroup
+          <ScrollableSelectableList
             mode={'single'} onSelectionChange={this._setFilters.bind(this)}
             filters={filters} currentFilter={currentFilter}/>
           <Animated.View

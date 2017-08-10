@@ -5,16 +5,10 @@ import {
   Dimensions,
   StyleSheet,
   View,
-  TextInput
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
-import Fonts from '../../../styles/Fonts.styles';
-import FilterGroup from '../../feedscreen/filters/FilterGroup';
-import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
-import I18n from 'react-native-i18n';
 import BrandUrlInput from '../forms/BrandUrlInput';
 
-const deviceWidth = Dimensions.get('window').width;
 
 type Props = {
   updateCurrentFilter: void,

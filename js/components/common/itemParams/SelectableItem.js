@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Image, View, TouchableWithoutFeedback, Text} from 'react-native';
 import * as _ from 'lodash';
-import BaseComponent from '../../common/base/BaseComponent';
+import BaseComponent from '../base/BaseComponent';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Colors from '../../../styles/Colors.styles'
 

@@ -61,12 +61,13 @@ class ModalQuestion extends Component {
   }
 
   render() {
-    const {title, subtitle, confirmString, cancelString} = this.props
+    const {title, subtitle, confirmString, cancelString, closeModal} = this.props
     return (
       <Modal
         animationType={"slide"}
         transparent={true}
         visible={this.props.modalVisible}
+        onRequestClose={() => {closeModal({modalVisible: false})}}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContentContainer}>

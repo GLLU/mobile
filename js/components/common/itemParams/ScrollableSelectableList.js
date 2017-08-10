@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import FilterButton from './FilterButton';
+import SelectableItem from './SelectableItem';
 import _ from 'lodash';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
   mode: string
 };
 
-class FilterGroup extends Component {
+class ScrollableSelectableList extends Component {
 
   props: Props
 
@@ -65,7 +65,7 @@ class FilterGroup extends Component {
       <ScrollView horizontal style={styles.container}
                   contentContainerStyle={[filters.length < 7 ? styles.contentContainerStyle : null]}>
         {_.map(filters, (filter, i) => (
-          <FilterButton
+          <SelectableItem
             onPress={this.onSingleSelectValue}
             key={i} filter={filter}/>
         ))}
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FilterGroup;
+export default ScrollableSelectableList;

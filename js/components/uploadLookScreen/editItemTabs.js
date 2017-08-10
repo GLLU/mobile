@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Platform } from 'react-native';
 import BrandSelector from './BrandSelector';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
 import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScreen';
-import FilterGroup from '../feedscreen/filters/FilterGroup';
+import ScrollableSelectableList from '../common/itemParams/ScrollableSelectableList';
 import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
 const vsign = require('../../../images/indicators/v_sign.png');
@@ -93,14 +93,14 @@ export default class EditItemTabs extends Component {
       <Image
         source={vsign}
         resizeMode={'contain'}
-        style={{ width: 12, height: 12, marginRight: 3 }} />
+        style={styles.vsignImg} />
     );
   }
 
   _renderRequiredSign() {
     return (
       <View
-        style={{ width: 10, height: 10, backgroundColor: 'red', borderRadius: 5, marginRight: 3 }} />
+        style={styles.requiredSign} />
     );
   }
 
@@ -131,18 +131,18 @@ export default class EditItemTabs extends Component {
     const { currentItem, categoryFilters, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
     switch (route.key) {
       case CATEGORY:
-        return (<FilterGroup
+        return (<ScrollableSelectableList
           mode="single" onSelectionChange={this._addItemCategory}
           filters={categoryFilters} currentFilter={itemCategory} />);
 
       case BRAND:
         return (<BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />);
       case COLOR:
-        return (<FilterGroup
+        return (<ScrollableSelectableList
           mode="multi" onSelectionChange={this._addItemTag}
           filters={colorsFilters} currentFilter={itemColors} />);
       case MOOD:
-        return (<FilterGroup
+        return (<ScrollableSelectableList
           mode="multi" onSelectionChange={occasion => toggleOccasionTag(occasion, occasion.selected)}
           filters={occasionsFilters} currentFilter={itemOccasions} />);
       case DESCRIPTION:
@@ -152,7 +152,7 @@ export default class EditItemTabs extends Component {
       case LINK:
         return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />;
+        return <View style={styles.emptyTab} />;
     }
   };
 
@@ -184,7 +184,7 @@ export default class EditItemTabs extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 120,
+    height: generateAdjustedSize(130),
     backgroundColor: Colors.primaryColor,
   },
   tabStyle: {
@@ -205,5 +205,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: generateAdjustedSize(12),
     marginHorizontal: 2,
+  },
+  emptyTab: {
+    height: generateAdjustedSize(200),
+    width: generateAdjustedSize(450),
+  },
+  vsignImg: {
+    width: 12,
+    height: 12,
+    marginRight: 3,
+  },
+  requiredSign: {
+    width: 10,
+    height: 10,
+    backgroundColor: 'red',
+    borderRadius: 5,
+    marginRight: 3,
   },
 });
