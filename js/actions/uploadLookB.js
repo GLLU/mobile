@@ -252,29 +252,32 @@ export function publishLook() {
             UploadLookService.addItemOccasions(lookId, createdItemData.item.id, occasionBody).then((occasionData) => {
             });
           })
-          interval = setInterval(function () {
-            if (getState().uploadLook.isUploading) {
-              //Do nothing, wait until next interval.
-            }
-            else {
-
-              clearInterval(interval);
-
-              UploadLookService.publishLook(lookId).then(() => {
-                if (description.length > 0) {
-                  const descriptionBody = {
-                    description
-                  }
-                  UploadLookService.updateLook(lookId, descriptionBody).then(() => {
-                  })
-                }
-                dispatch(clearUploadLook())
-              })
-            }
-          }, 5000);
         })
       });
-      resolve()
+
+      interval = setInterval(function () {
+        if (getState().uploadLook.isUploading) {
+          //Do nothing, wait until next interval.
+        } 
+        else {
+
+          clearInterval(interval);
+
+          console.log('im publishing');
+          UploadLookService.publishLook(lookId).then(() => {
+            if (description.length > 0) {
+              const descriptionBody = {
+                description
+              }
+              UploadLookService.updateLook(lookId, descriptionBody).then(() => {
+              })
+            }
+            dispatch(clearUploadLook())
+          })
+        }
+      }, 5000);
+
+      resolve();
     })
 
     // return new Promise((resolve, reject) => {
