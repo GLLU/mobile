@@ -1,9 +1,13 @@
 // @flow
+import { Platform } from 'react-native';
 
 export function formatAvatar(path: string): any {
+
   if (path) {
+    const formattedPath = Platform.OS === 'ios' ? path.replace('file://', '') : path;
+
     return {
-      path,
+      path: formattedPath,
       type: 'multipart/form-data',
     };
   }
