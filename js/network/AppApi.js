@@ -17,10 +17,12 @@ export default class AppAPI {
   }
 
   static put(route, body) {
+    console.log('happenned put')
     return NetworkManager.fetch(route, 'PUT', body);
   }
 
   static post(route, body) {
+    console.log('happenned post')
     return NetworkManager.fetch(route, 'POST', body);
   }
 

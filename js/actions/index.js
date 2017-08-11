@@ -1,23 +1,38 @@
-import { showProcessing, hideProcessing } from './loader';
-import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
-import { showParisBottomMessage, hideParisBottomMessage } from './paris';
-import { loadCategories, loadBrands, loadOccasionTags } from './filters';
-import { completeEdit, saveUserSize } from './myBodyMeasure';
-import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
-import { likeUpdate, unlikeUpdate } from './likes';
-import { getUserBalance } from './wallet';
-import { getLookLikes, initLookLikes } from './lookLikes';
-import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
-import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications, clearNewNotifications }  from './notifications';
-import { getUserFollowersData, initUserFollowers }  from './followers';
-import { getLookCommentsData, initLookComments, addLookComment } from './comments';
-import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
-import { getFeed, loadMore, clearFeed, getFollowingFeed, getBestMatchFeed, getWhatsHotFeed } from './feed';
+import {showProcessing, hideProcessing} from './loader';
+import {
+  showError,
+  hideError,
+  showWarning,
+  hideWarning,
+  showInfo,
+  hideInfo,
+  showFatalError,
+  hideFatalError
+} from './errorHandler';
+import {showParisBottomMessage, hideParisBottomMessage} from './paris';
+import {loadCategories, loadBrands, loadOccasionTags} from './filters';
+import {completeEdit, saveUserSize} from './myBodyMeasure';
+import {changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType} from './myBodyType';
+import {likeUpdate, unlikeUpdate} from './likes';
+import {getUserBalance} from './wallet';
+import {getLookLikes, initLookLikes} from './lookLikes';
+import {followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows}  from './follows';
+import {
+  getNotifications,
+  goToNotificationSubjectScreen,
+  markAsReadNotifications,
+  clearNewNotifications
+}  from './notifications';
+import {getUserFollowersData, initUserFollowers}  from './followers';
+import {getLookCommentsData, initLookComments, addLookComment} from './comments';
+import {getUserLooksData, getUserLooks, loadMoreUserLooks} from './looks';
+import {getFeed, loadMore, clearFeed, getFollowingFeed, getBestMatchFeed, getWhatsHotFeed} from './feed';
 import {
   addNewLook,
   editNewLook,
   editTag,
   createLookItem,
+  removeLookItem,
   selectLookItem,
   updateLookItem,
   publishLookItem,
@@ -36,7 +51,8 @@ import {
   addPhotosVideo,
   toggleOccasionTag,
 } from './uploadLook';
-import { setUser,
+import {
+  setUser,
   loginViaFacebook,
   checkLogin,
   getStats,
@@ -44,7 +60,7 @@ import { setUser,
   clearTutorial,
   hideTutorial,
   onBodyShapeChoosen
-  } from './user';
+} from './user';
 
 export {
   loadCategories,
@@ -61,6 +77,7 @@ export {
   addNewLook,
   editNewLook,
   createLookItem,
+  removeLookItem,
   selectLookItem,
   updateLookItem,
   onBodyShapeChoosen,

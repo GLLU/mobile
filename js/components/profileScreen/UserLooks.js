@@ -68,7 +68,7 @@ class UserLooks extends Component {
 
   _handleEditPress(look) {
     this.props.editNewLook(look.id).then(() => {
-      this.props.navigateTo('addItemScreen', { mode: 'edit' });
+      this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
     });
   }
 
@@ -91,7 +91,7 @@ class UserLooks extends Component {
   renderEditLookBtn(look) {
     return (
       <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn]}>
-        <Text style={styles.editText}>{i18n.t('EDIT')}</Text>
+        <Text style={styles.editText}>{i18n.t('EDIT_LARGE')}</Text>
       </TouchableOpacity>
 
     );

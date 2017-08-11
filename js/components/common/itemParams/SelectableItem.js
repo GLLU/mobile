@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Image, View, TouchableWithoutFeedback, Text} from 'react-native';
 import * as _ from 'lodash';
-import BaseComponent from '../../common/base/BaseComponent';
+import BaseComponent from '../base/BaseComponent';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import Colors from '../../../styles/Colors.styles'
 
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   categoryItemImage: {
     height: generateAdjustedSize(45),
     width: generateAdjustedSize(45),
+    backgroundColor: 'transparent',
     alignSelf: 'center',
   },
   btnCategoryItem: {
@@ -30,18 +31,19 @@ const styles = StyleSheet.create({
     marginTop: generateAdjustedSize(6),
     color: Colors.Gray,
     alignSelf: 'center',
-    flex: 1
   }
 });
 
 class FilterButton extends BaseComponent {
   static propTypes = {
     filter: React.PropTypes.object,
+    showText: React.PropTypes.boolean,
     onPress: React.PropTypes.func,
   }
 
   static defaultProps = {
     onPress: _.noop,
+    showText: true,
     filter: {
       selected: false,
       name: 'Items',
@@ -76,14 +78,30 @@ class FilterButton extends BaseComponent {
     return <Image source={uri} style={styles.categoryItemImage} resizeMode={'contain'}/>;
   }
 
+  _renderColor(color, selected) {
+    return <View style={[styles.categoryItemImage, {
+      backgroundColor: color,
+      borderWidth: selected ? 3 : 0.5,
+      borderColor: selected ? Colors.secondaryColor : Colors.black,
+      borderRadius: 25
+    }]}/>;
+  }
+
   handlePressItem(filter) {
     const shouldSelect = !this.state.selected;
     this.logEvent('Feedscreen', {name: `filter ${this.props.filter.name} was clicked!`, selected: `${shouldSelect}`});
     this.props.onPress(filter);
   }
 
+  _renderFilterName(selected, name) {
+    return (
+      <Text numberOfLines={1} ellipsizeMode={'tail'}
+            style={[styles.filterName, {color: selected ? Colors.secondaryColor : Colors.black}]}>{name}</Text>
+    )
+  }
+
   render() {
-    const {filter} = this.props;
+    const {filter, showText} = this.props;
     const {selected} = this.state;
     return (
       <View style={[styles.categoryItem]}>
@@ -92,8 +110,8 @@ class FilterButton extends BaseComponent {
           onPress={() => this.handlePressItem(filter)}
         >
           <View style={{justifyContent: 'center', alignItems: 'center', flex: -1}}>
-            {this._renderIcon(filter.icon, selected)}
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.filterName}>{filter.name}</Text>
+            {filter.icon ? this._renderIcon(filter.icon, selected) : this._renderColor(filter.color, selected)}
+            {showText ? this._renderFilterName(selected, filter.name) : null}
           </View>
         </TouchableWithoutFeedback>
       </View>

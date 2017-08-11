@@ -3,22 +3,19 @@ export default function map(item) {
     id: item.id,
     locationX: item.cover_x_pos,
     locationY: item.cover_y_pos,
-    price: item.price,
     userId: item.user_id,
     lookId: item.look_id,
-    editing: true,
-    category: null,
-    brand: null,
-    itemSizeRegion: null,
-    itemSizeValue: null,
-    description: '',
-    sharingType: true,
-    sharingUrl: '',
-    location: 'us',
-    photos: [],
-    video: '',
-    occasions: [],
-    tags: [],
-    ...item,
+    category: item.category ? item.category.id : -1,
+    brand: item.brand ? item.brand.id : null,
+    occasions: _.map(item.occasions, (occasion) => {
+      return occasion.id
+    }),
+    colors: _.map(item.colors, (color) => {
+      return color.id
+    }),
+    tags: item.tags ? item.tags : [],
+    description: item.description ? item.description : '',
+    url: item.url ? item.url : null,
+    isNew: item.isNew ? true : false
   }
 }

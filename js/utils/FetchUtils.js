@@ -5,7 +5,7 @@ import * as selfRef from './FetchUtils'
 
 export default selfRef;
 
-export const postMultipartForm = (api_key, path, formData, fileField, file, method = 'POST') => {
+export const postMultipartForm = (api_key, path, formData, fileField, file, method = 'PUT') => {
   return new Promise((resolve, reject) => {
     formData.push({
       name: fileField,

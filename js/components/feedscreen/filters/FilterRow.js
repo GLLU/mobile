@@ -12,10 +12,9 @@ import {
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
-import FilterGroup from './FilterGroup';
+import ScrollableSelectableList from '../../common/itemParams/ScrollableSelectableList';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 import I18n from 'react-native-i18n';
-
 const arrowRight = require('../../../../images/icons/collapsed-filterButton.png');
 const arrowDown = require('../../../../images/icons/expand-filterButton.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -35,7 +34,7 @@ class FilterRow extends Component {
     super(props);
     this.toggleFilterRow = this.toggleFilterRow.bind(this);
     this._setFilters = this._setFilters.bind(this);
-    this.checkSelectedQuery = this.checkSelectedQuery.bind(this);
+    this.getCurrentFilterId = this.getCurrentFilterId.bind(this);
     this.checkSelectedFilter = this.checkSelectedFilter.bind(this);
     this.state = {
       openFilter: false,
@@ -93,26 +92,19 @@ class FilterRow extends Component {
     }
   }
 
-  checkSelectedQuery() {
-    const checkedFilters = _.map(this.props.filters, (filter, i) => {
-      const {currentFilter} = this.props;
-      const clonedFilter = _.cloneDeep(filter);
-      if (currentFilter[filter.kind]) {
-        const filterName = filter.name.toLowerCase();
-        const filterKind = currentFilter[filter.kind].toLowerCase();
-        if (filterKind === filterName) {
-          clonedFilter.selected = true;
-        }
-      }
-      return clonedFilter;
-    });
-    return checkedFilters;
+  getCurrentFilterId() { // Current filter on FilterView is by the feed query (strings) i need the filter id.
+    const {currentFilter, filters} = this.props;
+    let checkedFilters = _.find(filters, (filter) => {
+      return filter.name === currentFilter[filter.kind]
+    })
+    return checkedFilters ? checkedFilters.id : null;
   }
 
   render() {
     const arrowIcon = this.state.openFilter ? arrowDown : arrowRight;
     const {currentFilterRowName, filtersAnimHeight} = this.state;
-    const {currentFilter, title} = this.props;
+    const {title, filters} = this.props;
+    const currentFilter = this.getCurrentFilterId()
     return (
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={this.toggleFilterRow}>
@@ -128,10 +120,9 @@ class FilterRow extends Component {
         </TouchableOpacity>
         <Animated.View
           style={[styles.filtersGroupContainer, {height: filtersAnimHeight}]}>
-
-          <FilterGroup
-            mode="single" onSelectionChange={this._setFilters.bind(this)}
-            filters={this.checkSelectedQuery()} currentFilter={currentFilter}/>
+          <ScrollableSelectableList
+            mode={'single'} onSelectionChange={this._setFilters.bind(this)}
+            filters={filters} currentFilter={currentFilter}/>
           <Animated.View
             style={[styles.rowEdgeShadow, {height: filtersAnimHeight, right: 0}]}/>
           <Animated.View

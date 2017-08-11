@@ -1,22 +1,26 @@
-import React, { Component } from 'react';
-import { View,Platform, Image, StyleSheet, Dimensions, PanResponder, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
-import _ from 'lodash';
-import glluTheme from '../../themes/gllu-theme';
+import React, {Component} from 'react';
+import {
+  View,
+  Platform,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard
+} from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Tag from '../common/Tag';
-export const EDIT_MODE = 'edit';
-export const CREATE_MODE = 'create';
-export const VIEW_MODE = 'view';
 
-const tagMarker = require('../../../images/markers/marker-top-right.png');
 const TAG_WIDTH = 30;
-const BORDER_WIDTH = 5;
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   base: {
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1
   },
   draggableContainer: {
     flex: 1,
@@ -46,63 +50,49 @@ class ImageWithTags extends Component {
   static propTypes = {
     image: React.PropTypes.string.isRequired,
     items: React.PropTypes.array.isRequired,
-    width: React.PropTypes.number,
-    mode: React.PropTypes.string,
-    showMarker: React.PropTypes.bool,
-    onMarkerCreate: React.PropTypes.func,
     onDragEnd: React.PropTypes.func,
     setCurrentItem: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      locationX: 0,
-      locationY: 0,
-    }
-  }
-
-  componentDidMount() {
-    if(this.props.items.length < 1) {
-      const locationX = w/2;
-      const locationY = h/2;
-      const left = locationX / w;
-      const top = locationY / h;
-      this.setState({locationX: left, locationY: top}, () => {
-        this.props.onMarkerCreate({locationX: left, locationY: top});
-      });
-    }
-
   }
 
   renderTags() {
-    const { items, currItem, currStep } = this.props;
+    const {items, currItem, setCurrentItem, onDragEnd} = this.props;
 
-    return items.map((item, i) => {
+    if (currItem) {
+      return items.map((item, i) => {
         return (
-          <Tag key={i} currItemId={currItem.id} setCurrentItem={this.props.setCurrentItem} dragable={currStep === -1} item={item} onDragEnd={this.props.onDragEnd}/>
+          <Tag key={item.id} currItemId={currItem.id} setCurrentItem={setCurrentItem} item={item}
+               onDragEnd={onDragEnd}/>
         );
-    });
+      });
+    }
   }
 
-  getRenderingDimensions() {
-    let width = w;
-    let height = h;
-    return { width, height };
+  componentWillMount() {
+    this.keyboardDidHideListener =
+      Keyboard
+        .addListener('keyboardDidHide',Keyboard.dismiss);
+  }
+
+  componentWillUnmount(){
+    this.keyboardDidHideListener.remove();
   }
 
   _render() {
-
-    if (true) {
-      return (
-        <Image source={{uri: this.props.image}} style={[styles.itemsContainer]} resizeMode={'stretch'}>
-          <View style={[styles.draggableContainer]}>
+    const {image, children} = this.props
+    return (
+      <Image source={{uri: image}} style={styles.itemsContainer} resizeMode={'stretch'}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={[[styles.draggableContainer]]}>
+          <View style={styles.contentContainer}>
             {this.renderTags()}
-            {this.props.children}
+            {children}
           </View>
-        </Image>
-      );
-    }
+        </TouchableWithoutFeedback>
+      </Image>
+    );
   }
 
   render() {
@@ -114,10 +104,5 @@ class ImageWithTags extends Component {
     );
   }
 }
-
-ImageWithTags.defaultProps = {
-  mode: VIEW_MODE,
-  showMarker: true,
-};
 
 export default ImageWithTags;

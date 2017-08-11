@@ -95,7 +95,7 @@ class FinishLookPage extends Component {
           index: 1,
           actions: [
             NavigationActions.navigate({ routeName: 'feedscreen' }),
-            NavigationActions.navigate({ routeName: 'addItemScreen',params:{ mode: 'create' }})
+            NavigationActions.navigate({ routeName: 'uploadLookScreen',params:{ mode: 'create' }})
           ]
         });
       }).catch(err => {
