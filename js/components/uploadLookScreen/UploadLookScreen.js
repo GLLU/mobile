@@ -120,8 +120,8 @@ class UploadLookScreen extends Component {
           if(isUploading){
             this.setModalVisible({
               modalVisible: true,
-              title: 'Your Look is being processed, it will be uploaded in a few moments',
-              confirmString: 'Continue',
+              title: 'Well done!! Your Look is being processed and will be uploaded in a few moments',
+              confirmString: 'CONTINUE',
               cancelString: '',
               confirmAction: goBack,
             })
@@ -149,8 +149,8 @@ class UploadLookScreen extends Component {
     this.setModalVisible({
       modalVisible: true,
       title: 'Are you sure u want to remove this item?',
-      confirmString: 'Yes, delete it',
-      cancelString: 'No, still want the edit this item',
+      confirmString: 'DELETE',
+      cancelString: 'NO, CONTINUE EDITING',
       confirmAction: this.handleRemoveItem,
     })
   }
