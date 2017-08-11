@@ -30,5 +30,6 @@ export function serializeLook(look) {
 }
 
 export function serializeLooks(looks) {
-  return _.map(looks, look => serializeLook(look));
+  const looksWithCover = _.filter(looks, (look) => look.cover ? look : null)
+  return _.map(looksWithCover, look => serializeLook(look));
 }
