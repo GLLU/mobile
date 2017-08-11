@@ -81,8 +81,8 @@ class FilterButton extends BaseComponent {
   _renderColor(color, selected) {
     return <View style={[styles.categoryItemImage, {
       backgroundColor: color,
-      borderWidth: selected ? 3 : 0,
-      borderColor: Colors.secondaryColor,
+      borderWidth: selected ? 3 : 0.5,
+      borderColor: selected ? Colors.secondaryColor : Colors.black,
       borderRadius: 25
     }]}/>;
   }

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import AppAPI from '../network/AppApi';
 import * as feedLookMapper from '../mappers/lookMapper';
 
+
 const publishRoute = lookId => `/looks/${lookId}/publish`;
 const createItemRoute = lookId => `/looks/${lookId}/items`;
 const updateItemRoute = (lookId, itemId) => `/looks/${lookId}/items/${itemId}`;
