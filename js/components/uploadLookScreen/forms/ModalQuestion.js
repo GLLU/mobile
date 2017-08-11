@@ -36,7 +36,7 @@ class ModalQuestion extends Component {
     title: 'Thats a nice Pop Up',
     subtitle: '',
     confirmString: 'Confirm',
-    cancelString: 'Cancel',
+    cancelString: '',
     confirmAction: _.noop,
     cancelAction: _.noop,
     closeModal: _.noop,
@@ -86,11 +86,11 @@ class ModalQuestion extends Component {
             <TouchableOpacity onPress={this._confirmAction} style={[styles.actionBtns, styles.confirmBtnBackground]}>
               <Text style={styles.btnsText}>{confirmString}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={
-              this._cancelAction
-            } style={[styles.actionBtns, styles.cancelBtnBackground]}>
-              <Text style={styles.btnsText}>{cancelString}</Text>
-            </TouchableOpacity>
+              {cancelString.length > 0 ? <TouchableOpacity onPress={
+                this._cancelAction
+              } style={[styles.actionBtns, styles.cancelBtnBackground]}>
+                <Text style={styles.btnsText}>{cancelString}</Text>
+              </TouchableOpacity> : null}
             </View>
           </View>
         </TouchableOpacity>

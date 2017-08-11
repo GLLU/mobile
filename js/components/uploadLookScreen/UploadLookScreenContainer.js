@@ -12,10 +12,11 @@ import {
   createLookItem,
   setTagPosition,
   removeLookItem,
-  publishLook
+  publishLook,
+  clearUploadLook
 } from '../../actions/uploadLookB';
 import {
-  getFeed,
+  getBestMatchFeed,
   clearFeed,
 } from '../../actions/feed';
 import {
@@ -28,14 +29,15 @@ function mapDispatchToProps(dispatch) {
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
     setTagPosition: position => dispatch(setTagPosition(position)),
-    getFeed: query => dispatch(getFeed(query)),
+    getFeed: query => dispatch(getBestMatchFeed(query)),
     clearFeed: () => dispatch(clearFeed()),
     getUserLooks: data => dispatch(getUserLooks(data)),
+    clearUploadLook: () => dispatch(clearUploadLook()),
   };
 }
 
 const mapStateToProps = (state) => {
-  const {lookId, image, items, localFilePath} = state.uploadLook;
+  const {lookId, image, items, localFilePath, isUploading} = state.uploadLook;
   const isVideo = Utils.isVideo(image);
   return {
     lookId,
@@ -44,8 +46,9 @@ const mapStateToProps = (state) => {
     items,
     state: state.uploadLook.state,
     categories: state.filters.categories,
-    currentFeedQuery: state.feed.query,
+    currentFeedQuery: state.feed.bestMatch.query,
     userId: state.user.id,
+    isUploading
   };
 };
 

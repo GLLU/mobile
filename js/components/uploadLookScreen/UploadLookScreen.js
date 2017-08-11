@@ -27,6 +27,7 @@ type Props = {
   createLookItem: () => void,
   removeLookItem: () => void,
   setTagPosition: () => void,
+  clearUploadLook: () => void,
   getFeed: () => void,
   getUserLooks: () => void,
   lookId: number,
@@ -59,6 +60,7 @@ class UploadLookScreen extends Component {
     this.handleNewItem = this.handleNewItem.bind(this);
     this.handleBackButton = this.handleBackButton.bind(this);
     this.showRemoveItemModal = this.showRemoveItemModal.bind(this);
+    this.gobackAndCancel = this.gobackAndCancel.bind(this);
     this.state = {
       currentStep: CATEGORY,
       allowContinue: false,
@@ -103,25 +105,30 @@ class UploadLookScreen extends Component {
   }
 
   publishAction() {
-    const { publishLookItem, clearFeed, logEvent, state, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo } = this.props;
+    const {isUploading, publishLookItem, clearFeed, logEvent, state, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo } = this.props;
     logEvent('UploadLookScreen', { name: 'Publish click' });
     this.setState({ isPublishing: true }, () => {
       publishLookItem().then(() => {
         this.setState({ isPublishing: false }, () => {
-          if (state === LOOK_STATES.PUBLISHED) {
-            goBack();
+          const looksCall = {
+            id: userId,
+            all: true,
+          };
+          getUserLooks(looksCall);
+          const query = _.cloneDeep(currentFeedQuery);
+          getFeed(query);
+          if(isUploading){
+            this.setModalVisible({
+              modalVisible: true,
+              title: 'Your Look is being processed, it will be uploaded in a few moments',
+              confirmString: 'Continue',
+              cancelString: '',
+              confirmAction: goBack,
+            })
           } else {
-            const looksCall = {
-              id: userId,
-              all: true,
-            };
-            const query = _.cloneDeep(currentFeedQuery);
-            getUserLooks(looksCall);
-            clearFeed().then(() => {
-              getFeed(query);
-            });
-            navigateTo('finishLookScreen');
+            goBack()
           }
+
         });
       });
     });
@@ -232,14 +239,19 @@ class UploadLookScreen extends Component {
   }
 
   handleBackButton() {
-    const {goBack} = this.props
     this.setModalVisible({
       modalVisible: true,
       title: 'Are you sure u want to abort the upload look process?',
       confirmString: 'Yes, i will come back later..',
       cancelString: 'No, i want to stay and upload my look',
-      confirmAction: goBack,
+      confirmAction: this.gobackAndCancel,
     })
+  }
+
+  gobackAndCancel() {
+    const {goBack, clearUploadLook} = this.props
+    goBack();
+    clearUploadLook()
   }
 
   render() {

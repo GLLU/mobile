@@ -19,6 +19,8 @@ export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
 export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
+export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
+export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
 import UploadLookService from '../services/uploadLookService';
 
 import _ from 'lodash';
@@ -45,6 +47,7 @@ export function addNewLook(image) {
               const payload = _.merge(emptyLookData.look, {
                 image: image.localPath,
                 items: [newItem],
+                isUploading: true
               });
               dispatch({
                 type: EDIT_NEW_LOOK,
@@ -54,17 +57,9 @@ export function addNewLook(image) {
               dispatch(hideProcessing());
               Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
                 if (data) {
-                  console.log('looks image data',data)
-                  const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-                  if (data.look.cover.type !== "image") {
-                    resolve(payload);
-                    dispatch(hideProcessing());
-                  } else {
-                    Utils.preloadImages([url]).then(() => {
-                      resolve(payload);
-                      dispatch(hideProcessing());
-                    }).catch(reject);
-                  }
+                  dispatch({
+                    type: DONE_UPLOADING_FILE,
+                  });
                 } else {
                   reject('Uplaod error');
                 }
@@ -165,7 +160,6 @@ export function toggleItemColors(colorId, selected, itemId) {
 }
 
 export function addDescription(description) {
-  console.log('desc action', description)
   return (dispatch) => {
     dispatch({
       type: ADD_DESCRIPTION,
@@ -200,6 +194,15 @@ export function addBrandName(brand, itemId) {
   };
 }
 
+export function clearUploadLook() {
+
+  return (dispatch) => {
+    dispatch({
+      type: CLEAR_UPLOAD_LOOK,
+    });
+  };
+}
+
 export function createBrandName(newBrand) {
   return (dispatch) => {
     const body = {
@@ -225,7 +228,7 @@ export function publishLook() {
   return (dispatch, getState) => {
     const state = getState();
 
-    const {lookId, items, description} = state.uploadLook;
+    const {lookId, items, description, isUploading} = state.uploadLook;
 
     return new Promise((resolve, reject) => {
       _.forEach(items, (item) => {
@@ -246,26 +249,38 @@ export function publishLook() {
               tag_id: occasion
             }
             UploadLookService.addItemOccasions(lookId, createdItemData.item.id ,occasionBody).then((occasionData) => {
-              console.log('occasion data:',occasionData);
             })
           })
-          UploadLookService.publishLook(lookId).then((newLook) => {
-            if(description.length > 0){
-              const descriptionBody = {
-                description
-              }
-              UploadLookService.updateLook(lookId, descriptionBody).then((updatedLookLook) => {
-                console.log('updatedLookLook data:',updatedLookLook)
+          if(isUploading){
+            setTimeout(function(){
+              UploadLookService.publishLook(lookId).then(() => {
+                if(description.length > 0){
+                  const descriptionBody = {
+                    description
+                  }
+                  UploadLookService.updateLook(lookId, descriptionBody).then(() => {
+                  })
+                }
+                dispatch(clearUploadLook())
               })
-            }
-          })
+              }, 30000);
+          }else {
+            UploadLookService.publishLook(lookId).then(() => {
+              if(description.length > 0){
+                const descriptionBody = {
+                  description
+                }
+                UploadLookService.updateLook(lookId, descriptionBody).then(() => {
+                })
+              }
+              dispatch(clearUploadLook())
+            })
+          }
 
         })
       });
-      //resolve()
-    }).then(() => {
-
-    });
+      resolve()
+    })
 
     // return new Promise((resolve, reject) => {
     //   UploadLookService.createLook().then((publishedLookData) => {

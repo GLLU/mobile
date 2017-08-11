@@ -20,7 +20,9 @@ import {
   REMOVE_BRAND_NAME,
   REMOVE_LOOK_ITEM,
   REMOVE_ITEM_COLOR,
-  ADD_ITEM_COLOR
+  ADD_ITEM_COLOR,
+  DONE_UPLOADING_FILE,
+  CLEAR_UPLOAD_LOOK
 } from '../actions/uploadLook';
 import {lookMapper, itemMapper} from '../mappers/';
 
@@ -61,6 +63,12 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       itemId: action.payload
+    }
+  },
+  [DONE_UPLOADING_FILE]: (state, action) => {
+    return {
+      ...state,
+      isUploading: false
     }
   },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
@@ -196,8 +204,13 @@ const ACTION_HANDLERS = {
       items: mutateItem(state, 'colors', colors, action.payload.itemId)
     }
   },
+  [CLEAR_UPLOAD_LOOK]: (state, action) => {
+    console.log('clear')
+    return {
+      ...initialState
+    }
+  },
   [ADD_ITEM_COLOR]: (state, action) => {
-    console.log('1action add color',action)
     const item = findItem(state, action.payload.itemId);
     let colors = _.cloneDeep(item.colors);
     colors.push(action.payload.colorId);
@@ -205,7 +218,7 @@ const ACTION_HANDLERS = {
       ...state,
       items: mutateItem(state, 'colors', colors, action.payload.itemId)
     }
-  },
+  }
 }
 
 // Reducer
@@ -215,6 +228,7 @@ const initialState = {
   description: '',
   items: [{id: -1}],
   video: '',
+  isUploading: false
 }
 
 export default function mybodyTypeReducer(state = initialState, action) {

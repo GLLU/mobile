@@ -19,6 +19,9 @@ export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
 export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
+export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
+export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
+
 
 import _ from 'lodash';
 
