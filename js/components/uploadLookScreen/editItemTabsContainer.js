@@ -31,7 +31,10 @@ function mapDispatchToProps(dispatch, ownProps) {
 
 function mapStateToProps(state, ownProps) {
   const currentItem = _.find(state.uploadLook.items, (item) => item.id === ownProps.item)
-  console.log('currentItem',currentItem)
+
+  if (!currentItem) {
+    return {};
+  }
   return {
     categoryFilters: state.filters.categories,
     occasionsFilters: state.filters.occasion_tags,
@@ -43,7 +46,7 @@ function mapStateToProps(state, ownProps) {
     itemDescription: state.uploadLook.description,
     itemUrl: currentItem.url,
     itemColors: currentItem.colors,
-    currentItem
+    currentItem,
 
   }
 }

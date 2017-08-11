@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import {
   getStats,
   getUserBodyType,
-  addNewLook,
   getUserLooks,
   showParisBottomMessage,
   likeUpdate,
@@ -14,6 +13,7 @@ import {
   getUserBalance,
 } from '../../actions';
 
+import { addNewLook } from '../../actions/uploadLookB';
 import { editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';

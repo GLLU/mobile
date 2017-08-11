@@ -48,8 +48,8 @@ class ModalQuestion extends Component {
     this._cancelAction = this._cancelAction.bind(this)
   }
 
-  _confirmAction() {
-    const {closeModal, confirmAction} = this.props
+  _confirmAction = () => {
+    const {closeModal, confirmAction} = this.props;
     confirmAction()
     closeModal({modalVisible: false})
   }

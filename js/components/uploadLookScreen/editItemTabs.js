@@ -185,6 +185,12 @@ export default class EditItemTabs extends Component {
   }
 
   render() {
+    const { currentItem } = this.props;
+
+    if (!currentItem) {
+      return null;
+    }
+
     return (
       <KeyboardAvoidingView behavior={'padding'}>
         <View  style={styles.container}>

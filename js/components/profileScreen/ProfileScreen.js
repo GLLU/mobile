@@ -218,7 +218,10 @@ class ProfileScreen extends Component {
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
-      this.props.addNewItem(file);
+      this.props.addNewLook(file).then(() => {
+        this.props.navigateTo('uploadLookScreen', {mode: 'create'});
+      });
+
     }
   }
 

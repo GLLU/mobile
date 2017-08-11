@@ -3,7 +3,8 @@ import { ListView, Image, TouchableOpacity, Text, View, ActivityIndicator } from
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import EmptyView from './EmptyView';
-import { addNewLook, getUserFollowersData } from '../../../../actions';
+import { getUserFollowersData } from '../../../../actions';
+import { addNewLook } from '../../../../actions/uploadLookB';
 import asScreen from '../../../common/containers/Screen';
 import ListScreen from '../../../common/lists/ListScreen';
 import UserActionRow from '../../../common/lists/UserActionRow';

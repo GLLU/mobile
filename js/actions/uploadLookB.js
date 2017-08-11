@@ -26,7 +26,7 @@ import UploadLookService from '../services/uploadLookService';
 import _ from 'lodash';
 
 import rest from '../api/rest';
-import { newItem } from '../reducers/uploadLook';
+import {newItem} from '../reducers/uploadLook';
 import {loadBrands, showProcessing, hideProcessing} from './index';
 import Utils from '../utils';
 
@@ -113,7 +113,7 @@ export function removeLookItem(itemId) {
 
 export function addItemType(categoryItem, itemId) {
   return (dispatch) => {
-    const payload = {categoryItem, itemId}
+    const payload = { categoryItem, itemId }
     dispatch({
       type: ADD_ITEM_TYPE,
       payload
@@ -125,13 +125,13 @@ export function toggleOccasionTag(tagId, selected, itemId) {
   return (dispatch) => {
     if (selected) {
       // remove
-      const payload = {tagId, itemId}
+      const payload = { tagId, itemId }
       dispatch({
         type: REMOVE_ITEM_OCCASION_TAG,
         payload
       });
     } else { // add
-      const payload = {tagId, itemId}
+      const payload = { tagId, itemId }
       dispatch({
         type: ADD_ITEM_OCCASION_TAG,
         payload
@@ -144,13 +144,13 @@ export function toggleItemColors(colorId, selected, itemId) {
   return (dispatch) => {
     if (selected) {
       // remove
-      const payload = {colorId, itemId}
+      const payload = { colorId, itemId }
       dispatch({
         type: REMOVE_ITEM_COLOR,
         payload
       });
     } else { // add
-      const payload = {colorId, itemId}
+      const payload = { colorId, itemId }
       dispatch({
         type: ADD_ITEM_COLOR,
         payload
@@ -211,7 +211,7 @@ export function createBrandName(newBrand) {
       }
     }
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.brands.post({}, {body: JSON.stringify(body)}, (err, data) => {
+      dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err && !_.isEmpty(data)) {
           dispatch(loadBrands());
           dispatch(addBrandName(data.brand.id, newBrand.itemId))
@@ -228,8 +228,9 @@ export function publishLook() {
   return (dispatch, getState) => {
     const state = getState();
 
-    const {lookId, items, description, isUploading} = state.uploadLook;
+    const { lookId, items, description, isUploading } = state.uploadLook;
 
+    let interval;
     return new Promise((resolve, reject) => {
       _.forEach(items, (item) => {
         const body = {
@@ -242,19 +243,25 @@ export function publishLook() {
             url: item.url
           }
         };
-        const editOrCreate = item.isNew ? {method: 'post'} : {method: 'put', itemId: item.id}
+        const editOrCreate = item.isNew ? { method: 'post' } : { method: 'put', itemId: item.id }
         UploadLookService.createOrEditItem(lookId, body, editOrCreate).then((createdItemData) => {
           _.forEach(item.occasions, (occasion) => {
             const occasionBody = {
               tag_id: occasion
             }
-            UploadLookService.addItemOccasions(lookId, createdItemData.item.id ,occasionBody).then((occasionData) => {
-            })
+            UploadLookService.addItemOccasions(lookId, createdItemData.item.id, occasionBody).then((occasionData) => {
+            });
           })
-          if(isUploading){
-            setTimeout(function(){
+          interval = setInterval(function () {
+            if (getState().uploadLook.isUploading) {
+              //Do nothing, wait until next interval.
+            }
+            else {
+
+              clearInterval(interval);
+
               UploadLookService.publishLook(lookId).then(() => {
-                if(description.length > 0){
+                if (description.length > 0) {
                   const descriptionBody = {
                     description
                   }
@@ -263,20 +270,8 @@ export function publishLook() {
                 }
                 dispatch(clearUploadLook())
               })
-              }, 30000);
-          }else {
-            UploadLookService.publishLook(lookId).then(() => {
-              if(description.length > 0){
-                const descriptionBody = {
-                  description
-                }
-                UploadLookService.updateLook(lookId, descriptionBody).then(() => {
-                })
-              }
-              dispatch(clearUploadLook())
-            })
-          }
-
+            }
+          }, 5000);
         })
       });
       resolve()

@@ -255,8 +255,12 @@ class UploadLookScreen extends Component {
   }
 
   render() {
-    const { isVideo } = this.props;
+    const { isVideo , filePath } = this.props;
     const { isPublishing } = this.state;
+
+    if (!filePath) {
+      return null;
+    }
     return (
       <View>
         {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}

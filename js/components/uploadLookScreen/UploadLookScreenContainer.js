@@ -38,6 +38,11 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = (state) => {
   const {lookId, image, items, localFilePath, isUploading} = state.uploadLook;
+
+  if (!image){
+    return {};
+  }
+
   const isVideo = Utils.isVideo(image);
   return {
     lookId,
