@@ -170,7 +170,7 @@ class MediaContainer extends Component {
   goToProfile(){
     const { look } = this.props
     const user = look;
-    this.props.navigateTo('profileScreen',user);
+    this.props.navigateTo('profileScreen',{user});
   }
 
   renderFeedMediaGrid(look) {
