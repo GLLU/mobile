@@ -241,9 +241,10 @@ class UploadLookScreen extends Component {
   handleBackButton() {
     this.setModalVisible({
       modalVisible: true,
-      title: 'Are you sure u want to abort the upload look process?',
-      confirmString: 'Yes, i will come back later..',
-      cancelString: 'No, i want to stay and upload my look',
+      title: 'SURE YOU WANT TO STOP THE UPLOAD LOOK PROCESS?',
+      subtitle: 'Please note changes will not be saved...',
+      confirmString: 'YES',
+      cancelString: 'NO, I WANT TO CONTINUE',
       confirmAction: this.gobackAndCancel,
     })
   }

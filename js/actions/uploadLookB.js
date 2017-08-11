@@ -258,7 +258,7 @@ export function publishLook() {
       interval = setInterval(function () {
         if (getState().uploadLook.isUploading) {
           //Do nothing, wait until next interval.
-        } 
+        }
         else {
 
           clearInterval(interval);
