@@ -12,6 +12,8 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  user: state.user
+});
 
 export default connect(mapStateToProps, bindAction)(asScreen(Splash));

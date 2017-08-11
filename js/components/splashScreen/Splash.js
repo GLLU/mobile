@@ -28,10 +28,15 @@ class Splash extends Component {
   }
 
   checkLogin() {
+    const { user } = this.props;
     setTimeout(() => {
       this.props.checkLogin()
         .then(() => {
-          this.props.resetTo('feedscreen');
+          if (user.id !== -1 && user.name !== null) {
+            this.props.resetTo('feedscreen');
+          } else {
+            this.props.resetTo('loginscreen');
+          }
         })
         .catch(() => {
           this.props.resetTo('loginscreen');

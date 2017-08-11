@@ -203,7 +203,7 @@ export function checkLogin() {
         NetworkManager.setToken(credentials.password);
         setRestOptions(dispatch, rest, { api_key: credentials.password });
         dispatch(rest.actions.auth.get({}, (err, data) => {
-          if (!err) {
+          if (!err && data && data.user && data.user.id !== null && data.user.id !== -1) {
             dispatch(setUser(data.user));
           } else {
             console.log('unable to invalidate user data', err);
