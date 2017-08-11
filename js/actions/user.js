@@ -102,7 +102,7 @@ const signUp = function (dispatch, data) {
           data: data[key],
         });
       });
-      Utils.postMultipartForm('', '/users', formData, 'user[avatar]', avatar).then(resolve, reject);
+      Utils.postMultipartForm('', '/users', formData, 'user[avatar]', avatar, 'POST').then(resolve, reject);
     } else {
       // normal rest
       const body = { user: data };
