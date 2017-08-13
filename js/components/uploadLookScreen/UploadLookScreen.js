@@ -277,7 +277,7 @@ class UploadLookScreen extends Component {
   mapItemsForAnalytics(type) {
     const { items } = this.props;
     const joinedArray = _.map(items, (item) => {
-      if(type === 'colors' || type === 'occasions') {
+      if(type === 'color_ids' || type === 'occasions') {
         return item[type].length > 0 ? true : null
       }
        return item[type] && item[type] !== -1 ? item[type] : null

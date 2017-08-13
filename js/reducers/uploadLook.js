@@ -33,7 +33,7 @@ export const newItem = {
   cover_x_pos: 0.5,
   cover_y_pos: 0.5,
   occasions: [],
-  colors: [],
+  color_ids: [],
   tags: [],
   isNew: true,
 }
@@ -198,10 +198,10 @@ const ACTION_HANDLERS = {
   },
   [REMOVE_ITEM_COLOR]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let colors = _.filter(item.colors, t => t !== action.payload.colorId);
+    let color_ids = _.filter(item.color_ids, t => t !== action.payload.colorId);
     return {
       ...state,
-      items: mutateItem(state, 'colors', colors, action.payload.itemId)
+      items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId)
     }
   },
   [CLEAR_UPLOAD_LOOK]: (state, action) => {
@@ -212,11 +212,11 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_COLOR]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let colors = _.cloneDeep(item.colors);
-    colors.push(action.payload.colorId);
+    let color_ids = _.cloneDeep(item.color_ids);
+    color_ids.push(action.payload.colorId);
     return {
       ...state,
-      items: mutateItem(state, 'colors', colors, action.payload.itemId)
+      items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId)
     }
   }
 }
