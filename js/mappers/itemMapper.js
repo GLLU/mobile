@@ -10,8 +10,8 @@ export default function map(item) {
     occasions: _.map(item.occasions, (occasion) => {
       return occasion.id
     }),
-    colors: _.map(item.colors, (color) => {
-      return color.id
+    color_ids: _.map(item.color_ids, (color) => {
+      return color
     }),
     tags: item.tags ? item.tags : [],
     description: item.description ? item.description : '',

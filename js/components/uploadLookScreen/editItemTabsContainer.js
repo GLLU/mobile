@@ -45,7 +45,7 @@ function mapStateToProps(state, ownProps) {
     itemOccasions: currentItem.occasions,
     itemDescription: state.uploadLook.description,
     itemUrl: currentItem.url,
-    itemColors: currentItem.colors,
+    itemColors: currentItem.color_ids,
     currentItem,
 
   }

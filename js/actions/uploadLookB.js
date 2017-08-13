@@ -239,7 +239,7 @@ export function publishLook() {
             cover_y_pos: item.locationY,
             category_id: item.category,
             brand_id: item.brand,
-            color_ids: item.colors,
+            color_ids: item.color_ids,
             url: item.url
           }
         };

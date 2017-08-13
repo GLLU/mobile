@@ -303,7 +303,7 @@ class LooksScreen extends Component {
         <ImageWrapper
           resizeMode={'stretch'}
           style={styles.itemImage}
-          source={{ uri: look.uri }}
+          source={{ uri: look.mediumSizeUri }}
           navigation={this.props.cardNavigation}>
           <LookOverlay
             width={width}
