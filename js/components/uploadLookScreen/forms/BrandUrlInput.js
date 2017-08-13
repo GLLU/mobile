@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
-import {StyleSheet, TextInput, View, Text, TouchableOpacity, Image} from 'react-native'
-import Colors from '../../../styles/Colors.styles'
+import {StyleSheet, TextInput, View, Text, TouchableOpacity, Image} from 'react-native';
+import i18n from 'react-native-i18n';
+import Colors from '../../../styles/Colors.styles';
+import Fonts from '../../../styles/Fonts.styles';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 const clear = require('../../../../images/icons/cancel-clear-x.png');
 
@@ -39,7 +41,7 @@ class BrandUrlInput extends PureComponent {
     const {url} = this.state
     return (
       <View style={styles.brandInputContainer}>
-        <Text style={styles.explanationText}>Type the web-link to your item to help people find it:</Text>
+        <Text style={styles.explanationText}>Enter the web-link to your item to help people find it:</Text>
         <View style={styles.urlRowContainer}>
           <Text style={styles.httpText}>http://www.</Text>
           <View style={styles.textInputContainer}>
@@ -57,6 +59,7 @@ class BrandUrlInput extends PureComponent {
             <Image source={clear} style={styles.clearText}/>
           </TouchableOpacity>
         </View>
+        <Text style={styles.skipText}>{i18n.t('SKIP_LINK')}</Text>
       </View>
     );
   }
@@ -75,6 +78,13 @@ const styles = StyleSheet.create({
   },
   explanationText: {
     fontSize: generateAdjustedSize(13),
+    fontFamily: Fonts.regularFont,
+  },
+  skipText: {
+    fontSize: generateAdjustedSize(13),
+    fontFamily: Fonts.contentFont,
+    color: Colors.lightGray,
+    textAlign: 'center',
   },
   httpText: {
     fontSize: generateAdjustedSize(13),

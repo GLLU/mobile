@@ -226,7 +226,7 @@ const initialState = {
   lookId: -1,
   image: null,
   description: '',
-  items: [{id: -1}],
+  items: [],
   video: '',
   isUploading: false
 }

@@ -103,6 +103,7 @@
   "LINK": "LINK",
   "EMPTY_FEED_TITLE": "NO LOOK WAS FOUND IN THIS SEARCH",
   "EMPTY_FEED_LEGEND": "Try to change your search filters.\nWe have a lot of cool looks that will fit to your style! ",
-  "WITHDRAW": "WITHDRAW"
+  "WITHDRAW": "WITHDRAW",
+  "SKIP_LINK": "Can't find the link? Skip this step and we will try to find it for you"
 }
 
