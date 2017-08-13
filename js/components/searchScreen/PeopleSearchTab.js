@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
   loadingViewContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   activityIndicator: {
-    height: 50
-  }
+    height: 50,
+  },
 });
 
 type Props = {
@@ -187,14 +187,14 @@ class PeopleSearchTab extends Component {
 
   renderLoader() {
     return (
-      <View style={ styles.loadingViewContainer }>
+      <View style={styles.loadingViewContainer}>
         <ActivityIndicator animating style={styles.activityIndicator} color={Colors.secondaryColor} />
       </View>
-    )
+    );
   }
 
   render() {
-    const {isLoading} = this.props
+    const { isLoading } = this.props;
     return (
       <View style={styles.tabContainer}>
         {isLoading ? this.renderLoader() : this.emptyOrInit()}
