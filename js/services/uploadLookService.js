@@ -27,7 +27,7 @@ class UploadLookService {
 
   static createOrEditItem = (lookId ,body, editOrCreate) =>
     AppAPI[editOrCreate.method](editOrCreate.method === 'post' ? `${createItemRoute(lookId)}` : `${updateItemRoute(lookId, editOrCreate.itemId)}`,
-    {...body.item}
+    {...body}
   ).then((data => {
     console.log('new item data',data);
     return data
