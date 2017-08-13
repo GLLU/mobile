@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, Image, KeyboardAvoidingView, Animated, TouchableOpacity } from 'react-native';
 import BrandSelector from './BrandSelector';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
@@ -11,6 +11,9 @@ import LinkTab from './tabs/linkTab';
 const vsign = require('../../../images/indicators/v_sign.png');
 import i18n from 'react-native-i18n';
 
+const arrowUp = require('../../../images/icons/arrow_up.png');
+const arrowDown = require('../../../images/icons/arrow_down.png');
+
 export default class EditItemTabs extends Component {
   constructor(props: object) {
     super(props);
@@ -21,6 +24,9 @@ export default class EditItemTabs extends Component {
     this._addItemTag = this._addItemTag.bind(this);
     this._addItemCategory = this._addItemCategory.bind(this);
     this._addItemBrand = this._addItemBrand.bind(this);
+
+    this.animatedTabBar = new Animated.Value(generateAdjustedSize(135));
+
     this.routes = [
       { key: CATEGORY, title: i18n.t('CATEGORY')},
       { key: BRAND, title: i18n.t('BRAND')},
@@ -40,6 +46,7 @@ export default class EditItemTabs extends Component {
       index: 0,
       routes: this.routes,
       loaded: false,
+      isOpen: true,
     };
   }
 
@@ -184,6 +191,21 @@ export default class EditItemTabs extends Component {
     );
   }
 
+  _handleText = () => {
+    const tabHeight = this.state.isOpen ? 0 : generateAdjustedSize(135);
+
+    Animated.timing(          // Uses easing functions
+      this.animatedTabBar,    // The value to drive
+      {
+        toValue: tabHeight,
+        duration: 100,
+      }            // Configuration
+    ).start();
+
+    this.setState({isOpen: !this.state.isOpen});
+  }
+
+
   render() {
     const { currentItem } = this.props;
 
@@ -193,7 +215,10 @@ export default class EditItemTabs extends Component {
 
     return (
       <KeyboardAvoidingView behavior={'padding'}>
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.bottomBarToggle} onPress={this._handleText}>
+          <Image style={{ height: 8, width: 18 }} source={this.state.isOpen ? arrowDown : arrowUp} resizeMode={'contain'}/>
+        </TouchableOpacity>
+        <Animated.View style={[styles.container, { height: this.animatedTabBar }]}>
           <TabViewAnimated
             style={styles.tabViewAnimatedContainer}
             navigationState={this.state}
@@ -202,7 +227,7 @@ export default class EditItemTabs extends Component {
             onRequestChangeTab={this._handleTabsIndexChange}
             swipeEnabled={false}
           />
-        </View>
+        </Animated.View>
       </KeyboardAvoidingView>
 
     );
@@ -219,6 +244,15 @@ const styles = StyleSheet.create({
     width: 100,
     paddingHorizontal: 3,
     flexDirection: 'row',
+  },
+  bottomBarToggle: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.black,
+    opacity: 0.7,
+    width: 40,
+    height: 40,
   },
   TabBar: {
     backgroundColor: Colors.backgroundGrey,
