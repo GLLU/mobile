@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Dimensions, TouchableOpacity, Text, View, FlatList, StyleSheet, SectionList } from 'react-native';
+import { Dimensions, TouchableOpacity, Text, View, FlatList, StyleSheet, SectionList, ActivityIndicator } from 'react-native';
 import i18n from 'react-native-i18n';
 const deviceWidth = Dimensions.get('window').width;
 import Separator from '../common/lists/Separator';
@@ -56,6 +56,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  loadingViewContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
+  },
+  activityIndicator: {
+    height: 50
+  }
 });
 
 type Props = {
@@ -177,10 +185,19 @@ class PeopleSearchTab extends Component {
     );
   }
 
+  renderLoader() {
+    return (
+      <View style={ styles.loadingViewContainer }>
+        <ActivityIndicator animating style={styles.activityIndicator} color={Colors.secondaryColor} />
+      </View>
+    )
+  }
+
   render() {
+    const {isLoading} = this.props
     return (
       <View style={styles.tabContainer}>
-        {this.emptyOrInit()}
+        {isLoading ? this.renderLoader() : this.emptyOrInit()}
       </View>
     );
   }
