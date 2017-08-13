@@ -17,7 +17,7 @@ export function serializeLook(look) {
     liked: look.is_liked,
     type: look.user_size.body_type,
     uri: cover.url ? cover.url : null,
-    mediumSizeUri: find(look.cover.list, x => x.version === 'medium').url,
+    mediumSizeUri: look.cover.type === 'video' ? null : find(look.cover.list, x => x.version === 'medium').url,
     width: cover ? cover.width : null,
     height: cover ? cover.height : null,
     coverType: look.cover.type,
