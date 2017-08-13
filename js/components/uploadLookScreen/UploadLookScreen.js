@@ -258,8 +258,16 @@ class UploadLookScreen extends Component {
   }
 
   gobackAndCancel() {
-    const {goBack, clearUploadLook, logEvent} = this.props
-    logEvent('uploadLook', {name: 'User canceled the upload look', origin: 'tagging'});
+    const {goBack, clearUploadLook, logEvent, description} = this.props
+    logEvent('uploadLook', {
+      name: 'User canceled the upload look', origin: 'tagging',
+      category: this.mapItemsForAnalytics('category'),
+      brand: this.mapItemsForAnalytics('brand'),
+      colors: this.mapItemsForAnalytics('colors'),
+      occasions: this.mapItemsForAnalytics('occasions'),
+      description,
+      link: this.mapItemsForAnalytics('url'),
+    });
     goBack();
     clearUploadLook();
   }
