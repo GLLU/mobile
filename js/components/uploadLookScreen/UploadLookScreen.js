@@ -265,8 +265,8 @@ class UploadLookScreen extends Component {
   }
 
   mapItemsForAnalytics(type) {
-    const {items} = this.props;
-    let joinedArray = _.map(items, (item, index) => {
+    const { items } = this.props;
+    const joinedArray = _.map(items, (item, index) => {
       if(type === 'colors' || type === 'occasions') {
         return item[type].length > 0 ? true : null
       }
@@ -276,7 +276,7 @@ class UploadLookScreen extends Component {
   }
 
   render() {
-    const { isVideo , filePath, description } = this.props;
+    const { isVideo , filePath } = this.props;
     const { isPublishing } = this.state;
     if (!filePath) {
       return null;
