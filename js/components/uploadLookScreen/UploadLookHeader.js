@@ -32,20 +32,16 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.boldContentFont,
   },
   addItemContainer: {
-    marginRight: 15,
-    borderWidth: 1,
-    padding: 5,
+    right: 10,
     height: 22,
-    width: 22,
-    borderRadius: 100,
     justifyContent: 'center',
-    borderColor: Colors.secondaryColor,
+    position: 'absolute',
   },
   addItemText: {
     color: Colors.secondaryColor,
     textAlign: 'center',
     fontFamily: Fonts.boldContentFont,
-    fontSize: generateAdjustedSize(20),
+    fontSize: generateAdjustedSize(16),
   },
   removeBtnContainer: {
     justifyContent: 'center',
@@ -188,7 +184,7 @@ class UploadLookHeader extends Component {
     const allowContinue = this.allowPublishBtn();
     return (
       <TouchableOpacity onPress={() => this.props.handleNewItem()} disabled={!allowContinue} style={styles.addItemContainer}>
-        <Text style={[styles.addItemText, !allowContinue ? {color: Colors.gray} : null]}>+</Text>
+        <Text style={[styles.addItemText, !allowContinue ? {color: Colors.gray} : null]}>ADD ITEM</Text>
       </TouchableOpacity>
     );
   }
@@ -260,13 +256,13 @@ class UploadLookHeader extends Component {
           {this._renderBackButton()}
           {this.props.items.length > 1 ? this._renderRemoveItemBtn() : null}
           <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-            {this._renderAddItemBtn()}
             {this.renderPublishBtn()}
           </View>
         </View>
         <View style={styles.titleAndAddContainer}>
           <Text
             style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
+          {this._renderAddItemBtn()}
         </View>
         { isVideo ? this.renderAddAnotherItemBtn() : null}
       </View>
