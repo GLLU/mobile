@@ -1,7 +1,7 @@
 // @flow
 
-import React, {Component} from 'react';
-import {TouchableOpacity, Image, Text, View, StyleSheet, Dimensions} from 'react-native';
+import React, { Component } from 'react';
+import { TouchableOpacity, Image, Text, View, StyleSheet, Dimensions } from 'react-native';
 import I18n from 'react-native-i18n';
 
 import Fonts from '../../styles/Fonts.styles';
@@ -45,15 +45,15 @@ class ProfileScreenHeader extends Component {
       <View style={{ height: 250 }}>
         <Image
           resizeMode={'stretch'} source={defaultBackground}
-          style={styles.backgroundImage}/>
-        <View style={styles.backgroundImage}/>
+          style={styles.backgroundImage} />
+        <View style={styles.backgroundImage} />
 
         <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
-          <ProfileAvatar style={{ width: 60, height: 60 }} avatarUrl={profilePic}/>
+          <ProfileAvatar style={{ width: 60, height: 60 }} avatarUrl={profilePic} />
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.username}>@{username}</Text>
           {isMyProfile ? null :
-            <FollowView onPress={onFollowClicked} user={{ isFollowing }} style={styles.followButton}/>}
+          <FollowView onPress={onFollowClicked} user={{ isFollowing }} style={styles.followButton} />}
         </View>
         {this._renderStats()}
       </View>
@@ -89,25 +89,25 @@ class ProfileScreenHeader extends Component {
         style={styles.statsRow}>
 
         {isMyProfile ? <ProfileScreenStat
-          title={I18n.t('BALANCE')} number={balance}
+          title={I18n.t('BALANCE')} number={followers >= 0 ? balance : -1} // we receive ballance in previoud call, so we need to verify that rest of stats arrived before showing ballance stat
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={this._handleBalanceClicked}/>
+          onClick={this._handleBalanceClicked} />
           : null}
 
         <ProfileScreenStat
           title={I18n.t('FOLLOWERS')} number={followers}
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={() => this._handleStatClick('followerScreen', 'followers', followers)}/>
+          onClick={() => this._handleStatClick('followerScreen', 'followers', followers)} />
 
         <ProfileScreenStat
           title={I18n.t('FOLLOWING')} number={following}
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={() => this._handleStatClick('followScreen', 'following', following)}/>
+          onClick={() => this._handleStatClick('followScreen', 'following', following)} />
 
         <ProfileScreenStat
           title={I18n.t('LOOKS')} number={looks_count}
           style={{ width: Dimensions.get('window').width / statsAmount }}
-          onClick={this._handleLooksClicked}/>
+          onClick={this._handleLooksClicked} />
 
       </View>
     );
