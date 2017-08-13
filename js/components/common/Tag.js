@@ -118,7 +118,7 @@ class Tag extends Component {
       return (
         <Animated.View
           {...this.panResponder.panHandlers}
-          style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? {zIndex: 1} : null]}>
+          style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}]}>
           <Image source={markerImage}
                  style={styles.itemBgImage}/>
         </Animated.View>

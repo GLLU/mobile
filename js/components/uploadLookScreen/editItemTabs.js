@@ -193,7 +193,7 @@ export default class EditItemTabs extends Component {
 
     return (
       <KeyboardAvoidingView behavior={'padding'}>
-        <View  style={styles.container}>
+        <View style={styles.container}>
           <TabViewAnimated
             style={styles.tabViewAnimatedContainer}
             navigationState={this.state}

@@ -74,7 +74,7 @@ class SearchScreen extends Component {
   }
 
   _handleSearch() {
-    if (this.state.searchTerm.length > 2) { // currently sever-side doesnt return results for less then 3 digits
+    if (this.state.searchTerm.length > 0) { // currently sever-side doesnt return results for less then 3 digits
       if (this.state.currentTab.key === 'looks') {
         this.props.getFeed({term: this.state.searchTerm});
         this.props.goBack();

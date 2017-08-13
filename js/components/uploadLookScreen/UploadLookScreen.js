@@ -1,10 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Dimensions, Platform, View, StyleSheet, BackAndroid } from 'react-native';
+import { Dimensions, Platform, View, StyleSheet, BackAndroid, Image } from 'react-native';
 import UploadLookHeader from './UploadLookHeader';
-import { LOOK_STATES } from '../../constants';
-import ImageWithTags from '../common/ImageWithTags';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import VideoWithTags from '../common/VideoWithTags';
@@ -14,6 +12,7 @@ import SpinnerSwitch from '../loaders/SpinnerSwitch';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
+import Tag from '../common/Tag';
 
 export const CATEGORY = 'category';
 export const BRAND = 'brand';
@@ -149,7 +148,6 @@ class UploadLookScreen extends Component {
   }
 
   handleNewItem() {
-    const {items} = this.props
     this.props.createLookItem().then((data) => {
       this.setState({ currItem: data });
     });
@@ -173,7 +171,7 @@ class UploadLookScreen extends Component {
     this.props.setTagPosition(position);
   }
 
-  _renderModal(confirmString, cancelString, title, subtitle = '', confirmAction, cancelAction) {
+  _renderModal() {
     const { modalParams } = this.state;
     return (
       <ModalQuestion
@@ -183,18 +181,12 @@ class UploadLookScreen extends Component {
   }
 
   renderImageWithTags() {
-    const { items, filePath } = this.props;
-    const currItem = this.getCurrentItem();
+    const { filePath } = this.props;
     return (
-      <ImageWithTags
-        items={items}
-        image={filePath}
-        setCurrentItem={itemId => this.setCurrentItem(itemId)}
-        onDragEnd={position => this.handleOnDragEnd(position)}
-        currItem={currItem}>
+      <Image source={{uri: filePath}} style={styles.itemsContainer} resizeMode={'stretch'}>
         {this.renderActions()}
-      </ImageWithTags>
-    );
+      </Image>
+    )
   }
 
   renderVideoWithTags() {
@@ -208,12 +200,27 @@ class UploadLookScreen extends Component {
   }
 
   renderActions() {
+    const {isVideo} = this.props
     return (
       <View style={styles.renderActionsContainer}>
-        { this.renderHeader()}
-        { this._renderEditItemTabs()}
+        { this.renderHeader() }
+        { isVideo ? null : this.renderTags() }
+        { this._renderEditItemTabs() }
       </View>
     );
+  }
+
+  renderTags() {
+    const {items} = this.props;
+    const currItem = this.getCurrentItem();
+    if (currItem) {
+      return items.map((item, i) => {
+        return (
+          <Tag key={item.id} currItemId={currItem.id} setCurrentItem={itemId => this.setCurrentItem(itemId)} item={item}
+               onDragEnd={position => this.handleOnDragEnd(position)}/>
+        );
+      });
+    }
   }
 
   _renderEditItemTabs() {

@@ -291,7 +291,6 @@ class LooksScreen extends Component {
     const showShowArrow = this.shouldRenderArrows();
     const openComments = this.openCommentsInAdvance(look);
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
-    console.log('martin', showSwipeWizard);
     return (
       <GestureRecognizer
         key={look.originalIndex !== undefined ? look.originalIndex : -1}
