@@ -105,7 +105,7 @@ class UploadLookScreen extends Component {
   }
 
   publishAction() {
-    const {isUploading, publishLookItem, clearFeed, logEvent, state, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo } = this.props;
+    const { isUploading, publishLookItem, clearFeed, logEvent, state, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo } = this.props;
     logEvent('uploadLook', {
       category: this.mapItemsForAnalytics('category'),
       brand: this.mapItemsForAnalytics('brand'),
@@ -122,18 +122,17 @@ class UploadLookScreen extends Component {
           getUserLooks(looksCall);
           const query = _.cloneDeep(currentFeedQuery);
           getFeed(query);
-          if(isUploading){
+          if (isUploading) {
             this.setModalVisible({
               modalVisible: true,
               title: 'Well done!! Your Look is being processed and will be uploaded in a few moments',
               confirmString: 'CONTINUE',
               cancelString: '',
               confirmAction: goBack,
-            })
+            });
           } else {
-            goBack()
+            goBack();
           }
-
         });
       });
     });
@@ -145,7 +144,7 @@ class UploadLookScreen extends Component {
   }
 
   handleNewItem() {
-    const {items} = this.props
+    const { items } = this.props;
     this.props.createLookItem().then((data) => {
       this.setState({ currItem: data });
     });
@@ -157,7 +156,7 @@ class UploadLookScreen extends Component {
       confirmString: 'DELETE',
       cancelString: 'NO, CONTINUE EDITING',
       confirmAction: this.handleRemoveItem,
-    })
+    });
   }
   handleRemoveItem() {
     const itemToRemoveById = _.find(this.props.items, item => item.id !== this.state.currItem).id;
@@ -174,7 +173,7 @@ class UploadLookScreen extends Component {
     return (
       <ModalQuestion
         {...modalParams}
-        closeModal={this.setModalVisible}/>
+        closeModal={this.setModalVisible} />
     );
   }
 
@@ -251,29 +250,29 @@ class UploadLookScreen extends Component {
       confirmString: 'YES',
       cancelString: 'NO, I WANT TO CONTINUE',
       confirmAction: this.gobackAndCancel,
-    })
+    });
   }
 
   gobackAndCancel() {
-    const {goBack, clearUploadLook, logEvent} = this.props
-    logEvent('uploadLook', {name: 'User canceled the upload look', origin: 'tagging'});
+    const { goBack, clearUploadLook, logEvent } = this.props;
+    logEvent('uploadLook', { name: 'User canceled the upload look', origin: 'tagging' });
     goBack();
     clearUploadLook();
   }
 
   mapItemsForAnalytics(type) {
-    const {items} = this.props;
-    let joinedArray = _.map(items, (item, index) => {
-      if(type === 'colors' || type === 'occasions') {
-        return item[type].length > 0 ? true : null
+    const { items } = this.props;
+    const joinedArray = _.map(items, (item, index) => {
+      if (type === 'colors' || type === 'occasions') {
+        return item[type].length > 0 ? true : null;
       }
-       return item[type] && item[type] !== -1 ? item[type] : null
-    })
-    return joinedArray
+      return item[type] && item[type] !== -1 ? item[type] : null;
+    });
+    return joinedArray;
   }
 
   render() {
-    const { isVideo , filePath, description } = this.props;
+    const { isVideo, filePath, description } = this.props;
     const { isPublishing } = this.state;
     if (!filePath) {
       return null;
