@@ -53,7 +53,8 @@ const mapStateToProps = (state) => {
     categories: state.filters.categories,
     currentFeedQuery: state.feed.bestMatch.query,
     userId: state.user.id,
-    isUploading
+    isUploading,
+    description: state.uploadLook.description
   };
 };
 

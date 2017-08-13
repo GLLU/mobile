@@ -154,19 +154,21 @@ class FeedPage extends Component {
     this.props.hideBodyTypeModal();
   }
 
-  async uploadLook() {
-    this.props.logEvent('Feedscreen', {name: 'Open Camera click'});
+  async uploadLook(pressedButton) {
+    this.props.logEvent('Feedscreen', {name: 'user started uploading a look', origin: pressedButton});
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.goToAddNewItem(file);
+    } else {
+      this.props.logEvent('Feedscreen', {name: 'User canceled the upload look', origin: 'camera'});
     }
   }
 
   renderBottomCamera() {
     return (
       <Animated.View style={{position: 'absolute', bottom: this.state.fadeAnimContentOnPress, alignSelf: 'center'}}>
-        <TouchableOpacity transparent onPress={this.uploadLook}>
+        <TouchableOpacity transparent onPress={() => this.uploadLook('floating button')}>
           <Image source={cameraIcon} style={styles.btnImage}/>
         </TouchableOpacity>
       </Animated.View>
@@ -205,7 +207,7 @@ class FeedPage extends Component {
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
           <MainBarView
-            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
+            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={() =>this.uploadLook('menu camera')}
             gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
             handleSearchStatus={this._handleSearchStatus} balance={balance} showBalanceBadge={showWalletBadge}
             handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}

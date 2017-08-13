@@ -204,7 +204,7 @@ class ProfileScreen extends Component {
         return (<WalletScreen
           balance={balance} onWithdrawPressed={this._handleWithdraw}
           onShowWalletWizard={() => this.setState({showWalletWizard: true})}
-          onAddNewLook={this._handleNewPost}/>);
+          onAddNewLook={() => this._handleNewPost('wallet')}/>);
       case 'settings':
         return <SettingsScreen navigation={navigation}/>;
       default:
@@ -213,15 +213,16 @@ class ProfileScreen extends Component {
     }
   };
 
-  async _handleNewPost() {
-    this.props.logEvent('Feedscreen', {name: 'Open Camera click'});
+  async _handleNewPost(buttonPressed) {
+    this.props.logEvent('profileScreen', {name: 'user started uploading a look', origin: buttonPressed});
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.props.addNewLook(file).then(() => {
         this.props.navigateTo('uploadLookScreen', {mode: 'create'});
       });
-
+    } else {
+      this.props.logEvent('profileScreen', {name: 'User canceled the upload look', origin: 'camera'})
     }
   }
 
@@ -318,7 +319,7 @@ class ProfileScreen extends Component {
       return (<EmptyStateScreen
         title={emptyStateTitle} subtitle={emptyStateSubtitle}
         icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
-        onButtonClicked={this._handleNewPost} />);
+        onButtonClicked={() => this._handleNewPost('userLooks')} />);
     }
 
     return (

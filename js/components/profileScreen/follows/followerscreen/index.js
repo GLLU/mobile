@@ -57,11 +57,13 @@ class FollowerScreen extends Component {
   }
 
   async uploadLook() {
-    this.props.logEvent('Followerscreen', { name: 'Open Camera click' });
+    this.props.logEvent('Followerscreen', {name: 'user started uploading a look', origin: 'followers'});
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.goToAddNewItem(file);
+    } else {
+      this.props.logEvent('Followerscreen', {name: 'User canceled the upload look', origin: 'camera'})
     }
   }
 

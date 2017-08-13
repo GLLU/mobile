@@ -106,7 +106,12 @@ class UploadLookScreen extends Component {
 
   publishAction() {
     const {isUploading, publishLookItem, clearFeed, logEvent, state, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo } = this.props;
-    logEvent('UploadLookScreen', { name: 'Publish click' });
+    logEvent('uploadLook', {
+      category: this.mapItemsForAnalytics('category'),
+      brand: this.mapItemsForAnalytics('brand'),
+      colors: this.mapItemsForAnalytics('colors'),
+    });
+
     this.setState({ isPublishing: true }, () => {
       publishLookItem().then(() => {
         this.setState({ isPublishing: false }, () => {
@@ -250,15 +255,26 @@ class UploadLookScreen extends Component {
   }
 
   gobackAndCancel() {
-    const {goBack, clearUploadLook} = this.props
+    const {goBack, clearUploadLook, logEvent} = this.props
+    logEvent('uploadLook', {name: 'User canceled the upload look', origin: 'tagging'});
     goBack();
-    clearUploadLook()
+    clearUploadLook();
+  }
+
+  mapItemsForAnalytics(type) {
+    const {items} = this.props;
+    let joinedArray = _.map(items, (item, index) => {
+      if(type === 'colors' || type === 'occasions') {
+        return item[type].length > 0 ? true : null
+      }
+       return item[type] && item[type] !== -1 ? item[type] : null
+    })
+    return joinedArray
   }
 
   render() {
-    const { isVideo , filePath } = this.props;
+    const { isVideo , filePath, description } = this.props;
     const { isPublishing } = this.state;
-
     if (!filePath) {
       return null;
     }
