@@ -1,19 +1,20 @@
 // @flow
-import React, {Component} from 'react';
-import {Dimensions, TouchableOpacity, Text, View, FlatList, StyleSheet} from 'react-native';
+import React, { Component } from 'react';
+import { Dimensions, TouchableOpacity, Text, View, FlatList, StyleSheet, SectionList } from 'react-native';
 import i18n from 'react-native-i18n';
 const deviceWidth = Dimensions.get('window').width;
 import Separator from '../common/lists/Separator';
 import UserActionRow from '../common/lists/UserActionRow';
 import Colors from '../../styles/Colors.styles';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import Fonts from '../../styles/Fonts.styles';
+import SectionSeparator from './SectionSeparator';
 const emptyUser = require('../../../images/emptyStates/user-woman.png');
 const styles = StyleSheet.create({
   tabContainer: {
     backgroundColor: Colors.white,
-    flex: 1
+    flex: 1,
   },
   RowTitle: {
     color: Colors.gray,
@@ -25,8 +26,6 @@ const styles = StyleSheet.create({
     height: generateAdjustedSize(60),
     backgroundColor: Colors.white,
     justifyContent: 'center',
-    borderBottomWidth: generateAdjustedSize(1),
-    borderBottomColor: Colors.separatorGray,
   },
   historyRowText: {
     fontWeight: '600',
@@ -76,7 +75,6 @@ class PeopleSearchTab extends Component {
     super(props);
     this._renderSuggestionUserActionRow = this._renderSuggestionUserActionRow.bind(this);
     this.renderResultsList = this.renderResultsList.bind(this);
-    this._renderSearchHistoryList = this._renderSearchHistoryList.bind(this);
     this.emptyOrInit = this.emptyOrInit.bind(this);
     this._renderInitView = this._renderInitView.bind(this);
     this._renderHistoryList = this._renderHistoryList.bind(this);
@@ -92,13 +90,13 @@ class PeopleSearchTab extends Component {
         data={this.props.results}
         keyExtractor={(item, index) => item.userId !== -1 ? item.userId : index}
         ItemSeparatorComponent={() => <Separator />}
-        renderItem={({item}) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+        renderItem={({ item }) => <UserActionRow {...item} navigateTo={this.props.navigateTo} />}
       />
     </View>
   );
 
   renderHistoryRow(item) {
-    const {searchFromHistory} = this.props;
+    const { searchFromHistory } = this.props;
     return (
       <TouchableOpacity onPress={() => searchFromHistory(item)} style={styles.historyRowContainer}>
         <Text style={styles.historyRowText}>{item}</Text>
@@ -106,20 +104,11 @@ class PeopleSearchTab extends Component {
     );
   }
 
-  _renderSearchHistoryList() {
-    const {searchHistory} = this.props;
-    return _.map(searchHistory, (item, index) => (
-      <View key={index} style={styles.historyRowContainer}>
-        {this.renderHistoryRow(item)}
-      </View>
-    ));
-  }
-
-  _renderEmptySearchHistory() {
+  renderEmptyHistoryRow(item) {
     return (
-      <View style={styles.historyRowContainer}>
-        <Text style={styles.historyRowText}>{i18n.t('TRY_SEARCH_FOR_PEOPLE')}</Text>
-      </View>
+      <TouchableOpacity disabled style={styles.historyRowContainer}>
+        <Text style={styles.historyRowText}>{item}</Text>
+      </TouchableOpacity>
     );
   }
 
@@ -130,22 +119,36 @@ class PeopleSearchTab extends Component {
       <View style={styles.emptyViewContainer}>
         <EmptyStateScreen
           title={emptyTitle}
-          subtitle={emptySubtitle} icon={emptyUser}/>
+          subtitle={emptySubtitle} icon={emptyUser} />
       </View>
     );
   }
 
   _renderInitView() {
+    const { searchHistory, suggestions } = this.props;
+    let searchHistorySection;
+    if (searchHistory.length > 0) {
+      searchHistorySection = { data: searchHistory, key: i18n.t('RECENT_SEARCHES'), renderItem: ({ item }) => this.renderHistoryRow(item), showClear: true };
+    } else {
+      searchHistorySection = { data: [i18n.t('TRY_SEARCH_FOR_PEOPLE')], key: i18n.t('RECENT_SEARCHES'), renderItem: ({ item }) => this.renderEmptyHistoryRow(item), showClear: false };
+    }
+    const sections = [
+      searchHistorySection,
+      { data: suggestions, key: i18n.t('FISHIONISTAS_YOU_WANNA_CHECK'), renderItem: ({ item }) => this._renderSuggestionUserActionRow(item), showClear: false },
+    ];
     return (
-      <View>
-        {this._renderHistoryList() }
-        {this.renderSuggestionsList()}
-      </View>
+      <SectionList
+        renderSectionHeader={({ section }) => <SectionSeparator title={section.key} showClear={section.showClear} clearAction={this.props.clearSearchHistory} />}
+        ItemSeparatorComponent={() => <Separator />}
+        keyExtractor={(item, index) => index}
+        removeClippedSubviews={false}
+        sections={sections}
+      />
     );
   }
 
   emptyOrInit() {
-    const {canShowEmptyView, results} = this.props;
+    const { canShowEmptyView, results } = this.props;
     if (canShowEmptyView) {
       return results.length > 0 ? this.renderResultsList() : this._renderEmptyView();
     } else {
@@ -167,22 +170,11 @@ class PeopleSearchTab extends Component {
     </View>
   );
 
-  renderSuggestionsList = () => (
-    <View style={{}}>
-      <View style={styles.rowTitleContainer}>
-        <Text style={styles.RowTitle}>{i18n.t('FISHIONISTAS_YOU_WANNA_CHECK')}</Text>
-      </View>
-      {this._renderSuggestionUserActionRow()}
-    </View>
-  );
-
-  _renderSuggestionUserActionRow() {
-    const {suggestions, navigateTo} = this.props;
-    return _.map(suggestions, (item, index) => (
-      <View key={index} style={styles.historyRowContainer}>
-        <UserActionRow {...item} navigateTo={navigateTo}/>
-      </View>
-    ));
+  _renderSuggestionUserActionRow(item) {
+    const { navigateTo } = this.props;
+    return (
+      <UserActionRow {...item} navigateTo={navigateTo} />
+    );
   }
 
   render() {

@@ -105,7 +105,7 @@ class UploadLookScreen extends Component {
   }
 
   publishAction() {
-    const {isUploading, publishLookItem, clearFeed, logEvent, state, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo, description } = this.props;
+    const {isUploading, publishLookItem, clearFeed, logEvent, state, items, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo, description } = this.props;
     logEvent('uploadLook', {
       category: this.mapItemsForAnalytics('category'),
       brand: this.mapItemsForAnalytics('brand'),
@@ -113,6 +113,7 @@ class UploadLookScreen extends Component {
       occasions: this.mapItemsForAnalytics('occasions'),
       description,
       link: this.mapItemsForAnalytics('url'),
+      items: items.length,
     });
 
     this.setState({ isPublishing: true }, () => {
@@ -258,15 +259,24 @@ class UploadLookScreen extends Component {
   }
 
   gobackAndCancel() {
-    const {goBack, clearUploadLook, logEvent} = this.props
-    logEvent('uploadLook', {name: 'User canceled the upload look', origin: 'tagging'});
+    const {goBack, clearUploadLook, logEvent, description, items} = this.props
+    logEvent('uploadLook', {
+      name: 'User canceled the upload look', origin: 'tagging',
+      category: this.mapItemsForAnalytics('category'),
+      brand: this.mapItemsForAnalytics('brand'),
+      colors: this.mapItemsForAnalytics('colors'),
+      occasions: this.mapItemsForAnalytics('occasions'),
+      description,
+      link: this.mapItemsForAnalytics('url'),
+      items: items.length,
+    });
     goBack();
     clearUploadLook();
   }
 
   mapItemsForAnalytics(type) {
-    const {items} = this.props;
-    let joinedArray = _.map(items, (item, index) => {
+    const { items } = this.props;
+    const joinedArray = _.map(items, (item) => {
       if(type === 'colors' || type === 'occasions') {
         return item[type].length > 0 ? true : null
       }
@@ -276,7 +286,7 @@ class UploadLookScreen extends Component {
   }
 
   render() {
-    const { isVideo , filePath, description } = this.props;
+    const { isVideo , filePath } = this.props;
     const { isPublishing } = this.state;
     if (!filePath) {
       return null;
