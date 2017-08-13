@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
     opacity: 0.7,
     width: 40,
-    height: 40,
+    height: 25,
   },
   TabBar: {
     backgroundColor: Colors.backgroundGrey,
