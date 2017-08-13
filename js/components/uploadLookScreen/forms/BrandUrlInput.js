@@ -30,7 +30,7 @@ class BrandUrlInput extends PureComponent {
     this.props.addUrl(value);
   }
 
-  _clearUrl() {
+  _clearUrl = () => {
     this.setState({
       url: ''
     });
