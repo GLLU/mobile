@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'space-around'
   },
 });
 
