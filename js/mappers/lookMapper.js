@@ -6,7 +6,7 @@ const getCoverByMediaType = (type, coverList) => {
   if (type === 'video') {
     return find(coverList, x => x.version === 'large_720');
   }
-  const cover = find(coverList, x => x.version === 'medium');
+  const cover = find(coverList, x => x.version === 'tiny');
   Image.prefetch(cover.url);
   return cover;
 };
@@ -17,6 +17,7 @@ export function serializeLook(look) {
     liked: look.is_liked,
     type: look.user_size.body_type,
     uri: cover.url ? cover.url : null,
+    mediumSizeUri: find(look.cover.list, x => x.version === 'medium').url,
     width: cover ? cover.width : null,
     height: cover ? cover.height : null,
     coverType: look.cover.type,

@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
   },
   addItemContainer: {
     marginRight: 15,
+    borderWidth: 1,
+    padding: 5,
+    height: 22,
+    width: 22,
+    borderRadius: 100,
+    justifyContent: 'center',
+    borderColor: Colors.secondaryColor,
   },
   addItemText: {
     color: Colors.secondaryColor,
