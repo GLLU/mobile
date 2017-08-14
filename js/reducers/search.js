@@ -112,6 +112,17 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ...action.payload.search,
+        people: {
+          ...action.payload.search.people,
+            data: {
+              users: [],
+              meta: {
+                currentPage: 0,
+                total: 0,
+              },
+            },
+        }
+
       };
     }
     default:
