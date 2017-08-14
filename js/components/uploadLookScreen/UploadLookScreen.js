@@ -112,6 +112,7 @@ class UploadLookScreen extends Component {
   publishAction() {
     const { isUploading, publishLookItem, clearFeed, logEvent, state, items, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo, description, mode } = this.props;
     logEvent('uploadLook', {
+      name: 'user uploaded a look',
       category: this.mapItemsForAnalytics('category'),
       brand: this.mapItemsForAnalytics('brand'),
       colors: this.mapItemsForAnalytics('colors'),

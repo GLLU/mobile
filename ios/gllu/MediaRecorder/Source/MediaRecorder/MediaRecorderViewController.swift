@@ -196,6 +196,7 @@ extension MediaRecorderViewController: UIImagePickerControllerDelegate {
         let cropper = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.custom)
         cropper.delegate = self
         cropper.dataSource = self
+        cropper.avoidEmptySpaceAroundImage = true
         self.navigationController?.pushViewController(cropper, animated: true)
     }
 }
@@ -207,7 +208,7 @@ extension MediaRecorderViewController: RSKImageCropViewControllerDataSource{
     let viewWidth : CGFloat = controller.view.frame.size.width
     let viewHeight : CGFloat = controller.view.frame.size.height
     
-    let height = viewHeight * 0.90
+    let height = ceil(viewHeight * 0.90)
     let width = height * (9 / 16.0)
     let maskSize : CGSize = CGSize(width: width, height: height)
     
