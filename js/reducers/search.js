@@ -109,21 +109,21 @@ export default function (state = initialState, action) {
       };
     }
     case REHYDRATE: {
-      return {
-        ...state,
-        ...action.payload.search,
-        people: {
-          ...action.payload.search.people,
-          data: {
-            users: [],
-            meta: {
-              currentPage: 0,
-              total: 0,
-            },
+      let rehydrateState;
+      if(action.payload.search) {
+        rehydrateState = {
+          ...action.payload.search,
+          people: {
+            ...initialState.people,
+            history: action.payload.search.people.history
           },
-        },
-
-      };
+        }
+        return {
+          ...state,
+          ...rehydrateState
+        }
+      }
+      return state;
     }
     default:
       return state;

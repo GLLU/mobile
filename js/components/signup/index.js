@@ -85,7 +85,7 @@ class SignUpPage extends Component {
               name: `user signed up with email ${email}`,
               invitation_token: this.props.invitation_token,
             });
-            this.props.resetTo('feedscreen', user);
+            this.props.resetTo('feedscreen');
           })
           .catch(err => this.setState({ isSigningUp: false }));
       });

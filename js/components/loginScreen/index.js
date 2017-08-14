@@ -62,7 +62,7 @@ class LoginPage extends Component {
     // Attempt a login using the Facebook login dialog asking for default permissions.
     Utils.loginWithFacebook()
       .then((data) => this.props.loginViaFacebook(data)
-        .then(user=>this.props.resetTo('feedscreen',user))
+        .then(user=>this.props.resetTo('feedscreen'))
         .catch((err) => console.log('facebook login Error',err)))
       .catch((err) => console.log('facebook login Error',err))
   }
