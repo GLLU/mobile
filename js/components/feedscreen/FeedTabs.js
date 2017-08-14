@@ -54,7 +54,6 @@ class FeedTabs extends Component {
 
   _toggleFilterMenu() {
     this.props.logEvent('filterFeed', {feed: this.props.feedsRoute.routes[this.props.feedsRoute.index].key});
-    console.log('route key ', this.props.feedsRoute.routes[this.props.feedsRoute.index].key)
     this.props.toggleFilterMenues(this.props.feedsRoute.routes[this.props.feedsRoute.index].key);
   }
 

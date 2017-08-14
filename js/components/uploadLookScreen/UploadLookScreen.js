@@ -66,6 +66,7 @@ class UploadLookScreen extends Component {
     this.handleBackButton = this.handleBackButton.bind(this);
     this.showRemoveItemModal = this.showRemoveItemModal.bind(this);
     this.gobackAndCancel = this.gobackAndCancel.bind(this);
+    this.resetToFeed = this.resetToFeed.bind(this);
     this.state = {
       currentStep: CATEGORY,
       allowContinue: false,
@@ -110,7 +111,7 @@ class UploadLookScreen extends Component {
   }
 
   publishAction() {
-    const { isUploading, publishLookItem, clearFeed, logEvent, state, items, goBack, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo, description, mode } = this.props;
+    const { isUploading, publishLookItem, clearFeed, logEvent, state, items, resetTo, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo, description, mode } = this.props;
     logEvent('uploadLook', {
       name: 'user uploaded a look',
       category: this.mapItemsForAnalytics('category'),
@@ -138,11 +139,11 @@ class UploadLookScreen extends Component {
               title: i18n.t('FINISH_LOOK_IMAGE_PENDING'),
               confirmString: i18n.t('CONTINUE'),
               cancelString: '',
-              confirmAction: goBack,
-              cancelAction: goBack,
+              confirmAction: this.resetToFeed,
+              cancelAction: this.resetToFeed,
             })
           } else if (mode === 'edit') {
-            goBack();
+            resetTo('feedscreen',{resetToIndex: 1});
           } else {
             this.setModalVisible({
               modalVisible: true,
@@ -150,14 +151,19 @@ class UploadLookScreen extends Component {
               confirmString: i18n.t('CONTINUE'),
               cancelString: '',
               subtitle: i18n.t('FINISH_LOOK_LEGEND'),
-              confirmAction: goBack,
-              cancelAction: goBack,
+              confirmAction: this.resetToFeed,
+              cancelAction: this.resetToFeed,
             });
           }
         });
         ;
       });
     });
+  }
+
+  resetToFeed() {
+    const {resetTo} = this.props
+    resetTo('feedscreen',{resetToIndex: 1})
   }
 
   getCurrentItem() {
