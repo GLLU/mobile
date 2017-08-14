@@ -173,7 +173,7 @@ class UploadLookScreen extends Component {
   showRemoveItemModal() {
     this.setModalVisible({
       modalVisible: true,
-      title: 'Are you sure u want to remove this item?',
+      title: 'ARE YOU SURE U WANT TO REMOVE THIS ITEM?',
       confirmString: 'DELETE',
       cancelString: 'NO, CONTINUE EDITING',
       confirmAction: this.handleRemoveItem,
