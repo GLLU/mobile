@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Dimensions, Platform, View, StyleSheet, BackAndroid, Image } from 'react-native';
+import { Dimensions, Platform, View, StyleSheet, BackAndroid, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import UploadLookHeader from './UploadLookHeader';
 import _ from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -184,7 +184,9 @@ class UploadLookScreen extends Component {
     const { filePath } = this.props;
     return (
       <Image source={{uri: filePath}} style={styles.itemsContainer} resizeMode={'stretch'}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {this.renderActions()}
+        </TouchableWithoutFeedback>
       </Image>
     )
   }

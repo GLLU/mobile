@@ -40,6 +40,7 @@ export default class EditItemTabs extends Component {
       index: 0,
       routes: this.routes,
       loaded: false,
+      reloadingTabs: false
     };
   }
 
@@ -49,18 +50,17 @@ export default class EditItemTabs extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { isFirstItem, currentItem } = this.props;
+    const { isFirstItem } = this.props;
     this.setState({ loaded: !this.state.loaded });
-    if (nextProps.currentItem !== currentItem) {
-      this._handleTabsIndexChange(0);
-    }
     if (nextProps.isFirstItem !== isFirstItem) {
-      this.setState({ routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription });
+      this.setState({ reloadingTabs: true }, () => {
+        this.setState({ routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription, index: 0, loaded: !this.state.loaded, reloadingTabs: false});
+      })
+
     }
   }
 
   _renderHeader = props => (
-
     <View style={{ flexDirection: 'row' }}>
       <TabBar
         tabStyle={styles.tabStyle} style={styles.TabBar}
@@ -68,7 +68,6 @@ export default class EditItemTabs extends Component {
         indicatorStyle={styles.indicatorStyle} {...props}
         scrollEnabled
         renderIcon={currTab => this.renderTabIcon(currTab)} />
-
     </View>
   );
 
@@ -186,22 +185,22 @@ export default class EditItemTabs extends Component {
 
   render() {
     const { currentItem } = this.props;
-
     if (!currentItem) {
       return null;
     }
-
     return (
       <KeyboardAvoidingView behavior={'padding'}>
         <View style={styles.container}>
-          <TabViewAnimated
-            style={styles.tabViewAnimatedContainer}
-            navigationState={this.state}
-            renderScene={this._renderScene}
-            renderHeader={this._renderHeader}
-            onRequestChangeTab={this._handleTabsIndexChange}
-            swipeEnabled={false}
-          />
+          {
+            !this.state.reloadingTabs ? <TabViewAnimated
+              style={styles.tabViewAnimatedContainer}
+              navigationState={this.state}
+              renderScene={this._renderScene}
+              renderHeader={this._renderHeader}
+              onRequestChangeTab={this._handleTabsIndexChange}
+              swipeEnabled={false}
+            /> : null
+          }
         </View>
       </KeyboardAvoidingView>
 
