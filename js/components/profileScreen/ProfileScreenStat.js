@@ -26,7 +26,7 @@ class ProfileScreenStat extends Component {
       <TouchableOpacity onPress={onClick} style={style}>
         <View style={{ alignItems: 'center' }}>
           {number >= 0 ? <Text style={styles.number}>{formatNumberAsString(number)}</Text> :
-          <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />}
+          <ActivityIndicator animating style={{ height: generateAdjustedSize(40) }} color={Colors.secondaryColor} />}
           <Text style={styles.text}>{title}</Text>
         </View>
       </TouchableOpacity>

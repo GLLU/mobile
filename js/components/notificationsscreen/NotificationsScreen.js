@@ -5,6 +5,8 @@ import {ListView, Image, TouchableOpacity, View, Text, ActivityIndicator} from '
 import I18n from 'react-native-i18n';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import NotificationListView from './notificationsList/NotificationListView';
+import { openCamera } from '../../lib/camera/CameraUtils';
+import { formatLook } from '../../utils/UploadUtils';
 
 type notificationsProps = {
   notifications: any,
@@ -20,6 +22,11 @@ class NotificationsScreen extends Component {
 
   props: notificationsProps;
 
+  constructor() {
+    super();
+    this._uploadLook = this._uploadLook.bind(this);
+  }
+
   componentDidMount() {
     this.props.clearNewNotifications();
   }
@@ -33,9 +40,30 @@ class NotificationsScreen extends Component {
       <EmptyStateScreen
         title={I18n.t('NO_NOTIFICATIONS_TITLE')} subtitle={I18n.t('NO_NOTIFICATIONS_LEGEND')}
         icon={require('../../../images/emptyStates/alert.png')}
-      />
+        buttonText={I18n.t('POST_NOW')}
+        onButtonClicked={this._uploadLook} />
     </View>
   )
+
+  async _uploadLook() {
+    this.props.logEvent('Followerscreen', {name: 'user started uploading a look', origin: 'notifications'});
+    const path = await openCamera(true);
+    const file = formatLook(path);
+    if (file) {
+      this._goToAddNewItem(file);
+    } else {
+      this.props.logEvent('Followerscreen', {name: 'User canceled the upload look', origin: 'camera'})
+    }
+  }
+
+  _goToAddNewItem = (imagePath: any) => {
+    this.props.addNewLook(imagePath).then(() => {
+      this.props.navigateTo('uploadLookScreen', { mode: 'create' });
+    }).catch((err) => {
+      console.log('addNewLook err', err);
+    });
+  }
+
 
   render(): React.Component {
     const headerData = {

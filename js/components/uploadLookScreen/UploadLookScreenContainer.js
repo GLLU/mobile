@@ -22,6 +22,7 @@ import {
 import {
   getUserLooks,
 } from '../../actions/looks';
+import { showFatalError } from '../../actions/errorHandler';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -33,10 +34,11 @@ function mapDispatchToProps(dispatch) {
     clearFeed: () => dispatch(clearFeed()),
     getUserLooks: data => dispatch(getUserLooks(data)),
     clearUploadLook: () => dispatch(clearUploadLook()),
+    showErrorMessage: errorMessage => dispatch(showFatalError(errorMessage)),
   };
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const {lookId, image, items, localFilePath, isUploading} = state.uploadLook;
 
   if (!image){
@@ -45,6 +47,7 @@ const mapStateToProps = (state) => {
 
   const isVideo = Utils.isVideo(image);
   return {
+    mode: ownProps.navigation.state.params.mode,
     lookId,
     isVideo,
     filePath: image,
