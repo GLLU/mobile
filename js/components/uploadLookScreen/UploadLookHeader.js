@@ -172,19 +172,39 @@ class UploadLookHeader extends Component {
   }
 
   renderPublishBtn() {
-    const allowContinue = this.allowPublishBtn();
+    const allowPublish = this.allowPublishBtn();
     return (
-      <TouchableOpacity style={styles.nextBtnContainer} disabled={!allowContinue} onPress={() => this.props.publishItem()}>
-        <Text style={[styles.publishBtnText, !allowContinue ? {color: Colors.gray} : null ]}>{i18n.t('PUBLISH')}</Text>
+      <TouchableOpacity style={styles.nextBtnContainer} onPress={() => this._handlePublishPressed(allowPublish)}>
+        <Text style={[styles.publishBtnText, !allowPublish ? {color: Colors.gray} : null ]}>{i18n.t('PUBLISH')}</Text>
       </TouchableOpacity>
     );
   }
 
+  _handlePublishPressed = (allowPublish) => {
+    const { publishItem, showErrorMessage } = this.props;
+
+    if (allowPublish) {
+      publishItem();
+    } else {
+      showErrorMessage(i18n.t('REQUIRED_LOOK_FIELDS'));
+    }
+  }
+
+  _handleNewItemPressed = (allowAddItem) => {
+    const { handleNewItem, showErrorMessage } = this.props;
+
+    if (allowAddItem) {
+      handleNewItem();
+    } else {
+      showErrorMessage(i18n.t('REQUIRED_LOOK_FIELDS'));
+    }
+  }
+
   _renderAddItemBtn() {
-    const allowContinue = this.allowPublishBtn();
+    const allowAddItem = this.allowPublishBtn();
     return (
-      <TouchableOpacity onPress={() => this.props.handleNewItem()} disabled={!allowContinue} style={styles.addItemContainer}>
-        <Text style={[styles.addItemText, !allowContinue ? {color: Colors.gray} : null]}>ADD ITEM</Text>
+      <TouchableOpacity onPress={() => this._handleNewItemPressed(allowAddItem)} style={styles.addItemContainer}>
+        <Text style={[styles.addItemText, !allowAddItem ? {color: Colors.gray} : null]}>ADD ITEM</Text>
       </TouchableOpacity>
     );
   }

@@ -49,7 +49,7 @@ class ProfileScreenHeader extends Component {
         <View style={styles.backgroundImage} />
 
         <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
-          <ProfileAvatar style={{ width: 60, height: 60 }} avatarUrl={profilePic} />
+          <ProfileAvatar style={{ width: 70, height: 70 }} avatarUrl={profilePic} />
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.username}>@{username}</Text>
           {isMyProfile ? null :
