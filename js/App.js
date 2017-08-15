@@ -34,6 +34,7 @@ class App extends Component {
     };
   }
 
+
   render() {
     // if (this.state.showDownloadingModal) {
     //   return (
@@ -84,7 +85,7 @@ class App extends Component {
     //   );
     // }
 
-    return <AppNavigator/>;
+    return <AppNavigator notification={this.props.notification} />;
   }
 }
 App = CodePush(App);

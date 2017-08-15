@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Dimensions, Image} from 'react-native';
 import {Provider} from 'react-redux';
 import {whyDidYouUpdate} from 'why-did-you-update';
+import OneSignal from 'react-native-onesignal';
+
 import App from './App';
 import Spinner from './components/loaders/Spinner';
 import configureStore from './configureStore';
@@ -32,6 +34,22 @@ function setup(): React.Component {
       require('./strings/index');
     }
 
+    componentWillMount() {
+      OneSignal.addEventListener('opened', this._onOpened);
+    }
+
+    componentWillUnmount() {
+      OneSignal.removeEventListener('opened', this._onOpened);
+    }
+
+    _onOpened(openResult) {
+      this.notificationObject = openResult.notification;
+      console.log('Message: ', openResult.notification.payload.body);
+      console.log('Data: ', openResult.notification.payload.additionalData);
+      console.log('isActive: ', openResult.notification.isAppInFocus);
+      console.log('openResult: ', openResult);
+    }
+
     onStoreConfigured() {
       this.setState({ isLoading: false });
     }
@@ -48,7 +66,7 @@ function setup(): React.Component {
       }
       return (
         <Provider store={this.state.store}>
-          <App isStoreConfigured={!this.state.isLoading}/>
+          <App notification={this.notificationObject} isStoreConfigured={!this.state.isLoading}/>
         </Provider>
       );
     }

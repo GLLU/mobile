@@ -94,11 +94,11 @@ class AppNavigator extends Component {
   }
 
   render() {
-    const {dispatch,navigationState} = this.props;
+    const { dispatch,navigationState, notification } = this.props;
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle='default'/>
-        <CardStack navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
+        <CardStack screenProps={notification} navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
         {/*{this.props.isLoading ? <SpinnerSwitch /> : null}*/}
         {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}

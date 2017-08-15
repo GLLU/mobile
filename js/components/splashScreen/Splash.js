@@ -28,7 +28,7 @@ class Splash extends Component {
   }
 
   checkLogin() {
-    const { user } = this.props;
+    const { user, notification } = this.props;
     setTimeout(() => {
       this.props.checkLogin()
         .then(() => {

@@ -3,6 +3,8 @@
 import React, {Component} from 'react';
 import {Dimensions, BackAndroid, View, StyleSheet, Modal, TouchableOpacity, Image, Animated} from 'react-native';
 import {connect} from 'react-redux';
+import OneSignal from 'react-native-onesignal';
+
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
@@ -84,7 +86,34 @@ class FeedPage extends Component {
     this.props.loadBrands();
   }
 
+  _onReceived = (notification) => {
+    console.log("Notification received: ", notification);
+  }
+
+  _onOpened(openResult) {
+    console.log('Message: ', openResult.notification.payload.body);
+    console.log('Data: ', openResult.notification.payload.additionalData);
+    console.log('isActive: ', openResult.notification.isAppInFocus);
+    console.log('openResult: ', openResult);
+  }
+
+  _onRegistered(notifData) {
+    console.log("Device had been registered for push notifications!", notifData);
+  }
+
+  _onIds(device) {
+    console.log('Device info: ', device);
+  }
+
+
   componentWillMount() {
+
+    OneSignal.inFocusDisplaying(2);
+    OneSignal.addEventListener('received', this._onReceived);
+    OneSignal.addEventListener('opened', this._onOpened);
+    OneSignal.addEventListener('registered', this._onRegistered);
+    OneSignal.addEventListener('ids', this._onIds);
+
     BackAndroid.addEventListener('hardwareBackPress', () => {
       if (this.state.photoModal) {
         this.setState({photoModal: false});
