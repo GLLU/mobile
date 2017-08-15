@@ -76,7 +76,7 @@ class SignUpPage extends Component {
         name: name.value,
         gender: gender.toLowerCase(),
         password: password.value,
-        confirmPassword: password,
+        confirmPassword: password.value,
       };
       this.setState({ isSigningUp: true }, () => {
         this.props.emailSignUp(data)
