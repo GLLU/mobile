@@ -52,7 +52,7 @@ class ProfileScreenHeader extends Component {
     logEvent('profileScreen', { name: 'Change avatar click from main profile' });
     this.uploadAvatar().then(() => {
       this.setState({ isChangingAvatar: true });
-    }).catch(err => console.log(err));
+    }).catch(err => this.setState({ isChangingAvatar: false }));
   }
 
   async uploadAvatar() {
@@ -64,6 +64,8 @@ class ProfileScreenHeader extends Component {
       changeUserAvatar({ id: userId, image }).then(() => {
         this.setState({ isChangingAvatar: false, profilePic: path });
       });
+    } else {
+      throw new Error('user cancelled');
     }
   }
 
