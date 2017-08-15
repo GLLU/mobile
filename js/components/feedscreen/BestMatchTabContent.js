@@ -61,6 +61,7 @@ class BestMatchTabContent extends BaseComponent {
     this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
+    this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -69,18 +70,13 @@ class BestMatchTabContent extends BaseComponent {
       flatLooksLeft: _.filter(props.flatLooks, (look, index) => index % 2 === 0),
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
+      showBodyTypeModal: false,
     };
     this.currPosition = 0;
 
     if (!props.hasUserSize){
       this.props.showBottomCameraButton(false);
     }
-  }
-
-  _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
-    const message = SocialShare.generateShareMessage(formatInvitationMessage());
-    SocialShare.nativeShare(message);
   }
 
   componentDidMount() {
@@ -103,6 +99,10 @@ class BestMatchTabContent extends BaseComponent {
   componentDidUpdate(prevProps) {
     if (!prevProps.isTabOnFocus && this.props.isTabOnFocus) {
       this.props.showBottomCameraButton(false);
+    }
+    const {isFilterMenuOpen} = this.props
+    if(this.scrollView && prevProps.isFilterMenuOpen !== isFilterMenuOpen && !isFilterMenuOpen) {
+      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false}), 0)
     }
   }
 
@@ -132,18 +132,6 @@ class BestMatchTabContent extends BaseComponent {
       this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen)
     }
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   if(nextProps !== this.props) {
-  //     _.each(Object.keys(this.props),thisPropsKey=>{
-  //       if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
-  //         console.log(`MediaContainer, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
-  //         return true
-  //       }
-  //     })
-  //   }
-  //   return false
-  // }
 
   handleScroll(event) {
     if (this.props.cardNavigationStack.index === 0) {
@@ -271,7 +259,7 @@ class BestMatchTabContent extends BaseComponent {
       });
   }
 
-  renderInviteFriend() {
+  renderChangeBodyShapeBtn() {
     return (
       <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
         <Image
@@ -297,13 +285,20 @@ class BestMatchTabContent extends BaseComponent {
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
         <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
-          <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
-            {this.renderInviteFriend()}
+          <TouchableOpacity onPress={() => this._showBodyShapeModal()}>
+            {this.renderChangeBodyShapeBtn()}
           </TouchableOpacity>
           {this._renderLooks(this.state.flatLooksRight)}
         </View>
       </View>
     );
+  }
+
+  _showBodyShapeModal() {
+    const {showBodyTypeModal} = this.state
+    this.props.showBottomCameraButton();
+    this.setState({showBodyTypeModal: !showBodyTypeModal})
+
   }
 
   _renderEmptyContent() {
@@ -362,16 +357,10 @@ class BestMatchTabContent extends BaseComponent {
     )
   }
 
-  componentDidUpdate(prevProps) {
-    const {isFilterMenuOpen} = this.props
-    if(this.scrollView && prevProps.isFilterMenuOpen !== isFilterMenuOpen && !isFilterMenuOpen) {
-      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false}), 0)
-    }
-  }
-
   render() {
     const {isFilterMenuOpen, flatLooks, isLoading, hasUserSize} = this.props
-    if (!hasUserSize) {
+    const { showBodyTypeModal } = this.state
+    if (!hasUserSize || showBodyTypeModal) {
       return this._renderChooseBodyShape();
     } else if (isLoading) {
       return this._renderLoader();
@@ -395,16 +384,19 @@ class BestMatchTabContent extends BaseComponent {
 
   _renderChooseBodyShape = () => {
 
-    const {saveBodyShape} = this.props;
-
+    const {saveBodyShape, hasUserSize} = this.props;
     return (
-      <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
+      <View style={{flex: 1, minHeight: deviceHeight, backgroundColor: Colors.white, alignItems: 'center'}}>
         <ScrollView contentContainerStyle={{paddingBottom: 16}}>
           <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
           <BodyTypePicker
             goBack={() => this.toggleBodyTypeModal(false)}
             onPick={() => this.toggleBodyTypeModal(false)}/>
           <SolidButton label="CHOOSE" onPress={saveBodyShape}/>
+          { hasUserSize ?
+            <TouchableOpacity onPress={this._showBodyShapeModal} style={{alignSelf: 'center'}}>
+              <Text style={{textAlign: 'center', color: Colors.highlightColor}}>Cancel</Text>
+            </TouchableOpacity> : null }
         </ScrollView>
       </View>
     );
