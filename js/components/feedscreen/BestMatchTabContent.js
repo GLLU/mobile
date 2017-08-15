@@ -71,6 +71,10 @@ class BestMatchTabContent extends BaseComponent {
       loadingMore: false,
     };
     this.currPosition = 0;
+
+    if (!props.hasUserSize){
+      this.props.showBottomCameraButton(false);
+    }
   }
 
   _onInviteFriendsClick() {
