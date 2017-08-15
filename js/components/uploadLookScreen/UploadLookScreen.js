@@ -23,7 +23,6 @@ export const DESCRIPTION = 'description';
 export const LINK = 'link';
 
 const EDIT_MODE = 'edit';
-const UPLOAD_MODE = 'create';
 
 type Props = {
   publishLookItem: () => void,
@@ -111,7 +110,7 @@ class UploadLookScreen extends Component {
   }
 
   publishAction() {
-    const { isUploading, publishLookItem, clearFeed, logEvent, state, items, resetTo, currentFeedQuery, userId, getFeed, getUserLooks, navigateTo, description, mode } = this.props;
+    const { isUploading, publishLookItem, logEvent, items, resetTo, currentFeedQuery, userId, getFeed, getUserLooks, description, mode } = this.props;
     logEvent('uploadLook', {
       name: 'user uploaded a look',
       category: this.mapItemsForAnalytics('category'),
@@ -151,8 +150,8 @@ class UploadLookScreen extends Component {
               confirmString: i18n.t('CONTINUE'),
               cancelString: '',
               subtitle: i18n.t('FINISH_LOOK_LEGEND'),
-              confirmAction: this.resetTo,
-              cancelAction: this.resetTo,
+              confirmAction: this.resetToFeed,
+              cancelAction: this.resetToFeed,
             });
           }
         });

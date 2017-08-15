@@ -37,6 +37,7 @@ let incrementedItemId = 0
 export function addNewLook(image) {
   return (dispatch, getState) => {
     dispatch(showProcessing());
+    dispatch(clearUploadLook());
     return new Promise((resolve, reject) => {
       const user = getState().user;
       if (user && user.id !== -1) {
@@ -75,6 +76,32 @@ export function addNewLook(image) {
       } else {
         reject('Authorization error')
       }
+    });
+  }
+}
+
+export function editNewLook(lookId) {
+  return (dispatch) => {
+    dispatch(showProcessing());
+    dispatch(clearUploadLook());
+    return new Promise((resolve) => {
+      dispatch(rest.actions.looks.get({id: lookId}, (err, data) => {
+        dispatch(hideProcessing());
+        if (!err) {
+          const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+          let payload = {
+            image: url,
+            ...data.look,
+          };
+          dispatch({
+            type: EDIT_NEW_LOOK,
+            payload,
+          });
+          resolve(payload);
+        } else {
+          throw err;
+        }
+      }));
     });
   }
 }
@@ -272,7 +299,6 @@ export function publishLook() {
               UploadLookService.updateLook(lookId, descriptionBody).then(() => {
               })
             }
-            dispatch(clearUploadLook())
           })
         }
       }, 5000);
