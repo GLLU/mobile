@@ -13,7 +13,7 @@ class Analytics {
   setupAnalytics() {
     return [
       new GoogleAnalytics(),
-      new FlurryAnalytics(),
+      // new FlurryAnalytics(),
       new FacebookAnalytics(),
       new MixPanelAnalytics(),
     ];

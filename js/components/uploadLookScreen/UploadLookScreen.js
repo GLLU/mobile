@@ -151,8 +151,8 @@ class UploadLookScreen extends Component {
               confirmString: i18n.t('CONTINUE'),
               cancelString: '',
               subtitle: i18n.t('FINISH_LOOK_LEGEND'),
-              confirmAction: this.resetToFeed,
-              cancelAction: this.resetToFeed,
+              confirmAction: this.resetTo,
+              cancelAction: this.resetTo,
             });
           }
         });

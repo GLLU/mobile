@@ -25,7 +25,7 @@ export default class EditItemTabs extends Component {
     this._addItemCategory = this._addItemCategory.bind(this);
     this._addItemBrand = this._addItemBrand.bind(this);
 
-    this.animatedTabBar = new Animated.Value(generateAdjustedSize(135));
+    this.animatedTabBar = new Animated.Value(generateAdjustedSize(140));
 
     this.routes = [
       { key: CATEGORY, title: i18n.t('CATEGORY')},
@@ -152,7 +152,7 @@ export default class EditItemTabs extends Component {
 
       case BRAND:
         return (
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, margin: 3}}>
             <ScrollableSelectableList
               mode="single" onSelectionChange={this._addItemBrand} showTexts={false}
               filters={brandsFilters} currentFilter={itemBrand} />
@@ -233,7 +233,7 @@ export default class EditItemTabs extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: generateAdjustedSize(135),
+    height: generateAdjustedSize(140),
     backgroundColor: Colors.white,
   },
   tabStyle: {

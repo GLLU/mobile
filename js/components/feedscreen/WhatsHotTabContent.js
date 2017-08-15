@@ -302,6 +302,7 @@ class HotTabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
+          ref={ c => this.scrollView = c }
           style={{ flex: 1 }}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
@@ -338,18 +339,32 @@ class HotTabContent extends BaseComponent {
     )
   }
 
+  componentDidUpdate(prevProps) {
+    const {isFilterMenuOpen} = this.props
+    if(this.scrollView && prevProps.isFilterMenuOpen !== isFilterMenuOpen && !isFilterMenuOpen) {
+      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false}), 0)
+    }
+  }
+
   render() {
     const { isFilterMenuOpen, flatLooks, isLoading } = this.props
     if (isLoading) {
       return this._renderLoader();
     } else {
-      return (
-        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
-          {this._renderFeedFilters()}
-          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
-          { isFilterMenuOpen ? this._renderFilterView() : null}
-        </View>
-      );
+      if(isFilterMenuOpen) {
+        return (
+          <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+            { this._renderFilterView() }
+          </View>
+        );
+      } else {
+        return (
+          <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+            {this._renderFeedFilters()}
+            { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+          </View>
+        );
+      }
     }
 
   }

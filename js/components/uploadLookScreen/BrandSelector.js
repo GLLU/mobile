@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
     height: generateAdjustedSize(18),
     alignSelf: 'center',
   },
+  searchIconContainer: {
+    width: generateAdjustedSize(18),
+    alignSelf: 'center',
+  }
 });
 
 class BrandSelector extends BaseComponent {
@@ -168,7 +172,7 @@ class BrandSelector extends BaseComponent {
   _renderSearchIcon() {
       return (
         <TouchableOpacity
-          onPress={this.handleTextFocus.bind(this)}>
+          onPress={this.handleTextFocus.bind(this)} style={styles.iconCheckComplete}>
           <Image source={require('../../../images/icons/search-black.png')} style={styles.iconCheckComplete}/>
         </TouchableOpacity>
       );
@@ -191,10 +195,8 @@ class BrandSelector extends BaseComponent {
     const currItem = _.find(items, listItem => listItem.id === item.id);
     const brandName = currItem.brand ? currItem.brand.name : null;
     return (
-      <View style={{ flex: 1, justifyContent: 'center', marginBottom: 3 }}>
-        <TouchableOpacity style={styles.inputContainer} onPress={this.handleTextFocus.bind(this)}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
           {this._renderSearchIcon(currItem)}
-        </TouchableOpacity>
         <Modal
           animationType={"slide"}
           transparent={false}

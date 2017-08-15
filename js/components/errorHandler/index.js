@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, Image,View, Text, StyleSheet, Dimensions, Platform  } from 'react-native';
 import { connect } from 'react-redux';
-
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 import { hideError, hideWarning, hideInfo, hideFatalError } from '../../actions/errorHandler';
@@ -53,14 +53,14 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     width: Dimensions.get('window').width,
-    height: 30,
+    height: generateAdjustedSize(40),
     alignItems: 'center',
     justifyContent: 'center',
     top: Platform.OS === 'ios' ? 20 : 0,
   },
   messageText: {
     fontFamily: Fonts.contentFont,
-    fontSize:14,
+    fontSize: generateAdjustedSize(15),
     textAlign: 'center',
     marginLeft: 8,
     marginRight: 8,
