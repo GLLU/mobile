@@ -10,6 +10,9 @@ import ProfileScreenStat from './ProfileScreenStat';
 import ProfileAvatar from '../common/avatars/ProfileAvatar';
 import SolidButton from '../common/buttons/SolidButton';
 import FollowView from './follows/FollowView';
+import { formatAvatar } from '../../utils/UploadUtils';
+import { openCamera } from '../../lib/camera/CameraUtils';
+import withAnalytics from "../common/analytics/WithAnalytics";
 
 type Props = {
   profilePic: string,
@@ -36,10 +39,53 @@ class ProfileScreenHeader extends Component {
     super(props);
 
     this._handleStatClick = this._handleStatClick.bind(this);
+    this._changeUserAvatar = this._changeUserAvatar.bind(this);
+    this.uploadAvatar = this.uploadAvatar.bind(this);
+    this.state = {
+      profilePic: props.profilePic,
+      isChangingAvatar: false
+    }
+  }
+
+  _changeUserAvatar() {
+    const {logEvent} = this.props
+    logEvent('profileScreen', { name: 'Change avatar click from main profile' });
+    this.uploadAvatar().then(() => {
+      this.setState({ isChangingAvatar: true });
+    }).catch(err => console.log(err));
+  }
+
+  async uploadAvatar() {
+    const {userId, logEvent, changeUserAvatar} = this.props
+    logEvent('profileScreen', { name: 'Open Camera click from main profile' });
+    const path = await openCamera(false);
+    const image = formatAvatar(path);
+    if (image) {
+      changeUserAvatar({ id: userId, image }).then(() => {
+        this.setState({ isChangingAvatar: false, profilePic: path });
+      });
+    }
+  }
+
+  _renderProfileAvatar() {
+    const { isMyProfile } = this.props
+    const { profilePic, isChangingAvatar } = this.state
+    if(isMyProfile){
+      return (
+        <ProfileAvatar
+          avatarUrl={profilePic} style={{ width: 70, height: 70 }}
+          isLoading={isChangingAvatar} changeUserAvatar={this._changeUserAvatar}
+          isEditable />
+      )
+    } else {
+      return (
+        <ProfileAvatar style={{ width: 60, height: 60 }} avatarUrl={profilePic} />
+      )
+    }
   }
 
   render(): React.Element<any> {
-    const { profilePic, name, username, isFollowing, isMyProfile, onFollowClicked } = this.props;
+    const { name, username, isFollowing, isMyProfile, onFollowClicked } = this.props;
 
     return (
       <View style={{ height: 250 }}>
@@ -49,7 +95,7 @@ class ProfileScreenHeader extends Component {
         <View style={styles.backgroundImage} />
 
         <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
-          <ProfileAvatar style={{ width: 70, height: 70 }} avatarUrl={profilePic} />
+          {this._renderProfileAvatar()}
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.username}>@{username}</Text>
           {isMyProfile ? null :
@@ -179,4 +225,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ProfileScreenHeader;
+export default withAnalytics(ProfileScreenHeader);

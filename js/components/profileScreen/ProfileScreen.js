@@ -195,7 +195,7 @@ class ProfileScreen extends Component {
   };
 
   _renderScene = ({route}) => {
-    const {navigation, balance} = this.props;
+    const {navigation, balance, onProfileEdit} = this.props;
 
     switch (route.key) {
       case 'looks':
@@ -206,7 +206,7 @@ class ProfileScreen extends Component {
           onShowWalletWizard={() => this.setState({showWalletWizard: true})}
           onAddNewLook={() => this._handleNewPost('wallet')}/>);
       case 'settings':
-        return <SettingsScreen navigation={navigation}/>;
+        return <SettingsScreen navigation={navigation} onProfileEdit={onProfileEdit}/>;
       default:
         return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
           ;
@@ -348,14 +348,14 @@ class ProfileScreen extends Component {
   _configureTransition = () => null;
 
   _renderParallaxHeader = () => {
-    const {balance, userData, userId, isMyProfile, onStatClicked, onFollowClicked, onProfileEdit} = this.props;
+    const {balance, userData, userId, isMyProfile, onStatClicked, onFollowClicked, onProfileEdit, changeUserAvatar} = this.props;
     const {isFollowing, stats} = this.state;
 
     return (
 
       <View>
         <ProfileScreenHeader
-          balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username}
+          balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username} userId={userData.id} changeUserAvatar={changeUserAvatar}
           stats={stats} onProfileEdit={onProfileEdit}
           isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}
           onFollowClicked={() => {
@@ -484,38 +484,6 @@ class ProfileScreen extends Component {
           }}>
           {username}
         </ScalableText>
-
-
-        {/*
-         <View style={{ justifyContent: 'center', marginTop: 8, height: 50, backgroundColor: 'white' }}>
-         <View style={{ flexDirection: 'row' }}>
-         <View style={{height:50, justifyContent: 'center'}}>
-         <Animated.Text numberOfLines={1}
-         style={[styles.label, { color: this.state.index === 0 ? Colors.highlightColor : '#5a6f88'}, styles.headerTab]}>
-         {this.state.routes[0].title}
-         </Animated.Text>
-         <View style={[styles.indicator, {    position: 'absolute',
-         left: 0,
-         bottom: 0,
-         right: 0,
-         height: 2,
-         }]} />
-         </View>
-         <Animated.Text numberOfLines={1}
-         style={[styles.label, { color: this.state.index === 1 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
-         {this.state.routes[1].title}
-         </Animated.Text>
-         <Animated.Text numberOfLines={1}
-         style={[styles.label, { color: this.state.index === 2 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
-         {this.state.routes[2].title}
-         </Animated.Text>
-         <Animated.Text numberOfLines={1}
-         style={[styles.label, { color: this.state.index === 3 ? Colors.highlightColor : '#5a6f88' }, styles.headerTab]}>
-         {this.state.routes[3].title}
-         </Animated.Text>
-         </View>
-         </View>
-         */}
       </View>
     );
   }

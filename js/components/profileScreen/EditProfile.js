@@ -74,14 +74,14 @@ class EditProfile extends Component {
   }
 
   _changeUserAvatar() {
-    this.props.logEvent('EditProfileScreen', { name: 'Change avatar click' });
+    this.props.logEvent('EditProfileScreen', { name: 'Change avatar click from editProfile' });
     this.uploadAvatar().then(() => {
       this.setState({ isChangingAvatar: true });
     }).catch(err => console.log(err));
   }
 
   async uploadAvatar() {
-    this.props.logEvent('EditProfileScreen', { name: 'Open Camera click' });
+    this.props.logEvent('EditProfileScreen', { name: 'Open Camera click from editProfile' });
     const path = await openCamera(false);
     const image = formatAvatar(path);
     if (image) {

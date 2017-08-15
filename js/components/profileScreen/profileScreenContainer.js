@@ -16,7 +16,7 @@ import {
 import { addNewLook, editNewLook } from '../../actions/uploadLookB';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';
-import { blockUser, hideWalletBadge } from '../../actions/user';
+import { blockUser, hideWalletBadge, changeUserAvatar } from '../../actions/user';
 
 
 import asScreen from '../common/containers/Screen';
@@ -26,6 +26,7 @@ import ProfileScreen from './ProfileScreen';
 function bindAction(dispatch: any, ownProps: any): void {
   return {
     navigateToLooksScreen: params => ownProps.navigateTo('lookScreenWhatsHot', params),
+    changeUserAvatar: data => dispatch(changeUserAvatar(data)),
     hideWalletBadge: () => dispatch(hideWalletBadge()),
     getStats: id => dispatch(getStats(id)),
     getUserBalance: id => dispatch(getUserBalance(id)),
