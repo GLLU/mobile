@@ -9,7 +9,6 @@ import SignInPage from './components/signin';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
 import ProfileScreen from './components/profileScreen/profileScreenContainer';
-import LooksScreen from './components/looksScreen/LooksSreenContainer';
 import FollowingLooks from './components/looksScreen/LooksFollowingContainer';
 import BestMatchLooks from './components/looksScreen/LooksBestMatchContainer';
 import WhatsHotLooks from './components/looksScreen/LooksWhatsHotContainer';
@@ -72,9 +71,6 @@ const routes = {
   },
   myBodyMeasure: {
     screen: MyBodyMeasure,
-  },
-  looksScreen: {
-    screen: LooksScreen,
   },
   lookScreenFollwing: {
     screen: FollowingLooks,
