@@ -82,8 +82,8 @@ class SignUpPage extends Component {
         this.props.emailSignUp(data)
           .then((user) => {
             this.props.logEvent('SignUpScreen', {
-              name: `user signed up with email ${email}`,
-              invitation_token: this.props.invitation_token,
+              name: 'user signed up with email',
+              email,
             });
             this.props.resetTo('feedscreen');
           })
