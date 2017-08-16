@@ -89,7 +89,7 @@ class PeopleSearchTab extends Component {
   }
 
   renderResultsList = () => (
-    <View>
+    <View style={{flex: 1}}>
       <View style={styles.rowTitleContainer}>
         <Text style={styles.RowTitle}>{i18n.t('RESULTS')}</Text>
       </View>
