@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import {
   View,
   Image,
-  Animated,
-  InteractionManager,
   TouchableOpacity,
   ScrollView,
   Dimensions,
@@ -41,7 +39,8 @@ type Props = {
   unlikeUpdate: void,
   reportAbuse: void,
   loadMore: void,
-  hideSwipeWizard: void
+  hideSwipeWizard: void,
+  openComments: boolean
 };
 
 class LooksScreen extends Component {
@@ -56,21 +55,14 @@ class LooksScreen extends Component {
     this._toggleLike = this._toggleLike.bind(this);
     this.renderUpArrow = this.renderUpArrow.bind(this);
     this.renderDownArrow = this.renderDownArrow.bind(this);
-    const flatLook = this.props.navigation.state.params;
     this.state = {
-      flatLook: this.props.navigation.state.params,
-      fadeAnim: new Animated.Value(0.35),
-      fadeAnimContent: new Animated.Value(0),
-      showAsFeed: !flatLook.singleItem, // Will check if recieved one object or an index of flatLooksData
-      isBottomDrawerOpen: flatLook.openComments,
-      isAnimatingScrollView: Platform.OS !== 'ios' && typeof flatLook === 'number',
-      startAnimte: false,
-      currScrollIndex: flatLook.originalIndex,
-      loader: Platform.OS !== 'ios' && !flatLook.singleItem,
+      showAsFeed: props.flatLooksData.length > 1,
+      isBottomDrawerOpen: props.openComments,
+      currScrollIndex: props.flatLook.originalIndex,
+      loader: Platform.OS !== 'ios' && !props.flatLooksData.length > 1,
       mountedOnce: false,
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
-    this.opennedComments = false;
   }
 
   componentDidMount() {
@@ -163,7 +155,7 @@ class LooksScreen extends Component {
   }
 
   onSwipe(gestureName: string) {
-    this.props.logEvent('LookScreen', { name: `user swiped`, type: gestureName });
+    this.props.logEvent('LookScreen', { name: 'user swiped', type: gestureName });
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
@@ -231,17 +223,9 @@ class LooksScreen extends Component {
     );
   }
 
-  openCommentsInAdvance(look: object) {
-    if (!this.state.mountedOnce && this.state.flatLook.openComments && look.id === this.state.flatLook.id) {
-      this.opennedComments = !this.opennedComments;
-      return this.opennedComments;
-    }
-    return false;
-  }
-
   renderVideo(look: object, index: number) {
     const showShowArrow = this.shouldRenderArrows();
-    const openComments = this.openCommentsInAdvance(look);
+    const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
 
     return (
@@ -258,7 +242,7 @@ class LooksScreen extends Component {
         <VideoWithCaching
           source={{ uri: look.uri, mainVer: 1, patchVer: 0 }}
           resizeMode={'contain'}
-          muted={true}
+          muted
           style={styles.videoBackground}
           repeat
           navigation={this.props.cardNavigation}
@@ -282,15 +266,15 @@ class LooksScreen extends Component {
         {showShowArrow ? this.renderUpArrow() : null}
         {showShowArrow ? this.renderDownArrow() : null}
 
-        {showSwipeWizard ?  <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
+        {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
       </GestureRecognizer>
     );
   }
 
   renderImage(look: object, index: boolean) {
     const showShowArrow = this.shouldRenderArrows();
-    const openComments = this.openCommentsInAdvance(look);
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
+    const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     return (
       <GestureRecognizer
         key={look.originalIndex !== undefined ? look.originalIndex : -1}
@@ -309,7 +293,6 @@ class LooksScreen extends Component {
             width={width}
             height={height}
             look={look}
-            shouldShowLike={this.state.showAsFeed}
             isMenuOpen={this.state.isMenuOpen}
             openComments={openComments}
             onBottomDrawerOpen={this.onToggleDrawer}
@@ -323,7 +306,7 @@ class LooksScreen extends Component {
           {showShowArrow ? this.renderUpArrow() : null}
           {showShowArrow ? this.renderDownArrow() : null}
 
-          {showSwipeWizard ?  <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
+          {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
 
         </ImageWrapper>
       </GestureRecognizer>
@@ -332,16 +315,13 @@ class LooksScreen extends Component {
 
   getFlatFeed() {
     let looksArr = '';
-    console.log('props1', this.props);
     const { meta: { total } } = this.props;
-
     if (total === 1) {
       return looksArr = [
         this.props.flatLooksData[this.state.currScrollIndex],
       ];
     }
     switch (this.state.currScrollIndex) {
-
       case 0:
         const fictionalLook = _.cloneDeep(this.props.flatLooksData[this.state.currScrollIndex]);
         fictionalLook.originalIndex = 999;
@@ -393,7 +373,7 @@ class LooksScreen extends Component {
     if (this.state.showAsFeed) {
       looksArr = this.getFlatFeed();
     } else {
-      looksArr = [this.state.flatLook];
+      looksArr = [this.props.flatLook];
     }
     return (
       <View style={{ flex: 1 }}>

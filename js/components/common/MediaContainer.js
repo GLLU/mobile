@@ -69,11 +69,8 @@ class MediaContainer extends Component {
   }
 
   _handleItemPress() {
-    const item = this.props.look;
+    const item = {lookId: this.props.look.id};
     this.props.logEvent(this.props.fromScreen, {name: 'Image click'});
-    if(this.props.fromScreen === 'profileScreen') {
-      item.singleItem = true
-    }
     let that = this
     setTimeout(()=>that.props.navigateToLooksScreen(item), 0);
   }
@@ -107,7 +104,7 @@ class MediaContainer extends Component {
 
   _handleCommentPress() {
     this.props.logEvent(this.props.fromScreen, {name: 'Image click trough comment button'});
-    const item = {...this.props.look,openComments:true};
+    const item = {lookId: this.props.look.id, openComments: true};
     let that = this
     setTimeout(()=>that.props.navigateToLooksScreen(item), 0);
   }

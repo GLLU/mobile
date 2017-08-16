@@ -129,9 +129,9 @@ class SettingsScreen extends Component {
     }).catch(err => console.error('An error occurred', err));
   }
 
-  renderListItem({ item }) {
+  renderListItem({ item }, index) {
     return (
-      <TouchableOpacity onPress={item.onPress}>
+      <TouchableOpacity onPress={item.onPress} key={index}>
         <View style={styles.listItem}>
           <Image style={styles.listItemThumbnail} small square source={item.icon}/>
           <Text style={styles.listItemText}>{item.text}</Text>
@@ -145,7 +145,7 @@ class SettingsScreen extends Component {
 
     return (
     <View>
-      {this.state.settings.map(item => this.renderListItem({item}))}
+      {this.state.settings.map((item, index) => this.renderListItem({item}, index))}
     </View>
     );
   }

@@ -194,7 +194,7 @@ class LookOverlay extends Component {
   }
 
   render() {
-    const {look, lookType, toggleLike, goBack, shouldShowLike} = this.props;
+    const {look, lookType, toggleLike, goBack} = this.props;
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -212,7 +212,6 @@ class LookOverlay extends Component {
           <TouchableWithoutFeedback onPress={this._toggleBottomContainer}>
             <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
               <ButtonsBar
-                shouldShowLike= {shouldShowLike}
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}
                 toggleItem={this._toggleItem}
