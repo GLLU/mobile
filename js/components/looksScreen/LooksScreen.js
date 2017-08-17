@@ -59,7 +59,7 @@ class LooksScreen extends Component {
       showAsFeed: props.flatLooksData.length > 1,
       isBottomDrawerOpen: props.openComments,
       currScrollIndex: props.flatLook.originalIndex,
-      loader: Platform.OS !== 'ios' && !props.flatLooksData.length > 1,
+      loader: Platform.OS !== 'ios' && props.flatLooksData.length > 1,
       mountedOnce: false,
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
@@ -346,15 +346,14 @@ class LooksScreen extends Component {
   }
 
   renderLoader() {
-    const navigationPropLook = this.props.navigation.state.params;
-    const { preview, coverType, uri, avatar } = navigationPropLook;
+    const { preview, coverType, uri, avatar } = this.props.flatLook;
     const previewUri = coverType === 'video' ?
       preview || avatar.url :
       uri;
     return (
       <View style={{ position: 'absolute', top: 0, height, width }}>
         <Image
-          resizeMode={'contain'} source={{ uri: previewUri }} style={{
+          resizeMode={'stretch'} source={{ uri: previewUri }} style={{
             position: 'absolute',
             top: 0,
             height,
@@ -377,7 +376,6 @@ class LooksScreen extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
-
         <ScrollView
           pagingEnabled={false}
           ref={(c) => {
