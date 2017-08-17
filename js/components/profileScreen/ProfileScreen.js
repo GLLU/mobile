@@ -81,7 +81,9 @@ class ProfileScreen extends Component {
       userLooks: props.userLooks,
       stats: props.userId === props.currLookScreenId ? props.stats : {},
       userId: props.userId,
+      currentScrollPosition: 0,
     };
+    this.currPosition = 0;
   }
 
   componentWillMount() {
@@ -110,6 +112,13 @@ class ProfileScreen extends Component {
     });
   }
 
+  componentDidMount() {
+    const that = this;
+    setInterval(() => {
+      that.handleScrollPositionForVideo();
+    }, 1000);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.state.userId === nextProps.currLookScreenId) {
       this.setState({
@@ -119,32 +128,10 @@ class ProfileScreen extends Component {
     }
   }
 
-  render(): React.Element<any> {
-    return (
-      <View style={{flex: 1, backgroundColor: 'white'}}>
-
-        <ParallaxView
-          stickyHeaderHeight={stickyHeaderHeight}
-          backgroundSpeed={10}
-          backgroundColor={'#3e3e3e'}
-          parallaxHeaderHeight={parallaxHeaderHeight}
-          renderForeground={() => this._renderParallaxHeader()}
-          renderFixedHeader={() => this._renderFixedHeader()}
-          renderStickyHeader={() => this._renderStickyHeader()}
-          onScroll={this._handleScrollUserLooks}
-          contentContainerStyle={{
-            flex: 1,
-            backgroundColor: 'white',
-          }}>
-
-          {this._renderBody()}
-
-        </ParallaxView>
-
-        {this._renderWalletWizardModal()}
-
-      </View>
-    );
+  handleScrollPositionForVideo() {
+    if (this.state.currentScrollPosition !== this.currPosition) {
+      this.setState({ currentScrollPosition: this.currPosition });
+    }
   }
 
   _handleChangeTab = (index) => {
@@ -251,7 +238,6 @@ class ProfileScreen extends Component {
         this._loadMoreUserLooks();
       }
     }
-
     this.currPosition = event.nativeEvent.contentOffset.y;
   }
 
@@ -310,7 +296,7 @@ class ProfileScreen extends Component {
 
   _renderUserLooks = () => {
     const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
-    const { stats, userLooks } = this.state;
+    const { userLooks, currentScrollPosition } = this.state;
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
     const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
     const emptyStateButtonText = isMyProfile ? I18n.t('POST_NOW') : null;
@@ -325,6 +311,7 @@ class ProfileScreen extends Component {
     return (
       <View>
         <UserLooks
+          currentScrollPosition={currentScrollPosition}
           navigateTo={navigateTo}
           myUserId={userId}
           userLooks={userLooks}
@@ -484,6 +471,34 @@ class ProfileScreen extends Component {
           }}>
           {username}
         </ScalableText>
+      </View>
+    );
+  }
+
+  render(): React.Element<any> {
+    return (
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+
+        <ParallaxView
+          stickyHeaderHeight={stickyHeaderHeight}
+          backgroundSpeed={10}
+          backgroundColor={'#3e3e3e'}
+          parallaxHeaderHeight={parallaxHeaderHeight}
+          renderForeground={() => this._renderParallaxHeader()}
+          renderFixedHeader={() => this._renderFixedHeader()}
+          renderStickyHeader={() => this._renderStickyHeader()}
+          onScroll={this._handleScrollUserLooks}
+          contentContainerStyle={{
+            flex: 1,
+            backgroundColor: 'white',
+          }}>
+
+          {this._renderBody()}
+
+        </ParallaxView>
+
+        {this._renderWalletWizardModal()}
+
       </View>
     );
   }
