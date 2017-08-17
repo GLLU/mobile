@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, TextInput, Text, Platform, View, TouchableOpacity, Image} from 'react-native';
-import withAnalytics from '../common/analytics/WithAnalytics';
-import _ from 'lodash';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 import FontSizeCalculator from './../../calculators/FontSize';
