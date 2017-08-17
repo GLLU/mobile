@@ -28,10 +28,10 @@ export default function withNavigation(WrappedComponent) {
       this.resetWithPayload=this.resetWithPayload.bind(this);
     }
 
-    resetTo(route) {
+    resetTo(route, params) {
       this.resetWithPayload({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: route })]
+        actions: [NavigationActions.navigate({ routeName: route, params })]
       });
     }
 

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { 
+import {
   EDIT_NEW_LOOK,
   EDIT_TAG,
   CREATE_LOOK_ITEM_BY_POSITION,
@@ -18,10 +18,27 @@ import {
   ADD_ITEM_OCCASION_TAG,
   REMOVE_ITEM_OCCASION_TAG,
   REMOVE_BRAND_NAME,
+  REMOVE_LOOK_ITEM,
+  REMOVE_ITEM_COLOR,
+  ADD_ITEM_COLOR,
+  DONE_UPLOADING_FILE,
+  CLEAR_UPLOAD_LOOK
 } from '../actions/uploadLook';
-import { lookMapper, itemMapper } from '../mappers/';
+import {lookMapper, itemMapper} from '../mappers/';
 
-const mutateItem = function(state, key, value, id) {
+export const newItem = {
+  brand: null,
+  id: 0,
+  category: null,
+  cover_x_pos: 0.5,
+  cover_y_pos: 0.5,
+  occasions: [],
+  color_ids: [],
+  tags: [],
+  isNew: true,
+}
+
+const mutateItem = function (state, key, value, id) {
   return state.items.map(item => {
     if (item.id === id) {
       item[key] = value;
@@ -30,7 +47,7 @@ const mutateItem = function(state, key, value, id) {
   })
 }
 
-const findItem = function(state, itemId) {
+const findItem = function (state, itemId) {
   return _.find(state.items, x => x.id === itemId);
 }
 
@@ -42,22 +59,25 @@ const ACTION_HANDLERS = {
       ...lookMapper(action.payload),
     }
   },
-  [SELECT_LOOK_ITEM] :(state, action) => {
+  [SELECT_LOOK_ITEM]: (state, action) => {
     return {
       ...state,
       itemId: action.payload
     }
   },
+  [DONE_UPLOADING_FILE]: (state, action) => {
+    return {
+      ...state,
+      isUploading: false
+    }
+  },
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
-    const item = action.payload.item;
-    const itemType = action.payload.item.look.cover.type;
-    const itemId = item.id
-    const items = state.items;
+    const { items } = state;
+    let item = newItem;
+    item.id = action.itemId
     items.push(itemMapper(item));
     return {
       ...state,
-      itemId,
-      itemType,
       items,
     }
   },
@@ -65,6 +85,12 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       editingTag: action.payload.editingTag
+    }
+  },
+  [REMOVE_LOOK_ITEM]: (state, action) => {
+    return {
+      ...state,
+      items: action.newItemsArr,
     }
   },
   [SET_TAG_POSITION]: (state, action) => {
@@ -77,7 +103,7 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_TYPE]: (state, action) => {
     const category = action.payload.categoryItem;
-    let items = mutateItem(state, 'category', category, action.payload.itemId);
+    let items = mutateItem(state, 'category', category.id, action.payload.itemId);
     items = mutateItem(state, 'category_id', category.id, action.payload.itemId);
     return {
       ...state,
@@ -87,7 +113,7 @@ const ACTION_HANDLERS = {
   [ADD_BRAND_NAME]: (state, action) => {
     return {
       ...state,
-      items: mutateItem(state, 'brand', action.payload, action.payload.itemId)
+      items: mutateItem(state, 'brand', action.payload.brand, action.payload.itemId)
     }
   },
   [REMOVE_BRAND_NAME]: (state, action) => {
@@ -106,7 +132,6 @@ const ACTION_HANDLERS = {
     const item = findItem(state, action.payload.itemId);
     let tags = item.tags;
     tags.push(action.payload.data);
-    tags = _.uniqBy(tags, 'id');
     return {
       ...state,
       items: mutateItem(state, 'tags', tags, action.payload.itemId)
@@ -114,7 +139,7 @@ const ACTION_HANDLERS = {
   },
   [REMOVE_ITEM_TAG]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let tags = _.filter(item.tags, t => t.name.toLowerCase() != action.payload.data.toLowerCase());
+    let tags = _.filter(item.tags, t => t.name.toLowerCase() !== action.payload.data.name.toLowerCase());
     return {
       ...state,
       items: mutateItem(state, 'tags', tags, action.payload.itemId)
@@ -156,7 +181,7 @@ const ACTION_HANDLERS = {
   },
   [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let occasions = _.filter(item.occasions, t => t.id !== action.payload.tag.id);
+    let occasions = _.filter(item.occasions, t => t !== action.payload.tagId);
     return {
       ...state,
       items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
@@ -164,27 +189,49 @@ const ACTION_HANDLERS = {
   },
   [ADD_ITEM_OCCASION_TAG]: (state, action) => {
     const item = findItem(state, action.payload.itemId);
-    let occasions = item.occasions;
-    occasions.push(action.payload.tag);
-    occasions = _.uniqBy(occasions, 'id');
+    let occasions = _.cloneDeep(item.occasions);
+    occasions.push(action.payload.tagId);
     return {
       ...state,
       items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
     }
   },
+  [REMOVE_ITEM_COLOR]: (state, action) => {
+    const item = findItem(state, action.payload.itemId);
+    let color_ids = _.filter(item.color_ids, t => t !== action.payload.colorId);
+    return {
+      ...state,
+      items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId)
+    }
+  },
+  [CLEAR_UPLOAD_LOOK]: (state, action) => {
+    console.log('clear')
+    return {
+      ...initialState
+    }
+  },
+  [ADD_ITEM_COLOR]: (state, action) => {
+    const item = findItem(state, action.payload.itemId);
+    let color_ids = _.cloneDeep(item.color_ids);
+    color_ids.push(action.payload.colorId);
+    return {
+      ...state,
+      items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId)
+    }
+  }
 }
 
 // Reducer
 const initialState = {
-  lookId: null,
-  itemId: null,
+  lookId: -1,
   image: null,
   description: '',
   items: [],
   video: '',
+  isUploading: false
 }
 
-export default function mybodyTypeReducer (state = initialState, action) {
+export default function mybodyTypeReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
 }

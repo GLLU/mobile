@@ -2,7 +2,7 @@ const React = require('react-native');
 const { StyleSheet } = React;
 
 import FontSizeCalculator from './../../../calculators/FontSize';
-
+import Fonts from '../../../styles/Fonts.styles';
 export const ITEM_WIDTH = 80;
 
 export default StyleSheet.create({
@@ -11,9 +11,8 @@ export default StyleSheet.create({
     padding: 10
   },
   smallTextInput: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Fonts.regularFont,
     color: '#a6a6a6',
-    fontWeight: '300',
     fontSize: new FontSizeCalculator(13).getSize(),
     marginTop: 10,
   },
@@ -33,10 +32,9 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   titleLabelInfo: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Fonts.regularFont,
     fontSize: new FontSizeCalculator(15).getSize(),
     color: '#7f7f7f',
-    fontWeight: '300',
     marginBottom: 8
   },
   editAboutMeContainer: {

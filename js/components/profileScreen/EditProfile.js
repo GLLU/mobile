@@ -74,19 +74,21 @@ class EditProfile extends Component {
   }
 
   _changeUserAvatar() {
-    this.props.logEvent('EditProfileScreen', { name: 'Change avatar click' });
+    this.props.logEvent('EditProfileScreen', { name: 'Change avatar click from editProfile' });
     this.uploadAvatar().then(() => {
       this.setState({ isChangingAvatar: true });
-    }).catch(err => console.log(err));
+    }).catch(err => this.setState({ isChangingAvatar: false }))
   }
 
   async uploadAvatar() {
-    this.props.logEvent('EditProfileScreen', { name: 'Open Camera click' });
+    this.props.logEvent('EditProfileScreen', { name: 'Open Camera click from editProfile' });
     const path = await openCamera(false);
     const image = formatAvatar(path);
     if (image) {
       const { id } = this.props.user;
       this.props.changeUserAvatar({ id, image });
+    } else {
+      throw new Error('user cancelled');
     }
   }
 
@@ -102,8 +104,9 @@ class EditProfile extends Component {
     this.props.logEvent('EditProfileScreen', { name: `body type modal is ${shouldActive ? 'visible' : 'hidden'}` });
     this.setState({ modalShowing: shouldActive });
   };
-
   render() {
+    console.log('isLoading',this.state.isChangingAvatar)
+
     return (
       <View style={{ backgroundColor: '#E9E9EF' }}>
         <View style={{ position: 'absolute', top: 0 }}>

@@ -1,7 +1,7 @@
-import {StackNavigator} from 'react-navigation'
+import { StackNavigator } from 'react-navigation';
 import LoginPage from './components/loginScreen/';
 import FeedPage from './components/feedscreen';
-import AddItemPage from './components/addItemScreen';
+import UploadLookScreen from './components/uploadLookScreen/UploadLookScreenContainer';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
@@ -19,17 +19,17 @@ import NotificationsScreen from './components/notificationsscreen/NotificationsC
 import SettingsScreen from './components/settingsScreen/SettingsContainer';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import FinishLookScreen from './components/finishLookScreen';
-import TutorialScreen from './components/tutorialScreen'
-import BadNavigationScreen from './components/badNavigationScreen'
-import likesScreen from './components/likesScreen'
-import BlockedUsersScreen from './components/blockedUsersScreen'
-import SearchScreen from './components/searchScreen/SearchScreenContainer'
+import TutorialScreen from './components/tutorialScreen';
+import BadNavigationScreen from './components/badNavigationScreen';
+import likesScreen from './components/likesScreen';
+import BlockedUsersScreen from './components/blockedUsersScreen';
+import SearchScreen from './components/searchScreen/SearchScreenContainer';
 import Splash from './components/splashScreen/SplashContainer';
 
 const stackNavigatorConfig = {
   initialRouteName: 'splash',
   headerMode: 'none',
-  gesturesEnabled: true
+  gesturesEnabled: true,
 };
 
 const routes = {
@@ -54,8 +54,11 @@ const routes = {
   feedscreen: {
     screen: FeedPage,
   },
-  addItemScreen: {
-    screen: AddItemPage,
+  uploadLookScreen: {
+    screen: UploadLookScreen,
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
   },
   finishLookScreen: {
     screen: FinishLookScreen,
@@ -94,23 +97,23 @@ const routes = {
     screen: FollowerScreen,
   },
   notificationsScreen: {
-    screen: NotificationsScreen
+    screen: NotificationsScreen,
   },
   settingsScreen: {
-    screen: SettingsScreen
+    screen: SettingsScreen,
   },
   blockedUsersScreen: {
-    screen: BlockedUsersScreen
+    screen: BlockedUsersScreen,
   },
   editProfileScreen: {
     screen: EditProfile,
   },
   tutorialscreen: {
-    screen: TutorialScreen
+    screen: TutorialScreen,
   },
   badNavigation: {
-    screen: BadNavigationScreen
-  }
+    screen: BadNavigationScreen,
+  },
 };
 
 export default StackNavigator(routes, stackNavigatorConfig);

@@ -76,7 +76,7 @@ class SignUpPage extends Component {
         name: name.value,
         gender: gender.toLowerCase(),
         password: password.value,
-        confirmPassword: password,
+        confirmPassword: password.value,
       };
       this.setState({ isSigningUp: true }, () => {
         this.props.emailSignUp(data)
@@ -85,7 +85,7 @@ class SignUpPage extends Component {
               name: `user signed up with email ${email}`,
               invitation_token: this.props.invitation_token,
             });
-            this.props.resetTo('feedscreen', user);
+            this.props.resetTo('feedscreen');
           })
           .catch(err => this.setState({ isSigningUp: false }));
       });

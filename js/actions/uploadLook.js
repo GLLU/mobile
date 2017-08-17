@@ -2,6 +2,7 @@ export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
 export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
+export const REMOVE_LOOK_ITEM = 'REMOVE_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
@@ -16,14 +17,20 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
+export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
+export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
+export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
+
 
 import _ from 'lodash';
 
 import rest from '../api/rest';
-import { loadBrands, showProcessing, hideProcessing } from './index';
+import {loadBrands, showProcessing, hideProcessing} from './index';
 import Utils from '../utils';
 
 let api_key = null;
+
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
@@ -37,10 +44,19 @@ export function addNewLook(image) {
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
               if (data) {
                 const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-                if(data.look.cover.type !== "image") {
+                if (data.look.cover.type !== "image") {
                   const payload = _.merge(data.look, {
                     image: url,
-                    items: [],
+                    items: [{
+                      brand: -1,
+                      id: -1,
+                      category: null,
+                      cover_x_pos: 0.5,
+                      cover_y_pos: 0.5,
+                      look_id: -1,
+                      occassions: [],
+                      tags: [],
+                    }],
                     localFilePath: image.localPath
                   });
 
@@ -54,7 +70,16 @@ export function addNewLook(image) {
                   Utils.preloadImages([url]).then(() => {
                     const payload = _.merge(data.look, {
                       image: url,
-                      items: [],
+                      items: [{
+                        brand: -1,
+                        id: -1,
+                        category: null,
+                        cover_x_pos: 0.5,
+                        cover_y_pos: 0.5,
+                        look_id: -1,
+                        occassions: [],
+                        tags: [],
+                      }],
                     });
                     dispatch({
                       type: EDIT_NEW_LOOK,
@@ -81,71 +106,12 @@ export function addNewLook(image) {
   }
 }
 
-export function editNewLook(lookId) {
-  return (dispatch, getState) => {
-    dispatch(showProcessing());
-    return new Promise((resolve, reject) => {
-      dispatch(rest.actions.looks.get({ id: lookId}, (err, data) => {
-        dispatch(hideProcessing());
-        if (!err) {;
-          const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-            let payload = {
-              image: url,
-              items: data.look.items,
-              ...data.look
-            };
-            dispatch({
-              type: EDIT_NEW_LOOK,
-              payload,
-            });
-            resolve(payload);
-        } else {
-          throw err;  
-        }
-      }));
-    });
-  }
-}
-
 export function editTag(editingTag) {
   return {
     type: EDIT_TAG,
     payload: {
       editingTag
     }
-  }
-}
-
-export function setTagPosition(payload) {
-  return {
-    type: SET_TAG_POSITION,
-    payload: payload
-  }
-}
-
-export function createLookItem(position) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const lookId = state.uploadLook.lookId;
-    const body = {
-      item: {
-        cover_x_pos: position.locationX,
-        cover_y_pos: position.locationY,
-      }
-    };
-    return new Promise((resolve, reject) => {
-      dispatch(rest.actions.items.post({look_id: lookId}, { body: JSON.stringify(body) } , (err, data) => {
-        if (!err) {
-          resolve(dispatch({
-              type: CREATE_LOOK_ITEM_BY_POSITION,
-              payload: data
-            })
-          );
-        } else {
-          reject(err);
-        }
-      }));
-    });
   }
 }
 
@@ -162,8 +128,8 @@ function _updateLook(lookId, params, dispatch, options = {}) {
   }
 
   return makeRequest(dispatch, rest.actions.looks.put, [
-    { id: lookId },
-    { body: JSON.stringify(body) }
+    {id: lookId},
+    {body: JSON.stringify(body)}
   ], options);
 }
 
@@ -172,8 +138,8 @@ function _updateItem(lookId, itemId, params, dispatch) {
     item: Object.assign({}, params),
   }
   return makeRequest(dispatch, rest.actions.items.put, [
-    { look_id: lookId, id: itemId },
-    { body: JSON.stringify(body)}
+    {look_id: lookId, id: itemId},
+    {body: JSON.stringify(body)}
   ]);
 }
 
@@ -193,9 +159,9 @@ export function updateLookItem(currItemId) {
   return (dispatch, getState) => {
     const state = getState();
     const itemId = currItemId
-    const { lookId, items } = state.uploadLook;
+    const {lookId, items} = state.uploadLook;
     const item = itemId ? _.find(items, item => item.id === itemId) : null;
-    const { brand, category, locationX, locationY } = item;
+    const {brand, category, locationX, locationY} = item;
     const brand_id = brand ? brand.id : undefined;
     const category_id = category ? category.id : undefined;
     const params = {
@@ -213,7 +179,7 @@ export function publishLookItem() {
   return (dispatch, getState) => {
     const state = getState();
 
-    const { lookId, itemId } = state.uploadLook;
+    const {lookId, itemId} = state.uploadLook;
 
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
@@ -230,7 +196,7 @@ export function publishLookItem() {
 export function addItemType(categoryItem, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
+    const {lookId} = state.uploadLook;
     const params = {
       category_id: categoryItem.id,
     }
@@ -240,20 +206,20 @@ export function addItemType(categoryItem, itemId) {
         type: ADD_ITEM_TYPE,
         payload
       });
-      dispatch(addItemTag(categoryItem.name, itemId)).catch(err => {
+      dispatch(addItemTag(categoryItem, itemId)).catch(err => {
         console.log('do nothing');
       });
     }).catch(err => {
       console.log('addItemType error', err);
     });
-    
+
   };
 }
 
 export function addBrandName(payload) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
+    const {lookId} = state.uploadLook;
     const itemId = payload.itemId
     const params = {
       brand_id: payload.id,
@@ -264,7 +230,7 @@ export function addBrandName(payload) {
           type: ADD_BRAND_NAME,
           payload: payload
         });
-        dispatch(addItemTag(payload.name, itemId)).catch(reject);
+        dispatch(addItemTag(payload, itemId)).catch(reject);
         resolve();
       }).catch(reject);
     });
@@ -279,10 +245,12 @@ export function createBrandName(newBrand) {
       }
     }
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
+      dispatch(rest.actions.brands.post({}, {body: JSON.stringify(body)}, (err, data) => {
         if (!err && !_.isEmpty(data)) {
           dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name, itemId: newBrand.itemId })).then(resolve, reject);
+          dispatch(addBrandName({
+            ...newBrand
+          })).then(resolve, reject);
         } else {
           reject(err);
         }
@@ -308,20 +276,20 @@ export function addItemSize(payload) {
 export function addItemTag(tag, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
+    const {lookId} = state.uploadLook;
     const body = {
-      tag_name: tag
+      tag_name: tag.name
     }
+    const payload = {data: tag, itemId}
+    dispatch({
+      type: ADD_ITEM_TAG,
+      payload
+    });
     return new Promise((resolve, reject) => {
       return makeRequest(dispatch, rest.actions.item_tags.post, [
-        { look_id: lookId, item_id: itemId },
-        { body: JSON.stringify(body) }
+        {look_id: lookId, item_id: itemId},
+        {body: JSON.stringify(body)}
       ]).then(data => {
-        const payload = {data: data.item_tag.tag, itemId}
-        dispatch({
-          type: ADD_ITEM_TAG,
-          payload
-        });
         resolve();
       }).catch(reject);
     });
@@ -331,20 +299,21 @@ export function addItemTag(tag, itemId) {
 export function removeItemTag(tag, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
+    const {lookId} = state.uploadLook;
     const body = {
-      tag_name: tag
+      tag_name: tag.name
     }
+    const payload = {data: tag, itemId}
+    dispatch({
+      type: REMOVE_ITEM_TAG,
+      payload
+    });
     return new Promise((resolve, reject) => {
       return makeRequest(dispatch, rest.actions.item_tags.delete, [
-        { look_id: lookId, item_id: itemId },
-        { body: JSON.stringify(body) }
+        {look_id: lookId, item_id: itemId},
+        {body: JSON.stringify(body)}
       ]).then(data => {
-        const payload = {data: tag, itemId}
-        dispatch({
-          type: REMOVE_ITEM_TAG,
-          payload
-        });
+        console.log('remove item tag data', tag)
         resolve();
       }).catch(reject);
     });
@@ -364,7 +333,7 @@ export function addSharingInfo(type, url) {
 export function addDescription(description) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
+    const {lookId} = state.uploadLook;
     const params = {
       description,
     }
@@ -382,7 +351,7 @@ export function addDescription(description) {
 export function addUrl(url, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
+    const {lookId} = state.uploadLook;
     const params = {
       url,
     }
@@ -415,36 +384,39 @@ export function addPhotosVideo(image) {
   };
 }
 
-export function toggleOccasionTag(tag, selected, itemId) {
+export function toggleOccasionTag(tagId, selected, itemId) {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
+    const {lookId} = state.uploadLook;
     if (selected) {
       // remove
-      dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tag.id}, (err, data) => {
+      dispatch(rest.actions.item_occasions.delete({look_id: lookId, item_id: itemId, id: tagId}, (err, data) => {
         if (!err) {
-          const payload = {tag, itemId}
+          const payload = {tagId, itemId}
           dispatch({
             type: REMOVE_ITEM_OCCASION_TAG,
             payload: payload
           });
         } else {
-          throw err;  
+          throw err;
         }
       }));
     } else { // add
       const body = {
-        tag_id: tag.id
+        tag_id: tagId
       }
-      dispatch(rest.actions.item_occasions.post({look_id: lookId, item_id: itemId}, { body: JSON.stringify(body)}, (err, data) => {
+      dispatch(rest.actions.item_occasions.post({
+        look_id: lookId,
+        item_id: itemId
+      }, {body: JSON.stringify(body)}, (err, data) => {
         if (!err) {
-          const payload = {tag: data.item_tag.tag, itemId}
+          const payload = {tagId, itemId}
           dispatch({
             type: ADD_ITEM_OCCASION_TAG,
             payload: payload
           });
         } else {
-          throw err;  
+          throw err;
         }
       }));
     }

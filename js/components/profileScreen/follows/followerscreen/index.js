@@ -3,7 +3,8 @@ import { ListView, Image, TouchableOpacity, Text, View, ActivityIndicator } from
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import EmptyView from './EmptyView';
-import { addNewLook, getUserFollowersData } from '../../../../actions';
+import { getUserFollowersData } from '../../../../actions';
+import { addNewLook } from '../../../../actions/uploadLookB';
 import asScreen from '../../../common/containers/Screen';
 import ListScreen from '../../../common/lists/ListScreen';
 import UserActionRow from '../../../common/lists/UserActionRow';
@@ -56,17 +57,19 @@ class FollowerScreen extends Component {
   }
 
   async uploadLook() {
-    this.props.logEvent('Followerscreen', { name: 'Open Camera click' });
+    this.props.logEvent('Followerscreen', {name: 'user started uploading a look', origin: 'followers'});
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.goToAddNewItem(file);
+    } else {
+      this.props.logEvent('Followerscreen', {name: 'User canceled the upload look', origin: 'camera'})
     }
   }
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath).then(() => {
-      this.props.navigateTo('addItemScreen', { mode: 'create' });
+      this.props.navigateTo('uploadLookScreen', { mode: 'create' });
     }).catch((err) => {
       console.log('addNewLook err', err);
     });

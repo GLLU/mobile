@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { StyleSheet ,View} from 'react-native'
-import { connect } from 'react-redux';
-
+import React, {Component} from 'react';
+import {StyleSheet, View} from 'react-native'
+import {connect} from 'react-redux';
+import i18n from 'react-native-i18n';
 import Autocomplete from './CustomAutocomplete';
-import { loadBrands } from '../../../actions';
+import {loadBrands} from '../../../actions';
 import _ from 'lodash';
 
 const styles = StyleSheet.create({
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 class BrandNameInput extends Component {
   static propTypes = {
-    brand:  React.PropTypes.string,
+    brand: React.PropTypes.string,
     brands: React.PropTypes.array,
     loadBrands: React.PropTypes.func,
     findOrCreateBrand: React.PropTypes.func,
@@ -53,7 +53,7 @@ class BrandNameInput extends Component {
     this.setState({
       query: text
     }, () => {
-      this.doFilterAsync(text);  
+      this.doFilterAsync(text);
     })
   }
 
@@ -65,35 +65,35 @@ class BrandNameInput extends Component {
     this.props.loadBrands(text).then(response => {
       this.setState({
         data: response,
-      });  
+      });
     }).catch(err => {
       console.log('filter brands error:', err);
-    }); 
+    });
   }
 
   render() {
-    const { query, data } = this.state;
-    const { brand } = this.props;
+    const {query, data} = this.state;
+    const {brand} = this.props;
     const selected = !!(brand && query && query.toLowerCase() === brand.toLowerCase());
     return (
       <View style={{paddingBottom: 20, paddingTop: 20, flex: 1}}>
         <Autocomplete
-            query={query}
-            autoCapitalize="none"
-            autoCorrect={false}
-            underlineColorAndroid='transparent'
-            selected={selected}
-            inputContainerStyle={styles.inputContainerStyle}
-            containerStyle={[styles.autocompleteContainer]}
-            listStyle={styles.slistStyle}
-            data={data}
-            defaultValue={query}
-            value={query}
-            onChangeText={text => this.onChangeText(text)}
-            onEndEditing={e => this.onEndEditing(e)}
-            placeholder="Type a brand name"
-            findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}
-            onCancel={this.props.onCancel}/>
+          query={query}
+          autoCapitalize="none"
+          autoCorrect={false}
+          underlineColorAndroid='transparent'
+          selected={selected}
+          inputContainerStyle={styles.inputContainerStyle}
+          containerStyle={[styles.autocompleteContainer]}
+          listStyle={styles.slistStyle}
+          data={data}
+          defaultValue={query}
+          value={query}
+          onChangeText={text => this.onChangeText(text)}
+          onEndEditing={e => this.onEndEditing(e)}
+          placeholder={i18n.t("TYPE_BRAND_NAME")}
+          findOrCreateBrand={this.handleFindOrCreateBrand.bind(this)}
+          onCancel={this.props.onCancel}/>
       </View>);
   }
 }

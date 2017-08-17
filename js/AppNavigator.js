@@ -100,7 +100,6 @@ class AppNavigator extends Component {
         <StatusBar barStyle='default'/>
         <CardStack navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
         {/*{this.props.isLoading ? <SpinnerSwitch /> : null}*/}
-        {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}

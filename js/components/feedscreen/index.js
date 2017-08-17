@@ -6,8 +6,9 @@ import {connect} from 'react-redux';
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import {addNewLook, setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
-import {toggleFiltersMenus} from '../../actions/filters';
+import { setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
+import {addNewLook} from '../../actions/uploadLookB'
+import {toggleFiltersMenus, getColors, getFeaturedBrands} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
 import Analytics from '../../lib/analytics/Analytics';
@@ -33,6 +34,7 @@ class FeedPage extends Component {
     hideBodyTypeModal: React.PropTypes.func,
     toggleFiltersMenus: React.PropTypes.func,
     loadCategories: React.PropTypes.func,
+    loadBrands: React.PropTypes.func,
     loadOccasionTags: React.PropTypes.func,
   }
 
@@ -61,7 +63,7 @@ class FeedPage extends Component {
       showBottomCamera: true,
       fadeAnimContentOnPress: new Animated.Value(10),
       feedsRoute: {
-        index: 0,
+        index: props.navigation.state.params ? props.navigation.state.params.resetToIndex : 1,
         routes: [
           {key: FEED_TYPE_FOLLOWING, title: 'Following'},
           {key: FEED_TYPE_BEST_MATCH, title: 'My Shape'},
@@ -78,6 +80,8 @@ class FeedPage extends Component {
     const {gender} = this.props.user;
     this.props.loadCategories(gender);
     this.props.loadOccasionTags(gender);
+    this.props.loadColors();
+    this.props.loadBrands();
   }
 
   componentWillMount() {
@@ -102,7 +106,7 @@ class FeedPage extends Component {
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath).then(() => {
-      this.props.navigateTo('addItemScreen', {mode: 'create'});
+      this.props.navigateTo('uploadLookScreen', {mode: 'create'});
     });
   }
 
@@ -150,19 +154,21 @@ class FeedPage extends Component {
     this.props.hideBodyTypeModal();
   }
 
-  async uploadLook() {
-    this.props.logEvent('Feedscreen', {name: 'Open Camera click'});
+  async uploadLook(pressedButton) {
+    this.props.logEvent('Feedscreen', {name: 'user started uploading a look', origin: pressedButton});
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.goToAddNewItem(file);
+    } else {
+      this.props.logEvent('Feedscreen', {name: 'User canceled the upload look', origin: 'camera'});
     }
   }
 
   renderBottomCamera() {
     return (
       <Animated.View style={{position: 'absolute', bottom: this.state.fadeAnimContentOnPress, alignSelf: 'center'}}>
-        <TouchableOpacity transparent onPress={this.uploadLook}>
+        <TouchableOpacity transparent onPress={() => this.uploadLook('floating button')}>
           <Image source={cameraIcon} style={styles.btnImage}/>
         </TouchableOpacity>
       </Animated.View>
@@ -201,7 +207,7 @@ class FeedPage extends Component {
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
           <MainBarView
-            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={this.uploadLook}
+            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={() =>this.uploadLook('menu camera')}
             gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
             handleSearchStatus={this._handleSearchStatus} balance={balance} showBalanceBadge={showWalletBadge}
             handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}
@@ -228,7 +234,9 @@ function bindActions(dispatch) {
     getUserBalance: (id) => dispatch(getUserBalance(id)),
     toggleFiltersMenus: feedType => dispatch(toggleFiltersMenus(feedType)),
     loadCategories: gender => dispatch(loadCategories(gender)),
+    loadBrands: () => dispatch(getFeaturedBrands()),
     loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
+    loadColors: () => dispatch(getColors()),
   };
 }
 

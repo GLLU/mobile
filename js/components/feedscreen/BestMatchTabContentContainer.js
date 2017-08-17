@@ -26,38 +26,41 @@ function mapDispatchToProps(dispatch, ownProps) {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  let defaultFilters = {
-    gender: '',
-    body_type: ''
-  };
-  if (state.user.user_size) {
-    const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
-    const myGender = state.user.gender ? state.user.gender : '';
-    defaultFilters = {
-      gender: myGender,
-      body_type: myBodyType,
+    let defaultFilters = {
+      gender: '',
+      body_type: ''
+    };
+    if (state.user.user_size) {
+      const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
+      const myGender = state.user.gender ? state.user.gender : '';
+      defaultFilters = {
+        gender: myGender,
+        body_type: myBodyType,
+        'sort[field]': 'created_at',
+      };
+    }
+    const hasUserSize = state.user.hasChoosenBodyShape;
+    const userSize = hasUserSize ? state.user.user_size : '';
+    const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
+    return {
+      isLoading: state.feed.bestMatch.isLoading,
+      currentBodyType: state.myBodyType.currentBodyType.body_type,
+      isTabOnFocus: ownProps.isTabOnFocus,
+      defaultFilters,
+      modalShowing: state.myBodyType.modalShowing,
+      flatLooks: flatLooksFeedData,
+      meta: state.feed.bestMatch.meta,
+      query: state.feed.bestMatch.query,
+      hasUserSize,
+      currBodyShapeModal: state.myBodyType.currentBodyType.body_type,
+      user_size: userSize,
+      user_gender: state.user.gender,
+      cardNavigationStack: state.cardNavigation,
+      userName: state.user.name,
+      isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_BEST_MATCH],
+      myFeedType: FEED_TYPE_BEST_MATCH,
     };
   }
-  const hasUserSize = state.user.hasChoosenBodyShape;
-  const userSize = hasUserSize ? state.user.user_size : '';
-  const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
-  return {
-    isLoading: state.feed.bestMatch.isLoading,
-    currentBodyType: state.myBodyType.currentBodyType.body_type,
-    isTabOnFocus: ownProps.isTabOnFocus,
-    defaultFilters,
-    modalShowing: state.myBodyType.modalShowing,
-    flatLooks: flatLooksFeedData,
-    meta: state.feed.bestMatch.meta,
-    query: state.feed.bestMatch.query,
-    hasUserSize,
-    user_size: userSize,
-    user_gender: state.user.gender,
-    cardNavigationStack: state.cardNavigation,
-    userName: state.user.name,
-    isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_BEST_MATCH],
-    myFeedType: FEED_TYPE_BEST_MATCH,
-  };
-};
+;
 
 export default connect(mapStateToProps, mapDispatchToProps)(BestMatchTabContent);

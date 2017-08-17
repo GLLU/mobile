@@ -8,6 +8,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import I18n from 'react-native-i18n';
 import _ from 'lodash';
@@ -107,31 +108,35 @@ class FiltersView extends BaseComponent {
 
   render() {
     return (
-      <View style={styles.filterViewContainer}>
-        <View style={styles.TopRow}>
-          <TouchableOpacity onPress={this._resetFilters}>
-            <Text style={styles.cleaResetText}>{I18n.t('RESET FILTERS')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._cancelFilter}>
-            <Text style={styles.cleaResetText}>{I18n.t('CANCEL')}</Text>
+      <ScrollView style={styles.filterViewContainer} contentContainerStyle={styles.contentContainerStyle}>
+          <View style={styles.TopRow}>
+            <TouchableOpacity onPress={this._resetFilters}>
+              <Text style={styles.cleaResetText}>{I18n.t('RESET FILTERS')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._cancelFilter}>
+              <Text style={styles.cleaResetText}>{I18n.t('CANCEL')}</Text>
+            </TouchableOpacity>
+          </View>
+          {this._renderFilterRows()}
+        <View style={styles.applyBottomContainer}>
+          <TouchableOpacity onPress={this._getFeed} style={styles.applyBtnContainer}>
+            <Text style={styles.applyText}>{I18n.t('APPLY')}</Text>
           </TouchableOpacity>
         </View>
-        {this._renderFilterRows()}
-        <TouchableOpacity onPress={this._getFeed} style={styles.applyBtnContainer}>
-          <Text style={styles.applyText}>{I18n.t('APPLY')}</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   filterViewContainer: {
-    backgroundColor: Colors.primaryColor,
-    position: 'absolute',
-    height: deviceHeight,
     top: 0,
     flexDirection: 'column',
+  },
+  contentContainerStyle: {
+    backgroundColor: Colors.primaryColor,
+    alignItems: 'flex-start',
+    minHeight: deviceHeight - generateAdjustedSize(113.5)
   },
   TopRow: {
     flexDirection: 'row',
@@ -154,21 +159,24 @@ const styles = StyleSheet.create({
   seperator: {
     paddingHorizontal: 10,
   },
-  applyBtn: {},
-  applyBtnContainer: {
-    width: deviceWidth - 90,
-    height: 45,
-    backgroundColor: Colors.highlightColor,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 150
-  },
   applyText: {
     textAlign: 'center',
     color: Colors.white,
     fontWeight: '600',
+  },
+  applyBottomContainer: {
+    flex: 1,
+    alignSelf: 'center',
+    flexDirection: 'column',
+    marginVertical: 45,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  applyBtnContainer: {
+    width: deviceWidth - 90,
+    height: 45,
+    backgroundColor: Colors.highlightColor,
+    justifyContent: 'center',
   },
 });
 

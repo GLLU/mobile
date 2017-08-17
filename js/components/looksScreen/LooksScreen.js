@@ -127,7 +127,7 @@ class LooksScreen extends Component {
 
   _goToEdit(look: object) {
     this.props.editNewLook(look.id).then(() => {
-      this.props.navigateTo('addItemScreen', { mode: 'edit' });
+      this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
     });
   }
 
@@ -163,7 +163,7 @@ class LooksScreen extends Component {
   }
 
   onSwipe(gestureName: string) {
-    this.props.logEvent('LookScreen', { name: `user swiped! type: ${gestureName}` });
+    this.props.logEvent('LookScreen', { name: `user swiped`, type: gestureName });
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
@@ -291,7 +291,6 @@ class LooksScreen extends Component {
     const showShowArrow = this.shouldRenderArrows();
     const openComments = this.openCommentsInAdvance(look);
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
-    console.log('martin', showSwipeWizard);
     return (
       <GestureRecognizer
         key={look.originalIndex !== undefined ? look.originalIndex : -1}
@@ -304,7 +303,7 @@ class LooksScreen extends Component {
         <ImageWrapper
           resizeMode={'stretch'}
           style={styles.itemImage}
-          source={{ uri: look.uri }}
+          source={{ uri: look.mediumSizeUri }}
           navigation={this.props.cardNavigation}>
           <LookOverlay
             width={width}

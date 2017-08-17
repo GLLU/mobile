@@ -15,6 +15,7 @@ import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 import SolidButton from '../../common/buttons/SolidButton';
 import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import withAnalytics from '../../common/analytics/WithAnalytics';
 
 export const POPUP_WIDTH = 160;
 export const POPUP_HEIGHT = 70;
@@ -93,12 +94,13 @@ class ItemPopup extends Component {
   }
 
   handleOpenLink() {
-    const url = this.props.url;
+    const { url, look_id, id, is_verified } = this.props;
     if (url) {
       Linking.canOpenURL(url).then((supported) => {
         if (!supported) {
           console.log(`Can't handle url: ${url}`);
         } else {
+          this.props.logEvent('lookScreen', {name: 'click on item', isVerified: is_verified, lookId: look_id, item_id: id})
           return Linking.openURL(url);
         }
       }).catch(err => console.error('An error occurred', err));
@@ -140,4 +142,4 @@ function bindActions(dispatch) {
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, bindActions)(ItemPopup);
+export default connect(mapStateToProps, bindActions)(withAnalytics(ItemPopup));
