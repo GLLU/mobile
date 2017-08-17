@@ -110,9 +110,7 @@ class ItemPopup extends Component {
   }
 
   getTitle(brand) {
-    const titleLength = 12;
     let title = brand ? brand.name : 'N/A';
-    title = title.length > titleLength ? `${title.slice(0, titleLength - 3)}...` : title;
     return title;
   }
 
@@ -123,7 +121,7 @@ class ItemPopup extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>
-          <Text style={styles.brand}>{brand.name}</Text>
+          <Text style={styles.brand}>{this.getTitle(brand)}</Text>
           { category ? <Text style={styles.category}>{category.name}</Text> : null }
           <SolidButton
             label={is_verified ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
