@@ -111,7 +111,7 @@ export default class ButtonsBar extends BaseComponent {
   }
 
   render() {
-    const { direction, shouldShowLike } = this.props;
+    const { direction } = this.props;
     const { lookType, hasDescription } = this.props;
     const { comments, isCommentsActive } = this.props;
     const { likes, liked, toggleLike, onNumberPress } = this.props;
@@ -119,10 +119,7 @@ export default class ButtonsBar extends BaseComponent {
       <View style={[styles.container, styles.row]}>
         <View style={[styles.rightContainer, styles[direction]]}>
           { lookType === 'video' ? this.renderVideoItems() : null }
-
-          {!shouldShowLike ? null :
           <LikeButton liked={liked} likes={likes} onIconPress={toggleLike} onNumberPress={onNumberPress} />
-          }
           <CommentsButton count={comments} isActive={isCommentsActive} onPress={this._onBubbleClicked} />
           { this._renderInformationButton(hasDescription) }
           <MenuButton onPress={() => this._onMenuClicked()} />

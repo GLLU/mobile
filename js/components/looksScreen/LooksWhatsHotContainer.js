@@ -23,9 +23,11 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = getLooksById(state.feed.whatsHot.flatLooksIdData, state.looks.flatLooksData);
   return {
+    flatLook: state.looks.flatLooksData[ownProps.navigation.state.params.lookId],
+    openComments: ownProps.navigation.state.params.openComments ? ownProps.navigation.state.params.openComments : false,
     isLoading: state.loader.loading,
     showSwipeWizard: state.user.showSwipeWizard,
     flatLooksData: flatLooksFeedData,
