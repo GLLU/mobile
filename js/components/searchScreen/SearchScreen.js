@@ -43,7 +43,7 @@ class SearchScreen extends Component {
     this._seachFromHistory = this._seachFromHistory.bind(this)
     this.state = {
       searchTerm: '',
-      currentTab: {key: 'looks', title: ''},
+      currentTab: { key: 'looks', title: '' },
     }
   }
 
@@ -63,7 +63,7 @@ class SearchScreen extends Component {
   }
 
   _setCurrentTab(currentTab) {
-    this.setState({currentTab})
+    this.setState({ currentTab })
   }
 
   _handleSearchInput(value) {
@@ -74,32 +74,38 @@ class SearchScreen extends Component {
   }
 
   _handleSearch() {
-    if (this.state.searchTerm.length > 0) { // currently sever-side doesnt return results for less then 3 digits
+
+    const { logEvent, getFeed, goBack, getUsers } = this.props;
+    const { searchTerm } = this.state;
+
+    if (searchTerm.length > 0) { // currently sever-side doesnt return results for less then 3 digits
       if (this.state.currentTab.key === 'looks') {
-        this.props.getFeed({term: this.state.searchTerm});
-        this.props.goBack();
+        logEvent('Feedscreen', { name: 'Search', type: 'looks', query: searchTerm });
+        getFeed({ term: searchTerm });
+        goBack();
       }
       else {
-        this.props.getUsers(this.state.searchTerm);
+        logEvent('Feedscreen', { name: 'Search', type: 'people', query: searchTerm });
+        getUsers(searchTerm);
       }
     }
   }
 
   _seachFromHistory(value) {
-    this.setState({searchTerm: value}, () => {
+    this.setState({ searchTerm: value }, () => {
       this._handleSearch()
     })
   }
 
   render() {
-    const {navigateTo} = this.props
+    const { navigateTo } = this.props
     return (// Will remove the marginTop
       <View style={styles.searchScreenContainer}>
         <View style={styles.searchBarContainer}>
           <TouchableOpacity onPress={this.props.goBack} style={styles.searchIconContainer}>
             <Image style={styles.searchIcon} source={leftLongArrow}/>
           </TouchableOpacity>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <SearchBar handleSearchInput={this.handleSearchInput}
                        handleSearch={this._handleSearch} searchTerm={this.state.searchTerm}
                        clearSearchBar={this._clearSearchBar}/>

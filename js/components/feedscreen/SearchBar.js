@@ -72,14 +72,12 @@ class SearchBar extends Component {
   }
 
   _doSearch(text) {
-    const {logEvent, handleSearchInput} = this.props
-    logEvent('Feedscreen', {name: 'Search'});
+    const { handleSearchInput} = this.props
     handleSearchInput(text);
   }
 
   _clearSearch() {
-    const {logEvent, clearSearchBar} = this.props
-    logEvent('Feedscreen', {name: 'Clear search'});
+    const { clearSearchBar } = this.props
     clearSearchBar();
   }
 
@@ -98,7 +96,6 @@ class SearchBar extends Component {
           placeholder='Search'
           underlineColorAndroid='transparent'
           onChangeText={this._doSearch}
-          value={this.props.searchTerm}
           returnKeyType={'search'}
           onSubmitEditing={this._getFeed}
         />
@@ -111,4 +108,4 @@ class SearchBar extends Component {
   }
 }
 
-export default withAnalytics(SearchBar);
+export default SearchBar;
