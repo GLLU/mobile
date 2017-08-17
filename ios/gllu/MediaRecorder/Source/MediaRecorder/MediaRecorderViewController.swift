@@ -145,7 +145,7 @@ class MediaRecorderViewController: AVSessionRecorderViewController, AVSessionRec
             mediaPicker.mediaTypes = [kUTTypeImage as String]
         }
         
-        mediaPicker.sourceType = .savedPhotosAlbum
+        mediaPicker.sourceType = .photoLibrary
         mediaPicker.allowsEditing = false
         mediaPicker.delegate = self
         
