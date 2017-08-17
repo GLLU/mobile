@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { View, Image, Linking, Platform, Dimensions, TouchableOpacity } from 'react-native';
+import OneSignal from 'react-native-onesignal';
 
 import Spinner from '../loaders/Spinner';
 
@@ -33,6 +34,7 @@ class Splash extends Component {
       this.props.checkLogin()
         .then(() => {
           if (user.id !== -1 && user.name !== null) {
+            OneSignal.sendTag("id", user.id);
             this.props.resetTo('feedscreen');
           } else {
             this.props.resetTo('loginscreen');
