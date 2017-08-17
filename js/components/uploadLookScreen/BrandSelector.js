@@ -110,7 +110,7 @@ class BrandSelector extends BaseComponent {
     const brandName = brand.name
     const brandFunction = brand.id ? this.props.addBrandName : this.props.createBrandName;
     if(brand.id){
-      brandFunction(data)
+      brandFunction(brand.id, this.props.item.id);
     } else {
       brandFunction(data).then(() => {
         console.log('brand added')
@@ -218,7 +218,7 @@ import {connect} from 'react-redux';
 function bindActions(dispatch) {
   return {
     createBrandName: (data) => dispatch(createBrandName(data)),
-    addBrandName: (data) => dispatch(addBrandName(data, data.itemId)),
+    addBrandName: (brandId, itemId) => dispatch(addBrandName(brandId, itemId)),
     removeBrandName: (itemId) => dispatch(removeBrandName(itemId)),
   };
 }
