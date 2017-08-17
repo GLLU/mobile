@@ -6,29 +6,32 @@ import rest from '../api/rest';
 export const SET_USER_FOLLOWS_DATA = 'SET_USER_FOLLOWS_DATA';
 export const START_FETCHING_FOLLOWING = 'following.START_FETCHING_FOLLOWING';
 export const INIT_USER_FOLLOWS = 'INIT_USER_FOLLOWS';
+import FollowsService from '../services/followsService';
+import {getFollowingFeed} from './feed';
 
 export function followUpdate(id) {
-  return (dispatch) => {
-    dispatch(follow(id));
+  return (dispatch, getState) => {
+    return new Promise((resolve) => {
+      FollowsService.follow(id).then(() => {
+        const query = getState().feed.following.query;
+        dispatch(getFollowingFeed(query));
+        resolve();
+      });
+    })
   };
 }
 
 export function unFollowUpdate(id) {
-  return (dispatch) => {
-    dispatch(unfollow(id));
+  return (dispatch, getState) => {
+    return new Promise((resolve) => {
+      FollowsService.unFollow(id).then(() => {
+        const query = getState().feed.following.query;
+        dispatch(getFollowingFeed(query));
+        resolve();
+      });
+    })
   };
-}
 
-export function follow(id) {
-  return (dispatch) => {
-    dispatch(rest.actions.follows.post({ user_id: id }, {}));
-  };
-}
-
-export function unfollow(id: number) {
-  return (dispatch) => {
-    dispatch(rest.actions.follows.delete({ user_id: id }));
-  };
 }
 
 export function initUserFollows(data) {
