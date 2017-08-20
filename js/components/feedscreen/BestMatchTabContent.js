@@ -387,7 +387,7 @@ class BestMatchTabContent extends BaseComponent {
           <SolidButton label="CHOOSE" onPress={this._saveBodyShape} />
           { hasUserSize ?
             <TouchableOpacity onPress={this._showBodyShapeModal} style={styles.cancelBodyShapeContainer}>
-              <Text style={styles.cancelBodyShape}>Cancel</Text>
+              <Text style={styles.cancelBodyShape}>{i18n.t('CANCEL')}</Text>
             </TouchableOpacity> : null }
         </ScrollView>
       </View>
@@ -468,8 +468,7 @@ const
       top: 0,
     },
     chooseBodyShapeContainer: {
-      flex: 1,
-      minHeight: deviceHeight,
+      flexGrow: 1,
       backgroundColor: Colors.white,
       alignItems: 'center',
     },
