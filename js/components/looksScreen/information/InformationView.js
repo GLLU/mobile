@@ -1,15 +1,13 @@
 // @flow
 
-import React, { Component } from 'react';
-import i18n from 'react-native-i18n';
-import { Animated, View, Text, StyleSheet } from 'react-native';
-import { chain, noop } from 'lodash'
-import BottomHalfScreenModal from "../common/BottomHalfScreenModal";
+import React, {Component} from 'react';
+import {Animated, View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
+import {chain, noop} from 'lodash'
 import ItemBrandsView from "./ItemBrandsView";
-import HalfScreenModalHeader from "../../common/headers/HalfScreenModalHeader";
 import Separator from "../../common/lists/Separator";
 
-import Colors from '../../../styles/Colors.styles'
+import Colors from '../../../styles/Colors.styles';
+import Fonts from '../../../styles/Fonts.styles';
 import InformationViewFooter from "./InformationViewFooter";
 
 const styles = StyleSheet.create({
@@ -25,11 +23,12 @@ const styles = StyleSheet.create({
   },
   description: {
     paddingHorizontal: 20,
+    fontFamily: Fonts.contentFont,
     color: Colors.black,
-    fontSize: 16
+    textAlign: 'center',
+    fontSize: 16,
   },
   separatorContainer: {
-    paddingVertical: 10,
     paddingHorizontal: 50
   },
   separator: {
@@ -61,6 +60,7 @@ class InformationView extends Component {
 
   constructor(props: Props) {
     super(props);
+    this.state = {isOpen: false};
     this._onRequestClose = this._onRequestClose.bind(this);
   }
 
@@ -72,32 +72,41 @@ class InformationView extends Component {
       .value();
 
   _onRequestClose() {
-    this.props.onRequestClose(false)
+    this.setState({ isOpen: false });
+    this.props.onRequestClose(false);
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({ isOpen: props.isOpen });
   }
 
   render() {
-    const {likes, comments, items, onCommentsPress, onLikesPress} = this.props;
+    const { likes, comments, items, onCommentsPress, onLikesPress } = this.props;
     const brands = this.getBrandsFromItems(items);
     return (
-      <BottomHalfScreenModal {...this.props}>
-        <View style={styles.container}>
-          <HalfScreenModalHeader title={i18n.t('INFORMATION')} onCancelPress={this._onRequestClose}/>
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.description}>
-              {this.props.description}
-            </Text>
+      <Modal transparent={true} visible={this.state.isOpen}>
+        <TouchableOpacity style={{flex: 1}} onPress={this._onRequestClose}>
+          <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: 'white' }}>
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.description}>
+                {this.props.description}
+              </Text>
+            </View>
+            <View style={styles.separatorContainer}>
+              <Separator style={styles.separator}/>
+            </View>
+            <View style={{alignItems: 'center'}}>
+            <ItemBrandsView style={{ paddingVertical: 10}} brands={brands}/>
+            </View>
+            <InformationViewFooter
+              onCommentsPress={onCommentsPress}
+              onLikesPress={onLikesPress}
+              likes={likes}
+              comments={comments}/>
           </View>
-          <View style={styles.separatorContainer}>
-            <Separator style={styles.separator}/>
-          </View>
-          <ItemBrandsView style={{paddingVertical: 10}} brands={brands}/>
-          <InformationViewFooter
-            onCommentsPress={onCommentsPress}
-            onLikesPress={onLikesPress}
-            likes={likes}
-            comments={comments}/>
-        </View>
-      </BottomHalfScreenModal>
+        </TouchableOpacity>
+      </Modal>
+
     );
   }
 }
