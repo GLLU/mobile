@@ -57,10 +57,19 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                             getCurrentActivity().startActivityForResult(timmerIntent, TRIM_VIDEO);
                         } else {
                             mImageTaken = true;
-                            CropImage.activity(Uri.parse(mFilePath))
-                                    .setAspectRatio(9, 16)
-                                    .setFlipHorizontally(true)
-                                    .start(getCurrentActivity());
+                            if (mAllowVideo) {
+                                CropImage.activity(Uri.parse(mFilePath))
+                                        .setAspectRatio(9, 16)
+                                        .setFlipHorizontally(true)
+                                        .start(getCurrentActivity());
+                            }
+                            else {
+                                CropImage.activity(Uri.parse(mFilePath))
+                                        .setFixAspectRatio(true)
+                                        .setCropShape(CropImageView.CropShape.OVAL)
+                                        .setFlipHorizontally(true)
+                                        .start(getCurrentActivity());
+                            }
                         }
                     } else if (resultCode == 1001) {
                         openGallery();
@@ -74,10 +83,19 @@ public class CameraUtils extends ReactContextBaseJavaModule {
                         String mFileType = mReactContext.getContentResolver().getType(mOriginalFile);
                         if (mFileType.contains("image")) {
                             // start cropping activity for pre-acquired image saved on the device
-                            CropImage.activity(uri)
-                                    .setAspectRatio(9, 16)
-                                    .setGuidelines(CropImageView.Guidelines.ON)
-                                    .start(getCurrentActivity());
+                            if (mAllowVideo) {
+                                CropImage.activity(uri)
+                                        .setAspectRatio(9, 16)
+                                        .setGuidelines(CropImageView.Guidelines.ON)
+                                        .start(getCurrentActivity());
+                            }
+                            else {
+                                CropImage.activity(uri)
+                                        .setFixAspectRatio(true)
+                                        .setCropShape(CropImageView.CropShape.OVAL)
+                                        .setGuidelines(CropImageView.Guidelines.ON)
+                                        .start(getCurrentActivity());
+                            }
                         } else {
 
                             Intent timmerIntent = new Intent(getCurrentActivity(), TrimmerActivity.class);

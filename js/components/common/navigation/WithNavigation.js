@@ -56,7 +56,6 @@ export default function withNavigation(WrappedComponent) {
     }
 
     goBack(withConfirmation = false) {
-      this.props.logEvent(this.constructor.name, { name: `user pressed back`});
       if (withConfirmation===true) {
         Alert.alert(
           '',
