@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import i18n from 'react-native-i18n';
 import {
   Modal,
   TextInput,
@@ -48,14 +49,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconCheckCompleteContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
     width: 50,
-    justifyContent: 'center',
+    height: 50,
     alignItems: 'center',
-    backgroundColor: Colors.transparent,
+    justifyContent: 'center',
   },
   iconCheckComplete: {
     width: generateAdjustedSize(18),
@@ -65,7 +62,11 @@ const styles = StyleSheet.create({
   searchIconContainer: {
     width: generateAdjustedSize(18),
     alignSelf: 'center',
-  }
+  },
+  searchText: {
+    fontSize: generateAdjustedSize(12),
+    fontFamily: Fonts.contentFont,
+  },
 });
 
 class BrandSelector extends BaseComponent {
@@ -172,8 +173,11 @@ class BrandSelector extends BaseComponent {
   _renderSearchIcon() {
       return (
         <TouchableOpacity
-          onPress={this.handleTextFocus.bind(this)} style={styles.iconCheckComplete}>
+          onPress={this.handleTextFocus.bind(this)} style={styles.iconCheckCompleteContainer}>
+          <View>
           <Image source={require('../../../images/icons/search-black.png')} style={styles.iconCheckComplete}/>
+            <Text style={styles.searchText}>{i18n.t('SEARCH')}</Text>
+          </View>
         </TouchableOpacity>
       );
   }
@@ -195,7 +199,7 @@ class BrandSelector extends BaseComponent {
     const currItem = _.find(items, listItem => listItem.id === item.id);
     const brandName = currItem.brand ? currItem.brand.name : null;
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{justifyContent: 'center' }}>
           {this._renderSearchIcon(currItem)}
         <Modal
           animationType={"slide"}

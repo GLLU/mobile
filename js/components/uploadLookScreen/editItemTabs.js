@@ -152,11 +152,11 @@ export default class EditItemTabs extends Component {
 
       case BRAND:
         return (
-          <View style={{flex: 1, margin: 3}}>
+          <View style={{flex: 1, margin: 3, flexDirection: 'row', alignItems: 'center'}}>
+            <BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />
             <ScrollableSelectableList
               mode="single" onSelectionChange={this._addItemBrand} showTexts={false}
               filters={brandsFilters} currentFilter={itemBrand} />
-            <BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />
           </View>
         );
       case COLOR:
