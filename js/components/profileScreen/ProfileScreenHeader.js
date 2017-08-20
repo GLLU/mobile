@@ -70,7 +70,7 @@ class ProfileScreenHeader extends Component {
   }
 
   _renderProfileAvatar() {
-    const { isMyProfile } = this.props
+    const { isMyProfile, onProfileImageClicked } = this.props
     const { profilePic, isChangingAvatar } = this.state
     if(isMyProfile){
       return (
@@ -81,7 +81,7 @@ class ProfileScreenHeader extends Component {
       )
     } else {
       return (
-        <ProfileAvatar style={{ width: 60, height: 60 }} avatarUrl={profilePic} />
+        <ProfileAvatar style={{ width: 60, height: 60 }} avatarUrl={profilePic} changeUserAvatar={onProfileImageClicked} />
       )
     }
   }
