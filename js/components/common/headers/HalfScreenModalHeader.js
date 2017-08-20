@@ -7,7 +7,7 @@ import CancelButton from "../buttons/CancelButton";
 import Fonts from '../../../styles/Fonts.styles'
 import Colors from '../../../styles/Colors.styles'
 import { noop } from "lodash";
-const infoIcon = require('../../../../images/icons/info-i-white.png');
+const infoIcon = require('../../../../images/icons/info.png');
 
 const styles = StyleSheet.create({
   container: {

@@ -1,10 +1,12 @@
 // @flow
 
 import React, {Component} from 'react';
+import i18n from 'react-native-i18n';
 import {Animated, View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import {chain, noop} from 'lodash'
 import ItemBrandsView from "./ItemBrandsView";
 import Separator from "../../common/lists/Separator";
+import HalfScreenModalHeader from '../../common/headers/HalfScreenModalHeader';
 
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
@@ -87,6 +89,7 @@ class InformationView extends Component {
       <Modal transparent={true} visible={this.state.isOpen}>
         <TouchableOpacity style={{flex: 1}} onPress={this._onRequestClose}>
           <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: 'white' }}>
+            <HalfScreenModalHeader title={i18n.t('INFORMATION')} onCancelPress={this._onRequestClose} />
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>
                 {this.props.description}
