@@ -110,7 +110,7 @@ class FeedPage extends Component {
     });
   }
 
-  showBottomCameraButton(shouldShow = !this.state.showBottomCamera) {
+  showBottomCameraButton(shouldShow) {
     if (shouldShow !== this.state.showBottomCamera) {
       this.setState({showBottomCamera: shouldShow});
       if (!shouldShow) {
