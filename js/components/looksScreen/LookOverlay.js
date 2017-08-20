@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import InformationView from './information/InformationView'
 import CommentsView from './comments/CommentsView'
 import LookHeader from './LookHeader'
 import MenuView from "./menu/MenuViewContainer";
-import { formatInvitationMessage } from "../../lib/messages/index";
+import {formatInvitationMessage} from "../../lib/messages/index";
 import withAnalytics from '../common/analytics/WithAnalytics'
 
 type Props = {
@@ -34,6 +34,7 @@ type Props = {
   toggleLike: void,
   reportabuse: void,
   onBottomDrawerOpen: void,
+  onInvalidItemPressed: void,
   openComments: boolean
 }
 
@@ -61,7 +62,7 @@ class LookOverlay extends Component {
     this.goToLikes = this.goToLikes.bind(this);
     this.closeBottomModal = this.closeBottomModal.bind(this);
     this._onShareClicked = this._onShareClicked.bind(this);
-    const {look} = this.props;
+    const { look } = this.props;
     this.state = {
       comments: look.comments || 0,
       isInformationActive: false,
@@ -74,47 +75,48 @@ class LookOverlay extends Component {
   }
 
   _renderBuyItButtons(look: object) {
-    const {width, height} = this.props;
+    const { width, height } = this.props;
     return look.items.map((item, index) =>
       <ItemMarker
         key={index}
         item={item}
-        containerDimensions={{width: width, height: height}}
-        pinPosition={{y: item.cover_y_pos, x: item.cover_x_pos}}/>
+        onPress={this.props.onInvalidItemPressed}
+        containerDimensions={{ width: width, height: height }}
+        pinPosition={{ y: item.cover_y_pos, x: item.cover_x_pos }}/>
     );
   }
 
   _toggleComments(shouldActive: boolean) {
-    const {onBottomDrawerOpen, logEvent} = this.props;
-    logEvent('LookScreen', {name: `Comments View ${shouldActive ? 'visible' : 'hidden'}`});
+    const { onBottomDrawerOpen, logEvent } = this.props;
+    logEvent('LookScreen', { name: `Comments View ${shouldActive ? 'visible' : 'hidden'}` });
     onBottomDrawerOpen(shouldActive);
-    this.setState({isCommentsActive: shouldActive, isInformationActive: false, isMenuOpen: false})
+    this.setState({ isCommentsActive: shouldActive, isInformationActive: false, isMenuOpen: false })
   }
 
   _toggleInformation(shouldActive: boolean) {
-    const {onBottomDrawerOpen, logEvent} = this.props;
-    logEvent('LookScreen', {name: `Information View ${shouldActive ? 'visible' : 'hidden'}`});
+    const { onBottomDrawerOpen, logEvent } = this.props;
+    logEvent('LookScreen', { name: `Information View ${shouldActive ? 'visible' : 'hidden'}` });
     onBottomDrawerOpen(shouldActive);
-    this.setState({isInformationActive: shouldActive, isCommentsActive: false, isMenuOpen: false})
+    this.setState({ isInformationActive: shouldActive, isCommentsActive: false, isMenuOpen: false })
   }
 
   _toggleMenuView() {
-    const {onBottomDrawerOpen, logEvent} = this.props;
+    const { onBottomDrawerOpen, logEvent } = this.props;
     const shouldActive = !this.state.isMenuOpen;
-    logEvent('LookScreen', {name: `Menu View ${shouldActive ? 'visible' : 'hidden'}`});
+    logEvent('LookScreen', { name: `Menu View ${shouldActive ? 'visible' : 'hidden'}` });
     onBottomDrawerOpen(shouldActive);
-    this.setState({isMenuOpen: shouldActive, isInformationActive: false, isCommentsActive: false})
+    this.setState({ isMenuOpen: shouldActive, isInformationActive: false, isCommentsActive: false })
   }
 
   _onShareClicked() {
-    const {logEvent} = this.props;
-    logEvent('LookScreen', {name: 'Share clicked'});
+    const { logEvent } = this.props;
+    logEvent('LookScreen', { name: 'Share clicked' });
     const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
 
   _renderMenuView(isActive: boolean) {
-    const {look} = this.props;
+    const { look } = this.props;
     return (
       <MenuView
         lookId={look.id}
@@ -127,7 +129,7 @@ class LookOverlay extends Component {
   }
 
   _renderInformationView(isActive: boolean) {
-    const {look} = this.props;
+    const { look } = this.props;
     return <InformationView
       isOpen={isActive}
       description={look.description}
@@ -141,7 +143,7 @@ class LookOverlay extends Component {
   }
 
   _renderCommentsView(isActive: boolean) {
-    const {look} = this.props;
+    const { look } = this.props;
     return <CommentsView
       goToProfile={this.goToProfile}
       look_id={look.id}
@@ -170,7 +172,7 @@ class LookOverlay extends Component {
   }
 
   closeBottomModal() {
-    this.setState({isCommentsActive: false, isInformationActive: false, isMenuOpen: false})
+    this.setState({ isCommentsActive: false, isInformationActive: false, isMenuOpen: false })
   }
 
   _toggleBottomContainer() {
@@ -194,7 +196,7 @@ class LookOverlay extends Component {
   }
 
   render() {
-    const {look, lookType, toggleLike, goBack} = this.props;
+    const { look, lookType, toggleLike, goBack } = this.props;
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -203,14 +205,14 @@ class LookOverlay extends Component {
       }            // Configuration
     ).start();
     return (
-      <View style={{marginTop: 0}}>
+      <View style={{ marginTop: 0 }}>
         <LookHeader
-          avatar={{uri: look.avatar.url}}
+          avatar={{ uri: look.avatar.url }}
           onBackNavigationPress={goBack}
           onProfileAvatarPress={() => this.goToProfile(look)}/>
-        <Animated.View style={{opacity: this.state.fadeAnimContentOnPress}}>
+        <Animated.View style={{ opacity: this.state.fadeAnimContentOnPress }}>
           <TouchableWithoutFeedback onPress={this._toggleBottomContainer}>
-            <View style={[styles.lookInfo, {flexGrow: 1, flexDirection: 'column'}]}>
+            <View style={[styles.lookInfo, { flexGrow: 1, flexDirection: 'column' }]}>
               <ButtonsBar
                 isCommentsActive={this.state.isCommentsActive}
                 toggleComments={this._toggleComments}

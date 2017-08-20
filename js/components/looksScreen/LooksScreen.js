@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Text,
   Platform,
 } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import i18n from 'react-native-i18n';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
 import SwipeWizardOverlay from './SwipeWizardOverlay';
@@ -18,6 +20,8 @@ import * as _ from 'lodash';
 import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
 import Spinner from '../loaders/Spinner';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
 
@@ -271,9 +275,19 @@ class LooksScreen extends Component {
     );
   }
 
+  _renderRetailerMessage = () => {
+    return (
+      <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: 'black', justifyContent: 'center', height: generateAdjustedSize(100) }}>
+        <Text style={styles.noItemLink}>{i18n.t('NO_DIRECT_LINK')}</Text>
+      </View>
+    );
+  }
+
+
   renderImage(look: object, index: boolean) {
     const showShowArrow = this.shouldRenderArrows();
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
+    const { showRetailerMessage } = this.state;
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     return (
       <GestureRecognizer
@@ -300,6 +314,7 @@ class LooksScreen extends Component {
             goToProfile={this._goToProfile}
             goToLikes={this._goToLikes}
             goToEdit={this._goToEdit}
+            onInvalidItemPressed={(showMessage) => this.setState({ showRetailerMessage: showMessage })}
             toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
             reportAbuse={lookId => this.props.reportAbuse(lookId)}
           />
@@ -307,6 +322,7 @@ class LooksScreen extends Component {
           {showShowArrow ? this.renderDownArrow() : null}
 
           {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
+          {showRetailerMessage ? this._renderRetailerMessage() : null}
 
         </ImageWrapper>
       </GestureRecognizer>
