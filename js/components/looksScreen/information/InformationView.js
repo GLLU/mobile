@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     fontFamily: Fonts.contentFont,
     color: Colors.black,
-    textAlign: 'center',
     fontSize: 16,
   },
   separatorContainer: {
