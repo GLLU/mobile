@@ -164,7 +164,7 @@ class MainBarView extends BaseComponent {
 
   goToSearch() {
     const {logEvent, navigateTo, handleIndexChange} = this.props
-    logEvent('Feedscreen', {name: 'Profile click'});
+    logEvent('Feedscreen', {name: 'Search click'});
     navigateTo('searchScreen');
     handleIndexChange(2)
   }

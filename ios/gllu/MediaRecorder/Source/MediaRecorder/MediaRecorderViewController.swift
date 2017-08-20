@@ -145,7 +145,7 @@ class MediaRecorderViewController: AVSessionRecorderViewController, AVSessionRec
             mediaPicker.mediaTypes = [kUTTypeImage as String]
         }
         
-        mediaPicker.sourceType = .savedPhotosAlbum
+        mediaPicker.sourceType = .photoLibrary
         mediaPicker.allowsEditing = false
         mediaPicker.delegate = self
         
@@ -193,7 +193,13 @@ extension MediaRecorderViewController: UIImagePickerControllerDelegate {
     }
 
     func crop(_ image: UIImage){
-        let cropper = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.custom)
+      var cropMode = RSKImageCropMode.custom;
+      
+      if !self.videoEnabled {
+        cropMode = RSKImageCropMode.circle
+      }
+      
+        let cropper = RSKImageCropViewController(image: image, cropMode: cropMode)
         cropper.delegate = self
         cropper.dataSource = self
         cropper.avoidEmptySpaceAroundImage = true
@@ -202,6 +208,7 @@ extension MediaRecorderViewController: UIImagePickerControllerDelegate {
 }
 
 extension MediaRecorderViewController: RSKImageCropViewControllerDataSource{
+  
   
   // Returns a custom rect for the mask.
   func imageCropViewControllerCustomMaskRect(_ controller : RSKImageCropViewController) -> CGRect{

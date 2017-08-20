@@ -51,7 +51,6 @@ class ProfileAvatar extends PureComponent {
     isLoading: React.PropTypes.bool,
     avatarUrl: React.PropTypes.string,
     isEditable: React.PropTypes.bool,
-    style: React.PropTypes.Object,
     changeUserAvatar: React.PropTypes.func,
   };
 
