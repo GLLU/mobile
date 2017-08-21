@@ -27,6 +27,13 @@ const styles = StyleSheet.create({
     width: TAG_WIDTH,
     resizeMode: 'contain'
   },
+  selectedItem: {
+    backgroundColor: '#f0f0f0',
+    borderWidth: 1,
+    padding: 5,
+    borderColor: 'black',
+    borderRadius: 22.5,
+  },
   text: {
     fontWeight: '500',
     fontSize: new FontSizeCalculator(18).getSize(),
@@ -103,7 +110,7 @@ class Tag extends Component {
   }
 
   getCurrentItemStatus(item) {
-    return item.brand && item.category !== null ? greenMarker : greenMarkerWithBorder
+    return item.brand && item.category !== null ? whiteMarker : whiteMarkerWithBorder;
   }
 
   otherItemStatus(item) {
@@ -113,14 +120,15 @@ class Tag extends Component {
   render() {
     const {item, currItemId} = this.props
     const layout = this._pan.getLayout();
-    const markerImage = currItemId === item.id ? this.getCurrentItemStatus(item) : this.otherItemStatus(item);
+    const markerImage = this.getCurrentItemStatus(item);
+    const markerStyle = currItemId === item.id ? [styles.itemBgImage, styles.selectedItem] : styles.itemBgImage;
     if (item) {
       return (
         <Animated.View
           {...this.panResponder.panHandlers}
           style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}]}>
           <Image source={markerImage}
-                 style={styles.itemBgImage}/>
+                 style={currItemId === item.id ? [ styles.selectedItem, styles.itemBgImage ] : styles.itemBgImage}/>
         </Animated.View>
       );
     }
