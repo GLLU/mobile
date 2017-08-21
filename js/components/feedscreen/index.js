@@ -108,7 +108,11 @@ class FeedPage extends Component {
 
   componentWillMount() {
 
-    OneSignal.inFocusDisplaying(2);
+    OneSignal.inFocusDisplaying(0);
+
+    // Relevant only for IOS - shows a popup in case we need permissions.
+    OneSignal.registerForPushNotifications();
+
     OneSignal.addEventListener('received', this._onReceived);
     OneSignal.addEventListener('opened', this._onOpened);
     OneSignal.addEventListener('registered', this._onRegistered);
@@ -127,6 +131,10 @@ class FeedPage extends Component {
 
   componentWillUnmount() {
     BackAndroid.removeEventListener('hardwareBackPress');
+    OneSignal.removeEventListener('received');
+    OneSignal.removeEventListener('opened');
+    OneSignal.removeEventListener('registered');
+    OneSignal.removeEventListener('ids');
   }
 
   setUser(name) {

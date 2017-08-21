@@ -34,7 +34,7 @@ class Splash extends Component {
       this.props.checkLogin()
         .then(() => {
           if (user.id !== -1 && user.name !== null) {
-            OneSignal.sendTag("id", user.id);
+            OneSignal.sendTag("id", user.id.toString());
             this.props.resetTo('feedscreen');
           } else {
             this.props.resetTo('loginscreen');

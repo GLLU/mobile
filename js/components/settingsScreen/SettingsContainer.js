@@ -2,6 +2,7 @@
 
 import {connect} from 'react-redux';
 import {NavigationActions} from "react-navigation";
+import OneSignal from 'react-native-onesignal';
 
 import Analytics from '../../lib/analytics/Analytics';
 import {logout} from '../../actions';
@@ -11,7 +12,7 @@ import asScreen from '../common/containers/Screen';
 function bindAction(dispatch, ownProps) {
   return {
     logout: () => {
-
+      OneSignal.deleteTag("id");
       Analytics.logEvent('SettingsScreen', { name: 'logout' });
       dispatch(logout());
       ownProps.navigation.dispatch(new NavigationActions.reset({
