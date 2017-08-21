@@ -1,8 +1,13 @@
 import rest from '../api/rest';
 import Config from 'react-native-config';
 import Pusher from 'pusher-js/react-native';
+import {normalize, arrayOf} from 'normalizr';
+
 import * as feedLookMapper from '../mappers/feedLookMapper';
 import NotificationsService from '../services/NotificationsService';
+import { unifyLooks } from '../utils/FeedUtils';
+import { setLooksData } from './feed';
+import { lookSchema } from '../schemas/schemas';
 
 // Actions
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
@@ -84,12 +89,15 @@ export function markAsReadNotifications(notificationId) {
 }
 
 export function goToNotificationSubjectScreen(lookId, notificationId) {
-  return dispatch => new Promise((resolve, reject) => {
+  return (dispatch, getState) => new Promise((resolve, reject) => {
     dispatch(rest.actions.looks({ id: lookId }, {}, (err, lookData) => {
       if (!err && lookData) {
         lookData = feedLookMapper.map(lookData.look);
         lookData.singleItem = true;
         dispatch(markAsReadNotifications(notificationId));
+        const normalizedLooksData = normalize([lookData], [lookSchema]);
+        const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
         resolve(lookData);
       } else {
         reject(err);

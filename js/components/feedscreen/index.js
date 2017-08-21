@@ -99,7 +99,7 @@ class FeedPage extends Component {
     } else {
       this.props.goToNotificationSubjectScreen(notification.go_to_object.id, notification.id)
         .then(look => {
-          this.props.navigateTo('lookScreenWhatsHot', { look });
+          this.props.navigateTo('lookScreenWhatsHot', { lookId: look.id });
         });
     }
   }

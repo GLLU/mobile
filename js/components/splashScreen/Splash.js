@@ -53,7 +53,7 @@ class Splash extends Component {
                       index: 1,
                       actions: [
                         NavigationActions.navigate({ routeName: 'feedscreen' }),
-                        NavigationActions.navigate({ routeName: 'lookScreenWhatsHot', params: { look } }),
+                        NavigationActions.navigate({ routeName: 'lookScreenWhatsHot', params: { lookId: look.id } }),
                       ],
                     });
                   });
