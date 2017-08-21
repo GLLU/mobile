@@ -84,7 +84,6 @@ class App extends Component {
     //       </View>
     //   );
     // }
-
     return <AppNavigator notification={this.props.notification} />;
   }
 }

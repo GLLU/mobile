@@ -20,6 +20,8 @@ if (!DEV) {
   disableConsole();
 }
 
+let notificationObject;
+
 function setup(): React.Component {
   class Root extends Component {
 
@@ -43,15 +45,11 @@ function setup(): React.Component {
     }
 
     _onOpened(openResult) {
-      this.notificationObject = openResult.notification;
-      console.log('Message: ', openResult.notification.payload.body);
-      console.log('Data: ', openResult.notification.payload.additionalData);
-      console.log('isActive: ', openResult.notification.isAppInFocus);
-      console.log('openResult: ', openResult);
+      notificationObject = openResult.notification;
     }
 
     onStoreConfigured() {
-      this.setState({ isLoading: false });
+      setTimeout(()=>this.setState({ isLoading: false }), 500);
     }
 
     render() {
@@ -66,7 +64,7 @@ function setup(): React.Component {
       }
       return (
         <Provider store={this.state.store}>
-          <App notification={this.notificationObject} isStoreConfigured={!this.state.isLoading}/>
+          <App notification={notificationObject} isStoreConfigured={!this.state.isLoading}/>
         </Provider>
       );
     }
