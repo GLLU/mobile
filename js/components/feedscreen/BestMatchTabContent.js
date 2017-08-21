@@ -80,14 +80,16 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    this._getFeed(this.props.defaultFilters);
+    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName} = this.props
+    this._getFeed(defaultFilters);
+    changeFiltersGender(defaultFilters.gender)
     const that = this;
     setInterval(() => {
       that.handleScrollPositionForVideo();
     }, 1000);
     NetInfo.isConnected.fetch().done(
       (isConnected) => {
-        isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null;
+        isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
       }
     );
   }
@@ -100,8 +102,8 @@ class BestMatchTabContent extends BaseComponent {
     if (!prevProps.isTabOnFocus && this.props.isTabOnFocus) {
       this.props.showBottomCameraButton(false);
     }
-    const { isFilterMenuOpen } = this.props;
-    if (this.scrollView && prevProps.isFilterMenuOpen !== isFilterMenuOpen && !isFilterMenuOpen) {
+    const { isFiltersMenuOpen } = this.props;
+    if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
       _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
     }
   }
@@ -128,8 +130,8 @@ class BestMatchTabContent extends BaseComponent {
       this.setState({ noMoreData: false });
     }
 
-    if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
-      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen);
+    if (this.props.isFiltersMenuOpen !== nextProps.isFiltersMenuOpen) {
+      this.props.showBottomCameraButton(!nextProps.isFiltersMenuOpen);
     }
   }
 
@@ -335,9 +337,17 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   _renderFilterView() {
-    const { myFeedType } = this.props;
+    const { myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery } = this.props;
     return (
-      <FiltersView currentFeedTab={myFeedType} showFilters={[CATEGORIES, EVENTS]} />
+      <FiltersView
+        currentFeedTab={myFeedType}
+        showFilters={[CATEGORIES, EVENTS]}
+        toggleFiltersMenus={toggleFiltersMenus}
+        getFeed={this._getFeed}
+        filtersGender={filtersGender}
+        changeFiltersGender={changeFiltersGender}
+        defaultQuery={defaultFilterQuery}
+        showGenderFilter={false}/>
     );
   }
 
@@ -399,13 +409,13 @@ class BestMatchTabContent extends BaseComponent {
   };
 
   render() {
-    const { isFilterMenuOpen, flatLooks, isLoading } = this.props;
+    const { isFiltersMenuOpen, flatLooks, isLoading } = this.props;
     const { showBodyTypeModal } = this.state;
     if (showBodyTypeModal) {
       return this._renderChooseBodyShape();
     } else if (isLoading) {
       return this._renderLoader();
-    } else if (isFilterMenuOpen) {
+    } else if (isFiltersMenuOpen) {
       return (
         <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           { this._renderFilterView() }

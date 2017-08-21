@@ -5,84 +5,13 @@ import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '..
 export const CATEGORIES = 'CATEGORIES';
 export const EVENTS = 'EVENTS';
 export const BODY_SHAPES = 'BODY_SHAPES';
-import Colors from '../styles/Colors.styles'
 const initialState = {
   occasion_tags: [],
   categories: [],
   brands: [],
   filterColors: [],
   featuredBrands: [],
-  filterMenuStatus: {
-    [FEED_TYPE_BEST_MATCH]: false,
-    [FEED_TYPE_FOLLOWING]: false,
-    [FEED_TYPE_WHATS_HOT]: false,
-  },
-  colors: [
-    {
-      id: 1,
-      selected: false,
-      name: 'Red',
-      highlight: false,
-      color: 'red'
-    },
-    {
-      id: 2,
-      selected: false,
-      name: 'Blue',
-      highlight: false,
-      color: 'blue'
-    },
-    {
-      id: 3,
-      selected: false,
-      name: 'Green',
-      highlight: false,
-      color: 'green'
-    },
-    {
-      id: 4,
-      selected: false,
-      name: 'Yellow',
-      highlight: false,
-      color: 'yellow'
-    },
-    {
-      id: 5,
-      selected: false,
-      name: 'Pink',
-      highlight: false,
-      color: 'pink'
-    },
-    {
-      id: 6,
-      selected: false,
-      name: 'Purple',
-      highlight: false,
-      color: 'purple'
-    },
-    {
-      id: 7,
-      selected: false,
-      name: 'Lightblue',
-      highlight: false,
-      color: 'lightblue'
-    },
-    {
-      id: 8,
-      selected: false,
-      name: 'Orange',
-      highlight: false,
-      color: 'orange'
-    },
-    {
-      id: 9,
-      selected: false,
-      name: 'Black',
-      highlight: false,
-      color: 'black'
-    },
-
-  ],
+  colors: [],
 };
 
 // Action Handlers
@@ -116,24 +45,6 @@ const ACTION_HANDLERS = {
   },
   [SET_COLORS]: (state, action) => {
     return {...state, filterColors: action.colors};
-  },
-  [OPEN_FEED_FILTER]: (state, action) => {
-    return {
-      ...state,
-      filterMenuStatus: {
-        ...state.filterMenuStatus,
-        [action.feedType]: true,
-      },
-    };
-  },
-  [CLOSE_FEED_FILTER]: (state, action) => {
-    return {
-      ...state,
-      filterMenuStatus: {
-        ...state.filterMenuStatus,
-        [action.feedType]: false,
-      },
-    };
   },
 }
 

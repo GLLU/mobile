@@ -65,7 +65,7 @@ class ScrollableSelectableList extends Component {
     const filters = mode === 'single' ? this.checkSingleSelectedQuery() : this.checkMultiSelectedQuery()
     return (
       <ScrollView horizontal style={styles.container}
-                  contentContainerStyle={[filters.length < 7 ? styles.contentContainerStyle : null]}>
+                  contentContainerStyle={[filters.length < 8 ? styles.contentContainerStyle : null]}>
         {_.map(filters, (filter, i) => (
           <SelectableItem
             onPress={this.onSingleSelectValue}
