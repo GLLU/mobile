@@ -113,11 +113,14 @@ class FiltersView extends BaseComponent {
   }
 
   _resetFilters() {
+    const {changeFiltersGender} = this.props
     const clearedFiltersState = _.cloneDeep(this.state.currentFilter);
     delete clearedFiltersState.body_type;
     delete clearedFiltersState.category;
     delete clearedFiltersState.occasion;
-    this.setState({ currentFilter: clearedFiltersState });
+    delete clearedFiltersState.gender;
+    changeFiltersGender('')
+    this.setState({ currentFilter: clearedFiltersState, sliderValue: 0.5 });
   }
 
   _cancelFilter() {
@@ -142,7 +145,10 @@ class FiltersView extends BaseComponent {
         gender = '';
     }
     changeFiltersGender(gender);
-    this.setState({ gender, sliderValue: value });
+    const clearedFiltersState = _.cloneDeep(this.state.currentFilter);
+    delete clearedFiltersState.body_type;
+    delete clearedFiltersState.category;
+    this.setState({ gender, sliderValue: value, currentFilter: { ...clearedFiltersState, gender } });
   }
 
   _renderGenderFilter() {
@@ -154,14 +160,15 @@ class FiltersView extends BaseComponent {
         <TouchableOpacity onPress={() => this.handleSlide(0)}>
           <Image source={maleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
-        <Slider
-          style={styles.slider}
-          maximumTrackTintColor={'transparent'}
-          minimumTrackTintColor={'transparent'}
-          value={this.state.sliderValue}
-          maximumValue={1}
-          step={0.5}
-          onSlidingComplete={value => this.handleSlide(value)} />
+        <View style={styles.slider}>
+          <Slider
+            maximumTrackTintColor={'transparent'}
+            minimumTrackTintColor={'transparent'}
+            value={this.state.sliderValue}
+            maximumValue={1}
+            step={0.5}
+            onSlidingComplete={value => this.handleSlide(value)} />
+        </View>
         <TouchableOpacity onPress={() => this.handleSlide(1)}>
           <Image source={femaleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
@@ -256,7 +263,7 @@ const styles = StyleSheet.create({
     height: 25,
   },
   slider: {
-    width: 100,
+    width: Platform.OS === 'ios' ? generateAdjustedSize(100) : generateAdjustedSize(80),
     backgroundColor: Colors.backgroundGrey,
     borderRadius: 20,
     marginHorizontal: 5,
