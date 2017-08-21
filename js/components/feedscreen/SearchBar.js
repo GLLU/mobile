@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, TextInput, Text, Platform, View, TouchableOpacity, Image} from 'react-native';
-import withAnalytics from '../common/analytics/WithAnalytics';
-import _ from 'lodash';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 import FontSizeCalculator from './../../calculators/FontSize';
@@ -69,17 +67,18 @@ class SearchBar extends Component {
     this._clearSearch = this._clearSearch.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this._doSearch = this._doSearch.bind(this);
+    this.state = {text: ''};
   }
 
   _doSearch(text) {
-    const {logEvent, handleSearchInput} = this.props
-    logEvent('Feedscreen', {name: 'Search'});
+    const { handleSearchInput} = this.props;
+    this.setState({text});
     handleSearchInput(text);
   }
 
   _clearSearch() {
-    const {logEvent, clearSearchBar} = this.props
-    logEvent('Feedscreen', {name: 'Clear search'});
+    const { clearSearchBar } = this.props;
+    this.setState({text: ''})
     clearSearchBar();
   }
 
@@ -96,9 +95,9 @@ class SearchBar extends Component {
         <TextInput
           style={styles.searchInput}
           placeholder='Search'
+          value={this.state.text}
           underlineColorAndroid='transparent'
           onChangeText={this._doSearch}
-          value={this.props.searchTerm}
           returnKeyType={'search'}
           onSubmitEditing={this._getFeed}
         />
@@ -111,4 +110,4 @@ class SearchBar extends Component {
   }
 }
 
-export default withAnalytics(SearchBar);
+export default SearchBar;

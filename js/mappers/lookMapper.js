@@ -15,6 +15,7 @@ export function serializeLook(look) {
   const cover = getCoverByMediaType(look.cover.type,look.cover.list);
   return {
     liked: look.is_liked,
+    description: look.description,
     type: look.user_size.body_type,
     uri: cover.url ? cover.url : null,
     mediumSizeUri: look.cover.type === 'video' ? null : find(look.cover.list, x => x.version === 'medium').url,
@@ -26,6 +27,7 @@ export function serializeLook(look) {
     comments: look.comments,
     id: look.id,
     items: look.items,
+    description: look.description,
     ...userMapper.map(look.user),
   }
 }

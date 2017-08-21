@@ -106,42 +106,6 @@ export function addNewLook(image) {
   }
 }
 
-export function editNewLook(lookId) {
-  return (dispatch, getState) => {
-    dispatch(showProcessing());
-    return new Promise((resolve, reject) => {
-      dispatch(rest.actions.looks.get({id: lookId}, (err, data) => {
-        dispatch(hideProcessing());
-        if (!err) {
-          const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-          const items = data.look.items.length > 0 ? data.look.items : [{
-            brand: null,
-            id: -1,
-            category: null,
-            cover_x_pos: 0.5,
-            cover_y_pos: 0.5,
-            look_id: -1,
-            occassions: [],
-            tags: [],
-          }]
-          let payload = {
-            image: url,
-            ...data.look,
-            items,
-          };
-          dispatch({
-            type: EDIT_NEW_LOOK,
-            payload,
-          });
-          resolve(payload);
-        } else {
-          throw err;
-        }
-      }));
-    });
-  }
-}
-
 export function editTag(editingTag) {
   return {
     type: EDIT_TAG,

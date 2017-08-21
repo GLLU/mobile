@@ -65,7 +65,7 @@ class FeedPage extends Component {
       showBottomCamera: true,
       fadeAnimContentOnPress: new Animated.Value(10),
       feedsRoute: {
-        index: props.navigation.state.params ? props.navigation.state.params.resetToIndex : 0,
+        index: props.navigation.state.params ? props.navigation.state.params.resetToIndex : 1,
         routes: [
           {key: FEED_TYPE_FOLLOWING, title: 'Following'},
           {key: FEED_TYPE_BEST_MATCH, title: 'My Shape'},
@@ -139,7 +139,7 @@ class FeedPage extends Component {
     });
   }
 
-  showBottomCameraButton(shouldShow = !this.state.showBottomCamera) {
+  showBottomCameraButton(shouldShow) {
     if (shouldShow !== this.state.showBottomCamera) {
       this.setState({showBottomCamera: shouldShow});
       if (!shouldShow) {

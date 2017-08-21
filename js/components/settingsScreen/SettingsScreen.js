@@ -16,6 +16,7 @@ import Colors from '../../styles/Colors.styles';
 import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 
 const iconShare = require('../../../images/icons/share.png');
+const iconEditProfile = require('../../../images/icons/edit_green.png');
 const iconContact = require('../../../images/icons/contact.png');
 const iconTerms = require('../../../images/icons/terms.png');
 const iconPrivacy = require('../../../images/icons/privacy.png');
@@ -41,8 +42,13 @@ class SettingsScreen extends Component {
   }
 
   getSettingsConfiguration = () => {
-    const { logout } = this.props;
+    const { logout, onProfileEdit } = this.props;
     return [
+      {
+        text: 'Edit your profile',
+        icon: iconEditProfile,
+        onPress: onProfileEdit,
+      },
       {
         text: 'Invite your Friends',
         icon: iconShare,
@@ -123,9 +129,9 @@ class SettingsScreen extends Component {
     }).catch(err => console.error('An error occurred', err));
   }
 
-  renderListItem({ item }) {
+  renderListItem({ item }, index) {
     return (
-      <TouchableOpacity onPress={item.onPress}>
+      <TouchableOpacity onPress={item.onPress} key={index}>
         <View style={styles.listItem}>
           <Image style={styles.listItemThumbnail} small square source={item.icon}/>
           <Text style={styles.listItemText}>{item.text}</Text>
@@ -139,7 +145,7 @@ class SettingsScreen extends Component {
 
     return (
     <View>
-      {this.state.settings.map(item => this.renderListItem({item}))}
+      {this.state.settings.map((item, index) => this.renderListItem({item}, index))}
     </View>
     );
   }

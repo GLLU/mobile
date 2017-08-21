@@ -21,10 +21,11 @@ class ItemBrandsView extends PureComponent {
 
   render() {
     const {brands, style} = this.props;
+
     return (
       <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={style}
                   contentContainerStyle={styles.container}>
-        {_.map(brands, brand => <ItemBrand key={brand.id} style={{marginHorizontal: 10}} brand={brand}/>)}
+        {_.map(brands, brand => <ItemBrand key={brand.id} style={{marginHorizontal: 5}} brand={brand}/>)}
       </ScrollView>
     );
   }

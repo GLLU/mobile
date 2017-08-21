@@ -50,8 +50,6 @@ export default class FooterButton extends PureComponent {
     this._onPress = this._onPress.bind(this);
   }
 
-  _getStyle=(isActive) =>isActive ? styles.footerButtonActive : styles.footerButton;
-
   _onPress() {
     const shouldActive = !this.props.isActive;
     this.props.onPress(shouldActive);
@@ -60,7 +58,7 @@ export default class FooterButton extends PureComponent {
   render() {
     return (
       <TouchableOpacity style={{marginVertical:5, width: 45, maxWidth: 55, alignSelf: 'flex-end'}} onPress={this._onPress}>
-        <View style={this._getStyle(this.props.isActive)}>
+        <View style={styles.footerButton}>
           <Image source={this.props.icon ? this.props.icon : { uri: this.props.iconUrl } } style={styles.footerButtonIcon}/>
         </View>
       </TouchableOpacity>

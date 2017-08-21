@@ -76,14 +76,14 @@ class SignUpPage extends Component {
         name: name.value,
         gender: gender.toLowerCase(),
         password: password.value,
-        confirmPassword: password,
+        confirmPassword: password.value,
       };
       this.setState({ isSigningUp: true }, () => {
         this.props.emailSignUp(data)
           .then((user) => {
             this.props.logEvent('SignUpScreen', {
-              name: `user signed up with email ${email}`,
-              invitation_token: this.props.invitation_token,
+              name: 'user signed up with email',
+              email,
             });
             this.props.resetTo('feedscreen');
           })

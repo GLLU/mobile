@@ -52,6 +52,7 @@ const mapStateToProps = (state, ownProps) => {
       meta: state.feed.bestMatch.meta,
       query: state.feed.bestMatch.query,
       hasUserSize,
+      currBodyShapeModal: state.myBodyType.currentBodyType.body_type,
       user_size: userSize,
       user_gender: state.user.gender,
       cardNavigationStack: state.cardNavigation,

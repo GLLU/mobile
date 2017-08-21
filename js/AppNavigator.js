@@ -44,7 +44,6 @@ class AppNavigator extends Component {
     );
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      Analytics.logEvent('Android back button click');
       const {dispatch,navigationState} = this.props;
       const navigation = this.generateNaivgationObject(dispatch,navigationState);
       const {routes} = navigation.state;

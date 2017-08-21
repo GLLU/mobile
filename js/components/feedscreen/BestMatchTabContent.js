@@ -9,31 +9,29 @@ import {
   TouchableOpacity,
   Text,
   Platform,
-  Animated,
   RefreshControl,
   View,
   NetInfo,
   ActivityIndicator,
 } from 'react-native';
-import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import {formatInvitationMessage} from '../../lib/messages/index';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
 import Fonts from '../../styles/Fonts.styles';
 import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
-import SolidButton from "../common/buttons/SolidButton";
+import SolidButton from '../common/buttons/SolidButton';
 import FiltersView from './FilterContainer';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FeedFilters from './FeedFilters';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
-import {CATEGORIES, EVENTS} from '../../reducers/filters';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import { CATEGORIES, EVENTS } from '../../reducers/filters';
 
 const noResultsIcon = require('../../../images/emptyStates/search.png');
+const editShapeBtn = require('../../../images/icons/edit_your_body_shape.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
@@ -58,9 +56,12 @@ class BestMatchTabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
+    this.handleScrollPosition = this.handleScrollPosition.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
+    this.getFeedWithNewBodyShape = this.getFeedWithNewBodyShape.bind(this);
+    this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
+    this._saveBodyShape = this._saveBodyShape.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -69,21 +70,20 @@ class BestMatchTabContent extends BaseComponent {
       flatLooksLeft: _.filter(props.flatLooks, (look, index) => index % 2 === 0),
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
+      showBodyTypeModal: !props.hasUserSize,
     };
     this.currPosition = 0;
-  }
 
-  _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
-    const message = SocialShare.generateShareMessage(formatInvitationMessage());
-    SocialShare.nativeShare(message);
+    if (!props.hasUserSize) {
+      this.props.showBottomCameraButton(false);
+    }
   }
 
   componentDidMount() {
     this._getFeed(this.props.defaultFilters);
     const that = this;
     setInterval(() => {
-      that.handleScrollPositionForVideo();
+      that.handleScrollPosition();
     }, 1000);
     NetInfo.isConnected.fetch().done(
       (isConnected) => {
@@ -97,16 +97,18 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.isTabOnFocus && this.props.isTabOnFocus) {
+    if (this.props.isTabOnFocus && this.state.showBodyTypeModal) {
       this.props.showBottomCameraButton(false);
+    } else {
+      this.props.showBottomCameraButton(true);
+    }
+    const { isFilterMenuOpen } = this.props;
+    if (this.scrollView && prevProps.isFilterMenuOpen !== isFilterMenuOpen && !isFilterMenuOpen) {
+      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isTabOnFocus && !this.props.isTabOnFocus && !nextProps.hasUserSize) {
-      this.props.showBottomCameraButton(false);
-    }
-
     if (!this.props.hasUserSize && nextProps.hasUserSize) {
       this._getFeed(this.props.defaultFilters);
     }
@@ -121,45 +123,32 @@ class BestMatchTabContent extends BaseComponent {
 
     if (nextProps.clearedField) {
       this.currPosition = 0;
-      this.setState({noMoreData: false});
+      this.setState({ noMoreData: false });
     }
 
     if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
-      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen)
+      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen);
     }
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   if(nextProps !== this.props) {
-  //     _.each(Object.keys(this.props),thisPropsKey=>{
-  //       if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
-  //         console.log(`MediaContainer, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
-  //         return true
-  //       }
-  //     })
-  //   }
-  //   return false
-  // }
-
   handleScroll(event) {
     if (this.props.cardNavigationStack.index === 0) {
-        const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-        const contentSizeHeight = event.nativeEvent.contentSize.height;
-        const currentScroll = event.nativeEvent.contentOffset.y;
-        if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
-          if (!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({loadingMore: true}, this.loadMore);
-          }
-        } else {
+      const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+      const contentSizeHeight = event.nativeEvent.contentSize.height;
+      const currentScroll = event.nativeEvent.contentOffset.y;
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+        if (!this.state.loadingMore && !this.state.isLoading) {
+          this.setState({ loadingMore: true }, this.loadMore);
         }
+      } else {
       }
-      this.currPosition = event.nativeEvent.contentOffset.y;
+    }
+    this.currPosition = event.nativeEvent.contentOffset.y;
   }
 
-  handleScrollPositionForVideo() {
+  handleScrollPosition() {
     if (this.state.currentScrollPosition !== this.currPosition) {
-      this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
-      this.setState({currentScrollPosition: this.currPosition});
+      this.setState({ currentScrollPosition: this.currPosition });
     }
   }
 
@@ -168,22 +157,22 @@ class BestMatchTabContent extends BaseComponent {
       console.log('already isLoading');
       return;
     }
-    const {meta: {total}, query} = this.props;
+    const { meta: { total }, query } = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({isLoading: true}, () => {
+      this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-            this.setState({isLoading: false});
-          }
+          this.setState({ isLoading: false });
+        }
         ).catch((err) => {
           console.log('error', err);
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
         });
       });
     } else {
-      this.setState({noMoreData: true});
+      this.setState({ noMoreData: true });
       console.log('end of feed');
     }
   }
@@ -200,7 +189,7 @@ class BestMatchTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'}/>
+        fromScreen={'Feedscreen'} />
     ));
   }
 
@@ -209,13 +198,13 @@ class BestMatchTabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
+            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)"/>;
+            return <Spinner color="rgb(230,230,230)" />;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
           }
           return null;
         })()}
@@ -226,7 +215,7 @@ class BestMatchTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666"/>
+          <Spinner color="#666666" />
         </View>
       );
     }
@@ -235,7 +224,7 @@ class BestMatchTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover}/>
+      <View style={styles.refreshingCover} />
     );
   }
 
@@ -252,28 +241,28 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   onRefresh() {
-    this.setState({isRefreshing: true});
-    const {getFeed, query} = this.props;
+    this.setState({ isRefreshing: true });
+    const { getFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
     getFeed(cleanQuery)
       .then(() => {
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       })
       .catch((error) => {
         console.log('Error when preload image', error);
-        this.setState({isRefreshing: false});
+        this.setState({ isRefreshing: false });
       });
   }
 
-  renderInviteFriend() {
+  _renderChangeBodyShapeBtn() {
     return (
-      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
+      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
         <Image
-          source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
-          style={{width: deviceWidth / 2 - 6, height: deviceWidth / 4}}
-          resizeMode={'stretch'}/>
+          source={editShapeBtn}
+          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
+          resizeMode={'stretch'} />
       </View>
     );
   }
@@ -289,12 +278,12 @@ class BestMatchTabContent extends BaseComponent {
           justifyContent: 'flex-end',
           alignSelf: 'center',
         }}>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
-          <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
-            {this.renderInviteFriend()}
+        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
+          <TouchableOpacity onPress={() => this._showBodyShapeModal()}>
+            {this._renderChangeBodyShapeBtn()}
           </TouchableOpacity>
           {this._renderLooks(this.state.flatLooksRight)}
         </View>
@@ -310,7 +299,7 @@ class BestMatchTabContent extends BaseComponent {
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
           title={emptyTitle}
-          subtitle={emptySubtitle} icon={noResultsIcon}/>
+          subtitle={emptySubtitle} icon={noResultsIcon} />
       </View>
     );
   }
@@ -319,7 +308,8 @@ class BestMatchTabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
-          style={{flex: 1}}
+          ref={c => this.scrollView = c}
+          style={{ flex: 1 }}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
@@ -334,62 +324,99 @@ class BestMatchTabContent extends BaseComponent {
 
   _renderLoader() {
     return (
-      <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
-        <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
+      <View style={{ justifyContent: 'center', height: deviceHeight - 150, alignSelf: 'center', position: 'absolute' }}>
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
       </View>
 
     );
   }
 
   _renderFilterView() {
-    const {myFeedType} = this.props;
+    const { myFeedType } = this.props;
     return (
-      <FiltersView currentFeedTab={myFeedType} showFilters={[CATEGORIES, EVENTS]}/>
-    )
+      <FiltersView currentFeedTab={myFeedType} showFilters={[CATEGORIES, EVENTS]} />
+    );
   }
 
   _renderFeedFilters() {
-    const {query} = this.props;
+    const { query } = this.props;
     const clonedQuery = _.cloneDeep(query);
-    delete clonedQuery.body_type
+    delete clonedQuery.body_type;
     return (
-      <FeedFilters query={clonedQuery} getFeed={this._getFeed}/>
-    )
+      <FeedFilters query={clonedQuery} getFeed={this._getFeed} />
+    );
   }
 
+  _showBodyShapeModal() {
+    const { showBodyTypeModal } = this.state;
+    this.setState({ showBodyTypeModal: !showBodyTypeModal });
+  }
+
+  getFeedWithNewBodyShape() {
+    this.setState({ isRefreshing: true });
+    const { getFeed, query, currBodyShapeModal } = this.props;
+    // reset the first page
+    const cleanQuery = _.cloneDeep(query);
+    cleanQuery.body_type = currBodyShapeModal;
+    delete cleanQuery.page;
+    getFeed(cleanQuery)
+      .then(() => {
+        this.setState({ isRefreshing: false });
+      })
+      .catch((error) => {
+        console.log('Error when preload image', error);
+        this.setState({ isRefreshing: false });
+      });
+  }
+
+  _saveBodyShape() {
+    const { saveBodyShape } = this.props;
+    this._showBodyShapeModal();
+    saveBodyShape();
+    this.getFeedWithNewBodyShape();
+  }
+
+  _renderChooseBodyShape = () => {
+    const { hasUserSize } = this.props;
+    return (
+      <View style={styles.chooseBodyShapeContainer}>
+        <ScrollView contentContainerStyle={styles.bodyShapeScrollView}>
+          <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
+          <BodyTypePicker
+            onPick={() => this._showBodyShapeModal()} />
+          <SolidButton label="CHOOSE" onPress={this._saveBodyShape} />
+          { hasUserSize ?
+            <TouchableOpacity onPress={this._showBodyShapeModal} style={styles.cancelBodyShapeContainer}>
+              <Text style={styles.cancelBodyShape}>{i18n.t('CANCEL')}</Text>
+            </TouchableOpacity> : null }
+        </ScrollView>
+      </View>
+    );
+  };
+
   render() {
-    const {isFilterMenuOpen, flatLooks, isLoading, hasUserSize} = this.props
-    if (!hasUserSize) {
+    const { isFilterMenuOpen, flatLooks, isLoading } = this.props;
+    const { showBodyTypeModal } = this.state;
+    if (showBodyTypeModal) {
       return this._renderChooseBodyShape();
     } else if (isLoading) {
       return this._renderLoader();
+    } else if (isFilterMenuOpen) {
+      return (
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+          { this._renderFilterView() }
+        </View>
+      );
     } else {
       return (
-        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           {this._renderFeedFilters()}
           { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
-          { isFilterMenuOpen ? this._renderFilterView() : null}
         </View>
       );
     }
   }
 
-  _renderChooseBodyShape = () => {
-
-    const {saveBodyShape} = this.props;
-
-    return (
-      <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
-        <ScrollView contentContainerStyle={{paddingBottom: 16}}>
-          <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
-          <BodyTypePicker
-            goBack={() => this.toggleBodyTypeModal(false)}
-            onPick={() => this.toggleBodyTypeModal(false)}/>
-          <SolidButton label="CHOOSE" onPress={saveBodyShape}/>
-        </ScrollView>
-      </View>
-    );
-  }
 }
 
 const
@@ -440,6 +467,22 @@ const
       position: 'absolute',
       top: 0,
     },
+    chooseBodyShapeContainer: {
+      flexGrow: 1,
+      backgroundColor: Colors.white,
+      alignItems: 'center',
+    },
+    bodyShapeScrollView: {
+      paddingBottom: 16
+    },
+    cancelBodyShape: {
+      textAlign: 'center',
+      color: Colors.highlightColor,
+      marginTop: 8
+    },
+    cancelBodyShapeContainer: {
+      alignSelf: 'center'
+    }
   });
 
 export default BestMatchTabContent;

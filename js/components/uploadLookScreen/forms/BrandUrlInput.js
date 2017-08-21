@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {StyleSheet, TextInput, View, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, TextInput, View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import i18n from 'react-native-i18n';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
@@ -44,7 +44,7 @@ class BrandUrlInput extends PureComponent {
         <Text style={styles.explanationText}>Enter the web-link to your item to help people find it:</Text>
         <View style={styles.urlRowContainer}>
           <Text style={styles.httpText}>http://www.</Text>
-          <View style={styles.textInputContainer}>
+          <View style={styles.inputContainer}>
             <TextInput
               ref={ref => this.urlText = ref}
               underlineColorAndroid='transparent'
@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   urlRowContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+
   },
   explanationText: {
     fontSize: generateAdjustedSize(13),
@@ -88,23 +89,25 @@ const styles = StyleSheet.create({
   },
   httpText: {
     fontSize: generateAdjustedSize(13),
-    marginBottom: 2
+    alignSelf: 'flex-end'
   },
-  textInputContainer: {
-    borderBottomColor: Colors.black,
-    borderBottomWidth: 1,
-    flex: 1
+  inputContainer: {
+    borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
+    flex: 1,
   },
   textInput: {
     flex: 1,
+    padding: 0,
+    marginBottom: Platform.OS === 'ios' ? 0 : 1,
+    paddingLeft: 2,
     backgroundColor: '#FFFFFF',
-    borderBottomWidth: 10,
+    borderBottomWidth: Platform.OS === 'ios' ? 0 : 0.5,
     borderBottomColor: Colors.black,
-    fontSize: generateAdjustedSize(13),
+    fontSize: generateAdjustedSize(14),
+    fontFamily: Fonts.contentFont,
   },
   saveText: {
     color: Colors.secondaryColor,
-
     fontSize: generateAdjustedSize(13),
     fontWeight: '500'
   },
