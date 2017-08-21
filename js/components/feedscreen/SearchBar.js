@@ -67,15 +67,18 @@ class SearchBar extends Component {
     this._clearSearch = this._clearSearch.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this._doSearch = this._doSearch.bind(this);
+    this.state = {text: ''};
   }
 
   _doSearch(text) {
-    const { handleSearchInput} = this.props
+    const { handleSearchInput} = this.props;
+    this.setState({text});
     handleSearchInput(text);
   }
 
   _clearSearch() {
-    const { clearSearchBar } = this.props
+    const { clearSearchBar } = this.props;
+    this.setState({text: ''})
     clearSearchBar();
   }
 
@@ -92,6 +95,7 @@ class SearchBar extends Component {
         <TextInput
           style={styles.searchInput}
           placeholder='Search'
+          value={this.state.text}
           underlineColorAndroid='transparent'
           onChangeText={this._doSearch}
           returnKeyType={'search'}

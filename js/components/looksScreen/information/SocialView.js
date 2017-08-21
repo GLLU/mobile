@@ -13,22 +13,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 15
+    padding: 10
   },
   icon: {
-    height: 50,
-    width: 50
+    height: 24,
+    width: 24,
   },
   counter: {
     marginLeft: 10,
-    fontFamily: Fonts.boldFont,
+    fontFamily: Fonts.contentFont,
     fontSize: 20,
-    fontWeight: 'bold'
   },
   countLikeLabel: {
     color: Colors.white,
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: 20,
+    fontFamily: Fonts.contentFont,
   },
 });
 

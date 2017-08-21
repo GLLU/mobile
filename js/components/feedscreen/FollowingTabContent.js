@@ -56,7 +56,7 @@ class FollowingTabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
+    this.handleScrollPosition = this.handleScrollPosition.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this.state = {
@@ -83,7 +83,7 @@ class FollowingTabContent extends BaseComponent {
     changeFiltersGender(defaultFilters.gender)
     const that = this;
     setInterval(() => {
-      that.handleScrollPositionForVideo();
+      that.handleScrollPosition();
     }, 1000);
     NetInfo.isConnected.fetch().done(
       (isConnected) => {
@@ -146,9 +146,8 @@ class FollowingTabContent extends BaseComponent {
     }
   }
 
-  handleScrollPositionForVideo() {
+  handleScrollPosition() {
     if (this.state.currentScrollPosition !== this.currPosition) {
-      this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
       this.setState({ currentScrollPosition: this.currPosition });
     }
   }

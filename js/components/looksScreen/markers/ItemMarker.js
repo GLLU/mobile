@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
 } from 'react-native';
-import _, { noop } from 'lodash';
-import MarkerView, { MARKER_WIDTH, MARKER_HEIGHT } from './MarkerView';
-import ItemPopup, { POPUP_HEIGHT, POPUP_WIDTH } from './ItemPopup';
+import _, {noop} from 'lodash';
+import MarkerView, {MARKER_WIDTH, MARKER_HEIGHT} from './MarkerView';
+import ItemPopup, {POPUP_HEIGHT, POPUP_WIDTH} from './ItemPopup';
 
 const styles = StyleSheet.create({
   container: {
@@ -51,6 +51,9 @@ class ItemMarker extends Component {
 
   onPress() {
     const { isViewActive } = this.state;
+    if (!this.props.item.is_verified) {
+      this.props.onPress(!isViewActive);
+    }
     this.setState({
       popupOffset: 0,
       isViewActive: !isViewActive,
@@ -151,9 +154,8 @@ class ItemMarker extends Component {
     return position;
   }
 
-
   _renderPopup(item, popupDimensions) {
-    return <ItemPopup {...item} dimensions={popupDimensions} />;
+    return <ItemPopup {...item} dimensions={popupDimensions}/>;
   }
 
   _renderMarker(position, dimensions, orientation) {
@@ -163,7 +165,7 @@ class ItemMarker extends Component {
         position={position}
         orientation={orientation}
         dimensions={dimensions}
-        onPress={this.onPress} />
+        onPress={this.onPress}/>
     );
   }
 

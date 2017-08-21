@@ -56,7 +56,7 @@ class BestMatchTabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.handleScrollPositionForVideo = this.handleScrollPositionForVideo.bind(this);
+    this.handleScrollPosition = this.handleScrollPosition.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this.getFeedWithNewBodyShape = this.getFeedWithNewBodyShape.bind(this);
@@ -85,7 +85,7 @@ class BestMatchTabContent extends BaseComponent {
     changeFiltersGender(defaultFilters.gender)
     const that = this;
     setInterval(() => {
-      that.handleScrollPositionForVideo();
+      that.handleScrollPosition();
     }, 1000);
     NetInfo.isConnected.fetch().done(
       (isConnected) => {
@@ -99,8 +99,10 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.isTabOnFocus && this.props.isTabOnFocus) {
+    if (this.props.isTabOnFocus && this.state.showBodyTypeModal) {
       this.props.showBottomCameraButton(false);
+    } else {
+      this.props.showBottomCameraButton(true);
     }
     const { isFiltersMenuOpen } = this.props;
     if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
@@ -109,10 +111,6 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isTabOnFocus && !this.props.isTabOnFocus && !nextProps.hasUserSize) {
-      this.props.showBottomCameraButton(false);
-    }
-
     if (!this.props.hasUserSize && nextProps.hasUserSize) {
       this._getFeed(this.props.defaultFilters);
     }
@@ -150,9 +148,8 @@ class BestMatchTabContent extends BaseComponent {
     this.currPosition = event.nativeEvent.contentOffset.y;
   }
 
-  handleScrollPositionForVideo() {
+  handleScrollPosition() {
     if (this.state.currentScrollPosition !== this.currPosition) {
-      this.props.showBottomCameraButton(this.state.currentScrollPosition > this.currPosition);
       this.setState({ currentScrollPosition: this.currPosition });
     }
   }
@@ -362,7 +359,6 @@ class BestMatchTabContent extends BaseComponent {
 
   _showBodyShapeModal() {
     const { showBodyTypeModal } = this.state;
-    this.props.showBottomCameraButton();
     this.setState({ showBodyTypeModal: !showBodyTypeModal });
   }
 
@@ -401,7 +397,7 @@ class BestMatchTabContent extends BaseComponent {
           <SolidButton label="CHOOSE" onPress={this._saveBodyShape} />
           { hasUserSize ?
             <TouchableOpacity onPress={this._showBodyShapeModal} style={styles.cancelBodyShapeContainer}>
-              <Text style={styles.cancelBodyShape}>Cancel</Text>
+              <Text style={styles.cancelBodyShape}>{i18n.t('CANCEL')}</Text>
             </TouchableOpacity> : null }
         </ScrollView>
       </View>
@@ -482,8 +478,7 @@ const
       top: 0,
     },
     chooseBodyShapeContainer: {
-      flex: 1,
-      minHeight: deviceHeight,
+      flexGrow: 1,
       backgroundColor: Colors.white,
       alignItems: 'center',
     },

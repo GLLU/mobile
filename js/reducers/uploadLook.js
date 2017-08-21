@@ -74,6 +74,8 @@ const ACTION_HANDLERS = {
   [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
     const { items } = state;
     let item = newItem;
+    item.cover_x_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
+    item.cover_y_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
     item.id = action.itemId
     items.push(itemMapper(item));
     return {
