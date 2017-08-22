@@ -13,7 +13,7 @@ import {
   getUserBalance,
 } from '../../actions';
 
-import { addNewLook, editNewLook } from '../../actions/uploadLookB';
+import { addNewLook, editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';
 import { blockUser, hideWalletBadge, changeUserAvatar } from '../../actions/user';
