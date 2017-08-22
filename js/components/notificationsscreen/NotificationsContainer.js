@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getNotifications, clearNewNotifications } from '../../actions';
 import NotificationsScreen from './NotificationsScreen';
 import asScreen from "../common/containers/Screen"
-import { addNewLook } from '../../actions/uploadLookB';
+import { addNewLook } from '../../actions/uploadLook';
 
 function bindAction(dispatch) {
   return {

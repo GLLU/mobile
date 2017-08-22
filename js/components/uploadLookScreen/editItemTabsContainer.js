@@ -14,7 +14,7 @@ import {
   addDescription,
   addUrl,
   addBrandName,
-} from '../../actions/uploadLookB';
+} from '../../actions/uploadLook';
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {

@@ -20,7 +20,7 @@ import {
 import {
   addBrandName,
   createBrandName,
-} from '../../actions/uploadLookB';
+} from '../../actions/uploadLook';
 import Fonts from '../../styles/Fonts.styles';
 import Colors from '../../styles/Colors.styles';
 import { generateAdjustedSize } from '../../utils/AdjustabaleContent';

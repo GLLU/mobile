@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import EmptyView from './EmptyView';
 import { getUserFollowersData } from '../../../../actions';
-import { addNewLook } from '../../../../actions/uploadLookB';
+import { addNewLook } from '../../../../actions/uploadLook';
 import asScreen from '../../../common/containers/Screen';
 import ListScreen from '../../../common/lists/ListScreen';
 import UserActionRow from '../../../common/lists/UserActionRow';
