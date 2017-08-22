@@ -8,7 +8,7 @@ export function map(notification) {
   return {
     ...notification,
     ...userMapper.map(initiator),
-    coverImage: cover ? _.find(cover.list, x => x.version === 'medium') : null,
+    coverImage: cover ? _.find(cover.list, x => x.version_name === 'medium') : null,
     actionText: getTextByAction(notification.action_kind)
   };
 }
