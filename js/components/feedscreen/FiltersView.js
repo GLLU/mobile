@@ -29,7 +29,6 @@ const maleIcon = require('../../../images/icons/filter-gender-male.png');
 const maleIconActive = require('../../../images/icons/filter-gender-male-active.png');
 const femaleIcon = require('../../../images/icons/filter-gender-female.png');
 const femaleIconActive = require('../../../images/icons/filter-gender-female-active.png');
-export const FILTER = I18n.t('FILTER');
 
 type Props = {
   defaultQuery: object,
@@ -168,7 +167,7 @@ class FiltersView extends BaseComponent {
             step={0.5}
             style={styles.slider}
             onSlidingComplete={value => this.handleSlide(value)}
-            thumbStyle={{height: 30, width: 30, borderRadius: 15, borderColor: Colors.secondaryColor, backgroundColor: Colors.white}}/>
+            thumbStyle={styles.sliderThumb}/>
         <TouchableOpacity onPress={() => this.handleSlide(1)}>
           <Image source={femaleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
@@ -267,6 +266,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.backgroundGrey,
     borderRadius: 20,
     marginHorizontal: 15,
+  },
+  sliderThumb: {
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    borderColor: Colors.secondaryColor,
+    backgroundColor: Colors.white
   },
 });
 
