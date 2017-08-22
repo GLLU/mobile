@@ -9,10 +9,10 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Slider,
   Image,
 } from 'react-native';
 import I18n from 'react-native-i18n';
+import Slider from 'react-native-slider';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -160,15 +160,15 @@ class FiltersView extends BaseComponent {
         <TouchableOpacity onPress={() => this.handleSlide(0)}>
           <Image source={maleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
-        <View style={styles.slider}>
           <Slider
             maximumTrackTintColor={'transparent'}
             minimumTrackTintColor={'transparent'}
             value={this.state.sliderValue}
             maximumValue={1}
             step={0.5}
-            onSlidingComplete={value => this.handleSlide(value)} />
-        </View>
+            style={styles.slider}
+            onSlidingComplete={value => this.handleSlide(value)}
+            thumbStyle={{height: 30, width: 30, borderRadius: 15, borderColor: Colors.secondaryColor, backgroundColor: Colors.white}}/>
         <TouchableOpacity onPress={() => this.handleSlide(1)}>
           <Image source={femaleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
@@ -263,10 +263,10 @@ const styles = StyleSheet.create({
     height: 25,
   },
   slider: {
-    width: Platform.OS === 'ios' ? generateAdjustedSize(100) : generateAdjustedSize(80),
+    width: Platform.OS === 'ios' ? generateAdjustedSize(110) : generateAdjustedSize(110),
     backgroundColor: Colors.backgroundGrey,
     borderRadius: 20,
-    marginHorizontal: 5,
+    marginHorizontal: 15,
   },
 });
 
