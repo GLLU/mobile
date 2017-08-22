@@ -132,7 +132,7 @@ export function emailSignUp(data) {
           if (pointers.length > 0) {
             dispatch(showFatalError(`${pointers[0]} ${err.errors[0].detail}`));
           }
-        } else if (err.status === 422) {
+        } else {
           dispatch(showFatalError(`Unknown error: ${err}`));
         }
         reject(err);
