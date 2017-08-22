@@ -124,7 +124,6 @@ class Tag extends Component {
     const {item, currItemId} = this.props
     const layout = this._pan.getLayout();
     const markerImage = this._getMarkerIcon(item);
-    const markerStyle = currItemId === item.id ? [styles.itemBgImage, styles.selectedItem] : styles.itemBgImage;
     if (item) {
       return (
         <Animated.View
