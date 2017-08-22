@@ -8,7 +8,7 @@ import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {addNewLook} from '../../actions/uploadLookB'
-import {toggleFiltersMenus, getColors, getFeaturedBrands} from '../../actions/filters';
+import { getColors, getFeaturedBrands} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
 import Analytics from '../../lib/analytics/Analytics';
@@ -17,7 +17,7 @@ import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
 import {formatLook} from '../../utils/UploadUtils';
 import FeedTabs from './FeedTabs';
-import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
+import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT, toggleFiltersMenus} from '../../actions/feed';
 
 const cameraIcon = require('../../../images/icons/camera_green-circle.png');
 
@@ -77,9 +77,8 @@ class FeedPage extends Component {
 
     Analytics.setUser(this.props.user);
 
-    const {gender} = this.props.user;
-    this.props.loadCategories(gender);
-    this.props.loadOccasionTags(gender);
+    this.props.loadCategories();
+    this.props.loadOccasionTags();
     this.props.loadColors();
     this.props.loadBrands();
   }

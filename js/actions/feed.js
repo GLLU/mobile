@@ -13,6 +13,9 @@ export const FINISH_FETCHING = 'FINISH_FETCHING';
 export const FEED_TYPE_FOLLOWING = 'following';
 export const FEED_TYPE_BEST_MATCH = 'bestMatch';
 export const FEED_TYPE_WHATS_HOT = 'whatsHot';
+export const OPEN_FEED_FILTER = 'OPEN_FEED_FILTER';
+export const CLOSE_FEED_FILTER = 'CLOSE_FEED_FILTER';
+export const CHANGE_FILTERS_GENDER = 'CHANGE_FILTERS_GENDER';
 
 
 export const parseQueryFromState = function (state: array) {
@@ -104,6 +107,31 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   };
 }
 
+export function toggleFiltersMenus(feedType) {
+  return (dispatch, getState) => {
+    const menuStatus = getState().feed[feedType].isFiltersMenuOpen;
+    if (menuStatus) {
+      dispatch(closeFilterFeedMenu(feedType));
+    } else {
+      dispatch(openFilterFeedMenu(feedType));
+    }
+  };
+}
+
+function openFilterFeedMenu(feedType: string) {
+  return {
+    type: OPEN_FEED_FILTER,
+    feedType,
+  };
+}
+
+function closeFilterFeedMenu(feedType: string) {
+  return {
+    type: CLOSE_FEED_FILTER,
+    feedType,
+  };
+}
+
 export function setFeedData(data: object) {
   return {
     type: SET_FLAT_LOOKS_FEED_DATA,
@@ -129,6 +157,13 @@ export function finishFechting(feedType: string) {
   return {
     type: FINISH_FETCHING,
     feedType: feedType,
+  };
+}
+
+export function changeFiltersGender(feedType: string, gender: string) {
+  return {
+    type: CHANGE_FILTERS_GENDER,
+    payload: {feedType, gender},
   };
 }
 

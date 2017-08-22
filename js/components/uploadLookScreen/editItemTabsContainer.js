@@ -36,8 +36,8 @@ function mapStateToProps(state, ownProps) {
     return {};
   }
   return {
-    categoryFilters: state.filters.categories,
-    occasionsFilters: state.filters.occasion_tags,
+    categoryFilters: _.filter(state.filters.categories, (filter) => filter.gender === state.user.gender),
+    occasionsFilters: _.filter(state.filters.occasion_tags, (filter) => filter.gender === state.user.gender),
     colorsFilters: state.filters.filterColors,
     brandsFilters: state.filters.featuredBrands,
     itemCategory: currentItem.category,

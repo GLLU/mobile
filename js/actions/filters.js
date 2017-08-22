@@ -6,8 +6,6 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_BRANDS = 'SET_BRANDS';
 export const SET_FEATURED_BRANDS = 'filter.SET_FEATURED_BRANDS';
 export const SET_OCCASION_TAGS = 'SET_OCCASION_TAGS';
-export const OPEN_FEED_FILTER = 'OPEN_FEED_FILTER';
-export const CLOSE_FEED_FILTER = 'CLOSE_FEED_FILTER';
 export const SET_COLORS = 'filters.SET_COLORS';
 
 export function getColors() {
@@ -99,29 +97,4 @@ export function loadOccasionTags(gender) {
       }));
     }
   });
-}
-
-export function toggleFiltersMenus(feedType) {
-  return (dispatch, getState) => {
-    const menuStatus = getState().filters.filterMenuStatus[feedType];
-    if (menuStatus) {
-      dispatch(closeFilterFeedMenu(feedType));
-    } else {
-      dispatch(openFilterFeedMenu(feedType));
-    }
-  };
-}
-
-function openFilterFeedMenu(feedType: string) {
-  return {
-    type: OPEN_FEED_FILTER,
-    feedType,
-  };
-}
-
-function closeFilterFeedMenu(feedType: string) {
-  return {
-    type: CLOSE_FEED_FILTER,
-    feedType,
-  };
 }

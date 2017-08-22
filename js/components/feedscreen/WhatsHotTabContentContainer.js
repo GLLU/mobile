@@ -1,10 +1,10 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import WhatsHotTabContent from './WhatsHotTabContent';
-import {showBodyTypeModal, getWhatsHotFeed, loadMore, showParisBottomMessage} from '../../actions';
-import {FEED_TYPE_WHATS_HOT} from '../../actions/feed';
-import {getLooksById} from '../../utils/FeedUtils';
+import { showBodyTypeModal, getWhatsHotFeed, loadMore, showParisBottomMessage } from '../../actions';
+import { FEED_TYPE_WHATS_HOT, toggleFiltersMenus, changeFiltersGender } from '../../actions/feed';
+import { getLooksById } from '../../utils/FeedUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenWhatsHot', params);
@@ -14,6 +14,8 @@ function mapDispatchToProps(dispatch, ownProps) {
     getFeed: query => dispatch(getWhatsHotFeed(query)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_WHATS_HOT)),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
+    toggleFiltersMenus: () => dispatch(toggleFiltersMenus(FEED_TYPE_WHATS_HOT)),
+    changeFiltersGender: gender => dispatch(changeFiltersGender(FEED_TYPE_WHATS_HOT, gender)),
   };
 }
 
@@ -45,8 +47,10 @@ const mapStateToProps = (state) => {
     user_gender: state.user.gender,
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
-    isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_WHATS_HOT],
+    isFiltersMenuOpen: state.feed[FEED_TYPE_WHATS_HOT].isFiltersMenuOpen,
     myFeedType: FEED_TYPE_WHATS_HOT,
+    filtersGender: state.feed[FEED_TYPE_WHATS_HOT].filtersGender,
+    defaultFilterQuery: { ...state.feed[FEED_TYPE_WHATS_HOT].query, gender: state.feed[FEED_TYPE_WHATS_HOT].filtersGender },
   };
 };
 
