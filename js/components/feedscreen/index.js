@@ -10,7 +10,7 @@ import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import {setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {addNewLook} from '../../actions/uploadLookB'
-import {gotNewNotifications, goToNotificationSubjectScreen} from '../../actions/notifications';
+import {gotNewNotifications, goToNotificationSubjectScreen, addUserNotification} from '../../actions/notifications';
 import {toggleFiltersMenus, getColors, getFeaturedBrands} from '../../actions/filters';
 import {getUserBalance} from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
@@ -90,7 +90,7 @@ class FeedPage extends Component {
   }
 
   _onReceived = (notification) => {
-    this.props.onNotificationReceived();
+    this.props.onNotificationReceived(notification.payload.additionalData);
   }
 
   _onOpened = (openResult) => {
@@ -272,7 +272,10 @@ function bindActions(dispatch) {
     loadBrands: () => dispatch(getFeaturedBrands()),
     loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
     loadColors: () => dispatch(getColors()),
-    onNotificationReceived: () => dispatch(gotNewNotifications()),
+    onNotificationReceived: (notification) => {
+      dispatch(gotNewNotifications());
+      dispatch(addUserNotification(notification));
+    },
     goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
   };
 }
