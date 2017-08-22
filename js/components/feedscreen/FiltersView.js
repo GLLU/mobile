@@ -9,10 +9,10 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Slider,
   Image,
 } from 'react-native';
 import I18n from 'react-native-i18n';
+import Slider from 'react-native-slider';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -29,7 +29,6 @@ const maleIcon = require('../../../images/icons/filter-gender-male.png');
 const maleIconActive = require('../../../images/icons/filter-gender-male-active.png');
 const femaleIcon = require('../../../images/icons/filter-gender-female.png');
 const femaleIconActive = require('../../../images/icons/filter-gender-female-active.png');
-export const FILTER = I18n.t('FILTER');
 
 type Props = {
   defaultQuery: object,
@@ -113,11 +112,14 @@ class FiltersView extends BaseComponent {
   }
 
   _resetFilters() {
+    const {changeFiltersGender} = this.props
     const clearedFiltersState = _.cloneDeep(this.state.currentFilter);
     delete clearedFiltersState.body_type;
     delete clearedFiltersState.category;
     delete clearedFiltersState.occasion;
-    this.setState({ currentFilter: clearedFiltersState });
+    delete clearedFiltersState.gender;
+    changeFiltersGender('')
+    this.setState({ currentFilter: clearedFiltersState, sliderValue: 0.5 });
   }
 
   _cancelFilter() {
@@ -142,7 +144,10 @@ class FiltersView extends BaseComponent {
         gender = '';
     }
     changeFiltersGender(gender);
-    this.setState({ gender, sliderValue: value });
+    const clearedFiltersState = _.cloneDeep(this.state.currentFilter);
+    delete clearedFiltersState.body_type;
+    delete clearedFiltersState.category;
+    this.setState({ gender, sliderValue: value, currentFilter: { ...clearedFiltersState, gender } });
   }
 
   _renderGenderFilter() {
@@ -154,14 +159,15 @@ class FiltersView extends BaseComponent {
         <TouchableOpacity onPress={() => this.handleSlide(0)}>
           <Image source={maleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
-        <Slider
-          style={styles.slider}
-          maximumTrackTintColor={'transparent'}
-          minimumTrackTintColor={'transparent'}
-          value={this.state.sliderValue}
-          maximumValue={1}
-          step={0.5}
-          onSlidingComplete={value => this.handleSlide(value)} />
+          <Slider
+            maximumTrackTintColor={'transparent'}
+            minimumTrackTintColor={'transparent'}
+            value={this.state.sliderValue}
+            maximumValue={1}
+            step={0.5}
+            style={styles.slider}
+            onSlidingComplete={value => this.handleSlide(value)}
+            thumbStyle={styles.sliderThumb}/>
         <TouchableOpacity onPress={() => this.handleSlide(1)}>
           <Image source={femaleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
@@ -256,10 +262,17 @@ const styles = StyleSheet.create({
     height: 25,
   },
   slider: {
-    width: 100,
+    width: Platform.OS === 'ios' ? generateAdjustedSize(110) : generateAdjustedSize(110),
     backgroundColor: Colors.backgroundGrey,
     borderRadius: 20,
-    marginHorizontal: 5,
+    marginHorizontal: 15,
+  },
+  sliderThumb: {
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    borderColor: Colors.secondaryColor,
+    backgroundColor: Colors.white
   },
 });
 

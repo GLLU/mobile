@@ -1,6 +1,6 @@
 {
   "name": "infash",
-  "version": "1.1.4",
+  "version": "1.2.2",
   "private": true,
   "scripts": {
     "postinstall": "rndebugger-open --open --port 8081",
@@ -56,6 +56,7 @@
     "react-native-mixpanel": "0.0.15",
     "react-native-modalbox": "^1.3.9",
     "react-native-radio-buttons": "^0.14.0",
+    "react-native-slider": "^0.10.0",
     "react-native-swipe-gestures": "^1.0.2",
     "react-native-tab-view": "0.0.67",
     "react-native-timeago": "^0.3.0",
