@@ -29,7 +29,7 @@ const mapStateToProps = (state, ownProps) => {
     flatLook: state.looks.flatLooksData[ownProps.navigation.state.params.lookId],
     openComments: ownProps.navigation.state.params.openComments ? ownProps.navigation.state.params.openComments : false,
     isLoading: state.loader.loading,
-    showSwipeWizard: state.user.showSwipeWizard,
+    showSwipeWizard: false,
     flatLooksData: flatLooksFeedData,
     meta: state.feed.whatsHot.meta,
     query: state.feed.whatsHot.query,

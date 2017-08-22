@@ -21,6 +21,8 @@ import {openCamera} from '../../lib/camera/CameraUtils';
 import {formatLook} from '../../utils/UploadUtils';
 import FeedTabs from './FeedTabs';
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT} from '../../actions/feed';
+import * as userMapper from "../../mappers/userMapper";
+
 
 const cameraIcon = require('../../../images/icons/camera_green-circle.png');
 
@@ -95,11 +97,11 @@ class FeedPage extends Component {
     const notification = openResult.notification.payload.additionalData;
 
     if (notification.action_kind === 'Follow') {
-      this.props.navigateTo('profileScreen', { user: notification });
+      this.props.navigateTo('profileScreen',  { user: userMapper.map(notification.initiator) });
     } else {
       this.props.goToNotificationSubjectScreen(notification.go_to_object.id, notification.id)
         .then(look => {
-          this.props.navigateTo('lookScreenWhatsHot', { lookId: look.id });
+          this.props.navigateTo('lookScreenProfile', { lookId: look.id });
         });
     }
   }

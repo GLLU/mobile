@@ -59,7 +59,7 @@ class NotificationListView extends BaseComponent {
         this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
           .then(look=>{
             this.setState({isNavigating:false},()=> {
-              this.props.navigateTo('lookScreenWhatsHot', { lookId: look.id })
+              this.props.navigateTo('lookScreenProfile', { lookId: look.id })
             });
           });
       });

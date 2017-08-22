@@ -45,7 +45,7 @@ function setup(): React.Component {
     }
 
     _onOpened(openResult) {
-      notificationObject = openResult.notification;
+      notificationObject = openResult.notification.payload.additionalData;
     }
 
     onStoreConfigured() {

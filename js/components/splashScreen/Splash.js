@@ -6,6 +6,8 @@ import OneSignal from 'react-native-onesignal';
 import {NavigationActions} from "react-navigation";
 
 import Spinner from '../loaders/Spinner';
+import * as userMapper from "../../mappers/userMapper";
+
 
 const background = require('../../../images/backgrounds/splashScreen.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -29,21 +31,19 @@ class Splash extends Component {
   }
 
   checkLogin() {
-    const { user, notification } = this.props;
+    const { user, screenProps } = this.props;
+    const { notification } = screenProps;
     setTimeout(() => {
       this.props.checkLogin()
         .then(() => {
           if (user.id !== -1 && user.name !== null) {
             if (notification) {
-              let screenToNavigate;
-              let screenProps;
-
               if (notification.action_kind === 'Follow') {
                 this.props.resetWithPayload({
                   index: 1,
                   actions: [
                     NavigationActions.navigate({ routeName: 'feedscreen' }),
-                    NavigationActions.navigate({ routeName: 'profileScreen', params: { user: notification } }),
+                    NavigationActions.navigate({ routeName: 'profileScreen', params: { user: userMapper.map(notification.initiator) } }),
                   ],
                 });
               } else {
@@ -53,7 +53,7 @@ class Splash extends Component {
                       index: 1,
                       actions: [
                         NavigationActions.navigate({ routeName: 'feedscreen' }),
-                        NavigationActions.navigate({ routeName: 'lookScreenWhatsHot', params: { lookId: look.id } }),
+                        NavigationActions.navigate({ routeName: 'lookScreenProfile', params: { lookId: look.id } }),
                       ],
                     });
                   });
