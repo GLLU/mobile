@@ -3,11 +3,14 @@
 import React, {Component} from 'react';
 import {Dimensions, BackAndroid, View, StyleSheet, Modal, TouchableOpacity, Image, Animated} from 'react-native';
 import {connect} from 'react-redux';
+import OneSignal from 'react-native-onesignal';
+
 import styles from './styles';
 import MainBarView from './MainBarView';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {addNewLook} from '../../actions/uploadLook'
+import {gotNewNotifications, goToNotificationSubjectScreen, addUserNotification} from '../../actions/notifications';
 import { getColors, getFeaturedBrands} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
@@ -17,6 +20,7 @@ import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
 import {formatLook} from '../../utils/UploadUtils';
 import FeedTabs from './FeedTabs';
+import * as userMapper from "../../mappers/userMapper";
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT, toggleFiltersMenus} from '../../actions/feed';
 
 const cameraIcon = require('../../../images/icons/camera_green-circle.png');
@@ -65,9 +69,9 @@ class FeedPage extends Component {
       feedsRoute: {
         index: props.navigation.state.params ? props.navigation.state.params.resetToIndex : 1,
         routes: [
-          {key: FEED_TYPE_FOLLOWING, title: 'Following'},
-          {key: FEED_TYPE_BEST_MATCH, title: 'My Shape'},
-          {key: FEED_TYPE_WHATS_HOT, title: "What's Hot"},
+          { key: FEED_TYPE_FOLLOWING, title: 'Following' },
+          { key: FEED_TYPE_BEST_MATCH, title: 'My Shape' },
+          { key: FEED_TYPE_WHATS_HOT, title: "What's Hot" },
         ],
       },
     };
@@ -83,10 +87,36 @@ class FeedPage extends Component {
     this.props.loadBrands();
   }
 
+  _onReceived = (notification) => {
+    this.props.onNotificationReceived(notification.payload.additionalData);
+  }
+
+  _onOpened = (openResult) => {
+    const notification = openResult.notification.payload.additionalData;
+
+    if (notification.action_kind === 'Follow') {
+      this.props.navigateTo('profileScreen',  { user: userMapper.map(notification.initiator) });
+    } else {
+      this.props.goToNotificationSubjectScreen(notification.go_to_object.id, notification.id)
+        .then(look => {
+          this.props.navigateTo('lookScreenProfile', { lookId: look.id });
+        });
+    }
+  }
+
   componentWillMount() {
+
+    OneSignal.inFocusDisplaying(0);
+
+    // Relevant only for IOS - shows a popup in case we need permissions.
+    OneSignal.registerForPushNotifications();
+
+    OneSignal.addEventListener('received', this._onReceived);
+    OneSignal.addEventListener('opened', this._onOpened);
+
     BackAndroid.addEventListener('hardwareBackPress', () => {
       if (this.state.photoModal) {
-        this.setState({photoModal: false});
+        this.setState({ photoModal: false });
         return true;
       }
     });
@@ -97,6 +127,10 @@ class FeedPage extends Component {
 
   componentWillUnmount() {
     BackAndroid.removeEventListener('hardwareBackPress');
+    OneSignal.removeEventListener('received');
+    OneSignal.removeEventListener('opened');
+    OneSignal.removeEventListener('registered');
+    OneSignal.removeEventListener('ids');
   }
 
   setUser(name) {
@@ -105,13 +139,13 @@ class FeedPage extends Component {
 
   goToAddNewItem(imagePath) {
     this.props.addNewLook(imagePath).then(() => {
-      this.props.navigateTo('uploadLookScreen', {mode: 'create'});
+      this.props.navigateTo('uploadLookScreen', { mode: 'create' });
     });
   }
 
   showBottomCameraButton(shouldShow) {
     if (shouldShow !== this.state.showBottomCamera) {
-      this.setState({showBottomCamera: shouldShow});
+      this.setState({ showBottomCamera: shouldShow });
       if (!shouldShow) {
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
@@ -132,15 +166,15 @@ class FeedPage extends Component {
 
   _handleSearchStatus(newStatus) {
     const searchStatus = !this.state.searchStatus;
-    this.setState({searchStatus});
+    this.setState({ searchStatus });
   }
 
   _clearFilter() {
-    this.setState({searchTerm: ''});
+    this.setState({ searchTerm: '' });
   }
 
   _handleSearchInput(term) {
-    this.setState({searchTerm: term});
+    this.setState({ searchTerm: term });
   }
 
   _onPickBodyType() {
@@ -149,24 +183,24 @@ class FeedPage extends Component {
   }
 
   closeModal() {
-    this.props.logEvent('Feedscreen', {name: 'Hard close bodyType modal'});
+    this.props.logEvent('Feedscreen', { name: 'Hard close bodyType modal' });
     this.props.hideBodyTypeModal();
   }
 
   async uploadLook(pressedButton) {
-    this.props.logEvent('Feedscreen', {name: 'user started uploading a look', origin: pressedButton});
+    this.props.logEvent('Feedscreen', { name: 'user started uploading a look', origin: pressedButton });
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.goToAddNewItem(file);
     } else {
-      this.props.logEvent('Feedscreen', {name: 'User canceled the upload look', origin: 'camera'});
+      this.props.logEvent('Feedscreen', { name: 'User canceled the upload look', origin: 'camera' });
     }
   }
 
   renderBottomCamera() {
     return (
-      <Animated.View style={{position: 'absolute', bottom: this.state.fadeAnimContentOnPress, alignSelf: 'center'}}>
+      <Animated.View style={{ position: 'absolute', bottom: this.state.fadeAnimContentOnPress, alignSelf: 'center' }}>
         <TouchableOpacity transparent onPress={() => this.uploadLook('floating button')}>
           <Image source={cameraIcon} style={styles.btnImage}/>
         </TouchableOpacity>
@@ -179,7 +213,7 @@ class FeedPage extends Component {
   }
 
   _renderFeed() {
-    const {reloading, clearedField, navigateTo, hasUserSize} = this.props;
+    const { reloading, clearedField, navigateTo, hasUserSize } = this.props;
     return (
       <FeedTabs
         reloading={reloading}
@@ -195,7 +229,7 @@ class FeedPage extends Component {
   }
 
   _handleTabsIndexChange = (index) => {
-    this.setState({feedsRoute: {...this.state.feedsRoute, index}});
+    this.setState({ feedsRoute: { ...this.state.feedsRoute, index } });
   };
 
   render() {
@@ -206,7 +240,7 @@ class FeedPage extends Component {
       <View style={styles.container}>
         <View style={[styles.mainNavHeader]}>
           <MainBarView
-            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={() =>this.uploadLook('menu camera')}
+            user={this.props.user} navigateTo={this.props.navigateTo} addNewItem={() => this.uploadLook('menu camera')}
             gotNewNotifications={this.props.gotNewNotifications} searchStatus={this.state.searchStatus}
             handleSearchStatus={this._handleSearchStatus} balance={balance} showBalanceBadge={showWalletBadge}
             handleSearchInput={term => this._handleSearchInput(term)} clearFilter={this._clearFilter}
@@ -216,7 +250,7 @@ class FeedPage extends Component {
         {this.renderBottomCamera()}
         <Modal
           animationType="slide" visible={this.props.modalShowing}
-          style={{justifyContent: 'flex-start', alignItems: 'center'}} onRequestClose={this.closeModal}>
+          style={{ justifyContent: 'flex-start', alignItems: 'center' }} onRequestClose={this.closeModal}>
           <BodyTypePicker goBack={this.props.hideBodyTypeModal} onPick={this._onPickBodyType}/>
         </Modal>
       </View>
@@ -236,6 +270,11 @@ function bindActions(dispatch) {
     loadBrands: () => dispatch(getFeaturedBrands()),
     loadOccasionTags: gender => dispatch(loadOccasionTags(gender)),
     loadColors: () => dispatch(getColors()),
+    onNotificationReceived: (notification) => {
+      dispatch(gotNewNotifications());
+      dispatch(addUserNotification(notification));
+    },
+    goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
   };
 }
 

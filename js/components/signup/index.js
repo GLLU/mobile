@@ -5,6 +5,7 @@ import {
   TextInput, KeyboardAvoidingView,
 } from 'react-native';
 import {Container, Content} from 'native-base';
+import OneSignal from 'react-native-onesignal';
 import {connect} from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import {Row, Grid} from 'react-native-easy-grid';
@@ -85,6 +86,7 @@ class SignUpPage extends Component {
               name: 'user signed up with email',
               email,
             });
+            OneSignal.sendTag("id", user.id.toString());
             this.props.resetTo('feedscreen');
           })
           .catch(err => this.setState({ isSigningUp: false }));

@@ -23,7 +23,7 @@ import com.android.build.OutputFile
  *   // the name of the generated asset file containing your JS bundle
  *   bundleAssetName: "index.android.bundle",
  *
- *   // the entry file for bundle generation
+ *   // the entry file for bundl    e generation
  *   entryFile: "index.android.js",
  *
  *   // whether to bundle JS and assets in debug mode
@@ -101,7 +101,10 @@ android {
         versionCode 5
         versionName "1.2.2"
         multiDexEnabled true
-       vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [onesignal_app_id: "9dafae92-eb15-420d-b362-0518a6b5234e",
+                                onesignal_google_project_number: "REMOTE"]
+
+        vectorDrawables.useSupportLibrary = true
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -183,6 +186,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-onesignal')
     compile project(':react-native-i18n')
     compile project(':react-native-mixpanel')
     compile project(':react-native-fabric')

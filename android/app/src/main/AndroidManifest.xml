@@ -30,6 +30,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data android:name="com.onesignal.NotificationAccentColor.DEFAULT" android:value="FF493267" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="073fbe796531c6ef71a3c78ed34e237691bf78bf" />
@@ -38,6 +39,7 @@
             android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:supportsRtl="false">
             <intent-filter>

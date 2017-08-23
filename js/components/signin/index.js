@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import {Container, Content} from 'native-base';
+import OneSignal from 'react-native-onesignal';
 import {connect} from 'react-redux';
 import IconB from 'react-native-vector-icons/FontAwesome';
 import {Row, Grid} from "react-native-easy-grid";
@@ -61,7 +62,8 @@ class SignInPage extends Component {
         this.props.emailSignIn(data)
           .then(user => {
             this.props.logEvent('SignInScreen', { name: 'Sign in successful!' });
-            this.props.resetTo('feedscreen')
+            OneSignal.sendTag("id", user.id.toString());
+            this.props.resetTo('feedscreen');
           })
           .catch(error => {
             this.props.logEvent('SignInScreen', { name: 'Sign in failed!' });

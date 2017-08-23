@@ -11,6 +11,7 @@ import com.facebook.react.modules.i18nmanager.I18nUtil;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.smixx.fabric.FabricPackage;
@@ -64,6 +65,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new ReactNativeOneSignalPackage(),
                             new RNI18nPackage(),
                             new RNMixpanel(),
                             new FabricPackage(),
