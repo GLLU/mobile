@@ -13,6 +13,7 @@ import {addNewLook} from '../../actions/uploadLook'
 import {gotNewNotifications, goToNotificationSubjectScreen, addUserNotification} from '../../actions/notifications';
 import { getColors, getFeaturedBrands} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
+import asScreen from '../common/containers/Screen';
 import Analytics from '../../lib/analytics/Analytics';
 import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
