@@ -29,6 +29,9 @@ const maleIcon = require('../../../images/icons/filter-gender-male.png');
 const maleIconActive = require('../../../images/icons/filter-gender-male-active.png');
 const femaleIcon = require('../../../images/icons/filter-gender-female.png');
 const femaleIconActive = require('../../../images/icons/filter-gender-female-active.png');
+const filterLeft = require('../../../images/indicators/filter_gender_left_15x15.png');
+const filterRight = require('../../../images/indicators/filter_gender_right_15x15.png');
+const filterMiddle = require('../../../images/indicators/filter_gender_middle_15x15.png');
 
 type Props = {
   defaultQuery: object,
@@ -150,10 +153,25 @@ class FiltersView extends BaseComponent {
     this.setState({ gender, sliderValue: value, currentFilter: { ...clearedFiltersState, gender } });
   }
 
+  getThumbImage() {
+    const { sliderValue } = this.state;
+    switch (sliderValue) {
+      case 0:
+        return filterLeft;
+      case 0.5:
+        return filterMiddle;
+      case 1:
+        return filterRight;
+      default:
+        return filterMiddle
+    }
+  }
+
   _renderGenderFilter() {
     const { sliderValue } = this.state;
     const maleColor = sliderValue === 0 ? maleIconActive : maleIcon;
     const femaleColor = sliderValue === 1 ? femaleIconActive : femaleIcon;
+    const thumbImage = this.getThumbImage();
     return (
       <View style={styles.sliderRow}>
         <TouchableOpacity onPress={() => this.handleSlide(0)}>
@@ -166,6 +184,7 @@ class FiltersView extends BaseComponent {
           maximumValue={1}
           step={0.5}
           style={styles.slider}
+          thumbImage={thumbImage}
           onSlidingComplete={value => this.handleSlide(value)}
           thumbStyle={styles.sliderThumb}/>
         <TouchableOpacity onPress={() => this.handleSlide(1)}>
@@ -270,16 +289,14 @@ const styles = StyleSheet.create({
   slider: {
     width: generateAdjustedSize(85),
     height: generateAdjustedSize(20),
-    backgroundColor: Colors.backgroundGrey,
+    backgroundColor: Colors.white,
     borderRadius: 20,
-    marginHorizontal: 15,
+    marginHorizontal: 10,
   },
   sliderThumb: {
+    backgroundColor: Colors.secondaryColor,
     height: 15,
     width: 15,
-    borderRadius: 8,
-    borderColor: Colors.secondaryColor,
-    backgroundColor: Colors.secondaryColor
   },
 });
 

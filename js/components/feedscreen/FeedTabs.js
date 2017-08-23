@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import {TabViewAnimated, TabBar, TabViewPagerPan} from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
@@ -52,6 +52,10 @@ class FeedTabs extends Component {
     }
   };
 
+  _renderPager = (props) => {
+    return <TabViewPagerPan {...props} swipeVelocityThreshold={50} swipeDistanceThreshold={30} />
+  };
+
   _toggleFilterMenu() {
     this.props.logEvent('filterFeed', {feed: this.props.feedsRoute.routes[this.props.feedsRoute.index].key});
     this.props.toggleFilterMenues(this.props.feedsRoute.routes[this.props.feedsRoute.index].key);
@@ -75,6 +79,7 @@ class FeedTabs extends Component {
           style={styles.tabViewAnimatedContainer}
           navigationState={feedsRoute}
           renderScene={this._renderScene}
+          renderPager={this._renderPager}
           renderHeader={this._renderHeader}
           onRequestChangeTab={this.props.handleIndexChange}
         />
