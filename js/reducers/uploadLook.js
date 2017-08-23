@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
   EDIT_NEW_LOOK,
   EDIT_TAG,
@@ -22,9 +21,10 @@ import {
   REMOVE_ITEM_COLOR,
   ADD_ITEM_COLOR,
   DONE_UPLOADING_FILE,
-  CLEAR_UPLOAD_LOOK
+  CLEAR_UPLOAD_LOOK,
 } from '../actions/uploadLook';
-import {lookMapper, itemMapper} from '../mappers/';
+import _ from 'lodash';
+import { lookMapper, itemMapper } from '../mappers/';
 
 export const newItem = {
   brand: null,
@@ -36,204 +36,183 @@ export const newItem = {
   color_ids: [],
   tags: [],
   isNew: true,
-}
+};
 
 const mutateItem = function (state, key, value, id) {
-  return state.items.map(item => {
+  return state.items.map((item) => {
     if (item.id === id) {
       item[key] = value;
     }
     return item;
-  })
-}
+  });
+};
 
 const findItem = function (state, itemId) {
   return _.find(state.items, x => x.id === itemId);
-}
-
-// Action Handlers
-const ACTION_HANDLERS = {
-  [EDIT_NEW_LOOK]: (state, action) => {
-    return {
-      ...action.payload,
-      ...lookMapper(action.payload),
-    }
-  },
-  [SELECT_LOOK_ITEM]: (state, action) => {
-    return {
-      ...state,
-      itemId: action.payload
-    }
-  },
-  [DONE_UPLOADING_FILE]: (state, action) => {
-    return {
-      ...state,
-      isUploading: false
-    }
-  },
-  [CREATE_LOOK_ITEM_BY_POSITION]: (state, action) => {
-    const { items } = state;
-    let item = newItem;
-    item.cover_x_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
-    item.cover_y_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
-    item.id = action.itemId
-    items.push(itemMapper(item));
-    return {
-      ...state,
-      items,
-    }
-  },
-  [EDIT_TAG]: (state, action) => {
-    return {
-      ...state,
-      editingTag: action.payload.editingTag
-    }
-  },
-  [REMOVE_LOOK_ITEM]: (state, action) => {
-    return {
-      ...state,
-      items: action.newItemsArr,
-    }
-  },
-  [SET_TAG_POSITION]: (state, action) => {
-    state.items = mutateItem(state, 'locationX', action.payload.locationX, action.payload.id);
-    state.items = mutateItem(state, 'locationY', action.payload.locationY, action.payload.id);
-    return {
-      ...state,
-      items: state.items,
-    }
-  },
-  [ADD_ITEM_TYPE]: (state, action) => {
-    const category = action.payload.categoryItem;
-    let items = mutateItem(state, 'category', category.id, action.payload.itemId);
-    items = mutateItem(state, 'category_id', category.id, action.payload.itemId);
-    return {
-      ...state,
-      items: items,
-    }
-  },
-  [ADD_BRAND_NAME]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'brand', action.payload.brand, action.payload.itemId)
-    }
-  },
-  [REMOVE_BRAND_NAME]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'brand', null, action.payload)
-    }
-  },
-  [ADD_ITEM_SIZE]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'itemSizeValue', action.payload, action.payload.id)
-    }
-  },
-  [ADD_ITEM_TAG]: (state, action) => {
-    const item = findItem(state, action.payload.itemId);
-    let tags = item.tags;
-    tags.push(action.payload.data);
-    return {
-      ...state,
-      items: mutateItem(state, 'tags', tags, action.payload.itemId)
-    }
-  },
-  [REMOVE_ITEM_TAG]: (state, action) => {
-    const item = findItem(state, action.payload.itemId);
-    let tags = _.filter(item.tags, t => t.name.toLowerCase() !== action.payload.data.name.toLowerCase());
-    return {
-      ...state,
-      items: mutateItem(state, 'tags', tags, action.payload.itemId)
-    }
-  },
-  [ADD_ITEM_URL]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'url', action.payload.url, action.payload.itemId)
-    }
-  },
-  [ADD_SHARING_INFO]: (state, action) => {
-    state.items = mutateItem(state, 'sharingType', action.payload.sharingType)
-    state.items = mutateItem(state, 'sharingUrl', action.payload.sharingUrl)
-    return {
-      ...state,
-      items: state.items
-    }
-  },
-  [ADD_LOCATION]: (state, action) => {
-    return {
-      ...state,
-      items: mutateItem(state, 'location', action.payload)
-    }
-  },
-  [ADD_DESCRIPTION]: (state, action) => {
-    return {
-      ...state,
-      description: action.payload
-    }
-  },
-  [ADD_PHOTOS_VIDEO]: (state, action) => {
-    const photos = state.photos;
-    photos.push({path: action.payload.path, data: action.payload.data});
-    return {
-      ...state,
-      items: mutateItem(state, 'photos', photos),
-    }
-  },
-  [REMOVE_ITEM_OCCASION_TAG]: (state, action) => {
-    const item = findItem(state, action.payload.itemId);
-    let occasions = _.filter(item.occasions, t => t !== action.payload.tagId);
-    return {
-      ...state,
-      items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
-    }
-  },
-  [ADD_ITEM_OCCASION_TAG]: (state, action) => {
-    const item = findItem(state, action.payload.itemId);
-    let occasions = _.cloneDeep(item.occasions);
-    occasions.push(action.payload.tagId);
-    return {
-      ...state,
-      items: mutateItem(state, 'occasions', occasions, action.payload.itemId)
-    }
-  },
-  [REMOVE_ITEM_COLOR]: (state, action) => {
-    const item = findItem(state, action.payload.itemId);
-    let color_ids = _.filter(item.color_ids, t => t !== action.payload.colorId);
-    return {
-      ...state,
-      items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId)
-    }
-  },
-  [CLEAR_UPLOAD_LOOK]: (state, action) => {
-    console.log('clear')
-    return {
-      ...initialState
-    }
-  },
-  [ADD_ITEM_COLOR]: (state, action) => {
-    const item = findItem(state, action.payload.itemId);
-    let color_ids = _.cloneDeep(item.color_ids);
-    color_ids.push(action.payload.colorId);
-    return {
-      ...state,
-      items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId)
-    }
-  }
-}
+};
 
 // Reducer
 const initialState = {
-  lookId: -1,
+  lookId: -2,
   image: null,
   description: '',
   items: [],
   video: '',
-  isUploading: false
-}
+  isUploading: false,
+};
 
-export default function mybodyTypeReducer(state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
-  return handler ? handler(state, action) : state
+export default function (state = initialState, action) {
+  let items;
+  let item;
+  let tags;
+  let color_ids;
+  let occasions;
+  switch (action.type) {
+    case EDIT_NEW_LOOK:
+      return {
+        ...action.payload,
+        ...lookMapper(action.payload),
+      };
+    case SELECT_LOOK_ITEM:
+      return {
+        ...state,
+        itemId: action.payload,
+      };
+    case DONE_UPLOADING_FILE:
+      return {
+        ...state,
+        isUploading: false,
+      };
+    case CREATE_LOOK_ITEM_BY_POSITION:
+      items = state.items;
+      item = newItem;
+      item.cover_x_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
+      item.cover_y_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
+      item.id = action.itemId;
+      items.push(itemMapper(item));
+      return {
+        ...state,
+        items,
+      };
+    case EDIT_TAG:
+      return {
+        ...state,
+        editingTag: action.payload.editingTag,
+      };
+    case REMOVE_LOOK_ITEM:
+      return {
+        ...state,
+        items: action.newItemsArr,
+      };
+    case SET_TAG_POSITION:
+      state.items = mutateItem(state, 'locationX', action.payload.locationX, action.payload.id);
+      state.items = mutateItem(state, 'locationY', action.payload.locationY, action.payload.id);
+      return {
+        ...state,
+        items: state.items,
+      };
+    case ADD_ITEM_TYPE:
+      const category = action.payload.categoryItem;
+      items = mutateItem(state, 'category', category.id, action.payload.itemId);
+      items = mutateItem(state, 'category_id', category.id, action.payload.itemId);
+      return {
+        ...state,
+        items,
+      };
+    case ADD_BRAND_NAME:
+      return {
+        ...state,
+        items: mutateItem(state, 'brand', action.payload.brand, action.payload.itemId),
+      };
+    case REMOVE_BRAND_NAME:
+      return {
+        ...state,
+        items: mutateItem(state, 'brand', null, action.payload),
+      };
+    case ADD_ITEM_SIZE:
+      return {
+        ...state,
+        items: mutateItem(state, 'itemSizeValue', action.payload, action.payload.id),
+      };
+    case ADD_ITEM_TAG:
+      item = findItem(state, action.payload.itemId);
+      tags = item.tags;
+      tags.push(action.payload.data);
+      return {
+        ...state,
+        items: mutateItem(state, 'tags', tags, action.payload.itemId),
+      };
+    case REMOVE_ITEM_TAG:
+      item = findItem(state, action.payload.itemId);
+      tags = _.filter(item.tags, t => t.name.toLowerCase() !== action.payload.data.name.toLowerCase());
+      return {
+        ...state,
+        items: mutateItem(state, 'tags', tags, action.payload.itemId),
+      };
+    case ADD_ITEM_URL:
+      return {
+        ...state,
+        items: mutateItem(state, 'url', action.payload.url, action.payload.itemId),
+      };
+    case ADD_SHARING_INFO:
+      state.items = mutateItem(state, 'sharingType', action.payload.sharingType);
+      state.items = mutateItem(state, 'sharingUrl', action.payload.sharingUrl);
+      return {
+        ...state,
+        items: state.items,
+      };
+    case ADD_LOCATION:
+      return {
+        ...state,
+        items: mutateItem(state, 'location', action.payload),
+      };
+    case ADD_DESCRIPTION:
+      return {
+        ...state,
+        description: action.payload,
+      };
+    case ADD_PHOTOS_VIDEO:
+      const photos = state.photos;
+      photos.push({ path: action.payload.path, data: action.payload.data });
+      return {
+        ...state,
+        items: mutateItem(state, 'photos', photos),
+      };
+    case REMOVE_ITEM_OCCASION_TAG:
+      item = findItem(state, action.payload.itemId);
+      occasions = _.filter(item.occasions, t => t !== action.payload.tagId);
+      return {
+        ...state,
+        items: mutateItem(state, 'occasions', occasions, action.payload.itemId),
+      };
+    case ADD_ITEM_OCCASION_TAG:
+      item = findItem(state, action.payload.itemId);
+      occasions = _.cloneDeep(item.occasions);
+      occasions.push(action.payload.tagId);
+      return {
+        ...state,
+        items: mutateItem(state, 'occasions', occasions, action.payload.itemId),
+      };
+    case REMOVE_ITEM_COLOR:
+      item = findItem(state, action.payload.itemId);
+      color_ids = _.filter(item.color_ids, t => t !== action.payload.colorId);
+      return {
+        ...state,
+        items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId),
+      };
+    case CLEAR_UPLOAD_LOOK:
+      return {
+        ...initialState,
+      };
+    case ADD_ITEM_COLOR:
+      item = findItem(state, action.payload.itemId);
+      color_ids = _.cloneDeep(item.color_ids);
+      color_ids.push(action.payload.colorId);
+      return {
+        ...state,
+        items: mutateItem(state, 'color_ids', color_ids, action.payload.itemId),
+      };
+    default:
+      return state;
+  }
 }

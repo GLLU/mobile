@@ -1,10 +1,10 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import FollowingTabContent from './FollowingTabContent';
-import {showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage} from '../../actions';
-import {getLooksById} from '../../utils/FeedUtils';
-import {FEED_TYPE_FOLLOWING} from '../../actions/feed';
+import { showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage } from '../../actions';
+import { getLooksById } from '../../utils/FeedUtils';
+import { FEED_TYPE_FOLLOWING, toggleFiltersMenus, changeFiltersGender } from '../../actions/feed';
 
 function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenFollwing', params);
@@ -15,6 +15,8 @@ function mapDispatchToProps(dispatch, ownProps) {
     getFeed: query => dispatch(getFollowingFeed(query)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_FOLLOWING)),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
+    toggleFiltersMenus: () => dispatch(toggleFiltersMenus(FEED_TYPE_FOLLOWING)),
+    changeFiltersGender: gender => dispatch(changeFiltersGender(FEED_TYPE_FOLLOWING, gender)),
   };
 }
 
@@ -39,8 +41,10 @@ const mapStateToProps = (state) => {
     user_gender: state.user.gender,
     cardNavigationStack: state.cardNavigation,
     userName: state.user.name,
-    isFilterMenuOpen: state.filters.filterMenuStatus[FEED_TYPE_FOLLOWING],
-    myFeedType: FEED_TYPE_FOLLOWING
+    isFiltersMenuOpen: state.feed[FEED_TYPE_FOLLOWING].isFiltersMenuOpen,
+    myFeedType: FEED_TYPE_FOLLOWING,
+    filtersGender: state.feed[FEED_TYPE_FOLLOWING].filtersGender,
+    defaultFilterQuery: { ...state.feed[FEED_TYPE_FOLLOWING].query, gender: state.feed[FEED_TYPE_FOLLOWING].filtersGender },
   };
 };
 

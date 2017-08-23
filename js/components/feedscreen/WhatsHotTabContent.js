@@ -13,14 +13,14 @@ import {
   RefreshControl,
   View,
   NetInfo,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import {formatInvitationMessage} from '../../lib/messages/index';
+import { formatInvitationMessage } from '../../lib/messages/index';
 import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -78,20 +78,22 @@ class HotTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    this._getFeed(this.props.defaultFilters);
+    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName} = this.props
+    this._getFeed(defaultFilters);
+    changeFiltersGender(defaultFilters.gender)
     const that = this;
     setInterval(() => {
       that.handleScrollPosition();
     }, 1000);
     NetInfo.isConnected.fetch().done(
       (isConnected) => {
-        isConnected ? this.props.showParisBottomMessage(`Hey ${this.props.userName}, you look amazing today!`) : null;
+        isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
       }
     );
   }
 
   _getFeed(query) {
-    this.props.getFeed(query)
+    this.props.getFeed(query);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -99,7 +101,7 @@ class HotTabContent extends BaseComponent {
       this.setState({
         flatLooksLeft: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 0),
         flatLooksRight: _.filter(nextProps.flatLooks, (look, index) => index % 2 === 1),
-        loadingMore: false
+        loadingMore: false,
       });
     }
 
@@ -108,8 +110,8 @@ class HotTabContent extends BaseComponent {
       this.setState({ noMoreData: false });
     }
 
-    if (this.props.isFilterMenuOpen !== nextProps.isFilterMenuOpen) {
-      this.props.showBottomCameraButton(!nextProps.isFilterMenuOpen)
+    if (this.props.isFiltersMenuOpen !== nextProps.isFiltersMenuOpen) {
+      this.props.showBottomCameraButton(!nextProps.isFiltersMenuOpen);
     }
   }
 
@@ -158,8 +160,8 @@ class HotTabContent extends BaseComponent {
     if (pageSize * pageNumber < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-            this.setState({ isLoading: false });
-          }
+          this.setState({ isLoading: false });
+        }
         ).catch((err) => {
           console.log('error', err);
           this.setState({ isLoading: false });
@@ -183,7 +185,7 @@ class HotTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'}/>
+        fromScreen={'Feedscreen'} />
     ));
   }
 
@@ -195,10 +197,10 @@ class HotTabContent extends BaseComponent {
             return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)"/>;
+            return <Spinner color="rgb(230,230,230)" />;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
           }
           return null;
         })()}
@@ -209,7 +211,7 @@ class HotTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666"/>
+          <Spinner color="#666666" />
         </View>
       );
     }
@@ -218,7 +220,7 @@ class HotTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover}/>
+      <View style={styles.refreshingCover} />
     );
   }
 
@@ -256,21 +258,22 @@ class HotTabContent extends BaseComponent {
         <Image
           source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
           style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
-          resizeMode={'stretch'}/>
+          resizeMode={'stretch'} />
       </View>
     );
   }
 
   renderColumns() {
     return (
-      <View style={{
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: deviceWidth,
-        justifyContent: 'flex-end',
-        alignSelf: 'center'
-      }}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          width: deviceWidth,
+          justifyContent: 'flex-end',
+          alignSelf: 'center',
+        }}>
         <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
@@ -292,7 +295,7 @@ class HotTabContent extends BaseComponent {
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
           title={emptyTitle}
-          subtitle={emptySubtitle} icon={noResultsIcon}/>
+          subtitle={emptySubtitle} icon={noResultsIcon} />
       </View>
     );
   }
@@ -301,7 +304,7 @@ class HotTabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
-          ref={ c => this.scrollView = c }
+          ref={c => this.scrollView = c}
           style={{ flex: 1 }}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
@@ -318,54 +321,57 @@ class HotTabContent extends BaseComponent {
   _renderLoader() {
     return (
       <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
-        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor}/>
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
       </View>
 
-    )
+    );
   }
 
   _renderFilterView() {
-    const { myFeedType } = this.props;
+    const { myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery } = this.props;
     return (
-      <FiltersView currentFeedTab={myFeedType}/>
-    )
+      <FiltersView
+        currentFeedTab={myFeedType}
+        toggleFiltersMenus={toggleFiltersMenus}
+        getFeed={this._getFeed}
+        filtersGender={filtersGender}
+        changeFiltersGender={changeFiltersGender}
+        defaultQuery={defaultFilterQuery} />
+    );
   }
 
   _renderFeedFilters() {
     const { query } = this.props;
     return (
-      <FeedFilters query={query} getFeed={this._getFeed}/>
-    )
+      <FeedFilters query={query} getFeed={this._getFeed} />
+    );
   }
 
   componentDidUpdate(prevProps) {
-    const {isFilterMenuOpen} = this.props
-    if(this.scrollView && prevProps.isFilterMenuOpen !== isFilterMenuOpen && !isFilterMenuOpen) {
-      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false}), 0)
+    const { isFiltersMenuOpen } = this.props;
+    if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
+      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
     }
   }
 
   render() {
-    const { isFilterMenuOpen, flatLooks, isLoading } = this.props
+    const { isFiltersMenuOpen, flatLooks, isLoading } = this.props;
     if (isLoading) {
       return this._renderLoader();
+    } else if (isFiltersMenuOpen) {
+      return (
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+          { this._renderFilterView() }
+        </View>
+      );
     } else {
-      if(isFilterMenuOpen) {
-        return (
-          <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-            { this._renderFilterView() }
-          </View>
-        );
-      } else {
-        return (
-          <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-            {this._renderFeedFilters()}
-            { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
-          </View>
-        );
-      }
+      return (
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+          {this._renderFeedFilters()}
+          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+        </View>
+      );
     }
-
   }
 }
 
@@ -406,7 +412,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     width: deviceWidth,
     position: 'absolute',
-    top: 0
+    top: 0,
   },
 });
 

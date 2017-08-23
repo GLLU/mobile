@@ -9,13 +9,11 @@ import {
 } from 'react-native'
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-const whiteMarker = require('../../../images/markers/tag_green.png');
-const whiteMarkerWithBorder = require('../../../images/markers/tag_red.png');
-const greenMarkerWithBorder = require('../../../images/markers/tag_red_circle.png');
-const greenMarker = require('../../../images/markers/tag_green_Circle.png');
+const validMarker = require('../../../images/markers/tag_green.png');
+const invalidMarker = require('../../../images/markers/tag_red.png');
 
-const TAG_WIDTH = 35;
-const TAG_HEIGHT = 35;
+const TAG_WIDTH = 50;
+const TAG_HEIGHT = 50;
 
 const BORDER_WIDTH = 5;
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
@@ -23,17 +21,33 @@ const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   itemBgImage: {
+    height: TAG_HEIGHT - 10,
+    width: TAG_WIDTH,
+    top: 5,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    resizeMode: 'contain',
+  },
+  selectedItem: {
+    backgroundColor: 'rgba(207,207,207,0.7)',
+    borderWidth: 0.5,
+    position: 'absolute',
+    borderColor: 'black',
+    borderRadius: TAG_HEIGHT / 2,
     height: TAG_HEIGHT,
     width: TAG_WIDTH,
-    resizeMode: 'contain'
   },
   text: {
     fontWeight: '500',
     fontSize: new FontSizeCalculator(18).getSize(),
     color: '#FFFFFF',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
-  itemMarker: {
+  unselectedItem: {
     position: 'absolute',
     height: TAG_HEIGHT,
     width: TAG_WIDTH,
@@ -102,23 +116,19 @@ class Tag extends Component {
     this._setupPanResponder(locationX, locationY);
   }
 
-  getCurrentItemStatus(item) {
-    return item.brand && item.category !== null ? greenMarker : greenMarkerWithBorder
-  }
-
-  otherItemStatus(item) {
-    return item.brand && item.category !== null ? whiteMarker : whiteMarkerWithBorder
+  _getMarkerIcon(item) {
+    return item.brand && item.category !== null ? validMarker : invalidMarker;
   }
 
   render() {
     const {item, currItemId} = this.props
     const layout = this._pan.getLayout();
-    const markerImage = currItemId === item.id ? this.getCurrentItemStatus(item) : this.otherItemStatus(item);
+    const markerImage = this._getMarkerIcon(item);
     if (item) {
       return (
         <Animated.View
           {...this.panResponder.panHandlers}
-          style={[layout, styles.itemMarker, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}]}>
+          style={[layout, currItemId === item.id ? styles.selectedItem : styles.unselectedItem, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}]}>
           <Image source={markerImage}
                  style={styles.itemBgImage}/>
         </Animated.View>

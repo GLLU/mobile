@@ -5,16 +5,12 @@ import asScreen from '../common/containers/Screen';
 import UploadLookScreen from './UploadLookScreen';
 import Utils from '../../utils';
 import {
-  updateLookItem,
-  publishLookItem,
-} from '../../actions/uploadLook';
-import {
   createLookItem,
   setTagPosition,
   removeLookItem,
   publishLook,
   clearUploadLook
-} from '../../actions/uploadLookB';
+} from '../../actions/uploadLook';
 import {
   getBestMatchFeed,
   clearFeed,
@@ -39,7 +35,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const {lookId, image, items, localFilePath, isUploading} = state.uploadLook;
+  const {lookId, image, items, isUploading} = state.uploadLook;
 
   if (!image){
     return {};

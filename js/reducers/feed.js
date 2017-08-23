@@ -1,4 +1,4 @@
-import {SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA, FINISH_FETCHING, START_FETCHING} from '../actions/feed';
+import {SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA, FINISH_FETCHING, START_FETCHING, CLOSE_FEED_FILTER, OPEN_FEED_FILTER, CHANGE_FILTERS_GENDER} from '../actions/feed';
 import {REHYDRATE} from 'redux-persist/constants';
 
 const initialState = {
@@ -17,6 +17,8 @@ const initialState = {
         number: 1,
       },
     },
+    isFiltersMenuOpen: false,
+    filtersGender: '',
     isLoading: true,
   },
   following: {
@@ -34,6 +36,8 @@ const initialState = {
         number: 1,
       },
     },
+    isFiltersMenuOpen: false,
+    filtersGender: '',
     isLoading: true,
   },
   whatsHot: {
@@ -51,6 +55,8 @@ const initialState = {
         number: 1,
       },
     },
+    isFiltersMenuOpen: false,
+    filtersGender: '',
     isLoading: true,
   },
 
@@ -86,6 +92,26 @@ export default function (state = initialState, action) {
         },
       };
     }
+   case OPEN_FEED_FILTER: {
+     const feedType = action.feedType
+      return {
+        ...state,
+        [feedType]: {
+          ...state[feedType],
+          isFiltersMenuOpen: true,
+        },
+      };
+    }
+   case CLOSE_FEED_FILTER: {
+     const feedType = action.feedType
+      return {
+        ...state,
+        [feedType]: {
+          ...state[feedType],
+          isFiltersMenuOpen: false,
+        },
+      };
+    }
     case FINISH_FETCHING: {
       const feedType = action.feedType
       return {
@@ -95,6 +121,16 @@ export default function (state = initialState, action) {
           isLoading: false,
         },
       };
+    }
+    case CHANGE_FILTERS_GENDER: {
+      const { feedType, gender } = action.payload
+      return {
+        ...state,
+        [feedType]: {
+          ...state[feedType],
+          filtersGender: gender,
+        },
+      }
     }
     default:
       return state;

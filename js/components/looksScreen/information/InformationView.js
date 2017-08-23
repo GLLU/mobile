@@ -29,9 +29,6 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontSize: 16,
   },
-  separatorContainer: {
-    paddingHorizontal: 50
-  },
   separator: {
     backgroundColor: Colors.separatorGray,
     height: 1
@@ -94,9 +91,7 @@ class InformationView extends Component {
                 {this.props.description}
               </Text>
             </View>
-            <View style={styles.separatorContainer}>
-              <Separator style={styles.separator}/>
-            </View>
+            <Separator style={styles.separator}/>
             <View style={{alignItems: 'center'}}>
             <ItemBrandsView style={{ paddingVertical: 10}} brands={brands}/>
             </View>

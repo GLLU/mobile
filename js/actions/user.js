@@ -126,17 +126,11 @@ export function emailSignUp(data) {
       }).catch((err) => {
         if (err.errors && err.errors.length > 0) {
           const pointers = [];
-          let errorString = '';
           err.errors.map((error) => {
             pointers.push(_.capitalize(_.last(_.split(error.source.pointer, '/'))));
           });
-          if (pointers.length === 1) {
-            dispatch(showFatalError(`${pointers[0]} has already taken`));
-          } else {
-            for (let i = 0; i < pointers.length - 1; i++) {
-              errorString += `${pointers[i]} & `;
-            }
-            dispatch(showFatalError(`${errorString + pointers[pointers.length - 1]} are already taken`));
+          if (pointers.length > 0) {
+            dispatch(showFatalError(`${pointers[0]} ${err.errors[0].detail}`));
           }
         } else {
           dispatch(showFatalError(`Unknown error: ${err}`));

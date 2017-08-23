@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform, Text, Image } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { addNewLook } from '../../actions/uploadLookB';
+import { addNewLook } from '../../actions/uploadLook';
 import SocialShare from '../../lib/social';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import glluTheme from '../../themes/gllu-theme';
