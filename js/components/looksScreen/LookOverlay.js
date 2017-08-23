@@ -109,9 +109,9 @@ class LookOverlay extends Component {
   }
 
   _onShareClicked() {
-    const { logEvent } = this.props;
+    const { logEvent, look } = this.props;
     logEvent('LookScreen', { name: 'Share clicked' });
-    const message = SocialShare.generateShareMessage(formatInvitationMessage());
+    const message = SocialShare.generateShareLookMessage(look.id);
     SocialShare.nativeShare(message);
   }
 

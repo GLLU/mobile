@@ -1,6 +1,7 @@
 import nativeShare from './nativeShare'
 import facebookShare from './facebookShare'
 import Config from 'react-native-config';
+import i18n from 'react-native-i18n';
 
 class SocialShare {
 
@@ -9,6 +10,13 @@ class SocialShare {
       text,
       url
     }
+  }
+
+  generateShareLookMessage(lookId: number) {
+    return {
+      text: i18n.t('SHARE_LOOK'),
+      url: `${Config.HOME_PAGE}looks/${lookId}`,
+    };
   }
 
   nativeShare(shareData) {
