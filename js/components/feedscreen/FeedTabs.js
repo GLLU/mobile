@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import {TabViewAnimated, TabBar, TabViewPagerPan} from 'react-native-tab-view';
 import FollowingTabContent from './FollowingTabContentContainer';
 import BestMatchTabContent from './BestMatchTabContentContainer';
 import WhatsHotTabContent from './WhatsHotTabContentContainer';
@@ -36,7 +36,7 @@ class FeedTabs extends Component {
     switch (route.key) {
       case FEED_TYPE_FOLLOWING:
         return (<FollowingTabContent
-          navigateTo={navigateTo}
+          navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 0}
           showBottomCameraButton={showBottomCameraButton}/>);
       case FEED_TYPE_BEST_MATCH:
         return (<BestMatchTabContent
@@ -44,12 +44,16 @@ class FeedTabs extends Component {
           showBottomCameraButton={showBottomCameraButton}/>);
       case FEED_TYPE_WHATS_HOT:
         return (<WhatsHotTabContent
-          navigateTo={navigateTo}
+          navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 2}
           showBottomCameraButton={showBottomCameraButton}/>);
       default:
         return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
           ;
     }
+  };
+
+  _renderPager = (props) => {
+    return <TabViewPagerPan {...props} swipeVelocityThreshold={50} swipeDistanceThreshold={30} />
   };
 
   _toggleFilterMenu() {
@@ -75,6 +79,7 @@ class FeedTabs extends Component {
           style={styles.tabViewAnimatedContainer}
           navigationState={feedsRoute}
           renderScene={this._renderScene}
+          renderPager={this._renderPager}
           renderHeader={this._renderHeader}
           onRequestChangeTab={this.props.handleIndexChange}
         />

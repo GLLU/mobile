@@ -99,12 +99,14 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.isTabOnFocus && this.state.showBodyTypeModal) {
-      this.props.showBottomCameraButton(false);
-    } else {
-      this.props.showBottomCameraButton(true);
+    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
+    if (isTabOnFocus) {
+      if(this.state.showBodyTypeModal || isFiltersMenuOpen){
+        showBottomCameraButton(false);
+      } else {
+        showBottomCameraButton(true);
+      }
     }
-    const { isFiltersMenuOpen } = this.props;
     if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
       _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
     }
@@ -126,10 +128,6 @@ class BestMatchTabContent extends BaseComponent {
     if (nextProps.clearedField) {
       this.currPosition = 0;
       this.setState({ noMoreData: false });
-    }
-
-    if (this.props.isFiltersMenuOpen !== nextProps.isFiltersMenuOpen) {
-      this.props.showBottomCameraButton(!nextProps.isFiltersMenuOpen);
     }
   }
 
