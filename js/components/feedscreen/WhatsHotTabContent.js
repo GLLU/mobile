@@ -109,10 +109,6 @@ class HotTabContent extends BaseComponent {
       this.currPosition = 0;
       this.setState({ noMoreData: false });
     }
-
-    if (this.props.isFiltersMenuOpen !== nextProps.isFiltersMenuOpen) {
-      this.props.showBottomCameraButton(!nextProps.isFiltersMenuOpen);
-    }
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -348,7 +344,14 @@ class HotTabContent extends BaseComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { isFiltersMenuOpen } = this.props;
+    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
+    if (isTabOnFocus) {
+      if(isFiltersMenuOpen) {
+        showBottomCameraButton(false);
+      } else {
+        showBottomCameraButton(true);
+      }
+    }
     if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
       _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
     }
