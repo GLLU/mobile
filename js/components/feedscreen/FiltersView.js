@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     width: generateAdjustedSize(85),
     height: generateAdjustedSize(20),
     backgroundColor: Colors.white,
-    borderRadius: 20,
+    borderRadius: generateAdjustedSize(10),
     marginHorizontal: 10,
   },
   sliderThumb: {
