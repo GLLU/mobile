@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Image,
@@ -15,15 +15,16 @@ import i18n from 'react-native-i18n';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
 import SwipeWizardOverlay from './SwipeWizardOverlay';
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import * as _ from 'lodash';
 import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
 import Spinner from '../loaders/Spinner';
-import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
+const closeIcon = require('../../../images/icons/cancelEdit.png');
 
 const config = {
   velocityThreshold: 0.3,
@@ -210,7 +211,7 @@ class LooksScreen extends Component {
       return (
         <View style={{ position: 'absolute', top: 0, width, height: 30 }}>
           <TouchableOpacity onPress={() => this.onSwipe('SWIPE_DOWN')} style={{ width: 50, alignSelf: 'center' }}>
-            <Image source={arrowUp} resizeMode={'contain'} style={{ width: 25, height: 40, alignSelf: 'center' }} />
+            <Image source={arrowUp} resizeMode={'contain'} style={{ width: 25, height: 40, alignSelf: 'center' }}/>
           </TouchableOpacity>
         </View>
       );
@@ -221,7 +222,7 @@ class LooksScreen extends Component {
     return (
       <View style={{ position: 'absolute', bottom: 0, width, height: 30 }}>
         <TouchableOpacity onPress={() => this.onSwipe('SWIPE_UP')} style={{ width: 50, alignSelf: 'center' }}>
-          <Image source={arrowDown} resizeMode={'contain'} style={{ width: 25, height: 40, alignSelf: 'center' }} />
+          <Image source={arrowDown} resizeMode={'contain'} style={{ width: 25, height: 40, alignSelf: 'center' }}/>
         </TouchableOpacity>
       </View>
     );
@@ -270,19 +271,37 @@ class LooksScreen extends Component {
         {showShowArrow ? this.renderUpArrow() : null}
         {showShowArrow ? this.renderDownArrow() : null}
 
-        {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
+        {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard}/> : null}
       </GestureRecognizer>
     );
   }
 
   _renderRetailerMessage = () => {
     return (
-      <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: 'black', justifyContent: 'center', height: generateAdjustedSize(100) }}>
+      <View style={{
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+        backgroundColor: 'black',
+        justifyContent: 'center',
+        height: generateAdjustedSize(100)
+      }}>
+        <TouchableOpacity
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+          style={{position: 'absolute', top: 6, right: 6}}
+          onPress={this._onCloseRetailerMessage}>
+          <Image style={{width: 16, height: 16}} resizeMode={'contain'} source={closeIcon} />
+        </TouchableOpacity>
+
         <Text style={styles.noItemLink}>{i18n.t('NO_DIRECT_LINK')}</Text>
       </View>
     );
   }
 
+  _onCloseRetailerMessage = () => {
+    this.setState({ showRetailerMessage: false });
+  }
 
   renderImage(look: object, index: boolean) {
     const showShowArrow = this.shouldRenderArrows();
@@ -321,7 +340,7 @@ class LooksScreen extends Component {
           {showShowArrow ? this.renderUpArrow() : null}
           {showShowArrow ? this.renderDownArrow() : null}
 
-          {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard} /> : null}
+          {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard}/> : null}
           {showRetailerMessage ? this._renderRetailerMessage() : null}
 
         </ImageWrapper>
@@ -370,14 +389,14 @@ class LooksScreen extends Component {
       <View style={{ position: 'absolute', top: 0, height, width }}>
         <Image
           resizeMode={'stretch'} source={{ uri: previewUri }} style={{
-            position: 'absolute',
-            top: 0,
-            height,
-            width,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Spinner color="grey" />
+          position: 'absolute',
+          top: 0,
+          height,
+          width,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <Spinner color="grey"/>
         </Image>
       </View>
     );

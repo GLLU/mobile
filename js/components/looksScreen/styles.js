@@ -13,6 +13,7 @@ export default StyleSheet.create({
   },
   noItemLink: {
     fontSize: generateAdjustedSize(16),
+    backgroundColor: 'transparent',
     color: Colors.white,
     textAlign: 'center',
     padding: 5,
