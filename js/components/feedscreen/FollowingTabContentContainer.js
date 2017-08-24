@@ -26,6 +26,7 @@ const mapStateToProps = (state) => {
     body_type: '',
     followings: true,
   };
+
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.following.flatLooksIdData, state.looks.flatLooksData);

@@ -67,7 +67,7 @@ export function getBestMatchFeed(query: object) {
   return (dispatch, getState) => {
     const newQuery = Object.assign({}, query, {
       gender: getState().user.gender,
-      body_type: getState().user.user_size.body_type
+      body_type: getState().user.user_size ? getState().user.user_size.body_type : ''
     });
     return dispatch(getFeed(newQuery, FEED_TYPE_BEST_MATCH));
   };

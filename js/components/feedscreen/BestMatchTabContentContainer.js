@@ -32,6 +32,7 @@ const mapStateToProps = (state, ownProps) => {
     gender: '',
     body_type: '',
   };
+
   if (state.user.user_size) {
     const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
     const myGender = state.user.gender ? state.user.gender : '';
