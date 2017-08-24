@@ -98,8 +98,8 @@ android {
         applicationId "com.infash"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 5
-        versionName "1.2.2"
+        versionCode 6
+        versionName "1.2.3"
         multiDexEnabled true
         manifestPlaceholders = [onesignal_app_id: "9dafae92-eb15-420d-b362-0518a6b5234e",
                                 onesignal_google_project_number: "REMOTE"]

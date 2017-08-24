@@ -10,9 +10,10 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Slider
 } from 'react-native';
 import I18n from 'react-native-i18n';
-import Slider from 'react-native-slider';
+import SliderRNS from 'react-native-slider';
 import _ from 'lodash';
 import BaseComponent from '../common/base/BaseComponent';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -171,12 +172,23 @@ class FiltersView extends BaseComponent {
     const { sliderValue } = this.state;
     const maleColor = sliderValue === 0 ? maleIconActive : maleIcon;
     const femaleColor = sliderValue === 1 ? femaleIconActive : femaleIcon;
-    const thumbImage = this.getThumbImage();
     return (
       <View style={styles.sliderRow}>
         <TouchableOpacity onPress={() => this.handleSlide(0)}>
           <Image source={maleColor} resizeMode={'contain'} style={styles.genderImage} />
         </TouchableOpacity>
+        {this._renderSliderForEachPlatform()}
+        <TouchableOpacity onPress={() => this.handleSlide(1)}>
+          <Image source={femaleColor} resizeMode={'contain'} style={styles.genderImage} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  _renderSliderForEachPlatform() {
+    const thumbImage = this.getThumbImage();
+    if(Platform.OS === 'ios') {
+      return (
         <Slider
           maximumTrackTintColor={'transparent'}
           minimumTrackTintColor={'transparent'}
@@ -187,11 +199,21 @@ class FiltersView extends BaseComponent {
           thumbImage={thumbImage}
           onSlidingComplete={value => this.handleSlide(value)}
           thumbStyle={styles.sliderThumb}/>
-        <TouchableOpacity onPress={() => this.handleSlide(1)}>
-          <Image source={femaleColor} resizeMode={'contain'} style={styles.genderImage} />
-        </TouchableOpacity>
-      </View>
-    );
+      )
+    } else {
+      return (
+        <SliderRNS
+          maximumTrackTintColor={'transparent'}
+          minimumTrackTintColor={'transparent'}
+          value={this.state.sliderValue}
+          maximumValue={1}
+          step={0.5}
+          style={styles.slider}
+          thumbImage={thumbImage}
+          onSlidingComplete={value => this.handleSlide(value)}
+          thumbStyle={styles.sliderThumb}/>
+      )
+    }
   }
 
   render() {

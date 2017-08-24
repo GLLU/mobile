@@ -47,13 +47,8 @@ class FeedTabs extends Component {
           navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 2}
           showBottomCameraButton={showBottomCameraButton}/>);
       default:
-        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>
-          ;
+        return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>;
     }
-  };
-
-  _renderPager = (props) => {
-    return <TabViewPagerPan {...props} swipeVelocityThreshold={50} swipeDistanceThreshold={30} />
   };
 
   _toggleFilterMenu() {
@@ -79,7 +74,6 @@ class FeedTabs extends Component {
           style={styles.tabViewAnimatedContainer}
           navigationState={feedsRoute}
           renderScene={this._renderScene}
-          renderPager={this._renderPager}
           renderHeader={this._renderHeader}
           onRequestChangeTab={this.props.handleIndexChange}
         />
