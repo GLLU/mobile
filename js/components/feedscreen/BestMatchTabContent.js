@@ -433,9 +433,9 @@ const
       marginHorizontal: 16,
       marginVertical: 12,
       textAlign: 'center',
-      fontFamily: Fonts.contentFont,
+      fontFamily: Fonts.boldContentFont,
       color: Colors.black,
-      fontSize: generateAdjustedSize(16),
+      fontSize: generateAdjustedSize(18),
     },
     tab: {
       backgroundColor: '#FFFFFF',

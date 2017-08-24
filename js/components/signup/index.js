@@ -24,7 +24,7 @@ import Spinner from '../loaders/Spinner';
 import {formatAvatar} from '../../utils/UploadUtils';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-const background = require('../../../images/backgrounds/hands.png');
+const background = require('../../../images/backgrounds/signIn.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
 
 import {

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   publishBtnText: {
     color: Colors.secondaryColor,
     textAlign: 'center',
-    fontSize: generateAdjustedSize(18),
+    fontSize: generateAdjustedSize(20),
     fontFamily: Fonts.boldContentFont,
   },
   addItemContainer: {

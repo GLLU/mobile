@@ -23,7 +23,7 @@ import Header from "../common/headers/Header";
 
 const logo = require('../../../images/logo/inFashLogo.png');
 
-const background = require('../../../images/backgrounds/bags.png');
+const background = require('../../../images/backgrounds/signIn.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
 
 import {emailRule, passwordRule} from '../../validators';
