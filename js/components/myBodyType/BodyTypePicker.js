@@ -38,6 +38,9 @@ class BodyTypePicker extends Component {
   _bodyTypeChange(index) {
     const { gender, bodyTypes } = this.props;
     const bodyType = bodyTypes[gender][index];
+    if (!bodyType) {
+      return;
+    }
     this.props.logEvent('ChooseBodyTypeScreen', { name: 'Select bodyType', bodyType: bodyType.name });
     setTimeout(() => {
       let data = {
