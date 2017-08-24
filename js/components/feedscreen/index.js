@@ -234,7 +234,7 @@ class FeedPage extends Component {
 
   render() {
 
-    const { navigateTo, gotNewNotifications, user, balance, showWalletBadge } = this.props;
+    const { balance, showWalletBadge } = this.props;
 
     return (
       <View style={styles.container}>
