@@ -88,7 +88,6 @@ export default class CommentInput extends BaseComponent {
           onChangeText={this.onChange}
           value={this.state.value}
           multiline
-          blurOnSubmit={false}
         underlineColorAndroid="transparent" />
         <SolidButton
           label="SEND" disabled={_.isEmpty(this.state.value)}
