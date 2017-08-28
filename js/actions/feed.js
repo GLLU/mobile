@@ -44,13 +44,16 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
         let { looks, meta } = multiData[0];
         const videoLook = multiData[1].looks[0];
 
-        // If the look has been retrieved in getLooks service, don't add the video retrieved
-        const videoExistsOnLooks = looks.filter(function( obj ) {
-          return obj.id === videoLook.id;
-        })[0];
+        if (videoLook) {
 
-        if (!videoExistsOnLooks && videoLook) {
-          looks.splice(2, 0, videoLook);
+          // If the look has been retrieved in getLooks service, don't add the video retrieved
+          const videoExistsOnLooks = looks.filter(function (obj) {
+            return obj.id === videoLook.id;
+          })[0];
+
+          if (!videoExistsOnLooks) {
+            looks.splice(2, 0, videoLook);
+          }
         }
 
         const normalizedLooksData = normalize(looks, [lookSchema]);
