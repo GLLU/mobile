@@ -161,6 +161,12 @@ class LooksScreen extends Component {
 
   onSwipe(gestureName: string) {
     this.props.logEvent('LookScreen', { name: 'user swiped', type: gestureName });
+    const { onHideSwipeWizard, showSwipeWizard } = this.props;
+
+    if (showSwipeWizard) {
+      onHideSwipeWizard();
+    }
+
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
