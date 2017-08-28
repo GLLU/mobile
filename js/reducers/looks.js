@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { CLEAR_FEED_DATA, SET_FLAT_LOOKS_DATA } from '../actions/feed';
-import { LOOK_LIKE, LOOK_UNLIKE } from '../actions/likes';
+import { LOOK_LIKE, LOOK_UNLIKE } from '../actions/look';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
 
 const initialState = {

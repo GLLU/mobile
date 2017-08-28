@@ -39,3 +39,7 @@ export function unlike(id) {
   };
 }
 
+export function updateFavorite(isFavorite, lookId) {
+
+}
+

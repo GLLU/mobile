@@ -8,7 +8,7 @@ import VideoWithCaching from "./media/VideoWithCaching";
 import ImageWrapper from "./media/ImageWrapper";
 import withAnalytics from "../common/analytics/WithAnalytics";
 import { connect } from "react-redux";
-import { likeUpdate, unlikeUpdate } from "../../actions/likes";
+import { likeUpdate, unlikeUpdate } from "../../actions/look";
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({

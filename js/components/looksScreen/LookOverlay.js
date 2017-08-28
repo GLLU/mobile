@@ -196,7 +196,7 @@ class LookOverlay extends Component {
   }
 
   render() {
-    const { look, lookType, toggleLike, goBack } = this.props;
+    const { look, lookType, toggleLike, toggleFavorite, goBack } = this.props;
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -220,10 +220,12 @@ class LookOverlay extends Component {
                 hasDescription={!_.isEmpty(look.description)}
                 isInformationActive={this.state.isInformationActive}
                 toggleDescription={this._toggleInformation}
+                isFavorite={look.isFavorite}
                 liked={look.liked}
                 likes={look.likes}
                 comments={look.comments}
                 toggleLike={toggleLike}
+                toggleFavorite={toggleFavorite}
                 toggleMenu={() => this._toggleMenuView()}
                 items={look.items}
                 activeItem={this.state.activeItem}

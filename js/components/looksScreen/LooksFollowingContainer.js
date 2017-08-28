@@ -4,6 +4,7 @@ import asScreen from '../common/containers/Screen';
 import {connect} from 'react-redux';
 import LooksScreen from './LooksScreen';
 import {likeUpdate, unlikeUpdate, loadMore, getLookLikes} from '../../actions';
+import {updateFavorite} from '../../actions/look';
 import {getLooksById} from '../../utils/FeedUtils';
 import {reportAbuse} from '../../actions/looks';
 import { hideSwipeWizard } from '../../actions/user';
@@ -13,6 +14,7 @@ import {FEED_TYPE_FOLLOWING} from '../../actions/feed';
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateFavorite: (isFavorite, lookId) => dispatch(updateFavorite(isFavorite, lookId)),
     editNewLook: id => dispatch(editNewLook(id)),
     likeUpdate: id => dispatch(likeUpdate(id)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),

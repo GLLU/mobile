@@ -118,6 +118,11 @@ class LooksScreen extends Component {
     }
   }
 
+  _toggleFavorite = (isFavorite: boolean, lookId: number) => {
+    this.props.logEvent('LookScreen', { name: 'Favorite click', isFavorite: `${isFavorite}` });
+    this.props.updateFavorite(isFavorite, lookId);
+  }
+
   _goToProfile(look: object) {
     this.props.navigateTo('profileScreen', { user: look });
   }
@@ -265,6 +270,7 @@ class LooksScreen extends Component {
           goToProfile={this._goToProfile}
           goToLikes={this._goToLikes}
           goToEdit={this._goToEdit}
+          toggleFavorite={isFavorite => this._toggleFavorite(isFavorite, look.id)}
           toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
           reportAbuse={lookId => this.props.reportAbuse(lookId)}
         />
@@ -334,6 +340,7 @@ class LooksScreen extends Component {
             goToLikes={this._goToLikes}
             goToEdit={this._goToEdit}
             onInvalidItemPressed={(showMessage) => this.setState({ showRetailerMessage: showMessage })}
+            toggleFavorite={isFavorite => this._toggleFavorite(isFavorite, look.id)}
             toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
             reportAbuse={lookId => this.props.reportAbuse(lookId)}
           />

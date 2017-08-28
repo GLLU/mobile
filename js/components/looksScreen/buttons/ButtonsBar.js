@@ -12,6 +12,8 @@ import LikeButton from './LikeButton';
 import ItemDataLine from '../common/ItemDataLine';
 import VideoItemLine from '../common/VideoItemLine';
 import BaseComponent from '../../common/base/BaseComponent';
+import FooterButton from "./FooterButton";
+
 
 const styles = StyleSheet.create({
   container: {
@@ -42,6 +44,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 });
+
+const notFavoriteIcon = require('../../../../images/icons/notFavorite.png');
+const favoriteIcon = require('../../../../images/icons/favorite.png');
 
 export default class ButtonsBar extends BaseComponent {
   static propTypes = {
@@ -112,13 +117,18 @@ export default class ButtonsBar extends BaseComponent {
 
   render() {
     const { direction } = this.props;
-    const { lookType, hasDescription } = this.props;
+    const { lookType, hasDescription, isFavorite } = this.props;
     const { comments, isCommentsActive } = this.props;
-    const { likes, liked, toggleLike, onNumberPress } = this.props;
+    const { likes, liked, toggleLike, onNumberPress, toggleFavorite } = this.props;
     return (
       <View style={[styles.container, styles.row]}>
         <View style={[styles.rightContainer, styles[direction]]}>
           { lookType === 'video' ? this.renderVideoItems() : null }
+
+          <FooterButton
+            icon={ isFavorite ? favoriteIcon : notFavoriteIcon}
+            onPress={() => toggleFavorite(!isFavorite)} />
+
           <LikeButton liked={liked} likes={likes} onIconPress={toggleLike} onNumberPress={onNumberPress} />
           <CommentsButton count={comments} isActive={isCommentsActive} onPress={this._onBubbleClicked} />
           { this._renderInformationButton(hasDescription) }
