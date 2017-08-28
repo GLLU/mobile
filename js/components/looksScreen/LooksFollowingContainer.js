@@ -4,7 +4,7 @@ import asScreen from '../common/containers/Screen';
 import {connect} from 'react-redux';
 import LooksScreen from './LooksScreen';
 import {likeUpdate, unlikeUpdate, loadMore, getLookLikes} from '../../actions';
-import {getLooksById} from '../../utils/FeedUtils';
+import {getLooksById, getLooksWithUsersObj} from '../../utils/FeedUtils';
 import {reportAbuse} from '../../actions/looks';
 import { hideSwipeWizard } from '../../actions/user';
 import {editNewLook} from '../../actions/uploadLook';
@@ -25,12 +25,13 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = getLooksById(state.feed.following.flatLooksIdData, state.looks.flatLooksData);
+  const flatLooksFeedDataWithUsersObjs = getLooksWithUsersObj(flatLooksFeedData, state.users.usersData);
   return {
     flatLook: state.looks.flatLooksData[ownProps.navigation.state.params.lookId],
     openComments: ownProps.navigation.state.params.openComments ? ownProps.navigation.state.params.openComments : false,
     isLoading: state.loader.loading,
     showSwipeWizard: state.user.showSwipeWizard,
-    flatLooksData: flatLooksFeedData,
+    flatLooksData: flatLooksFeedDataWithUsersObjs,
     meta: state.feed.following.meta,
     query: state.feed.following.query,
     userLooks: state.userLooks.userLooksData,

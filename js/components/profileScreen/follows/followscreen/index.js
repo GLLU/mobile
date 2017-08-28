@@ -7,6 +7,7 @@ import asScreen from '../../../common/containers/Screen';
 import ListScreen from '../../../common/lists/ListScreen';
 import UserActionRow from '../../../common/lists/UserActionRow';
 import EmptyStateScreen from '../../../common/EmptyStateScreen';
+import { getFollowsWithUsersObj } from '../../../../utils/UsersUtils';
 
 class FollowScreen extends Component {
 
@@ -98,10 +99,13 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  follows: state.userFollows.userFollowsData,
-  isLoading: state.userFollows.isLoading,
-  currId: state.userFollows.currId,
-});
+const mapStateToProps = state => {
+  const followsDataWithUsersObjs = getFollowsWithUsersObj(state.userFollows.userFollowsData, state.users.usersData);
+  return{
+    follows: followsDataWithUsersObjs,
+    isLoading: state.userFollows.isLoading,
+    currId: state.userFollows.currId,
+  }
+};
 
 export default connect(mapStateToProps, bindAction)(asScreen(FollowScreen));

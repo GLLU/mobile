@@ -1,6 +1,10 @@
 // @flow
 
 import rest from '../api/rest';
+import { normalize } from 'normalizr';
+import { followeeSchema } from '../schemas/schemas';
+import { setUsers } from './users';
+import * as followMapper from '../mappers/followMapper';
 
 // Actions
 export const SET_USER_FOLLOWS_DATA = 'SET_USER_FOLLOWS_DATA';
@@ -55,9 +59,13 @@ export function getUserFollowsData(id, pageNumber = 1, pageSize = 25) {
       },
     }, {}, (err, userFollowsData) => {
       if (!err && userFollowsData) {
+        const userFollowsDataMapped = userFollowsData.follows.map(followMapper.mapFollow);
+        const normalizedUserFollowsData = normalize(userFollowsDataMapped, [followeeSchema]);
+        dispatch(setUsers(normalizedUserFollowsData.entities.users))
+        const serializedFollowsArray = _.map(normalizedUserFollowsData.result, (followId) => normalizedUserFollowsData.entities.follows[followId])
         const followsData = {
           currId: id,
-          follows: userFollowsData.follows,
+          follows: serializedFollowsArray,
         };
         dispatch(setUserFollowsData(followsData));
       }

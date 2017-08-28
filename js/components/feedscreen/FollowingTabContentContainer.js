@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 import FollowingTabContent from './FollowingTabContent';
 import { showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage } from '../../actions';
-import { getLooksById } from '../../utils/FeedUtils';
+import { getLooksById, getLooksWithUsersObj } from '../../utils/FeedUtils';
 import { FEED_TYPE_FOLLOWING, toggleFiltersMenus, changeFiltersGender } from '../../actions/feed';
 
 function mapDispatchToProps(dispatch, ownProps) {
@@ -30,11 +30,12 @@ const mapStateToProps = (state) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.following.flatLooksIdData, state.looks.flatLooksData);
+  const flatLooksFeedDataWithUsersObjs = getLooksWithUsersObj(flatLooksFeedData, state.users.usersData);
   return {
     isLoading: state.feed.following.isLoading,
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
-    flatLooks: flatLooksFeedData,
+    flatLooks: flatLooksFeedDataWithUsersObjs,
     meta: state.feed.following.meta,
     query: state.feed.following.query,
     hasUserSize,

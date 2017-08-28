@@ -11,7 +11,7 @@ import {
 
 import { FEED_TYPE_BEST_MATCH, toggleFiltersMenus, changeFiltersGender } from '../../actions/feed';
 import { saveUserBodyShape } from '../../actions/myBodyMeasure';
-import { getLooksById } from '../../utils/FeedUtils';
+import { getLooksById, getLooksWithUsersObj } from '../../utils/FeedUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenBestMatch', params);
@@ -45,13 +45,14 @@ const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.hasChoosenBodyShape;
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
+  const flatLooksFeedDataWithUsersObjs = getLooksWithUsersObj(flatLooksFeedData, state.users.usersData);
   return {
     isLoading: state.feed.bestMatch.isLoading,
     currentBodyType: state.myBodyType.currentBodyType.body_type,
     isTabOnFocus: ownProps.isTabOnFocus,
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
-    flatLooks: flatLooksFeedData,
+    flatLooks: flatLooksFeedDataWithUsersObjs,
     meta: state.feed.bestMatch.meta,
     query: state.feed.bestMatch.query,
     hasUserSize,

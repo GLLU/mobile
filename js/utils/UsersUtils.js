@@ -1,9 +1,17 @@
 // @flow
 
-export function getUsersById(usersIds: array, usersData: object) {
-  return _.map(usersIds, (lookId, index) => {
-    const look = usersData[lookId];
-    return look;
+// export function getUsersById(usersIds: array, usersData: object) {
+//   return _.map(usersIds, (lookId, index) => {
+//     const look = usersData[lookId];
+//     return look;
+//   });
+// }
+
+export function getFollowsWithUsersObj(followsData: array, usersData: array) {
+  return _.map(followsData, (followee, index) => {
+    const followeeUserData = usersData[followee.followeeId];
+    const newLFollow = {...followee, followee: followeeUserData, user: usersData[followee.userId]}
+    return newLFollow;
   });
 }
 

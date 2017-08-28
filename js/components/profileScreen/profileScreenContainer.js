@@ -65,7 +65,6 @@ const mapStateToProps = (state, ownProps) => {
   const isMyProfile = userData.isMe;
   const userId = userData.id;
   const userSize = hasUserSize ? state.user.user_size : {};
-  console.log('userData',userData,)
   return {
     cameFromBallance: ownProps.navigation.state.params.cameFromBallance,
     userData,

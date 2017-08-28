@@ -26,7 +26,6 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
   const flatLooksFeedDataWithUsersObjs = getLooksWithUsersObj(flatLooksFeedData, state.users.usersData);
-  console.log('flatLooksFeedDataWithUsersObjs',flatLooksFeedDataWithUsersObjs)
   return {
     flatLook: state.looks.flatLooksData[ownProps.navigation.state.params.lookId],
     openComments: ownProps.navigation.state.params.openComments ? ownProps.navigation.state.params.openComments : false,

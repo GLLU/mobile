@@ -2,9 +2,9 @@
 
 import _ from 'lodash';
 import LooksService from '../services/looksService';
-import { normalize, arrayOf } from 'normalizr';
+import { normalize } from 'normalizr';
 import { unifyLooks } from '../utils/FeedUtils';
-import { lookSchema, lookListSchema } from '../schemas/schemas';
+import { lookSchema } from '../schemas/schemas';
 import { setUsers } from './users';
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';

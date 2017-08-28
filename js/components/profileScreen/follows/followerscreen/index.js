@@ -11,6 +11,7 @@ import UserActionRow from '../../../common/lists/UserActionRow';
 import { openCamera } from '../../../../lib/camera/CameraUtils';
 import { formatLook } from '../../../../utils/UploadUtils';
 import EmptyStateScreen from '../../../common/EmptyStateScreen';
+import { getFollowsWithUsersObj } from '../../../../utils/UsersUtils';
 
 class FollowerScreen extends Component {
 
@@ -129,10 +130,13 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  followers: state.userFollowers.userFollowersData,
+const mapStateToProps = state => {
+  const followersDataWithUsersObjs = getFollowsWithUsersObj(state.userFollowers.userFollowersData, state.users.usersData);
+  console.log('followersDataWithUsersObjs',followersDataWithUsersObjs)
+  return{
+  followers: followersDataWithUsersObjs,
   isLoading: state.userFollowers.isLoading,
   currId: state.userFollowers.currId,
-});
+}};
 
 export default connect(mapStateToProps, bindAction)(asScreen(FollowerScreen));

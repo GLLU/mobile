@@ -1,5 +1,4 @@
 import * as actions from '../actions/follows';
-import * as followMapper from '../mappers/followMapper';
 import * as _ from 'lodash';
 
 const initialState = {
@@ -10,7 +9,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_USER_FOLLOWS_DATA: {
-      let userFollowsData = action.payload.follows.map(followMapper.mapFollow);
+      let userFollowsData = action.payload.follows
       if (action.payload.currId === state.currId) {
         userFollowsData = _.unionBy(state.userFollowsData, userFollowsData, follow => follow.id);
       }
