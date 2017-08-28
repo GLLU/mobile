@@ -5,6 +5,7 @@ import LooksService from '../services/looksService';
 import { normalize, arrayOf } from 'normalizr';
 import { unifyLooks } from '../utils/FeedUtils';
 import { lookSchema, lookListSchema } from '../schemas/schemas';
+import { setUsers } from './users';
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
@@ -40,9 +41,9 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (data) {
         const { looks, meta } = data;
-        console.log('looks',looks)
         const normalizedLooksData = normalize(looks, [lookSchema]);
-        console.log('normalizedLooksData',normalizedLooksData)
+        console.log('normalizedLooksData',normalizedLooksData);
+        dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType }));
@@ -99,6 +100,7 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
       if (data) {
         const { looks, meta } = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
+        dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result);
