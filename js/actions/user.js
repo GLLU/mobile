@@ -8,6 +8,7 @@ import i18n from 'react-native-i18n';
 import LoginService from '../services/loginService';
 import NetworkManager from '../network/NetworkManager';
 import UsersService from '../services/usersService';
+import * as userMapper from '../mappers/userMapper';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
@@ -58,9 +59,10 @@ const signInFromRest = function (dispatch, data) {
 };
 
 export function setUser(user: string) {
+  const mappedUser = userMapper.map(user)
   return {
     type: SET_USER,
-    payload: user,
+    payload: mappedUser,
   };
 }
 

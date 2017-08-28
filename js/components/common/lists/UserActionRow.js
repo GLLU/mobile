@@ -82,6 +82,7 @@ class UserActionRow extends Component {
   }
 
   onFollowPress(user, shouldFollow) {
+    console.log('user',user)
     if (shouldFollow) {
       this.props.followUpdate(user.id);
     } else {
@@ -105,7 +106,7 @@ class UserActionRow extends Component {
     }
     return (<FollowView
       onPress={this.onFollowPress} style={styles.followView}
-      user={{ id: this.props.userId, isFollowing: this.state.isFollowing }} />);
+      user={{ id: this.props.id, isFollowing: this.state.isFollowing }} />);
   }
 
   render() {

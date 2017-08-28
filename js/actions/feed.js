@@ -40,7 +40,9 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
     return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (data) {
         const { looks, meta } = data;
+        console.log('looks',looks)
         const normalizedLooksData = normalize(looks, [lookSchema]);
+        console.log('normalizedLooksData',normalizedLooksData)
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType }));

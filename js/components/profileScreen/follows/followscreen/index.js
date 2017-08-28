@@ -33,6 +33,7 @@ class FollowScreen extends Component {
 
   getFollowsData() {
     const userData = this.props.navigation.state.params;
+    console.log('userData2',userData)
     this.props.getUserFollowsData(userData.user.id, this.currentPageIndex);
     this.currentPageIndex++;
   }

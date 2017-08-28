@@ -62,10 +62,10 @@ function bindAction(dispatch: any, ownProps: any): void {
 const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userData = ownProps.navigation.state.params.user;
-  const isMyProfile = userData.isMe ? userData.isMe : userData.is_me;
-  const userId = userData.userId ? userData.userId : userData.id;
+  const isMyProfile = userData.isMe;
+  const userId = userData.id;
   const userSize = hasUserSize ? state.user.user_size : {};
-
+  console.log('userData',userData,)
   return {
     cameFromBallance: ownProps.navigation.state.params.cameFromBallance,
     userData,

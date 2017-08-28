@@ -63,13 +63,14 @@ class BlockedUsersScreen extends Component {
 
   render() {
     const {totalBlockedUsersCount, blockedUsers, goBack, unblockUser, getMoreBlockedUsers} = this.props;
+    console.log('blockedUsers',blockedUsers)
     const header = {title: 'Blocked Users', count: totalBlockedUsersCount};
     return (
       <ListScreen
         renderEmpty={this.renderEmptyView}
         renderItem={(user) => <BlockedUserRow
           {...user}
-          userId={user.userId}
+          userId={user.id}
           onUnblockPress={unblockUser}/>}
         headerData={header}
         data={blockedUsers}
