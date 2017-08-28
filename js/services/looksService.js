@@ -5,10 +5,15 @@ import * as feedLookMapper from '../mappers/lookMapper';
 const route = '/feed';
 
 class LooksService {
-  static getLooks = body => AppAPI.get(`${route}`, body).then((data => {
-    const looks = feedLookMapper.serializeLooks(data.looks)
+  static getLooks = body => AppAPI.get(`${route}`, body).then(((data) => {
+    const looks = feedLookMapper.serializeLooks(data.looks);
     return { looks, meta: data.meta };
-  }))
+  }));
+
+  static getVideos = body => AppAPI.get(`${route}`, {...body, 'videos':true}).then(((data) => {
+    const looks = feedLookMapper.serializeLooks(data.looks);
+    return { looks, meta: data.meta };
+  }));
   }
 
 export default LooksService;
