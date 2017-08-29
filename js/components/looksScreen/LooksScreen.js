@@ -66,7 +66,7 @@ class LooksScreen extends Component {
       currScrollIndex: props.flatLook.originalIndex,
       loader: Platform.OS !== 'ios' && props.flatLooksData.length > 1,
       mountedOnce: false,
-      muted: true,
+      isMuted: true,
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
   }

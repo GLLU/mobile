@@ -58,7 +58,7 @@ class VolumeButton extends Component {
         borderRadius: size / 2,
       }]}>
         <TouchableOpacity transparent onPress={() => this.props.togglePlaySoundAction()}>
-          <Image style={styles.iconWithImage} source={volumeIcon} resizeMethod={'contain'}/>
+          <Image style={styles.iconWithImage} source={volumeIcon} resizeMode={'contain'}/>
         </TouchableOpacity>
       </View>
     )
