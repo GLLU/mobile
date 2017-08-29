@@ -14,6 +14,7 @@ export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const BODY_SHAPE_CHOOSEN = 'user.BODY_SHAPE_CHOOSEN';
 export const HIDE_WALLET_BADGE = 'user.HIDE_WALLET_BADGE';
+export const HIDE_CLOSET_WIZARD = 'user.HIDE_CLOSET_WIZARD';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const HIDE_SWIPE_WIZARD = 'user.HIDE_SWIPE_WIZARD';
@@ -66,6 +67,10 @@ export function setUser(user: string) {
 
 export function hideSwipeWizard() {
   return ({ type: HIDE_SWIPE_WIZARD });
+}
+
+export function hideClosetWizard() {
+  return ({ type: HIDE_CLOSET_WIZARD });
 }
 
 export function loginViaFacebook(data) {

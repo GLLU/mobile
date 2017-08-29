@@ -1,4 +1,4 @@
-import {SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_BODY_MODAL, HIDE_SWIPE_WIZARD} from '../actions/user';
+import {SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_BODY_MODAL, HIDE_SWIPE_WIZARD, HIDE_CLOSET_WIZARD} from '../actions/user';
 import {COMPLETE_EDIT_BODY_MEASURE} from '../actions/myBodyMeasure';
 import {REHYDRATE} from 'redux-persist/constants';
 
@@ -15,6 +15,7 @@ const initialState = {
   hasChoosenBodyShape: false,
   showSwipeWizard: true,
   showWalletBadge: true,
+  showClosetWizard: true,
 };
 
 // Action Handlers
@@ -34,6 +35,10 @@ const ACTION_HANDLERS = {
   [HIDE_SWIPE_WIZARD]: (state, action) => ({
     ...state,
     showSwipeWizard: false,
+  }),
+  [HIDE_CLOSET_WIZARD]: (state, action) => ({
+    ...state,
+    showClosetWizard: false,
   }),
 
   [SET_USER]: (state, action) => {
@@ -57,6 +62,7 @@ const ACTION_HANDLERS = {
     showWalletBadge: state.showWalletBadge,
     hasChoosenBodyShape: state.hasChoosenBodyShape,
     showSwipeWizard: state.showSwipeWizard,
+    showClosetWizard: state.showClosetWizard,
   }),
 };
 

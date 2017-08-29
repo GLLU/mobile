@@ -119,8 +119,15 @@ class LooksScreen extends Component {
   }
 
   _toggleFavorite = (isFavorite: boolean, lookId: number) => {
-    this.props.logEvent('LookScreen', { name: 'Favorite click', isFavorite: `${isFavorite}` });
-    this.props.updateFavorite(isFavorite, lookId);
+
+    const { logEvent, updateFavorite, showClosetWizard, onShowClosetMessage } = this.props;
+
+    if (showClosetWizard){
+      onShowClosetMessage(i18n.t('CLOSET_WIZARD'));
+    }
+
+   logEvent('LookScreen', { name: 'Favorite click', isFavorite: `${isFavorite}` });
+   // updateFavorite(isFavorite, lookId);
   }
 
   _goToProfile(look: object) {
