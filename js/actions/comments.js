@@ -1,6 +1,9 @@
 import rest from '../api/rest';
 import { isEmpty } from "lodash";
 import * as commentMapper from '../mappers/commentMapper';
+import { normalize } from 'normalizr';
+import { commentSchema } from '../schemas/schemas';
+import { setUsers } from './users';
 // Actions
 export const SET_LOOK_COMMENTS_DATA = 'SET_LOOK_COMMENTS_DATA';
 export const INIT_LOOK_COMMENTS = 'INIT_LOOK_COMMENTS';
@@ -23,15 +26,21 @@ export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
       }
     }, {}, (err, lookCommentsData) => {
       if (!err && lookCommentsData && !isEmpty(lookCommentsData)) {
-        let commentsDataMapped = lookCommentsData.comments.map(commentMapper.mapComment);
         const currStateId = getState().lookComments.currId
         const stateLookCommentsData = getState().lookComments.lookCommentsData
+        const commentsDataMapped = lookCommentsData.comments.map(commentMapper.mapComment);
+        console.log('commentsDataMapped',commentsDataMapped)
+        const normalizedCommentsData = normalize(commentsDataMapped, [commentSchema]);
+        console.log('normalizedCommentsData',normalizedCommentsData)
+
+        dispatch(setUsers(normalizedCommentsData.entities.users))
+        let serializedFollowsArray = _.map(normalizedCommentsData.result, (commentId) => normalizedCommentsData.entities.comments[commentId])
         if (id === currStateId) {
-          commentsDataMapped = _.unionBy(stateLookCommentsData, commentsDataMapped, comment => comment.id);
+          serializedFollowsArray = _.unionBy(stateLookCommentsData, serializedFollowsArray, comment => comment.id);
         }
         const commentsData = {
           currId: id,
-          comments: commentsDataMapped
+          comments: serializedFollowsArray
         };
 
         dispatch(setLookCommentsData(commentsData));

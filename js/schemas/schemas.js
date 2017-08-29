@@ -26,3 +26,7 @@ export const followeeSchema = new schema.Entity('follows', {followeeId: user,use
     return userPreProcessor(followeePreprocessedEntity);
   },
 });
+
+export const commentSchema = new schema.Entity('comments', {userId:user}, {
+  processStrategy: (entity) => userPreProcessor(entity),
+});

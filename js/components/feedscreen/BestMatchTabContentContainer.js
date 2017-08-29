@@ -11,7 +11,8 @@ import {
 
 import { FEED_TYPE_BEST_MATCH, toggleFiltersMenus, changeFiltersGender } from '../../actions/feed';
 import { saveUserBodyShape } from '../../actions/myBodyMeasure';
-import { getLooksById, getLooksWithUsersObj } from '../../utils/FeedUtils';
+import { getLooksById } from '../../utils/FeedUtils';
+import { getDataWithUsersObj } from '../../utils/UsersUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenBestMatch', params);
@@ -45,7 +46,7 @@ const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.hasChoosenBodyShape;
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
-  const flatLooksFeedDataWithUsersObjs = getLooksWithUsersObj(flatLooksFeedData, state.users.usersData);
+  const flatLooksFeedDataWithUsersObjs = getDataWithUsersObj(flatLooksFeedData, state.users.usersData);
   return {
     isLoading: state.feed.bestMatch.isLoading,
     currentBodyType: state.myBodyType.currentBodyType.body_type,
