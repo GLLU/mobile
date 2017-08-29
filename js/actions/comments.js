@@ -29,10 +29,7 @@ export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
         const currStateId = getState().lookComments.currId
         const stateLookCommentsData = getState().lookComments.lookCommentsData
         const commentsDataMapped = lookCommentsData.comments.map(commentMapper.mapComment);
-        console.log('commentsDataMapped',commentsDataMapped)
         const normalizedCommentsData = normalize(commentsDataMapped, [commentSchema]);
-        console.log('normalizedCommentsData',normalizedCommentsData)
-
         dispatch(setUsers(normalizedCommentsData.entities.users))
         let serializedFollowsArray = _.map(normalizedCommentsData.result, (commentId) => normalizedCommentsData.entities.comments[commentId])
         if (id === currStateId) {

@@ -118,8 +118,8 @@ class LooksScreen extends Component {
     }
   }
 
-  _goToProfile(look: object) {
-    this.props.navigateTo('profileScreen', { user: look });
+  _goToProfile(user: object) {
+    this.props.navigateTo('profileScreen', { user });
   }
 
   _goToEdit(look: object) {

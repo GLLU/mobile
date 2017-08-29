@@ -7,17 +7,16 @@
 //   });
 // }
 
-export function getDataWithUsersObj(data: array, usersData: array, spreadUser = true) {
+export function getDataWithUsersObj(data: array, usersData: array) {
   return _.map(data, (item) => {
-    const itemUserData = usersData[item.userId];
-    const clonedUserData = _.cloneDeep(itemUserData);
-    if (spreadUser) {
-      delete clonedUserData.id;
-      return { ...item, ...clonedUserData };
-    } else {
-      return { ...item, user: clonedUserData };
-    }
+    return addUserObjToItem(item, usersData)
   });
+}
+
+export function addUserObjToItem(item: object, usersData: array) {
+  const itemUserData = usersData[item.userId];
+  const clonedUserData = _.cloneDeep(itemUserData);
+  return { ...item, user: clonedUserData };
 }
 
 export function getFollowsWithUsersObj(followsData: array, usersData: array) {

@@ -30,3 +30,7 @@ export const followeeSchema = new schema.Entity('follows', {followeeId: user,use
 export const commentSchema = new schema.Entity('comments', {userId:user}, {
   processStrategy: (entity) => userPreProcessor(entity),
 });
+
+export const blockedSchema = new schema.Entity('blockedUsers', {userId:user}, {
+  processStrategy: (entity) => userPreProcessor(entity),
+});

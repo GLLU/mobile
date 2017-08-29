@@ -15,9 +15,11 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {
+  console.log('notifications',state.notifications)
+  return {
   notifications: state.notifications,
   isLoading: state.notifications.isLoading,
-});
+}};
 
 export default connect(mapStateToProps, bindAction)(asScreen(NotificationsScreen));

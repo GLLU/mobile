@@ -73,11 +73,12 @@ class CommentsView extends Component {
   }
 
   _pushComment(value) {
+    console.log('this.props.myUser',this.props.myUser)
     const comment = {
       id: -1,
       created_at: new Date().toUTCString(),
       user_id: this.props.myUser.id,
-      user: this.props.myUser,
+      userId: this.props.myUser.id,
       look_id: this.props.look_id,
       //parent_id is used for hierarchical comments and therefore currently not relevant
       parent_id: null,
@@ -89,6 +90,7 @@ class CommentsView extends Component {
   }
 
   onUserNavigate(user) {
+    console.log('user',user)
     this.props.goToProfile(user);
   }
 
@@ -102,6 +104,7 @@ class CommentsView extends Component {
   }
 
   _renderListView() {
+    console.log('booommm', this.props.comments)
     return (
       <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count === 0}
                         comments={this.props.comments}

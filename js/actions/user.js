@@ -9,6 +9,9 @@ import LoginService from '../services/loginService';
 import NetworkManager from '../network/NetworkManager';
 import UsersService from '../services/usersService';
 import * as userMapper from '../mappers/userMapper';
+import { normalize } from 'normalizr';
+import { blockedSchema } from '../schemas/schemas';
+import { setUsers } from './users';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
@@ -59,11 +62,14 @@ const signInFromRest = function (dispatch, data) {
 };
 
 export function setUser(user: string) {
-  const mappedUser = userMapper.map(user)
-  return {
-    type: SET_USER,
-    payload: mappedUser,
-  };
+  return (dispatch) => {
+    const mappedUser = userMapper.map(user)
+    dispatch(setUsers({[mappedUser.id]: mappedUser}))
+    dispatch({
+      type: SET_USER,
+      payload: mappedUser,
+    });
+  }
 }
 
 export function hideSwipeWizard() {
@@ -250,7 +256,9 @@ export function getBlockedUsers() {
     const nextPage = 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
       const { blockedUsers } = getState().blockedUsers;
-      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      const normalizedBlockedUsersData = normalize(data.blockedUsers, [blockedSchema]);
+      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers))
+      const blockedUsersUnion = _.unionBy(blockedUsers, normalizedBlockedUsersData.result);
       dispatch({
         type: SET_BLOCKED_USERS,
         blockedUsers: blockedUsersUnion,
@@ -271,7 +279,9 @@ export function getMoreBlockedUsers() {
     const nextPage = meta.currentPage + 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
       const { blockedUsers } = getState().blockedUsers;
-      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      const normalizedBlockedUsersData = normalize(data.blockedUsers, [blockedSchema]);
+      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers))
+      const blockedUsersUnion = _.unionBy(blockedUsers, normalizedBlockedUsersData.result);
       dispatch({
         type: SET_BLOCKED_USERS,
         blockedUsers: blockedUsersUnion,
@@ -303,7 +313,7 @@ export function unblockUser(blockedUserId) {
     UsersService.unblock(userId, blockedUserId)
       .catch(err => ({}));//mute error
     const { blockedUsers, meta } = getState().blockedUsers;
-    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.userId !== blockedUserId);
+    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, userId => userId !== blockedUserId);
     dispatch({
       type: SET_BLOCKED_USERS,
       blockedUsers: blockedUsersWithoutUnblocked,

@@ -42,7 +42,6 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
       if (data) {
         const { looks, meta } = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
-        console.log('normalizedLooksData',normalizedLooksData);
         dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
