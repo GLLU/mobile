@@ -1,6 +1,6 @@
 import rest from '../api/rest';
 import { isEmpty } from "lodash";
-
+import * as commentMapper from '../mappers/commentMapper';
 // Actions
 export const SET_LOOK_COMMENTS_DATA = 'SET_LOOK_COMMENTS_DATA';
 export const INIT_LOOK_COMMENTS = 'INIT_LOOK_COMMENTS';
@@ -14,7 +14,7 @@ export function setLookCommentsData(data) {
 }
 
 export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     return dispatch(rest.actions.comments({
       look_id: id,
       page: {
@@ -23,10 +23,17 @@ export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
       }
     }, {}, (err, lookCommentsData) => {
       if (!err && lookCommentsData && !isEmpty(lookCommentsData)) {
+        let commentsDataMapped = lookCommentsData.comments.map(commentMapper.mapComment);
+        const currStateId = getState().lookComments.currId
+        const stateLookCommentsData = getState().lookComments.lookCommentsData
+        if (id === currStateId) {
+          commentsDataMapped = _.unionBy(stateLookCommentsData, commentsDataMapped, comment => comment.id);
+        }
         const commentsData = {
           currId: id,
-          comments: lookCommentsData.comments
+          comments: commentsDataMapped
         };
+
         dispatch(setLookCommentsData(commentsData));
       }
     }));

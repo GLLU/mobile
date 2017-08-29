@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontFamily: Fonts.boldContentFont,
-    fontSize:16,
+    fontSize: 16,
   },
   commentText: {
     fontFamily: Fonts.contentFont,
-    fontSize:14,
+    fontSize: 14,
     flex: 1,
   },
   createdAt: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 2,
     textAlign: 'right',
     color: Colors.lightGray,
-  }
+  },
 });
 
 export default class CommentRow extends Component {
@@ -49,10 +49,10 @@ export default class CommentRow extends Component {
     user: React.PropTypes.object,
     look_id: React.PropTypes.number,
     body: React.PropTypes.string,
-    //parent_id & children are used for hierarchical comments and therefore currently not relevant
+    // parent_id & children are used for hierarchical comments and therefore currently not relevant
     parent_id: React.PropTypes.number,
     children: React.PropTypes.array,
-    onUserPress: React.PropTypes.func
+    onUserPress: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -60,50 +60,43 @@ export default class CommentRow extends Component {
     id: -1,
     created_at: new Date(1970, 1, 1).toUTCString(),
     body: '',
-    //parent_id & children are used for hierarchical comments and therefore currently not relevant
+    // parent_id & children are used for hierarchical comments and therefore currently not relevant
     parent_id: null,
     children: [],
-    onUserPress: noop
+    onUserPress: noop,
   };
 
   _onUserPress() {
-    this.props.onUserPress(this.props.user);
+    const {user, onUserPress} = this.props
+    onUserPress(user);
   }
 
   render() {
-    const name = this.props.user?this.props.user.name:'';
-    const avatar = this.props.user?this.props.user.avatar:{url:'https://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg'};
+    const {user, created_at, body} = this.props
+    const name = user ? user.name : '';
+    const avatar = user ? user.avatar : { url: 'https://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg' };
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._onUserPress} style={{flex:2}} name="avatar">
-          <Image resizeMode='cover' source={{ uri: avatar.url}} style={styles.photo}/>
+        <TouchableOpacity onPress={this._onUserPress} style={{ flex: 2 }} name="avatar">
+          <Image resizeMode="cover" source={{ uri: avatar.url }} style={styles.photo} />
         </TouchableOpacity>
-        <View style={{flex:13, flexDirection:'column'}}>
-          <View style={{flex:1, flexDirection:'row'}}>
-            <TouchableOpacity style={{flex:3}} onPress={this._onUserPress}>
+        <View style={{ flex: 13, flexDirection: 'column' }}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <TouchableOpacity style={{ flex: 3 }} onPress={this._onUserPress}>
               <Text style={styles.userName} name="name">
                 {name}
               </Text>
             </TouchableOpacity>
             <Text style={styles.createdAt} name="created_at">
-              {moment(this.props.created_at).fromNow()}
+              {moment(created_at).fromNow()}
             </Text>
           </View>
           <Text style={styles.commentText} name="body">
-            {this.props.body}
+            {body}
           </Text>
         </View>
       </View>
     );
   }
 }
-
-
-
-
-
-
-
-
-
 
