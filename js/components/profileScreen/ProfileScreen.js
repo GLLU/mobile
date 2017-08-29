@@ -77,7 +77,7 @@ class ProfileScreen extends Component {
       routes: [
         { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
         { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
-        { key: 'closet', title: I18n.t('CLOSET'), index: 2 },
+        { key: 'closet', title: I18n.t('FAVORITE'), index: 2 },
         { key: 'settings', title: I18n.t('SETTINGS'), index: 3 },
       ],
       isFollowing: props.isFollowing,
