@@ -23,7 +23,6 @@ function initLookComments(state) {
 
 function addLookComment(state, action) {
   let comment = action.payload;
-  console.log('comment55',comment)
   let lookCommentsData = _.union(state.lookCommentsData, [comment]);
   return {
     ...state,

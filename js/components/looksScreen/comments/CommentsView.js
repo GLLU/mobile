@@ -73,7 +73,6 @@ class CommentsView extends Component {
   }
 
   _pushComment(value) {
-    console.log('this.props.myUser',this.props.myUser)
     const comment = {
       id: -1,
       created_at: new Date().toUTCString(),
@@ -90,7 +89,6 @@ class CommentsView extends Component {
   }
 
   onUserNavigate(user) {
-    console.log('user',user)
     this.props.goToProfile(user);
   }
 
@@ -104,7 +102,6 @@ class CommentsView extends Component {
   }
 
   _renderListView() {
-    console.log('booommm', this.props.comments)
     return (
       <CommentsListView onUserPress={this.onUserNavigate} isEmpty={this.state.count === 0}
                         comments={this.props.comments}

@@ -64,7 +64,6 @@ class BlockedUserRow extends PureComponent {
   }
 
   _onUnblockPress = () => {
-    console.log('props999',this.props)
     this.props.onUnblockPress(this.props.userId)
   };
 
