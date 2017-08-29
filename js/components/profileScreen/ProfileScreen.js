@@ -77,7 +77,8 @@ class ProfileScreen extends Component {
       routes: [
         { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
         { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
-        { key: 'settings', title: I18n.t('SETTINGS'), index: 2 },
+        { key: 'closet', title: I18n.t('CLOSET'), index: 2 },
+        { key: 'settings', title: I18n.t('SETTINGS'), index: 3 },
       ],
       isFollowing: props.isFollowing,
       userLooks: props.userLooks,
@@ -194,6 +195,8 @@ class ProfileScreen extends Component {
           balance={balance} onWithdrawPressed={this._handleWithdraw}
           onShowWalletWizard={() => this.setState({ showWalletWizard: true })}
           onAddNewLook={() => this._handleNewPost('wallet')} />);
+      case 'closet':
+        return this._renderUserLooks();
       case 'settings':
         return <SettingsScreen navigation={navigation} onProfileEdit={onProfileEdit} />;
       default:
@@ -545,7 +548,7 @@ const styles = StyleSheet.create({
   tab: {
     opacity: 1,
     height: 50,
-    width: Dimensions.get('window').width / 3,
+    width: Dimensions.get('window').width / 4,
   },
   headerTab: {
     opacity: 1,
