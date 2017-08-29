@@ -66,6 +66,7 @@ class LooksScreen extends Component {
       currScrollIndex: props.flatLook.originalIndex,
       loader: Platform.OS !== 'ios' && props.flatLooksData.length > 1,
       mountedOnce: false,
+      muted: true,
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
   }
@@ -240,6 +241,10 @@ class LooksScreen extends Component {
     );
   }
 
+  _toggleVolumePressed = () => {
+    this.setState({ isMuted: !this.state.isMuted });
+  }
+
   renderVideo(look: object, index: number) {
     const showShowArrow = this.shouldRenderArrows();
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
@@ -259,7 +264,7 @@ class LooksScreen extends Component {
         <VideoWithCaching
           source={{ uri: look.uri, mainVer: 1, patchVer: 0 }}
           resizeMode={'contain'}
-          muted
+          muted={this.state.isMuted}
           style={styles.videoBackground}
           repeat
           navigation={this.props.cardNavigation}
@@ -274,6 +279,8 @@ class LooksScreen extends Component {
           openComments={openComments}
           onBottomDrawerOpen={this.onToggleDrawer}
           goBack={this.props.goBack}
+          isMuted={this.state.isMuted}
+          onVolumePressed={this._toggleVolumePressed}
           goToProfile={this._goToProfile}
           goToLikes={this._goToLikes}
           goToEdit={this._goToEdit}
