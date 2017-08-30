@@ -75,6 +75,7 @@ export default class CommentInput extends BaseComponent {
     if (commentValue) {
       this.logEvent('LookScreen', { name: 'new comment added!', content: commentValue });
       this.props.onSendPress(this.state.value);
+      Keyboard.dismiss();
     }
   }
 

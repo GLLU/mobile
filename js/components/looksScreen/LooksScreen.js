@@ -418,6 +418,7 @@ class LooksScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ScrollView
+          keyboardShouldPersistTaps={'always'}
           pagingEnabled={false}
           ref={(c) => {
             this._scrollView = c;

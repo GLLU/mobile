@@ -15,7 +15,7 @@ const statusBarHeight = ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
 const styles = StyleSheet.create({
   container: {
-    height: height - (softMenuBarHeight - statusBarHeight),
+    height: height,
     flexDirection: 'column-reverse'
   },
   childrenContainer: {
