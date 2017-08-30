@@ -2,7 +2,10 @@
 
 import rest from '../api/rest';
 import UsersService from '../services/usersService';
-
+import { normalize } from 'normalizr';
+import { userSchema } from '../schemas/schemas';
+import { setUsers } from './users';
+import {batchActions} from 'redux-batched-actions';
 // Actions
 export const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM';
 export const SET_USERS = 'SET_USERS';
@@ -89,9 +92,12 @@ export function getMoreUsers() {
 export function getUsersSuggestions() {
   return (dispatch) => {
     UsersService.getSuggestionsUsers().then((data) => {
+      const normalizedUserLikesData = normalize(data.users, [userSchema]);
+      console.log('normalizedUserLikesData3333',normalizedUserLikesData.result)
+      dispatch(setUsers(normalizedUserLikesData.entities.users))
       dispatch({
         type: SET_SUGGESTIONS_USERS,
-        users: data.users
+        users: normalizedUserLikesData.result
 
       });
     })
