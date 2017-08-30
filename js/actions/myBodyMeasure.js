@@ -47,8 +47,6 @@ export function saveUserBodyShape() {
 
     dispatch(rest.actions.size.post({user_id}, {body: JSON.stringify(measurement)}, (err, data) => {
       if (!err && data) {
-        const query = _.cloneDeep(getState().feed.bestMatch)
-        console.log('query333', query)
         dispatch(onBodyShapeChoosen());
         dispatch({type: COMPLETE_EDIT_BODY_MEASURE, payload: measurement});
         resolve();

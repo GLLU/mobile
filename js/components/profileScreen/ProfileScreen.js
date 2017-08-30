@@ -297,7 +297,7 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
+    const { navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
     const { userLooks, currentScrollPosition } = this.state;
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
     const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
@@ -315,7 +315,6 @@ class ProfileScreen extends Component {
         <UserLooks
           currentScrollPosition={currentScrollPosition}
           navigateTo={navigateTo}
-          myUserId={userId}
           userLooks={userLooks}
           navigateToLooksScreen={navigateToLooksScreen}
           isMyProfile={isMyProfile}
@@ -347,10 +346,9 @@ class ProfileScreen extends Component {
       <View>
         <ProfileScreenHeader
           balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username}
-          userId={userData.id} changeUserAvatar={changeUserAvatar}
+          userId={userData.userId} changeUserAvatar={changeUserAvatar}
           stats={stats} onProfileEdit={onProfileEdit}
           onProfileImageClicked={() => {
-            console.log('here');
             this.setState({ showProfileImage: true });
           }}
           isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}

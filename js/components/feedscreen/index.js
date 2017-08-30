@@ -95,7 +95,7 @@ class FeedPage extends Component {
     const notification = openResult.notification.payload.additionalData;
 
     if (notification.action_kind === 'Follow') {
-      this.props.navigateTo('profileScreen',  { user: userMapper.map(notification.initiator) });
+      this.props.navigateTo('profileScreen',  { userId: userMapper.map(notification.initiator).id });
     } else {
       this.props.goToNotificationSubjectScreen(notification.go_to_object.id, notification.id)
         .then(look => {

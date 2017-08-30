@@ -7,13 +7,9 @@ const initialState = {
 };
 
 function setLookComments(state, action) {
-  let lookCommentsData = action.payload.comments;
-  if (action.payload.currId === state.currId) {
-    lookCommentsData = _.union(state.lookCommentsData, action.payload.comments);
-  }
   return {
     ...state,
-    lookCommentsData,
+    lookCommentsData: action.payload.comments,
     currId: action.payload.currId
   };
 }

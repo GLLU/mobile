@@ -153,7 +153,7 @@ class MainBarView extends BaseComponent {
 
   goToProfile(cameFromBallance: boolean = false) {
     this.props.logEvent('Feedscreen', {name: `${cameFromBallance ? 'Balance' : 'Profile'} click`});
-    this.props.navigateTo('profileScreen', {user: this.props.user, cameFromBallance});
+    this.props.navigateTo('profileScreen', {userId: this.props.user.id, cameFromBallance});
   }
 
   handleNotificationsPress() {

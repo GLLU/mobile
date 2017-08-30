@@ -18,6 +18,7 @@ import notifications from './notifications';
 import paris from './paris';
 import lookLikes from './lookLikes';
 import looks from './looks';
+import users from './users';
 import blockedUsers from './blockedUsers';
 import search from './search'
 
@@ -41,6 +42,7 @@ export default combineReducers({
   paris,
   lookLikes,
   looks,
+  users,
   blockedUsers,
   search,
 });

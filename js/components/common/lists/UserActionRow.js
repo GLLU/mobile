@@ -72,13 +72,10 @@ class UserActionRow extends Component {
     this.renderFollowText = this.renderFollowText.bind(this);
     this.renderFollowView = this.renderFollowView.bind(this);
     this.onFollowPress = this.onFollowPress.bind(this);
-    this.state = {
-      isFollowing: props.isFollowing,
-    };
   }
 
   onUserPress() {
-    this.props.navigateTo('profileScreen', { user: this.props });
+    this.props.navigateTo('profileScreen', { userId: this.props.id });
   }
 
   onFollowPress(user, shouldFollow) {
@@ -87,7 +84,6 @@ class UserActionRow extends Component {
     } else {
       this.props.unFollowUpdate(user.id);
     }
-    this.setState({ isFollowing: shouldFollow });
   }
 
   renderFollowText() {
@@ -100,12 +96,13 @@ class UserActionRow extends Component {
   }
 
   renderFollowView() {
+    const {isMe, isFollowing, id} = this.props
     if (this.props.isMe) {
       return <View name="can't follow me" style={styles.followView} />;
     }
     return (<FollowView
       onPress={this.onFollowPress} style={styles.followView}
-      user={{ id: this.props.userId, isFollowing: this.state.isFollowing }} />);
+      user={{ id, isFollowing }} />);
   }
 
   render() {
