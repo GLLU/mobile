@@ -53,10 +53,12 @@ export function getUsers(term) {
     const nextPage = 1;
     dispatch(startFetchingUsers())
     UsersService.getUsers(userId, nextPage, term).then((data) => {
+      const normalizedResultsData = normalize(data.users, [userSchema]);
+      dispatch(setUsers(normalizedResultsData.entities.users))
       dispatch({
         type: SET_USERS,
         data: {
-          users: data.users,
+          users: normalizedResultsData.result,
           meta: {
             currentPage: nextPage,
             total: data.meta.total
@@ -92,12 +94,11 @@ export function getMoreUsers() {
 export function getUsersSuggestions() {
   return (dispatch) => {
     UsersService.getSuggestionsUsers().then((data) => {
-      const normalizedUserLikesData = normalize(data.users, [userSchema]);
-      console.log('normalizedUserLikesData3333',normalizedUserLikesData.result)
-      dispatch(setUsers(normalizedUserLikesData.entities.users))
+      const normalizedUserSuggestionsData = normalize(data.users, [userSchema]);
+      dispatch(setUsers(normalizedUserSuggestionsData.entities.users))
       dispatch({
         type: SET_SUGGESTIONS_USERS,
-        users: normalizedUserLikesData.result
+        users: normalizedUserSuggestionsData.result
 
       });
     })

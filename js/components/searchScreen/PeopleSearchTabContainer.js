@@ -11,10 +11,10 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
-
   const suggestedUsersObjects = _.map(state.search.suggestions.users, (userId) => state.users.usersData[userId])
+  const resultsUsersObjects = _.map(state.search.people.data.users, (userId) => state.users.usersData[userId])
   return {
-    results: state.search.people.data.users,
+    results: resultsUsersObjects,
     searchHistory: state.search.people.history,
     suggestions: suggestedUsersObjects,
     isLoading: state.search.people.isLoading,
