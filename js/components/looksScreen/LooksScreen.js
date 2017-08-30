@@ -128,7 +128,7 @@ class LooksScreen extends Component {
     }
 
    logEvent('LookScreen', { name: 'Favorite click', isFavorite: `${isFavorite}` });
-   // updateFavorite(isFavorite, lookId);
+    updateFavorite(isFavorite, lookId);
   }
 
   _goToProfile(look: object) {

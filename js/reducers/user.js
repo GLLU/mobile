@@ -1,4 +1,13 @@
-import {SET_USER, RESET_STATE, HIDE_TUTORIAL, BODY_SHAPE_CHOOSEN, HIDE_BODY_MODAL, HIDE_SWIPE_WIZARD, HIDE_CLOSET_WIZARD} from '../actions/user';
+import {
+  SET_USER,
+  RESET_STATE,
+  HIDE_TUTORIAL,
+  BODY_SHAPE_CHOOSEN,
+  HIDE_BODY_MODAL,
+  HIDE_SWIPE_WIZARD,
+  HIDE_CLOSET_WIZARD
+} from '../actions/user';
+import {ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES} from '../actions/look';
 import {COMPLETE_EDIT_BODY_MEASURE} from '../actions/myBodyMeasure';
 import {REHYDRATE} from 'redux-persist/constants';
 
@@ -11,6 +20,7 @@ const initialState = {
   avatar: null,
   can_simple_login: null,
   api_key: null,
+  favoriteLooks: [],
   showTutorial: false,
   hasChoosenBodyShape: false,
   showSwipeWizard: true,
@@ -40,7 +50,17 @@ const ACTION_HANDLERS = {
     ...state,
     showClosetWizard: false,
   }),
+  [ADD_TO_FAVORITES]: (state, action) => {
+    return { ...state, favoriteLooks: [...state.favoriteLooks, action.lookId] };
+  },
+  [REMOVE_FROM_FAVORITES]: (state, action) => {
+    const lookIdIndex = state.favoriteLooks.indexOf(action.lookId);
 
+    return {
+      ...state,
+      favoriteLooks: [...state.favoriteLooks.slice(0, lookIdIndex), ...state.favoriteLooks.slice(lookIdIndex + 1)],
+    };
+  },
   [SET_USER]: (state, action) => {
     const user = Object.assign({}, action.payload);
     return {
@@ -52,10 +72,15 @@ const ACTION_HANDLERS = {
     ...state,
     user_size: action.payload,
   }),
-  [REHYDRATE]: (state, action) => ({
-    ...state,
-    ...action.payload.user,
-  }),
+  [REHYDRATE]: (state, action) => {
+
+    const userData = {...action.payload.user, favoriteLooks: []};
+
+    return {
+      ...state,
+      ...userData
+    }
+  },
   [RESET_STATE]: (state, action) => ({
     ...initialState,
     showTutorial: state.showTutorial,

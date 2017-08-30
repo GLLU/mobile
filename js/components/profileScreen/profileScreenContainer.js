@@ -81,6 +81,7 @@ const mapStateToProps = (state, ownProps) => {
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
     userLooks: userId === state.userLooks.currId ? getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData) : [],
+    userFavorites: getLooksById(state.user.favoriteLooks, state.looks.flatLooksData),
     cardNavigation: state.cardNavigation,
     meta: userId === state.userLooks.currId ? state.userLooks.meta : { total_count: 0 },
     query: state.userLooks.query,
