@@ -128,7 +128,7 @@ class FollowRow extends Component {
     return (
       <View onPress={this.onUserPress.bind(this)} style={styles.textContainer}>
         <Text style={styles.actionText}><Text
-          style={styles.followName}>{this.props.name}</Text>{` ${this.props.actionText}`}</Text>
+          style={styles.followName}>{this.props.initiator.name}</Text>{` ${this.props.actionText}`}</Text>
         <TimeAgo style={styles.timeStamp} time={timeStamp}/>
       </View>
     )
@@ -164,7 +164,7 @@ class FollowRow extends Component {
 
   renderFollowView() {
     return <View onPress={this.onFollowPress} style={styles.followView}
-                 user={{ id: this.props.userId, isFollowing: this.state.isFollowing }}/>
+                 user={{ id: this.props.initiator.id, isFollowing: this.props.initiator.isFollowing }}/>
   }
 
   render() {
@@ -174,7 +174,7 @@ class FollowRow extends Component {
       <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container, this.props.style]}>
         { this.renderMarkAsReadBtn(isRead) }
         <View style={styles.photoContainer}>
-          <Image resizeMode='cover' source={{ uri: this.props.avatar.url }} style={styles.avatarImage}/>
+          <Image resizeMode='cover' source={{ uri: this.props.initiator.avatar.url }} style={styles.avatarImage}/>
         </View>
         { this.renderFollowText() }
         { this.props.action_kind !== 'Follow' ? this.renderNotificationImage() : this.renderFollowView() }

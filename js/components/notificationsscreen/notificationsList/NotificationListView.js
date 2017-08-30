@@ -45,7 +45,7 @@ class NotificationListView extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (_.isEmpty(nextProps.notifications.allNotifications)) {
+    if (_.isEmpty(nextProps.notifications)) {
       this.setState({isTrueEndReached: true});
     }
   }
@@ -53,8 +53,7 @@ class NotificationListView extends BaseComponent {
   onUserNavigate(props) {
     this.logEvent('NotificationsScreen', {name: 'user clicked notification'});
     if(props.action_kind === 'Follow') {
-      console.log('props666',props)
-      this.props.navigateTo('profileScreen', { userId: props.initiator_user_id} );
+      this.props.navigateTo('profileScreen', { userId: props.initiator.id} );
     } else  {
       this.setState({isNavigating:true},()=>{
         this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
@@ -77,7 +76,8 @@ class NotificationListView extends BaseComponent {
   toggleFollowAction(user, shouldFollow) {
     let data = {id: user.id};
     if (shouldFollow) {
-      this.props.followUpdate(data);
+      this.props.fol
+      lowUpdate(data);
     }
     else {
       this.props.unFollowUpdate(data);
@@ -88,7 +88,7 @@ class NotificationListView extends BaseComponent {
     return (
     <FlatList
       style={styles.container}
-      data={this.props.notifications.allNotifications}
+      data={this.props.notifications}
       keyExtractor={(notification,index)=>notification.id!==-1?notification.id:index}
       ItemSeparatorComponent={()=><Separator/>}
       renderItem={({item}) => <NotificationRow onMarkAsReadPress={this.onMarkAsReadPress} onUserPress={this.onUserNavigate} onFollowPress={this.toggleFollowAction} {...item}/>}
@@ -102,7 +102,7 @@ class NotificationListView extends BaseComponent {
     return (
       <View style={{flex:1, flexDirection:'column'}}>
         <ListViewHeader goBack={this.props.goBack} title={`My ${this.props.headerData.mode}`}/>
-        {this.props.notifications.allNotifications && this.props.notifications.allNotifications.length > 0 ? this.renderListView() : this.props.renderEmpty()}
+        {this.props.notifications && this.props.notifications.length > 0 ? this.renderListView() : this.props.renderEmpty()}
         {this.state.isNavigating? <SpinnerSwitch/> : null}
       </View>
     );

@@ -20,10 +20,18 @@ export function addUserObjToItem(item: object, usersData: array) {
 }
 
 export function getFollowsWithUsersObj(followsData: array, usersData: array) {
-  return _.map(followsData, (followee, index) => {
+  return _.map(followsData, (followee) => {
     const followeeUserData = usersData[followee.followeeId];
     const newLFollow = { ...followee, followee: followeeUserData, user: usersData[followee.userId] };
     return newLFollow;
+  });
+}
+
+export function getNotificationsWithUsersObj(notificationsData: array, usersData: array) {
+  return _.map(notificationsData, (notification) => {
+    const initiatorUserData = usersData[notification.initiatorId];
+    const newNotification = { ...notification, initiator: initiatorUserData };
+    return newNotification;
   });
 }
 

@@ -12,7 +12,7 @@ export function map(notification) {
   }
   return {
     ...clonedNotification,
-    ...mappedInitiator,
+    initiator: mappedInitiator,
     id: notification.id,
     coverImage: cover ? _.find(cover.list, x => x.version === 'medium') : null,
     actionText: getTextByAction(notification.action_kind)
