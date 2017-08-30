@@ -10,12 +10,17 @@ import * as followMapper from '../mappers/followMapper';
 export const SET_USER_FOLLOWS_DATA = 'SET_USER_FOLLOWS_DATA';
 export const START_FETCHING_FOLLOWING = 'following.START_FETCHING_FOLLOWING';
 export const INIT_USER_FOLLOWS = 'INIT_USER_FOLLOWS';
+export const UPDATE_USER_FOLLOW_STATUS = 'UPDATE_USER_FOLLOW_STATUS';
 import FollowsService from '../services/followsService';
 import { getFollowingFeed } from './feed';
 
 export function followUpdate(id) {
   return (dispatch, getState) => {
-    FollowsService.follow(id).then(() => {
+    FollowsService.follow(id).then((data) => {
+      dispatch({
+        type: UPDATE_USER_FOLLOW_STATUS,
+        userId: id,
+      });
       const query = getState().feed.following.query;
       dispatch(getFollowingFeed(query));
     });
@@ -24,7 +29,11 @@ export function followUpdate(id) {
 
 export function unFollowUpdate(id) {
   return (dispatch, getState) => {
-    FollowsService.unFollow(id).then(() => {
+    FollowsService.unFollow(id).then((data) => {
+      dispatch({
+        type: UPDATE_USER_FOLLOW_STATUS,
+        userId: id,
+      });
       const query = getState().feed.following.query;
       dispatch(getFollowingFeed(query));
     });
@@ -61,8 +70,8 @@ export function getUserFollowsData(id, pageNumber = 1, pageSize = 25) {
       if (!err && userFollowsData) {
         const userFollowsDataMapped = userFollowsData.follows.map(followMapper.mapFollow);
         const normalizedUserFollowsData = normalize(userFollowsDataMapped, [followeeSchema]);
-        dispatch(setUsers(normalizedUserFollowsData.entities.users))
-        const serializedFollowsArray = _.map(normalizedUserFollowsData.result, (followId) => normalizedUserFollowsData.entities.follows[followId])
+        dispatch(setUsers(normalizedUserFollowsData.entities.users));
+        const serializedFollowsArray = _.map(normalizedUserFollowsData.result, followId => normalizedUserFollowsData.entities.follows[followId]);
         const followsData = {
           currId: id,
           follows: serializedFollowsArray,

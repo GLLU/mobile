@@ -1,7 +1,7 @@
 import rest from '../api/rest';
 import * as lookLikes from '../mappers/lookLikesMapper'
 import { normalize } from 'normalizr';
-import { lookSchema } from '../schemas/schemas';
+import { userLikeSchema } from '../schemas/schemas';
 import { setUsers } from './users';
 // Actions
 export const SET_LOOK_LIKES = 'SET_LOOK_LIKES';
@@ -36,9 +36,9 @@ export function getLookLikes(id, pageNumber = 1, pageSize = 25) {
     }, {}, (err, lookLikesData) => {
       if (!err && lookLikesData) {
         const mappedLookLikesData = lookLikesData.likes.map(lookLikes.map);
-        const normalizedUserLikesData = normalize(mappedLookLikesData, [lookSchema]);
+        const normalizedUserLikesData = normalize(mappedLookLikesData, [userLikeSchema]);
         dispatch(setUsers(normalizedUserLikesData.entities.users))
-        const serializedFollowsArray = _.map(normalizedUserLikesData.result, (followId) => normalizedUserLikesData.entities.looks[followId])
+        const serializedFollowsArray = _.map(normalizedUserLikesData.result, (followId) => normalizedUserLikesData.entities.likes[followId])
         const likesData = {
           currId: id,
           likes: serializedFollowsArray

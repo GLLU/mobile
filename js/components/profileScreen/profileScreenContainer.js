@@ -21,6 +21,7 @@ import { blockUser, hideWalletBadge, changeUserAvatar } from '../../actions/user
 import asScreen from '../common/containers/Screen';
 
 import ProfileScreen from './ProfileScreen';
+import { addUserObjToItem } from '../../utils/UsersUtils';
 
 function bindAction(dispatch: any, ownProps: any): void {
   return {
@@ -61,7 +62,7 @@ function bindAction(dispatch: any, ownProps: any): void {
 
 const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const userData = ownProps.navigation.state.params.user;
+  const userData = state.users.usersData[ownProps.navigation.state.params.user.id]
   const isMyProfile = userData.isMe;
   const userId = userData.id;
   const userSize = hasUserSize ? state.user.user_size : {};

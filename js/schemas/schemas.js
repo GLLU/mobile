@@ -19,7 +19,6 @@ export const lookSchema = new schema.Entity('looks', {userId:user}, {
   processStrategy: (entity) => userPreProcessor(entity),
 });
 
-
 export const followeeSchema = new schema.Entity('follows', {followeeId: user,userId:user}, {
   processStrategy: (entity) => {
     const followeePreprocessedEntity=userPreProcessor(entity, 'followeeId', 'followee');
@@ -27,10 +26,15 @@ export const followeeSchema = new schema.Entity('follows', {followeeId: user,use
   },
 });
 
+
 export const commentSchema = new schema.Entity('comments', {userId:user}, {
   processStrategy: (entity) => userPreProcessor(entity),
 });
 
 export const blockedSchema = new schema.Entity('blockedUsers', {userId:user}, {
+  processStrategy: (entity) => userPreProcessor(entity),
+});
+
+export const userLikeSchema = new schema.Entity('likes', {userId:user}, {
   processStrategy: (entity) => userPreProcessor(entity),
 });
