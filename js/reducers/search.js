@@ -117,6 +117,7 @@ export default function (state = initialState, action) {
             ...initialState.people,
             history: action.payload.search.people.history
           },
+          suggestions: [],
         }
         return {
           ...state,
