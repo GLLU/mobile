@@ -39,7 +39,7 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
     delete query.page;
     return Promise.all([LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }), LooksService.getVideos({ ...query, 'page[size]': 1, 'page[number]': 1 })])
       .then((multiData) => {
-      if (multiData) {
+      if (multiData && multiData[0] && multiData[1]) {
 
         let { looks, meta } = multiData[0];
         const videoLook = multiData[1].looks[0];
