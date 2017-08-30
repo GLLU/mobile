@@ -96,6 +96,7 @@ export function goToNotificationSubjectScreen(lookId, notificationId) {
         lookData.singleItem = true;
         dispatch(markAsReadNotifications(notificationId));
         const normalizedLooksData = normalize([lookData], [lookSchema]);
+        console.log('normalizedLooksData',normalizedLooksData)
         dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));

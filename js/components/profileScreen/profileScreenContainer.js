@@ -62,7 +62,8 @@ function bindAction(dispatch: any, ownProps: any): void {
 
 const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const userData = state.users.usersData[ownProps.navigation.state.params.user.id]
+  console.log('ownProps.navigation.state.params',ownProps.navigation.state.params)
+  const userData = state.users.usersData[ownProps.navigation.state.params.userId]
   const isMyProfile = userData.isMe;
   const userId = userData.id;
   const userSize = hasUserSize ? state.user.user_size : {};
