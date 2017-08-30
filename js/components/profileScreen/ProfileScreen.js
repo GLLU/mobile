@@ -297,7 +297,7 @@ class ProfileScreen extends Component {
   }
 
   _renderUserLooks = () => {
-    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
+    const { navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
     const { userLooks, currentScrollPosition } = this.state;
     const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
     const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
@@ -315,7 +315,6 @@ class ProfileScreen extends Component {
         <UserLooks
           currentScrollPosition={currentScrollPosition}
           navigateTo={navigateTo}
-          myUserId={userId}
           userLooks={userLooks}
           navigateToLooksScreen={navigateToLooksScreen}
           isMyProfile={isMyProfile}

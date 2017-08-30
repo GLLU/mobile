@@ -16,6 +16,7 @@ import {
 import { addNewLook, editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';
+import { getDataWithUsersObj } from '../../utils/UsersUtils';
 import { blockUser, hideWalletBadge, changeUserAvatar } from '../../actions/user';
 
 import asScreen from '../common/containers/Screen';
@@ -66,6 +67,7 @@ const mapStateToProps = (state, ownProps) => {
   const isMyProfile = userData.isMe;
   const userId = userData.id;
   const userSize = hasUserSize ? state.user.user_size : {};
+  const userLooks = userId === state.userLooks.currId ? getDataWithUsersObj(getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData), state.users.usersData) : []
   return {
     cameFromBallance: ownProps.navigation.state.params.cameFromBallance,
     userData,
@@ -80,7 +82,7 @@ const mapStateToProps = (state, ownProps) => {
     isFollowing: userData.isFollowing ? userData.isFollowing : userData.is_following,
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
-    userLooks: userId === state.userLooks.currId ? getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData) : [],
+    userLooks,
     cardNavigation: state.cardNavigation,
     meta: userId === state.userLooks.currId ? state.userLooks.meta : { total_count: 0 },
     query: state.userLooks.query,
