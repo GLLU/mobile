@@ -1,7 +1,8 @@
+import * as userMapper from "./userMapper";
 
 export function map(like) {
   return {
     ...like,
-    ...like.user
+    ...userMapper.map(like.user)
   };
 }

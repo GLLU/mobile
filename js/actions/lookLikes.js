@@ -1,5 +1,8 @@
 import rest from '../api/rest';
-
+import * as lookLikes from '../mappers/lookLikesMapper'
+import { normalize } from 'normalizr';
+import { lookSchema } from '../schemas/schemas';
+import { setUsers } from './users';
 // Actions
 export const SET_LOOK_LIKES = 'SET_LOOK_LIKES';
 export const INIT_LOOK_LIKES = 'INIT_LOOK_LIKES';
@@ -32,9 +35,13 @@ export function getLookLikes(id, pageNumber = 1, pageSize = 25) {
       }
     }, {}, (err, lookLikesData) => {
       if (!err && lookLikesData) {
-        let likesData = {
+        const mappedLookLikesData = lookLikesData.likes.map(lookLikes.map);
+        const normalizedUserLikesData = normalize(mappedLookLikesData, [lookSchema]);
+        dispatch(setUsers(normalizedUserLikesData.entities.users))
+        const serializedFollowsArray = _.map(normalizedUserLikesData.result, (followId) => normalizedUserLikesData.entities.looks[followId])
+        const likesData = {
           currId: id,
-          likes: lookLikesData.likes
+          likes: serializedFollowsArray
         };
         dispatch(setLookLikes(likesData));
       }
