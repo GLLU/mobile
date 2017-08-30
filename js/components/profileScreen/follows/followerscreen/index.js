@@ -58,13 +58,13 @@ class FollowerScreen extends Component {
   }
 
   async uploadLook() {
-    this.props.logEvent('Followerscreen', {name: 'user started uploading a look', origin: 'followers'});
+    this.props.logEvent('Followerscreen', { name: 'user started uploading a look', origin: 'followers' });
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.goToAddNewItem(file);
     } else {
-      this.props.logEvent('Followerscreen', {name: 'User canceled the upload look', origin: 'camera'})
+      this.props.logEvent('Followerscreen', { name: 'User canceled the upload look', origin: 'camera' });
     }
   }
 
@@ -130,13 +130,13 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const followersDataWithUsersObjs = getFollowsWithUsersObj(state.userFollowers.userFollowersData, state.users.usersData);
-  console.log('followersDataWithUsersObjs',followersDataWithUsersObjs)
-  return{
-  followers: followersDataWithUsersObjs,
-  isLoading: state.userFollowers.isLoading,
-  currId: state.userFollowers.currId,
-}};
+  return {
+    followers: followersDataWithUsersObjs,
+    isLoading: state.userFollowers.isLoading,
+    currId: state.userFollowers.currId,
+  };
+};
 
 export default connect(mapStateToProps, bindAction)(asScreen(FollowerScreen));

@@ -7,7 +7,7 @@ import * as feedLookMapper from '../mappers/lookMapper';
 import NotificationsService from '../services/NotificationsService';
 import { unifyLooks } from '../utils/FeedUtils';
 import { setLooksData } from './feed';
-import { notificationSchema } from '../schemas/schemas';
+import { notificationSchema, lookSchema } from '../schemas/schemas';
 
 // Actions
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
@@ -99,7 +99,6 @@ export function goToNotificationSubjectScreen(lookId, notificationId) {
         lookData.singleItem = true;
         dispatch(markAsReadNotifications(notificationId));
         const normalizedLooksData = normalize([lookData], [lookSchema]);
-        console.log('normalizedLooksData',normalizedLooksData)
         dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));

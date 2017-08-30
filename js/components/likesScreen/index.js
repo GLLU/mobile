@@ -42,7 +42,6 @@ class LikesScreen extends Component {
   render() {
     const userData = this.props.navigation.state.params;
     const headerData = {title: 'Likes', count:userData.count};
-    console.log('this.props.likes',this.props.likes)
     return (
       <ListScreen
         renderEmpty={()=>null}

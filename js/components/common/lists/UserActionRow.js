@@ -79,7 +79,6 @@ class UserActionRow extends Component {
   }
 
   onFollowPress(user, shouldFollow) {
-    console.log('user',user)
     if (shouldFollow) {
       this.props.followUpdate(user.id);
     } else {

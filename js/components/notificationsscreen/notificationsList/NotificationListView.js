@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 class NotificationListView extends BaseComponent {
 
   static propTypes = {
-    notifications: React.PropTypes.object,
+    notifications: React.PropTypes.array,
     onEndReached: React.PropTypes.func,
     headerData: React.PropTypes.object,
     renderEmpty: React.PropTypes.func
