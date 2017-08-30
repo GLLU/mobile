@@ -26,18 +26,19 @@ export function getLookCommentsData(id, pageNumber = 1, pageSize = 25) {
       }
     }, {}, (err, lookCommentsData) => {
       if (!err && lookCommentsData && !isEmpty(lookCommentsData)) {
-        const currStateId = getState().lookComments.currId
-        const stateLookCommentsData = getState().lookComments.lookCommentsData
+        const state = getState();
+        const currStateId = state.lookComments.currId;
+        const stateLookCommentsData = state.lookComments.lookCommentsData;
         const commentsDataMapped = lookCommentsData.comments.map(commentMapper.mapComment);
         const normalizedCommentsData = normalize(commentsDataMapped, [commentSchema]);
         dispatch(setUsers(normalizedCommentsData.entities.users))
-        let serializedFollowsArray = _.map(normalizedCommentsData.result, (commentId) => normalizedCommentsData.entities.comments[commentId])
+        let serializedCommentsArray = _.map(normalizedCommentsData.result, (commentId) => normalizedCommentsData.entities.comments[commentId])
         if (id === currStateId) {
-          serializedFollowsArray = _.unionBy(stateLookCommentsData, serializedFollowsArray, comment => comment.id);
+          serializedCommentsArray = _.unionBy(stateLookCommentsData, serializedCommentsArray, comment => comment.id);
         }
         const commentsData = {
           currId: id,
-          comments: serializedFollowsArray
+          comments: serializedCommentsArray
         };
 
         dispatch(setLookCommentsData(commentsData));

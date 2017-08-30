@@ -38,10 +38,10 @@ export function getLookLikes(id, pageNumber = 1, pageSize = 25) {
         const mappedLookLikesData = lookLikesData.likes.map(lookLikes.map);
         const normalizedUserLikesData = normalize(mappedLookLikesData, [userLikeSchema]);
         dispatch(setUsers(normalizedUserLikesData.entities.users))
-        const serializedFollowsArray = _.map(normalizedUserLikesData.result, (followId) => normalizedUserLikesData.entities.likes[followId])
+        const serializedLikesArray = _.map(normalizedUserLikesData.result, (followId) => normalizedUserLikesData.entities.likes[followId])
         const likesData = {
           currId: id,
-          likes: serializedFollowsArray
+          likes: serializedLikesArray
         };
         dispatch(setLookLikes(likesData));
       }
