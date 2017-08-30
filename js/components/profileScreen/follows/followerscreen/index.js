@@ -112,7 +112,7 @@ class FollowerScreen extends Component {
       <View style={{ flex: 1 }}>
         <ListScreen
           renderEmpty={this._renderOnEmpty}
-          renderItem={item => <UserActionRow {...item} navigateTo={this.props.navigateTo} />}
+          renderItem={item => <UserActionRow {...item.user} navigateTo={this.props.navigateTo} />}
           headerData={headerData}
           data={this.state.followers}
           navigateTo={this.props.navigateTo}

@@ -82,7 +82,7 @@ class FollowScreen extends Component {
     return (
       <ListScreen
         renderEmpty={this._renderOnEmpty}
-        renderItem={item => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+        renderItem={item => <UserActionRow {...item.followee} navigateTo={this.props.navigateTo}/>}
         headerData={headerData}
         data={this.state.follows}
         navigateTo={this.props.navigateTo}

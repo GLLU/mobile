@@ -26,7 +26,7 @@ export const followeeSchema = new schema.Entity('follows', {followeeId: user,use
   },
 });
 
-export const notificationSchema = new schema.Entity('notifications', {initiatorId: user}, {
+export const notificationSchema = new schema.Entity('notifications', {initiatorId: user,userId:user}, {
   processStrategy: (entity) => {
     const notificationPreprocessedEntity=userPreProcessor(entity, 'initiatorId', 'initiator');
     return userPreProcessor(notificationPreprocessedEntity);

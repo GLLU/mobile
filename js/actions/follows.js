@@ -16,11 +16,11 @@ import { getFollowingFeed } from './feed';
 
 export function followUpdate(id) {
   return (dispatch, getState) => {
+    dispatch({
+      type: UPDATE_USER_FOLLOW_STATUS,
+      userId: id,
+    });
     FollowsService.follow(id).then((data) => {
-      dispatch({
-        type: UPDATE_USER_FOLLOW_STATUS,
-        userId: id,
-      });
       const query = getState().feed.following.query;
       dispatch(getFollowingFeed(query));
     });
@@ -29,11 +29,11 @@ export function followUpdate(id) {
 
 export function unFollowUpdate(id) {
   return (dispatch, getState) => {
+    dispatch({
+      type: UPDATE_USER_FOLLOW_STATUS,
+      userId: id,
+    });
     FollowsService.unFollow(id).then((data) => {
-      dispatch({
-        type: UPDATE_USER_FOLLOW_STATUS,
-        userId: id,
-      });
       const query = getState().feed.following.query;
       dispatch(getFollowingFeed(query));
     });
