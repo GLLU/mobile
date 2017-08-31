@@ -36,6 +36,7 @@ import Colors from '../../styles/Colors.styles';
 const { height } = Dimensions.get('window');
 const parallaxHeaderHeight = 270;
 const stickyHeaderHeight = Platform.OS === 'ios' ? 66 : 46;
+const cameraIcon = require('../../../images/icons/camera_green-circle.png');
 
 type Props = {
   number: string,
@@ -296,6 +297,16 @@ class ProfileScreen extends Component {
       </View>);
   }
 
+  renderBottomCamera() {
+    return (
+      <View style={styles.bottomCameraContainer}>
+        <TouchableOpacity transparent onPress={() => this._handleNewPost('userLooks')}>
+          <Image source={cameraIcon} style={styles.btnImage}/>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   _renderUserLooks = () => {
     const { navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo } = this.props;
     const { userLooks, currentScrollPosition } = this.state;
@@ -493,9 +504,10 @@ class ProfileScreen extends Component {
       )
 
   render(): React.Element<any> {
+    const {isMyProfile} = this.props;
+    const {index} = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-
         <ParallaxView
           stickyHeaderHeight={stickyHeaderHeight}
           backgroundSpeed={10}
@@ -509,11 +521,9 @@ class ProfileScreen extends Component {
             flex: 1,
             backgroundColor: 'white',
           }}>
-
           {this._renderBody()}
-
         </ParallaxView>
-
+        {isMyProfile && index === 0 ? this.renderBottomCamera() : null}
         {this._renderWalletWizardModal()}
         {this._renderFullSizeImage()}
 
@@ -553,7 +563,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     padding: 10,
   },
-
+  btnImage: {
+    height: 75,
+    width: 75,
+    marginBottom: 2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    resizeMode: 'contain',
+  },
+  bottomCameraContainer: {
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+  },
 });
 
 export default ProfileScreen;
