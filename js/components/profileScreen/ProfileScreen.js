@@ -90,11 +90,13 @@ class ProfileScreen extends Component {
   }
 
   componentWillMount() {
-    const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getUserBodyType, hasUserSize, userSize, userGender, hideWalletBadge } = this.props;
+    const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getFavoriteLooks, getUserBodyType, hasUserSize, userSize, userGender, hideWalletBadge } = this.props;
 
     hideWalletBadge();
 
     getStats(userId);
+
+    getFavoriteLooks();
 
     if (isMyProfile) {
       getUserBalance(userId);
@@ -227,10 +229,14 @@ class ProfileScreen extends Component {
     this.setState({ index: tabIndex });
   }
 
-  _handleScrollUserLooks = (event: any) => {
-    if (this.state.index !== 0) {
+  _handleScroll = (event: any) => {
+
+    if (this.state.index !== 0 && this.state.index !== 2) { // Only user looks and favorite looks are relevant
       return;
     }
+
+    const loadMoreFunc = this.state.index === 0 ? this._loadMoreUserLooks : null;
+    const isAlreadyLoadingMore = this.state.index === 0 ? this.state.loadingMore : null;
 
     event.persist();
 
@@ -239,20 +245,21 @@ class ProfileScreen extends Component {
     const currentScroll = event.nativeEvent.contentOffset.y;
     if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) {
       this.contentHeight = contentSizeHeight;
-      if (!this.state.loadingMore) {
-        this._loadMoreUserLooks();
+      if (!isAlreadyLoadingMore) {
+        loadMoreFunc();
       }
     }
     this.currPosition = event.nativeEvent.contentOffset.y;
+
   }
 
   _renderScrollableComponent = () => <ScrollView
     scrollEventThrottle={100}
-    onScroll={this._handleScrollUserLooks}
+    onScroll={this._handleScroll}
     style={{ backgroundColor: 'purple' }}
     pagingEnabled/>
 
-  _loadMoreUserLooks() {
+  _loadMoreUserLooks = () => {
     if (this.state.loadingMore) {
       console.log('already isLoading');
       return;
@@ -281,39 +288,45 @@ class ProfileScreen extends Component {
     }
   }
 
-  _renderLoadMore() {
+  _loadMoreFavoriteLooks = () => {
+
+  }
+
+  _renderLoadMore(isLoading, looks) {
     return (
       <View style={styles.loader}>
         {(() => {
-          if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
-          }
-          if (this.state.isLoading) {
+          if (isLoading && (!looks || looks.length === 0)) {
             return <Spinner color="rgb(230,230,230)"/>;
           }
-          if (this.state.loadingMore) {
+          else if( isLoading) {
             return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
-          return null;
+          else {
+            debugger;
+            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
+          }
         })()}
       </View>);
   }
 
   _renderLooks = (type = 'user') => {
-    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo, userFavorites } = this.props;
+    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo, userFavorites, isLoadingFavorites } = this.props;
     const { userLooks, currentScrollPosition } = this.state;
-    const emptyStateTitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
+    const emptyStateTitle = type !== 'user' ? I18n.t('NO_FAVORITES') : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
     const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
     const emptyStateButtonText = isMyProfile ? I18n.t('POST_NOW') : null;
 
-    if ((!userLooks || userLooks.length === 0) && !this.state.isLoading) {
+    const looks = type === 'user' ? userLooks : userFavorites;
+    const isLoading = type === 'user' ? (this.state.isLoading || this.state.loadingMore) : isLoadingFavorites;
+
+    if ((!looks || looks.length === 0) && !isLoading) {
       return (<EmptyStateScreen
         title={emptyStateTitle} subtitle={emptyStateSubtitle}
         icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
         onButtonClicked={() => this._handleNewPost('userLooks')}/>);
     }
 
-    const looks = type === 'user' ? userLooks : userFavorites;
 
     return (
       <View>
@@ -329,8 +342,8 @@ class ProfileScreen extends Component {
           likeUpdate={likeUpdate}
           unlikeUpdate={unlikeUpdate}
           meta={meta}
-          isLoading={this.state.isLoading}/>
-        {this._renderLoadMore()}
+          isLoading={isLoading}/>
+        {this._renderLoadMore(isLoading, looks)}
       </View>
     );
   }
@@ -338,7 +351,7 @@ class ProfileScreen extends Component {
   _renderPager = props => (
     <TabViewPagerScroll
       {...props} style={this.state.index !== 1 ? { height } : null}
-      onScroll={this._handleScrollUserLooks} swipeEnabled animationEnabled={false}/>
+      onScroll={this._handleScroll} swipeEnabled animationEnabled={false}/>
   );
 
   _configureTransition = () => null;
@@ -377,7 +390,7 @@ class ProfileScreen extends Component {
 
         {!isMyProfile ? this._renderLooks() :
           <TabViewAnimated
-            style={[styles.container, this.state.index !== 0 ? { height } : null]}
+            style={[styles.container, (this.state.index !== 0 && this.state.index !== 2) ? { height } : null]}
             navigationState={this.state}
             configureTransition={this._configureTransition}
             renderScene={this._renderScene}
@@ -511,7 +524,7 @@ class ProfileScreen extends Component {
           renderForeground={() => this._renderParallaxHeader()}
           renderFixedHeader={() => this._renderFixedHeader()}
           renderStickyHeader={() => this._renderStickyHeader()}
-          onScroll={this._handleScrollUserLooks}
+          onScroll={this._handleScroll}
           contentContainerStyle={{
             flex: 1,
             backgroundColor: 'white',

@@ -16,6 +16,7 @@ import {
 import { addNewLook, editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';
+import { loadMoreFavoriteLooks, getFavoriteLooks } from '../../actions/looks';
 import { blockUser, hideWalletBadge, changeUserAvatar } from '../../actions/user';
 
 import asScreen from '../common/containers/Screen';
@@ -34,7 +35,9 @@ function bindAction(dispatch: any, ownProps: any): void {
     blockUser: userId => dispatch(blockUser(userId)),
     editNewLook: id => dispatch(editNewLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),
+    getFavoriteLooks: () => dispatch(getFavoriteLooks()),
     loadMoreUserLooks: looksCall => dispatch(loadMoreUserLooks(looksCall)),
+    loadMoreFavoriteLooks: () => dispatch(loadMoreFavoriteLooks()),
     showParisBottomMessage: (balance) => {
       ownProps.logEvent('ProfileScreen', { name: 'Wallet Pressed' });
       const parisMessage = balance < 50 ? 'Hey, you can withdraw the reward once you reach at least US$50.00' : 'Hey, to withdraw please Contact us';
@@ -76,12 +79,13 @@ const mapStateToProps = (state, ownProps) => {
     userGender: state.user.gender,
     isMyProfile,
     userId,
+    isLoadingFavorites: state.user.favoriteLooks.isLoading,
     navigation: ownProps.navigation,
     isFollowing: userData.isFollowing ? userData.isFollowing : userData.is_following,
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
     userLooks: userId === state.userLooks.currId ? getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData) : [],
-    userFavorites: getLooksById(state.user.favoriteLooks, state.looks.flatLooksData),
+    userFavorites: getLooksById(state.user.favoriteLooks.ids, state.looks.flatLooksData),
     cardNavigation: state.cardNavigation,
     meta: userId === state.userLooks.currId ? state.userLooks.meta : { total_count: 0 },
     query: state.userLooks.query,

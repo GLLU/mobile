@@ -5,7 +5,9 @@ import {
   BODY_SHAPE_CHOOSEN,
   HIDE_BODY_MODAL,
   HIDE_SWIPE_WIZARD,
-  HIDE_CLOSET_WIZARD
+  HIDE_CLOSET_WIZARD,
+  LOADING_FAVORITES_START,
+  SET_FAVORITE_LOOKS,
 } from '../actions/user';
 import {ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES} from '../actions/look';
 import {COMPLETE_EDIT_BODY_MEASURE} from '../actions/myBodyMeasure';
@@ -20,7 +22,7 @@ const initialState = {
   avatar: null,
   can_simple_login: null,
   api_key: null,
-  favoriteLooks: [],
+  favoriteLooks: { isLoading: false, ids: [] },
   showTutorial: false,
   hasChoosenBodyShape: false,
   showSwipeWizard: true,
@@ -51,14 +53,39 @@ const ACTION_HANDLERS = {
     showClosetWizard: false,
   }),
   [ADD_TO_FAVORITES]: (state, action) => {
-    return { ...state, favoriteLooks: [...state.favoriteLooks, action.lookId] };
+    return {
+      ...state,
+      favoriteLooks: { ...state.favoriteLooks, ids: [...state.favoriteLooks, action.lookId] }
+    };
   },
   [REMOVE_FROM_FAVORITES]: (state, action) => {
     const lookIdIndex = state.favoriteLooks.indexOf(action.lookId);
 
     return {
       ...state,
-      favoriteLooks: [...state.favoriteLooks.slice(0, lookIdIndex), ...state.favoriteLooks.slice(lookIdIndex + 1)],
+      favoriteLooks: {
+        ...state.favoriteLooks,
+        ids: [...state.favoriteLooks.slice(0, lookIdIndex), ...state.favoriteLooks.slice(lookIdIndex + 1)]
+      },
+    };
+  },
+  [SET_FAVORITE_LOOKS]: (state, action) => {
+    return {
+      ...state,
+      favoriteLooks: {
+        ...state.favoriteLooks,
+        ids: action.looksIds,
+        isLoading: false,
+      },
+    };
+  },
+  [LOADING_FAVORITES_START]: (state, action) => {
+    return {
+      ...state,
+      favoriteLooks: {
+        ...state.favoriteLooks,
+        isLoading: true,
+      },
     };
   },
   [SET_USER]: (state, action) => {
@@ -74,7 +101,7 @@ const ACTION_HANDLERS = {
   }),
   [REHYDRATE]: (state, action) => {
 
-    const userData = {...action.payload.user, favoriteLooks: []};
+    const userData = { ...action.payload.user, favoriteLooks: { isLoading: false, ids: [] } };
 
     return {
       ...state,

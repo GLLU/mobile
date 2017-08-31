@@ -60,6 +60,13 @@ class usersService {
     });
   }
 
+  static getFavoriteLooks = (userId, query) => {
+    return AppAPI.get(`${route}/${userId}/looks`, query).then((response) => {
+      const looks = feedLookMapper.serializeLooks(response.looks)
+      return {looks, meta: response.meta};
+    });
+  }
+
   static block = (userId, blockedUserId) => AppAPI.post(`${blockRoute(userId)}`, {blocked_user_id: blockedUserId});
 
   static unblock = (userId, blockedUserId) => AppAPI.delete(`${blockRoute(userId)}/${blockedUserId}`);

@@ -21,7 +21,8 @@ export const HIDE_SWIPE_WIZARD = 'user.HIDE_SWIPE_WIZARD';
 export const USER_BLOCKED = 'USER_BLOCKED';
 export const USER_UNBLOCKED = 'USER_UNBLOCKED';
 export const SET_BLOCKED_USERS = 'SET_BLOCKED_USERS';
-
+export const SET_FAVORITE_LOOKS = 'user.SET_FAVORITE_LOOKS';
+export const LOADING_FAVORITES_START = 'user.LOADING_FAVORITES_START';
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
 
@@ -343,6 +344,10 @@ export function hideTutorial() {
       type: HIDE_TUTORIAL,
     });
   };
+}
+
+export function setFavoriteLooks(data) {
+  return ({type: SET_FAVORITE_LOOKS, looksIds: data.flatLooksIdData });
 }
 
 export function onBodyShapeChoosen() {
