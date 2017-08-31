@@ -235,7 +235,7 @@ class ProfileScreen extends Component {
       return;
     }
 
-    const loadMoreFunc = this.state.index === 0 ? this._loadMoreUserLooks : null;
+    const loadMoreFunc = this.state.index === 0 ? this._loadMoreUserLooks : this._loadMoreFavoriteLooks;
     const isAlreadyLoadingMore = this.state.index === 0 ? this.state.loadingMore : null;
 
     event.persist();
@@ -289,7 +289,7 @@ class ProfileScreen extends Component {
   }
 
   _loadMoreFavoriteLooks = () => {
-
+      this.props.loadMoreFavoriteLooks();
   }
 
   _renderLoadMore(isLoading, looks) {

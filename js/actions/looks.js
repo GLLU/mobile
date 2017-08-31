@@ -85,7 +85,7 @@ export function getFavoriteLooks() {
 
     const { favoriteLooks, id } = getState().user;
     const pageNumber = 1;
-    const query = { page: { size: DEFAULT_PAGE_SIZE, number: pageNumber } };
+    const query = { 'page[size]': DEFAULT_PAGE_SIZE, 'page[number]': pageNumber };
 
     dispatch(({ type: LOADING_FAVORITES_START }));
 
@@ -95,7 +95,8 @@ export function getFavoriteLooks() {
       const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
       dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
       const flatLooksIdData = normalizedLooksData.result;
-      dispatch(setFavoriteLooks({flatLooksIdData}));
+      dispatch(setFavoriteLooks({ flatLooksIdData }));
+      dispatch(loadMoreFavoriteLooks());
       Promise.resolve(data.looks);
     });
   };
@@ -106,7 +107,11 @@ export function loadMoreFavoriteLooks() {
 
     const { favoriteLooks, id } = getState().user;
     const pageNumber = Math.floor(favoriteLooks.ids.length / DEFAULT_PAGE_SIZE) + 1;
-    const query = { page: { size: DEFAULT_PAGE_SIZE, number: pageNumber } };
+    const query = { 'page[size]': DEFAULT_PAGE_SIZE, 'page[number]': pageNumber };
+
+    if (pageNumber === 1) {
+      Promise.resolve();
+    }
 
     dispatch(({ type: LOADING_FAVORITES_START }));
 
@@ -115,7 +120,7 @@ export function loadMoreFavoriteLooks() {
       const normalizedLooksData = normalize(looks, [lookSchema]);
       const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
       dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
-      const flatLooksIdData = favoriteLooks.concat(normalizedLooksData.result);
+      const flatLooksIdData = favoriteLooks.ids.concat(normalizedLooksData.result);
       dispatch(setFavoriteLooks({ flatLooksIdData }));
       Promise.resolve(data.looks);
     });

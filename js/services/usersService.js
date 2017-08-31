@@ -58,7 +58,7 @@ class usersService {
   }
 
   static getFavoriteLooks = (userId, query) => {
-    return AppAPI.get(`${route}/${userId}/favorite_looks`).then((response) => {
+    return AppAPI.get(`${route}/${userId}/favorite_looks`, query).then((response) => {
       const looks = feedLookMapper.serializeLooks(response.looks)
       return {looks, meta: response.meta};
     });
