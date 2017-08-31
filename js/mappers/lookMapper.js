@@ -28,7 +28,7 @@ export function serializeLook(look) {
     id: look.id,
     items: look.items,
     description: look.description,
-    isFavorite: false,
+    isFavorite: look.is_favorite,
     ...userMapper.map(look.user),
   }
 }

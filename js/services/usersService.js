@@ -61,7 +61,7 @@ class usersService {
   }
 
   static getFavoriteLooks = (userId, query) => {
-    return AppAPI.get(`${route}/${userId}/looks`, query).then((response) => {
+    return AppAPI.get(`${route}/${userId}/favorite_looks`).then((response) => {
       const looks = feedLookMapper.serializeLooks(response.looks)
       return {looks, meta: response.meta};
     });
@@ -70,6 +70,11 @@ class usersService {
   static block = (userId, blockedUserId) => AppAPI.post(`${blockRoute(userId)}`, {blocked_user_id: blockedUserId});
 
   static unblock = (userId, blockedUserId) => AppAPI.delete(`${blockRoute(userId)}/${blockedUserId}`);
+
+  static setFavoriteLook = (userId, lookId) => AppAPI.post(`${route}/${userId}/favorite_looks`, {look_id: lookId});
+
+  static removeFavoriteLook = (userId, lookId) => AppAPI.delete(`${route}/${userId}/favorite_looks`, {look_id: lookId});
+
 }
 
 export default usersService;

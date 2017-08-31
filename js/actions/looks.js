@@ -95,8 +95,7 @@ export function getFavoriteLooks() {
       const normalizedLooksData = normalize(looks, [lookSchema]);
       const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
       dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
-      const flatLooksIdData = favoriteLooks.ids.concat(normalizedLooksData.result);
-      debugger;
+      const flatLooksIdData = normalizedLooksData.result;
       dispatch(setFavoriteLooks({flatLooksIdData}));
       Promise.resolve(data.looks);
     });

@@ -1,7 +1,7 @@
 // @flow
 
 import rest from '../api/rest';
-
+import userService from '../services/usersService';
 // Actions
 export const SET_LOOK_LIKE_STATE = 'SET_LOOK_LIKE_STATE';
 export const LOOK_UNLIKE = 'LOOK_UNLIKE';
@@ -42,12 +42,18 @@ export function unlike(id) {
 }
 
 export function updateFavorite(isFavorite, lookId) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+
+    const userId = getState().user.id;
+
     if (isFavorite) {
       dispatch({ type: ADD_TO_FAVORITES, lookId });
+      userService.setFavoriteLook(userId, lookId);
+
     }
     else {
       dispatch({ type: REMOVE_FROM_FAVORITES, lookId });
+      userService.removeFavoriteLook(userId, lookId);
     }
   }
 }

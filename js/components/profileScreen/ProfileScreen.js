@@ -303,7 +303,6 @@ class ProfileScreen extends Component {
             return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
           else {
-            debugger;
             return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
         })()}

@@ -59,13 +59,13 @@ const ACTION_HANDLERS = {
     };
   },
   [REMOVE_FROM_FAVORITES]: (state, action) => {
-    const lookIdIndex = state.favoriteLooks.indexOf(action.lookId);
+    const lookIdIndex = state.favoriteLooks.ids.indexOf(action.lookId);
 
     return {
       ...state,
       favoriteLooks: {
         ...state.favoriteLooks,
-        ids: [...state.favoriteLooks.slice(0, lookIdIndex), ...state.favoriteLooks.slice(lookIdIndex + 1)]
+        ids: [...state.favoriteLooks.ids.slice(0, lookIdIndex), ...state.favoriteLooks.ids.slice(lookIdIndex + 1)]
       },
     };
   },
