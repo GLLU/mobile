@@ -77,7 +77,7 @@ class ProfileScreen extends Component {
       routes: [
         { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
         { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
-        { key: 'closet', title: I18n.t('FAVORITE'), index: 2 },
+        { key: 'closet', title: I18n.t('FAVORITES'), index: 2 },
         { key: 'settings', title: I18n.t('SETTINGS'), index: 3 },
       ],
       isFollowing: props.isFollowing,
@@ -289,7 +289,7 @@ class ProfileScreen extends Component {
   }
 
   _loadMoreFavoriteLooks = () => {
-      this.props.loadMoreFavoriteLooks();
+    this.props.loadMoreFavoriteLooks();
   }
 
   _renderLoadMore(isLoading, looks) {
@@ -299,7 +299,7 @@ class ProfileScreen extends Component {
           if (isLoading && (!looks || looks.length === 0)) {
             return <Spinner color="rgb(230,230,230)"/>;
           }
-          else if( isLoading) {
+          else if (isLoading) {
             return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
           else {
@@ -313,8 +313,9 @@ class ProfileScreen extends Component {
     const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo, userFavorites, isLoadingFavorites } = this.props;
     const { userLooks, currentScrollPosition } = this.state;
     const emptyStateTitle = type !== 'user' ? I18n.t('NO_FAVORITES') : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
-    const emptyStateSubtitle = isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
-    const emptyStateButtonText = isMyProfile ? I18n.t('POST_NOW') : null;
+    const emptyStateSubtitle = type !== 'user' ? null : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
+    const emptyStateButtonText = type !== 'user' ? null : isMyProfile ? I18n.t('POST_NOW') : null;
+    const emptyStateIcon = type === 'user' ? require('../../../images/emptyStates/photo-camera.png') : require('../../../images/emptyStates/star.png');
 
     const looks = type === 'user' ? userLooks : userFavorites;
     const isLoading = type === 'user' ? (this.state.isLoading || this.state.loadingMore) : isLoadingFavorites;
@@ -323,10 +324,9 @@ class ProfileScreen extends Component {
     if ((!looks || looks.length === 0) && !isLoading) {
       return (<EmptyStateScreen
         title={emptyStateTitle} subtitle={emptyStateSubtitle}
-        icon={require('../../../images/emptyStates/photo-camera.png')} buttonText={emptyStateButtonText}
+        icon={emptyStateIcon} buttonText={emptyStateButtonText}
         onButtonClicked={() => this._handleNewPost('userLooks')}/>);
     }
-
 
     return (
       <View>
