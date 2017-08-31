@@ -1,15 +1,16 @@
 import * as userMapper from "./userMapper";
 export function mapFollower(follow) {
-  return map(follow, follow.user)
+  return map(follow);
 }
 
 export function mapFollow(follow) {
-  return map(follow, follow.followee)
+  return map(follow);
 }
 
-function map(follow, user) {
+function map(follow) {
   return {
     ...follow,
-      ...userMapper.map(user)
+      user:userMapper.map(follow.user),
+    followee:userMapper.map(follow.followee),
   };
 }

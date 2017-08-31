@@ -6,6 +6,7 @@ import { getNotifications, clearNewNotifications } from '../../actions';
 import NotificationsScreen from './NotificationsScreen';
 import asScreen from "../common/containers/Screen"
 import { addNewLook } from '../../actions/uploadLook';
+import { getNotificationsWithUsersObj } from '../../utils/UsersUtils';
 
 function bindAction(dispatch) {
   return {
@@ -15,9 +16,11 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  notifications: state.notifications,
+const mapStateToProps = state => {
+  const flatLooksFeedDataWithUsersObjs = getNotificationsWithUsersObj(state.notifications.allNotifications, state.users.usersData);
+  return {
+  notifications: flatLooksFeedDataWithUsersObjs,
   isLoading: state.notifications.isLoading,
-});
+}};
 
 export default connect(mapStateToProps, bindAction)(asScreen(NotificationsScreen));

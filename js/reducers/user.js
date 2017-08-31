@@ -16,11 +16,8 @@ import {REHYDRATE} from 'redux-persist/constants';
 const initialState = {
   id: -1,
   name: null,
-  email: null,
   username: null,
-  country: null,
   avatar: null,
-  can_simple_login: null,
   api_key: null,
   favoriteLooks: { isLoading: false, ids: [] },
   showTutorial: false,

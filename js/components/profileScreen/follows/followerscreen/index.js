@@ -11,6 +11,7 @@ import UserActionRow from '../../../common/lists/UserActionRow';
 import { openCamera } from '../../../../lib/camera/CameraUtils';
 import { formatLook } from '../../../../utils/UploadUtils';
 import EmptyStateScreen from '../../../common/EmptyStateScreen';
+import { getFollowsWithUsersObj } from '../../../../utils/UsersUtils';
 
 class FollowerScreen extends Component {
 
@@ -57,13 +58,13 @@ class FollowerScreen extends Component {
   }
 
   async uploadLook() {
-    this.props.logEvent('Followerscreen', {name: 'user started uploading a look', origin: 'followers'});
+    this.props.logEvent('Followerscreen', { name: 'user started uploading a look', origin: 'followers' });
     const path = await openCamera(true);
     const file = formatLook(path);
     if (file) {
       this.goToAddNewItem(file);
     } else {
-      this.props.logEvent('Followerscreen', {name: 'User canceled the upload look', origin: 'camera'})
+      this.props.logEvent('Followerscreen', { name: 'User canceled the upload look', origin: 'camera' });
     }
   }
 
@@ -111,7 +112,7 @@ class FollowerScreen extends Component {
       <View style={{ flex: 1 }}>
         <ListScreen
           renderEmpty={this._renderOnEmpty}
-          renderItem={item => <UserActionRow {...item} navigateTo={this.props.navigateTo} />}
+          renderItem={item => <UserActionRow {...item.user} navigateTo={this.props.navigateTo} />}
           headerData={headerData}
           data={this.state.followers}
           navigateTo={this.props.navigateTo}
@@ -129,10 +130,13 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  followers: state.userFollowers.userFollowersData,
-  isLoading: state.userFollowers.isLoading,
-  currId: state.userFollowers.currId,
-});
+const mapStateToProps = (state) => {
+  const followersDataWithUsersObjs = getFollowsWithUsersObj(state.userFollowers.userFollowersData, state.users.usersData);
+  return {
+    followers: followersDataWithUsersObjs,
+    isLoading: state.userFollowers.isLoading,
+    currId: state.userFollowers.currId,
+  };
+};
 
 export default connect(mapStateToProps, bindAction)(asScreen(FollowerScreen));

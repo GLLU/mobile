@@ -7,6 +7,7 @@ import { likeUpdate, unlikeUpdate, loadMore, getLookLikes } from '../../actions'
 import { showParisBottomMessage } from '../../actions/paris';
 import {updateFavorite} from '../../actions/look';
 import { getLooksById } from '../../utils/FeedUtils';
+import { getDataWithUsersObj } from '../../utils/UsersUtils';
 import { reportAbuse } from '../../actions/looks';
 import { hideSwipeWizard , hideClosetWizard} from '../../actions/user';
 import { editNewLook } from '../../actions/uploadLook';
@@ -32,13 +33,15 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = getLooksById(state.feed.bestMatch.flatLooksIdData, state.looks.flatLooksData);
+  const flatLooksFeedDataWithUsersObjs = getDataWithUsersObj(flatLooksFeedData, state.users.usersData);
   return {
     flatLook: state.looks.flatLooksData[ownProps.navigation.state.params.lookId],
     openComments: ownProps.navigation.state.params.openComments ? ownProps.navigation.state.params.openComments : false,
     isLoading: state.loader.loading,
     showSwipeWizard: state.user.showSwipeWizard,
     showClosetWizard: state.user.showClosetWizard,
-    flatLooksData: flatLooksFeedData,
+    flatLooksData: flatLooksFeedDataWithUsersObjs,
+    usersData: state.users.usersData,
     meta: state.feed.bestMatch.meta,
     query: state.feed.bestMatch.query,
     userLooks: state.userLooks.userLooksData,

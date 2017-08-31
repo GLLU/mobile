@@ -17,11 +17,13 @@ import { addNewLook, editNewLook } from '../../actions/uploadLook';
 import { followUpdate, unFollowUpdate } from '../../actions/follows';
 import { getLooksById } from '../../utils/FeedUtils';
 import { loadMoreFavoriteLooks, getFavoriteLooks } from '../../actions/looks';
+import { getDataWithUsersObj } from '../../utils/UsersUtils';
 import { blockUser, hideWalletBadge, changeUserAvatar } from '../../actions/user';
 
 import asScreen from '../common/containers/Screen';
 
 import ProfileScreen from './ProfileScreen';
+import { addUserObjToItem } from '../../utils/UsersUtils';
 
 function bindAction(dispatch: any, ownProps: any): void {
   return {
@@ -64,11 +66,11 @@ function bindAction(dispatch: any, ownProps: any): void {
 
 const mapStateToProps = (state, ownProps) => {
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
-  const userData = ownProps.navigation.state.params.user;
-  const isMyProfile = userData.isMe ? userData.isMe : userData.is_me;
-  const userId = userData.userId ? userData.userId : userData.id;
+  const userData = state.users.usersData[ownProps.navigation.state.params.userId]
+  const isMyProfile = userData.isMe;
+  const userId = userData.id;
   const userSize = hasUserSize ? state.user.user_size : {};
-
+  const userLooks = userId === state.userLooks.currId ? getDataWithUsersObj(getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData), state.users.usersData) : []
   return {
     cameFromBallance: ownProps.navigation.state.params.cameFromBallance,
     userData,
@@ -84,8 +86,8 @@ const mapStateToProps = (state, ownProps) => {
     isFollowing: userData.isFollowing ? userData.isFollowing : userData.is_following,
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
-    userLooks: userId === state.userLooks.currId ? getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData) : [],
-    userFavorites: getLooksById(state.user.favoriteLooks.ids, state.looks.flatLooksData),
+    userLooks,
+    userFavorites: getDataWithUsersObj(getLooksById(state.user.favoriteLooks.ids, state.looks.flatLooksData), state.users.usersData),
     cardNavigation: state.cardNavigation,
     meta: userId === state.userLooks.currId ? state.userLooks.meta : { total_count: 0 },
     query: state.userLooks.query,

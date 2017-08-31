@@ -1,4 +1,4 @@
-import {normalize, arrayOf} from 'normalizr';
+import {normalize} from 'normalizr';
 
 import rest from '../api/rest';
 import usersService from '../services/usersService';

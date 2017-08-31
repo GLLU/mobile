@@ -29,7 +29,7 @@ export function serializeLook(look) {
     items: look.items,
     description: look.description,
     isFavorite: look.is_favorite,
-    ...userMapper.map(look.user),
+    user: userMapper.map(look.user),
   }
 }
 

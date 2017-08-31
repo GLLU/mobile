@@ -135,7 +135,6 @@ class ProfileScreenHeader extends Component {
     return (
       <View
         style={styles.statsRow}>
-
         {isMyProfile ? <ProfileScreenStat
           title={I18n.t('BALANCE')} number={followers >= 0 ? balance : -1} // we receive ballance in previoud call, so we need to verify that rest of stats arrived before showing ballance stat
           style={{ width: Dimensions.get('window').width / statsAmount }}

@@ -120,8 +120,8 @@ class LookOverlay extends Component {
     return (
       <MenuView
         lookId={look.id}
-        userId={look.userId}
-        isMyLook={look.isMe}
+        userId={look.user.id}
+        isMyLook={look.user.isMe}
         isOpen={isActive}
         onRequestClose={this._toggleMenuView}
         onEditPress={() => this.goToEdit(look)}
@@ -207,9 +207,9 @@ class LookOverlay extends Component {
     return (
       <View style={{ marginTop: 0 }}>
         <LookHeader
-          avatar={{ uri: look.avatar.url }}
+          avatar={{ uri: look.user.avatar.url }}
           onBackNavigationPress={goBack}
-          onProfileAvatarPress={() => this.goToProfile(look)}/>
+          onProfileAvatarPress={() => this.goToProfile(look.user)}/>
         <Animated.View style={{ opacity: this.state.fadeAnimContentOnPress }}>
           <TouchableWithoutFeedback onPress={this._toggleBottomContainer}>
             <View style={[styles.lookInfo, { flexGrow: 1, flexDirection: 'column' }]}>

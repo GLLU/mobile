@@ -2,12 +2,12 @@ import rest from '../api/rest';
 import Config from 'react-native-config';
 import Pusher from 'pusher-js/react-native';
 import {normalize, arrayOf} from 'normalizr';
-
-import * as feedLookMapper from '../mappers/feedLookMapper';
+import { setUsers } from './users';
+import * as feedLookMapper from '../mappers/lookMapper';
 import NotificationsService from '../services/NotificationsService';
 import { unifyLooks } from '../utils/FeedUtils';
 import { setLooksData } from './feed';
-import { lookSchema } from '../schemas/schemas';
+import { notificationSchema, lookSchema } from '../schemas/schemas';
 
 // Actions
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
@@ -70,7 +70,10 @@ export function getNotifications(retryCount = 0) {
     }).then((notificationsData) => {
       const userId = getState().user.id;
       _.isEmpty(getState().notifications.allNotifications) ? getPusherClient(dispatch, userId) : null;
-      dispatch(setUserNotifications(notificationsData, page++));
+      const normalizedNotificationsData = normalize(notificationsData.notifications, [notificationSchema]);
+      const serializedNotificationsArray = _.map(normalizedNotificationsData.result, notificationId => normalizedNotificationsData.entities.notifications[notificationId]);
+      dispatch(setUsers(normalizedNotificationsData.entities.users));
+      dispatch(setUserNotifications(serializedNotificationsArray, page++));
     }).catch((error) => {
       if (retryCount < 5) {
         dispatch(getNotifications(retryCount + 1));
@@ -92,10 +95,11 @@ export function goToNotificationSubjectScreen(lookId, notificationId) {
   return (dispatch, getState) => new Promise((resolve, reject) => {
     dispatch(rest.actions.looks({ id: lookId }, {}, (err, lookData) => {
       if (!err && lookData) {
-        lookData = feedLookMapper.map(lookData.look);
+        lookData = feedLookMapper.serializeLook(lookData.look);
         lookData.singleItem = true;
         dispatch(markAsReadNotifications(notificationId));
         const normalizedLooksData = normalize([lookData], [lookSchema]);
+        dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
         resolve(lookData);

@@ -24,7 +24,7 @@ export default class ListScreen extends Component {
   };
 
   static defaultProps={
-    keyExtractor:(item,index)=>item.userId!==-1?item.userId:index,
+    keyExtractor:(item,index)=>item.id!==-1?item.id:index,
   };
 
   constructor(props) {
@@ -43,13 +43,13 @@ export default class ListScreen extends Component {
   renderList=()=>{
     return (
       <FlatList
-      style={styles.container}
-      data={this.props.data}
-      keyExtractor={this.props.keyExtractor}
-      ItemSeparatorComponent={()=><Separator/>}
-      renderItem={({item}) => this.props.renderItem(item)}
-      onEndReached={this.state.isTrueEndReached? noop:this.props.onEndReached}
-      onEndReachedThreshold={100}
+        style={styles.container}
+        data={this.props.data}
+        keyExtractor={(item, index) => item.id !== -1 ? item.id : index}
+        ItemSeparatorComponent={()=><Separator/>}
+        renderItem={({item}) => this.props.renderItem(item)}
+        onEndReached={this.state.isTrueEndReached? noop:this.props.onEndReached}
+        onEndReachedThreshold={100}
     />
     );
   };

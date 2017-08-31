@@ -1,5 +1,4 @@
 import * as actions from '../actions/lookLikes';
-import * as lookLikes from '../mappers/lookLikesMapper'
 import * as _ from "lodash";
 
 const initialState = {
@@ -10,7 +9,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_LOOK_LIKES: {
-      let lookLikesData = action.payload.likes.map(lookLikes.map);
+      let lookLikesData = action.payload.likes
       if (action.payload.currId === state.currId) {
         lookLikesData = _.unionBy(state.lookLikesData, lookLikesData, like=>like.id);
       }

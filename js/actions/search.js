@@ -2,7 +2,10 @@
 
 import rest from '../api/rest';
 import UsersService from '../services/usersService';
-
+import { normalize } from 'normalizr';
+import { userSchema } from '../schemas/schemas';
+import { setUsers } from './users';
+import {batchActions} from 'redux-batched-actions';
 // Actions
 export const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM';
 export const SET_USERS = 'SET_USERS';
@@ -50,10 +53,12 @@ export function getUsers(term) {
     const nextPage = 1;
     dispatch(startFetchingUsers())
     UsersService.getUsers(userId, nextPage, term).then((data) => {
+      const normalizedResultsData = normalize(data.users, [userSchema]);
+      dispatch(setUsers(normalizedResultsData.entities.users))
       dispatch({
         type: SET_USERS,
         data: {
-          users: data.users,
+          users: normalizedResultsData.result,
           meta: {
             currentPage: nextPage,
             total: data.meta.total
@@ -89,9 +94,11 @@ export function getMoreUsers() {
 export function getUsersSuggestions() {
   return (dispatch) => {
     UsersService.getSuggestionsUsers().then((data) => {
+      const normalizedUserSuggestionsData = normalize(data.users, [userSchema]);
+      dispatch(setUsers(normalizedUserSuggestionsData.entities.users))
       dispatch({
         type: SET_SUGGESTIONS_USERS,
-        users: data.users
+        users: normalizedUserSuggestionsData.result
 
       });
     })

@@ -6,6 +6,7 @@ import LooksScreen from './LooksScreen';
 import {likeUpdate, unlikeUpdate, loadMore, getLookLikes} from '../../actions';
 import { showParisBottomMessage } from '../../actions/paris';
 import {updateFavorite} from '../../actions/look';
+import { getDataWithUsersObj, addUserDataToItem } from '../../utils/UsersUtils';
 import {reportAbuse} from '../../actions/looks';
 import { hideSwipeWizard, hideClosetWizard } from '../../actions/user';
 import {editNewLook} from '../../actions/uploadLook';
@@ -31,13 +32,15 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = [state.looks.flatLooksData[ownProps.navigation.state.params.lookId]];
+  const flatLooksFeedDataWithUsersObjs = getDataWithUsersObj(flatLooksFeedData, state.users.usersData);
+  const mappedFlatLook = getDataWithUsersObj([state.looks.flatLooksData[ownProps.navigation.state.params.lookId]], state.users.usersData)
   return {
-    flatLook: state.looks.flatLooksData[ownProps.navigation.state.params.lookId],
+    flatLook: mappedFlatLook[0],
     openComments: ownProps.navigation.state.params.openComments ? ownProps.navigation.state.params.openComments : false,
     isLoading: state.loader.loading,
     showSwipeWizard: false,
     showClosetWizard: state.user.showClosetWizard,
-    flatLooksData: flatLooksFeedData,
+    flatLooksData: flatLooksFeedDataWithUsersObjs,
     meta: state.feed.whatsHot.meta,
     query: state.feed.whatsHot.query,
     userLooks: state.userLooks.userLooksData,

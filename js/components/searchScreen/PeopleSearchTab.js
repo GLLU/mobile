@@ -96,7 +96,7 @@ class PeopleSearchTab extends Component {
       <FlatList
         style={styles.container}
         data={this.props.results}
-        keyExtractor={(item, index) => item.userId !== -1 ? item.userId : index}
+        keyExtractor={(item, index) => item.id !== -1 ? item.id : index}
         ItemSeparatorComponent={() => <Separator />}
         renderItem={({ item }) => <UserActionRow {...item} navigateTo={this.props.navigateTo} />}
       />

@@ -17,7 +17,6 @@ class usersService {
     const data = await AppAPI.get(`${blockRoute(userId)}`, {'page[number]': pageNumber});
     const blockedUsers = _.map(data.users, (user) => {
       const mappedUser = userMapper.map(user);
-      mappedUser.id = mappedUser.userId;
       return mappedUser;
     });
     const meta = metaMapper.map(data.meta);
@@ -31,7 +30,6 @@ class usersService {
     const data = await AppAPI.get(`${getUsersRoute(userId)}`, {term});
     const users = _.map(data.users, (user) => {
       const mappedUser = userMapper.map(user);
-      mappedUser.id = mappedUser.userId;
       return mappedUser;
     });
     const meta = metaMapper.map(data.meta);
@@ -45,7 +43,6 @@ class usersService {
     const data = await AppAPI.get(`${getUsersSuggestionRoute()}`);
     const users = _.map(data.users, (user) => {
       const mappedUser = userMapper.map(user);
-      mappedUser.id = mappedUser.userId;
       return mappedUser;
     });
     return {

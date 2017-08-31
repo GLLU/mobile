@@ -131,8 +131,8 @@ class LooksScreen extends Component {
     updateFavorite(isFavorite, lookId);
   }
 
-  _goToProfile(look: object) {
-    this.props.navigateTo('profileScreen', { user: look });
+  _goToProfile(user: object) {
+    this.props.navigateTo('profileScreen', { userId: user.id });
   }
 
   _goToEdit(look: object) {
@@ -174,6 +174,12 @@ class LooksScreen extends Component {
 
   onSwipe(gestureName: string) {
     this.props.logEvent('LookScreen', { name: 'user swiped', type: gestureName });
+    const { onHideSwipeWizard, showSwipeWizard } = this.props;
+
+    if (showSwipeWizard) {
+      onHideSwipeWizard();
+    }
+
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
     switch (gestureName) {
       case SWIPE_UP: {
@@ -433,6 +439,7 @@ class LooksScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ScrollView
+          keyboardShouldPersistTaps={'always'}
           pagingEnabled={false}
           ref={(c) => {
             this._scrollView = c;

@@ -2,9 +2,10 @@
 
 import _ from 'lodash';
 import LooksService from '../services/looksService';
-import { normalize, arrayOf } from 'normalizr';
+import { normalize } from 'normalizr';
 import { unifyLooks } from '../utils/FeedUtils';
-import { lookSchema, lookListSchema } from '../schemas/schemas';
+import { lookSchema } from '../schemas/schemas';
+import { setUsers } from './users';
 export const SET_FLAT_LOOKS_FEED_DATA = 'SET_FLAT_LOOKS_FEED_DATA';
 export const SET_FLAT_LOOKS_DATA = 'SET_FLAT_LOOKS_DATA';
 export const CLEAR_FEED_DATA = 'CLEAR_FEED_DATA';
@@ -37,16 +38,33 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
     });
     dispatch(startFechting(feedType));
     delete query.page;
-    return LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
-      if (data) {
-        const { looks, meta } = data;
+    return Promise.all([LooksService.getLooks({ ...query, 'page[size]': 10, 'page[number]': 1 }), LooksService.getVideos({ ...query, 'page[size]': 1, 'page[number]': 1 })])
+      .then((multiData) => {
+      if (multiData && multiData[0] && multiData[1]) {
+
+        let { looks, meta } = multiData[0];
+        const videoLook = multiData[1].looks[0];
+
+        if (videoLook) {
+
+          // If the look has been retrieved in getLooks service, don't add the video retrieved
+          const videoExistsOnLooks = looks.filter(function (obj) {
+            return obj.id === videoLook.id;
+          })[0];
+
+          if (!videoExistsOnLooks) {
+            looks.splice(2, 0, videoLook);
+          }
+        }
+
         const normalizedLooksData = normalize(looks, [lookSchema]);
+        dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType }));
         dispatch(finishFechting(feedType));
         dispatch(loadMore(feedType));
-        Promise.resolve(data);
+        Promise.resolve(multiData[0]);
       } else {
         Promise.reject();
       }
@@ -97,6 +115,7 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
       if (data) {
         const { looks, meta } = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
+        dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result);
