@@ -8,6 +8,7 @@ import { showParisBottomMessage } from '../../actions/paris';
 import {updateFavorite} from '../../actions/look';
 import { getDataWithUsersObj, addUserDataToItem } from '../../utils/UsersUtils';
 import {reportAbuse} from '../../actions/looks';
+import {getLooksById} from '../../utils/FeedUtils';
 import { hideSwipeWizard, hideClosetWizard } from '../../actions/user';
 import {editNewLook} from '../../actions/uploadLook';
 import {FEED_TYPE_WHATS_HOT} from '../../actions/feed';
@@ -33,7 +34,7 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state, ownProps) => {
   const flatLooksFeedData = [state.looks.flatLooksData[ownProps.navigation.state.params.lookId]];
   const flatLooksFeedDataWithUsersObjs = getDataWithUsersObj(flatLooksFeedData, state.users.usersData);
-  const mappedFlatLook = getDataWithUsersObj([state.looks.flatLooksData[ownProps.navigation.state.params.lookId]], state.users.usersData)
+  const mappedFlatLook = getDataWithUsersObj(getLooksById([ownProps.navigation.state.params.lookId], state.looks.flatLooksData), state.users.usersData)
   return {
     flatLook: mappedFlatLook[0],
     openComments: ownProps.navigation.state.params.openComments ? ownProps.navigation.state.params.openComments : false,
