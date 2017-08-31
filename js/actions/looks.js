@@ -111,6 +111,7 @@ export function loadMoreFavoriteLooks() {
 
     if (pageNumber === 1) {
       Promise.resolve();
+      return;
     }
 
     dispatch(({ type: LOADING_FAVORITES_START }));

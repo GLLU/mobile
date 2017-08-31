@@ -1,6 +1,6 @@
 // @flow
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import {
   getStats,
@@ -13,17 +13,17 @@ import {
   getUserBalance,
 } from '../../actions';
 
-import { addNewLook, editNewLook } from '../../actions/uploadLook';
-import { followUpdate, unFollowUpdate } from '../../actions/follows';
-import { getLooksById } from '../../utils/FeedUtils';
-import { loadMoreFavoriteLooks, getFavoriteLooks } from '../../actions/looks';
-import { getDataWithUsersObj } from '../../utils/UsersUtils';
-import { blockUser, hideWalletBadge, changeUserAvatar } from '../../actions/user';
+import {addNewLook, editNewLook} from '../../actions/uploadLook';
+import {followUpdate, unFollowUpdate} from '../../actions/follows';
+import {getLooksById} from '../../utils/FeedUtils';
+import {loadMoreFavoriteLooks, getFavoriteLooks} from '../../actions/looks';
+import {getDataWithUsersObj} from '../../utils/UsersUtils';
+import {blockUser, hideWalletBadge, changeUserAvatar} from '../../actions/user';
 
 import asScreen from '../common/containers/Screen';
 
 import ProfileScreen from './ProfileScreen';
-import { addUserObjToItem } from '../../utils/UsersUtils';
+import {addUserObjToItem} from '../../utils/UsersUtils';
 
 function bindAction(dispatch: any, ownProps: any): void {
   return {
@@ -71,6 +71,7 @@ const mapStateToProps = (state, ownProps) => {
   const userId = userData.id;
   const userSize = hasUserSize ? state.user.user_size : {};
   const userLooks = userId === state.userLooks.currId ? getDataWithUsersObj(getLooksById(state.userLooks.flatLooksIdData, state.looks.flatLooksData), state.users.usersData) : []
+  const userFavorites = getDataWithUsersObj(getLooksById(state.user.favoriteLooks.ids, state.looks.flatLooksData), state.users.usersData);
   return {
     cameFromBallance: ownProps.navigation.state.params.cameFromBallance,
     userData,
@@ -87,7 +88,7 @@ const mapStateToProps = (state, ownProps) => {
     currLookScreenId: state.userLooks.currId,
     isLoading: state.loader.loading,
     userLooks,
-    userFavorites: getDataWithUsersObj(getLooksById(state.user.favoriteLooks.ids, state.looks.flatLooksData), state.users.usersData),
+    userFavorites,
     cardNavigation: state.cardNavigation,
     meta: userId === state.userLooks.currId ? state.userLooks.meta : { total_count: 0 },
     query: state.userLooks.query,
