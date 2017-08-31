@@ -13,7 +13,6 @@ import FollowingLooks from './components/looksScreen/LooksFollowingContainer';
 import BestMatchLooks from './components/looksScreen/LooksBestMatchContainer';
 import WhatsHotLooks from './components/looksScreen/LooksWhatsHotContainer';
 import ProfileLooks from './components/looksScreen/LooksProfileContainer';
-import FavoriteLooks from './components/looksScreen/LooksFavoritesContainer';
 import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
 import NotificationsScreen from './components/notificationsscreen/NotificationsContainer';
@@ -84,9 +83,6 @@ const routes = {
   },
   lookScreenProfile: {
     screen: ProfileLooks,
-  },
-  lookScreenFavorites: {
-    screen: FavoriteLooks,
   },
   profileScreen: {
     screen: ProfileScreen,
