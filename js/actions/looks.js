@@ -84,7 +84,6 @@ export function getFavoriteLooks() {
   return (dispatch, getState) => {
 
     const { favoriteLooks, id } = getState().user;
-
     const pageNumber = 1;
     const query = { page: { size: DEFAULT_PAGE_SIZE, number: pageNumber } };
 
@@ -106,7 +105,7 @@ export function loadMoreFavoriteLooks() {
   return (dispatch, getState) => {
 
     const { favoriteLooks, id } = getState().user;
-    const pageNumber = currentLooks.length / DEFAULT_PAGE_SIZE;
+    const pageNumber = Math.floor(favoriteLooks.ids.length / DEFAULT_PAGE_SIZE) + 1;
     const query = { page: { size: DEFAULT_PAGE_SIZE, number: pageNumber } };
 
     dispatch(({ type: LOADING_FAVORITES_START }));
