@@ -263,6 +263,13 @@
 			remoteGlobalIDString = 6476C4051EEAA69700B10F51;
 			remoteInfo = "RNI18n-tvOS";
 		};
+		635EAAA21F57F50000E670F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2967F5C5301D4E2DB9FF96F6 /* RCTVideo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641E28441F0EEC8500443AF6;
+			remoteInfo = "RCTVideo-tvOS";
+		};
 		636853391F0D40DE00C4BC2F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4514476142504992896A2D23 /* SMXCrashlytics.xcodeproj */;
@@ -854,6 +861,7 @@
 			isa = PBXGroup;
 			children = (
 				297B48631ECDA17F003A8E58 /* libRCTVideo.a */,
+				635EAAA31F57F50000E670F6 /* libRCTVideo.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1475,6 +1483,13 @@
 			fileType = archive.ar;
 			path = "libRNI18n-tvOS.a";
 			remoteRef = 63465EF21F30A5C600007C4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		635EAAA31F57F50000E670F6 /* libRCTVideo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTVideo.a;
+			remoteRef = 635EAAA21F57F50000E670F6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		6368533A1F0D40DE00C4BC2F /* libSMXCrashlytics.a */ = {
