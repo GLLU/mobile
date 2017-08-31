@@ -98,6 +98,7 @@ class UserLooks extends Component {
   }
 
   _renderLooks = (looks) => {
+    const { canEdit } = this.props;
     return _.map(looks, look => (
       <MediaContainer
         look={look}
@@ -110,8 +111,7 @@ class UserLooks extends Component {
         shouldOptimize={this.state.flatLooksLeft.length > 20}
         showMediaGrid={false}
         fromScreen={'profileScreen'}>
-        { this.state.isMyProfile ? this.renderEditLookBtn(look) : null}
-        { this.state.isMyProfile ? this.renderLookStatus(look) : null}
+        { this.state.isMyProfile && canEdit ? this.renderEditLookBtn(look) : null}
       </MediaContainer>
       ));
   }

@@ -318,6 +318,7 @@ class ProfileScreen extends Component {
 
     const looks = type === 'user' ? userLooks : userFavorites;
     const isLoading = type === 'user' ? (this.state.isLoading || this.state.loadingMore) : isLoadingFavorites;
+    const canEdit = type === 'user' ? true : false;
 
     if ((!looks || looks.length === 0) && !isLoading) {
       return (<EmptyStateScreen
@@ -341,6 +342,7 @@ class ProfileScreen extends Component {
           likeUpdate={likeUpdate}
           unlikeUpdate={unlikeUpdate}
           meta={meta}
+          canEdit={canEdit}
           isLoading={isLoading}/>
         {this._renderLoadMore(isLoading, looks)}
       </View>
