@@ -74,6 +74,7 @@ export function getUserFollowsData(id, pageNumber = 1, pageSize = 25) {
         const serializedFollowsArray = _.map(normalizedUserFollowsData.result, followId => normalizedUserFollowsData.entities.follows[followId]);
         const followsData = {
           currId: id,
+          shouldUnion: pageNumber !== 1,
           follows: serializedFollowsArray,
         };
         dispatch(setUserFollowsData(followsData));
