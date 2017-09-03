@@ -22,6 +22,7 @@ class NetworkManager {
               return response.data;
             })
             .catch((error) => {
+      console.log('error111111',error)
               Utils.notifyRequestError(new Error(JSON.stringify(error)), error.response.data);
               throw ApiUtils.generalErrors(error);
             });

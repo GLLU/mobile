@@ -10,6 +10,7 @@ import Utils from '../../utils'
 import { connect } from 'react-redux';
 import styles from './styles';
 import { checkLogin, loginViaFacebook } from '../../actions';
+import { instagramSignIn } from '../../actions/user';
 import _ from 'lodash';
 import Video from 'react-native-video';
 import glluTheme from '../../themes/gllu-theme';
@@ -40,11 +41,12 @@ class LoginPage extends Component {
     super(props);
     this.handleEmailSigninPress=this.handleEmailSigninPress.bind(this);
     this._onNavigationStateChange=this._onNavigationStateChange.bind(this);
-    this.hide=this.hide.bind(this);
+    this.hideInstagramModal=this.hideInstagramModal.bind(this);
+    this.showInstagramModal=this.showInstagramModal.bind(this);
     this.state = {
       name: '',
       repeat: props.currentAppState==='active',
-      modalVisible: true
+      modalVisible: false
     };
     if(this.props.showTutorial && Platform !== 'ios'){
       //this.props.navigateTo('tutorialscreen');
@@ -112,6 +114,14 @@ class LoginPage extends Component {
                        onPress={this.connectWithFB.bind(this)}>
             Connect with facebook
           </Icon.Button>
+          <Icon.Button iconStyle={styles.btnFB}
+                       style={styles.fbIcon}
+                       borderRadius={4}
+                       name="instagram"
+                       backgroundColor="orange"
+                       onPress={this.showInstagramModal}>
+            Connect with Instagram
+          </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>
             <TouchableOpacity onPress={this.handleEmailSigninPress }><Text style={styles.loginTxt}>{i18n.t('LOGIN')}</Text></TouchableOpacity>
@@ -120,33 +130,51 @@ class LoginPage extends Component {
     )
   }
 
-  hide () {
+  hideInstagramModal () {
     this.setState({ modalVisible: false })
+  }
+
+  showInstagramModal() {
+    this.setState({ modalVisible: true })
   }
 
   _onNavigationStateChange (webViewState) {
     const { url } = webViewState
-    console.log('boooommm000',webViewState)
-    if (url && url.startsWith('www.infash.com')) {
-      console.log('boooommm11')
-      const match = url.match(/#(.*)/)
-      if (match && match[1]) {
-        const params = qs.parse(match[1])
-        if (params.access_token) {
-          this.hide()
-          this.props.onLoginSuccess(params.access_token)
-        }
-      } else {
-        this.hide()
-      }
+    if (url && url.startsWith('https://www.infash.com/#access_token')) {
+      const accessToken = url.split("#access_token=").pop(); // => "instagram access_token"
+      this.props.instagramSignIn(accessToken).then(() => {
+        this.hideInstagramModal();
+        this.props.resetTo('feedscreen');
+      }).catch((err) => console.log('instagram login Error',err))
     }
   }
 
-  render() {
+  _renderInstagramModal() {
     const clientId = '2e3d4a2f2bc246eb85419bf6d180181f'
     const redirectUrl = 'https://www.infash.com'
-    const scopes = ['public_content']
+    return(
+      <View style={styles.modalWarp}>
+        <KeyboardAvoidingView behavior='padding' style={styles.keyboardStyle}>
+          <View style={styles.contentWarp}>
+            <WebView
+              style={[{ flex: 1 }]}
+              source={{ uri: `https://api.instagram.com/oauth/authorize/?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=token` }}
+              scalesPageToFit
+              startInLoadingState
+              onNavigationStateChange={this._onNavigationStateChange}
+              onError={this._onNavigationStateChange}
+            />
+            <TouchableOpacity onPress={this.hideInstagramModal} style={styles.btnStyle}>
+              <Image source={logo} style={styles.closeStyle} />
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+    )
+  }
 
+  render() {
+    console.log('modal',this.state.modalVisible)
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>
@@ -171,23 +199,7 @@ class LoginPage extends Component {
                   <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
                 </View>
             </View>
-            <View style={styles.modalWarp}>
-              <KeyboardAvoidingView behavior='padding' style={styles.keyboardStyle}>
-                <View style={styles.contentWarp}>
-                  <WebView
-                    style={[{ flex: 1 }]}
-                    source={{ uri: `https://api.instagram.com/oauth/authorize/?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=token` }}
-                    scalesPageToFit
-                    startInLoadingState
-                    onNavigationStateChange={this._onNavigationStateChange}
-                    onError={this._onNavigationStateChange}
-                  />
-                  <TouchableOpacity onPress={this.hide} style={styles.btnStyle}>
-                    <Image source={logo} style={styles.closeStyle} />
-                  </TouchableOpacity>
-                </View>
-              </KeyboardAvoidingView>
-            </View>
+            {this.state.modalVisible ? this._renderInstagramModal() : null}
           </Content>
         </View>
       </Container>
@@ -199,6 +211,7 @@ function bindAction(dispatch) {
   return {
     loginViaFacebook: data => dispatch(loginViaFacebook(data)),
     checkLogin: (user) => dispatch(checkLogin(user)),
+    instagramSignIn: (accessToken) => dispatch(instagramSignIn(accessToken)),
   };
 }
 
