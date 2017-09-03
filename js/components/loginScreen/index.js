@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import asScreen from '../common/containers/Screen'
 import listenToAppState from '../common/eventListeners/AppStateListener'
-import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity , WebView, KeyboardAvoidingView} from 'react-native';
 import { Container, Content, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import i18n from 'react-native-i18n';
@@ -39,9 +39,12 @@ class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.handleEmailSigninPress=this.handleEmailSigninPress.bind(this);
+    this._onNavigationStateChange=this._onNavigationStateChange.bind(this);
+    this.hide=this.hide.bind(this);
     this.state = {
       name: '',
-      repeat: props.currentAppState==='active'
+      repeat: props.currentAppState==='active',
+      modalVisible: true
     };
     if(this.props.showTutorial && Platform !== 'ios'){
       //this.props.navigateTo('tutorialscreen');
@@ -117,7 +120,32 @@ class LoginPage extends Component {
     )
   }
 
+  hide () {
+    this.setState({ modalVisible: false })
+  }
+
+  _onNavigationStateChange (webViewState) {
+    const { url } = webViewState
+    console.log('boooommm000',webViewState)
+    if (url && url.startsWith('www.infash.com')) {
+      console.log('boooommm11')
+      const match = url.match(/#(.*)/)
+      if (match && match[1]) {
+        const params = qs.parse(match[1])
+        if (params.access_token) {
+          this.hide()
+          this.props.onLoginSuccess(params.access_token)
+        }
+      } else {
+        this.hide()
+      }
+    }
+  }
+
   render() {
+    const clientId = '2e3d4a2f2bc246eb85419bf6d180181f'
+    const redirectUrl = 'https://www.infash.com'
+    const scopes = ['public_content']
 
     return (
       <Container theme={glluTheme}>
@@ -142,6 +170,23 @@ class LoginPage extends Component {
                   <Text style={styles.text}> and </Text>
                   <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
                 </View>
+            </View>
+            <View style={styles.modalWarp}>
+              <KeyboardAvoidingView behavior='padding' style={styles.keyboardStyle}>
+                <View style={styles.contentWarp}>
+                  <WebView
+                    style={[{ flex: 1 }]}
+                    source={{ uri: `https://api.instagram.com/oauth/authorize/?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=token` }}
+                    scalesPageToFit
+                    startInLoadingState
+                    onNavigationStateChange={this._onNavigationStateChange}
+                    onError={this._onNavigationStateChange}
+                  />
+                  <TouchableOpacity onPress={this.hide} style={styles.btnStyle}>
+                    <Image source={logo} style={styles.closeStyle} />
+                  </TouchableOpacity>
+                </View>
+              </KeyboardAvoidingView>
             </View>
           </Content>
         </View>

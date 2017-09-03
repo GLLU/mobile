@@ -156,4 +156,32 @@ module.exports = StyleSheet.create({
     elevation: 0,
     paddingTop: (Platform.OS === 'ios') ? 1 : 7,
   },
+  modalWarp: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    height: deviceHeight,
+    width: deviceWidth
+  },
+  keyboardStyle: {
+    flex: 1,
+  },
+  contentWarp: {
+    height: deviceHeight,
+    width: deviceWidth,
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    flex: 1
+  },
+  btnStyle: {
+    width: 30,
+    height: 30,
+    position: 'absolute',
+    top: 5,
+    right: 5
+  },
+  closeStyle: {
+    width: 30, height: 30
+  }
 });
