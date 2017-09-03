@@ -150,7 +150,6 @@ class FollowingTabContent extends BaseComponent {
 
   loadMore() {
     if (this.state.isLoading) {
-      console.log('already isLoading');
       return;
     }
     const { meta: { total }, query } = this.props;
@@ -163,13 +162,11 @@ class FollowingTabContent extends BaseComponent {
           this.setState({ isLoading: false });
         }
         ).catch((err) => {
-          console.log('error', err);
           this.setState({ isLoading: false });
         });
       });
     } else {
       this.setState({ noMoreData: true });
-      console.log('end of feed');
     }
   }
 
@@ -247,7 +244,6 @@ class FollowingTabContent extends BaseComponent {
         this.setState({ isRefreshing: false });
       })
       .catch((error) => {
-        console.log('Error when preload image', error);
         this.setState({ isRefreshing: false });
       });
   }

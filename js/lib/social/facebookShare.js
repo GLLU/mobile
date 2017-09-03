@@ -14,9 +14,7 @@ function _shareFacebook(shareData) {
         }
     }).then((result) => {
         var logText = result.isCancelled ? 'Share cancelled' : `Share success with postId: ${result.postId}`;
-        console.log(logText);
     }).catch(error => {
-        console.log(`Share fail with error: ${error}`);
     });
 }
 

@@ -150,7 +150,6 @@ class LooksScreen extends Component {
   }
 
   loadMore() {
-    console.log('loadMore');
     if (this.state.isLoading) {
       return;
     }
@@ -162,13 +161,11 @@ class LooksScreen extends Component {
         this.props.loadMore().then(() => {
           this.setState({ isLoading: false });
         }).catch((err) => {
-          console.log('error', err);
           this.setState({ isLoading: false });
         });
       });
     } else {
       this.setState({ noMoreData: true });
-      console.log('end of feed');
     }
   }
 
@@ -206,13 +203,10 @@ class LooksScreen extends Component {
         break;
       }
       case SWIPE_LEFT:
-        console.log('swipe left, no action');
         break;
       case SWIPE_RIGHT:
-        console.log('swipe right, no action');
         break;
       default:
-        console.log('have we broken the 4th wall?');
     }
   }
 

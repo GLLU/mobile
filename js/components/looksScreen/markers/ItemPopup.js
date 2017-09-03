@@ -98,7 +98,6 @@ class ItemPopup extends Component {
     if (url) {
       Linking.canOpenURL(url).then((supported) => {
         if (!supported) {
-          console.log(`Can't handle url: ${url}`);
         } else {
           this.props.logEvent('lookScreen', {name: 'click on item', isVerified: is_verified, lookId: look_id, item_id: id})
           return Linking.openURL(url);

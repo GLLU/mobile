@@ -105,7 +105,6 @@ class EditProfile extends Component {
     this.setState({ modalShowing: shouldActive });
   };
   render() {
-    console.log('isLoading',this.state.isChangingAvatar)
 
     return (
       <View style={{ backgroundColor: '#E9E9EF' }}>

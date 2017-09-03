@@ -262,7 +262,6 @@ class ProfileScreen extends Component {
 
   _loadMoreUserLooks = () => {
     if (this.state.loadingMore) {
-      console.log('already isLoading');
       return;
     }
     const data = {
@@ -279,13 +278,11 @@ class ProfileScreen extends Component {
             this.setState({ loadingMore: false });
           }
         ).catch((err) => {
-          console.log('error', err);
           this.setState({ loadingMore: false });
         });
       });
     } else {
       this.setState({ noMoreData: true });
-      console.log('end of LooksScreen');
     }
   }
 

@@ -64,7 +64,6 @@ class VideoWithCaching extends Component {
   };
 
   onError(err){
-    console.log('error on video',err);
     if(this.forceCacheAttempts<5){
       this.forceCacheAttempts++;
       this.props.forceCache();

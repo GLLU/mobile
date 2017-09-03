@@ -289,7 +289,6 @@ export function publishLook() {
 
           clearInterval(interval);
 
-          console.log('im publishing');
           UploadLookService.publishLook(lookId).then(() => {
             if (description.length > 0) {
               const descriptionBody = {

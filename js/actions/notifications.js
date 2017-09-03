@@ -86,7 +86,6 @@ export function markAsReadNotifications(notificationId) {
   return (dispatch, getState) => dispatch(rest.actions.markAsReadNotification.put({ id: notificationId }, {}, (err, notificationsData) => {
     dispatch(markAsRead(notificationId));
     if (err) {
-      console.log('err', err);
     }
   }));
 }

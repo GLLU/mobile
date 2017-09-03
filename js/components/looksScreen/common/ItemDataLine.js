@@ -54,7 +54,6 @@ class ItemDataLine extends Component {
     if (url) {
       Linking.canOpenURL(url).then(supported => {
         if (!supported) {
-          console.log('Can\'t handle url: ' + url);
         }
         else {
           return Linking.openURL(url);

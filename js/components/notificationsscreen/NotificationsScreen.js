@@ -60,7 +60,6 @@ class NotificationsScreen extends Component {
     this.props.addNewLook(imagePath).then(() => {
       this.props.navigateTo('uploadLookScreen', { mode: 'create' });
     }).catch((err) => {
-      console.log('addNewLook err', err);
     });
   }
 

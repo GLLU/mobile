@@ -39,10 +39,8 @@ const setRestOptions = function (dispatch, rest, user) {
     },
   })).use('responseHandler', (err, data) => {
     if (err) {
-      console.log('ERROR', err, data);
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
-      console.log('SUCCESS', data);
     }
   });
 };
@@ -178,9 +176,7 @@ export function forgotPassword(email) {
   const data = { email };
   return dispatch => dispatch(rest.actions.password_recovery.post({}, { body: JSON.stringify(data) }, (err, data) => {
     if (!err && data) {
-      console.log('PASSWORD RECOVERY:', data);
     } else {
-      console.log('password recovery Failed', err);
     }
   }));
 }
@@ -214,7 +210,6 @@ export function checkLogin() {
           if (!err && data && data.user && data.user.id !== null && data.user.id !== -1) {
             dispatch(setUser(data.user));
           } else {
-            console.log('unable to invalidate user data', err);
             reject(err);
           }
         }));

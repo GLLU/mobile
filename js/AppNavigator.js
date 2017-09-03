@@ -65,7 +65,6 @@ class AppNavigator extends Component {
   }
 
   handleConnectionChange = (isConnected) => {
-    console.log(`is network connected: ${isConnected}`);
     if(!isConnected){
       this.props.showParisBottomMessage(`It seems you have no internet connection`, 999999);
     } else {

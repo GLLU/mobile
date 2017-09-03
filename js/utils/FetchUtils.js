@@ -27,7 +27,6 @@ export const postMultipartForm = (api_key, path, formData, fileField, file, meth
         reject(json.error);
       }
     }).catch((err) => {
-      console.log('File upload error:', err);
       reject(err);
     });
   });

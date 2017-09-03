@@ -127,7 +127,6 @@ export default reduxApi({
     crud: true,
   }
 }).use("fetch", (url, options) => {
-  console.log('making request', url, options);
   return adapterFetch(fetch)(url, options);
 })
   .use('rootUrl', Config.API_URL)
@@ -141,9 +140,7 @@ export default reduxApi({
   }).use("responseHandler", (err, data) => {
     if (err) {
       throw (err)
-      console.log("ERROR", err);
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
-      console.log("SUCCESS", data)
     }
   });
