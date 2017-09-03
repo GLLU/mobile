@@ -10,7 +10,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case actions.SET_USER_FOLLOWERS_DATA: {
       let userFollowersData = action.payload.followers
-      if (action.payload.currId === state.currId) {
+      if (action.payload.currId === state.currId && action.payload.shouldUnion) {
         userFollowersData = _.unionBy(state.userFollowersData, userFollowersData, follow => follow.id);
       }
       return {
