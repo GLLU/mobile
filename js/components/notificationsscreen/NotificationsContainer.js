@@ -17,6 +17,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
+
   const flatLooksFeedDataWithUsersObjs = getNotificationsWithUsersObj(state.notifications.allNotifications, state.users.usersData);
   return {
   notifications: flatLooksFeedDataWithUsersObjs,
