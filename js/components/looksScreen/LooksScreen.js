@@ -123,11 +123,11 @@ class LooksScreen extends Component {
 
     const { logEvent, updateFavorite, showClosetWizard, onShowClosetMessage } = this.props;
 
-    if (showClosetWizard){
+    if (showClosetWizard) {
       onShowClosetMessage(i18n.t('CLOSET_WIZARD'));
     }
 
-   logEvent('LookScreen', { name: 'Favorite click', isFavorite: `${isFavorite}` });
+    logEvent('LookScreen', { name: 'Favorite click', isFavorite: `${isFavorite}` });
     updateFavorite(isFavorite, lookId);
   }
 
@@ -308,10 +308,10 @@ class LooksScreen extends Component {
         height: generateAdjustedSize(100)
       }}>
         <TouchableOpacity
-          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-          style={{position: 'absolute', top: 6, right: 6}}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          style={{ position: 'absolute', top: 6, right: 6 }}
           onPress={this._onCloseRetailerMessage}>
-          <Image style={{width: 16, height: 16}} resizeMode={'contain'} source={closeIcon} />
+          <Image style={{ width: 16, height: 16 }} resizeMode={'contain'} source={closeIcon}/>
         </TouchableOpacity>
 
         <Text style={styles.noItemLink}>{i18n.t('NO_DIRECT_LINK')}</Text>
@@ -337,6 +337,19 @@ class LooksScreen extends Component {
           flex: 1,
           backgroundColor: 'transparent',
         }}>
+        <View style={{
+          flex: 1,
+          backgroundColor: 'white',
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: 0
+        }}>
+          <Text style={styles.loadingImage}>Loading Image...</Text>
+        </View>
         <ImageWrapper
           resizeMode={'stretch'}
           style={styles.itemImage}

@@ -45,10 +45,11 @@ export function saveUserBodyShape() {
       measurements_scale: 'cm',
     };
 
+    dispatch({type: COMPLETE_EDIT_BODY_MEASURE, payload: measurement});
+
     dispatch(rest.actions.size.post({user_id}, {body: JSON.stringify(measurement)}, (err, data) => {
       if (!err && data) {
         dispatch(onBodyShapeChoosen());
-        dispatch({type: COMPLETE_EDIT_BODY_MEASURE, payload: measurement});
         resolve();
       } else {
         reject(err);
