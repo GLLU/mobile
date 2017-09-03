@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-
   switch (action.type) {
     case actions.SET_USER_NOTIFICATIONS: {
       let newNotifications = false;
