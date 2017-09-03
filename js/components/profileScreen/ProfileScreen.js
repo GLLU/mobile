@@ -74,7 +74,7 @@ class ProfileScreen extends Component {
       modalVisible: false,
       showWalletWizard: false,
       showProfileImage: false,
-      index: 1,
+      index: 0,
       routes: [
         { key: 'looks', title: I18n.t('LOOKS'), index: 0 },
         { key: 'wallet', title: I18n.t('WALLET'), index: 1 },
@@ -303,9 +303,6 @@ class ProfileScreen extends Component {
           else if (isLoading) {
             return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
-          else {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
-          }
         })()}
       </View>);
   }
@@ -324,7 +321,7 @@ class ProfileScreen extends Component {
     const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo, userFavorites, isLoadingFavorites } = this.props;
     const { userLooks, currentScrollPosition } = this.state;
     const emptyStateTitle = type !== 'user' ? I18n.t('NO_FAVORITES') : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
-    const emptyStateSubtitle = type !== 'user' ? null : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
+    const emptyStateSubtitle = type !== 'user' ? I18n.t('NO_FAVORITES_LEGEND') : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
     const emptyStateButtonText = type !== 'user' ? null : isMyProfile ? I18n.t('POST_NOW') : null;
     const emptyStateIcon = type === 'user' ? require('../../../images/emptyStates/photo-camera.png') : require('../../../images/emptyStates/star.png');
 
