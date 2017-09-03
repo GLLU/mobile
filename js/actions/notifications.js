@@ -75,8 +75,6 @@ export function getNotifications(retryCount = 0) {
       'page[size]': 20,
       'page[number]': page,
     }).then((notificationsData) => {
-      console.log('data222',notificationsData)
-
       const userId = getState().user.id;
       _.isEmpty(getState().notifications.allNotifications) ? getPusherClient(dispatch, userId) : null;
       const normalizedNotificationsData = normalize(notificationsData.notifications, [notificationSchema]);
