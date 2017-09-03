@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-
   switch (action.type) {
     case actions.SET_USER_NOTIFICATIONS: {
       let newNotifications = false;
@@ -31,8 +30,7 @@ export default function (state = initialState, action) {
     }
     case actions.ADD_USER_NOTIFICATION: {
       let existNotifications = state.allNotifications;
-      let newNotification = notificationsMapper.map(action.payload)
-      existNotifications.unshift(newNotification)
+      existNotifications.unshift(action.payload)
       return {
         ...state,
         allNotifications: existNotifications,
