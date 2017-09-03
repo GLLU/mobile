@@ -64,7 +64,6 @@ export default function withNavigation(WrappedComponent) {
             {
               text: 'Cancel',
               onPress: () => {
-                console.log('Cancel Pressed');
               },
               style: 'cancel'
             },

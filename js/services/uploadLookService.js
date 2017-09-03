@@ -11,17 +11,14 @@ const addItemOccasionRoute = (lookId, itemId) => `/looks/${lookId}/items/${itemI
 
 class UploadLookService {
   static createLook = () => AppAPI.post('/looks', {id: -1}).then((data => {
-    console.log('new look data',data)
     return data
   }))
 
   static publishLook = lookId => AppAPI.post(`${publishRoute(lookId)}`, {}).then((data => {
-    console.log('published look data', data);
     return data
   }))
 
   static updateLook = (lookId, body) => AppAPI.put(`${updateLookRoute(lookId)}`, {...body}).then((data => {
-    console.log('updated look data', data);
     return data
   }))
 
@@ -29,7 +26,6 @@ class UploadLookService {
     AppAPI[editOrCreate.method](editOrCreate.method === 'post' ? `${createItemRoute(lookId)}` : `${updateItemRoute(lookId, editOrCreate.itemId)}`,
     {...body}
   ).then((data => {
-    console.log('new item data',data);
     return data
   }))
 
@@ -37,7 +33,6 @@ class UploadLookService {
     AppAPI.post(`${addItemOccasionRoute(lookId, itemId)}`,
       {...body}
     ).then((data => {
-      console.log('new occasion data',data);
       return data
     }))
 

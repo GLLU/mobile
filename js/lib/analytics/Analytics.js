@@ -6,7 +6,6 @@ import { APP_LOADED_EVENT, PAGE_LOADED_EVENT } from './constants';
 
 class Analytics {
   constructor() {
-    console.log('Init Analytics');
     this.tools = this.setupAnalytics();
   }
 

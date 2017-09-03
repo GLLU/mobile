@@ -39,7 +39,6 @@ class BrandNameInput extends Component {
 
   componentWillMount() {
     this.props.loadBrands().catch(err => {
-      console.log('load brands err', err);
     });
   }
 
@@ -58,7 +57,6 @@ class BrandNameInput extends Component {
   }
 
   onEndEditing(e) {
-    // console.log('onEndEditing', e);
   }
 
   doFilter(text) {
@@ -67,7 +65,6 @@ class BrandNameInput extends Component {
         data: response,
       });
     }).catch(err => {
-      console.log('filter brands error:', err);
     });
   }
 

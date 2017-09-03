@@ -114,10 +114,8 @@ class BrandSelector extends BaseComponent {
       brandFunction(brand.id, this.props.item.id);
     } else {
       brandFunction(data).then(() => {
-        console.log('brand added')
         handleTabsIndexChange()
       }).catch(err => {
-        console.log('error', err);
       })
     }
 

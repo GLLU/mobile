@@ -114,7 +114,6 @@ class SignInPage extends Component {
     this.props.logEvent('SignInScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then((supported) => {
       if (!supported) {
-        console.log(`Can't handle url: ${url}`);
       } else {
         return Linking.openURL(url);
       }
@@ -151,33 +150,33 @@ class SignInPage extends Component {
                 <Grid>
                   <Row style={styles.formItem}>
                     <TextInput
-                    placeholder="Email"
-                    keyboardType="email-address"
-                    placeholderTextColor="lightgrey"
-                    ref={c => this.emailInput = c}
-                    blurOnSubmit={false}
-                    onSubmitEditing={() => this.focusNext('passwordInput')}
-                    returnKeyType="next"
-                    autoCorrect={false}
-                    style={[styles.formInput]}
-                    onChangeText={email => this.validateEmailInput(email)} />
+                      placeholder="Email"
+                      keyboardType="email-address"
+                      placeholderTextColor="lightgrey"
+                      ref={c => this.emailInput = c}
+                      blurOnSubmit={false}
+                      onSubmitEditing={() => this.focusNext('passwordInput')}
+                      returnKeyType="next"
+                      autoCorrect={false}
+                      style={[styles.formInput]}
+                      onChangeText={email => this.validateEmailInput(email)} />
                     {this.state.email.length > 0 ? <IconB
-                    size={20} color={'#009688'} name={this.state.emailValid}
-                    style={styles.uploadImgIcon} /> : null}
+                      size={20} color={'#009688'} name={this.state.emailValid}
+                      style={styles.uploadImgIcon} /> : null}
                   </Row>
                   <Row style={styles.formItem}>
                     <TextInput
-                    placeholder="Password"
-                    placeholderTextColor="lightgrey"
-                    ref={c => this.passwordInput = c}
-                    secureTextEntry
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.handleSigninPress()}
-                    style={[styles.formInput]}
-                    onChangeText={password => this.validatePasswordInput(password)} />
+                      placeholder="Password"
+                      placeholderTextColor="lightgrey"
+                      ref={c => this.passwordInput = c}
+                      secureTextEntry
+                      returnKeyType="next"
+                      onSubmitEditing={() => this.handleSigninPress()}
+                      style={[styles.formInput]}
+                      onChangeText={password => this.validatePasswordInput(password)} />
                     {this.state.password.length > 0 ? <IconB
-                    size={20} color={'#009688'} name={this.state.passwordValid}
-                    style={styles.uploadImgIcon} /> : null}
+                      size={20} color={'#009688'} name={this.state.passwordValid}
+                      style={styles.uploadImgIcon} /> : null}
                   </Row>
                 </Grid>
                 <SolidButton

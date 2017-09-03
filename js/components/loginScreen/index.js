@@ -89,7 +89,6 @@ class LoginPage extends Component {
     this.props.logEvent('loginscreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
-        console.log('Can\'t handle url: ' + url);
       } else {
         return Linking.openURL(url);
       }

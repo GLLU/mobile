@@ -18,13 +18,15 @@ export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
 export const BODY_SHAPE_CHOOSEN = 'user.BODY_SHAPE_CHOOSEN';
 export const HIDE_WALLET_BADGE = 'user.HIDE_WALLET_BADGE';
+export const HIDE_CLOSET_WIZARD = 'user.HIDE_CLOSET_WIZARD';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
 export const HIDE_SWIPE_WIZARD = 'user.HIDE_SWIPE_WIZARD';
 export const USER_BLOCKED = 'USER_BLOCKED';
 export const USER_UNBLOCKED = 'USER_UNBLOCKED';
 export const SET_BLOCKED_USERS = 'SET_BLOCKED_USERS';
-
+export const SET_FAVORITE_LOOKS = 'user.SET_FAVORITE_LOOKS';
+export const LOADING_FAVORITES_START = 'user.LOADING_FAVORITES_START';
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
 
@@ -37,10 +39,8 @@ const setRestOptions = function (dispatch, rest, user) {
     },
   })).use('responseHandler', (err, data) => {
     if (err) {
-      console.log('ERROR', err, data);
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
-      console.log('SUCCESS', data);
     }
   });
 };
@@ -74,6 +74,10 @@ export function setUser(user: string) {
 
 export function hideSwipeWizard() {
   return ({ type: HIDE_SWIPE_WIZARD });
+}
+
+export function hideClosetWizard() {
+  return ({ type: HIDE_CLOSET_WIZARD });
 }
 
 export function loginViaFacebook(data) {
@@ -172,9 +176,7 @@ export function forgotPassword(email) {
   const data = { email };
   return dispatch => dispatch(rest.actions.password_recovery.post({}, { body: JSON.stringify(data) }, (err, data) => {
     if (!err && data) {
-      console.log('PASSWORD RECOVERY:', data);
     } else {
-      console.log('password recovery Failed', err);
     }
   }));
 }
@@ -208,7 +210,6 @@ export function checkLogin() {
           if (!err && data && data.user && data.user.id !== null && data.user.id !== -1) {
             dispatch(setUser(data.user));
           } else {
-            console.log('unable to invalidate user data', err);
             reject(err);
           }
         }));
@@ -350,6 +351,10 @@ export function hideTutorial() {
       type: HIDE_TUTORIAL,
     });
   };
+}
+
+export function setFavoriteLooks(data) {
+  return ({type: SET_FAVORITE_LOOKS, looksIds: data.flatLooksIdData });
 }
 
 export function onBodyShapeChoosen() {

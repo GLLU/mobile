@@ -5,7 +5,6 @@ import UsersService from '../services/usersService';
 import { normalize } from 'normalizr';
 import { userSchema } from '../schemas/schemas';
 import { setUsers } from './users';
-import {batchActions} from 'redux-batched-actions';
 // Actions
 export const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM';
 export const SET_USERS = 'SET_USERS';

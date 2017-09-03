@@ -66,6 +66,7 @@ class LooksScreen extends Component {
       currScrollIndex: props.flatLook.originalIndex,
       loader: Platform.OS !== 'ios' && props.flatLooksData.length > 1,
       mountedOnce: false,
+      isMuted: true,
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
   }
@@ -118,6 +119,18 @@ class LooksScreen extends Component {
     }
   }
 
+  _toggleFavorite = (isFavorite: boolean, lookId: number) => {
+
+    const { logEvent, updateFavorite, showClosetWizard, onShowClosetMessage } = this.props;
+
+    if (showClosetWizard){
+      onShowClosetMessage(i18n.t('CLOSET_WIZARD'));
+    }
+
+   logEvent('LookScreen', { name: 'Favorite click', isFavorite: `${isFavorite}` });
+    updateFavorite(isFavorite, lookId);
+  }
+
   _goToProfile(user: object) {
     this.props.navigateTo('profileScreen', { userId: user.id });
   }
@@ -137,7 +150,6 @@ class LooksScreen extends Component {
   }
 
   loadMore() {
-    console.log('loadMore');
     if (this.state.isLoading) {
       return;
     }
@@ -149,13 +161,11 @@ class LooksScreen extends Component {
         this.props.loadMore().then(() => {
           this.setState({ isLoading: false });
         }).catch((err) => {
-          console.log('error', err);
           this.setState({ isLoading: false });
         });
       });
     } else {
       this.setState({ noMoreData: true });
-      console.log('end of feed');
     }
   }
 
@@ -193,13 +203,10 @@ class LooksScreen extends Component {
         break;
       }
       case SWIPE_LEFT:
-        console.log('swipe left, no action');
         break;
       case SWIPE_RIGHT:
-        console.log('swipe right, no action');
         break;
       default:
-        console.log('have we broken the 4th wall?');
     }
   }
 
@@ -234,6 +241,10 @@ class LooksScreen extends Component {
     );
   }
 
+  _toggleVolumePressed = () => {
+    this.setState({ isMuted: !this.state.isMuted });
+  }
+
   renderVideo(look: object, index: number) {
     const showShowArrow = this.shouldRenderArrows();
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
@@ -253,7 +264,7 @@ class LooksScreen extends Component {
         <VideoWithCaching
           source={{ uri: look.uri, mainVer: 1, patchVer: 0 }}
           resizeMode={'contain'}
-          muted
+          muted={this.state.isMuted}
           style={styles.videoBackground}
           repeat
           navigation={this.props.cardNavigation}
@@ -268,9 +279,12 @@ class LooksScreen extends Component {
           openComments={openComments}
           onBottomDrawerOpen={this.onToggleDrawer}
           goBack={this.props.goBack}
+          isMuted={this.state.isMuted}
+          onVolumePressed={this._toggleVolumePressed}
           goToProfile={this._goToProfile}
           goToLikes={this._goToLikes}
           goToEdit={this._goToEdit}
+          toggleFavorite={isFavorite => this._toggleFavorite(isFavorite, look.id)}
           toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
           reportAbuse={lookId => this.props.reportAbuse(lookId)}
         />
@@ -340,6 +354,7 @@ class LooksScreen extends Component {
             goToLikes={this._goToLikes}
             goToEdit={this._goToEdit}
             onInvalidItemPressed={(showMessage) => this.setState({ showRetailerMessage: showMessage })}
+            toggleFavorite={isFavorite => this._toggleFavorite(isFavorite, look.id)}
             toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
             reportAbuse={lookId => this.props.reportAbuse(lookId)}
           />

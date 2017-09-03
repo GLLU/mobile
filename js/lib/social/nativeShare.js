@@ -15,11 +15,9 @@ function _shareTextNative(shareData) {
 
 function _logResult(result) {
     if (result.action === Share.sharedAction) {
-        console.log(`shared with an activityType: ${result.activityType}`)
     }
     else {
         if (result.action === Share.dismissedAction) {
-            console.log('dismissed');
         }
     }
 }
