@@ -1,5 +1,15 @@
-import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, TouchableHighlight, Image, View } from 'react-native';
+import React, {Component} from 'react';
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  Platform,
+  Dimensions,
+  TouchableOpacity,
+  TouchableHighlight,
+  Image,
+  View
+} from 'react-native';
 import LikeView from '../feedscreen/items/FeedLikesView';
 import FeedCommentsView from '../feedscreen/items/FeedCommentsView';
 import VolumeButton from './VolumeButton';
@@ -7,8 +17,9 @@ import Utils from '../../utils';
 import VideoWithCaching from "./media/VideoWithCaching";
 import ImageWrapper from "./media/ImageWrapper";
 import withAnalytics from "../common/analytics/WithAnalytics";
-import { connect } from "react-redux";
-import { likeUpdate, unlikeUpdate } from "../../actions/look";
+import {connect} from "react-redux";
+import {likeUpdate, unlikeUpdate} from "../../actions/look";
+import Fonts from '../../styles/Fonts.styles';
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -23,6 +34,18 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     zIndex: 1,
+  },
+  userName: {
+    fontFamily: Fonts.regularFont,
+    fontSize: 12,
+    alignSelf: 'center',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+  description: {
+    fontSize: 12,
+    fontFamily: Fonts.contentFont,
+    marginBottom: 5,
   },
 });
 
@@ -132,7 +155,12 @@ class MediaContainer extends Component {
             preview={video.preview}
           />
           :
-          <View style={{ width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor, borderRadius: 10 }} />
+          <View style={{
+            width: lookWidth,
+            height: lookHeight,
+            backgroundColor: this.state.backgroundColor,
+            borderRadius: 10
+          }}/>
         }
 
 
@@ -147,16 +175,19 @@ class MediaContainer extends Component {
     return (
       <View>
         {ShouldShowLookImage ?
-          <ImageWrapper source={{ uri: look.uri }} resizeMode={'stretch'} style={{ width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor }} />
+          <ImageWrapper source={{ uri: look.uri }} resizeMode={'stretch'}
+                        style={{ width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor }}/>
           :
-          <View style={{ width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor }} />}
+          <View style={{ width: lookWidth, height: lookHeight, backgroundColor: this.state.backgroundColor }}/>}
       </View>
     );
   }
+
   renderVolumButton(look) {
     return (
 
-      <VolumeButton look={look} isMuted={this.state.isMuted} togglePlaySoundAction={() => this._togglePlaySoundAction()} />
+      <VolumeButton look={look} isMuted={this.state.isMuted}
+                    togglePlaySoundAction={() => this._togglePlaySoundAction()}/>
 
     );
   }
@@ -175,13 +206,6 @@ class MediaContainer extends Component {
           <View style={{ alignSelf: 'flex-end' }}>
             {look.coverType === 'video' ? this.renderVolumButton(look) : null}
           </View>
-          <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', height: 30, bottom: 0, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <LikeView isLiked={look.liked} likes={look.likes} onPress={this.toggleLikeAction} onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookId={look.id} />
-            <TouchableOpacity style={{ justifyContent: 'center', flex: 1 }} onPress={() => this.goToProfile()}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={{ color: 'white', alignSelf: 'center', textAlign: 'center', justifyContent: 'center', fontSize: 11 }}>{look.user.username}</Text>
-            </TouchableOpacity>
-            <FeedCommentsView comments={look.comments} onPress={this._handleCommentPress} lookId={look.id} />
-          </View>
         </View>
       );
     } else {
@@ -189,14 +213,33 @@ class MediaContainer extends Component {
     }
   }
 
+  _renderBottomBar = () => {
+    const { look } = this.props;
+
+    return (
+      <View style={{marginHorizontal: 6, marginBottom: 9}}>
+        <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <LikeView isLiked={look.liked} likes={look.likes} onPress={this.toggleLikeAction}
+                    onLikesNumberPress={this._onLikesNumberPress.bind(this)} lookId={look.id}/>
+          <TouchableOpacity style={{ justifyContent: 'center', flex: 1 }} onPress={() => this.goToProfile()}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userName}>{look.user.username}</Text>
+          </TouchableOpacity>
+          <FeedCommentsView comments={look.comments} onPress={this._handleCommentPress} lookId={look.id}/>
+        </View>
+        {look.description ? <Text style={styles.description}>{look.description}</Text> : null}
+      </View>
+    );
+  }
+
   render() {
     const { look } = this.props;
     return (
-      <View onLayout={e => this.setLookPosition(e)} style={{ margin: 3 }}>
+      <View onLayout={e => this.setLookPosition(e)}>
         <TouchableOpacity activeOpacity={0.8} onPress={this._handleItemPress}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look)}
           {this.renderFeedMediaGrid(look)}
         </TouchableOpacity>
+        {this._renderBottomBar()}
       </View>
     );
   }

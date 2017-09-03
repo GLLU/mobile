@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, Image, Platform, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { formatNumberAsString } from "../../../utils/FormatUtils";
 
-const bubbleIcon = require('../../../../images/icons/speech-bubble.png');
+const bubbleIcon = require('../../../../images/icons/blackBubble.png');
 
 const styles = StyleSheet.create({
   likeContainer: {
@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
   iconBubbleWithImage: {
     height: 18,
     width: 18,
-    resizeMode: 'stretch',
+    resizeMode: 'contain',
     alignSelf: 'center',
     marginTop: 3,
   },
   countLikeLabel: {
-    color: '#FFFFFF',
+    color: 'black',
     fontSize: 12,
     fontWeight: '500',
   },

@@ -5,8 +5,8 @@ import { StyleSheet, Image, Platform, View, Text, TouchableWithoutFeedback } fro
 import { Col, Grid } from "react-native-easy-grid";
 import { formatNumberAsString } from "../../../utils/FormatUtils";
 
-const likeIcon = require('../../../../images/icons/like.png');
-const likedIcon = require('../../../../images/icons/likedRed.png');
+const likeIcon = require('../../../../images/icons/likeBlack.png');
+const likedIcon = require('../../../../images/icons/redLike.png');
 
 const styles = StyleSheet.create({
   likeContainer: {
@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue'
   },
   iconWithImage: {
-    height: 25,
-    width: 25,
-    resizeMode: 'stretch',
+    height: 18,
+    width: 18,
+    resizeMode: 'contain',
     alignSelf: 'center',
     marginTop: 3
   },
   countLikeLabel: {
-    color: '#FFFFFF',
+    color: 'black',
     fontSize: 12,
     fontWeight: '500',
   },
@@ -92,7 +92,7 @@ class FeedLikesView extends Component {
               <Image source={likeIconView} style={styles.iconWithImage}/>
             </TouchableWithoutFeedback>
           </View>
-          {this.renderLikesAmount(likes)}
+          {likes > 0 ? this.renderLikesAmount(likes) : <View/>}
         </View>
       </View>
     )
