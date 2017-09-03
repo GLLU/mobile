@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
     alignSelf: 'flex-start',
+    flex:1,
   },
   followUsername: {
     flex: 0.5,
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
     alignSelf: 'flex-start',
+    flex:1,
   },
   photoContainer: {
     flex: 2,
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.lightGray,
   },
   followView: {
-    flex: 3,
+    width: generateAdjustedSize(80),
   },
 });
 
@@ -89,8 +91,8 @@ class UserActionRow extends Component {
   renderFollowText() {
     return (
       <View style={styles.textContainer}>
-        <Text style={styles.followName}>{this.props.name}</Text>
-        <Text style={styles.followUsername}>@{this.props.username}</Text>
+        <Text numberOfLines={1} style={styles.followName}>{this.props.name}</Text>
+        <Text numberOfLines={1} style={styles.followUsername}>@{this.props.username}</Text>
       </View>
     );
   }
