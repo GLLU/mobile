@@ -99,7 +99,6 @@ class FinishLookPage extends Component {
           ]
         });
       }).catch(err => {
-        console.log('addNewLook err', err);
       });
   }
 

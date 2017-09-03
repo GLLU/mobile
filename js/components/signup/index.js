@@ -175,7 +175,6 @@ class SignUpPage extends Component {
     this.props.logEvent('SignUpScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then((supported) => {
       if (!supported) {
-        console.log(`Can't handle url: ${url}`);
       } else {
         return Linking.openURL(url);
       }

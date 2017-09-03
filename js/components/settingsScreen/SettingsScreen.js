@@ -108,7 +108,6 @@ class SettingsScreen extends Component {
     this.props.logEvent('SettingsScreen', { name: 'Link click', url });
     Linking.canOpenURL(url).then((supported) => {
       if (!supported) {
-        console.log(`Can't handle url: ${url}`);
         if (type === 'email') {
           Alert.alert(
             '',
@@ -117,7 +116,6 @@ class SettingsScreen extends Component {
               {
                 text: 'OK',
                 onPress: () => {
-                  console.log('Alert OK pressed');
                 },
               },
             ]

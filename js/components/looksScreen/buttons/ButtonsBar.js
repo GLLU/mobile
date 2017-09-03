@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
+  Text,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import * as _ from 'lodash';
 import InformationButton from './InformationButton';
@@ -9,18 +11,20 @@ import CommentsButton from './CommentsButton';
 import ItemButton from './ItemButton';
 import MenuButton from './MenuButton';
 import LikeButton from './LikeButton';
-import ItemDataLine from '../common/ItemDataLine';
+import VolumeButton from '../../common/VolumeButton';
 import VideoItemLine from '../common/VideoItemLine';
 import BaseComponent from '../../common/base/BaseComponent';
+import FooterButton from "./FooterButton";
 
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 100,
     right: 0,
+    width: Dimensions.get('window').width,
     zIndex: 1,
     padding: 10,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   rightContainer: {
     position: 'relative',
@@ -29,11 +33,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   leftContainer: {
-    position: 'relative',
-    right: 0,
+    alignSelf: 'flex-end',
+    left: 0,
     zIndex: 1,
     padding: 10,
-
+    flexDirection: 'column',
   },
   row: {
     flexDirection: 'row',
@@ -42,6 +46,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 });
+
+const notFavoriteIcon = require('../../../../images/icons/notFavorite.png');
+const favoriteIcon = require('../../../../images/icons/favorite.png');
 
 export default class ButtonsBar extends BaseComponent {
   static propTypes = {
@@ -96,7 +103,7 @@ export default class ButtonsBar extends BaseComponent {
 
   _renderInformationButton(hasDescription) {
     if (hasDescription) {
-      return <InformationButton isActive={this.props.isInformationActive} onPress={this._onInformationClicked} />;
+      return <InformationButton isActive={this.props.isInformationActive} onPress={this._onInformationClicked}/>;
     }
   }
 
@@ -106,23 +113,35 @@ export default class ButtonsBar extends BaseComponent {
 
   renderVideoItems() {
     return _.map(this.props.items, item => item.category && item.brand ? (
-      <VideoItemLine key={item.id} item={item} toggleItem={this.props.toggleItem} />
-      ) : null);
+      <VideoItemLine key={item.id} item={item} toggleItem={this.props.toggleItem}/>
+    ) : null);
   }
 
   render() {
     const { direction } = this.props;
-    const { lookType, hasDescription } = this.props;
+    const { lookType, hasDescription, isFavorite } = this.props;
     const { comments, isCommentsActive } = this.props;
-    const { likes, liked, toggleLike, onNumberPress } = this.props;
+    const { likes, liked, toggleLike, onNumberPress, toggleFavorite, onVolumePressed, isMuted } = this.props;
     return (
       <View style={[styles.container, styles.row]}>
+        <View style={styles.leftContainer}>
+          {lookType === 'video' ?
+            <View style={{ marginVertical: 5 }}>
+              <VolumeButton size={45} isMuted={isMuted} togglePlaySoundAction={onVolumePressed}/>
+            </View>
+            : null}
+        </View>
         <View style={[styles.rightContainer, styles[direction]]}>
           { lookType === 'video' ? this.renderVideoItems() : null }
-          <LikeButton liked={liked} likes={likes} onIconPress={toggleLike} onNumberPress={onNumberPress} />
-          <CommentsButton count={comments} isActive={isCommentsActive} onPress={this._onBubbleClicked} />
+
+          <FooterButton
+            icon={ isFavorite ? favoriteIcon : notFavoriteIcon}
+            onPress={() => toggleFavorite(!isFavorite)}/>
+
+          <LikeButton liked={liked} likes={likes} onIconPress={toggleLike} onNumberPress={onNumberPress}/>
+          <CommentsButton count={comments} isActive={isCommentsActive} onPress={this._onBubbleClicked}/>
           { this._renderInformationButton(hasDescription) }
-          <MenuButton onPress={() => this._onMenuClicked()} />
+          <MenuButton onPress={() => this._onMenuClicked()}/>
         </View>
       </View>
     );

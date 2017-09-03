@@ -33,7 +33,6 @@ class UserLooks extends Component {
       isRefreshing: false,
       currentScrollPosition: 0,
       loadingMore: false,
-      totalLooks: 0,
     };
     this.currPosition = 0;
     this.contentHeight = 0;
@@ -41,7 +40,7 @@ class UserLooks extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.userLooks !== this.props.userLooks) {
-      this.setState({ flatLooksLeft: _.filter(nextProps.userLooks, (look, index) => index % 2 === 0), flatLooksRight: _.filter(nextProps.userLooks, (look, index) => index % 2 === 1), loadingMore: false, totalLooks: nextProps.meta.total_count });
+      this.setState({ flatLooksLeft: _.filter(nextProps.userLooks, (look, index) => index % 2 === 0), flatLooksRight: _.filter(nextProps.userLooks, (look, index) => index % 2 === 1), loadingMore: false});
     }
 
     if (nextProps.clearedField) {
@@ -98,6 +97,7 @@ class UserLooks extends Component {
   }
 
   _renderLooks = (looks) => {
+    const { canEdit } = this.props;
     return _.map(looks, look => (
       <MediaContainer
         look={look}
@@ -110,14 +110,13 @@ class UserLooks extends Component {
         shouldOptimize={this.state.flatLooksLeft.length > 20}
         showMediaGrid={false}
         fromScreen={'profileScreen'}>
-        { this.state.isMyProfile ? this.renderEditLookBtn(look) : null}
-        { this.state.isMyProfile ? this.renderLookStatus(look) : null}
+        { this.state.isMyProfile && canEdit ? this.renderEditLookBtn(look) : null}
       </MediaContainer>
       ));
   }
 
   render() {
-    if (this.state.totalLooks === 0 && !this.props.isLoading) {
+    if (this.props.userLooks.length === 0 && !this.props.isLoading) {
       return this.renderEmptyView();
     } else {
       return (

@@ -12,8 +12,6 @@ class NetworkManager {
   static _token;
 
   static fetch(route: string, method: string, body: any, isFormData: boolean): void {
-    console.log(`fetch: ${this._getUrl(route)}`);
-    console.log('formdata:', this._getHeaders(isFormData));
     return axios(this._getUrl(route), {
       method,
       headers: this._getHeaders(isFormData),
@@ -21,11 +19,9 @@ class NetworkManager {
       validateStatus: status => ApiUtils.checkStatus(status),
     })
             .then((response) => {
-              console.log('this is the response', response.data);
               return response.data;
             })
             .catch((error) => {
-              console.log(`error: ${error}`);
               Utils.notifyRequestError(new Error(JSON.stringify(error)), error.response.data);
               throw ApiUtils.generalErrors(error);
             });
@@ -49,7 +45,6 @@ class NetworkManager {
   }
 
   static _getHeaders(isFormData: boolean) {
-    console.log('getToken', this._getToken());
     const contentType = isFormData ? 'multipart/form-data; boundary=----WebKitFormBoundarybCWfCArA88j4YJQ8' : 'application/json';
 
     return {

@@ -5,11 +5,14 @@ import usersService from '../services/usersService';
 import {unifyLooks} from '../utils/FeedUtils';
 import {setLooksData, parseQueryFromState} from './feed';
 import {lookSchema, lookListSchema} from '../schemas/schemas';
+import {setFavoriteLooks, LOADING_FAVORITES_START} from '../actions/user';
 
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
 export const SET_USER_LOOKS_FEED_DATA_QUEUE = 'SET_USER_LOOKS_FEED_DATA_QUEUE';
 import _ from 'lodash';
+
+const DEFAULT_PAGE_SIZE = 10;
 
 export function getUserLooks(looksCall, query, retryCount = 0) {
   return (dispatch, getState) => {
@@ -73,6 +76,54 @@ export function loadMoreUserLooks(looksCall, retryCount = 0) {
       }
     }).catch((error) => {
       Promise.reject(error);
+    });
+  };
+}
+
+export function getFavoriteLooks() {
+  return (dispatch, getState) => {
+
+    const { favoriteLooks, id } = getState().user;
+    const pageNumber = 1;
+    const query = { 'page[size]': DEFAULT_PAGE_SIZE, 'page[number]': pageNumber };
+
+    dispatch(({ type: LOADING_FAVORITES_START }));
+
+    return usersService.getFavoriteLooks(id, query).then((data) => {
+      const { looks } = data;
+      const normalizedLooksData = normalize(looks, [lookSchema]);
+      const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
+      dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
+      const flatLooksIdData = normalizedLooksData.result;
+      dispatch(setFavoriteLooks({ flatLooksIdData }));
+      dispatch(loadMoreFavoriteLooks());
+      Promise.resolve(data.looks);
+    });
+  };
+}
+
+export function loadMoreFavoriteLooks() {
+  return (dispatch, getState) => {
+
+    const { favoriteLooks, id } = getState().user;
+    const pageNumber = Math.floor(favoriteLooks.ids.length / DEFAULT_PAGE_SIZE) + 1;
+    const query = { 'page[size]': DEFAULT_PAGE_SIZE, 'page[number]': pageNumber };
+
+    if (pageNumber === 1) {
+      Promise.resolve();
+      return;
+    }
+
+    dispatch(({ type: LOADING_FAVORITES_START }));
+
+    return usersService.getFavoriteLooks(id, query).then((data) => {
+      const { looks } = data;
+      const normalizedLooksData = normalize(looks, [lookSchema]);
+      const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
+      dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
+      const flatLooksIdData = favoriteLooks.ids.concat(normalizedLooksData.result);
+      dispatch(setFavoriteLooks({ flatLooksIdData }));
+      Promise.resolve(data.looks);
     });
   };
 }

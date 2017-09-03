@@ -3,8 +3,8 @@ import { View, Image, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Te
 import * as _ from 'lodash'
 import FooterButtonWithCounter from "./FooterButtonWithCounter";
 
-const likeImage = require('../../../../images/icons/like.png');
-const likeClickedImage = require('../../../../images/icons/likedRed.png');
+const likeImage = require('../../../../images/icons/bigLike.png');
+const likeClickedImage = require('../../../../images/icons/bigLikedRed.png');
 
 export default class LikeButton extends Component {
   constructor(props) {
