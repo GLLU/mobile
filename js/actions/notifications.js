@@ -32,12 +32,11 @@ export function setUserNotifications(notificationsData, page) {
 export function addUserNotification(data) {
   const notification = notificationMapper.map(data)
   const normalizedNotificationsData = normalize([notification], [notificationSchema]);
-  const serializedNotificationsArray = _.map(normalizedNotificationsData.result, notificationId => normalizedNotificationsData.entities.notifications[notificationId]);
   return (dispatch) => {
     dispatch(setUsers(normalizedNotificationsData.entities.users));
     dispatch({
       type: ADD_USER_NOTIFICATION,
-      payload: serializedNotificationsArray[0],
+      payload: normalizedNotificationsData.entities.notifications[notification.id],
     });
   };
 }
