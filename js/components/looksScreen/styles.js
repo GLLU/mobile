@@ -28,6 +28,11 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 20
   },
+  loadingImage:{
+    color: 'black',
+    fontFamily: Fonts.contentFont,
+    fontSize: generateAdjustedSize(18),
+  },
   topLeft: {
     left: 10
   },

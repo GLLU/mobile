@@ -31,8 +31,12 @@ class Splash extends Component {
   }
 
   checkLogin() {
-    const { user, screenProps } = this.props;
+    const { user, screenProps, setUsers } = this.props;
     const { notification } = screenProps;
+    if(notification) {
+      const mappedUser = userMapper.map(notification.initiator)
+      setUsers({[mappedUser.id]: mappedUser})
+    }
     setTimeout(() => {
       this.props.checkLogin()
         .then(() => {
@@ -43,7 +47,7 @@ class Splash extends Component {
                   index: 1,
                   actions: [
                     NavigationActions.navigate({ routeName: 'feedscreen' }),
-                    NavigationActions.navigate({ routeName: 'profileScreen', params: { user: userMapper.map(notification.initiator) } }),
+                    NavigationActions.navigate({ routeName: 'profileScreen', params: { userId: notification.initiator.id } }),
                   ],
                 });
               } else {
