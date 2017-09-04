@@ -29,7 +29,6 @@ const mapStateToProps = (state) => {
     const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
     const myGender = state.user.gender ? state.user.gender : '';
     defaultFilters = {
-      gender: myGender,
       'sort[field]': 'likes_count',
     };
   }
