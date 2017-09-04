@@ -153,15 +153,14 @@ export function emailSignUp(data) {
   });
 }
 
-export function instagramSignIn(access_token) {
+export function instagramSignIn(access_token, gender) {
   return dispatch => new Promise((resolve, reject) => {
     const body = {
       insta_auth: {
         access_token,
-        gender: 'female'
+        gender
       }
     }
-    console.log('body33',body)
     return LoginService.signInInstagram(body).then((user) => {
       if (user) {
         signInFromRest(dispatch, user).then(resolve).catch(reject);
@@ -169,9 +168,7 @@ export function instagramSignIn(access_token) {
       }
     }).catch((err) => {
       console.log('instagram login error: ',err)
-      const error = i18n.t('INVALID_LOGIN');
-      dispatch(showFatalError(error));
-      reject(error);
+      reject();
     });
   })
 

@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import asScreen from '../common/containers/Screen';
 import listenToAppState from '../common/eventListeners/AppStateListener';
-import { View, Image, Linking, Platform, Dimensions, Text, StyleSheet, TouchableOpacity, WebView, KeyboardAvoidingView } from 'react-native';
-import { Container, Content, Button } from 'native-base';
+import { View, Image, Linking, Platform, Text, TouchableOpacity, WebView, KeyboardAvoidingView } from 'react-native';
+import { Container, Content } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import i18n from 'react-native-i18n';
 import Utils from '../../utils';
@@ -20,13 +20,9 @@ import {
   TERMS_URL,
   PRIVACY_URL,
 } from '../../constants';
-import SolidButton from '../common/buttons/SolidButton';
 
-const background = require('../../../images/backgrounds/bags.png');
 const backgroundShadow = require('../../../images/shadows/background-shadow-70p.png');
 const logo = require('../../../images/logo/inFashLogo.png');
-
-const PERMISSIONS = ['email', 'public_profile'];
 
 class LoginPage extends Component {
 
@@ -75,7 +71,7 @@ class LoginPage extends Component {
 
   handleEmailSignupPress() {
     this.props.logEvent('loginscreen', { name: 'Email signup click' });
-    this.props.navigateTo('genderselect');
+    this.props.navigateTo('genderselect', {signupBy: 'email'});
   }
 
   handleEmailSigninPress() {
@@ -145,12 +141,13 @@ class LoginPage extends Component {
 
   _onNavigationStateChange(webViewState) {
     const { url } = webViewState;
+    const { instagramSignIn, resetTo, navigateTo } = this.props
     if (url && url.startsWith(`${Config.INSTAGRAM_REDIRECT_URL}/#access_token`)) {
       const accessToken = url.split('#access_token=').pop(); // => "instagram access_token"
-      this.props.instagramSignIn(accessToken).then(() => {
+      instagramSignIn(accessToken).then(() => {
         this.hideInstagramModal();
-        this.props.resetTo('feedscreen');
-      }).catch(err => console.log('instagram login Error', err));
+        resetTo('feedscreen');
+      }).catch(err => navigateTo('genderselect', {signupBy: 'instagram', accessToken}));
     }
   }
 
@@ -179,7 +176,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    console.log('modal', this.state.modalVisible);
+    const {repeat, modalVisible} = this.state
     return (
       <Container theme={glluTheme}>
         <View style={styles.container}>
@@ -190,7 +187,7 @@ class LoginPage extends Component {
                 resizeMode="stretch"
                 muted
                 style={styles.videoBackground}
-                repeat={this.state.repeat}
+                repeat={repeat}
                 ref={component => this._root = component}
                       />
               <Image source={backgroundShadow} style={styles.bgShadow} />
@@ -205,7 +202,7 @@ class LoginPage extends Component {
                 <Text style={styles.link} onPress={this.handlePrivacyPolicyPress.bind(this)}>Privacy Policy</Text>
               </View>
             </View>
-            {this.state.modalVisible ? this._renderInstagramModal() : null}
+            {modalVisible ? this._renderInstagramModal() : null}
           </Content>
         </View>
       </Container>

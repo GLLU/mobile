@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text, View,StyleSheet } from 'react-native';
+import { Image, TouchableOpacity, Text, View, KeyboardAvoidingView, WebView } from 'react-native';
 import { Container, Content, StyleProvider, getTheme } from 'native-base';
 import i18n from 'react-native-i18n';
 import asScreen from '../common/containers/Screen'
@@ -13,17 +13,29 @@ class SignUpGenderPage extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       gender: '',
     };
-
   }
 
+  signUpWithInstagram() {
+    const { gender } = this.state
+    const { instagramSignIn, resetTo, navigation } = this.props
+    const {accessToken} = navigation.state.params
+    instagramSignIn(accessToken, gender).then(() => {
+      this.hideInstagramModal();
+      resetTo('feedscreen');
+    }).catch(err => console.log('instagram login Error', err));
+  }
 
   handleGenderPress(gender) {
-    this.props.logEvent(`GenderSelectScreen`, { name: 'Gender click', gender });
-    this.props.navigateTo('signupemail', {gender:gender});
+    const { navigateTo, logEvent, navigation } = this.props
+    logEvent(`GenderSelectScreen`, {name: 'Gender click', gender});
+    if (navigation.state.params.signupBy === 'email') {
+      navigateTo('signupemail', {gender: gender});
+    } else {
+      this.setState({gender}, () => this.signUpWithInstagram())
+    }
   }
 
   render() {

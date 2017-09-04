@@ -194,6 +194,5 @@ module.exports = StyleSheet.create({
     color: Colors.white,
     fontSize: generateAdjustedSize(14),
     fontWeight: 'normal',
-
   },
 });

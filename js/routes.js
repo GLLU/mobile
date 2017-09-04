@@ -6,7 +6,7 @@ import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
-import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
+import SignUpGenderPage from './components/signup/SignUpGenderContainer.js';
 import ForgotPassword from './components/forgotPassword';
 import ProfileScreen from './components/profileScreen/profileScreenContainer';
 import FollowingLooks from './components/looksScreen/LooksFollowingContainer';
