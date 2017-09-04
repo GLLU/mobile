@@ -15,6 +15,7 @@ const Colors = {
   separatorGray: '#d6d6d6',
   usernameColor: '#00a9ff',
   transparent: 'transparent',
+  instagramLogin: '#ca3379',
 };
 
 export default Colors;

@@ -16,6 +16,7 @@ import Config from 'react-native-config';
 import Video from 'react-native-video';
 import glluTheme from '../../themes/gllu-theme';
 import HollowButton from '../common/buttons/HollowButton';
+import Colors from '../../styles/Colors.styles';
 import {
   TERMS_URL,
   PRIVACY_URL,
@@ -112,13 +113,13 @@ class LoginPage extends Component {
           onPress={this.connectWithFB.bind(this)}>
               Connect with facebook
             </Icon.Button>
-        <View style={{ marginTop: 6 }}>
+        <View style={{ marginTop: 10 }}>
           <Icon.Button
             iconStyle={styles.btnFB}
             style={styles.fbIcon}
             borderRadius={4}
             name="instagram"
-            backgroundColor="#af7b5d"
+            backgroundColor={Colors.instagramLogin}
             onPress={this.showInstagramModal}>
               Connect with Instagram
           </Icon.Button>
