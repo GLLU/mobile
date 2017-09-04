@@ -12,7 +12,6 @@ import {
   RefreshControl,
   View,
   NetInfo,
-  FlatList,
   ActivityIndicator,
 } from 'react-native';
 import Spinner from '../loaders/Spinner';
@@ -28,8 +27,8 @@ import SolidButton from '../common/buttons/SolidButton';
 import FiltersView from './FilterContainer';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FeedFilters from './FeedFilters';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
-import {CATEGORIES, EVENTS} from '../../reducers/filters';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import { CATEGORIES, EVENTS } from '../../reducers/filters';
 
 const noResultsIcon = require('../../../images/emptyStates/search.png');
 const editShapeBtn = require('../../../images/icons/edit_your_body_shape.png');
@@ -81,7 +80,7 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props
+    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName} = this.props
     this._getFeed(defaultFilters);
     changeFiltersGender(defaultFilters.gender)
     const that = this;
@@ -102,7 +101,7 @@ class BestMatchTabContent extends BaseComponent {
   componentDidUpdate(prevProps) {
     const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
     if (isTabOnFocus) {
-      if (this.state.showBodyTypeModal || isFiltersMenuOpen) {
+      if(this.state.showBodyTypeModal || isFiltersMenuOpen){
         showBottomCameraButton(false);
       } else {
         showBottomCameraButton(true);
@@ -164,8 +163,8 @@ class BestMatchTabContent extends BaseComponent {
     if (pageSize * pageNumber < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-            this.setState({ isLoading: false });
-          }
+          this.setState({ isLoading: false });
+        }
         ).catch((err) => {
           this.setState({ isLoading: false });
         });
@@ -177,24 +176,19 @@ class BestMatchTabContent extends BaseComponent {
 
   _renderLooks(looks: array) {
 
-    return <FlatList
-      style={styles.container}
-      data={looks}
-      keyExtractor={(item, index) => item.id}
-      renderItem={({ look }) => {
-        <MediaContainer
-          look={look}
-          currScroll={this.state.currentScrollPosition}
-          navigateTo={this.props.navigateTo}
-          navigateToLooksScreen={this.props.navigateToLooksScreen}
-          NavigateToLooks={this.props.navigateToLooks}
-          sendParisMessage={this.props.showParisBottomMessage}
-          key={look.id}
-          shouldOptimize={this.state.flatLooksLeft.length > 10}
-          showMediaGrid
-          fromScreen={'Feedscreen'}/>
-      }}
-    />
+    return _.map(looks, look => (
+      <MediaContainer
+        look={look}
+        currScroll={this.state.currentScrollPosition}
+        navigateTo={this.props.navigateTo}
+        navigateToLooksScreen={this.props.navigateToLooksScreen}
+        NavigateToLooks={this.props.navigateToLooks}
+        sendParisMessage={this.props.showParisBottomMessage}
+        key={look.id}
+        shouldOptimize={this.state.flatLooksLeft.length > 10}
+        showMediaGrid
+        fromScreen={'Feedscreen'} />
+    ));
   }
 
   _renderLoadMore() {
@@ -205,10 +199,10 @@ class BestMatchTabContent extends BaseComponent {
             return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)"/>;
+            return <Spinner color="rgb(230,230,230)" />;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
           }
           return null;
         })()}
@@ -219,7 +213,7 @@ class BestMatchTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666"/>
+          <Spinner color="#666666" />
         </View>
       );
     }
@@ -228,7 +222,7 @@ class BestMatchTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover}/>
+      <View style={styles.refreshingCover} />
     );
   }
 
@@ -265,7 +259,7 @@ class BestMatchTabContent extends BaseComponent {
         <Image
           source={editShapeBtn}
           style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
-          resizeMode={'stretch'}/>
+          resizeMode={'stretch'} />
       </View>
     );
   }
@@ -302,7 +296,7 @@ class BestMatchTabContent extends BaseComponent {
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
           title={emptyTitle}
-          subtitle={emptySubtitle} icon={noResultsIcon}/>
+          subtitle={emptySubtitle} icon={noResultsIcon} />
       </View>
     );
   }
@@ -328,7 +322,7 @@ class BestMatchTabContent extends BaseComponent {
   _renderLoader() {
     return (
       <View style={{ justifyContent: 'center', height: deviceHeight - 150, alignSelf: 'center', position: 'absolute' }}>
-        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor}/>
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
       </View>
 
     );
@@ -354,7 +348,7 @@ class BestMatchTabContent extends BaseComponent {
     const clonedQuery = _.cloneDeep(query);
     delete clonedQuery.body_type;
     return (
-      <FeedFilters query={clonedQuery} getFeed={this._getFeed}/>
+      <FeedFilters query={clonedQuery} getFeed={this._getFeed} />
     );
   }
 
@@ -393,8 +387,8 @@ class BestMatchTabContent extends BaseComponent {
         <ScrollView contentContainerStyle={styles.bodyShapeScrollView}>
           <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
           <BodyTypePicker
-            onPick={() => this._showBodyShapeModal()}/>
-          <SolidButton label="CHOOSE" onPress={this._saveBodyShape}/>
+            onPick={() => this._showBodyShapeModal()} />
+          <SolidButton label="CHOOSE" onPress={this._saveBodyShape} />
           { hasUserSize ?
             <TouchableOpacity onPress={this._showBodyShapeModal} style={styles.cancelBodyShapeContainer}>
               <Text style={styles.cancelBodyShape}>{i18n.t('CANCEL')}</Text>

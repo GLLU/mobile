@@ -171,6 +171,7 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _renderLooks(looks: array) {
+
     return _.map(looks, look => (
       <MediaContainer
         look={look}
