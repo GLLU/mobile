@@ -6,6 +6,7 @@ import {unifyLooks} from '../utils/FeedUtils';
 import {setLooksData, parseQueryFromState} from './feed';
 import {lookSchema, lookListSchema} from '../schemas/schemas';
 import {setFavoriteLooks, LOADING_FAVORITES_START} from '../actions/user';
+import {setUsers}  from '../actions/users';
 
 export const SET_USER_LOOKS_DATA = 'SET_USER_LOOKS_DATA';
 export const SET_USER_LOOKS = 'SET_USER_LOOKS';
@@ -24,7 +25,7 @@ export function getUserLooks(looksCall, query, retryCount = 0) {
       id: looksCall.id,
     });
 
-    return usersService.getUserLooks(looksCall.id, { ...query, 'page[size]': 10, 'page[number]': 1 }).then((data) => {
+    return usersService.getUserLooks(looksCall.id, {'page[size]': 10, 'page[number]': 1 }).then((data) => {
       if (data) {
         const { looks, meta } = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
@@ -50,15 +51,7 @@ export function loadMoreUserLooks(looksCall, retryCount = 0) {
     const currPage = state.query.page.number;
     const nextPageNumber = currPage + 1;
     const newState = _.merge(state.query, { page: { number: nextPageNumber } });
-    const params = parseQueryFromState(newState);
-
-    const query = {
-      page: {
-        size: 10,
-        number: nextPageNumber,
-      },
-      id: looksCall.id,
-    };
+    const params = {'page[size]': 10, 'page[number]': nextPageNumber };
 
     return usersService.getUserLooks(looksCall.id, params).then((data) => {
       if (data) {
@@ -70,7 +63,7 @@ export function loadMoreUserLooks(looksCall, retryCount = 0) {
         dispatch(setUserLooks({ flatLooksIdData, meta, query: newState, currId: looksCall.id }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
-        dispatch(loadMoreUserLooks(looksCall, params, retryCount + 1));
+        dispatch(loadMoreUserLooks(looksCall, retryCount + 1));
       } else {
         Promise.reject();
       }
@@ -92,6 +85,7 @@ export function getFavoriteLooks() {
     return usersService.getFavoriteLooks(id, query).then((data) => {
       const { looks } = data;
       const normalizedLooksData = normalize(looks, [lookSchema]);
+      dispatch(setUsers(normalizedLooksData.entities.users))
       const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
       dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
       const flatLooksIdData = normalizedLooksData.result;
@@ -119,6 +113,7 @@ export function loadMoreFavoriteLooks() {
     return usersService.getFavoriteLooks(id, query).then((data) => {
       const { looks } = data;
       const normalizedLooksData = normalize(looks, [lookSchema]);
+      dispatch(setUsers(normalizedLooksData.entities.users))
       const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
       dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
       const flatLooksIdData = favoriteLooks.ids.concat(normalizedLooksData.result);
