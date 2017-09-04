@@ -1,6 +1,6 @@
 // @flow
 
-import {showError, hideError, showFatalError, hideFatalError} from './index';
+import { showError, hideError, showFatalError, hideFatalError } from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
@@ -29,7 +29,6 @@ export const SET_FAVORITE_LOOKS = 'user.SET_FAVORITE_LOOKS';
 export const LOADING_FAVORITES_START = 'user.LOADING_FAVORITES_START';
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
-
   api_key = user.api_key;
   rest.use('options', () => ({
     headers: {
@@ -63,13 +62,14 @@ const signInFromRest = function (dispatch, data) {
 
 export function setUser(user: string) {
   return (dispatch) => {
-    const mappedUser = userMapper.map(user)
-    dispatch(setUsers({[mappedUser.id]: mappedUser}))
+    const mappedUser = userMapper.map(user);
+    dispatch(setUsers({ [mappedUser.id]: mappedUser }));
+    console.log('boom33',mappedUser)
     dispatch({
       type: SET_USER,
       payload: mappedUser,
     });
-  }
+  };
 }
 
 export function hideSwipeWizard() {
@@ -154,24 +154,25 @@ export function emailSignUp(data) {
 }
 
 export function instagramSignIn(access_token, gender) {
-  return dispatch => new Promise((resolve, reject) => {
+  return (dispatch) => {
     const body = {
       insta_auth: {
         access_token,
-        gender
-      }
-    }
+        gender,
+      },
+    };
+    console.log('body32323',body)
     return LoginService.signInInstagram(body).then((user) => {
-      if (user) {
-        signInFromRest(dispatch, user).then(resolve).catch(reject);
+      console.log('user',user)
+      signInFromRest(dispatch, user).then(() => {
         dispatch(hideFatalError());
-      }
+        Promise.resolve();
+      }).catch(Promise.reject());
     }).catch((err) => {
-      console.log('instagram login error: ',err)
-      reject();
+      console.log('rejectttt');
+      Promise.reject();
     });
-  })
-
+  };
 }
 
 export function emailSignIn(data) {
@@ -235,8 +236,7 @@ export function checkLogin() {
           }
         }));
         resolve(true);
-      }
-      else {
+      } else {
         reject();
       }
     });
@@ -279,17 +279,17 @@ export function getBlockedUsers() {
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
       const { blockedUsers } = getState().blockedUsers;
       const normalizedBlockedUsersData = normalize(data.blockedUsers, [blockedSchema]);
-      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers))
+      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers));
       const blockedUsersUnion = _.unionBy(blockedUsers, normalizedBlockedUsersData.result);
       dispatch({
         type: SET_BLOCKED_USERS,
         blockedUsers: blockedUsersUnion,
         meta: {
           currentPage: nextPage,
-          total: data.meta.total
-        }
+          total: data.meta.total,
+        },
       });
-    })
+    });
   };
 }
 
@@ -302,18 +302,18 @@ export function getMoreBlockedUsers() {
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
       const { blockedUsers } = getState().blockedUsers;
       const normalizedBlockedUsersData = normalize(data.blockedUsers, [blockedSchema]);
-      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers))
+      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers));
       const blockedUsersUnion = _.unionBy(blockedUsers, normalizedBlockedUsersData.result);
       dispatch({
         type: SET_BLOCKED_USERS,
         blockedUsers: blockedUsersUnion,
         meta: {
           currentPage: nextPage,
-          total: data.meta.total
-        }
+          total: data.meta.total,
+        },
       });
-    })
-  }
+    });
+  };
 }
 
 export function blockUser(blockedUserId) {
@@ -325,7 +325,7 @@ export function blockUser(blockedUserId) {
         userId,
         blockedUserId,
       });
-    })
+    });
   };
 }
 
@@ -333,7 +333,7 @@ export function unblockUser(blockedUserId) {
   return (dispatch, getState) => {
     const userId = getState().user.id;
     UsersService.unblock(userId, blockedUserId)
-      .catch(err => ({}));//mute error
+      .catch(err => ({}));// mute error
     const { blockedUsers, meta } = getState().blockedUsers;
     const blockedUsersWithoutUnblocked = _.filter(blockedUsers, userId => userId !== blockedUserId);
     dispatch({
@@ -341,8 +341,8 @@ export function unblockUser(blockedUserId) {
       blockedUsers: blockedUsersWithoutUnblocked,
       meta: {
         currentPage: meta.currentPage,
-        total: meta.total - 1
-      }
+        total: meta.total - 1,
+      },
     });
   };
 }
@@ -375,7 +375,7 @@ export function hideTutorial() {
 }
 
 export function setFavoriteLooks(data) {
-  return ({type: SET_FAVORITE_LOOKS, looksIds: data.flatLooksIdData });
+  return ({ type: SET_FAVORITE_LOOKS, looksIds: data.flatLooksIdData });
 }
 
 export function onBodyShapeChoosen() {

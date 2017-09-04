@@ -18,12 +18,10 @@ class SignUpGenderPage extends Component {
     };
   }
 
-  signUpWithInstagram() {
-    const { gender } = this.state
+  signUpWithInstagram(gender) {
     const { instagramSignIn, resetTo, navigation } = this.props
     const {accessToken} = navigation.state.params
     instagramSignIn(accessToken, gender).then(() => {
-      this.hideInstagramModal();
       resetTo('feedscreen');
     }).catch(err => console.log('instagram login Error', err));
   }
@@ -34,7 +32,7 @@ class SignUpGenderPage extends Component {
     if (navigation.state.params.signupBy === 'email') {
       navigateTo('signupemail', {gender: gender});
     } else {
-      this.setState({gender}, () => this.signUpWithInstagram())
+      this.signUpWithInstagram(gender)
     }
   }
 

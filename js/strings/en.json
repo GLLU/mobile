@@ -118,6 +118,8 @@
   "CLOSET_WIZARD": "This look has been added to your favorite list.\nYou can find all these looks on your profile",
   "FAVORITES": "FAVORITES",
   "NO_FAVORITES": "YOU DIDN'T SELECT ANY LOOK AS FAVORITE YET",
-  "NO_FAVORITES_LEGEND": "Check the feed for favorite looks"
+  "NO_FAVORITES_LEGEND": "Check the feed for favorite looks",
+  "INSTAGRAM_CONNECT": "Connect with Instagram",
+  "FACEBOOK_CONNECT": "Connect with facebook"
 }
 

@@ -86,7 +86,7 @@ module.exports = StyleSheet.create({
   iconButton: {
     textAlign: 'left'
   },
-  btnFB: {
+  btnSocial: {
     marginTop: 0,
     paddingTop: 2,
     paddingBottom: 2,
@@ -94,7 +94,7 @@ module.exports = StyleSheet.create({
     borderRadius: 0,
 
   },
-  fbIcon: {
+  socialIcon: {
     justifyContent: 'center',
   },
   btnContent: {

@@ -46,9 +46,6 @@ class LoginPage extends Component {
       repeat: props.currentAppState === 'active',
       modalVisible: false,
     };
-    if (this.props.showTutorial && Platform !== 'ios') {
-      // this.props.navigateTo('tutorialscreen');
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,23 +102,23 @@ class LoginPage extends Component {
           <HollowButton label="Signup with Email" onPress={this.handleEmailSignupPress.bind(this)} />
         </View>
         <Icon.Button
-          iconStyle={styles.btnFB}
-          style={styles.fbIcon}
+          iconStyle={styles.btnSocial}
+          style={styles.socialIcon}
           borderRadius={4}
           name="facebook"
           backgroundColor="#3b5998"
           onPress={this.connectWithFB.bind(this)}>
-              Connect with facebook
+          {i18n.t('FACEBOOK_CONNECT')}
             </Icon.Button>
         <View style={{ marginTop: 10 }}>
           <Icon.Button
-            iconStyle={styles.btnFB}
-            style={styles.fbIcon}
+            iconStyle={styles.btnSocial}
+            style={styles.socialIcon}
             borderRadius={4}
             name="instagram"
             backgroundColor={Colors.instagramLogin}
             onPress={this.showInstagramModal}>
-              Connect with Instagram
+            {i18n.t('INSTAGRAM_CONNECT')}
           </Icon.Button>
         </View>
         <View style={styles.alreadyBox}>

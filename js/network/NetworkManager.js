@@ -12,6 +12,8 @@ class NetworkManager {
   static _token;
 
   static fetch(route: string, method: string, body: any, isFormData: boolean): void {
+    console.log(`fetch: ${this._getUrl(route)}`);
+    console.log('formdata:', this._getHeaders(isFormData));
     return axios(this._getUrl(route), {
       method,
       headers: this._getHeaders(isFormData),
@@ -23,6 +25,7 @@ class NetworkManager {
             })
             .catch((error) => {
               Utils.notifyRequestError(new Error(JSON.stringify(error)), error.response.data);
+              console.log('urlerror', `${this._getUrl(route)}`)
               throw ApiUtils.generalErrors(error);
             });
   }
