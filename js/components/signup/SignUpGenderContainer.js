@@ -5,7 +5,7 @@ import SignUpGenderPage from './SignUpGenderPage';
 import asScreen from '../common/containers/Screen';
 import { instagramSignIn } from '../../actions/user';
 
-function bindAction(dispatch, ownProps) {
+function bindAction(dispatch) {
   return {
     instagramSignIn: (accessToken, gender) => dispatch(instagramSignIn(accessToken, gender)),
   };
