@@ -8,6 +8,7 @@ import NotificationsService from '../services/NotificationsService';
 import { unifyLooks } from '../utils/FeedUtils';
 import { setLooksData } from './feed';
 import { notificationSchema, lookSchema } from '../schemas/schemas';
+import * as notificationMapper from '../mappers/notificationsMapper';
 
 // Actions
 export const SET_USER_NOTIFICATIONS = 'SET_USER_NOTIFICATIONS';
@@ -29,9 +30,14 @@ export function setUserNotifications(notificationsData, page) {
 }
 
 export function addUserNotification(data) {
-  return {
-    type: ADD_USER_NOTIFICATION,
-    payload: data,
+  const notification = notificationMapper.map(data)
+  const normalizedNotificationsData = normalize([notification], [notificationSchema]);
+  return (dispatch) => {
+    dispatch(setUsers(normalizedNotificationsData.entities.users));
+    dispatch({
+      type: ADD_USER_NOTIFICATION,
+      payload: normalizedNotificationsData.entities.notifications[notification.id],
+    });
   };
 }
 
