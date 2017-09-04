@@ -95,7 +95,7 @@ module.exports = StyleSheet.create({
 
   },
   fbIcon: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   btnContent: {
     color: 'white',
@@ -160,7 +160,7 @@ module.exports = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: '#f7f7fa',
     height: deviceHeight,
     width: deviceWidth
   },
@@ -170,18 +170,18 @@ module.exports = StyleSheet.create({
   contentWarp: {
     height: deviceHeight,
     width: deviceWidth,
+    marginTop: Platform.OS === 'ios' ? 30 : 0,
     backgroundColor: '#fff',
     alignSelf: 'center',
     flex: 1
   },
   btnStyle: {
-    width: 30,
-    height: 30,
     position: 'absolute',
-    top: 5,
-    right: 5
+    top: 12.5,
+    right: 8,
   },
   closeStyle: {
-    width: 30, height: 30
+    backgroundColor: Colors.transparent,
+    color: Colors.white
   }
 });
