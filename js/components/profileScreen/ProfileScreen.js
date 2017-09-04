@@ -94,13 +94,11 @@ class ProfileScreen extends Component {
     const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getFavoriteLooks, getUserBodyType, hasUserSize, userSize, userGender, hideWalletBadge } = this.props;
 
     hideWalletBadge();
-
     getStats(userId);
-
-    getFavoriteLooks();
 
     if (isMyProfile) {
       getUserBalance(userId);
+      getFavoriteLooks();
     }
 
     if (hasUserSize) {

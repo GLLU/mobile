@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 class FilterButton extends BaseComponent {
   static propTypes = {
     filter: React.PropTypes.object,
-    showText: React.PropTypes.boolean,
+    showText: React.PropTypes.bool,
     onPress: React.PropTypes.func,
   }
 

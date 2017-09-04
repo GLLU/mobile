@@ -54,11 +54,9 @@ class WalletScreen extends Component {
           <View style={{ position: 'absolute', top: 53, left: 16 }}>
             <Text style={styles.balanceTitle}>{I18n.t('CURRENT_BALANCE')}</Text>
             <Text style={styles.balanceAmount}>{balance}<Text style={styles.dolarSign}>{I18n.t('USD')}</Text></Text>
-            <Text style={styles.lastUpdate}>Last update: 06.06.17</Text>
+            <Text style={styles.lastUpdate}>Last update: today</Text>
           </View>
         </View>
-
-        <Text style={[styles.lastUpdate, { alignSelf: 'center' }]}>13.30 USD pending confirmation</Text>
 
         <SolidButton label={I18n.t('WITHDRAW')} style={styles.withdrawButton} onPress={this._handleWithdrawPressed} />
 

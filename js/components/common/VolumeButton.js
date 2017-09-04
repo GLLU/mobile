@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     width: 25,
     justifyContent: 'center',
     alignSelf: 'center',
-    color: 'lightgrey',
   },
   countLikeLabel: {
     color: '#FFFFFF',
