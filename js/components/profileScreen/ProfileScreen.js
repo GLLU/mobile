@@ -94,13 +94,11 @@ class ProfileScreen extends Component {
     const { getStats, userId, isMyProfile, getUserBalance, getUserLooks, getFavoriteLooks, getUserBodyType, hasUserSize, userSize, userGender, hideWalletBadge } = this.props;
 
     hideWalletBadge();
-
     getStats(userId);
-
-    getFavoriteLooks();
 
     if (isMyProfile) {
       getUserBalance(userId);
+      getFavoriteLooks();
     }
 
     if (hasUserSize) {
@@ -519,7 +517,8 @@ class ProfileScreen extends Component {
 
   render(): React.Element<any> {
     const {isMyProfile} = this.props;
-    const {index} = this.state;
+    const {index, userLooks} = this.state;
+    const shouldShowCamera = (userLooks && userLooks.length > 0)
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <ParallaxView
@@ -537,7 +536,7 @@ class ProfileScreen extends Component {
           }}>
           {this._renderBody()}
         </ParallaxView>
-        {isMyProfile && index === 0 ? this.renderBottomCamera() : null}
+        {isMyProfile && index === 0 && shouldShowCamera ? this.renderBottomCamera() : null}
         {this._renderWalletWizardModal()}
         {this._renderFullSizeImage()}
 

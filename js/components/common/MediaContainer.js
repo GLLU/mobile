@@ -232,14 +232,14 @@ class MediaContainer extends Component {
   }
 
   render() {
-    const { look } = this.props;
+    const { look, showMediaGrid } = this.props;
     return (
       <View onLayout={e => this.setLookPosition(e)} style={{ marginHorizontal: 3 }}>
         <TouchableOpacity activeOpacity={0.8} onPress={this._handleItemPress}>
           {look.coverType === 'video' ? this.renderVideo(look) : this.renderImage(look)}
           {this.renderFeedMediaGrid(look)}
         </TouchableOpacity>
-        {this._renderBottomBar()}
+        {showMediaGrid ?  this._renderBottomBar() : <View style={{marginHorizontal: 6, marginBottom: 9}}/> }
       </View>
     );
   }

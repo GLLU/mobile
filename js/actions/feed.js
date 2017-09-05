@@ -118,11 +118,11 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
         dispatch(setUsers(normalizedLooksData.entities.users))
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-        const flatLooksIdData = state.flatLooksIdData.concat(normalizedLooksData.result);
+        const flatLooksIdData =  _.union(state.flatLooksIdData, normalizedLooksData.result);
         dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
-        dispatch(loadMore(params, retryCount + 1));
+        dispatch(loadMore(feedType, retryCount + 1));
       } else {
         Promise.reject();
       }
