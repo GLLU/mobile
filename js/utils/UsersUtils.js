@@ -36,6 +36,6 @@ export function getNotificationsWithUsersObj(notificationsData: array, usersData
 }
 
 export function unifyUsers(newUsersData, stateUsersData) {
-  const usersData = { ...newUsersData, ...stateUsersData };
+  const usersData = { ...stateUsersData, ...newUsersData, };
   return usersData;
 }

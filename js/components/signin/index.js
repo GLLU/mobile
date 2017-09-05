@@ -40,8 +40,6 @@ class SignInPage extends Component {
   constructor(props) {
     super(props);
     this.focusNext = this.focusNext.bind(this);
-    this._onNavigationStateChange = this._onNavigationStateChange.bind(this);
-    this.hide = this.hide.bind(this);
     this.state = {
       isSigningIn: false,
       email: '',

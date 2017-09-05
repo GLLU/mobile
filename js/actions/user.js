@@ -43,9 +43,11 @@ const setRestOptions = function (dispatch, rest, user) {
     }
   });
 };
+
 export function hideWalletBadge() {
   return ({ type: HIDE_BODY_MODAL });
 }
+
 const signInFromRest = function (dispatch, data) {
   return new Promise((resolve, reject) => {
     if (!data || _.isEmpty(data)) {
@@ -54,22 +56,23 @@ const signInFromRest = function (dispatch, data) {
     Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
       NetworkManager.setToken(data.user.api_key);
       setRestOptions(dispatch, rest, data.user);
-      dispatch(setUser(data.user));
-      resolve(data.user);
+      dispatch(setUser(data.user)).then(() => {
+        resolve(data.user);
+      });
     });
   });
 };
 
 export function setUser(user: string) {
-  return (dispatch) => {
+  return (dispatch) => new Promise((resolve, reject) => {
     const mappedUser = userMapper.map(user);
-    dispatch(setUsers({ [mappedUser.id]: mappedUser }));
-    console.log('boom33',mappedUser)
     dispatch({
       type: SET_USER,
       payload: mappedUser,
     });
-  };
+    dispatch(setUsers({ [mappedUser.id]: mappedUser }));
+    resolve();
+  });
 }
 
 export function hideSwipeWizard() {
@@ -154,25 +157,20 @@ export function emailSignUp(data) {
 }
 
 export function instagramSignIn(access_token, gender) {
-  return (dispatch) => {
+  return (dispatch, getState) => new Promise((resolve, reject) => {
     const body = {
       insta_auth: {
         access_token,
         gender,
       },
     };
-    console.log('body32323',body)
     return LoginService.signInInstagram(body).then((user) => {
-      console.log('user',user)
       signInFromRest(dispatch, user).then(() => {
         dispatch(hideFatalError());
-        Promise.resolve();
-      }).catch(Promise.reject());
-    }).catch((err) => {
-      console.log('rejectttt');
-      Promise.reject();
-    });
-  };
+        resolve();
+      }).catch((err) => Promise.reject(err));
+    }).catch((err) => Promise.reject(err));
+  });
 }
 
 export function emailSignIn(data) {
