@@ -143,8 +143,8 @@ class LoginPage extends Component {
     if (url && url.startsWith(`${Config.INSTAGRAM_REDIRECT_URL}/#access_token`)) {
       const accessToken = url.split('#access_token=').pop(); // => "instagram access_token"
       instagramSignIn(accessToken).then(() => {
-        this.hideInstagramModal();
         resetTo('feedscreen');
+        this.hideInstagramModal();
       }).catch(err => navigateTo('genderselect', {signupBy: 'instagram', accessToken}));
     }
   }
