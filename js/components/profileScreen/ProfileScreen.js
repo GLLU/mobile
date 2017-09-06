@@ -369,12 +369,14 @@ class ProfileScreen extends Component {
       <View>
         <ProfileScreenHeader
           balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username}
-          userId={userData.userId} changeUserAvatar={changeUserAvatar}
+          userId={userData.id} changeUserAvatar={changeUserAvatar}
           stats={stats} onProfileEdit={onProfileEdit}
           onProfileImageClicked={() => {
             this.setState({ showProfileImage: true });
           }}
-          isFollowing={isFollowing} userid={userId} isMyProfile={isMyProfile} onStatClicked={onStatClicked}
+          isFollowing={isFollowing}
+          isMyProfile={isMyProfile}
+          onStatClicked={onStatClicked}
           onFollowClicked={() => {
             onFollowClicked(userId, isFollowing);
             this.setState({ isFollowing: !isFollowing });
