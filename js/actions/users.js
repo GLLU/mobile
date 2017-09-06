@@ -5,7 +5,7 @@ export const SET_USERS_DATA = 'SET_USERS_DATA';
 
 export function setUsers(users) {
   return (dispatch, getState) => {
-    const unfiedUsers = unifyUsers(users, getState().users.usersData);
+    const unfiedUsers = unifyUsers(getState().users.usersData, users);
     dispatch({
       type: SET_USERS_DATA,
       payload: unfiedUsers,
