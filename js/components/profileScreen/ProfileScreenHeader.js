@@ -19,7 +19,7 @@ type Props = {
   name: string,
   username: string,
   isFollowing: boolean,
-  userid: number,
+  userId: number,
   isMyProfile: string,
   balance: number,
   stats: any,
@@ -161,9 +161,9 @@ class ProfileScreenHeader extends Component {
   }
 
   _handleStatClick(screenName: string, statClicked: string, count: number) {
-    const { isMyProfile, onStatClicked, userid, name } = this.props;
+    const { isMyProfile, onStatClicked, userId, name } = this.props;
 
-    onStatClicked(screenName, { id: userid, name }, isMyProfile, statClicked, count);
+    onStatClicked(screenName, { id: userId, name }, isMyProfile, statClicked, count);
   }
 
   _handleBalanceClicked = () => {
