@@ -140,6 +140,7 @@ class UserLooks extends Component {
 const styles = StyleSheet.create({
   tab: {
     backgroundColor: '#FFFFFF',
+    paddingTop: 5
   },
   mainGrid: {
     backgroundColor: '#FFFFFF',
