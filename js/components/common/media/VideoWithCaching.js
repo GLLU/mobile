@@ -92,7 +92,7 @@ class VideoWithCaching extends Component {
   }
 
   renderLoader = () => {
-    if (this.state.isPlaying) {
+    if (!this.state.isPlaying) {
       return null;
     }
     if (this.props.preview) {
