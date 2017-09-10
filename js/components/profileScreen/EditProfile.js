@@ -41,7 +41,7 @@ class EditProfile extends Component {
     this._saveChanges = this._saveChanges.bind(this);
     this._changeUserAvatar = this._changeUserAvatar.bind(this);
     this.state = {
-      aboutMe: props.user.about_me || '',
+      aboutMe: props.user.aboutMe || '',
       modalShowing:false,
       isUpdating: false,
       isChangingAvatar: false,
@@ -168,7 +168,7 @@ const mapStateToProps = state => ({
   cardNavigation: state.cardNavigation,
   myUserId: state.user.id,
   stats: state.stats,
-  user: state.user,
+  user: state.users.usersData[state.user.id],
   bodyType: state.myBodyType.currentBodyType,
 });
 
