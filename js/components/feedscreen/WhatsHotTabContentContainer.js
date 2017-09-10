@@ -21,17 +21,11 @@ function mapDispatchToProps(dispatch, ownProps) {
 }
 
 const mapStateToProps = (state) => {
-  let defaultFilters = {
+  const defaultFilters = {
+    'sort[field]': 'likes_count',
     gender: '',
     body_type: '',
   };
-  if (state.user.user_size) {
-    const myBodyType = state.user.user_size.body_type ? state.user.user_size.body_type : '';
-    const myGender = state.user.gender ? state.user.gender : '';
-    defaultFilters = {
-      'sort[field]': 'likes_count',
-    };
-  }
   const hasUserSize = state.user.user_size !== null && !_.isEmpty(state.user.user_size);
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.whatsHot.flatLooksIdData, state.looks.flatLooksData);
