@@ -41,7 +41,7 @@ class EditProfile extends Component {
     this._saveChanges = this._saveChanges.bind(this);
     this._changeUserAvatar = this._changeUserAvatar.bind(this);
     this.state = {
-      aboutMe: props.user.about_me || '',
+      aboutMe: props.user.aboutMe || '',
       modalShowing:false,
       isUpdating: false,
       isChangingAvatar: false,
