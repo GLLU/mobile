@@ -92,7 +92,7 @@ class VideoWithCaching extends Component {
   }
 
   renderLoader = () => {
-    if (!this.state.isPlaying) {
+    if (this.state.isPlaying) {
       return null;
     }
     if (this.props.preview) {
@@ -110,7 +110,7 @@ class VideoWithCaching extends Component {
   };
 
   renderLowConnectivity = () => {
-    if (this.state.connectionError) {
+    if (!this.state.connectionError) {
       return null;
     }
     return (
