@@ -168,7 +168,7 @@ const mapStateToProps = state => ({
   cardNavigation: state.cardNavigation,
   myUserId: state.user.id,
   stats: state.stats,
-  user: state.user,
+  user: state.users.usersData[state.user.id],
   bodyType: state.myBodyType.currentBodyType,
 });
 
