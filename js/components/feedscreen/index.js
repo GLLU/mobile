@@ -97,9 +97,7 @@ class FeedPage extends Component {
 
     if (isGroupedNotification) {
       this.props.navigateTo('notificationsScreen');
-    }
-
-    if (notification.action_kind === 'Follow') {
+    } else if (notification.action_kind === 'Follow') {
       this.props.navigateTo('profileScreen',  { userId: userMapper.map(notification.initiator).id });
     } else {
       this.props.goToNotificationSubjectScreen(notification.go_to_object.id, notification.id)
