@@ -92,7 +92,12 @@ class FeedPage extends Component {
   }
 
   _onOpened = (openResult) => {
+    const isGroupedNotification = openResult.notification.groupedNotifications;
     const notification = openResult.notification.payload.additionalData;
+
+    if (isGroupedNotification) {
+      this.props.navigateTo('notificationsScreen');
+    }
 
     if (notification.action_kind === 'Follow') {
       this.props.navigateTo('profileScreen',  { userId: userMapper.map(notification.initiator).id });

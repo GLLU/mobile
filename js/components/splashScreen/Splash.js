@@ -42,7 +42,16 @@ class Splash extends Component {
         .then(() => {
           if (user.id !== -1 && user.name !== null) {
             if (notification) {
-              if (notification.action_kind === 'Follow') {
+              if (notification.groupedNotifications) {
+                this.props.resetWithPayload({
+                  index: 1,
+                  actions: [
+                    NavigationActions.navigate({ routeName: 'feedscreen' }),
+                    NavigationActions.navigate({ routeName: 'notificationsScreen' }),
+                  ],
+                });
+              }
+              else if (notification.action_kind === 'Follow') {
                 this.props.resetWithPayload({
                   index: 1,
                   actions: [
