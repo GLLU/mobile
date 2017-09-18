@@ -121,7 +121,7 @@ function getPusherClient(dispatch, userId) {
   });
   const channel = pusher.subscribe(`notifications_${userId}`);
   channel.bind_global((event, data) => {
-    if (event === 'Like' || event === 'Follow' || event === 'Comment' || event === 'Upload') {
+    if (event === 'Like' || event === 'Follow' || event === 'Comment') {
       dispatch(addUserNotification(data.message));
       dispatch(gotNewNotifications());
     }

@@ -20,6 +20,7 @@ import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
 import {formatLook} from '../../utils/UploadUtils';
+import i18n from 'react-native-i18n';
 import FeedTabs from './FeedTabs';
 import * as userMapper from "../../mappers/userMapper";
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT, toggleFiltersMenus} from '../../actions/feed';
@@ -91,7 +92,7 @@ class FeedPage extends Component {
   _onReceived = (notification) => {
     this.props.onNotificationReceived(notification.payload.additionalData);
     if (notification.action_kind === 'Upload') {
-      this.props.showParisBottomMessage(`Your Look is now Ready!`);
+      this.props.showParisBottomMessage(i18n.t('PARIS_VIDEO_LIVE'));
     }
   }
 
