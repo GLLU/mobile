@@ -91,7 +91,7 @@ class FeedPage extends Component {
   _onReceived = (notification) => {
     this.props.onNotificationReceived(notification.payload.additionalData);
     if (notification.action_kind === 'Upload') {
-      this.props.showParisBottomMessage(`Your Video is now Ready!`);
+      this.props.showParisBottomMessage(`Your Look is now Ready!`);
     }
   }
 
