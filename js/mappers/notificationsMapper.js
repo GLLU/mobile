@@ -27,6 +27,8 @@ function getTextByAction(actionKind) {
       return 'started following you';
     case 'Comment':
       return 'commented on your look';
+    case 'Upload':
+      return 'Your look is Ready';
     default:
       return 'unrecognized action kind';
   }

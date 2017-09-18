@@ -11,6 +11,7 @@ import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {addNewLook} from '../../actions/uploadLook'
 import {gotNewNotifications, goToNotificationSubjectScreen, addUserNotification} from '../../actions/notifications';
+import { showParisBottomMessage } from '../../actions/paris';
 import { getColors, getFeaturedBrands} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
@@ -89,6 +90,9 @@ class FeedPage extends Component {
 
   _onReceived = (notification) => {
     this.props.onNotificationReceived(notification.payload.additionalData);
+    if (notification.action_kind === 'Upload') {
+      this.props.showParisBottomMessage(`Your Video is now Ready!`);
+    }
   }
 
   _onOpened = (openResult) => {
@@ -279,6 +283,7 @@ function bindActions(dispatch) {
       dispatch(gotNewNotifications());
       dispatch(addUserNotification(notification));
     },
+    showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
     goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
   };
 }
