@@ -118,6 +118,11 @@
   "CLOSET_WIZARD": "This look has been added to your favorite list.\nYou can find all these looks on your profile",
   "FAVORITES": "FAVORITES",
   "NO_FAVORITES": "YOU DIDN'T SELECT ANY LOOK AS FAVORITE YET",
-  "NO_FAVORITES_LEGEND": "Check the feed for favorite looks"
+  "NO_FAVORITES_LEGEND": "Check the feed for favorite looks",
+  "PARIS_VIDEO_LIVE": "Your video is live!",
+  "LIKED_YOUR_LOOK": "liked your look",
+  "STARTED_FOLLOWING_YOU": "started following you",
+  "COMMENTED_ON_YOUR_LOOK": "commented on your look",
+  "UNRECOGNIZED_NOTIFICATION_ACTION": "unrecognized action kind"
 }
 
