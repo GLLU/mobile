@@ -58,11 +58,11 @@ class EditProfile extends Component {
     const { user, bodyType } = this.props;
     const measurements = {
       body_type: bodyType.body_type,
-      chest: user.user_size.chest,
-      waist: user.user_size.waist,
-      hips: user.user_size.hips,
-      height: user.user_size.height,
-      measurements_scale: user.user_size.measurements_scale,
+      chest: 1,
+      waist: 1,
+      hips: 1,
+      height: 1,
+      measurements_scale: 'cm',
     };
     this.setState({ isUpdating: true }, () => {
       Promise.all([
