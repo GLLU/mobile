@@ -127,4 +127,3 @@ function getPusherClient(dispatch, userId) {
     }
   });
 }
-

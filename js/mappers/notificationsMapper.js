@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import * as userMapper from "./userMapper";
+import i18n from 'react-native-i18n';
 
 export function map(notification) {
   let clonedNotification = _.cloneDeep(notification)
@@ -22,12 +23,14 @@ export function map(notification) {
 function getTextByAction(actionKind) {
   switch (actionKind) {
     case 'Like':
-      return 'liked your look';
+      return i18n.t('LIKED_YOUR_LOOK');
     case 'Follow':
-      return 'started following you';
+      return i18n.t('STARTED_FOLLOWING_YOU');
     case 'Comment':
-      return 'commented on your look';
+      return i18n.t('COMMENTED_ON_YOUR_LOOK');
+    case 'Upload':
+      return i18n.t('PARIS_VIDEO_LIVE');
     default:
-      return 'unrecognized action kind';
+      return i18n.t('UNRECOGNIZED_NOTIFICATION_ACTION');
   }
 }

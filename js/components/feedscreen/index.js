@@ -11,6 +11,7 @@ import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import { setUser, getNotifications, loadCategories, loadOccasionTags} from '../../actions';
 import {addNewLook} from '../../actions/uploadLook'
 import {gotNewNotifications, goToNotificationSubjectScreen, addUserNotification} from '../../actions/notifications';
+import { showParisBottomMessage } from '../../actions/paris';
 import { getColors, getFeaturedBrands} from '../../actions/filters';
 import { getUserBalance } from '../../actions/wallet';
 import asScreen from '../common/containers/Screen';
@@ -19,6 +20,7 @@ import {hideBodyTypeModal} from '../../actions/myBodyType';
 import {noop} from 'lodash';
 import {openCamera} from '../../lib/camera/CameraUtils';
 import {formatLook} from '../../utils/UploadUtils';
+import i18n from 'react-native-i18n';
 import FeedTabs from './FeedTabs';
 import * as userMapper from "../../mappers/userMapper";
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT, toggleFiltersMenus} from '../../actions/feed';
@@ -89,6 +91,9 @@ class FeedPage extends Component {
 
   _onReceived = (notification) => {
     this.props.onNotificationReceived(notification.payload.additionalData);
+    if (notification.action_kind === 'Upload') {
+      this.props.showParisBottomMessage(i18n.t('PARIS_VIDEO_LIVE'));
+    }
   }
 
   _onOpened = (openResult) => {
@@ -277,6 +282,7 @@ function bindActions(dispatch) {
       dispatch(gotNewNotifications());
       dispatch(addUserNotification(notification));
     },
+    showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
     goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
   };
 }
