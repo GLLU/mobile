@@ -12,10 +12,17 @@ class SocialShare {
     }
   }
 
-  generateShareLookMessage(lookId: number) {
+  generateShareLookMessage(lookId: number, previewUrl: string) {
+    const lookUrl = `${Config.HOME_PAGE}looks/${lookId}`;
+    if (previewUrl) {
+      return {
+        text: `${i18n.t('SHARE_LOOK')} ${lookUrl}`,
+        url: previewUrl,
+      };
+    }
     return {
       text: i18n.t('SHARE_LOOK'),
-      url: `${Config.HOME_PAGE}looks/${lookId}`,
+      url: lookUrl,
     };
   }
 
