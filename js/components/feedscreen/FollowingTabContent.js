@@ -30,6 +30,7 @@ import EmptyStateScreen from '../common/EmptyStateScreen';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
 import FeedActiveFilter from '../common/buttons/TagStringButton';
+import UserActionCard from '../common/lists/UserActionCard';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const deviceWidth = Dimensions.get('window').width;
@@ -78,8 +79,9 @@ class FollowingTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName} = this.props
+    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName, getUsersSuggestions} = this.props
     this._getFeed(defaultFilters);
+    getUsersSuggestions()
     changeFiltersGender(defaultFilters.gender)
     const that = this;
     setInterval(() => {
@@ -301,6 +303,7 @@ class FollowingTabContent extends BaseComponent {
 
 
   _renderScrollView() {
+    const {flatLooks} = this.props;
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -310,10 +313,34 @@ class FollowingTabContent extends BaseComponent {
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
+          { flatLooks.length < 6 ? this._renderUsersScrollView() : null}
           {this._renderLoadMore()}
           {this._renderRefreshingCover()}
         </ScrollView>
         {this._renderLoading()}
+      </View>
+    );
+  }
+
+  renderUserSuggestionsList() {
+    const {usersSuggestions, navigateTo} = this.props
+    return _.map(usersSuggestions, suggestedUser => (
+      <UserActionCard {...suggestedUser} key={suggestedUser.id} navigateTo={navigateTo}/>
+    ));
+  }
+
+  _renderUsersScrollView() {
+    return (
+      <View style={styles.userSuggestionsContainer}>
+        <ScrollView
+          horizontal={true}
+          ref={ c => this.scrollView = c }
+          style={{ flex: 1 }}
+          scrollEventThrottle={100}
+          onScroll={this.handleScroll}
+          refreshControl={this._renderRefreshControl()}>
+          {this.renderUserSuggestionsList()}
+        </ScrollView>
       </View>
     );
   }
@@ -423,6 +450,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
   },
+  userSuggestionsContainer: {
+    height: 120,
+    marginBottom: 70
+  }
 });
 
 export default FollowingTabContent;

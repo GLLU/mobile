@@ -11,49 +11,40 @@ import Colors from '../../../styles/Colors.styles';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: generateAdjustedSize(100),
     padding: generateAdjustedSize(12),
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
     backgroundColor: 'white',
   },
   textContainer: {
-    flex: 7,
     flexDirection: 'column',
-    marginLeft: generateAdjustedSize(12),
+    marginVertical: 4
   },
-  followName: {
-    flex: 0.5,
+
+  followUsername: {
     color: 'black',
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.contentFont,
-    alignSelf: 'flex-start',
-    flex:1,
-  },
-  followUsername: {
-    flex: 0.5,
-    color: '#00a9ff',
-    fontSize: generateAdjustedSize(14),
-    fontFamily: Fonts.contentFont,
-    alignSelf: 'flex-start',
-    flex:1,
-  },
-  photoContainer: {
-    flex: 2,
+    alignSelf: 'center',
+    textAlign: 'center',
   },
   photo: {
-    flex: 1,
-    width: generateAdjustedSize(40),
-    height: generateAdjustedSize(40),
-    borderRadius: generateAdjustedSize(20),
+    alignSelf: 'center',
+    width: generateAdjustedSize(60),
+    height: generateAdjustedSize(60),
+    borderRadius: generateAdjustedSize(30),
     borderWidth: 1,
     borderColor: Colors.lightGray,
   },
   followView: {
-    width: generateAdjustedSize(80),
+    width: generateAdjustedSize(60),
+    height: generateAdjustedSize(20),
+    alignSelf: 'center'
   },
 });
 
-class UserActionRow extends Component {
+class UserActionCard extends Component {
 
   static propTypes = {
     name: React.PropTypes.string,
@@ -91,8 +82,7 @@ class UserActionRow extends Component {
   renderFollowText() {
     return (
       <View style={styles.textContainer}>
-        <Text numberOfLines={1} style={styles.followName}>{this.props.name}</Text>
-        <Text numberOfLines={1} style={styles.followUsername}>@{this.props.username}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.followUsername}>@{this.props.username}</Text>
       </View>
     );
   }
@@ -129,4 +119,4 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps, bindAction)(UserActionRow);
+export default connect(mapStateToProps, bindAction)(UserActionCard);
