@@ -36,9 +36,8 @@ const mapStateToProps = (state) => {
   const userSize = hasUserSize ? state.user.user_size : '';
   const flatLooksFeedData = getLooksById(state.feed.following.flatLooksIdData, state.looks.flatLooksData);
   const flatLooksFeedDataWithUsersObjs = getDataWithUsersObj(flatLooksFeedData, state.users.usersData);
-  const suggestedUsersObjects = _.map(state.search.suggestions.users, (userId) => state.users.usersData[userId])
+  const usersSuggestions = _.map(state.search.suggestions.users, (userId) => state.users.usersData[userId])
   return {
-    tempUser: state.user ,
     isLoading: state.feed.following.isLoading,
     defaultFilters,
     modalShowing: state.myBodyType.modalShowing,
@@ -54,7 +53,7 @@ const mapStateToProps = (state) => {
     myFeedType: FEED_TYPE_FOLLOWING,
     filtersGender: state.feed[FEED_TYPE_FOLLOWING].filtersGender,
     defaultFilterQuery: { ...state.feed[FEED_TYPE_FOLLOWING].query, gender: state.feed[FEED_TYPE_FOLLOWING].filtersGender },
-    usersSuggestions: suggestedUsersObjects
+    usersSuggestions
   };
 };
 
