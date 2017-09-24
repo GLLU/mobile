@@ -21,7 +21,7 @@ import LookHeader from './LookHeader'
 import MenuView from "./menu/MenuViewContainer";
 import { formatInvitationMessage } from "../../lib/messages/index";
 import withAnalytics from '../common/analytics/WithAnalytics'
-import { downloadFile } from "../../lib/download/FileDownloader";
+import { downloadAsBase64, downloadFile } from "../../lib/download/FileDownloader";
 
 type Props = {
   look: object,
@@ -113,8 +113,8 @@ class LookOverlay extends Component {
     const {logEvent, look} = this.props;
     logEvent('LookScreen', {name: 'Share clicked'});
     const previewUrl = look.coverType === 'video' ? look.preview : look.uri;
-    downloadFile(previewUrl).then(localpath => {
-      const message = SocialShare.generateShareLookMessage(look.id, localpath);
+    downloadAsBase64(previewUrl).then(base64Data => {
+      const message = SocialShare.generateShareLookMessage(look.id, base64Data);
       SocialShare.nativeShare(message);
     });
 

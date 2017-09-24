@@ -866,6 +866,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		29E5C8AB1F77E26A00235CC6 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				270A5312FCF34EAD8C6CC8ED /* libRCTFBSDK.a */,
+				F9EAE8D736B84131A0BE302D /* libCodePush.a */,
+				1407E961A4DD43838E1FB8D2 /* libRNVectorIcons.a */,
+				62F3FFD4390546D3B254EF38 /* libReactNativeConfig.a */,
+				A011C62B8B304B13B116B84A /* libBVLinearGradient.a */,
+				4B0C2826D367497EAE251EA2 /* libRNKeychain.a */,
+				BA21D50A5F8140E18526196E /* libBugsnagReactNative.a */,
+				9924F3ED8031451DBF3909FF /* libRNFetchBlob.a */,
+				F640DE27BB5A484B835C3102 /* libRNFlurryAnalytics.a */,
+				B0BEE0C419AF49E59C089445 /* libRCTGoogleAnalyticsBridge.a */,
+				B3B531CDBB4841E384D13E0B /* libRCTVideo.a */,
+				B94AAD195D7B412EBE507A90 /* libSMXCrashlytics.a */,
+				35BF71EA21694A08A9BA2E32 /* libRNMixpanel.a */,
+				34692ED035204787A5CD6BE2 /* libRCTOneSignal.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		29F795B01EC84C39002E98C8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1085,6 +1106,7 @@
 				5404D6F11DDB311600AADB8F /* Frameworks */,
 				C0ECE8847C0B633B836F8F3A /* Pods */,
 				5207B329129A4BDBBC0DEFAB /* Resources */,
+				29E5C8AB1F77E26A00235CC6 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
