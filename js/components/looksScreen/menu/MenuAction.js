@@ -52,6 +52,7 @@ type Props = {
   label: string,
   withConfirmation: boolean,
   onPress: void,
+  showLoader: boolean,
   postActionMessage: string,
   areYouSureMessage: string
 };
@@ -122,10 +123,14 @@ class MenuAction extends Component {
   }
 
   renderContent() {
-    const {label, postActionMessage, areYouSureMessage} = this.props;
+    const {label, postActionMessage, areYouSureMessage, showLoader} = this.props;
     const {isPressed, isDone} = this.state;
     if (!isPressed || !postActionMessage) {
-      return <SolidButton label={label} onPress={this._onPress}/>
+      return <SolidButton
+        showLoader={showLoader}
+        label={label}
+        onPress={this._onPress}
+      />
     }
     if (isDone) {
       return this.renderPostActionMessage(postActionMessage);

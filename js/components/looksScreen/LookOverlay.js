@@ -71,6 +71,7 @@ class LookOverlay extends Component {
       activeItem: '',
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
+      isSharing: false,
       fadeAnimContentOnPress: new Animated.Value(1)
     }
   }
@@ -112,22 +113,28 @@ class LookOverlay extends Component {
   _onShareClicked() {
     const {logEvent, look} = this.props;
     logEvent('LookScreen', {name: 'Share clicked'});
-    const previewUrl = look.coverType === 'video' ? look.preview : look.uri;
-    downloadAsBase64(previewUrl).then(base64Data => {
-      const message = SocialShare.generateShareLookMessage(look.id, base64Data);
-      SocialShare.nativeShare(message);
-    });
+    this.setState({isSharing: true}, () => {
+      const previewUrl = look.coverType === 'video' ? look.preview : look.uri;
+      downloadAsBase64(previewUrl).then(base64Data => {
+        const message = SocialShare.generateShareLookMessage(look.id, base64Data);
+        this.setState({isSharing: false}, () => {
+          SocialShare.nativeShare(message);
+        });
 
+      });
+    })
   }
 
   _renderMenuView(isActive: boolean) {
     const {look} = this.props;
+    const {isSharing} = this.state;
     return (
       <MenuView
         lookId={look.id}
         userId={look.user.id}
         isMyLook={look.user.isMe}
         isOpen={isActive}
+        isSharing={isSharing}
         onRequestClose={this._toggleMenuView}
         onEditPress={() => this.goToEdit(look)}
         onShareClicked={this._onShareClicked}/>);
