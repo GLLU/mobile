@@ -117,6 +117,4 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({});
-
-export default connect(mapStateToProps, bindAction)(UserActionCard);
+export default connect(null, bindAction)(UserActionCard);
