@@ -1,27 +1,24 @@
 import RNFetchBlob from 'react-native-fetch-blob'
+import * as _ from "lodash";
 
 const {fs} = RNFetchBlob;
 
-export const downloadAsBase64 = (uri) => {
+const baseDownloadDir = `${fs.dirs.CacheDir}/media`;
+
+export const downloadFile = (uri, extension = '.jpg') => {
   return new Promise((resolve, reject) => {
-    let imagePath = null;
     RNFetchBlob
       .config({
-        fileCache: true
-      })
-      .fetch('GET', uri)
-      // the image is now dowloaded to device's storage
-      .then((res) => {
-        // the image path you can use it directly with Image component
-        imagePath = res.path();
-        return res.readFile('base64')
-      })
-      .then((base64Data) => {
-        // here's base64 encoded image
-        resolve(base64Data);
-        // remove the file from storage
-        fs.unlink(imagePath);
-      })
+        path: `${baseDownloadDir}/infash-image-${_.now()}${extension}`,
+        overwrite: true
+      }).fetch('GET', uri)
+      .then((res => {
+        if (Math.floor(res.respInfo.status / 100) !== 2) {
+          throw new Error('Failed to download file');
+        }
+        const localPath = res.path();
+        resolve(localPath)
+      }))
       .catch(reject);
   });
 };
