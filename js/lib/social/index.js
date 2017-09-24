@@ -7,7 +7,7 @@ class SocialShare {
 
   generateShareMessage(text = 'Check out inFash - Fashion that fits', url = Config.HOME_PAGE) {
     return {
-      text,
+      text: `${text} ${url}`,
       url
     }
   }
