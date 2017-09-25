@@ -134,7 +134,7 @@ class FollowingTabContent extends BaseComponent {
         const currentScroll = event.nativeEvent.contentOffset.y;
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if (!this.state.loadingMore && !this.state.isLoading) {
-            // this.setState({ loadingMore: true }, this.loadMore);
+             this.setState({ loadingMore: true }, this.loadMore);
           }
         } else {
         }
