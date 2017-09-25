@@ -25,6 +25,8 @@ import likesScreen from './components/likesScreen';
 import BlockedUsersScreen from './components/blockedUsersScreen';
 import SearchScreen from './components/searchScreen/SearchScreenContainer';
 import Splash from './components/splashScreen/SplashContainer';
+import WebViewAuthoHeight from './components/common/WebViewAutoHeight';
+import CustomWebView from './components/common/CustomWebView';
 
 const stackNavigatorConfig = {
   initialRouteName: 'splash',
@@ -114,6 +116,13 @@ const routes = {
   badNavigation: {
     screen: BadNavigationScreen,
   },
+  webViewScreen: {
+    screen: CustomWebView,
+  },
+  WebViewAuthoHeightScreen: {
+    screen: WebViewAuthoHeight,
+  },
+
 };
 
 export default StackNavigator(routes, stackNavigatorConfig);

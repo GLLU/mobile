@@ -94,13 +94,13 @@ class ItemPopup extends Component {
   }
 
   handleOpenLink() {
-    const { url, look_id, id, is_verified } = this.props;
+    const { url, look_id, id, is_verified, openWebView } = this.props;
     if (url) {
       Linking.canOpenURL(url).then((supported) => {
         if (!supported) {
         } else {
-          this.props.logEvent('lookScreen', {name: 'click on item', isVerified: is_verified, lookId: look_id, item_id: id})
-          return Linking.openURL(url);
+          this.props.logEvent('lookScreen', {name: 'click on item', isVerified: is_verified, lookId: look_id, item_id: id});
+          openWebView(url);
         }
       }).catch(err => console.error('An error occurred', err));
     } else {
