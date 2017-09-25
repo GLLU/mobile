@@ -46,6 +46,7 @@ class FollowingTabContent extends BaseComponent {
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     getFeed: React.PropTypes.func,
+    refreshFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
   }
@@ -72,7 +73,7 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _onInviteFriendsClick() {
-    this.logEvent('Feedscreen', { name: 'Invite your friends click' });
+    this.logEvent('Feedscreen', {name: 'Invite your friends click'});
     const message = SocialShare.generateShareMessage(formatInvitationMessage());
     SocialShare.nativeShare(message);
   }
@@ -107,7 +108,7 @@ class FollowingTabContent extends BaseComponent {
 
     if (nextProps.clearedField) {
       this.currPosition = 0;
-      this.setState({ noMoreData: false });
+      this.setState({noMoreData: false});
     }
   }
 
@@ -133,7 +134,7 @@ class FollowingTabContent extends BaseComponent {
         const currentScroll = event.nativeEvent.contentOffset.y;
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if (!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({ loadingMore: true }, this.loadMore);
+            this.setState({loadingMore: true}, this.loadMore);
           }
         } else {
         }
@@ -144,7 +145,7 @@ class FollowingTabContent extends BaseComponent {
 
   handleScrollPosition() {
     if (this.state.currentScrollPosition !== this.currPosition) {
-      this.setState({ currentScrollPosition: this.currPosition });
+      this.setState({currentScrollPosition: this.currPosition});
     }
   }
 
@@ -152,21 +153,21 @@ class FollowingTabContent extends BaseComponent {
     if (this.state.isLoading) {
       return;
     }
-    const { meta: { total }, query } = this.props;
+    const {meta: {total}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({ isLoading: true }, () => {
+      this.setState({isLoading: true}, () => {
         this.props.loadMore().then(() => {
-          this.setState({ isLoading: false });
-        }
+            this.setState({isLoading: false});
+          }
         ).catch((err) => {
-          this.setState({ isLoading: false });
+          this.setState({isLoading: false});
         });
       });
     } else {
-      this.setState({ noMoreData: true });
+      this.setState({noMoreData: true});
     }
   }
 
@@ -183,7 +184,7 @@ class FollowingTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'} />
+        fromScreen={'Feedscreen'}/>
     ));
   }
 
@@ -192,13 +193,13 @@ class FollowingTabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
+            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)" />;
+            return <Spinner color="rgb(230,230,230)"/>;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
           return null;
         })()}
@@ -209,7 +210,7 @@ class FollowingTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666" />
+          <Spinner color="#666666"/>
         </View>
       );
     }
@@ -218,7 +219,7 @@ class FollowingTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover} />
+      <View style={styles.refreshingCover}/>
     );
   }
 
@@ -235,27 +236,27 @@ class FollowingTabContent extends BaseComponent {
   }
 
   onRefresh() {
-    this.setState({ isRefreshing: true });
-    const { getFeed, query } = this.props;
+    this.setState({isRefreshing: true});
+    const {refreshFeed, query} = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
-    getFeed(cleanQuery)
+    refreshFeed(cleanQuery)
       .then(() => {
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       })
       .catch((error) => {
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       });
   }
 
   renderInviteFriend() {
     return (
-      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
+      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
         <Image
-          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
-          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
-          resizeMode={'stretch'} />
+          source={{uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png'}}
+          style={{width: deviceWidth / 2 - 6, height: deviceWidth / 4}}
+          resizeMode={'stretch'}/>
       </View>
     );
   }
@@ -271,10 +272,10 @@ class FollowingTabContent extends BaseComponent {
           justifyContent: 'flex-end',
           alignSelf: 'center',
         }}>
-        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
           <TouchableOpacity onPress={() => this._onInviteFriendsClick()}>
             {this.renderInviteFriend()}
           </TouchableOpacity>
@@ -285,10 +286,10 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
-    const { onFollowClicked } = this.props;
+    const {onFollowClicked} = this.props;
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{flex: 1, justifyContent: 'center'}}>
         <EmptyStateScreen
           title={i18n.t('ME_NO_FOLLOWING_TITLE')} subtitle={i18n.t('ME_NO_FOLLOWING_LEGEND')}
           icon={require('../../../images/emptyStates/user-admin.png')}
@@ -304,8 +305,8 @@ class FollowingTabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
-          ref={ c => this.scrollView = c }
-          style={{ flex: 1 }}
+          ref={c => this.scrollView = c}
+          style={{flex: 1}}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
@@ -320,15 +321,15 @@ class FollowingTabContent extends BaseComponent {
 
   _renderLoader() {
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
-        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
+      <View style={{alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150}}>
+        <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
       </View>
 
     );
   }
 
   _renderFilterView() {
-    const { myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery } = this.props;
+    const {myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery} = this.props;
     return (
       <FiltersView
         currentFeedTab={myFeedType}
@@ -341,42 +342,42 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _renderFeedFilters() {
-    const { query } = this.props;
+    const {query} = this.props;
     return (
-      <FeedFilters query={query} getFeed={this._getFeed} />
+      <FeedFilters query={query} getFeed={this._getFeed}/>
     );
   }
 
   componentDidUpdate(prevProps) {
-    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
+    const {isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton} = this.props;
     if (isTabOnFocus) {
-      if(isFiltersMenuOpen){
+      if (isFiltersMenuOpen) {
         showBottomCameraButton(false);
       } else {
         showBottomCameraButton(true);
       }
     }
-    if(this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
-      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false}), 0)
+    if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
+      _.delay(() => this.scrollView.scrollTo({y: this.currPosition, x: 0, animated: false}), 0)
     }
   }
 
   render() {
-    const { isFiltersMenuOpen, flatLooks, isLoading } = this.props;
+    const {isFiltersMenuOpen, flatLooks, isLoading} = this.props;
     if (isLoading) {
       return this._renderLoader();
     } else {
-      if(isFiltersMenuOpen) {
+      if (isFiltersMenuOpen) {
         return (
           <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-            { this._renderFilterView() }
+            {this._renderFilterView()}
           </View>
         );
       } else {
         return (
           <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
             {this._renderFeedFilters()}
-            { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+            {flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView()}
           </View>
         );
       }

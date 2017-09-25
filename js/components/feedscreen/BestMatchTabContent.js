@@ -45,6 +45,7 @@ class BestMatchTabContent extends BaseComponent {
     reloading: React.PropTypes.bool,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
+    refreshFeed: React.PropTypes.func,
     getFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
@@ -99,16 +100,16 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
+    const {isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton} = this.props;
     if (isTabOnFocus) {
-      if(this.state.showBodyTypeModal || isFiltersMenuOpen){
+      if (this.state.showBodyTypeModal || isFiltersMenuOpen) {
         showBottomCameraButton(false);
       } else {
         showBottomCameraButton(true);
       }
     }
     if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
-      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
+      _.delay(() => this.scrollView.scrollTo({y: this.currPosition, x: 0, animated: false}), 0);
     }
   }
 
@@ -127,7 +128,7 @@ class BestMatchTabContent extends BaseComponent {
 
     if (nextProps.clearedField) {
       this.currPosition = 0;
-      this.setState({ noMoreData: false });
+      this.setState({noMoreData: false});
     }
   }
 
@@ -138,7 +139,7 @@ class BestMatchTabContent extends BaseComponent {
       const currentScroll = event.nativeEvent.contentOffset.y;
       if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if (!this.state.loadingMore && !this.state.isLoading) {
-          this.setState({ loadingMore: true }, this.loadMore);
+          this.setState({loadingMore: true}, this.loadMore);
         }
       } else {
       }
@@ -148,7 +149,7 @@ class BestMatchTabContent extends BaseComponent {
 
   handleScrollPosition() {
     if (this.state.currentScrollPosition !== this.currPosition) {
-      this.setState({ currentScrollPosition: this.currPosition });
+      this.setState({currentScrollPosition: this.currPosition});
     }
   }
 
@@ -156,21 +157,21 @@ class BestMatchTabContent extends BaseComponent {
     if (this.state.isLoading) {
       return;
     }
-    const { meta: { total }, query } = this.props;
+    const {meta: {total}, query} = this.props;
     const pageSize = query.page.size;
     const pageNumber = query.page.number;
 
     if (pageSize * pageNumber < total) {
-      this.setState({ isLoading: true }, () => {
+      this.setState({isLoading: true}, () => {
         this.props.loadMore().then(() => {
-          this.setState({ isLoading: false });
-        }
+            this.setState({isLoading: false});
+          }
         ).catch((err) => {
-          this.setState({ isLoading: false });
+          this.setState({isLoading: false});
         });
       });
     } else {
-      this.setState({ noMoreData: true });
+      this.setState({noMoreData: true});
     }
   }
 
@@ -187,7 +188,7 @@ class BestMatchTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'} />
+        fromScreen={'Feedscreen'}/>
     ));
   }
 
@@ -196,13 +197,13 @@ class BestMatchTabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
+            return <Text style={{color: 'rgb(230,230,230)'}}>No additional looks yet</Text>;
           }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)" />;
+            return <Spinner color="rgb(230,230,230)"/>;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
           return null;
         })()}
@@ -213,7 +214,7 @@ class BestMatchTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666" />
+          <Spinner color="#666666"/>
         </View>
       );
     }
@@ -222,7 +223,7 @@ class BestMatchTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover} />
+      <View style={styles.refreshingCover}/>
     );
   }
 
@@ -239,27 +240,27 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   onRefresh() {
-    this.setState({ isRefreshing: true });
-    const { getFeed, query } = this.props;
+    this.setState({isRefreshing: true});
+    const {refreshFeed, query} = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
-    getFeed(cleanQuery)
+    refreshFeed(cleanQuery)
       .then(() => {
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       })
       .catch((error) => {
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       });
   }
 
   _renderChangeBodyShapeBtn() {
     return (
-      <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
+      <View style={{width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3}}>
         <Image
           source={editShapeBtn}
-          style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
-          resizeMode={'stretch'} />
+          style={{width: deviceWidth / 2 - 6, height: deviceWidth / 4}}
+          resizeMode={'stretch'}/>
       </View>
     );
   }
@@ -275,10 +276,10 @@ class BestMatchTabContent extends BaseComponent {
           justifyContent: 'flex-end',
           alignSelf: 'center',
         }}>
-        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
           {this._renderLooks(this.state.flatLooksLeft)}
         </View>
-        <View style={{ flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0 }}>
+        <View style={{flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0}}>
           <TouchableOpacity onPress={() => this._showBodyShapeModal()}>
             {this._renderChangeBodyShapeBtn()}
           </TouchableOpacity>
@@ -293,10 +294,10 @@ class BestMatchTabContent extends BaseComponent {
     const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{flex: 1, justifyContent: 'center'}}>
         <EmptyStateScreen
           title={emptyTitle}
-          subtitle={emptySubtitle} icon={noResultsIcon} />
+          subtitle={emptySubtitle} icon={noResultsIcon}/>
       </View>
     );
   }
@@ -306,7 +307,7 @@ class BestMatchTabContent extends BaseComponent {
       <View style={styles.tab}>
         <ScrollView
           ref={c => this.scrollView = c}
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
@@ -321,15 +322,15 @@ class BestMatchTabContent extends BaseComponent {
 
   _renderLoader() {
     return (
-      <View style={{ justifyContent: 'center', height: deviceHeight - 150, alignSelf: 'center', position: 'absolute' }}>
-        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
+      <View style={{justifyContent: 'center', height: deviceHeight - 150, alignSelf: 'center', position: 'absolute'}}>
+        <ActivityIndicator animating style={{height: 50}} color={Colors.secondaryColor}/>
       </View>
 
     );
   }
 
   _renderFilterView() {
-    const { myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery } = this.props;
+    const {myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery} = this.props;
     return (
       <FiltersView
         currentFeedTab={myFeedType}
@@ -344,78 +345,78 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   _renderFeedFilters() {
-    const { query } = this.props;
+    const {query} = this.props;
     const clonedQuery = _.cloneDeep(query);
     delete clonedQuery.body_type;
     return (
-      <FeedFilters query={clonedQuery} getFeed={this._getFeed} />
+      <FeedFilters query={clonedQuery} getFeed={this._getFeed}/>
     );
   }
 
   _showBodyShapeModal() {
-    const { showBodyTypeModal } = this.state;
-    this.setState({ showBodyTypeModal: !showBodyTypeModal });
+    const {showBodyTypeModal} = this.state;
+    this.setState({showBodyTypeModal: !showBodyTypeModal});
   }
 
   getFeedWithNewBodyShape() {
-    this.setState({ isRefreshing: true });
-    const { getFeed, query, currBodyShapeModal } = this.props;
+    this.setState({isRefreshing: true});
+    const {getFeed, query, currBodyShapeModal} = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     cleanQuery.body_type = currBodyShapeModal;
     delete cleanQuery.page;
     getFeed(cleanQuery)
       .then(() => {
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       })
       .catch((error) => {
-        this.setState({ isRefreshing: false });
+        this.setState({isRefreshing: false});
       });
   }
 
   _saveBodyShape() {
-    const { saveBodyShape } = this.props;
+    const {saveBodyShape} = this.props;
     this._showBodyShapeModal();
     saveBodyShape();
     this.getFeedWithNewBodyShape();
   }
 
   _renderChooseBodyShape = () => {
-    const { hasUserSize } = this.props;
+    const {hasUserSize} = this.props;
     return (
       <View style={styles.chooseBodyShapeContainer}>
         <ScrollView contentContainerStyle={styles.bodyShapeScrollView}>
           <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
           <BodyTypePicker
-            onPick={() => this._showBodyShapeModal()} />
-          <SolidButton label="CHOOSE" onPress={this._saveBodyShape} />
-          { hasUserSize ?
+            onPick={() => this._showBodyShapeModal()}/>
+          <SolidButton label="CHOOSE" onPress={this._saveBodyShape}/>
+          {hasUserSize ?
             <TouchableOpacity onPress={this._showBodyShapeModal} style={styles.cancelBodyShapeContainer}>
               <Text style={styles.cancelBodyShape}>{i18n.t('CANCEL')}</Text>
-            </TouchableOpacity> : null }
+            </TouchableOpacity> : null}
         </ScrollView>
       </View>
     );
   };
 
   render() {
-    const { isFiltersMenuOpen, flatLooks, isLoading } = this.props;
-    const { showBodyTypeModal } = this.state;
+    const {isFiltersMenuOpen, flatLooks, isLoading} = this.props;
+    const {showBodyTypeModal} = this.state;
     if (showBodyTypeModal) {
       return this._renderChooseBodyShape();
     } else if (isLoading) {
       return this._renderLoader();
     } else if (isFiltersMenuOpen) {
       return (
-        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
-          { this._renderFilterView() }
+        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
+          {this._renderFilterView()}
         </View>
       );
     } else {
       return (
-        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+        <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
           {this._renderFeedFilters()}
-          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+          {flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView()}
         </View>
       );
     }

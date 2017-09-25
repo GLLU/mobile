@@ -5,7 +5,7 @@ import FollowingTabContent from './FollowingTabContent';
 import { showBodyTypeModal, getFollowingFeed, loadMore, showParisBottomMessage } from '../../actions';
 import { getLooksById } from '../../utils/FeedUtils';
 import { getDataWithUsersObj } from '../../utils/UsersUtils';
-import { FEED_TYPE_FOLLOWING, toggleFiltersMenus, changeFiltersGender } from '../../actions/feed';
+import { FEED_TYPE_FOLLOWING, toggleFiltersMenus, changeFiltersGender, refreshFeed } from '../../actions/feed';
 
 function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenFollwing', params);
@@ -14,6 +14,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     onFollowClicked: () => ownProps.navigateTo('searchScreen'),
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getFollowingFeed(query)),
+    refreshFeed: () => dispatch(refreshFeed(FEED_TYPE_FOLLOWING)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_FOLLOWING)),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
     toggleFiltersMenus: () => dispatch(toggleFiltersMenus(FEED_TYPE_FOLLOWING)),
@@ -47,7 +48,10 @@ const mapStateToProps = (state) => {
     isFiltersMenuOpen: state.feed[FEED_TYPE_FOLLOWING].isFiltersMenuOpen,
     myFeedType: FEED_TYPE_FOLLOWING,
     filtersGender: state.feed[FEED_TYPE_FOLLOWING].filtersGender,
-    defaultFilterQuery: { ...state.feed[FEED_TYPE_FOLLOWING].query, gender: state.feed[FEED_TYPE_FOLLOWING].filtersGender },
+    defaultFilterQuery: {
+      ...state.feed[FEED_TYPE_FOLLOWING].query,
+      gender: state.feed[FEED_TYPE_FOLLOWING].filtersGender
+    },
   };
 };
 
