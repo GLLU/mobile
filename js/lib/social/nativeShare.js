@@ -1,13 +1,10 @@
-import { Share } from 'react-native';
+import Share from 'react-native-share';
 
 function _shareTextNative(shareData) {
-  Share.share({
+  Share.open({
     message: shareData.text,
     url: shareData.url,
     title: 'inFash'
-  }, {
-    dialogTitle: 'Share inFash',
-    excludedActivityTypes: [/*here we can exclude sharing options on ios*/]
   })
     .then(this._logResult)
     .catch((error) => console.log(`error: ${ error.message }`));
