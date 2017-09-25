@@ -10,14 +10,6 @@ import {
 const bodyTypeList = {
   female: [
     {
-      name: 'invertedTriangle',
-      body_type: 'invertedTriangle',
-      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
-      imageUrl: require('../../images/bodytypes/female/inverted-triangle.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/female-inverted-triangle-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/female-inverted-triangle.png')
-    },
-    {
       name: 'rectangle',
       body_type: 'rectangle',
       description: 'Also known as H or straight body shape due to the similar width of the shoulders, hips and waistline.',
@@ -26,12 +18,20 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-rectangle.png')
     },
     {
-      name: 'apple',
-      body_type: 'apple',
-      description: 'Your shoulders and hip line are about the same, and your waistline is the same or wider than your shoulders and hips.',
-      imageUrl: require('../../images/bodytypes/female/apple.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/female-apple-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/female-apple.png')
+      name: 'invertedTriangle',
+      body_type: 'invertedTriangle',
+      description: 'Your defining attributes are hips that are narrower than the shoulders with a waist that is straight or goes slightly in.',
+      imageUrl: require('../../images/bodytypes/female/inverted-triangle.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-inverted-triangle-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-inverted-triangle.png')
+    },
+    {
+      name: 'hourglass',
+      body_type: 'hourglass',
+      description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
+      imageUrl: require('../../images/bodytypes/female/hourglass.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-hourglass-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-hourglass.png')
     },
     {
       name: 'pear',
@@ -42,23 +42,15 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-pear.png')
     },
     {
-      name: 'hourglass',
-      body_type: 'hourglass',
-      description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
-      imageUrl: require('../../images/bodytypes/female/hourglass.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/female-hourglass-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/female-hourglass.png')
+      name: 'apple',
+      body_type: 'apple',
+      description: 'Your shoulders and hip line are about the same, and your waistline is the same or wider than your shoulders and hips.',
+      imageUrl: require('../../images/bodytypes/female/apple.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-apple-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-apple.png')
     }
   ],
   male: [
-    {
-      name: 'invertedTriangle',
-      body_type: 'invertedTriangle',
-      description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
-      imageUrl: require('../../images/bodytypes/male/invert.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/male-inverted-triangle-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/male-inverted-triangle.png')
-    },
     {
       name: 'rectangle',
       body_type: 'rectangle',
@@ -66,6 +58,14 @@ const bodyTypeList = {
       imageUrl: require('../../images/bodytypes/male/rectangle.png'),
       filterImageUrlActive: require('../../images/filters/body-types/male-rectangle-active.png'),
       filterImageUrl: require('../../images/filters/body-types/male-rectangle.png')
+    },
+    {
+      name: 'invertedTriangle',
+      body_type: 'invertedTriangle',
+      description: 'You have an athletic build with chest and shoulders that are noticeably broader than waist or hips.',
+      imageUrl: require('../../images/bodytypes/male/invert.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/male-inverted-triangle-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/male-inverted-triangle.png')
     },
     {
       name: 'triangle',
