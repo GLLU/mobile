@@ -1,11 +1,11 @@
-import {SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA, FINISH_FETCHING, START_FETCHING, CLOSE_FEED_FILTER, OPEN_FEED_FILTER, CHANGE_FILTERS_GENDER} from '../actions/feed';
-import {REHYDRATE} from 'redux-persist/constants';
+import { SET_FLAT_LOOKS_FEED_DATA, CLEAR_FEED_DATA, FINISH_FETCHING, START_FETCHING, CLOSE_FEED_FILTER, OPEN_FEED_FILTER, CHANGE_FILTERS_GENDER } from '../actions/feed';
 
 const initialState = {
   bestMatch: {
     flatLooksIdData: [],
     meta: {
       total: 0,
+      lastRefreshPage: 1,
     },
     query: {
       gender: null,
@@ -25,6 +25,7 @@ const initialState = {
     flatLooksIdData: [],
     meta: {
       total: 0,
+      lastRefreshPage: 1,
     },
     query: {
       gender: null,
@@ -44,6 +45,7 @@ const initialState = {
     flatLooksIdData: [],
     meta: {
       total: 0,
+      lastRefreshPage: 1,
     },
     query: {
       gender: null,
@@ -66,7 +68,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_FLAT_LOOKS_FEED_DATA: {
-      const {query, meta, flatLooksIdData, feedType} = action.payload
+      const { query, meta, flatLooksIdData, feedType } = action.payload;
       return {
         ...state,
         [feedType]: {
@@ -83,7 +85,7 @@ export default function (state = initialState, action) {
       };
     }
     case START_FETCHING: {
-      const feedType = action.feedType
+      const feedType = action.feedType;
       return {
         ...state,
         [feedType]: {
@@ -92,8 +94,8 @@ export default function (state = initialState, action) {
         },
       };
     }
-   case OPEN_FEED_FILTER: {
-     const feedType = action.feedType
+    case OPEN_FEED_FILTER: {
+      const feedType = action.feedType;
       return {
         ...state,
         [feedType]: {
@@ -102,8 +104,8 @@ export default function (state = initialState, action) {
         },
       };
     }
-   case CLOSE_FEED_FILTER: {
-     const feedType = action.feedType
+    case CLOSE_FEED_FILTER: {
+      const feedType = action.feedType;
       return {
         ...state,
         [feedType]: {
@@ -113,7 +115,7 @@ export default function (state = initialState, action) {
       };
     }
     case FINISH_FETCHING: {
-      const feedType = action.feedType
+      const feedType = action.feedType;
       return {
         ...state,
         [feedType]: {
@@ -123,14 +125,14 @@ export default function (state = initialState, action) {
       };
     }
     case CHANGE_FILTERS_GENDER: {
-      const { feedType, gender } = action.payload
+      const { feedType, gender } = action.payload;
       return {
         ...state,
         [feedType]: {
           ...state[feedType],
           filtersGender: gender,
         },
-      }
+      };
     }
     default:
       return state;

@@ -46,6 +46,7 @@ class FollowingTabContent extends BaseComponent {
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     getFeed: React.PropTypes.func,
+    refreshFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
   }
@@ -78,9 +79,9 @@ class FollowingTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName} = this.props
+    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
     this._getFeed(defaultFilters);
-    changeFiltersGender(defaultFilters.gender)
+    changeFiltersGender(defaultFilters.gender);
     const that = this;
     setInterval(() => {
       that.handleScrollPosition();
@@ -171,7 +172,6 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _renderLooks(looks: array) {
-
     return _.map(looks, look => (
       <MediaContainer
         look={look}
@@ -236,11 +236,11 @@ class FollowingTabContent extends BaseComponent {
 
   onRefresh() {
     this.setState({ isRefreshing: true });
-    const { getFeed, query } = this.props;
+    const { refreshFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
-    getFeed(cleanQuery)
+    refreshFeed(cleanQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
       })
@@ -304,7 +304,7 @@ class FollowingTabContent extends BaseComponent {
     return (
       <View style={styles.tab}>
         <ScrollView
-          ref={ c => this.scrollView = c }
+          ref={c => this.scrollView = c}
           style={{ flex: 1 }}
           scrollEventThrottle={100}
           onScroll={this.handleScroll}
@@ -336,7 +336,7 @@ class FollowingTabContent extends BaseComponent {
         getFeed={this._getFeed}
         filtersGender={filtersGender}
         changeFiltersGender={changeFiltersGender}
-        defaultQuery={defaultFilterQuery}/>
+        defaultQuery={defaultFilterQuery} />
     );
   }
 
@@ -350,14 +350,14 @@ class FollowingTabContent extends BaseComponent {
   componentDidUpdate(prevProps) {
     const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
     if (isTabOnFocus) {
-      if(isFiltersMenuOpen){
+      if (isFiltersMenuOpen) {
         showBottomCameraButton(false);
       } else {
         showBottomCameraButton(true);
       }
     }
-    if(this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
-      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false}), 0)
+    if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
+      _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
     }
   }
 
@@ -365,21 +365,19 @@ class FollowingTabContent extends BaseComponent {
     const { isFiltersMenuOpen, flatLooks, isLoading } = this.props;
     if (isLoading) {
       return this._renderLoader();
+    } else if (isFiltersMenuOpen) {
+      return (
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+          {this._renderFilterView()}
+        </View>
+      );
     } else {
-      if(isFiltersMenuOpen) {
-        return (
-          <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-            { this._renderFilterView() }
-          </View>
-        );
-      } else {
-        return (
-          <View style={{flexGrow: 1, alignSelf: 'stretch'}}>
-            {this._renderFeedFilters()}
-            { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
-          </View>
-        );
-      }
+      return (
+        <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
+          {this._renderFeedFilters()}
+          {flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView()}
+        </View>
+      );
     }
   }
 }
