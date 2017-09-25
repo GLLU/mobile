@@ -9,14 +9,12 @@ import {
   TouchableOpacity,
   Text,
   Platform,
-  Animated,
   RefreshControl,
   View,
   NetInfo,
   ActivityIndicator,
 } from 'react-native';
 import i18n from 'react-native-i18n';
-import LinearGradient from 'react-native-linear-gradient';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import _ from 'lodash';
 import SocialShare from '../../lib/social';
@@ -24,14 +22,16 @@ import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import { formatInvitationMessage } from '../../lib/messages/index';
-import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
 import FeedActiveFilter from '../common/buttons/TagStringButton';
-
-const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
+import UserActionCard from '../common/lists/UserActionCard';
+const emptyUsersIcon = require('../../../images/emptyStates/user-admin.png');
+const search = require('../../../images/icons/search-black.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
@@ -79,8 +79,9 @@ class FollowingTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
+    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName, getUsersSuggestions } = this.props;
     this._getFeed(defaultFilters);
+    getUsersSuggestions();
     changeFiltersGender(defaultFilters.gender);
     const that = this;
     setInterval(() => {
@@ -134,7 +135,7 @@ class FollowingTabContent extends BaseComponent {
         const currentScroll = event.nativeEvent.contentOffset.y;
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if (!this.state.loadingMore && !this.state.isLoading) {
-            this.setState({ loadingMore: true }, this.loadMore);
+             this.setState({ loadingMore: true }, this.loadMore);
           }
         } else {
         }
@@ -285,8 +286,15 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
-    const { onFollowClicked } = this.props;
+    const { onFollowClicked, usersSuggestions } = this.props;
 
+    if(usersSuggestions.length > 0) {
+      return (
+        <ScrollView style={styles.userSuggestionsScroll}>
+          {this._renderUsersSuggestionView()}
+        </ScrollView>
+      )
+    }
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
@@ -301,6 +309,7 @@ class FollowingTabContent extends BaseComponent {
 
 
   _renderScrollView() {
+    const { flatLooks } = this.props;
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -310,6 +319,7 @@ class FollowingTabContent extends BaseComponent {
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
+          { flatLooks.length < 6 ? this._renderUsersSuggestionView() : null}
           {this._renderLoadMore()}
           {this._renderRefreshingCover()}
         </ScrollView>
@@ -317,6 +327,44 @@ class FollowingTabContent extends BaseComponent {
       </View>
     );
   }
+
+  renderUserSuggestionsList(usersSuggestions) {
+    const { navigateTo } = this.props;
+    return _.map(usersSuggestions, suggestedUser => (
+      <UserActionCard {...suggestedUser} key={suggestedUser.id} navigateTo={navigateTo} />
+    ));
+  }
+
+  _renderSuggestionHeader() {
+    return (
+      <View style={styles.userSuggestionHeaderContainer}>
+        <Text style={styles.userSuggestionHeaderText}>{i18n.t('PEOPLE_SUGGESTION_FEED')}</Text>
+        <Image source={emptyUsersIcon} style={styles.userSuggestionHeaderIcon} resizeMode={'contain'} />
+      </View>
+    );
+  }
+
+  _renderUsersSuggestionView() {
+    const {onFollowClicked, usersSuggestions} = this.props;
+    if (usersSuggestions.length > 0) {
+      return (
+        <View style={styles.userSuggestionsContainer}>
+          {this._renderSuggestionHeader()}
+          {this.renderUserSuggestionsList(usersSuggestions)}
+          <TouchableOpacity style={styles.followMoreBtnContainer} onPress={onFollowClicked}>
+            <View style={styles.followMoreBtn}>
+              <Image source={search} style={styles.searchPeopleIcon}/>
+            </View>
+            <View style={styles.searchPeopleTxtContainer}>
+              <Text style={styles.searchPeopleTxt}>{i18n.t('SEARCH_FOR_MORE_PEOPLE')}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      );
+    } else return null
+  }
+
+
 
   _renderLoader() {
     return (
@@ -368,14 +416,14 @@ class FollowingTabContent extends BaseComponent {
     } else if (isFiltersMenuOpen) {
       return (
         <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
-          {this._renderFilterView()}
+          { this._renderFilterView() }
         </View>
       );
     } else {
       return (
         <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           {this._renderFeedFilters()}
-          {flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView()}
+          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
         </View>
       );
     }
@@ -421,6 +469,82 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
   },
+  userSuggestionsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: generateAdjustedSize(75),
+  },
+  followMoreBtn: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: generateAdjustedSize(80),
+    height: generateAdjustedSize(80),
+    borderRadius: generateAdjustedSize(40),
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    backgroundColor: Colors.white,
+  },
+  followMoreBtnContainer: {
+    width: deviceWidth / 3,
+    padding: generateAdjustedSize(12),
+    flexDirection: 'column',
+    backgroundColor: Colors.white,
+    alignItems: 'center',
+  },
+  searchPeopleTxt: {
+    fontSize: generateAdjustedSize(12),
+    textAlign: 'center',
+    backgroundColor: Colors.transparent,
+    color: Colors.black,
+    fontFamily: Fonts.mediumFont,
+
+  },
+  searchPeopleIcon: {
+    height: generateAdjustedSize(30),
+    width: generateAdjustedSize(30),
+    marginBottom: 2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 6,
+    resizeMode: 'contain',
+  },
+  searchPeopleTxtContainer: {
+    alignSelf: 'center',
+    padding: generateAdjustedSize(3),
+  },
+  userSuggestionHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    alignItems: 'center',
+    width: deviceWidth,
+    height: generateAdjustedSize(45),
+    borderBottomWidth: 0.5,
+    borderTopWidth: 0.5,
+    paddingVertical: 3,
+    borderColor: Colors.lightGray,
+    backgroundColor: Colors.white
+  },
+  userSuggestionHeaderText: {
+    flex: 1,
+    color: Colors.gray,
+    fontWeight: '500',
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontFamily: Fonts.regularFont
+  },
+  userSuggestionHeaderIcon: {
+    position: 'absolute',
+    width: generateAdjustedSize(40),
+    height: generateAdjustedSize(40),
+    padding: generateAdjustedSize(5),
+    left: generateAdjustedSize(15)
+  },
+  userSuggestionsScroll: {
+    flex: 1,
+    backgroundColor: Colors.white
+  }
 });
 
 export default FollowingTabContent;

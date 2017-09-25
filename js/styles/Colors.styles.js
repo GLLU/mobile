@@ -12,6 +12,7 @@ const Colors = {
   lightGray: '#c0c0c0',
   gray: '#7a7a7a',
   darkGreen: '#009688',
+  lightGreen: '#6bd7c5',
   separatorGray: '#d6d6d6',
   usernameColor: '#00a9ff',
   transparent: 'transparent',
