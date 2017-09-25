@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import LooksService from '../services/looksService';
 import { normalize } from 'normalizr';
-import { pushIdsRandomly, unifyLooks } from '../utils/FeedUtils'
+import { pushIdsRandomly, unifyLooks } from '../utils/FeedUtils';
 import { lookSchema } from '../schemas/schemas';
 import { setUsers } from './users';
 
@@ -48,6 +48,7 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
         if (multiData && multiData[0] && multiData[1]) {
           const { looks, meta } = multiData[0];
           const videoLook = multiData[1].looks[0];
+          const metaWithRefresh = { ...meta, lastRefreshPage: getState().feed[feedType].meta.lastRefreshPage };
 
           if (videoLook) {
             // If the look has been retrieved in getLooks service, don't add the video retrieved
@@ -61,8 +62,8 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
           const normalizedLooksData = normalize(looks, [lookSchema]);
           dispatch(setUsers(normalizedLooksData.entities.users));
           const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
-          dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-          dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType }));
+          dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
+          dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta:metaWithRefresh, query: newState, feedType }));
           dispatch(finishFechting(feedType));
           dispatch(loadMore(feedType));
           Promise.resolve(multiData[0]);
@@ -115,12 +116,13 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
     return LooksService.getLooks(params).then((data) => {
       if (data) {
         const { looks, meta } = data;
+        const metaWithRefresh = { ...meta, lastRefreshPage: getState().feed[feedType].meta.lastRefreshPage };
         const normalizedLooksData = normalize(looks, [lookSchema]);
         dispatch(setUsers(normalizedLooksData.entities.users));
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
-        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
         const flatLooksIdData = _.union(state.flatLooksIdData, normalizedLooksData.result);
-        dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
+        dispatch(setFeedData({ flatLooksIdData, meta: metaWithRefresh, query: newState, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
         dispatch(loadMore(feedType, retryCount + 1));
@@ -136,22 +138,22 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
 export function refreshFeed(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   return (dispatch, getState) => {
     const state = getState().feed[feedType];
-    const currPage = state.query.page.number;
-    const nextPageNumber =
-      currPage < 7 &&
-      (currPage + 2) * state.query.page.size < state.meta.total ?
-        currPage + 2 : 1;
+    let nextPageNumber = state.meta.lastRefreshPage + 2;
+    if (nextPageNumber > 7 || nextPageNumber > (state.meta.total / state.query.size) - 1) {
+      nextPageNumber = 1;
+    }
     const newState = _.merge(state.query, { page: { number: nextPageNumber } });
     const params = parseQueryFromState(newState);
     return LooksService.getLooks(params).then((data) => {
       if (data) {
         const { looks, meta } = data;
+        const metaWithRefresh = { ...meta, lastRefreshPage: nextPageNumber };
         const normalizedLooksData = normalize(looks, [lookSchema]);
         dispatch(setUsers(normalizedLooksData.entities.users));
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
-        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-        const flatLooksIdData = pushIdsRandomly(state.flatLooksIdData,normalizedLooksData.result);
-        dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
+        const flatLooksIdData = pushIdsRandomly(state.flatLooksIdData, normalizedLooksData.result);
+        dispatch(setFeedData({ flatLooksIdData, meta: metaWithRefresh, query: state.query, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
         dispatch(refreshFeed(feedType, retryCount + 1));

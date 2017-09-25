@@ -12,10 +12,10 @@ export function getLooksById(feedLooksIds: array, flatLooksData: object) {
 
 export const pushIdsRandomly = (originalIds: Array<number>, newIds: Array<number>) => {
   const newArray = [];
-  const indexedIds = _.map(newIds, newId => ({id: newId, index: _.random(originalIds.length)}));
+  const indexedIds = _.map(newIds, newId => ({ id: newId, index: _.random(originalIds.length) }));
   _.times(originalIds.length, (i) => {
-    const newId=_.find(indexedIds, indexedId => i === indexedId.index);
-    if(newId){
+    const newId = _.find(indexedIds, indexedId => i === indexedId.index);
+    if (newId) {
       newArray.push(newId.id);
     }
     newArray.push(originalIds[i]);

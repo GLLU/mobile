@@ -29,7 +29,6 @@ import i18n from 'react-native-i18n';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
 import EmptyStateScreen from '../common/EmptyStateScreen';
-import { refreshFeed } from '../../actions/feed';
 
 const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const noResultsIcon = require('../../../images/emptyStates/search.png');
