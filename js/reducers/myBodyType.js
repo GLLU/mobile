@@ -48,7 +48,7 @@ const bodyTypeList = {
       imageUrl: require('../../images/bodytypes/female/apple.png'),
       filterImageUrlActive: require('../../images/filters/body-types/female-apple-active.png'),
       filterImageUrl: require('../../images/filters/body-types/female-apple.png')
-    }
+    },
   ],
   male: [
     {

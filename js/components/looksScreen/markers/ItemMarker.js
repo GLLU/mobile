@@ -138,6 +138,10 @@ class ItemMarker extends Component {
     return closeToEdgeIndicator;
   }
 
+  _openWebView(url) {
+    this.props._openWebView(url);
+  }
+
   limitPosition(position, closeToEdgeIndicator, containerDimensions) {
     if (closeToEdgeIndicator.left) {
       position.x = 20;
@@ -155,7 +159,7 @@ class ItemMarker extends Component {
   }
 
   _renderPopup(item, popupDimensions) {
-    return <ItemPopup {...item} dimensions={popupDimensions}/>;
+    return <ItemPopup {...item} openWebView={this.props.openWebView} dimensions={popupDimensions}/>;
   }
 
   _renderMarker(position, dimensions, orientation) {
