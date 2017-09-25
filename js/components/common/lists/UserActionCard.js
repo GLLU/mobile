@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import FollowView from '../../profileScreen/follows/FollowView';
 import { connect } from 'react-redux';
 import { followUpdate, unFollowUpdate } from '../../../actions/follows';
@@ -10,10 +10,11 @@ import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 import Fonts from '../../../styles/Fonts.styles';
 import Colors from '../../../styles/Colors.styles';
 const deviceWidth = Dimensions.get('window').width;
+const userImageCircleSize = 80
 
 const styles = StyleSheet.create({
   container: {
-    width: deviceWidth/3,
+    width: deviceWidth / 3,
     padding: generateAdjustedSize(12),
     flexDirection: 'column',
     backgroundColor: Colors.white,
@@ -33,9 +34,9 @@ const styles = StyleSheet.create({
   },
   photo: {
     alignSelf: 'center',
-    width: generateAdjustedSize(80),
-    height: generateAdjustedSize(80),
-    borderRadius: generateAdjustedSize(40),
+    width: generateAdjustedSize(userImageCircleSize),
+    height: generateAdjustedSize(userImageCircleSize),
+    borderRadius: generateAdjustedSize(userImageCircleSize/2),
     borderWidth: 1,
     borderColor: Colors.lightGray,
   },
@@ -46,17 +47,17 @@ const styles = StyleSheet.create({
   },
   unFollowBtn: {
     backgroundColor: Colors.white,
-    borderColor: Colors.lightGreen
+    borderColor: Colors.lightGreen,
   },
   followBtn: {
     backgroundColor: Colors.lightGreen,
-    borderWidth: 0
+    borderWidth: 0,
   },
   followViewContainer: {
     position: 'absolute',
     alignSelf: 'center',
-    bottom: generateAdjustedSize(30)
-  }
+    bottom: Platform.OS === 'ios' ? generateAdjustedSize(30) : generateAdjustedSize(35),
+  },
 });
 
 type Props = {
@@ -114,11 +115,11 @@ class UserActionCard extends Component {
       return <View name="can't follow me" style={styles.followView} />;
     }
     return (
-    <View style={styles.followViewContainer}>
-      <FollowView
-      onPress={this.onFollowPress} style={styles.followView} unFollowBtnStyle={styles.unFollowBtn} followBtnStyle={styles.followBtn}
-      user={{ id, isFollowing }} />
-    </View>
+      <View style={styles.followViewContainer}>
+        <FollowView
+          onPress={this.onFollowPress} style={styles.followView} unFollowBtnStyle={styles.unFollowBtn} followBtnStyle={styles.followBtn}
+          user={{ id, isFollowing }} />
+      </View>
     );
   }
 

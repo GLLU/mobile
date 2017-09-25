@@ -288,7 +288,11 @@ class FollowingTabContent extends BaseComponent {
     const { onFollowClicked, usersSuggestions } = this.props;
 
     if(usersSuggestions.length > 0) {
-      return this._renderUsersSuggestionView();
+      return (
+        <ScrollView style={styles.userSuggestionsScroll}>
+          {this._renderUsersSuggestionView()}
+        </ScrollView>
+      )
     }
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -351,7 +355,7 @@ class FollowingTabContent extends BaseComponent {
               <Image source={search} style={styles.searchPeopleIcon}/>
             </View>
             <View style={styles.searchPeopleTxtContainer}>
-              <Text style={styles.searchPeopleTxt}>Search for more people</Text>
+              <Text style={styles.searchPeopleTxt}>{i18n.t('SEARCH_FOR_MORE_PEOPLE')}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -468,7 +472,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: 70,
+    marginBottom: generateAdjustedSize(75),
   },
   followMoreBtn: {
     alignSelf: 'center',
@@ -492,7 +496,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: Colors.transparent,
     color: Colors.black,
-    fontWeight: '500',
+    fontFamily: Fonts.mediumFont,
 
   },
   searchPeopleIcon: {
@@ -518,7 +522,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderTopWidth: 0.5,
     paddingVertical: 3,
-    borderColor: Colors.lightGray
+    borderColor: Colors.lightGray,
+    backgroundColor: Colors.white
   },
   userSuggestionHeaderText: {
     flex: 1,
@@ -534,6 +539,10 @@ const styles = StyleSheet.create({
     height: generateAdjustedSize(40),
     padding: generateAdjustedSize(5),
     left: generateAdjustedSize(15)
+  },
+  userSuggestionsScroll: {
+    flex: 1,
+    backgroundColor: Colors.white
   }
 });
 
