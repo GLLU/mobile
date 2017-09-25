@@ -130,6 +130,7 @@ class MenuAction extends Component {
         showLoader={showLoader}
         label={label}
         onPress={this._onPress}
+        loaderColor={Colors.white}
       />
     }
     if (isDone) {
