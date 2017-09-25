@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import LooksService from '../services/looksService';
 import { normalize } from 'normalizr';
-import { unifyLooks } from '../utils/FeedUtils';
+import { pushIdsRandomly, unifyLooks } from '../utils/FeedUtils'
 import { lookSchema } from '../schemas/schemas';
 import { setUsers } from './users';
 
@@ -137,7 +137,10 @@ export function refreshFeed(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   return (dispatch, getState) => {
     const state = getState().feed[feedType];
     const currPage = state.query.page.number;
-    const nextPageNumber = (currPage + 2) * state.query.page.size < state.meta.total ? currPage + 2 : 1;
+    const nextPageNumber =
+      currPage < 7 &&
+      (currPage + 2) * state.query.page.size < state.meta.total ?
+        currPage + 2 : 1;
     const newState = _.merge(state.query, { page: { number: nextPageNumber } });
     const params = parseQueryFromState(newState);
     return LooksService.getLooks(params).then((data) => {
@@ -147,7 +150,7 @@ export function refreshFeed(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
         dispatch(setUsers(normalizedLooksData.entities.users));
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
-        const flatLooksIdData = _.union(normalizedLooksData.result, state.flatLooksIdData);
+        const flatLooksIdData = pushIdsRandomly(state.flatLooksIdData,normalizedLooksData.result);
         dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
