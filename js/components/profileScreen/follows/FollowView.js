@@ -7,7 +7,8 @@ import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 const styles = StyleSheet.create({
   followBtn: {
     backgroundColor: Colors.secondaryColor,
-    height: 25,
+    width: generateAdjustedSize(75),
+    height: generateAdjustedSize(25),
     justifyContent: 'center',
     margin: generateAdjustedSize(5),
   },
@@ -51,7 +52,7 @@ class FollowView extends Component {
 
   renderUnfollowButton() {
     return (
-      <TouchableOpacity style={[styles.unfollowBtn, this.props.style]} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.unfollowBtn, this.props.style, this.props.unFollowBtnStyle]} onPress={this.handleFollowPress}>
         <Text style={styles.unfollowText}>Unfollow</Text>
       </TouchableOpacity>
     )
@@ -59,7 +60,7 @@ class FollowView extends Component {
 
   renderFollowButton() {
     return (
-      <TouchableOpacity style={[styles.followBtn, this.props.style]} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.followBtn, this.props.style, this.props.followBtnStyle]} onPress={this.handleFollowPress}>
         <Text style={styles.followText}>Follow</Text>
       </TouchableOpacity>
     )

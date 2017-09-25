@@ -123,6 +123,7 @@
   "LIKED_YOUR_LOOK": "liked your look",
   "STARTED_FOLLOWING_YOU": "started following you",
   "COMMENTED_ON_YOUR_LOOK": "commented on your look",
-  "UNRECOGNIZED_NOTIFICATION_ACTION": "unrecognized action kind"
+  "UNRECOGNIZED_NOTIFICATION_ACTION": "unrecognized action kind",
+  "PEOPLE_SUGGESTION_FEED": "Fashionistas we recommend you start \nfollowing",
 }
 
