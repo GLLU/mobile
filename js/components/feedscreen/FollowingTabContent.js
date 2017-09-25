@@ -46,6 +46,7 @@ class FollowingTabContent extends BaseComponent {
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     getFeed: React.PropTypes.func,
+    refreshFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
   }
@@ -236,11 +237,11 @@ class FollowingTabContent extends BaseComponent {
 
   onRefresh() {
     this.setState({ isRefreshing: true });
-    const { getFeed, query } = this.props;
+    const { refreshFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
-    getFeed(cleanQuery)
+    refreshFeed(cleanQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
       })

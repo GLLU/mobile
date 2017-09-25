@@ -75,12 +75,13 @@ class LookOverlay extends Component {
   }
 
   _renderBuyItButtons(look: object) {
-    const { width, height } = this.props;
+    const { width, height, openWebView } = this.props;
     return look.items.map((item, index) =>
       <ItemMarker
         key={index}
         item={item}
         onPress={this.props.onInvalidItemPressed}
+        openWebView={openWebView}
         containerDimensions={{ width: width, height: height }}
         pinPosition={{ y: item.cover_y_pos, x: item.cover_x_pos }}/>
     );
