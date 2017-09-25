@@ -45,6 +45,7 @@ class BestMatchTabContent extends BaseComponent {
     reloading: React.PropTypes.bool,
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
+    refreshFeed: React.PropTypes.func,
     getFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
@@ -80,9 +81,9 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName} = this.props
+    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
     this._getFeed(defaultFilters);
-    changeFiltersGender(defaultFilters.gender)
+    changeFiltersGender(defaultFilters.gender);
     const that = this;
     setInterval(() => {
       that.handleScrollPosition();
@@ -101,7 +102,7 @@ class BestMatchTabContent extends BaseComponent {
   componentDidUpdate(prevProps) {
     const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
     if (isTabOnFocus) {
-      if(this.state.showBodyTypeModal || isFiltersMenuOpen){
+      if (this.state.showBodyTypeModal || isFiltersMenuOpen) {
         showBottomCameraButton(false);
       } else {
         showBottomCameraButton(true);
@@ -175,7 +176,6 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   _renderLooks(looks: array) {
-
     return _.map(looks, look => (
       <MediaContainer
         look={look}
@@ -240,11 +240,11 @@ class BestMatchTabContent extends BaseComponent {
 
   onRefresh() {
     this.setState({ isRefreshing: true });
-    const { getFeed, query } = this.props;
+    const { refreshFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
-    getFeed(cleanQuery)
+    refreshFeed(cleanQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
       })
@@ -339,7 +339,7 @@ class BestMatchTabContent extends BaseComponent {
         filtersGender={filtersGender}
         changeFiltersGender={changeFiltersGender}
         defaultQuery={defaultFilterQuery}
-        showGenderFilter={false}/>
+        showGenderFilter={false} />
     );
   }
 
@@ -389,10 +389,10 @@ class BestMatchTabContent extends BaseComponent {
           <BodyTypePicker
             onPick={() => this._showBodyShapeModal()} />
           <SolidButton label="CHOOSE" onPress={this._saveBodyShape} />
-          { hasUserSize ?
+          {hasUserSize ?
             <TouchableOpacity onPress={this._showBodyShapeModal} style={styles.cancelBodyShapeContainer}>
               <Text style={styles.cancelBodyShape}>{i18n.t('CANCEL')}</Text>
-            </TouchableOpacity> : null }
+            </TouchableOpacity> : null}
         </ScrollView>
       </View>
     );
@@ -408,14 +408,14 @@ class BestMatchTabContent extends BaseComponent {
     } else if (isFiltersMenuOpen) {
       return (
         <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
-          { this._renderFilterView() }
+          {this._renderFilterView()}
         </View>
       );
     } else {
       return (
         <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           {this._renderFeedFilters()}
-          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+          {flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView()}
         </View>
       );
     }
@@ -477,16 +477,16 @@ const
       alignItems: 'center',
     },
     bodyShapeScrollView: {
-      paddingBottom: 16
+      paddingBottom: 16,
     },
     cancelBodyShape: {
       textAlign: 'center',
       color: Colors.highlightColor,
-      marginTop: 8
+      marginTop: 8,
     },
     cancelBodyShapeContainer: {
-      alignSelf: 'center'
-    }
+      alignSelf: 'center',
+    },
   });
 
 export default BestMatchTabContent;

@@ -9,7 +9,7 @@ import {
   showParisBottomMessage,
 } from '../../actions';
 
-import { FEED_TYPE_BEST_MATCH, toggleFiltersMenus, changeFiltersGender } from '../../actions/feed';
+import { FEED_TYPE_BEST_MATCH, toggleFiltersMenus, changeFiltersGender, refreshFeed } from '../../actions/feed';
 import { saveUserBodyShape } from '../../actions/myBodyMeasure';
 import { getLooksById } from '../../utils/FeedUtils';
 import { getDataWithUsersObj } from '../../utils/UsersUtils';
@@ -21,6 +21,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getBestMatchFeed(query)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_BEST_MATCH)),
+    refreshFeed: () => dispatch(refreshFeed(FEED_TYPE_BEST_MATCH)),
     saveBodyShape: () => dispatch(saveUserBodyShape()),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
     toggleFiltersMenus: () => dispatch(toggleFiltersMenus(FEED_TYPE_BEST_MATCH)),

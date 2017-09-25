@@ -46,6 +46,7 @@ class HotTabContent extends BaseComponent {
     handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     getFeed: React.PropTypes.func,
+    refreshFeed: React.PropTypes.func,
     showBodyTypeModal: React.PropTypes.func,
     loadMore: React.PropTypes.func,
   }
@@ -78,9 +79,9 @@ class HotTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const {changeFiltersGender, defaultFilters, showParisBottomMessage, userName} = this.props
+    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
     this._getFeed(defaultFilters);
-    changeFiltersGender(defaultFilters.gender)
+    changeFiltersGender(defaultFilters.gender);
     const that = this;
     setInterval(() => {
       that.handleScrollPosition();
@@ -231,11 +232,11 @@ class HotTabContent extends BaseComponent {
 
   onRefresh() {
     this.setState({ isRefreshing: true });
-    const { getFeed, query } = this.props;
+    const { refreshFeed, query } = this.props;
     // reset the first page
     const cleanQuery = _.cloneDeep(query);
     delete cleanQuery.page;
-    getFeed(cleanQuery)
+    refreshFeed(cleanQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
       })
@@ -342,7 +343,7 @@ class HotTabContent extends BaseComponent {
   componentDidUpdate(prevProps) {
     const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
     if (isTabOnFocus) {
-      if(isFiltersMenuOpen) {
+      if (isFiltersMenuOpen) {
         showBottomCameraButton(false);
       } else {
         showBottomCameraButton(true);
@@ -360,14 +361,14 @@ class HotTabContent extends BaseComponent {
     } else if (isFiltersMenuOpen) {
       return (
         <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
-          { this._renderFilterView() }
+          {this._renderFilterView()}
         </View>
       );
     } else {
       return (
         <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
           {this._renderFeedFilters()}
-          { flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView() }
+          {flatLooks.length === 0 ? this._renderEmptyContent() : this._renderScrollView()}
         </View>
       );
     }
