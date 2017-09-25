@@ -150,7 +150,7 @@ class MediaContainer extends Component {
             resizeMode={'stretch'}
             muted={this.state.isMuted}
             style={{ width: lookWidth, height: lookHeight, overflow: 'hidden' }}
-            paused={true}
+            paused={false}
             repeat
             preview={video.preview}
           />
