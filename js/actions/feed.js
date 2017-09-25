@@ -21,7 +21,7 @@ export const CHANGE_FILTERS_GENDER = 'CHANGE_FILTERS_GENDER';
 
 
 export const parseQueryFromState = function (state: array) {
-  const parsedState = {...state, 'page[size]': state.page.size, 'page[number]': state.page.number};
+  const parsedState = { ...state, 'page[size]': state.page.size, 'page[number]': state.page.number };
   if (state.category) {
     parsedState.category = state.category;
   }
@@ -42,20 +42,16 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
     return Promise.all([LooksService.getLooks({
       ...query,
       'page[size]': 10,
-      'page[number]': 1
-    }), LooksService.getVideos({...query, 'page[size]': 1, 'page[number]': 1})])
+      'page[number]': 1,
+    }), LooksService.getVideos({ ...query, 'page[size]': 1, 'page[number]': 1 })])
       .then((multiData) => {
         if (multiData && multiData[0] && multiData[1]) {
-
-          let {looks, meta} = multiData[0];
+          const { looks, meta } = multiData[0];
           const videoLook = multiData[1].looks[0];
 
           if (videoLook) {
-
             // If the look has been retrieved in getLooks service, don't add the video retrieved
-            const videoExistsOnLooks = looks.filter(function (obj) {
-              return obj.id === videoLook.id;
-            })[0];
+            const videoExistsOnLooks = looks.filter(obj => obj.id === videoLook.id)[0];
 
             if (!videoExistsOnLooks) {
               looks.splice(2, 0, videoLook);
@@ -63,10 +59,10 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
           }
 
           const normalizedLooksData = normalize(looks, [lookSchema]);
-          dispatch(setUsers(normalizedLooksData.entities.users))
+          dispatch(setUsers(normalizedLooksData.entities.users));
           const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
-          dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
-          dispatch(setFeedData({flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType}));
+          dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
+          dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta, query: newState, feedType }));
           dispatch(finishFechting(feedType));
           dispatch(loadMore(feedType));
           Promise.resolve(multiData[0]);
@@ -90,7 +86,7 @@ export function getBestMatchFeed(query: object) {
   return (dispatch, getState) => {
     const newQuery = Object.assign({}, query, {
       gender: getState().user.gender,
-      body_type: getState().user.user_size ? getState().user.user_size.body_type : ''
+      body_type: getState().user.user_size ? getState().user.user_size.body_type : '',
     });
     return dispatch(getFeed(newQuery, FEED_TYPE_BEST_MATCH));
   };
@@ -114,17 +110,17 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
     const state = getState().feed[feedType];
     const currPage = state.query.page.number;
     const nextPageNumber = currPage + 1;
-    const newState = _.merge(state.query, {page: {number: nextPageNumber}});
+    const newState = _.merge(state.query, { page: { number: nextPageNumber } });
     const params = parseQueryFromState(newState);
     return LooksService.getLooks(params).then((data) => {
       if (data) {
-        const {looks, meta} = data;
+        const { looks, meta } = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
-        dispatch(setUsers(normalizedLooksData.entities.users))
+        dispatch(setUsers(normalizedLooksData.entities.users));
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
-        dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         const flatLooksIdData = _.union(state.flatLooksIdData, normalizedLooksData.result);
-        dispatch(setFeedData({flatLooksIdData, meta, query: newState, feedType}));
+        dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
         dispatch(loadMore(feedType, retryCount + 1));
@@ -142,17 +138,17 @@ export function refreshFeed(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
     const state = getState().feed[feedType];
     const currPage = state.query.page.number;
     const nextPageNumber = (currPage + 2) * state.query.page.size < state.meta.total ? currPage + 2 : 1;
-    const newState = _.merge(state.query, {page: {number: nextPageNumber}});
+    const newState = _.merge(state.query, { page: { number: nextPageNumber } });
     const params = parseQueryFromState(newState);
     return LooksService.getLooks(params).then((data) => {
       if (data) {
-        const {looks, meta} = data;
+        const { looks, meta } = data;
         const normalizedLooksData = normalize(looks, [lookSchema]);
-        dispatch(setUsers(normalizedLooksData.entities.users))
+        dispatch(setUsers(normalizedLooksData.entities.users));
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
-        dispatch(setLooksData({flatLooksData: {...unfiedLooks}, query: newState}));
+        dispatch(setLooksData({ flatLooksData: { ...unfiedLooks }, query: newState }));
         const flatLooksIdData = _.union(normalizedLooksData.result, state.flatLooksIdData);
-        dispatch(setFeedData({flatLooksIdData, meta, query: newState, feedType}));
+        dispatch(setFeedData({ flatLooksIdData, meta, query: newState, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
         dispatch(refreshFeed(feedType, retryCount + 1));
@@ -221,7 +217,7 @@ export function finishFechting(feedType: string) {
 export function changeFiltersGender(feedType: string, gender: string) {
   return {
     type: CHANGE_FILTERS_GENDER,
-    payload: {feedType, gender},
+    payload: { feedType, gender },
   };
 }
 

@@ -50,7 +50,7 @@ const mapStateToProps = (state) => {
     filtersGender: state.feed[FEED_TYPE_FOLLOWING].filtersGender,
     defaultFilterQuery: {
       ...state.feed[FEED_TYPE_FOLLOWING].query,
-      gender: state.feed[FEED_TYPE_FOLLOWING].filtersGender
+      gender: state.feed[FEED_TYPE_FOLLOWING].filtersGender,
     },
   };
 };
