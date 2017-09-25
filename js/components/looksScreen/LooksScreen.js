@@ -145,6 +145,10 @@ class LooksScreen extends Component {
     this.props.navigateTo('likesscreen', { lookId: look.id, count: look.likes });
   }
 
+  _openWebView = (url: string) => {
+    this.props.navigateTo('webViewScreen', { url, headerData: {title: 'Shop Item'} });
+  }
+
   onToggleDrawer(shouldOpen: boolean) {
     this.setState({ isBottomDrawerOpen: shouldOpen });
   }
@@ -284,6 +288,7 @@ class LooksScreen extends Component {
           goToProfile={this._goToProfile}
           goToLikes={this._goToLikes}
           goToEdit={this._goToEdit}
+          openWebView={this._openWebView}
           toggleFavorite={isFavorite => this._toggleFavorite(isFavorite, look.id)}
           toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
           reportAbuse={lookId => this.props.reportAbuse(lookId)}
@@ -366,6 +371,7 @@ class LooksScreen extends Component {
             goToProfile={this._goToProfile}
             goToLikes={this._goToLikes}
             goToEdit={this._goToEdit}
+            openWebView={this._openWebView}
             onInvalidItemPressed={(showMessage) => this.setState({ showRetailerMessage: showMessage })}
             toggleFavorite={isFavorite => this._toggleFavorite(isFavorite, look.id)}
             toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}

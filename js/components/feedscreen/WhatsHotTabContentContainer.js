@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch, ownProps) {
 
 const mapStateToProps = (state) => {
   const defaultFilters = {
-    'sort[field]': 'likes_count',
+    'sort[field]': 'hot',
     gender: '',
     body_type: '',
   };
