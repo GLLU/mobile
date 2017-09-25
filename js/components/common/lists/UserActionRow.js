@@ -99,7 +99,7 @@ class UserActionRow extends Component {
 
   renderFollowView() {
     const {isMe, isFollowing, id} = this.props
-    if (this.props.isMe) {
+    if (isMe) {
       return <View name="can't follow me" style={styles.followView} />;
     }
     return (<FollowView
