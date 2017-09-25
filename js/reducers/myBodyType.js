@@ -26,12 +26,12 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-rectangle.png')
     },
     {
-      name: 'apple',
-      body_type: 'apple',
-      description: 'Your shoulders and hip line are about the same, and your waistline is the same or wider than your shoulders and hips.',
-      imageUrl: require('../../images/bodytypes/female/apple.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/female-apple-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/female-apple.png')
+      name: 'hourglass',
+      body_type: 'hourglass',
+      description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
+      imageUrl: require('../../images/bodytypes/female/hourglass.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-hourglass-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-hourglass.png')
     },
     {
       name: 'pear',
@@ -42,13 +42,13 @@ const bodyTypeList = {
       filterImageUrl: require('../../images/filters/body-types/female-pear.png')
     },
     {
-      name: 'hourglass',
-      body_type: 'hourglass',
-      description: 'Your bust may be large or small, but roughly the same size as your hips. Your waist is narrow and well defined.',
-      imageUrl: require('../../images/bodytypes/female/hourglass.png'),
-      filterImageUrlActive: require('../../images/filters/body-types/female-hourglass-active.png'),
-      filterImageUrl: require('../../images/filters/body-types/female-hourglass.png')
-    }
+      name: 'apple',
+      body_type: 'apple',
+      description: 'Your shoulders and hip line are about the same, and your waistline is the same or wider than your shoulders and hips.',
+      imageUrl: require('../../images/bodytypes/female/apple.png'),
+      filterImageUrlActive: require('../../images/filters/body-types/female-apple-active.png'),
+      filterImageUrl: require('../../images/filters/body-types/female-apple.png')
+    },
   ],
   male: [
     {
