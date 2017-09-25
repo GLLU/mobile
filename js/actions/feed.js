@@ -137,7 +137,7 @@ export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   };
 }
 
-export function refreshFeed(feedType = FEED_TYPE_WHATS_HOT, retryCount = 0) {
+export function refreshFeed(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   return (dispatch, getState) => {
     const state = getState().feed[feedType];
     const currPage = state.query.page.number;
@@ -155,7 +155,7 @@ export function refreshFeed(feedType = FEED_TYPE_WHATS_HOT, retryCount = 0) {
         dispatch(setFeedData({flatLooksIdData, meta, query: newState, feedType}));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {
-        dispatch(loadMore(feedType, retryCount + 1));
+        dispatch(refreshFeed(feedType, retryCount + 1));
       } else {
         Promise.reject();
       }
