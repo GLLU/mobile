@@ -9,6 +9,7 @@ import {
   Image,
   TouchableHighlight,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import * as _ from 'lodash';
 import styles from './styles';
@@ -116,17 +117,24 @@ class LookOverlay extends Component {
     logEvent('LookScreen', { name: 'Share clicked' });
     this.setState({ isSharing: true }, () => {
       const previewUrl = look.coverType === 'video' ? look.preview : look.uri;
-      downloadFile(previewUrl,`look-${look.id}`).then((localPath) => {
-        const message = SocialShare.generateShareLookMessage(look.id, localPath);
+      if (Platform.OS === 'ios') {
+        const message = SocialShare.generateShareLookMessage(look.id);
         this.setState({ isSharing: false }, () => {
           SocialShare.nativeShare(message);
         });
-      })
-        .catch((err) => {
+      } else {
+        downloadFile(previewUrl, `look-${look.id}`).then((localPath) => {
+          const message = SocialShare.generateShareLookMessage(look.id, localPath);
           this.setState({ isSharing: false }, () => {
-            console.log(`couldn't share this look ${look.id}`);
+            SocialShare.nativeShare(message);
           });
-        });
+        })
+          .catch((err) => {
+            this.setState({ isSharing: false }, () => {
+              console.log(`couldn't share this look ${look.id}`);
+            });
+          });
+      }
     });
   }
 

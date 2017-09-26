@@ -1,6 +1,5 @@
 import nativeShare from './nativeShare';
 import facebookShare from './facebookShare';
-import { Platform } from 'react-native';
 import Config from 'react-native-config';
 import i18n from 'react-native-i18n';
 
@@ -16,19 +15,13 @@ class SocialShare {
   generateShareLookMessage(lookId: number, previewUrl: string) {
     const lookUrl = `${Config.HOME_PAGE}looks/${lookId}`;
     if (previewUrl) {
-      if (Platform.OS === 'ios') {
-        return {
-          url: previewUrl,
-        };
-      }
       return {
         text: `${i18n.t('SHARE_LOOK')} ${lookUrl}`,
         url: previewUrl,
       };
     }
     return {
-      text: i18n.t('SHARE_LOOK'),
-      url: lookUrl,
+      text: `${i18n.t('SHARE_LOOK')} ${lookUrl}`,
     };
   }
 
