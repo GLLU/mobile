@@ -20,9 +20,8 @@ import InformationView from './information/InformationView';
 import CommentsView from './comments/CommentsView';
 import LookHeader from './LookHeader';
 import MenuView from './menu/MenuViewContainer';
-import { formatInvitationMessage } from '../../lib/messages/index';
 import withAnalytics from '../common/analytics/WithAnalytics';
-import { downloadAsBase64, downloadFile } from '../../lib/download/FileDownloader';
+import { downloadFile } from '../../lib/download/FileDownloader';
 
 type Props = {
   look: object,
