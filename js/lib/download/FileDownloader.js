@@ -6,10 +6,10 @@ import * as _ from 'lodash';
 
 const { fs } = RNFetchBlob;
 
-const baseDownloadDir = `${fs.dirs.PictureDir}/infash`;
+const baseDownloadDir = `${Platform.OS === 'ios' ? fs.dirs.DocumentDir : fs.dirs.PictureDir}/infash`;
 
-export const downloadFile = (uri) => new Promise((resolve, reject) => {
-  const extension=uri.split('.').pop();
+export const downloadFile = uri => new Promise((resolve, reject) => {
+  const extension = uri.split('.').pop();
   RNFetchBlob
       .config({
         path: `${baseDownloadDir}/image-${_.now()}.${extension}`,
@@ -28,6 +28,7 @@ export const downloadFile = (uri) => new Promise((resolve, reject) => {
 });
 
 export const downloadAsBase64 = (uri, mediaType = 'image') => new Promise((resolve, reject) => {
+  let imagePath='';
   RNFetchBlob
       .config({
         fileCache: true,
