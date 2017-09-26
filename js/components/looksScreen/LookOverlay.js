@@ -112,7 +112,7 @@ class LookOverlay extends Component {
   }
 
   _onShareClicked() {
-    const { logEvent, look, showErrorMessage } = this.props;
+    const { logEvent, look } = this.props;
     logEvent('LookScreen', { name: 'Share clicked' });
     this.setState({ isSharing: true }, () => {
       const previewUrl = look.coverType === 'video' ? look.preview : look.uri;

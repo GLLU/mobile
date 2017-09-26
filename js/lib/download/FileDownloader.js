@@ -6,13 +6,13 @@ import * as _ from 'lodash';
 
 const { fs } = RNFetchBlob;
 
-const baseDownloadDir = `${fs.dirs.CacheDir}/media`;
+const baseDownloadDir = `${fs.dirs.PictureDir}/infash`;
 
 export const downloadFile = (uri) => new Promise((resolve, reject) => {
   const extension=uri.split('.').pop();
   RNFetchBlob
       .config({
-        path: `${baseDownloadDir}/infash-image-${_.now()}.${extension}`,
+        path: `${baseDownloadDir}/image-${_.now()}.${extension}`,
         overwrite: true,
       }).fetch('GET', uri)
       .then(((res) => {
@@ -28,7 +28,6 @@ export const downloadFile = (uri) => new Promise((resolve, reject) => {
 });
 
 export const downloadAsBase64 = (uri, mediaType = 'image') => new Promise((resolve, reject) => {
-  const extension=uri.split('.').pop();
   RNFetchBlob
       .config({
         fileCache: true,
@@ -41,7 +40,7 @@ export const downloadAsBase64 = (uri, mediaType = 'image') => new Promise((resol
         return res.readFile('base64');
       })
       .then((base64Data) => {
-        const formattedBase64 = `data:${mediaType}/${extension};base64,${base64Data}`;
+        const formattedBase64 = `data:${mediaType}/*;base64,${base64Data}`;
         // here's base64 encoded image
         resolve(formattedBase64);
         // remove the file from storage
