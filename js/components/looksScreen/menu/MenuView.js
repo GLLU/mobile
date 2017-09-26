@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
     justifyContent: 'center',
-    flex:1,
-    flexDirection:'column',
+    flex: 1,
+    flexDirection: 'column',
     paddingHorizontal: 30
   },
   thankYouContainer: {
@@ -35,7 +35,8 @@ type Props = {
   onEditPress: void,
   onShareClicked: void,
   reportAbuse: void,
-  isMyLook: boolean
+  isMyLook: boolean,
+  isSharing: boolean
 };
 
 class MenuView extends Component {
@@ -60,11 +61,16 @@ class MenuView extends Component {
 
   renderSeparator = ({key}) => <View key={key} style={{height: 1, backgroundColor: Colors.lightGray}}/>;
 
-  renderShare = () =>
-    <MenuAction
-      key={'share'}
-      label={i18n.t('SHARE')}
-      onPress={this.props.onShareClicked}/>;
+  renderShare = () => {
+    const {isSharing, onShareClicked} = this.props;
+    return (
+      <MenuAction
+        key={'share'}
+        label={i18n.t('SHARE')}
+        showLoader={isSharing}
+        onPress={onShareClicked}/>
+    );
+  };
 
   renderEdit = () =>
     <MenuAction

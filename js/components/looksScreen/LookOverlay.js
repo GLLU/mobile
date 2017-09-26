@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -8,19 +8,20 @@ import {
   TouchableOpacity,
   Image,
   TouchableHighlight,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import SocialShare from '../../lib/social';
 import ItemMarker from './markers/ItemMarker';
-import InformationView from './information/InformationView'
-import CommentsView from './comments/CommentsView'
-import LookHeader from './LookHeader'
-import MenuView from "./menu/MenuViewContainer";
-import {formatInvitationMessage} from "../../lib/messages/index";
-import withAnalytics from '../common/analytics/WithAnalytics'
+import InformationView from './information/InformationView';
+import CommentsView from './comments/CommentsView';
+import LookHeader from './LookHeader';
+import MenuView from './menu/MenuViewContainer';
+import withAnalytics from '../common/analytics/WithAnalytics';
+import { downloadFile } from '../../lib/download/FileDownloader';
 
 type Props = {
   look: object,
@@ -36,7 +37,7 @@ type Props = {
   onBottomDrawerOpen: void,
   onInvalidItemPressed: void,
   openComments: boolean
-}
+};
 
 class LookOverlay extends Component {
 
@@ -47,7 +48,7 @@ class LookOverlay extends Component {
     goToProfile: _.noop,
     toggleLike: _.noop,
     reportAbuse: _.noop,
-    onBottomDrawerOpen: _.noop
+    onBottomDrawerOpen: _.noop,
   };
 
   constructor(props: Props) {
@@ -70,8 +71,9 @@ class LookOverlay extends Component {
       activeItem: '',
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
-      fadeAnimContentOnPress: new Animated.Value(1)
-    }
+      isSharing: false,
+      fadeAnimContentOnPress: new Animated.Value(1),
+    };
   }
 
   _renderBuyItButtons(look: object) {
@@ -82,8 +84,8 @@ class LookOverlay extends Component {
         item={item}
         onPress={this.props.onInvalidItemPressed}
         openWebView={openWebView}
-        containerDimensions={{ width: width, height: height }}
-        pinPosition={{ y: item.cover_y_pos, x: item.cover_x_pos }}/>
+        containerDimensions={{ width, height }}
+        pinPosition={{ y: item.cover_y_pos, x: item.cover_x_pos }} />
     );
   }
 
@@ -91,14 +93,14 @@ class LookOverlay extends Component {
     const { onBottomDrawerOpen, logEvent } = this.props;
     logEvent('LookScreen', { name: `Comments View ${shouldActive ? 'visible' : 'hidden'}` });
     onBottomDrawerOpen(shouldActive);
-    this.setState({ isCommentsActive: shouldActive, isInformationActive: false, isMenuOpen: false })
+    this.setState({ isCommentsActive: shouldActive, isInformationActive: false, isMenuOpen: false });
   }
 
   _toggleInformation(shouldActive: boolean) {
     const { onBottomDrawerOpen, logEvent } = this.props;
     logEvent('LookScreen', { name: `Information View ${shouldActive ? 'visible' : 'hidden'}` });
     onBottomDrawerOpen(shouldActive);
-    this.setState({ isInformationActive: shouldActive, isCommentsActive: false, isMenuOpen: false })
+    this.setState({ isInformationActive: shouldActive, isCommentsActive: false, isMenuOpen: false });
   }
 
   _toggleMenuView() {
@@ -106,32 +108,53 @@ class LookOverlay extends Component {
     const shouldActive = !this.state.isMenuOpen;
     logEvent('LookScreen', { name: `Menu View ${shouldActive ? 'visible' : 'hidden'}` });
     onBottomDrawerOpen(shouldActive);
-    this.setState({ isMenuOpen: shouldActive, isInformationActive: false, isCommentsActive: false })
+    this.setState({ isMenuOpen: shouldActive, isInformationActive: false, isCommentsActive: false });
   }
 
   _onShareClicked() {
     const { logEvent, look } = this.props;
     logEvent('LookScreen', { name: 'Share clicked' });
-    const message = SocialShare.generateShareLookMessage(look.id);
-    SocialShare.nativeShare(message);
+    this.setState({ isSharing: true }, () => {
+      const previewUrl = look.coverType === 'video' ? look.preview : look.uri;
+      if (Platform.OS === 'ios') {
+        const message = SocialShare.generateShareLookMessage(look.id);
+        this.setState({ isSharing: false }, () => {
+          SocialShare.nativeShare(message);
+        });
+      } else {
+        downloadFile(previewUrl, `look-${look.id}`).then((localPath) => {
+          const message = SocialShare.generateShareLookMessage(look.id, localPath);
+          this.setState({ isSharing: false }, () => {
+            SocialShare.nativeShare(message);
+          });
+        })
+          .catch((err) => {
+            this.setState({ isSharing: false }, () => {
+              console.log(`couldn't share this look ${look.id}`);
+            });
+          });
+      }
+    });
   }
 
   _renderMenuView(isActive: boolean) {
     const { look } = this.props;
+    const { isSharing } = this.state;
     return (
       <MenuView
         lookId={look.id}
         userId={look.user.id}
         isMyLook={look.user.isMe}
         isOpen={isActive}
+        isSharing={isSharing}
         onRequestClose={this._toggleMenuView}
         onEditPress={() => this.goToEdit(look)}
-        onShareClicked={this._onShareClicked}/>);
+        onShareClicked={this._onShareClicked} />);
   }
 
   _renderInformationView(isActive: boolean) {
     const { look } = this.props;
-    return <InformationView
+    return (<InformationView
       isOpen={isActive}
       description={look.description}
       items={look.items}
@@ -140,17 +163,17 @@ class LookOverlay extends Component {
       onCommentsPress={this._toggleComments}
       onLikesPress={() => this.goToLikes(look)}
       onRequestClose={this._toggleInformation}
-    />;
+    />);
   }
 
   _renderCommentsView(isActive: boolean) {
     const { look } = this.props;
-    return <CommentsView
+    return (<CommentsView
       goToProfile={this.goToProfile}
       look_id={look.id}
       count={this.state.comments}
       isOpen={isActive}
-      onRequestClose={this._toggleComments}/>
+      onRequestClose={this._toggleComments} />);
   }
 
   _toggleItem(shouldActive: boolean) {
@@ -173,7 +196,7 @@ class LookOverlay extends Component {
   }
 
   closeBottomModal() {
-    this.setState({ isCommentsActive: false, isInformationActive: false, isMenuOpen: false })
+    this.setState({ isCommentsActive: false, isInformationActive: false, isMenuOpen: false });
   }
 
   _toggleBottomContainer() {
@@ -182,7 +205,7 @@ class LookOverlay extends Component {
         this.state.fadeAnimContentOnPress,    // The value to drive
         {
           toValue: 0,
-          delay: 250
+          delay: 250,
         }            // Configuration
       ).start();
     } else {
@@ -190,7 +213,7 @@ class LookOverlay extends Component {
         this.state.fadeAnimContentOnPress,    // The value to drive
         {
           toValue: 1,
-          delay: 250
+          delay: 250,
         }            // Configuration
       ).start();
     }
@@ -202,7 +225,7 @@ class LookOverlay extends Component {
       this.state.fadeAnimContent,    // The value to drive
       {
         toValue: 1,
-        delay: 250
+        delay: 250,
       }            // Configuration
     ).start();
     return (
@@ -210,7 +233,7 @@ class LookOverlay extends Component {
         <LookHeader
           avatar={{ uri: look.user.avatar.url }}
           onBackNavigationPress={goBack}
-          onProfileAvatarPress={() => this.goToProfile(look.user)}/>
+          onProfileAvatarPress={() => this.goToProfile(look.user)} />
         <Animated.View style={{ opacity: this.state.fadeAnimContentOnPress }}>
           <TouchableWithoutFeedback onPress={this._toggleBottomContainer}>
             <View style={[styles.lookInfo, { flexGrow: 1, flexDirection: 'column' }]}>
@@ -240,10 +263,10 @@ class LookOverlay extends Component {
           {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderInformationView(this.state.isInformationActive)}
         </Animated.View>
-        { !lookType ? this._renderBuyItButtons(look) : null}
+        {!lookType ? this._renderBuyItButtons(look) : null}
         {this._renderMenuView(this.state.isMenuOpen)}
       </View>
-    )
+    );
   }
 }
 
