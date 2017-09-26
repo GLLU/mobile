@@ -8,11 +8,11 @@ const { fs } = RNFetchBlob;
 
 const baseDownloadDir = `${Platform.OS === 'ios' ? fs.dirs.DocumentDir : fs.dirs.PictureDir}/infash`;
 
-export const downloadFile = uri => new Promise((resolve, reject) => {
+export const downloadFile = (uri,name=_.now()) => new Promise((resolve, reject) => {
   const extension = uri.split('.').pop();
   RNFetchBlob
       .config({
-        path: `${baseDownloadDir}/image-${_.now()}.${extension}`,
+        path: `${baseDownloadDir}/${name}.${extension}`,
         overwrite: true,
       }).fetch('GET', uri)
       .then(((res) => {

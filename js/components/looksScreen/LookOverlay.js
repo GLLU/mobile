@@ -116,7 +116,7 @@ class LookOverlay extends Component {
     logEvent('LookScreen', { name: 'Share clicked' });
     this.setState({ isSharing: true }, () => {
       const previewUrl = look.coverType === 'video' ? look.preview : look.uri;
-      downloadFile(previewUrl).then((localPath) => {
+      downloadFile(previewUrl,`look-${look.id}`).then((localPath) => {
         const message = SocialShare.generateShareLookMessage(look.id, localPath);
         this.setState({ isSharing: false }, () => {
           SocialShare.nativeShare(message);
