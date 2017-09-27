@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.transparent,
     color: Colors.gray,
     fontFamily: Fonts.mediumFont,
-    paddingVertical:
+    paddingVertical: 15
   },
   searchPeopleIcon: {
     height: generateAdjustedSize(30),
