@@ -32,15 +32,13 @@ class QuerySuggestions extends Component {
     const { querySuggestions, getFeedWithSuggestion } = this.props;
     const sortedGroups = _.groupBy(querySuggestions, item => item.rowNumber);
     return _.map(sortedGroups, (row,index) => (
-      <View key={index} style={{ flex: 1, width: deviceWidth, flexDirection: 'row' }}>
-        <QuerySuggestion rowArray={row} getFeedWithSuggestion={getFeedWithSuggestion}/>
-      </View>
+      <QuerySuggestion key={index} rowArray={row} getFeedWithSuggestion={getFeedWithSuggestion}/>
     ));
   }
   render() {
     console.log('ok ok ok')
     return (
-      <View>
+      <View style={{ flex: 1}}>
         {this.boom()}
       </View>
     )

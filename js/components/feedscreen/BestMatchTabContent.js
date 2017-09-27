@@ -56,41 +56,61 @@ const otherCategories = [
       occasion: 'Breakfast',
       term: 'yellow'
     },
-    title: 'Strings of iron',
-    coverUrl: 'https://lumiere-a.akamaihd.net/v1/images/image_ccc4b657.jpeg',
+    title: 'Strings \nOf \nIron',
+    color: '#ff3a7d',
   },
   {
     id: 2,
     rowNumber: 2,
-    query: 'Tops',
+    query: {
+      category: 'Jeans',
+      occasion: 'Breakfast',
+      term: 'yellow'
+    },
     title: 'Bat-mobile 101',
     coverUrl: 'https://images.alphacoders.com/371/thumb-1920-371.jpg',
   },
   {
     id: 3,
     rowNumber: 2,
-    query: 'Tops',
+    query: {
+      category: 'Jeans',
+      occasion: 'Breakfast',
+      term: 'yellow'
+    },
     title: 'kryptonite recipes',
     coverUrl: 'http://cdn.playbuzz.com/cdn/62530326-1b72-4685-b59b-85bae109fa36/5f076c45-61b6-469f-ab63-cd2f0be7db26.jpg',
   },
   {
     id: 4,
     rowNumber: 3,
-    query: 'Tops',
+    query: {
+      category: 'Jeans',
+      occasion: 'Breakfast',
+      term: 'yellow'
+    },
     title: 'Green is the new Black',
     coverUrl: 'https://static.comicvine.com/uploads/original/8/80111/2797109-hulk_marvel_4.jpg',
   },
   {
     id: 5,
     rowNumber: 3,
-    query: 'Tops',
+    query: {
+      category: 'Jeans',
+      occasion: 'Breakfast',
+      term: 'yellow'
+    },
     title: 'A turtles life',
     coverUrl: 'http://www.cbr.com/wp-content/uploads/2017/01/the-flash-barry-allen-cw.jpg',
   },
   {
     id: 6,
     rowNumber: 4,
-    query: 'Tops',
+    query: {
+      category: 'Jeans',
+      occasion: 'Breakfast',
+      term: 'yellow'
+    },
     title: 'How to build a tall tower',
     coverUrl: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
   },
@@ -202,7 +222,7 @@ class BestMatchTabContent extends BaseComponent {
       const currentScroll = event.nativeEvent.contentOffset.y;
       if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if (!this.state.loadingMore && !this.state.isLoading) {
-          this.setState({ loadingMore: true }, this.loadMore);
+          //this.setState({ loadingMore: true }, this.loadMore);
         }
       } else {
       }
@@ -349,15 +369,6 @@ class BestMatchTabContent extends BaseComponent {
         </View>
       </View>
     );
-  }
-
-  renderCategory() {
-    const sortedGroups = _.groupBy(otherCategories, item => item.rowNumber);
-    return _.map(sortedGroups, (row) => (
-      <View style={{flex: 1, width: deviceWidth, flexDirection: 'row'}}>
-        {this.renderOtherCategories(row)}
-      </View>
-    ));
   }
 
   _renderScrollView() {
