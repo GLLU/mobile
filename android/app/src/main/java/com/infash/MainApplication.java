@@ -7,6 +7,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.appsflyer.reactnative.RNAppsFlyerPackage;
 
 import android.app.Application;
 
@@ -83,8 +84,9 @@ public class MainApplication extends Application
                             new ExtraDimensionsPackage(),
                             new VectorIconsPackage(),
                             new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
-                            new FBSDKPackage(mCallbackManager)
-                    );
+                            new FBSDKPackage(mCallbackManager),
+                            new RNAppsFlyerPackage(MainApplication.this)
+                            );
                 }
             };
 

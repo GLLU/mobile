@@ -79,6 +79,7 @@
 		656ED9381F27349100B94EA0 /* FreightSansMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 656ED9371F27349100B94EA0 /* FreightSansMedium.ttf */; };
 		656EDA0B1F28D57C00B94EA0 /* FreightSansBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 656EDA091F28D57C00B94EA0 /* FreightSansBold.otf */; };
 		656EDA0C1F28D57C00B94EA0 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 656EDA0A1F28D57C00B94EA0 /* Montserrat-Light.ttf */; };
+		65B680E61F7BB0D100B2F37A /* libRNAppsFlyer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65B680DC1F7BB08300B2F37A /* libRNAppsFlyer.a */; };
 		6B767161E3424E8DA25DC601 /* libRNMixpanel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BF71EA21694A08A9BA2E32 /* libRNMixpanel.a */; };
 		6D2AC0A7EE61433E9C850A88 /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E936F3E326F44EA96579D63 /* Rubik-MediumItalic.ttf */; };
 		77CC25145EAD4DABA136676C /* SF-UI-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F010170E6FB4AC494C7E102 /* SF-UI-Text-Regular.otf */; };
@@ -312,6 +313,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
 			remoteInfo = RCTOneSignal;
+		};
+		65B680DB1F7BB08300B2F37A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65B680B51F7BB08300B2F37A /* RNAppsFlyer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNAppsFlyer;
 		};
 		65BCE8D21F16166B00CB6038 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -555,6 +563,7 @@
 		656ED9371F27349100B94EA0 /* FreightSansMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreightSansMedium.ttf; sourceTree = "<group>"; };
 		656EDA091F28D57C00B94EA0 /* FreightSansBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreightSansBold.otf; sourceTree = "<group>"; };
 		656EDA0A1F28D57C00B94EA0 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Light.ttf"; sourceTree = "<group>"; };
+		65B680B51F7BB08300B2F37A /* RNAppsFlyer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNAppsFlyer.xcodeproj; path = "../node_modules/react-native-appsflyer/ios/RNAppsFlyer.xcodeproj"; sourceTree = "<group>"; };
 		65DD188C568749D9AC549134 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		692A395096D71E62D22EBFA0 /* Pods-infash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-infash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-infash/Pods-infash.debug.xcconfig"; sourceTree = "<group>"; };
 		693C7585FBCC441F89EF29A0 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
@@ -637,6 +646,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65B680E61F7BB0D100B2F37A /* libRNAppsFlyer.a in Frameworks */,
 				63465F491F30AC8500007C4B /* libRNI18n.a in Frameworks */,
 				A99752E4EDCB40839A8AE3B6 /* libz.tbd in Frameworks */,
 				D00061571E71BC44007B72E6 /* libsqlite3.0.tbd in Frameworks */,
@@ -1055,6 +1065,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		65B680B61F7BB08300B2F37A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65B680DC1F7BB08300B2F37A /* libRNAppsFlyer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		65BCE8A61F16166A00CB6038 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1075,6 +1093,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				65B680B51F7BB08300B2F37A /* RNAppsFlyer.xcodeproj */,
 				63465EEB1F30A5C500007C4B /* RNI18n.xcodeproj */,
 				63A439211E544D88002CD308 /* RCTAnimation.xcodeproj */,
 				00E356EF1AD99517003FC87E /* glluTests */,
@@ -1359,6 +1378,10 @@
 					ProjectRef = E306EADEFCF3420F995D7665 /* ReactNativeConfig.xcodeproj */;
 				},
 				{
+					ProductGroup = 65B680B61F7BB08300B2F37A /* Products */;
+					ProjectRef = 65B680B51F7BB08300B2F37A /* RNAppsFlyer.xcodeproj */;
+				},
+				{
 					ProductGroup = D0F73C8C1E59B5AB001128F0 /* Products */;
 					ProjectRef = 8D3A373AAB20450E885E98E7 /* RNFetchBlob.xcodeproj */;
 				},
@@ -1579,6 +1602,13 @@
 			fileType = archive.ar;
 			path = libRCTOneSignal.a;
 			remoteRef = 65824ADA1F4B06D2006CD342 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65B680DC1F7BB08300B2F37A /* libRNAppsFlyer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNAppsFlyer.a;
+			remoteRef = 65B680DB1F7BB08300B2F37A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65BCE8D31F16166B00CB6038 /* libRNMixpanel.a */ = {
