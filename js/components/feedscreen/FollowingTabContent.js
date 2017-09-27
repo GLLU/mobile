@@ -60,6 +60,7 @@ class FollowingTabContent extends BaseComponent {
     this.handleScrollPosition = this.handleScrollPosition.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
+    this.checkIfFeedResultsAreFiltered = this.checkIfFeedResultsAreFiltered.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -135,7 +136,7 @@ class FollowingTabContent extends BaseComponent {
         const currentScroll = event.nativeEvent.contentOffset.y;
         if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
           if (!this.state.loadingMore && !this.state.isLoading) {
-             this.setState({ loadingMore: true }, this.loadMore);
+            this.setState({ loadingMore: true }, this.loadMore);
           }
         } else {
         }
@@ -285,15 +286,43 @@ class FollowingTabContent extends BaseComponent {
     );
   }
 
+  checkIfFeedResultsAreFiltered() {
+    const { query } = this.props;
+    const parsedQuery = _.cloneDeep(query);
+    delete parsedQuery.page;
+    delete parsedQuery.followings;
+    delete parsedQuery['sort[field]'];
+    delete parsedQuery.gender;
+    const bodyTypeFromQuery = parsedQuery.body_type ? parsedQuery.body_type : '';
+    if (bodyTypeFromQuery.length === 0) {
+      delete parsedQuery.body_type;
+    }
+    return !_.isEmpty(parsedQuery);
+  }
+
+  _renderEmptyContentText() {
+    if (this.checkIfFeedResultsAreFiltered()) {
+      return (
+        <Text style={styles.searchPeopleNoResultsTxt}>{i18n.t('ME_NO_FOLLOWING_RESULTS')}</Text>
+      );
+    } else {
+      return (
+        <View>
+          <Text style={styles.searchPeopleNoResultsTxt}>{i18n.t('ME_NO_FOLLOWING_TITLE')}</Text>
+        </View>
+      );
+    }
+  }
+
   _renderEmptyContent() {
     const { onFollowClicked, usersSuggestions } = this.props;
-
-    if(usersSuggestions.length > 0) {
+    if (usersSuggestions.length > 0) {
       return (
         <ScrollView style={styles.userSuggestionsScroll}>
+          {this._renderEmptyContentText()}
           {this._renderUsersSuggestionView()}
         </ScrollView>
-      )
+      );
     }
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -345,7 +374,7 @@ class FollowingTabContent extends BaseComponent {
   }
 
   _renderUsersSuggestionView() {
-    const {onFollowClicked, usersSuggestions} = this.props;
+    const { onFollowClicked, usersSuggestions } = this.props;
     if (usersSuggestions.length > 0) {
       return (
         <View style={styles.userSuggestionsContainer}>
@@ -353,7 +382,7 @@ class FollowingTabContent extends BaseComponent {
           {this.renderUserSuggestionsList(usersSuggestions)}
           <TouchableOpacity style={styles.followMoreBtnContainer} onPress={onFollowClicked}>
             <View style={styles.followMoreBtn}>
-              <Image source={search} style={styles.searchPeopleIcon}/>
+              <Image source={search} style={styles.searchPeopleIcon} />
             </View>
             <View style={styles.searchPeopleTxtContainer}>
               <Text style={styles.searchPeopleTxt}>{i18n.t('SEARCH_FOR_MORE_PEOPLE')}</Text>
@@ -361,9 +390,8 @@ class FollowingTabContent extends BaseComponent {
           </TouchableOpacity>
         </View>
       );
-    } else return null
+    } else return null;
   }
-
 
 
   _renderLoader() {
@@ -500,6 +528,13 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.mediumFont,
 
   },
+  searchPeopleNoResultsTxt: {
+    fontSize: generateAdjustedSize(16),
+    textAlign: 'center',
+    color: Colors.black,
+    padding: 20,
+    fontFamily: Fonts.regular,
+  },
   searchPeopleIcon: {
     height: generateAdjustedSize(30),
     width: generateAdjustedSize(30),
@@ -524,7 +559,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     paddingVertical: 3,
     borderColor: Colors.lightGray,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   userSuggestionHeaderText: {
     flex: 1,
@@ -532,19 +567,22 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     alignSelf: 'center',
     textAlign: 'center',
-    fontFamily: Fonts.regularFont
+    fontFamily: Fonts.regularFont,
   },
   userSuggestionHeaderIcon: {
     position: 'absolute',
     width: generateAdjustedSize(40),
     height: generateAdjustedSize(40),
     padding: generateAdjustedSize(5),
-    left: generateAdjustedSize(15)
+    left: generateAdjustedSize(15),
   },
   userSuggestionsScroll: {
     flex: 1,
-    backgroundColor: Colors.white
-  }
+    backgroundColor: Colors.white,
+  },
+  searchPeopleNoResultsTxtSubTitle: {
+    paddingTop: 0,
+  },
 });
 
 export default FollowingTabContent;
