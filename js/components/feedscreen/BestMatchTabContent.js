@@ -25,6 +25,7 @@ import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from '../common/buttons/SolidButton';
 import FiltersView from './FilterContainer';
+import QuerySuggestions from './querySuggestionsGrid/QuerySuggestions';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FeedFilters from './FeedFilters';
 import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
@@ -35,6 +36,67 @@ const editShapeBtn = require('../../../images/icons/edit_your_body_shape.png');
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
+
+const otherCategories = [
+  {
+    id: 0,
+    rowNumber: 1,
+    query: {
+      category: 'Jeans',
+      occasion: 'Breakfast',
+    },
+    title: 'How to build a tall tower',
+    coverUrl: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
+  },
+  {
+    id: 1,
+    rowNumber: 2,
+    query: {
+      category: 'Jeans',
+      occasion: 'Breakfast',
+      term: 'yellow'
+    },
+    title: 'Strings of iron',
+    coverUrl: 'https://lumiere-a.akamaihd.net/v1/images/image_ccc4b657.jpeg',
+  },
+  {
+    id: 2,
+    rowNumber: 2,
+    query: 'Tops',
+    title: 'Bat-mobile 101',
+    coverUrl: 'https://images.alphacoders.com/371/thumb-1920-371.jpg',
+  },
+  {
+    id: 3,
+    rowNumber: 2,
+    query: 'Tops',
+    title: 'kryptonite recipes',
+    coverUrl: 'http://cdn.playbuzz.com/cdn/62530326-1b72-4685-b59b-85bae109fa36/5f076c45-61b6-469f-ab63-cd2f0be7db26.jpg',
+  },
+  {
+    id: 4,
+    rowNumber: 3,
+    query: 'Tops',
+    title: 'Green is the new Black',
+    coverUrl: 'https://static.comicvine.com/uploads/original/8/80111/2797109-hulk_marvel_4.jpg',
+  },
+  {
+    id: 5,
+    rowNumber: 3,
+    query: 'Tops',
+    title: 'A turtles life',
+    coverUrl: 'http://www.cbr.com/wp-content/uploads/2017/01/the-flash-barry-allen-cw.jpg',
+  },
+  {
+    id: 6,
+    rowNumber: 4,
+    query: 'Tops',
+    title: 'How to build a tall tower',
+    coverUrl: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
+  },
+
+];
+
 
 class BestMatchTabContent extends BaseComponent {
 
@@ -61,6 +123,7 @@ class BestMatchTabContent extends BaseComponent {
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this.getFeedWithNewBodyShape = this.getFeedWithNewBodyShape.bind(this);
+    this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
     this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
     this._saveBodyShape = this._saveBodyShape.bind(this);
     this.state = {
@@ -288,20 +351,18 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
-  _renderEmptyContent() {
-    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
-    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
-
-    return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <EmptyStateScreen
-          title={emptyTitle}
-          subtitle={emptySubtitle} icon={noResultsIcon} />
+  renderCategory() {
+    const sortedGroups = _.groupBy(otherCategories, item => item.rowNumber);
+    return _.map(sortedGroups, (row) => (
+      <View style={{flex: 1, width: deviceWidth, flexDirection: 'row'}}>
+        {this.renderOtherCategories(row)}
       </View>
-    );
+    ));
   }
 
   _renderScrollView() {
+    const { flatLooks } = this.props;
+    console.log('flength',flatLooks)
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -311,6 +372,7 @@ class BestMatchTabContent extends BaseComponent {
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
+          {flatLooks.length < 6 ? <QuerySuggestions querySuggestions={otherCategories} getFeedWithSuggestion={this.getFeedWithSuggestion}/> : null}
           {this._renderLoadMore()}
           {this._renderRefreshingCover()}
         </ScrollView>
@@ -325,6 +387,19 @@ class BestMatchTabContent extends BaseComponent {
         <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
       </View>
 
+    );
+  }
+
+  _renderEmptyContent() {
+    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
+    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
+
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <EmptyStateScreen
+          title={emptyTitle}
+          subtitle={emptySubtitle} icon={noResultsIcon} />
+      </View>
     );
   }
 
@@ -364,7 +439,20 @@ class BestMatchTabContent extends BaseComponent {
     const cleanQuery = _.cloneDeep(query);
     cleanQuery.body_type = currBodyShapeModal;
     delete cleanQuery.page;
+    console.log('query222',cleanQuery)
     getFeed(cleanQuery)
+      .then(() => {
+        this.setState({ isRefreshing: false });
+      })
+      .catch((error) => {
+        this.setState({ isRefreshing: false });
+      });
+  }
+
+  getFeedWithSuggestion(suggestionQuery) {
+    this.setState({ isRefreshing: true });
+    const { getFeed } = this.props;
+    getFeed(suggestionQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
       })
