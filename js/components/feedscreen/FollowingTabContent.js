@@ -309,7 +309,6 @@ class FollowingTabContent extends BaseComponent {
       return (
         <View>
           <Text style={styles.searchPeopleNoResultsTxt}>{i18n.t('ME_NO_FOLLOWING_TITLE')}</Text>
-          <Text style={[styles.searchPeopleNoResultsTxt, styles.searchPeopleNoResultsTxtSubTitle]}>{i18n.t('ME_NO_FOLLOWING_LEGEND')}</Text>
         </View>
       );
     }
@@ -530,12 +529,11 @@ const styles = StyleSheet.create({
 
   },
   searchPeopleNoResultsTxt: {
-    fontSize: generateAdjustedSize(14),
+    fontSize: generateAdjustedSize(16),
     textAlign: 'center',
-    backgroundColor: Colors.transparent,
-    color: Colors.gray,
-    fontFamily: Fonts.mediumFont,
-    paddingVertical: 15,
+    color: Colors.black,
+    padding: 20,
+    fontFamily: Fonts.regular,
   },
   searchPeopleIcon: {
     height: generateAdjustedSize(30),
