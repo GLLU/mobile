@@ -31,7 +31,9 @@ class Analytics {
 
   setUser(user) {
     this._loop((x) => {
-      x.setUser(user);
+      if (typeof x.setUser === 'function') {
+        x.setUser(user);
+      }
     });
   }
 
