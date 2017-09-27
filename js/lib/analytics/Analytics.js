@@ -1,4 +1,6 @@
-import FlurryAnalytics from './FlurryAnalytics';
+import { Platform } from 'react-native';
+
+import AppsFlyerAnalytics from './AppsFlyerAnalytics';
 import GoogleAnalytics from './GoogleAnalytics';
 import FacebookAnalytics from './FacebookAnalytics';
 import MixPanelAnalytics from './MixPanelAnalytics';
@@ -10,11 +12,20 @@ class Analytics {
   }
 
   setupAnalytics() {
+
+    if (Platform.OS === 'ios'){
+      return [
+        new GoogleAnalytics(),
+        new FacebookAnalytics(),
+        new MixPanelAnalytics(),
+      ];
+    }
+
     return [
       new GoogleAnalytics(),
-      // new FlurryAnalytics(),
       new FacebookAnalytics(),
       new MixPanelAnalytics(),
+      new AppsFlyerAnalytics(),
     ];
   }
 
