@@ -291,6 +291,7 @@ class FollowingTabContent extends BaseComponent {
     if(usersSuggestions.length > 0) {
       return (
         <ScrollView style={styles.userSuggestionsScroll}>
+          <Text style={styles.searchPeopleNoResultsTxt}>{i18n.t('ME_NO_FOLLOWING_RESULTS')}</Text>
           {this._renderUsersSuggestionView()}
         </ScrollView>
       )
@@ -499,6 +500,13 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontFamily: Fonts.mediumFont,
 
+  },
+  searchPeopleNoResultsTxt: {
+    fontSize: generateAdjustedSize(14),
+    textAlign: 'center',
+    backgroundColor: Colors.transparent,
+    color: Colors.gray,
+    fontFamily: Fonts.mediumFont,
   },
   searchPeopleIcon: {
     height: generateAdjustedSize(30),
