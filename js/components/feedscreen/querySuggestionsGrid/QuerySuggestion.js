@@ -55,7 +55,7 @@ class QuerySuggestion extends Component {
     if (suggestion.imageUri) {
       return (
         <TouchableOpacity onPress={() => getFeedWithSuggestion(suggestion.query)} style={styles.btnContainer}>
-          <Image source={{ uri: suggestion.imageUri }} resizeMode={'stretch'} style={styles.imgStyle}>
+          <Image source={{ uri: suggestion.imageUri }} resizeMode={'cover'} style={styles.imgStyle}>
             <View style={styles.titleOnImageContainer}>
               <Text style={styles.titleOnImage}>{suggestion.title}</Text>
             </View>

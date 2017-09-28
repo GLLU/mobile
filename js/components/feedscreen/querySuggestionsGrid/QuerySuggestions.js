@@ -10,7 +10,7 @@ import Fonts from '../../../styles/Fonts.styles';
 const deviceWidth = Dimensions.get('window').width;
 import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 
-const emptyResultsIcon = require('../../../../images/emptyStates/user-admin.png');
+const emptyResultsIcon = require('../../../../images/emptyStates/user-woman.png');
 
 const styles = StyleSheet.create({
   container: {

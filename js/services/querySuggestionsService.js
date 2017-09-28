@@ -14,7 +14,7 @@ const suggestions = [
   },
   {
     id: 1,
-    row_number: 2,
+    row_number: 3,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
@@ -25,7 +25,7 @@ const suggestions = [
   },
   {
     id: 2,
-    row_number: 2,
+    row_number: 3,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
@@ -47,7 +47,7 @@ const suggestions = [
   },
   {
     id: 4,
-    row_number: 3,
+    row_number: 2,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
