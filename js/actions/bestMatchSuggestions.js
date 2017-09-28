@@ -10,7 +10,6 @@ export function getSuggestions() {
     dispatch(startFetching());
     BestMatchSuggestionsService.getSuggestions().then((suggestions) => {
       dispatch(setSuggestions(suggestions));
-      dispatch(finishFetching());
     });
   };
 }
@@ -27,11 +26,5 @@ export function setSuggestions(suggestions) {
 export function startFetching() {
   return {
     type: START_FETCHING_BEST_MATCH_SUGGESTIONS,
-  };
-}
-
-export function finishFetching(isEndReached: boolean) {
-  return {
-    type: FINISH_FETCHING_BEST_MATCH_SUGGESTIONS,
   };
 }

@@ -34,7 +34,7 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
     const newState = Object.assign({}, query, {
       page: {
         size: 10,
-        number: 10,
+        number: 1,
       },
     });
     dispatch(startFechting(feedType));
@@ -43,7 +43,7 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
       ...query,
       'page[size]': 10,
       'page[number]': 1,
-    }), LooksService.getVideos({ ...query, 'page[size]': 10, 'page[number]': 1 })])
+    }), LooksService.getVideos({ ...query, 'page[size]': 1, 'page[number]': 1 })])
       .then((multiData) => {
         if (multiData && multiData[0] && multiData[1]) {
           const { looks, meta } = multiData[0];

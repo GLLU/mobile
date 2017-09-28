@@ -65,7 +65,6 @@ class BestMatchTabContent extends BaseComponent {
     this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
     this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
     this._saveBodyShape = this._saveBodyShape.bind(this);
-    this.checkIfFeedResultsAreFiltered = this.checkIfFeedResultsAreFiltered.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -319,20 +318,6 @@ class BestMatchTabContent extends BaseComponent {
       </View>
 
     );
-  }
-
-  checkIfFeedResultsAreFiltered() {
-    const { query } = this.props;
-    const parsedQuery = _.cloneDeep(query);
-    delete parsedQuery.page;
-    delete parsedQuery.followings;
-    delete parsedQuery['sort[field]'];
-    delete parsedQuery.gender;
-    const bodyTypeFromQuery = parsedQuery.body_type ? parsedQuery.body_type : '';
-    if (bodyTypeFromQuery.length === 0) {
-      delete parsedQuery.body_type;
-    }
-    return !_.isEmpty(parsedQuery);
   }
 
   _renderEmptyContent() {

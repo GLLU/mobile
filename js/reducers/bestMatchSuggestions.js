@@ -15,17 +15,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         suggestions: action.suggestions,
+        isLoading: false,
       };
     case START_FETCHING_BEST_MATCH_SUGGESTIONS: {
       return {
         ...state,
         isLoading: true,
-      };
-    }
-    case FINISH_FETCHING_BEST_MATCH_SUGGESTIONS: {
-      return {
-        ...state,
-        isLoading: false,
       };
     }
     default:
