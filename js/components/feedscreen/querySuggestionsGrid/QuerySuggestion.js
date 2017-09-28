@@ -8,30 +8,44 @@ const deviceWidth = Dimensions.get('window').width;
 import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.primaryColor,
+  rowsContainer: {
+    flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    margin: 3,
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+    width: deviceWidth,
+    height: 130
+  },
+  btnContainer: {
+    flex: 1,
+    margin: 5
   },
   titleOnImage: {
     position: 'absolute',
-    backgroundColor: Colors.secondaryColor,
+    fontSize: generateAdjustedSize(16),
+    fontFamily: Fonts.boldContentFont,
+    margin: 5,
+    color: Colors.white,
+    backgroundColor: Colors.transparent,
   },
   titleOnColor: {
-    alignSelf: 'center',
-    justifyContent: 'center',
     fontSize: generateAdjustedSize(18),
     flex: 2,
     lineHeight: 25,
     textAlign: 'center',
     fontFamily: Fonts.boldContentFont,
-    textShadowColor: Colors.white,
-    textShadowRadius: 5,
-    textShadowOffset: { width: 1, height: 1 },
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor: Colors.transparent,
+    color: Colors.white
   },
+  imgStyle: {
+    flex: 1
+  },
+  titleOnImageContainer: {
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)'
+  },
+  titleOnColorContainer: {
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)', flexDirection: 'row', justifyContent: 'center'
+  }
 });
 
 type Props = {
@@ -43,19 +57,21 @@ class QuerySuggestion extends Component {
 
   props: Props;
 
-  renderSuggestion(suggestion) {
-    if (suggestion.coverUrl) {
+  renderSuggestion(suggestion: object) {
+    if (suggestion.imageUri) {
       return (
-        <Image source={{ uri: suggestion.coverUrl }} resizeMode={'stretch'} style={{ flex: 1 }}>
-          <Text style={styles.titleOnImage}>{suggestion.title}</Text>
+        <Image source={{ uri: suggestion.imageUri }} resizeMode={'stretch'} style={styles.imgStyle}>
+          <View style={styles.titleOnImageContainer}>
+            <Text style={styles.titleOnImage}>{suggestion.title}</Text>
+          </View>
         </Image>
       );
     } else {
       return (
-        <View style={{ flex: 1, backgroundColor: suggestion.color, justifyContent: 'center', flexDirection: 'row' }}>
-          <View style={{ flex: 1 }} />
-          <Text ellipsizeMode={'head'} style={[styles.titleOnColor, { backgroundColor: suggestion.color, overflow: 'hidden' }]}>{suggestion.title}</Text>
-          <View style={{ flex: 1 }} />
+        <View style={{ flex: 1, backgroundColor: suggestion.color }}>
+          <View style={styles.titleOnColorContainer}>
+            <Text style={[styles.titleOnColor ]}>{suggestion.title}</Text>
+          </View>
         </View>
       );
     }
@@ -64,14 +80,14 @@ class QuerySuggestion extends Component {
   renderRows() {
     const { rowArray, getFeedWithSuggestion } = this.props;
     return _.map(rowArray, rowItem => (
-      <TouchableOpacity key={rowItem.id} onPress={() => getFeedWithSuggestion(rowItem.query)} style={{ flex: 1, margin: 5 }}>
+      <TouchableOpacity key={rowItem.id} onPress={() => getFeedWithSuggestion(rowItem.query)} style={styles.btnContainer}>
         {this.renderSuggestion(rowItem)}
       </TouchableOpacity>
     ));
   }
   render() {
     return (
-      <View style={{ flex: 1, flexDirection: 'row', width: deviceWidth, minHeight: 130 }}>
+      <View style={styles.rowsContainer}>
         {this.renderRows()}
       </View>
     );

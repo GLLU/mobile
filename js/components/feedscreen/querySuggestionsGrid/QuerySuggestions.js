@@ -10,12 +10,8 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.primaryColor,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    margin: 3,
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+    flex: 1,
+    marginBottom: 70,
   },
 });
 
@@ -36,9 +32,8 @@ class QuerySuggestions extends Component {
     ));
   }
   render() {
-    console.log('ok ok ok')
     return (
-      <View style={{ flex: 1}}>
+      <View style={styles.container}>
         {this.boom()}
       </View>
     )

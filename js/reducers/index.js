@@ -20,7 +20,8 @@ import lookLikes from './lookLikes';
 import looks from './looks';
 import users from './users';
 import blockedUsers from './blockedUsers';
-import search from './search'
+import search from './search';
+import bestMatchSuggestions from './bestMatchSuggestions';
 
 export default combineReducers({
   loader,
@@ -45,4 +46,5 @@ export default combineReducers({
   users,
   blockedUsers,
   search,
+  bestMatchSuggestions
 });

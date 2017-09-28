@@ -37,87 +37,6 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
 
-const otherCategories = [
-  {
-    id: 0,
-    rowNumber: 1,
-    query: {
-      category: 'Jeans',
-      occasion: 'Breakfast',
-    },
-    title: 'How to build a tall tower',
-    coverUrl: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
-  },
-  {
-    id: 1,
-    rowNumber: 2,
-    query: {
-      category: 'Jeans',
-      occasion: 'Breakfast',
-      term: 'yellow'
-    },
-    title: 'Strings \nOf \nIron',
-    color: '#ff3a7d',
-  },
-  {
-    id: 2,
-    rowNumber: 2,
-    query: {
-      category: 'Jeans',
-      occasion: 'Breakfast',
-      term: 'yellow'
-    },
-    title: 'Bat-mobile 101',
-    coverUrl: 'https://images.alphacoders.com/371/thumb-1920-371.jpg',
-  },
-  {
-    id: 3,
-    rowNumber: 2,
-    query: {
-      category: 'Jeans',
-      occasion: 'Breakfast',
-      term: 'yellow'
-    },
-    title: 'kryptonite recipes',
-    coverUrl: 'http://cdn.playbuzz.com/cdn/62530326-1b72-4685-b59b-85bae109fa36/5f076c45-61b6-469f-ab63-cd2f0be7db26.jpg',
-  },
-  {
-    id: 4,
-    rowNumber: 3,
-    query: {
-      category: 'Jeans',
-      occasion: 'Breakfast',
-      term: 'yellow'
-    },
-    title: 'Green is the new Black',
-    coverUrl: 'https://static.comicvine.com/uploads/original/8/80111/2797109-hulk_marvel_4.jpg',
-  },
-  {
-    id: 5,
-    rowNumber: 3,
-    query: {
-      category: 'Jeans',
-      occasion: 'Breakfast',
-      term: 'yellow'
-    },
-    title: 'A turtles life',
-    coverUrl: 'http://www.cbr.com/wp-content/uploads/2017/01/the-flash-barry-allen-cw.jpg',
-  },
-  {
-    id: 6,
-    rowNumber: 4,
-    query: {
-      category: 'Jeans',
-      occasion: 'Breakfast',
-      term: 'yellow'
-    },
-    title: 'How to build a tall tower',
-    coverUrl: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
-  },
-
-];
-
-
 class BestMatchTabContent extends BaseComponent {
 
   static propTypes = {
@@ -164,7 +83,7 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
+    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName, getSuggestions } = this.props;
     this._getFeed(defaultFilters);
     changeFiltersGender(defaultFilters.gender);
     const that = this;
@@ -176,6 +95,7 @@ class BestMatchTabContent extends BaseComponent {
         isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
       }
     );
+    getSuggestions()
   }
 
   _getFeed(query) {
@@ -372,7 +292,7 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   _renderScrollView() {
-    const { flatLooks } = this.props;
+    const { flatLooks, bestMatchSuggestions } = this.props;
     console.log('flength',flatLooks)
     return (
       <View style={styles.tab}>
@@ -383,7 +303,7 @@ class BestMatchTabContent extends BaseComponent {
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
-          {flatLooks.length < 6 ? <QuerySuggestions querySuggestions={otherCategories} getFeedWithSuggestion={this.getFeedWithSuggestion}/> : null}
+          {flatLooks.length < 6 ? <QuerySuggestions querySuggestions={bestMatchSuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion}/> : null}
           {this._renderLoadMore()}
           {this._renderRefreshingCover()}
         </ScrollView>
