@@ -1,19 +1,20 @@
 import * as _ from 'lodash';
+import * as suggestionMapper from '../mappers/querySuggestionMapper'
 
 const suggestions = [
   {
     id: 0,
-    rowNumber: 1,
+    row_number: 1,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
     },
     title: 'How to build a tall tower',
-    imageUri: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
+    image_uri: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
   },
   {
     id: 1,
-    rowNumber: 2,
+    row_number: 2,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
@@ -24,58 +25,58 @@ const suggestions = [
   },
   {
     id: 2,
-    rowNumber: 2,
+    row_number: 2,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
       term: 'yellow',
     },
     title: 'Bat-mobile 101',
-    imageUri: 'https://images.alphacoders.com/371/thumb-1920-371.jpg',
+    image_uri: 'https://images.alphacoders.com/371/thumb-1920-371.jpg',
   },
   {
     id: 3,
-    rowNumber: 2,
+    row_number: 2,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
       term: 'yellow',
     },
     title: 'kryptonite recipes',
-    imageUri: 'http://cdn.playbuzz.com/cdn/62530326-1b72-4685-b59b-85bae109fa36/5f076c45-61b6-469f-ab63-cd2f0be7db26.jpg',
+    image_uri: 'http://cdn.playbuzz.com/cdn/62530326-1b72-4685-b59b-85bae109fa36/5f076c45-61b6-469f-ab63-cd2f0be7db26.jpg',
   },
   {
     id: 4,
-    rowNumber: 3,
+    row_number: 3,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
       term: 'yellow',
     },
     title: 'Green is the new Black',
-    imageUri: 'https://static.comicvine.com/uploads/original/8/80111/2797109-hulk_marvel_4.jpg',
+    image_uri: 'https://static.comicvine.com/uploads/original/8/80111/2797109-hulk_marvel_4.jpg',
   },
   {
     id: 5,
-    rowNumber: 3,
+    row_number: 3,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
       term: 'yellow',
     },
     title: 'A turtles life',
-    imageUri: 'http://www.cbr.com/wp-content/uploads/2017/01/the-flash-barry-allen-cw.jpg',
+    image_uri: 'http://www.cbr.com/wp-content/uploads/2017/01/the-flash-barry-allen-cw.jpg',
   },
   {
     id: 6,
-    rowNumber: 4,
+    row_number: 4,
     query: {
       category: 'Jeans',
       occasion: 'Breakfast',
       term: 'yellow',
     },
     title: 'How to build a tall tower',
-    imageUri: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
+    image_uri: 'http://www.ldi.co.il/media/catalog/category/BTB_jpg.jpg',
   },
 
 ];
@@ -83,7 +84,8 @@ const suggestions = [
 class BestMatchSuggestionsService {
   static getSuggestions = () =>
     new Promise((resolve, reject) => {
-      resolve(suggestions);
+      const serializedSuggestions = _.groupBy(_.map(suggestions, (suggestion) => suggestionMapper.map(suggestion)), item => item.rowNumber)
+      resolve(serializedSuggestions);
     })
 }
 

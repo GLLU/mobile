@@ -7,10 +7,12 @@ import com.facebook.FacebookSdk;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.appsflyer.reactnative.RNAppsFlyerPackage;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cl.json.RNSharePackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.kevinejohn.RNMixpanel.RNMixpanel;
@@ -65,6 +67,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new RNSharePackage(),
             new ReactNativeOneSignalPackage(),
                             new RNI18nPackage(),
                             new RNMixpanel(),
@@ -81,8 +84,9 @@ public class MainApplication extends Application
                             new ExtraDimensionsPackage(),
                             new VectorIconsPackage(),
                             new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
-                            new FBSDKPackage(mCallbackManager)
-                    );
+                            new FBSDKPackage(mCallbackManager),
+                            new RNAppsFlyerPackage(MainApplication.this)
+                            );
                 }
             };
 

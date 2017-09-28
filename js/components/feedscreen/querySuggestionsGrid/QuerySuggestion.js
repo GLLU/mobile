@@ -6,19 +6,7 @@ import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 
-const deviceWidth = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
-  rowsContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    width: deviceWidth,
-    height: 130,
-  },
-  btnContainer: {
-    flex: 1,
-    margin: 5,
-  },
   titleOnImage: {
     position: 'absolute',
     fontSize: generateAdjustedSize(16),
@@ -42,23 +30,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleOnImageContainer: {
-    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   titleOnColorContainer: {
-    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)', flexDirection: 'row', justifyContent: 'center',
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)', flexDirection: 'row', justifyContent: 'center',
   },
 });
 
 type Props = {
-  rowArray: array,
-  getFeedWithSuggestion: () => void
+  suggestion: object,
 };
 
 class QuerySuggestion extends Component {
 
   props: Props;
-
-  renderSuggestion(suggestion: object) {
+  render() {
+    const { suggestion } = this.props;
     if (suggestion.imageUri) {
       return (
         <Image source={{ uri: suggestion.imageUri }} resizeMode={'stretch'} style={styles.imgStyle}>
@@ -76,22 +63,6 @@ class QuerySuggestion extends Component {
         </View>
       );
     }
-  }
-
-  renderRows() {
-    const { rowArray, getFeedWithSuggestion } = this.props;
-    return _.map(rowArray, rowItem => (
-      <TouchableOpacity key={rowItem.id} onPress={() => getFeedWithSuggestion(rowItem.query)} style={styles.btnContainer}>
-        {this.renderSuggestion(rowItem)}
-      </TouchableOpacity>
-    ));
-  }
-  render() {
-    return (
-      <View style={styles.rowsContainer}>
-        {this.renderRows()}
-      </View>
-    );
   }
 }
 

@@ -98,7 +98,7 @@ android {
         applicationId "com.infash"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 8
+        versionCode 9
         versionName "1.2.6"
         multiDexEnabled true
         manifestPlaceholders = [onesignal_app_id: "9dafae92-eb15-420d-b362-0518a6b5234e",
@@ -186,6 +186,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-share')
     compile project(':react-native-onesignal')
     compile project(':react-native-i18n')
     compile project(':react-native-mixpanel')
@@ -209,6 +210,7 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-code-push')
     compile project(':react-native-fbsdk')
+    compile project(':react-native-appsflyer')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.facebook.react:react-native:+'

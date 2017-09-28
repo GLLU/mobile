@@ -7053,6 +7053,10 @@ react-native-app-intro@^1.1.5:
     assign-deep "^0.4.5"
     react-native-swiper "git+https://github.com/FuYaoDe/react-native-swiper.git"
 
+react-native-appsflyer@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-appsflyer/-/react-native-appsflyer-1.1.5.tgz#3e44377aed172933fa2a46774946475246b682e8"
+
 react-native-autocomplete-input@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/react-native-autocomplete-input/-/react-native-autocomplete-input-3.3.0.tgz#48cd29163b60405553794529d2f7ca2e9477424b"
@@ -7205,6 +7209,10 @@ react-native-scrollable-tab-view@^0.7.1:
   dependencies:
     react-static-container "^1.0.1"
     react-timer-mixin "^0.13.3"
+
+react-native-share@^1.0.21:
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-1.0.21.tgz#45cc1c7bae5af8e6e88b77c3bfa23fb88521a354"
 
 react-native-slider@^0.10.0:
   version "0.10.0"

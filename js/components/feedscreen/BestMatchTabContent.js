@@ -142,7 +142,7 @@ class BestMatchTabContent extends BaseComponent {
       const currentScroll = event.nativeEvent.contentOffset.y;
       if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if (!this.state.loadingMore && !this.state.isLoading) {
-          this.setState({ loadingMore: true }, this.loadMore);
+          //this.setState({ loadingMore: true }, this.loadMore);
         }
       } else {
       }
@@ -326,7 +326,7 @@ class BestMatchTabContent extends BaseComponent {
     const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
     if (bestMatchSuggestions.length > 0) {
       return (
-        <ScrollView style={styles.userSuggestionsScroll}>
+        <ScrollView style={styles.looksSuggestionsScroll}>
           <Text style={styles.filterLooksNoResultsTxt}>{i18n.t('ME_NO_BEST_MATCH_RESULTS')}</Text>
           <QuerySuggestions querySuggestions={bestMatchSuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
         </ScrollView>
@@ -511,6 +511,10 @@ const
     },
     cancelBodyShapeContainer: {
       alignSelf: 'center',
+    },
+    looksSuggestionsScroll: {
+      flex: 1,
+      backgroundColor: Colors.white,
     },
     filterLooksNoResultsTxt: {
       fontSize: generateAdjustedSize(16),
