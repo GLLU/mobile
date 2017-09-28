@@ -1,7 +1,7 @@
 import {
-  FINISH_FETCHING_BEST_MATCH_SUGGESTIONS, SET_BEST_MATCH_SUGGESTIONS,
-  START_FETCHING_BEST_MATCH_SUGGESTIONS,
-} from '../actions/bestMatchSuggestions';
+  SET_QUERY_SUGGESTIONS,
+  START_FETCHING_QUERY_SUGGESTIONS,
+} from '../actions/querySuggestions';
 
 
 const initialState = {
@@ -11,13 +11,13 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_BEST_MATCH_SUGGESTIONS:
+    case SET_QUERY_SUGGESTIONS:
       return {
         ...state,
         suggestions: action.suggestions,
         isLoading: false,
       };
-    case START_FETCHING_BEST_MATCH_SUGGESTIONS: {
+    case START_FETCHING_QUERY_SUGGESTIONS: {
       return {
         ...state,
         isLoading: true,

@@ -83,7 +83,7 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName, getSuggestions } = this.props;
+    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
     this._getFeed(defaultFilters);
     changeFiltersGender(defaultFilters.gender);
     const that = this;
@@ -95,7 +95,6 @@ class BestMatchTabContent extends BaseComponent {
         isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
       }
     );
-    getSuggestions();
   }
 
   _getFeed(query) {
@@ -198,9 +197,6 @@ class BestMatchTabContent extends BaseComponent {
     return (
       <View style={styles.loader}>
         {(() => {
-          if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
-          }
           if (this.state.isLoading) {
             return <Spinner color="rgb(230,230,230)" />;
           }
@@ -292,7 +288,7 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   _renderScrollView() {
-    const { flatLooks, bestMatchSuggestions } = this.props;
+    const { flatLooks, querySuggestions } = this.props;
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -302,8 +298,8 @@ class BestMatchTabContent extends BaseComponent {
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
-          {flatLooks.length < 6 ? <QuerySuggestions querySuggestions={bestMatchSuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} /> : null}
           {this._renderLoadMore()}
+          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
           {this._renderRefreshingCover()}
         </ScrollView>
         {this._renderLoading()}
@@ -321,14 +317,14 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
-    const { bestMatchSuggestions } = this.props;
+    const { querySuggestions } = this.props;
     const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
     const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
-    if (bestMatchSuggestions.length > 0) {
+    if (!_.isEmpty(querySuggestions)) {
       return (
         <ScrollView style={styles.looksSuggestionsScroll}>
           <Text style={styles.filterLooksNoResultsTxt}>{i18n.t('ME_NO_BEST_MATCH_RESULTS')}</Text>
-          <QuerySuggestions querySuggestions={bestMatchSuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
+          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
         </ScrollView>
       );
     }

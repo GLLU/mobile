@@ -24,6 +24,7 @@ import i18n from 'react-native-i18n';
 import FeedTabs from './FeedTabs';
 import * as userMapper from "../../mappers/userMapper";
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT, toggleFiltersMenus} from '../../actions/feed';
+import { getSuggestions } from '../../actions/querySuggestions';
 
 const cameraIcon = require('../../../images/icons/camera_green-circle.png');
 
@@ -80,13 +81,12 @@ class FeedPage extends Component {
   }
 
   componentDidMount() {
-
     Analytics.setUser(this.props.user);
-
     this.props.loadCategories();
     this.props.loadOccasionTags();
     this.props.loadColors();
     this.props.loadBrands();
+    this.props.getSuggestions();
   }
 
   _onReceived = (notification) => {
@@ -284,6 +284,7 @@ function bindActions(dispatch) {
     },
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),
     goToNotificationSubjectScreen: (objectId, notificationId) => dispatch(goToNotificationSubjectScreen(objectId, notificationId)),
+    getSuggestions: () => dispatch(getSuggestions()),
   };
 }
 
