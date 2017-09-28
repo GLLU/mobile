@@ -217,7 +217,6 @@ class FiltersView extends BaseComponent {
   }
 
   render() {
-    console.log('stateFilter',this.state.currentFilter)
     const { showGenderFilter = true } = this.props;
     return (
       <ScrollView style={styles.filterViewContainer} contentContainerStyle={styles.contentContainerStyle}>

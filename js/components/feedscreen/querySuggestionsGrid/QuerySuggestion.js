@@ -4,19 +4,20 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
-const deviceWidth = Dimensions.get('window').width;
 import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
+
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   rowsContainer: {
     flex: 1,
     flexDirection: 'row',
     width: deviceWidth,
-    height: 130
+    height: 130,
   },
   btnContainer: {
     flex: 1,
-    margin: 5
+    margin: 5,
   },
   titleOnImage: {
     position: 'absolute',
@@ -35,17 +36,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: Colors.transparent,
-    color: Colors.white
+    color: Colors.white,
   },
   imgStyle: {
-    flex: 1
+    flex: 1,
   },
   titleOnImageContainer: {
-    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)'
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
   titleOnColorContainer: {
-    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)', flexDirection: 'row', justifyContent: 'center'
-  }
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)', flexDirection: 'row', justifyContent: 'center',
+  },
 });
 
 type Props = {
@@ -70,7 +71,7 @@ class QuerySuggestion extends Component {
       return (
         <View style={{ flex: 1, backgroundColor: suggestion.color }}>
           <View style={styles.titleOnColorContainer}>
-            <Text style={[styles.titleOnColor ]}>{suggestion.title}</Text>
+            <Text style={[styles.titleOnColor]}>{suggestion.title}</Text>
           </View>
         </View>
       );

@@ -65,6 +65,7 @@ class BestMatchTabContent extends BaseComponent {
     this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
     this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
     this._saveBodyShape = this._saveBodyShape.bind(this);
+    this.checkIfFeedResultsAreFiltered = this.checkIfFeedResultsAreFiltered.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -95,7 +96,7 @@ class BestMatchTabContent extends BaseComponent {
         isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
       }
     );
-    getSuggestions()
+    getSuggestions();
   }
 
   _getFeed(query) {
@@ -142,7 +143,7 @@ class BestMatchTabContent extends BaseComponent {
       const currentScroll = event.nativeEvent.contentOffset.y;
       if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if (!this.state.loadingMore && !this.state.isLoading) {
-          //this.setState({ loadingMore: true }, this.loadMore);
+          this.setState({ loadingMore: true }, this.loadMore);
         }
       } else {
       }
@@ -293,7 +294,6 @@ class BestMatchTabContent extends BaseComponent {
 
   _renderScrollView() {
     const { flatLooks, bestMatchSuggestions } = this.props;
-    console.log('flength',flatLooks)
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -303,7 +303,7 @@ class BestMatchTabContent extends BaseComponent {
           onScroll={this.handleScroll}
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
-          {flatLooks.length < 6 ? <QuerySuggestions querySuggestions={bestMatchSuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion}/> : null}
+          {flatLooks.length < 6 ? <QuerySuggestions querySuggestions={bestMatchSuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} /> : null}
           {this._renderLoadMore()}
           {this._renderRefreshingCover()}
         </ScrollView>
@@ -321,10 +321,32 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
+  checkIfFeedResultsAreFiltered() {
+    const { query } = this.props;
+    const parsedQuery = _.cloneDeep(query);
+    delete parsedQuery.page;
+    delete parsedQuery.followings;
+    delete parsedQuery['sort[field]'];
+    delete parsedQuery.gender;
+    const bodyTypeFromQuery = parsedQuery.body_type ? parsedQuery.body_type : '';
+    if (bodyTypeFromQuery.length === 0) {
+      delete parsedQuery.body_type;
+    }
+    return !_.isEmpty(parsedQuery);
+  }
+
   _renderEmptyContent() {
+    const { bestMatchSuggestions } = this.props;
     const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
     const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
-
+    if (bestMatchSuggestions.length > 0) {
+      return (
+        <ScrollView style={styles.userSuggestionsScroll}>
+          <Text style={styles.filterLooksNoResultsTxt}>{i18n.t('ME_NO_BEST_MATCH_RESULTS')}</Text>
+          <QuerySuggestions querySuggestions={bestMatchSuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
+        </ScrollView>
+      );
+    }
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
@@ -370,7 +392,6 @@ class BestMatchTabContent extends BaseComponent {
     const cleanQuery = _.cloneDeep(query);
     cleanQuery.body_type = currBodyShapeModal;
     delete cleanQuery.page;
-    console.log('query222',cleanQuery)
     getFeed(cleanQuery)
       .then(() => {
         this.setState({ isRefreshing: false });
@@ -505,6 +526,13 @@ const
     },
     cancelBodyShapeContainer: {
       alignSelf: 'center',
+    },
+    filterLooksNoResultsTxt: {
+      fontSize: generateAdjustedSize(16),
+      textAlign: 'center',
+      color: Colors.black,
+      padding: 20,
+      fontFamily: Fonts.regular,
     },
   });
 
