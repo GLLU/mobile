@@ -7,6 +7,10 @@ import Fonts from '../../../styles/Fonts.styles';
 import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flex: 1,
+    margin: 5,
+  },
   titleOnImage: {
     position: 'absolute',
     fontSize: generateAdjustedSize(16),
@@ -39,28 +43,34 @@ const styles = StyleSheet.create({
 
 type Props = {
   suggestion: object,
+  getFeedWithSuggestion: () => void,
 };
 
 class QuerySuggestion extends Component {
 
   props: Props;
   render() {
-    const { suggestion } = this.props;
+    const { suggestion, getFeedWithSuggestion } = this.props;
+
     if (suggestion.imageUri) {
       return (
-        <Image source={{ uri: suggestion.imageUri }} resizeMode={'stretch'} style={styles.imgStyle}>
-          <View style={styles.titleOnImageContainer}>
-            <Text style={styles.titleOnImage}>{suggestion.title}</Text>
-          </View>
-        </Image>
+        <TouchableOpacity onPress={() => getFeedWithSuggestion(suggestion.query)} style={styles.btnContainer}>
+          <Image source={{ uri: suggestion.imageUri }} resizeMode={'stretch'} style={styles.imgStyle}>
+            <View style={styles.titleOnImageContainer}>
+              <Text style={styles.titleOnImage}>{suggestion.title}</Text>
+            </View>
+          </Image>
+        </TouchableOpacity>
       );
     } else {
       return (
-        <View style={{ flex: 1, backgroundColor: suggestion.color }}>
-          <View style={styles.titleOnColorContainer}>
-            <Text style={[styles.titleOnColor]}>{suggestion.title}</Text>
+        <TouchableOpacity onPress={() => getFeedWithSuggestion(suggestion.query)} style={styles.btnContainer}>
+          <View style={{ flex: 1, backgroundColor: suggestion.color }}>
+            <View style={styles.titleOnColorContainer}>
+              <Text style={[styles.titleOnColor]}>{suggestion.title}</Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       );
     }
   }

@@ -23,10 +23,6 @@ const styles = StyleSheet.create({
     width: deviceWidth,
     height: 130,
   },
-  btnContainer: {
-    flex: 1,
-    margin: 5,
-  },
   userSuggestionHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -78,9 +74,7 @@ class QuerySuggestions extends Component {
   renderRow(row) {
     const { getFeedWithSuggestion } = this.props;
     return _.map(row, rowItem => (
-      <TouchableOpacity key={rowItem.id} onPress={() => getFeedWithSuggestion(rowItem.query)} style={styles.btnContainer}>
-        <QuerySuggestion suggestion={rowItem} />
-      </TouchableOpacity>
+        <QuerySuggestion key={rowItem.id} suggestion={rowItem} getFeedWithSuggestion={getFeedWithSuggestion} />
     ));
   }
 
