@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import LooksService from '../services/looksService';
 import { normalize } from 'normalizr';
-import { pushIdsRandomly, unifyLooks } from '../utils/FeedUtils';
+import { unifyLooks } from '../utils/FeedUtils';
 import { lookSchema } from '../schemas/schemas';
 import { setUsers } from './users';
 
@@ -152,7 +152,7 @@ export function refreshFeed(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
         dispatch(setUsers(normalizedLooksData.entities.users));
         const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
         dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
-        const flatLooksIdData = pushIdsRandomly(state.flatLooksIdData, normalizedLooksData.result);
+        const flatLooksIdData = _.chain(state.flatLooksIdData).union(normalizedLooksData.result).shuffle().value();
         dispatch(setFeedData({ flatLooksIdData, meta: metaWithRefresh, query: state.query, feedType }));
         Promise.resolve(data.looks);
       } else if (retryCount < 5) {

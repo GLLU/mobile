@@ -1,16 +1,17 @@
+// @flow
+
 import React, { Component } from 'react';
 import * as _ from 'lodash';
-import { Dimensions, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const deviceWidth = Dimensions.get('window').width;
 import Spinner from '../../loaders/Spinner';
-import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 
 const styles = StyleSheet.create({
   center: {
-    flexDirection:'column',
+    flexDirection: 'column',
     justifyContent: 'center',
   },
   text: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     fontSize: generateAdjustedSize(14),
     fontFamily: Fonts.regularFont,
   },
-  basicStyle:{
+  basicStyle: {
     width: generateAdjustedSize(265),
     height: generateAdjustedSize(45),
     alignSelf: 'center',
@@ -32,28 +33,33 @@ const styles = StyleSheet.create({
   ,
 });
 
-class SolidButton extends Component {
+type Props={
+  label: string,
+  disabled: boolean,
+  onPress: void,
+  style: any,
+  showLoader: boolean,
+  loaderColor: string
+};
 
-  static propTypes = {
-    label: React.PropTypes.string.isRequired,
-    disabled: React.PropTypes.bool,
-    onPress: React.PropTypes.func,
-    showLoader: React.PropTypes.bool,
-  }
+class SolidButton extends Component {
 
   static defaultProps = {
     onPress: _.noop,
     disabled: false,
     showLoader: false,
-    loaderElement: null
+    loaderElement: null,
   }
 
+  props: Props;
+
   render() {
+    const { loaderColor, disabled, onPress, label, showLoader, style } = this.props;
     return (
-      <TouchableOpacity style={[styles.center, styles.basicStyle ,this.props.style]} disabled={this.props.disabled} onPress={this.props.onPress}>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Text style={styles.text}>{this.props.label}</Text>
-          {this.props.showLoader ? <Spinner animating={true} size={'small'} style={{ left: 10 }}/> : null}
+      <TouchableOpacity style={[styles.center, styles.basicStyle, style]} disabled={disabled} onPress={onPress}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <Text style={styles.text}>{label}</Text>
+          {showLoader ? <Spinner animating color={loaderColor} size={'small'} style={{ left: 10 }} /> : null}
         </View>
       </TouchableOpacity>
     );
