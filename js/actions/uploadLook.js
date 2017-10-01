@@ -55,15 +55,7 @@ export function addNewLook(image) {
               });
               resolve(payload);
               dispatch(hideProcessing());
-              Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
-                if (data) {
-                  dispatch({
-                    type: DONE_UPLOADING_FILE,
-                  });
-                } else {
-                  reject('Uplaod error');
-                }
-              }).catch(reject);
+              uploadLookFile(dispatch, api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image)
             });
 
           } else {
@@ -77,6 +69,23 @@ export function addNewLook(image) {
       }
     });
   }
+}
+
+function uploadLookFile(dispatch, api_key, uri, [], type, image, retryCount = 0) {
+  Utils.postMultipartForm(api_key, uri, [], type, image).then((data) => {
+    if (data) {
+      dispatch({
+        type: DONE_UPLOADING_FILE,
+      });
+    } else {
+      Promise.reject('Uplaod error');
+    }
+  }).catch((error) => {
+    if (retryCount < 5) {
+      uploadLookFile(api_key, uri, [], type, image, retryCount)
+    }
+    Promise.reject(error);
+  });
 }
 
 export function editNewLook(lookId) {
