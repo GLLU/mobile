@@ -98,7 +98,7 @@ class BestMatchTabContent extends BaseComponent {
   _getFeed(query) {
     this.props.getFeed(query);
   }
-  
+
   componentDidUpdate(prevProps) {
     const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
     if (isTabOnFocus) {
