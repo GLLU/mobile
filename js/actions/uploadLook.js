@@ -22,12 +22,18 @@ export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
 export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
 export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
 
+import { normalize } from 'normalizr';
+import { lookSchema } from '../schemas/schemas';
+import { unifyLooks } from '../utils/FeedUtils';
+
 import UploadLookService from '../services/uploadLookService';
 import _ from 'lodash';
 import rest from '../api/rest';
 import {newItem} from '../reducers/uploadLook';
 import {loadBrands, showProcessing, hideProcessing} from './index';
 import Utils from '../utils';
+import FEED_TYPE_BEST_MATCH from './feed';
+import {setLooksData, setFeedData} from './feed';
 
 let api_key = null;
 let incrementedItemId = 0
@@ -289,17 +295,24 @@ export function publishLook() {
 
           clearInterval(interval);
 
-          UploadLookService.publishLook(lookId).then(() => {
+          UploadLookService.publishLook(lookId).then((look) => {
+            const state = getState().feed['bestMatch'];
+            const normalizedLooksData = normalize([look], [lookSchema]);
+            const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
+            dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
+            const unifiedLooksIds = state.flatLooksIdData;
+            unifiedLooksIds.unshift(look.id);
+            dispatch(setFeedData({ flatLooksIdData: unifiedLooksIds, meta: state.meta, query: state.query, feedType: 'bestMatch' }));
             if (description.length > 0) {
               const descriptionBody = {
                 description
               }
-              UploadLookService.updateLook(lookId, descriptionBody).then(() => {
+              UploadLookService.updateLook(lookId, descriptionBody).then((look) => {
               })
             }
           })
         }
-      }, 5000);
+      }, 2000);
 
       resolve();
     })
