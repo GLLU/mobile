@@ -2,10 +2,12 @@
 
 import rest from '../api/rest';
 import userService from '../services/usersService';
+import looksService from '../services/looksService';
 // Actions
 export const SET_LOOK_LIKE_STATE = 'SET_LOOK_LIKE_STATE';
 export const LOOK_UNLIKE = 'LOOK_UNLIKE';
 export const LOOK_LIKE = 'LOOK_LIKE';
+export const DELETE_LOOK = 'DELETE_LOOK';
 export const ADD_TO_FAVORITES = 'look.ADD_TO_FAVORITES';
 export const REMOVE_FROM_FAVORITES = 'look.REMOVE_FROM_FAVORITES';
 
@@ -39,6 +41,13 @@ export function unlike(id) {
   return (dispatch) => {
     dispatch(rest.actions.likes.delete({ look_id: id }));
   };
+}
+
+export function deleteLook(id: number) {
+  return (dispatch, getState) => {
+    dispatch({type: DELETE_LOOK, lookId: id});
+    looksService.deleteLook(id);
+  }
 }
 
 export function updateFavorite(isFavorite, lookId) {

@@ -313,7 +313,7 @@ class ProfileScreen extends Component {
   }
 
   _renderLooks = (type = 'user') => {
-    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo, userFavorites, isLoadingFavorites } = this.props;
+    const { userId, navigateToLooksScreen, isMyProfile, meta, editNewLook, deleteLook, addNewLook, likeUpdate, unlikeUpdate, navigateTo, userFavorites, isLoadingFavorites } = this.props;
     const { userLooks, currentScrollPosition } = this.state;
     const emptyStateTitle = type !== 'user' ? I18n.t('NO_FAVORITES') : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_TITLE') : I18n.t('NO_LOOKS_UPLOADED_TITLE');
     const emptyStateSubtitle = type !== 'user' ? I18n.t('NO_FAVORITES_LEGEND') : isMyProfile ? I18n.t('ME_NO_LOOKS_UPLOADED_LEGEND') : null;
@@ -341,6 +341,7 @@ class ProfileScreen extends Component {
           navigateToLooksScreen={navigateToLooksScreen}
           isMyProfile={isMyProfile}
           editNewLook={editNewLook}
+          deleteLook={deleteLook}
           addNewLook={addNewLook}
           likeUpdate={likeUpdate}
           unlikeUpdate={unlikeUpdate}

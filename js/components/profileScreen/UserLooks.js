@@ -87,10 +87,23 @@ class UserLooks extends Component {
     );
   }
 
+  _handleDeleteLook(look) {
+    this.props.deleteLook(look.id);
+  }
+
   renderEditLookBtn(look) {
     return (
       <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn]}>
         <Text style={styles.editText}>{i18n.t('EDIT_LARGE')}</Text>
+      </TouchableOpacity>
+
+    );
+  }
+
+  _renderDeleteLookBtn(look) {
+    return (
+      <TouchableOpacity onPress={() => this._handleDeleteLook(look)} style={[styles.deleteLookBtn]}>
+        <Text style={styles.deleteText}>{i18n.t('DELETE_LARGE')}</Text>
       </TouchableOpacity>
 
     );
@@ -111,6 +124,7 @@ class UserLooks extends Component {
         shouldOptimize={this.state.flatLooksLeft.length > 20}
         showMediaGrid={false}
         fromScreen={'profileScreen'}>
+        { this.state.isMyProfile && canEdit ? this._renderDeleteLookBtn(look) : null}
         { this.state.isMyProfile && canEdit ? this.renderEditLookBtn(look) : null}
       </MediaContainer>
       ));
@@ -146,6 +160,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginTop: -10,
   },
+  deleteLookBtn: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
+    backgroundColor: '#000000',
+    alignItems: 'center',
+    opacity: 0.6,
+  },
   editLookBtn: {
     position: 'absolute',
     right: 0,
@@ -153,6 +175,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     alignItems: 'center',
     opacity: 0.6,
+  },
+  deleteText: {
+    fontSize: 14,
+    padding: 6,
+    fontFamily: Fonts.regularFont,
+    color: 'white',
   },
   editText: {
     fontSize: 14,
