@@ -88,11 +88,6 @@ class FollowingTabContent extends BaseComponent {
     setInterval(() => {
       that.handleScrollPosition();
     }, 1000);
-    NetInfo.isConnected.fetch().done(
-      (isConnected) => {
-        isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
-      }
-    );
   }
 
   _getFeed(query) {

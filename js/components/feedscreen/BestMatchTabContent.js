@@ -82,17 +82,12 @@ class BestMatchTabContent extends BaseComponent {
 
   componentDidMount() {
     const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
-    this._getFeed(defaultFilters);
-    changeFiltersGender(defaultFilters.gender);
-    const that = this;
-    setInterval(() => {
-      that.handleScrollPosition();
-    }, 1000);
-    NetInfo.isConnected.fetch().done(
-      (isConnected) => {
-        isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
-      }
-    );
+      this._getFeed(defaultFilters);
+      changeFiltersGender(defaultFilters.gender);
+      const that = this;
+      setInterval(() => {
+        that.handleScrollPosition();
+      }, 1000);
   }
 
   _getFeed(query) {
