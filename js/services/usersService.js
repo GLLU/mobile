@@ -52,7 +52,7 @@ class usersService {
 
   static getUserLooks = (userId, query) => {
     return AppAPI.get(`${route}/${userId}/looks`, query).then((response) => {
-      const looks = feedLookMapper.serializeLooks(response.looks)
+      const looks = feedLookMapper.serializeLooks(response.looks);
       return {looks, meta: response.meta};
     });
   }

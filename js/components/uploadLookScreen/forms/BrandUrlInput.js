@@ -43,7 +43,7 @@ class BrandUrlInput extends PureComponent {
       <View style={styles.brandInputContainer}>
         <Text style={styles.explanationText}>Enter the web-link to your item to help people find it:</Text>
         <View style={styles.urlRowContainer}>
-          <Text style={styles.httpText}>http://www.</Text>
+          <Text style={styles.httpText}>http://</Text>
           <View style={styles.inputContainer}>
             <TextInput
               ref={ref => this.urlText = ref}

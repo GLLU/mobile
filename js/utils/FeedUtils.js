@@ -3,10 +3,16 @@
 import * as _ from 'lodash';
 
 export function getLooksById(feedLooksIds: array, flatLooksData: object) {
-  return _.map(feedLooksIds, (lookId, index) => {
+  const filteredLooks = _.map(feedLooksIds, (lookId, index) => {
     const look = flatLooksData[lookId];
-    look.originalIndex = index;
-    return look;
+    if (look) {
+      look.originalIndex = index;
+      return look;
+    }
+  });
+
+  return filteredLooks.filter(function (currLook) {
+    return currLook != undefined;
   });
 }
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { CLEAR_FEED_DATA, SET_FLAT_LOOKS_DATA } from '../actions/feed';
-import { LOOK_LIKE, LOOK_UNLIKE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES } from '../actions/look';
+import { LOOK_LIKE, LOOK_UNLIKE, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES, DELETE_LOOK } from '../actions/look';
 import { ADD_LOOK_COMMENT } from '../actions/comments';
 
 const initialState = {
@@ -40,6 +40,15 @@ export default function (state = initialState, action) {
           ...state.flatLooksData,
           [lookId]: { ...lookToUpdate, likes: lookToUpdate.likes + 1, liked: true },
         },
+      };
+    }
+    case DELETE_LOOK: {
+      const newFlatLooksData = Object.assign({}, state.flatLooksData);
+      delete newFlatLooksData[action.lookId];
+
+      return {
+        ...state,
+        flatLooksData: newFlatLooksData,
       };
     }
     case LOOK_UNLIKE: {

@@ -16,6 +16,7 @@ import {
 import {addNewLook, editNewLook} from '../../actions/uploadLook';
 import {followUpdate, unFollowUpdate} from '../../actions/follows';
 import {getLooksById} from '../../utils/FeedUtils';
+import {deleteLook} from '../../actions/look';
 import {loadMoreFavoriteLooks, getFavoriteLooks} from '../../actions/looks';
 import {getDataWithUsersObj} from '../../utils/UsersUtils';
 import {blockUser, hideWalletBadge, changeUserAvatar} from '../../actions/user';
@@ -36,6 +37,7 @@ function bindAction(dispatch: any, ownProps: any): void {
     addNewLook: imagePath => dispatch(addNewLook(imagePath)),
     blockUser: userId => dispatch(blockUser(userId)),
     editNewLook: id => dispatch(editNewLook(id)),
+    deleteLook: id => dispatch(deleteLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),
     getFavoriteLooks: () => dispatch(getFavoriteLooks()),
     loadMoreUserLooks: looksCall => dispatch(loadMoreUserLooks(looksCall)),
