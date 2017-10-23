@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleOnImageContainer: {
-    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   titleOnColorContainer: {
-    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)', flexDirection: 'row', justifyContent: 'center',
+    flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.3)', flexDirection: 'row', justifyContent: 'center',
   },
 });
 

@@ -1,13 +1,12 @@
-
-
-import React, { Component } from 'react';
-import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import i18n from 'react-native-i18n';
 import _ from 'lodash';
 import Fonts from '../../styles/Fonts.styles';
 import MediaContainer from '../common/MediaContainer';
 const deviceWidth = Dimensions.get('window').width;
 import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
+import ModalQuestion from '../uploadLookScreen/forms/ModalQuestion';
 
 class UserLooks extends Component {
 
@@ -33,6 +32,9 @@ class UserLooks extends Component {
       isRefreshing: false,
       currentScrollPosition: 0,
       loadingMore: false,
+      modalParams: {
+        modalVisible: false,
+      },
     };
     this.currPosition = 0;
     this.contentHeight = 0;
@@ -40,7 +42,11 @@ class UserLooks extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.userLooks !== this.props.userLooks) {
-      this.setState({ flatLooksLeft: _.filter(nextProps.userLooks, (look, index) => index % 2 === 0), flatLooksRight: _.filter(nextProps.userLooks, (look, index) => index % 2 === 1), loadingMore: false});
+      this.setState({
+        flatLooksLeft: _.filter(nextProps.userLooks, (look, index) => index % 2 === 0),
+        flatLooksRight: _.filter(nextProps.userLooks, (look, index) => index % 2 === 1),
+        loadingMore: false
+      });
     }
 
     if (nextProps.clearedField) {
@@ -56,7 +62,9 @@ class UserLooks extends Component {
 
   componentDidMount() {
     const that = this;
-    setInterval(() => { that.handleScrollPositionForVideo(); }, 1000);
+    setInterval(() => {
+      that.handleScrollPositionForVideo();
+    }, 1000);
   }
 
   handleScrollPositionForVideo() {
@@ -73,24 +81,68 @@ class UserLooks extends Component {
 
   renderLookStatus(look) {
     return (
-      <View style={[{ position: 'absolute', left: 0 }, look.coverType === 'video' ? { top: 30 } : { top: 15 }, Platform.OS === 'ios' && look.coverType === 'video' ? { left: 3 } : null]}>
+      <View style={[{
+        position: 'absolute',
+        left: 0
+      }, look.coverType === 'video' ? { top: 30 } : { top: 15 }, Platform.OS === 'ios' && look.coverType === 'video' ? { left: 3 } : null]}>
         <Text style={styles.lookStatusText}>{look.state}</Text>
       </View>
     );
   }
 
+  _setModalVisible(params: object) {
+    const { modalParams } = this.state;
+    this.setState({ modalParams: { ...modalParams, ...params } });
+  }
+
+  _hideModal = () => {
+    this.setState({ modalParams: { modalVisible: false } })
+  }
+
   renderEmptyView() {
     return (
       <View>
-        <ParisAdjustableMessage text={'Sorry, no looks available yet'} />
+        <ParisAdjustableMessage text={'Sorry, no looks available yet'}/>
       </View>
     );
+  }
+
+  _handleDeleteLook(look) {
+    this._setModalVisible({
+      modalVisible: true,
+      title: 'ARE YOU SURE U WANT TO DELETE THIS LOOK?',
+      confirmString: 'DELETE',
+      cancelString: 'NO, IT WAS A MISTAKE',
+      cancelAction: this._hideModal,
+      confirmAction: () => {
+        this.props.deleteLook(look.id);
+        this._hideModal();
+      }
+  })
   }
 
   renderEditLookBtn(look) {
     return (
       <TouchableOpacity onPress={() => this._handleEditPress(look)} style={[styles.editLookBtn]}>
         <Text style={styles.editText}>{i18n.t('EDIT_LARGE')}</Text>
+      </TouchableOpacity>
+
+    );
+  }
+
+  _renderDeleteModal() {
+    const { modalParams } = this.state;
+    return (
+      <ModalQuestion
+        {...modalParams}
+        closeModal={this.setModalVisible}/>
+    );
+  }
+
+  _renderDeleteLookBtn(look) {
+    return (
+      <TouchableOpacity onPress={() => this._handleDeleteLook(look)} style={[styles.deleteLookBtn]}>
+        <Text style={styles.deleteText}>{i18n.t('DELETE_LARGE')}</Text>
       </TouchableOpacity>
 
     );
@@ -111,9 +163,10 @@ class UserLooks extends Component {
         shouldOptimize={this.state.flatLooksLeft.length > 20}
         showMediaGrid={false}
         fromScreen={'profileScreen'}>
+        { this.state.isMyProfile && canEdit ? this._renderDeleteLookBtn(look) : null}
         { this.state.isMyProfile && canEdit ? this.renderEditLookBtn(look) : null}
       </MediaContainer>
-      ));
+    ));
   }
 
   render() {
@@ -130,6 +183,7 @@ class UserLooks extends Component {
               {this._renderLooks(this.state.flatLooksRight)}
             </View>
           </View>
+          {this._renderDeleteModal()}
         </View>
       );
     }
@@ -146,6 +200,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginTop: -10,
   },
+  deleteLookBtn: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
+    backgroundColor: '#000000',
+    alignItems: 'center',
+    opacity: 0.6,
+  },
   editLookBtn: {
     position: 'absolute',
     right: 0,
@@ -154,6 +216,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     opacity: 0.6,
   },
+  deleteText: {
+    fontSize: 14,
+    padding: 6,
+    fontFamily: Fonts.regularFont,
+    color: 'white',
+  },
   editText: {
     fontSize: 14,
     padding: 6,
@@ -161,7 +229,12 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   columnContainer: {
-    flex: 1, flexDirection: 'row', flexWrap: 'wrap', width: deviceWidth, justifyContent: 'flex-end', alignSelf: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: deviceWidth,
+    justifyContent: 'flex-end',
+    alignSelf: 'center',
   },
   looksColumn: {
     flex: 0.5, flexDirection: 'column', padding: 0, paddingHorizontal: 0, margin: 0,

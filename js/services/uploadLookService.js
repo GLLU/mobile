@@ -15,7 +15,7 @@ class UploadLookService {
   }))
 
   static publishLook = lookId => AppAPI.post(`${publishRoute(lookId)}`, {}).then((data => {
-    return data
+    return feedLookMapper.serializeLook(data.look);
   }))
 
   static updateLook = (lookId, body) => AppAPI.put(`${updateLookRoute(lookId)}`, {...body}).then((data => {

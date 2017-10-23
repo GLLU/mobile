@@ -28,8 +28,8 @@ import FiltersView from './FilterContainer';
 import QuerySuggestions from './querySuggestionsGrid/QuerySuggestions';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FeedFilters from './FeedFilters';
-import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
-import { CATEGORIES, EVENTS } from '../../reducers/filters';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import {CATEGORIES, EVENTS} from '../../reducers/filters';
 
 const noResultsIcon = require('../../../images/emptyStates/search.png');
 const editShapeBtn = require('../../../images/icons/edit_your_body_shape.png');
@@ -62,7 +62,7 @@ class BestMatchTabContent extends BaseComponent {
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this.getFeedWithNewBodyShape = this.getFeedWithNewBodyShape.bind(this);
-    this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
+    //this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
     this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
     this._saveBodyShape = this._saveBodyShape.bind(this);
     this.state = {
@@ -84,17 +84,12 @@ class BestMatchTabContent extends BaseComponent {
 
   componentDidMount() {
     const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
-    this._getFeed(defaultFilters);
-    changeFiltersGender(defaultFilters.gender);
-    const that = this;
-    setInterval(() => {
-      that.handleScrollPosition();
-    }, 1000);
-    NetInfo.isConnected.fetch().done(
-      (isConnected) => {
-        isConnected ? showParisBottomMessage(`Hey ${userName}, you look amazing today!`) : null;
-      }
-    );
+      this._getFeed(defaultFilters);
+      changeFiltersGender(defaultFilters.gender);
+      const that = this;
+      setInterval(() => {
+        that.handleScrollPosition();
+      }, 1000);
   }
 
   _getFeed(query) {
@@ -166,8 +161,8 @@ class BestMatchTabContent extends BaseComponent {
     if (pageSize * pageNumber < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-          this.setState({ isLoading: false });
-        }
+            this.setState({ isLoading: false });
+          }
         ).catch((err) => {
           this.setState({ isLoading: false });
         });
@@ -189,7 +184,7 @@ class BestMatchTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'} />
+        fromScreen={'Feedscreen'}/>
     ));
   }
 
@@ -198,10 +193,10 @@ class BestMatchTabContent extends BaseComponent {
       <View style={styles.loader}>
         {(() => {
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)" />;
+            return <Spinner color="rgb(230,230,230)"/>;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
           }
           return null;
         })()}
@@ -212,7 +207,7 @@ class BestMatchTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666" />
+          <Spinner color="#666666"/>
         </View>
       );
     }
@@ -221,7 +216,7 @@ class BestMatchTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover} />
+      <View style={styles.refreshingCover}/>
     );
   }
 
@@ -258,7 +253,7 @@ class BestMatchTabContent extends BaseComponent {
         <Image
           source={editShapeBtn}
           style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
-          resizeMode={'stretch'} />
+          resizeMode={'stretch'}/>
       </View>
     );
   }
@@ -287,8 +282,20 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
+  _renderEmptyContent() {
+    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
+    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
+
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+          <EmptyStateScreen title={emptyTitle}
+          subtitle={emptySubtitle} icon={noResultsIcon}/>
+      </View>
+    );
+  }
+
   _renderScrollView() {
-    const { flatLooks, querySuggestions } = this.props;
+    const { flatLooks } = this.props;
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -299,7 +306,6 @@ class BestMatchTabContent extends BaseComponent {
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
           {this._renderLoadMore()}
-          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
           {this._renderRefreshingCover()}
         </ScrollView>
         {this._renderLoading()}
@@ -310,12 +316,13 @@ class BestMatchTabContent extends BaseComponent {
   _renderLoader() {
     return (
       <View style={{ justifyContent: 'center', height: deviceHeight - 150, alignSelf: 'center', position: 'absolute' }}>
-        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor}/>
       </View>
 
     );
   }
 
+/*
   _renderEmptyContent() {
     const { querySuggestions } = this.props;
     const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
@@ -336,6 +343,7 @@ class BestMatchTabContent extends BaseComponent {
       </View>
     );
   }
+*/
 
   _renderFilterView() {
     const { myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery } = this.props;
@@ -348,7 +356,7 @@ class BestMatchTabContent extends BaseComponent {
         filtersGender={filtersGender}
         changeFiltersGender={changeFiltersGender}
         defaultQuery={defaultFilterQuery}
-        showGenderFilter={false} />
+        showGenderFilter={false}/>
     );
   }
 
@@ -357,7 +365,7 @@ class BestMatchTabContent extends BaseComponent {
     const clonedQuery = _.cloneDeep(query);
     delete clonedQuery.body_type;
     return (
-      <FeedFilters query={clonedQuery} getFeed={this._getFeed} />
+      <FeedFilters query={clonedQuery} getFeed={this._getFeed}/>
     );
   }
 
@@ -382,6 +390,7 @@ class BestMatchTabContent extends BaseComponent {
       });
   }
 
+/*
   getFeedWithSuggestion(suggestionQuery) {
     this.setState({ isRefreshing: true });
     const { getFeed } = this.props;
@@ -393,6 +402,7 @@ class BestMatchTabContent extends BaseComponent {
         this.setState({ isRefreshing: false });
       });
   }
+*/
 
   _saveBodyShape() {
     const { saveBodyShape } = this.props;
@@ -408,8 +418,8 @@ class BestMatchTabContent extends BaseComponent {
         <ScrollView contentContainerStyle={styles.bodyShapeScrollView}>
           <Text style={styles.bodyShapeLegend}>{i18n.t('BODY_SHAPE_LEGEND')}</Text>
           <BodyTypePicker
-            onPick={() => this._showBodyShapeModal()} />
-          <SolidButton label="CHOOSE" onPress={this._saveBodyShape} />
+            onPick={() => this._showBodyShapeModal()}/>
+          <SolidButton label="CHOOSE" onPress={this._saveBodyShape}/>
           {hasUserSize ?
             <TouchableOpacity onPress={this._showBodyShapeModal} style={styles.cancelBodyShapeContainer}>
               <Text style={styles.cancelBodyShape}>{i18n.t('CANCEL')}</Text>

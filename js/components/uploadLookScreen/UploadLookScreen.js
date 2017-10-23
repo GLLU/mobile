@@ -130,8 +130,10 @@ class UploadLookScreen extends Component {
             all: true,
           };
           getUserLooks(looksCall);
+/*
           const query = _.cloneDeep(currentFeedQuery);
           getFeed(query);
+*/
           if (isUploading) {
             this.setModalVisible({
               modalVisible: true,
@@ -162,7 +164,7 @@ class UploadLookScreen extends Component {
 
   resetToFeed() {
     const {resetTo} = this.props
-    resetTo('feedscreen',{resetToIndex: 1})
+    resetTo('feedscreen',{resetToIndex: 1});
   }
 
   getCurrentItem() {
