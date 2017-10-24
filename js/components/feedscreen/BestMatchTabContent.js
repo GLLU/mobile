@@ -25,6 +25,7 @@ import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from '../common/buttons/SolidButton';
 import FiltersView from './FilterContainer';
+import QuerySuggestions from './querySuggestionsGrid/QuerySuggestions';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FeedFilters from './FeedFilters';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
@@ -61,6 +62,7 @@ class BestMatchTabContent extends BaseComponent {
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this.getFeedWithNewBodyShape = this.getFeedWithNewBodyShape.bind(this);
+    //this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
     this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
     this._saveBodyShape = this._saveBodyShape.bind(this);
     this.state = {
@@ -289,14 +291,14 @@ class BestMatchTabContent extends BaseComponent {
 
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <EmptyStateScreen
-          title={emptyTitle}
+          <EmptyStateScreen title={emptyTitle}
           subtitle={emptySubtitle} icon={noResultsIcon}/>
       </View>
     );
   }
 
   _renderScrollView() {
+    const { flatLooks } = this.props;
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -322,6 +324,29 @@ class BestMatchTabContent extends BaseComponent {
 
     );
   }
+
+/*
+  _renderEmptyContent() {
+    const { querySuggestions } = this.props;
+    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
+    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
+    if (!_.isEmpty(querySuggestions)) {
+      return (
+        <ScrollView style={styles.looksSuggestionsScroll}>
+          <Text style={styles.filterLooksNoResultsTxt}>{i18n.t('ME_NO_BEST_MATCH_RESULTS')}</Text>
+          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
+        </ScrollView>
+      );
+    }
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <EmptyStateScreen
+          title={emptyTitle}
+          subtitle={emptySubtitle} icon={noResultsIcon} />
+      </View>
+    );
+  }
+*/
 
   _renderFilterView() {
     const { myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery } = this.props;
@@ -367,6 +392,20 @@ class BestMatchTabContent extends BaseComponent {
         this.setState({ isRefreshing: false });
       });
   }
+
+/*
+  getFeedWithSuggestion(suggestionQuery) {
+    this.setState({ isRefreshing: true });
+    const { getFeed } = this.props;
+    getFeed(suggestionQuery)
+      .then(() => {
+        this.setState({ isRefreshing: false });
+      })
+      .catch((error) => {
+        this.setState({ isRefreshing: false });
+      });
+  }
+*/
 
   _saveBodyShape() {
     const { saveBodyShape } = this.props;
@@ -481,6 +520,17 @@ const
     },
     cancelBodyShapeContainer: {
       alignSelf: 'center',
+    },
+    looksSuggestionsScroll: {
+      flex: 1,
+      backgroundColor: Colors.white,
+    },
+    filterLooksNoResultsTxt: {
+      fontSize: generateAdjustedSize(16),
+      textAlign: 'center',
+      color: Colors.black,
+      padding: 20,
+      fontFamily: Fonts.regular,
     },
   });
 

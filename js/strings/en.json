@@ -128,5 +128,7 @@
   "PEOPLE_SUGGESTION_FEED": "Fashionistas we recommend you start \nfollowing",
   "SEARCH_FOR_MORE_PEOPLE": "Search for more people",
   "ME_NO_FOLLOWING_RESULTS": "Sorry, we could not find any relevant results, we can offer you cool and stylish people to follow after and extend your results",
+  "ME_NO_BEST_MATCH_RESULTS": "Sorry, we could not find any relevant results",
+  "QUERY_SUGGESTION_FEED": "Trendy stuff you may like",
 }
 

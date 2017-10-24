@@ -50,6 +50,7 @@ const mapStateToProps = (state) => {
       ...state.feed[FEED_TYPE_WHATS_HOT].query,
       gender: state.feed[FEED_TYPE_WHATS_HOT].filtersGender,
     },
+    querySuggestions: state.querySuggestions.suggestions
   };
 };
 

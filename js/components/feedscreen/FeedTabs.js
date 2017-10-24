@@ -67,7 +67,7 @@ class FeedTabs extends Component {
   }
 
   render() {
-    const {hasUserSize, feedsRoute} = this.props;
+    const { hasUserSize, feedsRoute } = this.props;
     return (
       <View style={styles.container}>
         <TabViewAnimated
@@ -77,7 +77,7 @@ class FeedTabs extends Component {
           renderHeader={this._renderHeader}
           onRequestChangeTab={this.props.handleIndexChange}
         />
-        { feedsRoute.index === 1 && !hasUserSize ? null : this._renderNavigationButton(filterIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
+        { feedsRoute.index === 1 ? null : this._renderNavigationButton(filterIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
       </View>
     );
   }

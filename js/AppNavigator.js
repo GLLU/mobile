@@ -101,6 +101,7 @@ class AppNavigator extends Component {
         {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}
+        {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.parisBottomMessage ? <ParisMessages /> : null}
       </View>
     );
@@ -125,7 +126,7 @@ const mapStateToProps = state => {
   return ({
     navigationState: state.cardNavigation,
     user: state.user,
-    isProcessing: isProcessing,
+    isProcessing,
     error: isError,
     fatalError: isFatalError,
     warning: isWarning,

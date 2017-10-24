@@ -67,6 +67,7 @@ const mapStateToProps = (state, ownProps) => {
     myFeedType: FEED_TYPE_BEST_MATCH,
     filtersGender: state.feed[FEED_TYPE_BEST_MATCH].filtersGender,
     defaultFilterQuery: { ...state.feed[FEED_TYPE_BEST_MATCH].query, gender: state.feed[FEED_TYPE_BEST_MATCH].filtersGender },
+    querySuggestions: state.querySuggestions.suggestions
   };
 }
 ;

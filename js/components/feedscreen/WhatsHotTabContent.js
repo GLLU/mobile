@@ -21,10 +21,11 @@ import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
 import { formatInvitationMessage } from '../../lib/messages/index';
-import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
-import LinearGradient from 'react-native-linear-gradient';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import QuerySuggestions from './querySuggestionsGrid/QuerySuggestions';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 import i18n from 'react-native-i18n';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
@@ -60,6 +61,7 @@ class HotTabContent extends BaseComponent {
     this.handleScrollPosition = this.handleScrollPosition.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
+    this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
     this.state = {
       isLoading: false,
       noMoreData: false,
@@ -90,6 +92,18 @@ class HotTabContent extends BaseComponent {
 
   _getFeed(query) {
     this.props.getFeed(query);
+  }
+
+  getFeedWithSuggestion(suggestionQuery) {
+    this.setState({ isRefreshing: true });
+    const { getFeed } = this.props;
+    getFeed(suggestionQuery)
+      .then(() => {
+        this.setState({ isRefreshing: false });
+      })
+      .catch((error) => {
+        this.setState({ isRefreshing: false });
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,7 +138,7 @@ class HotTabContent extends BaseComponent {
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const contentSizeHeight = event.nativeEvent.contentSize.height;
       const currentScroll = event.nativeEvent.contentOffset.y;
-      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 350 - layoutMeasurementHeight) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if (!this.state.loadingMore && !this.state.isLoading) {
           this.setState({ loadingMore: true }, this.loadMore);
         }
@@ -276,9 +290,17 @@ class HotTabContent extends BaseComponent {
   }
 
   _renderEmptyContent() {
+    const { querySuggestions } = this.props;
     const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
     const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
-
+    if (!_.isEmpty(querySuggestions)) {
+      return (
+        <ScrollView style={styles.looksSuggestionsScroll}>
+          <Text style={styles.filterLooksNoResultsTxt}>{i18n.t('ME_NO_BEST_MATCH_RESULTS')}</Text>
+          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
+        </ScrollView>
+      );
+    }
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
@@ -289,6 +311,7 @@ class HotTabContent extends BaseComponent {
   }
 
   _renderScrollView() {
+    const { querySuggestions } = this.props
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -299,6 +322,7 @@ class HotTabContent extends BaseComponent {
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
           {this._renderLoadMore()}
+          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
           {this._renderRefreshingCover()}
         </ScrollView>
         {this._renderLoading()}
@@ -408,6 +432,17 @@ const styles = StyleSheet.create({
     width: deviceWidth,
     position: 'absolute',
     top: 0,
+  },
+  looksSuggestionsScroll: {
+    flex: 1,
+    backgroundColor: Colors.white,
+  },
+  filterLooksNoResultsTxt: {
+    fontSize: generateAdjustedSize(16),
+    textAlign: 'center',
+    color: Colors.black,
+    padding: 20,
+    fontFamily: Fonts.regular,
   },
 });
 

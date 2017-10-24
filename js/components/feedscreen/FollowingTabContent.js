@@ -388,7 +388,6 @@ class FollowingTabContent extends BaseComponent {
     } else return null;
   }
 
-
   _renderLoader() {
     return (
       <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
