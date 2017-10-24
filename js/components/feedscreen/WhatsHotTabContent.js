@@ -138,7 +138,7 @@ class HotTabContent extends BaseComponent {
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const contentSizeHeight = event.nativeEvent.contentSize.height;
       const currentScroll = event.nativeEvent.contentOffset.y;
-      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 250) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 350 - layoutMeasurementHeight) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if (!this.state.loadingMore && !this.state.isLoading) {
           this.setState({ loadingMore: true }, this.loadMore);
         }
@@ -196,6 +196,9 @@ class HotTabContent extends BaseComponent {
     return (
       <View style={styles.loader}>
         {(() => {
+          if (this.state.noMoreData) {
+            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
+          }
           if (this.state.isLoading) {
             return <Spinner color="rgb(230,230,230)" />;
           }
