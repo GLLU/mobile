@@ -1,7 +1,7 @@
 // @flow
 
 import React, {Component} from 'react';
-import {Dimensions, BackAndroid, View, StyleSheet, Modal, TouchableOpacity, Image, Animated} from 'react-native';
+import {Dimensions, BackAndroid, View, StyleSheet, Modal, TouchableOpacity, Image, Animated, Text} from 'react-native';
 import {connect} from 'react-redux';
 import OneSignal from 'react-native-onesignal';
 
@@ -69,6 +69,7 @@ class FeedPage extends Component {
       contentHeight: null,
       showBottomCamera: true,
       fadeAnimContentOnPress: new Animated.Value(10),
+      fadeAnimUploadHint: new Animated.Value(-160),
       feedsRoute: {
         index: props.navigation.state.params ? props.navigation.state.params.resetToIndex : 1,
         routes: [
@@ -161,6 +162,15 @@ class FeedPage extends Component {
             toValue: -80,
           }            // Configuration
         ).start();
+/*
+        Animated.timing(          // Uses easing functions
+          this.state.fadeAnimUploadHint,    // The value to drive
+          {
+            toValue: -80,
+          }            // Configuration
+        ).start();
+
+*/
       } else {
         Animated.timing(          // Uses easing functions
           this.state.fadeAnimContentOnPress,    // The value to drive
@@ -168,7 +178,35 @@ class FeedPage extends Component {
             toValue: 10,
           }            // Configuration
         ).start();
+
+        Animated.timing(          // Uses easing functions
+          this.state.fadeAnimUploadHint,    // The value to drive
+          {
+            toValue: 90,
+            delay: 500,
+          }            // Configuration
+        ).start();
+
+/*
+        Animated.timing(          // Uses easing functions
+          this.state.fadeAnimUploadHint,    // The value to drive
+          {
+            toValue: -80,
+            delay: 5000,
+          }            // Configuration
+        ).start();
+*/
+
       }
+    }
+    else {
+      Animated.timing(          // Uses easing functions
+        this.state.fadeAnimUploadHint,    // The value to drive
+        {
+          toValue: 90,
+          delay: 500,
+        }            // Configuration
+      ).start();
     }
   }
 
@@ -216,6 +254,19 @@ class FeedPage extends Component {
     );
   }
 
+  _renderUploadHint = () => {
+    return (
+      <Animated.View style={{ position: 'absolute', bottom: this.state.fadeAnimUploadHint, alignSelf: 'center' }}>
+        <View style={styles.talkBubble}>
+          <View style={styles.talkBubbleSquare}>
+            <Text style={styles.cameraHintText}>What are you waiting for? Upload your first look and start making money!</Text>
+          </View>
+          <View style={styles.talkBubbleTriangle} />
+        </View>
+      </Animated.View>
+    );
+  }
+
   toggleFilterMenues(feedType: string) {
     this.props.toggleFiltersMenus(feedType);
   }
@@ -256,6 +307,7 @@ class FeedPage extends Component {
         </View>
         {this._renderFeed()}
         {this.renderBottomCamera()}
+        {this._renderUploadHint()}
         <Modal
           animationType="slide" visible={this.props.modalShowing}
           style={{ justifyContent: 'flex-start', alignItems: 'center' }} onRequestClose={this.closeModal}>

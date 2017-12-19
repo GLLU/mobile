@@ -47,7 +47,8 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
       .then((multiData) => {
         if (multiData && multiData[0] && multiData[1]) {
           const { looks, meta } = multiData[0];
-          const videoLook = multiData[1].looks[0];
+          const randomVideoLocation = Math.floor(Math.random() * 9) + 1;
+          const videoLook = multiData[1].looks[randomVideoLocation];
           const metaWithRefresh = { ...meta, lastRefreshPage: getState().feed[feedType].meta.lastRefreshPage };
 
           if (videoLook) {
