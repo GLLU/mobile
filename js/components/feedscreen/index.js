@@ -307,7 +307,9 @@ class FeedPage extends Component {
         </View>
         {this._renderFeed()}
         {this.renderBottomCamera()}
+{/*
         {this._renderUploadHint()}
+*/}
         <Modal
           animationType="slide" visible={this.props.modalShowing}
           style={{ justifyContent: 'flex-start', alignItems: 'center' }} onRequestClose={this.closeModal}>
