@@ -14,7 +14,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenFollwing', params);
   return {
     navigateToLooksScreen,
-    onFollowClicked: () => ownProps.navigateTo('searchScreen'),
+    onFollowClicked: () => ownProps.navigateTo('searchScreen', { key: 'people' }),
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getFollowingFeed(query)),
     refreshFeed: () => dispatch(refreshFeed(FEED_TYPE_FOLLOWING)),

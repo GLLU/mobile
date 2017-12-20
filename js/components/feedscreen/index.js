@@ -74,8 +74,8 @@ class FeedPage extends Component {
         index: props.navigation.state.params ? props.navigation.state.params.resetToIndex : 1,
         routes: [
           { key: FEED_TYPE_FOLLOWING, title: 'Following' },
-          { key: FEED_TYPE_BEST_MATCH, title: 'My Shape' },
           { key: FEED_TYPE_WHATS_HOT, title: "What's Hot" },
+          { key: FEED_TYPE_BEST_MATCH, title: 'My Shape' }
         ],
       },
     };

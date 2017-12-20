@@ -43,7 +43,11 @@ class SearchScreen extends Component {
     this._seachFromHistory = this._seachFromHistory.bind(this)
     this.state = {
       searchTerm: '',
-      currentTab: { key: 'looks', title: '' },
+      currentTab: { key: props.navigation && 
+        props.navigation.state &&
+        props.navigation.state.params &&
+        props.navigation.state.params.key ?
+        props.navigation.state.params.key : 'looks', title: '' },
     }
   }
 
@@ -98,7 +102,8 @@ class SearchScreen extends Component {
   }
 
   render() {
-    const { navigateTo } = this.props
+    const { navigateTo } = this.props;
+    const { currentTab } = this.state;
     return (// Will remove the marginTop
       <View style={styles.searchScreenContainer}>
         <View style={styles.searchBarContainer}>
@@ -111,7 +116,7 @@ class SearchScreen extends Component {
                        clearSearchBar={this._clearSearchBar}/>
           </View>
         </View>
-        <SearchTabs navigateTo={navigateTo} setCurrentTab={this._setCurrentTab}
+        <SearchTabs navigateTo={navigateTo} setCurrentTab={this._setCurrentTab} activeTab={currentTab}
                     searchFromHistory={this._seachFromHistory}/>
       </View>
     );

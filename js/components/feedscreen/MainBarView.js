@@ -166,7 +166,7 @@ class MainBarView extends BaseComponent {
     const {logEvent, navigateTo, handleIndexChange} = this.props
     logEvent('Feedscreen', {name: 'Search click'});
     navigateTo('searchScreen');
-    handleIndexChange(2)
+    handleIndexChange(1);
   }
 
   renderNavigationButton(icon: string, onPress: void, iconStyle: object, containerStyle: object) {
