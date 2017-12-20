@@ -61,13 +61,16 @@ class ParisMessages extends Component {
   render() {
     let text = this.props.message.length > 0 ? `${this.props.message}` : ''
     return (
+      null
+    );
+    /* return (
       <View style={[styles.container, {backgroundColor: 'black'}]}>
         <View style={styles.headerBtn}>
           <Image source={ParisHead} style={styles.cancelEdit}/>
         </View>
         <Text style={styles.textStyle}>{text}</Text>
       </View>
-    )
+    )*/
   }
 }
 
