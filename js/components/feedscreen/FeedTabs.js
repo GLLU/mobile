@@ -78,7 +78,7 @@ class FeedTabs extends Component {
           renderHeader={this._renderHeader}
           onRequestChangeTab={this.props.handleIndexChange}
         />
-        { feedsRoute.index === 1 ? null : this._renderNavigationButton(filterIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
+        { feedsRoute.index === 2 ? null : this._renderNavigationButton(filterIcon, this._toggleFilterMenu, styles.btnImage, styles.filterButtonContainer)}
       </View>
     );
   }
