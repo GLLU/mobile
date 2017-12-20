@@ -87,5 +87,5 @@ class App extends Component {
     return <AppNavigator notification={this.props.notification} />;
   }
 }
-App = CodePush(App);
+//App = CodePush(App);
 export default App;

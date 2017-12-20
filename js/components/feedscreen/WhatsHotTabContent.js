@@ -20,8 +20,8 @@ import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
 import _ from 'lodash';
-import { formatInvitationMessage } from '../../lib/messages/index';
-import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import {formatInvitationMessage} from '../../lib/messages/index';
+import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
 import QuerySuggestions from './querySuggestionsGrid/QuerySuggestions';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
@@ -165,8 +165,8 @@ class HotTabContent extends BaseComponent {
     if (pageSize * pageNumber < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
-          this.setState({ isLoading: false });
-        }
+            this.setState({ isLoading: false });
+          }
         ).catch((err) => {
           this.setState({ isLoading: false });
         });
@@ -188,33 +188,43 @@ class HotTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'} />
+        fromScreen={'Feedscreen'}/>
     ));
   }
 
   _renderLoadMore() {
-    return (
-      <View style={styles.loader}>
-        {(() => {
-          if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
-          }
-          if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)" />;
-          }
-          if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
-          }
-          return null;
-        })()}
-      </View>);
+    const { querySuggestions } = this.props;
+
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.loader}>
+          <Spinner color="rgb(230,230,230)" />
+        </View>
+      );
+    }
+    if (this.state.noMoreData) {
+      return (
+        <View>
+          <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>
+          <QuerySuggestions querySuggestions={querySuggestions}
+                            getFeedWithSuggestion={this.getFeedWithSuggestion} />
+        </View>
+      );
+    }
+    if (this.props.flatLooks.length > 2) {
+      return (
+        <View style={styles.loader}>
+          <Image source={require('../../../images/icons/feedLoadMore.gif')} />
+        </View>
+      );
+    }
   }
 
   _renderLoading() {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666" />
+          <Spinner color="#666666"/>
         </View>
       );
     }
@@ -223,7 +233,7 @@ class HotTabContent extends BaseComponent {
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover} />
+      <View style={styles.refreshingCover}/>
     );
   }
 
@@ -260,7 +270,7 @@ class HotTabContent extends BaseComponent {
         <Image
           source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
           style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
-          resizeMode={'stretch'} />
+          resizeMode={'stretch'}/>
       </View>
     );
   }
@@ -297,7 +307,7 @@ class HotTabContent extends BaseComponent {
       return (
         <ScrollView style={styles.looksSuggestionsScroll}>
           <Text style={styles.filterLooksNoResultsTxt}>{i18n.t('ME_NO_BEST_MATCH_RESULTS')}</Text>
-          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
+          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion}/>
         </ScrollView>
       );
     }
@@ -305,13 +315,12 @@ class HotTabContent extends BaseComponent {
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <EmptyStateScreen
           title={emptyTitle}
-          subtitle={emptySubtitle} icon={noResultsIcon} />
+          subtitle={emptySubtitle} icon={noResultsIcon}/>
       </View>
     );
   }
 
   _renderScrollView() {
-    const { querySuggestions } = this.props
     return (
       <View style={styles.tab}>
         <ScrollView
@@ -322,7 +331,6 @@ class HotTabContent extends BaseComponent {
           refreshControl={this._renderRefreshControl()}>
           {this.renderColumns()}
           {this._renderLoadMore()}
-          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
           {this._renderRefreshingCover()}
         </ScrollView>
         {this._renderLoading()}
@@ -333,7 +341,7 @@ class HotTabContent extends BaseComponent {
   _renderLoader() {
     return (
       <View style={{ alignItems: 'center', justifyContent: 'center', height: deviceHeight - 150 }}>
-        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor} />
+        <ActivityIndicator animating style={{ height: 50 }} color={Colors.secondaryColor}/>
       </View>
 
     );
@@ -348,14 +356,14 @@ class HotTabContent extends BaseComponent {
         getFeed={this._getFeed}
         filtersGender={filtersGender}
         changeFiltersGender={changeFiltersGender}
-        defaultQuery={defaultFilterQuery} />
+        defaultQuery={defaultFilterQuery}/>
     );
   }
 
   _renderFeedFilters() {
     const { query } = this.props;
     return (
-      <FeedFilters query={query} getFeed={this._getFeed} />
+      <FeedFilters query={query} getFeed={this._getFeed}/>
     );
   }
 
