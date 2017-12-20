@@ -10,6 +10,7 @@ import {
 import { REHYDRATE } from 'redux-persist/constants';
 
 const initialState = {
+  activeTab: 'looks',
   looks: {
     history: ['black', 'jeans', 'dress', 'dinner', 'yellow'],
     data: [],

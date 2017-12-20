@@ -217,12 +217,15 @@ class FiltersView extends BaseComponent {
   }
 
   render() {
-    const { showGenderFilter = true } = this.props;
+    const { showGenderFilter = true, filters } = this.props;
+    const { currentFilter } = this.state;
+    const isActiveFilter = currentFilter.category || currentFilter.occasion ||
+          (currentFilter.body_type && _.find(filters, filter => filter.title ==='BODY_SHAPE'));
     return (
       <ScrollView style={styles.filterViewContainer} contentContainerStyle={styles.contentContainerStyle}>
         <View style={styles.TopRow}>
-          <TouchableOpacity onPress={this._resetFilters} style={styles.topSideButtons}>
-            <Text style={styles.cleaResetText}>{I18n.t('RESET FILTERS')}</Text>
+          <TouchableOpacity onPress={this._resetFilters} style={styles.topSideButtons} disabled={!isActiveFilter}>
+            <Text style={isActiveFilter ? styles.cleaResetText : styles.disabledText}>{I18n.t('RESET FILTERS')}</Text>
           </TouchableOpacity>
           { showGenderFilter ? this._renderGenderFilter() : null}
           <TouchableOpacity onPress={this._cancelFilter} style={[styles.topSideButtons, styles.cancelButtonContainer]}>
@@ -278,6 +281,11 @@ const styles = StyleSheet.create({
   cleaResetText: {
     fontSize: generateAdjustedSize(12),
     fontFamily: Fonts.regularFont,
+  },
+  disabledText: {
+    fontSize: generateAdjustedSize(12),
+    fontFamily: Fonts.regularFont,
+    opacity: 0.4,
   },
   filterByText: {
     fontWeight: '600',

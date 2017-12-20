@@ -12,7 +12,7 @@ export default class SearchTabs extends Component {
     this._handleIndexChange = this._handleIndexChange.bind(this)
     this._renderScene = this._renderScene.bind(this)
     this.state = {
-      index: 1,
+      index: props.activeTab.key === 'looks' ? 0 : 1,
       routes: [
         {key: 'looks', title: 'Looks'},
         {key: 'people', title: 'People'},

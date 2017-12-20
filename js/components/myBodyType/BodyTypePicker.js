@@ -73,7 +73,7 @@ class BodyTypePicker extends Component {
                               currentPage={this.props.currentIndex} onPageChange={this._bodyTypeChange.bind(this)}>
             {this.props.bodyTypes[this.props.gender].map((img, i) => {
               const isActive = i === this.props.currentIndex;
-              isActive ? this._changeTitleAndDescription(img) : null
+              isActive ? (img) => this._changeTitleAndDescription(img) : null
               return (
                 <CarouselItem key={i} item={img} itemActive={isActive}/>
               )

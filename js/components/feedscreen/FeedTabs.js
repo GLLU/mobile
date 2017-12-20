@@ -38,14 +38,15 @@ class FeedTabs extends Component {
         return (<FollowingTabContent
           navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 0}
           showBottomCameraButton={showBottomCameraButton}/>);
-      case FEED_TYPE_BEST_MATCH:
-        return (<BestMatchTabContent
-          navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 1}
-          showBottomCameraButton={showBottomCameraButton}/>);
       case FEED_TYPE_WHATS_HOT:
         return (<WhatsHotTabContent
+          navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 1}
+          showBottomCameraButton={showBottomCameraButton}/>);
+      case FEED_TYPE_BEST_MATCH:
+        return (<BestMatchTabContent
           navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 2}
           showBottomCameraButton={showBottomCameraButton}/>);
+      
       default:
         return <View style={{height: 200, width: 450, backgroundColor: 'red'}}/>;
     }
