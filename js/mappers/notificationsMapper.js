@@ -16,11 +16,11 @@ export function map(notification) {
     initiator: mappedInitiator,
     id: notification.id,
     coverImage: cover ? _.find(cover.list, x => x.version === 'medium') : null,
-    actionText: getTextByAction(notification.action_kind)
+    actionText: getTextByAction(notification.action_kind, notification.text)
   };
 }
 
-function getTextByAction(actionKind) {
+function getTextByAction(actionKind, text) {
   switch (actionKind) {
     case 'Like':
       return i18n.t('LIKED_YOUR_LOOK');
@@ -31,6 +31,6 @@ function getTextByAction(actionKind) {
     case 'Upload':
       return i18n.t('PARIS_VIDEO_LIVE');
     default:
-      return i18n.t('UNRECOGNIZED_NOTIFICATION_ACTION');
+      return text;
   }
 }

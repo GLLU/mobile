@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
   },
 });
 
+// Don't allow text growing on IOS
+Text.defaultProps.allowFontScaling = false;
+
 class App extends Component {
 
   constructor(props) {
