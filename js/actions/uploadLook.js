@@ -16,14 +16,68 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+export const SET_SUGGESTIONS_ITEMS = 'SET_SUGGESTIONS_ITEMS';
 
 import _ from 'lodash';
 
 import rest from '../api/rest';
 import { loadBrands, showProcessing, hideProcessing } from './index';
+import RNFetchBlob from 'react-native-fetch-blob';
+import uploadLookService from '../services/uploadLookService';
 import Utils from '../utils';
 
 let api_key = null;
+
+function _getSuggestion(image) {
+  return new Promise((resolve, reject) => {
+    RNFetchBlob
+  .config({
+    fileCache: true,
+  })
+  .fetch('GET', image.localPath)
+  .then((resp) => {
+    resp.base64().then((readFile) => {
+      uploadLookService.getLookSuggestions(Utils.convertDataURIToBinary(readFile)).then((data) => {
+        if (data && data.tags) {
+          //this.addTags(data);
+          resolve(data);
+        } else {
+          reject('Error - No data');
+        }
+      }).catch(() => {
+        reject('error retrieving suggestions');
+      });
+    });
+  });
+  });
+}
+
+export function createLookItem(position) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const lookId = state.uploadLook.lookId;
+    const body = {
+      item: {
+        cover_x_pos: position.locationX,
+        cover_y_pos: position.locationY,
+      }
+    };
+    return new Promise((resolve, reject) => {
+      dispatch(rest.actions.items.post({ look_id: lookId }, { body: JSON.stringify(body) }, (err, data) => {
+        if (!err) {
+          resolve(dispatch({
+            type: CREATE_LOOK_ITEM_BY_POSITION,
+            payload: data,
+          })
+          );
+        } else {
+          reject(err);
+        }
+      }));
+    });
+  }
+}
+
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
@@ -34,16 +88,27 @@ export function addNewLook(image) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
+            /*_getSuggestion(image).then((data) => {
+              const payload = data;
+              dispatch({
+                type: SET_SUGGESTIONS_ITEMS,
+                payload,
+              });
+              //const positions = data.tags;
+              //for (let i = 0; i < positions.length; i++) {
+              //createLookItem({ locationX: positions[0].x, locationY: positions[0].y });
+              //}
+            })*/
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
               if (data) {
-                const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-                if(data.look.cover.type !== "image") {
+                const url = data.look.cover.type === 'image' ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+                if (data.look.cover.type !== 'image') {
                   const payload = _.merge(data.look, {
                     image: url,
                     items: [],
-                    localFilePath: image.localPath
+                    localFilePath: image.localPath,
                   });
-
+          
                   dispatch({
                     type: EDIT_NEW_LOOK,
                     payload,
@@ -70,16 +135,18 @@ export function addNewLook(image) {
             }).catch(reject);
           } else {
             dispatch(hideProcessing());
-            reject('Authorization error')
+            reject('Authorization error');
           }
         }).catch(reject);
 
       } else {
-        reject('Authorization error')
+        reject('Authorization error');
       }
     });
   }
 }
+
+
 
 export function editNewLook(lookId) {
   return (dispatch, getState) => {
@@ -120,32 +187,6 @@ export function setTagPosition(payload) {
   return {
     type: SET_TAG_POSITION,
     payload: payload
-  }
-}
-
-export function createLookItem(position) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const lookId = state.uploadLook.lookId;
-    const body = {
-      item: {
-        cover_x_pos: position.locationX,
-        cover_y_pos: position.locationY,
-      }
-    };
-    return new Promise((resolve, reject) => {
-      dispatch(rest.actions.items.post({look_id: lookId}, { body: JSON.stringify(body) } , (err, data) => {
-        if (!err) {
-          resolve(dispatch({
-              type: CREATE_LOOK_ITEM_BY_POSITION,
-              payload: data
-            })
-          );
-        } else {
-          reject(err);
-        }
-      }));
-    });
   }
 }
 

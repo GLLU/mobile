@@ -20,3 +20,14 @@ export function formatLook(path) {
     };
   }
 }
+
+export function convertDataURIToBinary(base64) {
+  const raw = window.atob(base64);
+  const rawLength = raw.length;
+  let array = new Uint8Array(new ArrayBuffer(rawLength));
+
+  for(i = 0; i < rawLength; i++) {
+    array[i] = raw.charCodeAt(i);
+  }
+  return array;
+}

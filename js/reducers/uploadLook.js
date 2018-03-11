@@ -3,6 +3,7 @@ import {
   EDIT_NEW_LOOK,
   EDIT_TAG,
   CREATE_LOOK_ITEM_BY_POSITION,
+  SET_SUGGESTIONS_ITEMS,
   SELECT_LOOK_ITEM,
   SET_TAG_POSITION,
   ADD_ITEM_TYPE,
@@ -73,6 +74,12 @@ const ACTION_HANDLERS = {
     return {
       ...state,
       items: state.items,
+    }
+  },
+  [SET_SUGGESTIONS_ITEMS]: (state, action) => {
+    return {
+      ...state,
+      positions: action.payload,
     }
   },
   [ADD_ITEM_TYPE]: (state, action) => {

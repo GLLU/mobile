@@ -25,6 +25,8 @@ class AddItemPage extends Component {
   static propTypes = {
     publishLookItem: React.PropTypes.func,
     updateLookItem: React.PropTypes.func,
+    createLookItem: React.PropTypes.func,
+    goBack: React.PropTypes.func,
     mode: React.PropTypes.string,
     setUser: React.PropTypes.func,
     look: React.PropTypes.object,
@@ -35,6 +37,7 @@ class AddItemPage extends Component {
   constructor(props) {
     super(props);
     this.handleContinue = this.handleContinue.bind(this);
+    this.handleAddItem = this.handleAddItem.bind(this);
     this.state = {
       isVideo: this.props.isVideo,
       currentStep: this.props.isVideo && props.items.length > 0 ? 0 : -1,
@@ -45,18 +48,19 @@ class AddItemPage extends Component {
       allowContinue: false,
       currMode: 'tagging',
       currItem: props.navigation.state.params.mode === "edit" ? { ...props.items[0]} : {id: -1},
-      isPublishing:false
+      isPublishing: false,
+      tagsPositions: [],
     };
 
   }
 
   setCurrentItem(item) {
-    this.setState({currItem: item})
+    this.setState({ currItem: item });
   }
 
   componentWillMount() {
     BackAndroid.addEventListener('uploadBackPress', () => {
-      this.handleBackButton()
+      this.handleBackButton();
       return true;
     });
   }
@@ -93,20 +97,21 @@ class AddItemPage extends Component {
   }
 
   publishAction() {
-    this.props.logEvent('UploadLookScreen', {name: 'Publish click'});
+    const { logEvent, goBack, navigateTo, currentFeedQuery } = this.props;
+    logEvent('UploadLookScreen', {name: 'Publish click'});
     this.setState({isPublishing:true},()=>{
-      this.props.publishLookItem().then(() => {
+      publishLookItem().then(() => {
         this.setState({isPublishing:false},()=> {
           if (this.props.state === LOOK_STATES.PUBLISHED) {
-            this.props.goBack()
+            goBack();
           } else {
             const looksCall = {
               id: this.state.userId,
-              all: true
-            }
-            this.props.getUserLooks(looksCall)
-            this.props.getFeed(this.props.currentFeedQuery)
-            this.props.navigateTo('finishLookScreen');
+              all: true,
+            };
+            getUserLooks(looksCall);
+            getFeed(currentFeedQuery);
+            navigateTo('finishLookScreen');
           }
         });
       });
@@ -146,14 +151,10 @@ class AddItemPage extends Component {
     });
   }
 
-  handleNewItem() {
-    const locationX = w / 2;
-    const locationY = h / 2;
-    const left = locationX / w;
-    const top = locationY / h;
-    const position = {locationX: left, locationY: top};
-    this.props.createLookItem(position).then((data) => {
-      this.setState({currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1})
+  handleNewItem(position) {
+    const itemPosition = { locationX: position ? position.locationX : 0.5, locationY: position ? position.locationY : 0.5 };
+    return this.props.createLookItem(itemPosition).then((data) => {
+      this.setState({ currItem: data.payload.item, currentStep: this.state.isVideo ? this.state.currentStep : -1 });
     });
   }
 
@@ -163,8 +164,9 @@ class AddItemPage extends Component {
   }
 
   renderImageWithTags() {
-    const {items, image} = this.props;
+    const { items, image } = this.props;
     const mode = this.getCurrentMode();
+    //this.addTags();
     return (
       <ImageWithTags
         mode={mode}
@@ -196,7 +198,7 @@ class AddItemPage extends Component {
 
   renderActions() {
     return (
-      <View style={{ height: h, width: w}}>
+      <View style={{ height: h, width: w }}>
         {this.renderHeader()}
         {this.state.currentStep === -1 ? null : this.renderThreeSteps()}
 
@@ -205,27 +207,25 @@ class AddItemPage extends Component {
   }
 
   renderThreeSteps() {
-    const {currItem} = this.state
+    const { currItem } = this.state;
     return (
-      <View style={{flexDirection: 'column', justifyContent: 'space-between', flex: 1}}>
-        <View style={{width: w, justifyContent: 'space-between', flexDirection: 'row'}}>
+      <View style={{ flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+        <View style={{ width: w, justifyContent: 'space-between', flexDirection: 'row' }}>
           <StepTwoOccasions item={currItem} />
           <StepOneCategory item={currItem} />
         </View>
-
-          <StepZeroBrand item={currItem}/>
-
+        <StepZeroBrand item={currItem} />
       </View>
     )
   }
 
   renderContent() {
     if (this.state.currentStep !== 1) {
-      return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()
+      return this.state.isVideo ? this.renderVideoWithTags() : this.renderImageWithTags();
     }
     return (
       <View>
-          {this.renderHeader()}
+        {this.renderHeader()}
         <StepThreePublish items={this.props.items} publishItem={this.publishAction.bind(this)} />
       </View>);
   }
@@ -249,7 +249,7 @@ class AddItemPage extends Component {
     return (
       <View>
         {this.renderContent()}
-        {this.state.isPublishing?<SpinnerSwitch/>:null}
+        {this.state.isPublishing ? <SpinnerSwitch /> : null}
       </View>
     );
   }
@@ -258,18 +258,18 @@ class AddItemPage extends Component {
 function bindActions(dispatch) {
   return {
     setUser: name => dispatch(setUser(name)),
-    updateLookItem: (look) => dispatch(updateLookItem(look)),
-    publishLookItem: (look) => dispatch(publishLookItem(look)),
+    updateLookItem: look => dispatch(updateLookItem(look)),
+    publishLookItem: look => dispatch(publishLookItem(look)),
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
-    setTagPosition: (position) => dispatch(setTagPosition(position)),
-    getFeed: (query) => dispatch(getFeed(query)),
+    setTagPosition: position => dispatch(setTagPosition(position)),
+    getFeed: query => dispatch(getFeed(query)),
     getUserLooks: data => dispatch(getUserLooks(data)),
   };
 }
 
-const mapStateToProps = state => {
-  const {lookId, image, items, localFilePath} = state.uploadLook;
-  const isVideo = Utils.isVideo(image)
+const mapStateToProps = (state) => {
+  const { lookId, image, items, localFilePath, positions } = state.uploadLook;
+  const isVideo = Utils.isVideo(image);
   return {
     lookId,
     image,
@@ -279,8 +279,9 @@ const mapStateToProps = state => {
     state: state.uploadLook.state,
     categories: state.filters.categories,
     currentFeedQuery: state.feed.query,
-    userId: state.user.id
+    userId: state.user.id,
+    positions,
   };
-}
+};
 
 export default connect(mapStateToProps, bindActions)(asScreen(AddItemPage));
