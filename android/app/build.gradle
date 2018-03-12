@@ -98,7 +98,7 @@ android {
         applicationId "com.infash"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 10
+        versionCode 14
         versionName "1.2.7"
         multiDexEnabled true
         manifestPlaceholders = [onesignal_app_id: "9dafae92-eb15-420d-b362-0518a6b5234e",
@@ -208,7 +208,6 @@ dependencies {
     compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-video')
     compile project(':react-native-vector-icons')
-    compile project(':react-native-code-push')
     compile project(':react-native-fbsdk')
     compile project(':react-native-appsflyer')
     compile fileTree(include: ['*.jar'], dir: 'libs')

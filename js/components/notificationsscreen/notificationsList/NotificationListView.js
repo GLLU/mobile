@@ -54,7 +54,7 @@ class NotificationListView extends BaseComponent {
     this.logEvent('NotificationsScreen', {name: 'user clicked notification'});
     if(props.action_kind === 'Follow') {
       this.props.navigateTo('profileScreen', { userId: props.initiator.id} );
-    } else  {
+    } else if (props.action_kind === 'Like' || props.action_kind === 'Comment' || props.action_kind === 'Upload')  {
       this.setState({isNavigating:true},()=>{
         this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
           .then(look=>{

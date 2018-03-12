@@ -103,11 +103,11 @@ class LoginPage extends Component {
           </View>
           <Icon.Button iconStyle={styles.btnFB}
                        style={styles.fbIcon}
-                       borderRadius={4}
-                       name="facebook"
+                       borderRadius={2}
+                       name="facebook-official"
                        backgroundColor="#3b5998"
                        onPress={this.connectWithFB.bind(this)}>
-            Connect with facebook
+            Continue with facebook
           </Icon.Button>
           <View style={styles.alreadyBox}>
             <Text style={styles.alreadyTxt}>Already a user?</Text>

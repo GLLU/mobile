@@ -27,7 +27,6 @@ import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -52,10 +51,6 @@ public class MainApplication extends Application
     private final ReactNativeHost mReactNativeHost =
             new ReactNativeHost(this) {
 
-                @Override
-                protected String getJSBundleFile() {
-                    return CodePush.getJSBundleFile();
-                }
 
 
                 @Override
@@ -83,7 +78,6 @@ public class MainApplication extends Application
                             new ReactVideoPackage(),
                             new ExtraDimensionsPackage(),
                             new VectorIconsPackage(),
-                            new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
                             new FBSDKPackage(mCallbackManager),
                             new RNAppsFlyerPackage(MainApplication.this)
                             );
