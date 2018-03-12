@@ -46,5 +46,3 @@ dependencies {
     compile 'com.github.MartinMobilize:easy-video-player:0.4.3'
     compile "com.afollestad.material-dialogs:core:$MD_VERSION"
 }
-
-apply from: 'https://raw.githubusercontent.com/afollestad/aidanfollestad.com/master/android-lib-release.gradle'
