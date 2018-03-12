@@ -28,30 +28,6 @@ import Utils from '../utils';
 
 let api_key = null;
 
-function _getSuggestion(image) {
-  return new Promise((resolve, reject) => {
-    RNFetchBlob
-  .config({
-    fileCache: true,
-  })
-  .fetch('GET', image.localPath)
-  .then((resp) => {
-    resp.base64().then((readFile) => {
-      uploadLookService.getLookSuggestions(Utils.convertDataURIToBinary(readFile)).then((data) => {
-        if (data && data.tags) {
-          //this.addTags(data);
-          resolve(data);
-        } else {
-          reject('Error - No data');
-        }
-      }).catch(() => {
-        reject('error retrieving suggestions');
-      });
-    });
-  });
-  });
-}
-
 export function createLookItem(position) {
   return (dispatch, getState) => {
     const state = getState();
@@ -65,17 +41,43 @@ export function createLookItem(position) {
     return new Promise((resolve, reject) => {
       dispatch(rest.actions.items.post({ look_id: lookId }, { body: JSON.stringify(body) }, (err, data) => {
         if (!err) {
-          resolve(dispatch({
+          dispatch({
             type: CREATE_LOOK_ITEM_BY_POSITION,
             payload: data,
-          })
-          );
+          });
+          resolve(data);
         } else {
           reject(err);
         }
       }));
     });
-  }
+  };
+}
+
+function _getSuggestion(image, dispatch, resolve) {
+  return new Promise((innerResolve, reject) => {
+    RNFetchBlob
+  .config({
+    fileCache: true,
+  })
+  .fetch('GET', image.localPath)
+  .then((resp) => {
+    resp.base64().then((readFile) => {
+      uploadLookService.getLookSuggestions(Utils.convertDataURIToBinary(readFile)).then((data) => {
+        if (data && data.tags) {
+          const positions = data.tags;
+          dispatch(createLookItem({ locationX: positions[1].x, locationY: positions[1].y }));
+          innerResolve(data);
+          resolve(data);
+        } else {
+          reject('Error - No data');
+        }
+      }).catch(() => {
+        reject('error retrieving suggestions');
+      });
+    });
+  });
+  });
 }
 
 // Actions
@@ -88,24 +90,12 @@ export function addNewLook(image) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
-            /*_getSuggestion(image).then((data) => {
-              const payload = data;
-              dispatch({
-                type: SET_SUGGESTIONS_ITEMS,
-                payload,
-              });
-              //const positions = data.tags;
-              //for (let i = 0; i < positions.length; i++) {
-              //createLookItem({ locationX: positions[0].x, locationY: positions[0].y });
-              //}
-            })*/
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
               if (data) {
                 const url = data.look.cover.type === 'image' ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
                 if (data.look.cover.type !== 'image') {
                   const payload = _.merge(data.look, {
                     image: url,
-                    items: [],
                     localFilePath: image.localPath,
                   });
           
@@ -113,22 +103,26 @@ export function addNewLook(image) {
                     type: EDIT_NEW_LOOK,
                     payload,
                   });
-                  resolve(payload);
                   dispatch(hideProcessing());
                 } else {
                   Utils.preloadImages([url]).then(() => {
                     const payload = _.merge(data.look, {
                       image: url,
-                      items: [],
                     });
                     dispatch({
                       type: EDIT_NEW_LOOK,
                       payload,
                     });
-                    resolve(payload);
+                    if (data && data.items > 0) {
+                      resolve(payload);
+                    }
                     dispatch(hideProcessing());
                   }).catch(reject);
                 }
+                _getSuggestion(image, dispatch, resolve).then((tagsData) => {
+                  const positions = tagsData.tags;
+                  dispatch(createLookItem({ locationX: positions[1].x, locationY: positions[1].y }));
+                });
               } else {
                 reject('Uplaod error');
               }
@@ -491,3 +485,14 @@ export function toggleOccasionTag(tag, selected, itemId) {
     }
   };
 }
+
+/*
+/*const payload = data;
+              dispatch({
+                type: SET_SUGGESTIONS_ITEMS,
+                payload,
+              });
+              //for (let i = 0; i < positions.length; i++) {
+              //
+              }
+*/

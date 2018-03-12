@@ -68,9 +68,9 @@ class ImageWithTags extends Component {
       const locationY = h/2;
       const left = locationX / w;
       const top = locationY / h;
-      this.setState({locationX: left, locationY: top}, () => {
+      /*this.setState({locationX: left, locationY: top}, () => {
         this.props.onMarkerCreate({locationX: left, locationY: top});
-      });
+      });*/
     }
 
   }
