@@ -14,5 +14,5 @@ pod 'FBSDKLoginKit', '4.17'
 pod 'FBSDKShareKit', '4.17'
 pod 'Flurry-iOS-SDK/FlurrySDK'
 pod 'QBImagePickerController'
-
+pod 'AppsFlyerFramework'
 end

@@ -1,29 +1,37 @@
-import React, { Component } from 'react';
-import { Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React, {Component} from 'react';
+import {Image, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import Fonts from '../../../styles/Fonts.styles';
+import Colors from '../../../styles/Colors.styles';
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
 
 const styles = StyleSheet.create({
   followBtn: {
-    backgroundColor: '#00D7B2',
-    height: 25,
+    backgroundColor: Colors.secondaryColor,
+    width: generateAdjustedSize(75),
+    height: generateAdjustedSize(25),
     justifyContent: 'center',
-    margin: 5,
+    margin: generateAdjustedSize(5),
   },
   followText: {
     textAlign: 'center',
-    color: 'white'
+    fontSize: generateAdjustedSize(14),
+    fontFamily: Fonts.contentFont,
+    color: Colors.white,
   },
   unfollowBtn: {
     backgroundColor: 'transparent',
-    width: 75,
-    height: 25,
+    width: generateAdjustedSize(75),
+    height: generateAdjustedSize(25),
     justifyContent: 'center',
-    margin: 5,
+    margin: generateAdjustedSize(5),
     borderWidth: 2,
-    borderColor: '#00D7B2',
+    borderColor: Colors.secondaryColor,
   },
   unfollowText: {
     textAlign: 'center',
-    color: '#00D7B2'
+    fontSize: generateAdjustedSize(14),
+    fontFamily: Fonts.contentFont,
+    color: Colors.secondaryColor,
   },
 });
 
@@ -44,7 +52,7 @@ class FollowView extends Component {
 
   renderUnfollowButton() {
     return (
-      <TouchableOpacity style={[styles.unfollowBtn,this.props.style]} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.unfollowBtn, this.props.style, this.props.unFollowBtnStyle]} onPress={this.handleFollowPress}>
         <Text style={styles.unfollowText}>Unfollow</Text>
       </TouchableOpacity>
     )
@@ -52,7 +60,7 @@ class FollowView extends Component {
 
   renderFollowButton() {
     return (
-      <TouchableOpacity style={[styles.followBtn ,this.props.style]} onPress={this.handleFollowPress}>
+      <TouchableOpacity style={[styles.followBtn, this.props.style, this.props.followBtnStyle]} onPress={this.handleFollowPress}>
         <Text style={styles.followText}>Follow</Text>
       </TouchableOpacity>
     )

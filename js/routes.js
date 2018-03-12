@@ -1,35 +1,45 @@
-import { StackNavigator } from 'react-navigation'
-import SplashPage from './components/splashscreen/';
+import { StackNavigator } from 'react-navigation';
+import LoginPage from './components/loginScreen/';
 import FeedPage from './components/feedscreen';
-import AddItemPage from './components/addItemScreen';
+import UploadLookScreen from './components/uploadLookScreen/UploadLookScreenContainer';
 import MyBodyType from './components/myBodyType';
 import MyBodyMeasure from './components/myBodyMeasure';
 import SignUpPage from './components/signup';
 import SignInPage from './components/signin';
 import SignUpGenderPage from './components/signup/SignUpGenderPage.js';
 import ForgotPassword from './components/forgotPassword';
-import LooksScreen from './components/looksScreen';
-import ProfileScreen from './components/profileScreen';
+import ProfileScreen from './components/profileScreen/profileScreenContainer';
+import FollowingLooks from './components/looksScreen/LooksFollowingContainer';
+import BestMatchLooks from './components/looksScreen/LooksBestMatchContainer';
+import WhatsHotLooks from './components/looksScreen/LooksWhatsHotContainer';
+import ProfileLooks from './components/looksScreen/LooksProfileContainer';
 import FollowScreen from './components/profileScreen/follows/followscreen';
 import FollowerScreen from './components/profileScreen/follows/followerscreen';
-import NotificationsScreen from './components/notificationsscreen';
-import SettingsScreen from './components/settingsScreen';
+import NotificationsScreen from './components/notificationsscreen/NotificationsContainer';
+import SettingsScreen from './components/settingsScreen/SettingsContainer';
 import EditProfile from './components/profileScreen/EditProfile.js';
 import FinishLookScreen from './components/finishLookScreen';
-import TutorialScreen from './components/tutorialScreen'
-import BadNavigationScreen from './components/badNavigationScreen'
-import likesScreen from './components/likesScreen'
-import BlockedUsersScreen from './components/blockedUsersScreen'
+import TutorialScreen from './components/tutorialScreen';
+import BadNavigationScreen from './components/badNavigationScreen';
+import likesScreen from './components/likesScreen';
+import BlockedUsersScreen from './components/blockedUsersScreen';
+import SearchScreen from './components/searchScreen/SearchScreenContainer';
+import Splash from './components/splashScreen/SplashContainer';
+import WebViewAuthoHeight from './components/common/WebViewAutoHeight';
+import CustomWebView from './components/common/CustomWebView';
 
 const stackNavigatorConfig = {
-  initialRouteName: 'splashscreen',
+  initialRouteName: 'splash',
   headerMode: 'none',
-  gesturesEnabled: true
+  gesturesEnabled: true,
 };
 
 const routes = {
-  splashscreen: {
-    screen: SplashPage,
+  splash: {
+    screen: Splash,
+  },
+  loginscreen: {
+    screen: LoginPage,
   },
   signupemail: {
     screen: SignUpPage,
@@ -46,11 +56,17 @@ const routes = {
   feedscreen: {
     screen: FeedPage,
   },
-  addItemScreen: {
-    screen: AddItemPage,
+  uploadLookScreen: {
+    screen: UploadLookScreen,
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
   },
   finishLookScreen: {
     screen: FinishLookScreen,
+  },
+  searchScreen: {
+    screen: SearchScreen,
   },
   myBodyType: {
     screen: MyBodyType,
@@ -58,8 +74,17 @@ const routes = {
   myBodyMeasure: {
     screen: MyBodyMeasure,
   },
-  looksScreen: {
-    screen: LooksScreen,
+  lookScreenFollwing: {
+    screen: FollowingLooks,
+  },
+  lookScreenBestMatch: {
+    screen: BestMatchLooks,
+  },
+  lookScreenWhatsHot: {
+    screen: WhatsHotLooks,
+  },
+  lookScreenProfile: {
+    screen: ProfileLooks,
   },
   profileScreen: {
     screen: ProfileScreen,
@@ -74,23 +99,30 @@ const routes = {
     screen: FollowerScreen,
   },
   notificationsScreen: {
-    screen: NotificationsScreen
+    screen: NotificationsScreen,
   },
   settingsScreen: {
-    screen: SettingsScreen
+    screen: SettingsScreen,
   },
   blockedUsersScreen: {
-    screen: BlockedUsersScreen
+    screen: BlockedUsersScreen,
   },
   editProfileScreen: {
     screen: EditProfile,
   },
   tutorialscreen: {
-    screen: TutorialScreen
+    screen: TutorialScreen,
   },
   badNavigation: {
-    screen: BadNavigationScreen
-  }
+    screen: BadNavigationScreen,
+  },
+  webViewScreen: {
+    screen: CustomWebView,
+  },
+  WebViewAuthoHeightScreen: {
+    screen: WebViewAuthoHeight,
+  },
+
 };
 
 export default StackNavigator(routes, stackNavigatorConfig);

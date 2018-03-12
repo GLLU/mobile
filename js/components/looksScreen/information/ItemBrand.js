@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   textStyle: {
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     textAlign: 'center',
     borderColor: Colors.black,
     borderWidth: 2,

@@ -1,28 +1,28 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
 } from 'react-native';
-import _, { noop } from 'lodash'
-import MarkerView from './MarkerView'
-import ItemPopup from './ItemPopup'
+import _, {noop} from 'lodash';
+import MarkerView, {MARKER_WIDTH, MARKER_HEIGHT} from './MarkerView';
+import ItemPopup, {POPUP_HEIGHT, POPUP_WIDTH} from './ItemPopup';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute'
+    position: 'absolute',
   },
   align: {
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   alignReverse: {
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   flex: {
     flexDirection: 'column',
   },
   flexReverse: {
     flexDirection: 'column-reverse',
-  }
+  },
 
 });
 
@@ -33,9 +33,8 @@ class ItemMarker extends Component {
     this._renderMarker = this._renderMarker.bind(this);
     this._renderPopup = this._renderPopup.bind(this);
     this.state = {
-      isViewActive: false
-    }
-
+      isViewActive: false,
+    };
   }
 
   static propTypes = {
@@ -43,7 +42,7 @@ class ItemMarker extends Component {
     pinPosition: React.PropTypes.object.isRequired,
     brand: React.PropTypes.object,
     item: React.PropTypes.object,
-    onPress: React.PropTypes.func
+    onPress: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -51,35 +50,36 @@ class ItemMarker extends Component {
   };
 
   onPress() {
-    const {isViewActive} = this.state;
+    const { isViewActive } = this.state;
+    if (!this.props.item.is_verified) {
+      this.props.onPress(!isViewActive);
+    }
     this.setState({
       popupOffset: 0,
-      isViewActive: !isViewActive
-    })
+      isViewActive: !isViewActive,
+    });
   }
 
   getContainerStyle(position, orientation, popupDimensions, isPopupVisible) {
-    let containerStyles = [styles.container];
-    let positionStyle = {
+    const containerStyles = [styles.container];
+    const positionStyle = {
       top: position.y,
-      left: position.x
+      left: position.x,
     };
     if (!orientation.top) {
       if (isPopupVisible) {
         positionStyle.top -= popupDimensions.height;
       }
       containerStyles.push(positionStyle);
-      containerStyles.push(styles.flexReverse)
-    }
-    else {
+      containerStyles.push(styles.flexReverse);
+    } else {
       containerStyles.push(positionStyle);
-      containerStyles.push(styles.flex)
+      containerStyles.push(styles.flex);
     }
     if (orientation.left) {
-      containerStyles.push(styles.align)
-    }
-    else {
-      containerStyles.push(styles.alignReverse)
+      containerStyles.push(styles.align);
+    } else {
+      containerStyles.push(styles.alignReverse);
     }
     return containerStyles;
   }
@@ -91,7 +91,7 @@ class ItemMarker extends Component {
       top,
       left,
       bottom: !top,
-      right: !left
+      right: !left,
     };
   }
 
@@ -100,43 +100,46 @@ class ItemMarker extends Component {
       top: !orientation.top,
       left: !orientation.left,
       bottom: !orientation.bottom,
-      right: !orientation.right
-    }
+      right: !orientation.right,
+    };
   }
 
   getPositionByOrientation(orientation, pinPosition, markerDimensions) {
-    let actualPosition = {
+    const actualPosition = {
       x: pinPosition.x,
-      y: pinPosition.y
+      y: pinPosition.y,
     };
     if (orientation.top) {
-      actualPosition.y = pinPosition.y - markerDimensions.height
+      actualPosition.y = pinPosition.y - markerDimensions.height;
     }
     if (orientation.left) {
-      actualPosition.x = pinPosition.x - markerDimensions.width
+      actualPosition.x = pinPosition.x - markerDimensions.width;
     }
     return actualPosition;
   }
 
   adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions) {
-    let adjustedPosition = {
+    const adjustedPosition = {
       x: position.x,
-      y: position.y
+      y: position.y,
     };
     if (orientation.right) {
-      adjustedPosition.x = position.x - (popupDimensions.width - markerDimensions.width)
+      adjustedPosition.x = position.x - (popupDimensions.width - markerDimensions.width);
     }
     return adjustedPosition;
-
   }
 
   isPositionCloseToEdge(containerDimensions, position) {
-    let closeToEdgeIndicator = {top: false, left: false, bottom: false, right: false};
+    const closeToEdgeIndicator = { top: false, left: false, bottom: false, right: false };
     closeToEdgeIndicator.left = position.x < 20;
     closeToEdgeIndicator.top = position.y < 20;
     closeToEdgeIndicator.right = containerDimensions !== undefined && containerDimensions.width - position.x < 80;
     closeToEdgeIndicator.bottom = containerDimensions !== undefined && containerDimensions.height - position.y < 80;
-    return closeToEdgeIndicator
+    return closeToEdgeIndicator;
+  }
+
+  _openWebView(url) {
+    this.props._openWebView(url);
   }
 
   limitPosition(position, closeToEdgeIndicator, containerDimensions) {
@@ -155,9 +158,8 @@ class ItemMarker extends Component {
     return position;
   }
 
-
   _renderPopup(item, popupDimensions) {
-    return <ItemPopup {...item} dimensions={popupDimensions}/>
+    return <ItemPopup {...item} openWebView={this.props.openWebView} dimensions={popupDimensions}/>;
   }
 
   _renderMarker(position, dimensions, orientation) {
@@ -174,13 +176,13 @@ class ItemMarker extends Component {
   render() {
     const pinPosition = {
       x: parseInt(this.props.pinPosition.x * this.props.containerDimensions.width),
-      y: parseInt(this.props.pinPosition.y * this.props.containerDimensions.height)
+      y: parseInt(this.props.pinPosition.y * this.props.containerDimensions.height),
     };
     const orientation = this.getOrientation(this.props.containerDimensions, pinPosition);
 
-    const markerDimensions = {width: 35, height: 35};
+    const markerDimensions = { width: MARKER_WIDTH, height: MARKER_HEIGHT };
 
-    const popupDimensions = {width: 120, height: 60};
+    const popupDimensions = { width: POPUP_WIDTH, height: POPUP_HEIGHT };
 
     let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions);
 
@@ -189,18 +191,18 @@ class ItemMarker extends Component {
     position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions);
 
     if (this.state.isViewActive) {
-      position = this.adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions)
+      position = this.adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions);
     }
 
     const markerOrientation = (_.chain(Object.keys(closeToEdgeIndicator)).map(key => closeToEdgeIndicator[key]).sum() > 1) ? this.reverseOrientation(orientation) : orientation;
 
-    //Actual Render
+    // Actual Render
     return (
       <View style={this.getContainerStyle(position, orientation, popupDimensions, this.state.isViewActive)}>
         {this._renderMarker(position, markerDimensions, markerOrientation)}
         { this.state.isViewActive ? this._renderPopup(this.props.item, popupDimensions) : null}
       </View>
-    )
+    );
   }
 }
 

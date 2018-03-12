@@ -7,11 +7,14 @@ import com.facebook.FacebookSdk;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.appsflyer.reactnative.RNAppsFlyerPackage;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.i18n.reactnativei18n.ReactNativeI18n;
+import cl.json.RNSharePackage;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.smixx.fabric.FabricPackage;
 import com.infash.customPackages.CameraReactPackage;
@@ -24,7 +27,6 @@ import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -49,10 +51,6 @@ public class MainApplication extends Application
     private final ReactNativeHost mReactNativeHost =
             new ReactNativeHost(this) {
 
-                @Override
-                protected String getJSBundleFile() {
-                    return CodePush.getJSBundleFile();
-                }
 
 
                 @Override
@@ -64,7 +62,9 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
-                            new ReactNativeI18n(),
+            new RNSharePackage(),
+            new ReactNativeOneSignalPackage(),
+                            new RNI18nPackage(),
                             new RNMixpanel(),
                             new FabricPackage(),
                             new CameraReactPackage(),
@@ -78,9 +78,9 @@ public class MainApplication extends Application
                             new ReactVideoPackage(),
                             new ExtraDimensionsPackage(),
                             new VectorIconsPackage(),
-                            new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
-                            new FBSDKPackage(mCallbackManager)
-                    );
+                            new FBSDKPackage(mCallbackManager),
+                            new RNAppsFlyerPackage(MainApplication.this)
+                            );
                 }
             };
 

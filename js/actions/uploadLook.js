@@ -2,6 +2,7 @@ export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
 export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
+export const REMOVE_LOOK_ITEM = 'REMOVE_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
 export const ADD_ITEM_TYPE = 'ADD_ITEM_TYPE';
 export const ADD_BRAND_NAME = 'ADD_BRAND_NAME';
@@ -16,17 +17,36 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+<<<<<<< HEAD
 export const SET_SUGGESTIONS_ITEMS = 'SET_SUGGESTIONS_ITEMS';
+=======
+export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
+export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
+export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
+export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
+>>>>>>> develop
 
+import { normalize } from 'normalizr';
+import { lookSchema } from '../schemas/schemas';
+import { unifyLooks } from '../utils/FeedUtils';
+
+import UploadLookService from '../services/uploadLookService';
 import _ from 'lodash';
-
 import rest from '../api/rest';
+<<<<<<< HEAD
 import { loadBrands, showProcessing, hideProcessing } from './index';
 import RNFetchBlob from 'react-native-fetch-blob';
 import uploadLookService from '../services/uploadLookService';
+=======
+import {newItem} from '../reducers/uploadLook';
+import {loadBrands, showProcessing, hideProcessing} from './index';
+>>>>>>> develop
 import Utils from '../utils';
+import FEED_TYPE_BEST_MATCH from './feed';
+import {setLooksData, setFeedData} from './feed';
 
 let api_key = null;
+<<<<<<< HEAD
 
 export function createLookItem(position) {
   return (dispatch, getState) => {
@@ -79,17 +99,22 @@ function _getSuggestion(image, dispatch, resolve) {
   });
   });
 }
+=======
+let incrementedItemId = 0
+>>>>>>> develop
 
 // Actions
 export function addNewLook(image) {
   return (dispatch, getState) => {
     dispatch(showProcessing());
+    dispatch(clearUploadLook());
     return new Promise((resolve, reject) => {
       const user = getState().user;
       if (user && user.id !== -1) {
         Utils.getKeychainData().then(credentials => {
           api_key = credentials.password;
           if (api_key) {
+<<<<<<< HEAD
             Utils.postMultipartForm(api_key, '/looks', [], image.type, image).then((data) => {
               if (data) {
                 const url = data.look.cover.type === 'image' ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
@@ -99,10 +124,26 @@ export function addNewLook(image) {
                     localFilePath: image.localPath,
                   });
           
+=======
+            UploadLookService.createLook().then((emptyLookData) => {
+              const payload = _.merge(emptyLookData.look, {
+                image: image.localPath,
+                items: [newItem],
+                isUploading: true
+              });
+              dispatch({
+                type: EDIT_NEW_LOOK,
+                payload,
+              });
+              resolve(payload);
+              dispatch(hideProcessing());
+              Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
+                if (data) {
+>>>>>>> develop
                   dispatch({
-                    type: EDIT_NEW_LOOK,
-                    payload,
+                    type: DONE_UPLOADING_FILE,
                   });
+<<<<<<< HEAD
                   dispatch(hideProcessing());
                 } else {
                   Utils.preloadImages([url]).then(() => {
@@ -127,6 +168,14 @@ export function addNewLook(image) {
                 reject('Uplaod error');
               }
             }).catch(reject);
+=======
+                } else {
+                  reject('Uplaod error');
+                }
+              }).catch(reject);
+            });
+
+>>>>>>> develop
           } else {
             dispatch(hideProcessing());
             reject('Authorization error');
@@ -143,37 +192,28 @@ export function addNewLook(image) {
 
 
 export function editNewLook(lookId) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(showProcessing());
-    return new Promise((resolve, reject) => {
-      dispatch(rest.actions.looks.get({ id: lookId}, (err, data) => {
+    dispatch(clearUploadLook());
+    return new Promise((resolve) => {
+      dispatch(rest.actions.looks.get({id: lookId}, (err, data) => {
         dispatch(hideProcessing());
-        if (!err) {;
+        if (!err) {
           const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-            let payload = {
-              image: url,
-              items: data.look.items,
-              ...data.look
-            };
-            dispatch({
-              type: EDIT_NEW_LOOK,
-              payload,
-            });
-            resolve(payload);
+          let payload = {
+            image: url,
+            ...data.look,
+          };
+          dispatch({
+            type: EDIT_NEW_LOOK,
+            payload,
+          });
+          resolve(payload);
         } else {
-          throw err;  
+          throw err;
         }
       }));
     });
-  }
-}
-
-export function editTag(editingTag) {
-  return {
-    type: EDIT_TAG,
-    payload: {
-      editingTag
-    }
   }
 }
 
@@ -184,6 +224,7 @@ export function setTagPosition(payload) {
   }
 }
 
+<<<<<<< HEAD
 export function selectLookItem(itemId) {
   return {
     type: SELECT_LOOK_ITEM,
@@ -194,114 +235,121 @@ export function selectLookItem(itemId) {
 function _updateLook(lookId, params, dispatch, options = {}) {
   const body = {
     look: Object.assign({}, params),
-  }
-
-  return makeRequest(dispatch, rest.actions.looks.put, [
-    { id: lookId },
-    { body: JSON.stringify(body) }
-  ], options);
-}
-
-function _updateItem(lookId, itemId, params, dispatch) {
-  const body = {
-    item: Object.assign({}, params),
-  }
-  return makeRequest(dispatch, rest.actions.items.put, [
-    { look_id: lookId, id: itemId },
-    { body: JSON.stringify(body)}
-  ]);
-}
-
-function makeRequest(dispatch, endPoint, endPointParams) {
-  return new Promise((resolve, reject) => {
-    dispatch(endPoint(...endPointParams, (err, data) => {
-      if (!err) {
-        resolve(data);
-      } else {
-        reject(err);
-      }
-    }));
-  });
-}
-
-export function updateLookItem(currItemId) {
+=======
+export function createLookItem() {
   return (dispatch, getState) => {
-    const state = getState();
-    const itemId = currItemId
-    const { lookId, items } = state.uploadLook;
-    const item = itemId ? _.find(items, item => item.id === itemId) : null;
-    const { brand, category, locationX, locationY } = item;
-    const brand_id = brand ? brand.id : undefined;
-    const category_id = category ? category.id : undefined;
-    const params = {
-      brand_id,
-      category_id,
-      cover_x_pos: locationX,
-      cover_y_pos: locationY,
-    }
-
-    return _updateItem(lookId, itemId, params, dispatch);
-  }
-}
-
-export function publishLookItem() {
-  return (dispatch, getState) => {
-    const state = getState();
-
-    const { lookId, itemId } = state.uploadLook;
-
     return new Promise((resolve, reject) => {
-      dispatch(rest.actions.publish({look_id: lookId}, {}, (err, data) => {
-        if (!err) {
-          resolve();
-        } else {
-          reject();
-        }
-      }));
+      const newItemId = incrementedItemId += 1
+      dispatch({
+        type: CREATE_LOOK_ITEM_BY_POSITION,
+        itemId: newItemId
+      })
+      resolve(newItemId)
     });
+  }
+}
+
+export function removeLookItem(itemId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const lookItems = _.cloneDeep(state.uploadLook.items)
+    const newItemsArr = _.filter(lookItems, (item) => item.id !== itemId);
+    dispatch({
+      type: REMOVE_LOOK_ITEM,
+      newItemsArr,
+    });
+>>>>>>> develop
   }
 }
 
 export function addItemType(categoryItem, itemId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const { lookId } = state.uploadLook;
-    const params = {
-      category_id: categoryItem.id,
-    }
-    return _updateItem(lookId, itemId, params, dispatch).then(data => {
-      const payload = {categoryItem, itemId}
-      dispatch({
-        type: ADD_ITEM_TYPE,
-        payload
-      });
-      dispatch(addItemTag(categoryItem.name, itemId)).catch(err => {
-        console.log('do nothing');
-      });
-    }).catch(err => {
-      console.log('addItemType error', err);
+  return (dispatch) => {
+    const payload = { categoryItem, itemId }
+    dispatch({
+      type: ADD_ITEM_TYPE,
+      payload
     });
-    
   };
 }
 
-export function addBrandName(payload) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const { lookId } = state.uploadLook;
-    const itemId = payload.itemId
-    const params = {
-      brand_id: payload.id,
+export function toggleOccasionTag(tagId, selected, itemId) {
+  return (dispatch) => {
+    if (selected) {
+      // remove
+      const payload = { tagId, itemId }
+      dispatch({
+        type: REMOVE_ITEM_OCCASION_TAG,
+        payload
+      });
+    } else { // add
+      const payload = { tagId, itemId }
+      dispatch({
+        type: ADD_ITEM_OCCASION_TAG,
+        payload
+      });
     }
-    return new Promise((resolve, reject) => {
-      return _updateItem(lookId, itemId, params, dispatch).then(data => {
-        dispatch({
-          type: ADD_BRAND_NAME,
-          payload: payload
-        });
-        dispatch(addItemTag(payload.name, itemId)).catch(reject);
-        resolve();
-      }).catch(reject);
+  };
+}
+
+export function toggleItemColors(colorId, selected, itemId) {
+  return (dispatch) => {
+    if (selected) {
+      // remove
+      const payload = { colorId, itemId }
+      dispatch({
+        type: REMOVE_ITEM_COLOR,
+        payload
+      });
+    } else { // add
+      const payload = { colorId, itemId }
+      dispatch({
+        type: ADD_ITEM_COLOR,
+        payload
+      });
+    }
+  };
+}
+
+export function addDescription(description) {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_DESCRIPTION,
+      payload: description
+    })
+  };
+}
+
+export function addUrl(url, itemId) {
+  return (dispatch) => {
+    const payload = {
+      url,
+      itemId
+    }
+    dispatch({
+      type: ADD_ITEM_URL,
+      payload
+    })
+  };
+}
+
+export function addBrandName(brand, itemId) {
+  return (dispatch) => {
+    const payload = {
+      brand,
+      itemId
+    }
+    dispatch({
+      type: ADD_BRAND_NAME,
+      payload: payload
+    });
+  };
+}
+
+export function clearUploadLook() {
+
+  return (dispatch) => {
+    dispatch({
+      type: CLEAR_UPLOAD_LOOK,
     });
   };
 }
@@ -317,7 +365,8 @@ export function createBrandName(newBrand) {
       dispatch(rest.actions.brands.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (!err && !_.isEmpty(data)) {
           dispatch(loadBrands());
-          dispatch(addBrandName({ id: data.brand.id, name: data.brand.name, itemId: newBrand.itemId })).then(resolve, reject);
+          dispatch(addBrandName(data.brand.id, newBrand.itemId))
+          resolve()
         } else {
           reject(err);
         }
@@ -326,121 +375,75 @@ export function createBrandName(newBrand) {
   };
 }
 
-export function removeBrandName(itemId) {
-  return {
-    type: REMOVE_BRAND_NAME,
-    payload: itemId
-  };
-}
-
-export function addItemSize(payload) {
-  return {
-    type: ADD_ITEM_SIZE,
-    payload: payload
-  }
-}
-
-export function addItemTag(tag, itemId) {
+export function publishLook() {
   return (dispatch, getState) => {
     const state = getState();
-    const { lookId } = state.uploadLook;
-    const body = {
-      tag_name: tag
-    }
+
+    const { lookId, items, description, isUploading } = state.uploadLook;
+
+    let interval;
     return new Promise((resolve, reject) => {
-      return makeRequest(dispatch, rest.actions.item_tags.post, [
-        { look_id: lookId, item_id: itemId },
-        { body: JSON.stringify(body) }
-      ]).then(data => {
-        const payload = {data: data.item_tag.tag, itemId}
-        dispatch({
-          type: ADD_ITEM_TAG,
-          payload
-        });
-        resolve();
-      }).catch(reject);
-    });
-  };
-}
+      _.forEach(items, (item) => {
+        const body = {
+          item: {
+            cover_x_pos: item.locationX,
+            cover_y_pos: item.locationY,
+            category_id: item.category,
+            brand_id: item.brand,
+            color_ids: item.color_ids,
+            url: item.url
+          }
+        };
+        const editOrCreate = item.isNew ? { method: 'post' } : { method: 'put', itemId: item.id }
+        UploadLookService.createOrEditItem(lookId, body, editOrCreate).then((createdItemData) => {
+          _.forEach(item.occasions, (occasion) => {
+            const occasionBody = {
+              tag_id: occasion
+            }
+            UploadLookService.addItemOccasions(lookId, createdItemData.item.id, occasionBody).then((occasionData) => {
+            });
+          })
+        })
+      });
 
-export function removeItemTag(tag, itemId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const { lookId } = state.uploadLook;
-    const body = {
-      tag_name: tag
-    }
-    return new Promise((resolve, reject) => {
-      return makeRequest(dispatch, rest.actions.item_tags.delete, [
-        { look_id: lookId, item_id: itemId },
-        { body: JSON.stringify(body) }
-      ]).then(data => {
-        const payload = {data: tag, itemId}
-        dispatch({
-          type: REMOVE_ITEM_TAG,
-          payload
-        });
-        resolve();
-      }).catch(reject);
-    });
-  };
-}
+      interval = setInterval(function () {
+        if (getState().uploadLook.isUploading) {
+          //Do nothing, wait until next interval.
+        }
+        else {
 
-export function addSharingInfo(type, url) {
-  return {
-    type: ADD_SHARING_INFO,
-    payload: {
-      sharingType: type,
-      sharingUrl: url
-    }
+          clearInterval(interval);
+
+          UploadLookService.publishLook(lookId).then((look) => {
+            const state = getState().feed['bestMatch'];
+            const normalizedLooksData = normalize([look], [lookSchema]);
+            const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
+            dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
+            const unifiedLooksIds = state.flatLooksIdData;
+            unifiedLooksIds.unshift(look.id);
+            dispatch(setFeedData({ flatLooksIdData: unifiedLooksIds, meta: state.meta, query: state.query, feedType: 'bestMatch' }));
+            if (description.length > 0) {
+              const descriptionBody = {
+                description
+              }
+              UploadLookService.updateLook(lookId, descriptionBody).then((look) => {
+              })
+            }
+          })
+        }
+      }, 2000);
+
+      resolve();
+    })
+
+    // return new Promise((resolve, reject) => {
+    //   UploadLookService.createLook().then((publishedLookData) => {
+    //     console.log('published look data',publishedLookData)
+    //     resolve()
+    //   });
+    // });
   }
-}
-
-export function addDescription(description) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const { lookId } = state.uploadLook;
-    const params = {
-      description,
-    }
-    return _updateLook(lookId, params, dispatch).then(data => {
-      dispatch({
-        type: ADD_DESCRIPTION,
-        payload: description
-      })
-    }).catch(err => {
-      console.log('error', err);
-    });
-  };
-}
-
-export function addUrl(url, itemId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const { lookId } = state.uploadLook;
-    const params = {
-      url,
-    }
-    return _updateItem(lookId, itemId, params, dispatch).then(data => {
-      const payload = {
-        url,
-        itemId
-      }
-      dispatch({
-        type: ADD_ITEM_URL,
-        payload
-      })
-    }).catch(err => {
-      console.log('error', err);
-    });
-  };
-}
-
-export function addLocation(payload) {
-  return {
-    type: ADD_LOCATION,
-    payload: payload
-  }
+<<<<<<< HEAD
 }
 
 export function addPhotosVideo(image) {
@@ -496,3 +499,6 @@ export function toggleOccasionTag(tag, selected, itemId) {
               //
               }
 */
+=======
+}
+>>>>>>> develop

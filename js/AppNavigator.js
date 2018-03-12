@@ -44,7 +44,6 @@ class AppNavigator extends Component {
     );
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      Analytics.logEvent('Android back button click');
       const {dispatch,navigationState} = this.props;
       const navigation = this.generateNaivgationObject(dispatch,navigationState);
       const {routes} = navigation.state;
@@ -58,7 +57,6 @@ class AppNavigator extends Component {
       }
     });
 
-    Analytics.setUser(this.props.user);
     Analytics.trackAppLoaded();
     expireCache()
       .then(()=>console.log('removed expired items in cache!'))
@@ -67,7 +65,6 @@ class AppNavigator extends Component {
   }
 
   handleConnectionChange = (isConnected) => {
-    console.log(`is network connected: ${isConnected}`);
     if(!isConnected){
       this.props.showParisBottomMessage(`It seems you have no internet connection`, 999999);
     } else {
@@ -95,16 +92,16 @@ class AppNavigator extends Component {
   }
 
   render() {
-    const {dispatch,navigationState} = this.props;
+    const { dispatch,navigationState, notification } = this.props;
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle='default'/>
-        <CardStack navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
+        <CardStack screenProps={{notification}} navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
         {/*{this.props.isLoading ? <SpinnerSwitch /> : null}*/}
-        {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}
         {this.props.info ? <ErrorHandler /> : null}
+        {this.props.isProcessing ? <SpinnerClothing /> : null}
         {this.props.parisBottomMessage ? <ParisMessages /> : null}
       </View>
     );
@@ -129,7 +126,7 @@ const mapStateToProps = state => {
   return ({
     navigationState: state.cardNavigation,
     user: state.user,
-    isProcessing: isProcessing,
+    isProcessing,
     error: isError,
     fatalError: isFatalError,
     warning: isWarning,

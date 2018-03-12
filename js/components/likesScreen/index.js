@@ -7,6 +7,7 @@ import { getLookLikes, initLookLikes } from '../../actions';
 import asScreen from "../common/containers/Screen"
 import UserActionRow from "../common/lists/UserActionRow";
 import ListScreen from "../common/lists/ListScreen";
+import { getDataWithUsersObj } from '../../utils/UsersUtils';
 
 class LikesScreen extends Component {
 
@@ -44,7 +45,7 @@ class LikesScreen extends Component {
     return (
       <ListScreen
         renderEmpty={()=>null}
-        renderItem={(item) => <UserActionRow {...item} navigateTo={this.props.navigateTo}/>}
+        renderItem={(item) => <UserActionRow {...item.user} navigateTo={this.props.navigateTo}/>}
         headerData={headerData}
         data={this.props.likes}
         navigateTo={this.props.navigateTo}
@@ -62,8 +63,9 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
+  const likesDataWithUsersObjs = getDataWithUsersObj(state.lookLikes.lookLikesData, state.users.usersData);
   return {
-    likes: state.lookLikes.lookLikesData,
+    likes: likesDataWithUsersObjs,
   }
 };
 

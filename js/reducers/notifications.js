@@ -8,13 +8,12 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-
   switch (action.type) {
     case actions.SET_USER_NOTIFICATIONS: {
       let newNotifications = false;
-      let allNotifications = action.payload.notificationsData.notifications.map(notificationsMapper.map);
+      let allNotifications = action.payload.notificationsData;
       if(state.page === 0){
-        newNotifications = action.payload.notificationsData.notifications.length > 0 ? !allNotifications[0].is_read : false
+        newNotifications = action.payload.notificationsData.length > 0 ? !allNotifications[0].is_read : false
       } else {
         allNotifications= _.unionBy(state.allNotifications, allNotifications, notification=>notification.id);
       }
@@ -22,13 +21,16 @@ export default function (state = initialState, action) {
         ...state,
         allNotifications,
         page: action.payload.page,
-        newNotifications
+        newNotifications,
+        isLoading: false,
       };
+    }
+    case actions.START_FETCHING_NOTIFICATIONS: {
+      return { ...state, isLoading: true, allNotifications: [] };
     }
     case actions.ADD_USER_NOTIFICATION: {
       let existNotifications = state.allNotifications;
-      let newNotification = notificationsMapper.map(action.payload)
-      existNotifications.unshift(newNotification)
+      existNotifications.unshift(action.payload)
       return {
         ...state,
         allNotifications: existNotifications,

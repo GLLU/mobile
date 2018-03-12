@@ -1,43 +1,56 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import FollowView from '../../profileScreen/follows/FollowView'
-import { connect } from "react-redux";
-import { followUpdate, unFollowUpdate } from "../../../actions/follows";
-import { noop } from "lodash";
+import FollowView from '../../profileScreen/follows/FollowView';
+import { connect } from 'react-redux';
+import { followUpdate, unFollowUpdate } from '../../../actions/follows';
+import { noop } from 'lodash';
+import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
+import Fonts from '../../../styles/Fonts.styles';
+import Colors from '../../../styles/Colors.styles';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 12,
+    padding: generateAdjustedSize(12),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor:'white'
+    backgroundColor: 'white',
   },
   textContainer: {
     flex: 7,
     flexDirection: 'column',
-    marginLeft: 12
+    marginLeft: generateAdjustedSize(12),
   },
   followName: {
     flex: 0.5,
     color: 'black',
+    fontSize: generateAdjustedSize(14),
+    fontFamily: Fonts.contentFont,
+    alignSelf: 'flex-start',
+    flex:1,
   },
   followUsername: {
     flex: 0.5,
-    color: '#00a9ff'
+    color: '#00a9ff',
+    fontSize: generateAdjustedSize(14),
+    fontFamily: Fonts.contentFont,
+    alignSelf: 'flex-start',
+    flex:1,
   },
   photoContainer: {
     flex: 2,
   },
   photo: {
     flex: 1,
-    width: 40,
-    height: 40,
-    borderRadius: 20
+    width: generateAdjustedSize(40),
+    height: generateAdjustedSize(40),
+    borderRadius: generateAdjustedSize(20),
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
   },
   followView: {
-    flex: 3
-  }
+    width: generateAdjustedSize(80),
+  },
 });
 
 class UserActionRow extends Component {
@@ -47,13 +60,13 @@ class UserActionRow extends Component {
     username: React.PropTypes.string,
     aboutMe: React.PropTypes.string,
     avatar: React.PropTypes.object,
-    userid: React.PropTypes.number,
+    userId: React.PropTypes.number,
     is_following: React.PropTypes.bool,
-    navigateTo:React.PropTypes.func
+    navigateTo: React.PropTypes.func,
   };
 
-  static defaultProps={
-    navigateTo:noop
+  static defaultProps = {
+    navigateTo: noop,
   }
 
   constructor(props) {
@@ -61,60 +74,56 @@ class UserActionRow extends Component {
     this.renderFollowText = this.renderFollowText.bind(this);
     this.renderFollowView = this.renderFollowView.bind(this);
     this.onFollowPress = this.onFollowPress.bind(this);
-    this.state = {
-      isFollowing: props.is_following
-    }
   }
 
   onUserPress() {
-    this.props.navigateTo('profileScreen', this.props);
+    this.props.navigateTo('profileScreen', { userId: this.props.id });
   }
 
   onFollowPress(user, shouldFollow) {
-    let data = {id: user.id};
     if (shouldFollow) {
-      this.props.followUpdate(data);
+      this.props.followUpdate(user.id);
+    } else {
+      this.props.unFollowUpdate(user.id);
     }
-    else {
-      this.props.unFollowUpdate(data);
-    }
-    this.setState({isFollowing: shouldFollow})
   }
 
   renderFollowText() {
     return (
       <View style={styles.textContainer}>
-        <Text style={styles.followName}>{this.props.name}</Text>
-        <Text style={styles.followUsername}>@{this.props.username}</Text>
+        <Text numberOfLines={1} style={styles.followName}>{this.props.name}</Text>
+        <Text numberOfLines={1} style={styles.followUsername}>@{this.props.username}</Text>
       </View>
-    )
+    );
   }
 
   renderFollowView() {
-    if (this.props.is_me) {
-      return <View name="can't follow me" style={styles.followView}/>;
+    const {isMe, isFollowing, id} = this.props
+    if (isMe) {
+      return <View name="can't follow me" style={styles.followView} />;
     }
-    return <FollowView onPress={this.onFollowPress} style={styles.followView}
-                       user={{id:this.props.user_id, isFollowing:this.state.isFollowing}}/>
+    return (<FollowView
+      onPress={this.onFollowPress} style={styles.followView}
+      user={{ id, isFollowing }} />);
   }
 
   render() {
     return (
-      <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container,this.props.style]}>
+      <TouchableOpacity onPress={this.onUserPress.bind(this)} style={[styles.container, this.props.style]}>
         <View style={styles.photoContainer}>
-          <Image resizeMode='cover' source={{ uri: this.props.avatar.url}} style={styles.photo}/>
+          <Image resizeMode="cover" source={{ uri: this.props.avatar.url }} style={styles.photo} />
         </View>
         {this.renderFollowText()}
         {this.renderFollowView()}
       </TouchableOpacity>
-    )
+    );
   }
 }
 
 function bindAction(dispatch) {
   return {
-    followUpdate: (id) => dispatch(followUpdate(id)),
-    unFollowUpdate: (id) => dispatch(unFollowUpdate(id))
+    followUpdate: id => dispatch(followUpdate(id)),
+    unFollowUpdate: id => dispatch(unFollowUpdate(id)),
   };
 }
 

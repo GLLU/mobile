@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 5,
     borderWidth: 2,
-    borderColor: Colors.primaryColor,
+    borderColor: Colors.secondaryColor,
   },
   unblockText: {
     textAlign: 'center',
-    color: Colors.primaryColor
+    color: Colors.secondaryColor,
   },
 });
 

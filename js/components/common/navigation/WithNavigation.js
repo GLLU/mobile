@@ -28,10 +28,10 @@ export default function withNavigation(WrappedComponent) {
       this.resetWithPayload=this.resetWithPayload.bind(this);
     }
 
-    resetTo(route) {
+    resetTo(route, params) {
       this.resetWithPayload({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: route })]
+        actions: [NavigationActions.navigate({ routeName: route, params })]
       });
     }
 
@@ -56,7 +56,6 @@ export default function withNavigation(WrappedComponent) {
     }
 
     goBack(withConfirmation = false) {
-      this.props.logEvent(this.constructor.name, { name: `user pressed back`});
       if (withConfirmation===true) {
         Alert.alert(
           '',
@@ -65,7 +64,6 @@ export default function withNavigation(WrappedComponent) {
             {
               text: 'Cancel',
               onPress: () => {
-                console.log('Cancel Pressed');
               },
               style: 'cancel'
             },

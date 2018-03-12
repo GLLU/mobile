@@ -39,32 +39,6 @@ export default StyleSheet.create({
     marginHorizontal: 10,
     backgroundColor: '#ffffff'
   },
-  bodyType: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-
-  },
-  bodyTypeShapeImage: {
-      height: 30,
-      width: 30,
-      resizeMode: 'contain'
-  },
-  bodyTypeText: {
-    fontSize: fontSizeDefault * 1.35,
-    color: fontColor,
-    marginBottom: 15,
-    fontFamily: 'PlayfairDisplay-Bold',
-  },
-  bodyTypeImageContainer: {
-    width: w,
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingBottom: 15
-  },
-  bodyTypeImage: {
-    width: w,
-    height: 240
-  },
   sizeListContainer: {
     flex: 1,
     justifyContent: 'flex-end',

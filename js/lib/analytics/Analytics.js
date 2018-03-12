@@ -1,4 +1,6 @@
-import FlurryAnalytics from './FlurryAnalytics';
+import { Platform } from 'react-native';
+
+import AppsFlyerAnalytics from './AppsFlyerAnalytics';
 import GoogleAnalytics from './GoogleAnalytics';
 import FacebookAnalytics from './FacebookAnalytics';
 import MixPanelAnalytics from './MixPanelAnalytics';
@@ -6,22 +8,32 @@ import { APP_LOADED_EVENT, PAGE_LOADED_EVENT } from './constants';
 
 class Analytics {
   constructor() {
-    console.log('Init Analytics');
     this.tools = this.setupAnalytics();
   }
 
   setupAnalytics() {
+
+    if (Platform.OS === 'ios'){
+      return [
+        new GoogleAnalytics(),
+        new FacebookAnalytics(),
+        new MixPanelAnalytics(),
+      ];
+    }
+
     return [
       new GoogleAnalytics(),
-      new FlurryAnalytics(),
       new FacebookAnalytics(),
       new MixPanelAnalytics(),
+      new AppsFlyerAnalytics(),
     ];
   }
 
   setUser(user) {
     this._loop((x) => {
-      x.setUser(user);
+      if (typeof x.setUser === 'function') {
+        x.setUser(user);
+      }
     });
   }
 

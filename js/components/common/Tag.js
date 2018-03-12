@@ -1,32 +1,55 @@
-import React, { Component } from 'react';
-import { Text,StyleSheet, Dimensions, TouchableOpacity, Image, UIManager, LayoutAnimation, Platform, Animated, View, PanResponder } from 'react-native'
+import React, {Component} from 'react';
+import {
+  StyleSheet,
+  Dimensions,
+  Image,
+  Platform,
+  Animated,
+  PanResponder,
+} from 'react-native'
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-const whiteMarker = require('../../../images/markers/marker-top-right.png');
-const whiteMarkerWithBorder = require('../../../images/markers/marker-red.png');
-const greenMarkerWithBorder = require('../../../images/markers/marker-green-red.png');
-const greenMarker = require('../../../images/markers/marker-green-1.png');
+const validMarker = require('../../../images/markers/tag_green.png');
+const invalidMarker = require('../../../images/markers/tag_red.png');
 
-const TAG_WIDTH = 30;
+const TAG_WIDTH = 50;
+const TAG_HEIGHT = 50;
+
 const BORDER_WIDTH = 5;
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   itemBgImage: {
-    height: 30,
+    height: TAG_HEIGHT - 10,
     width: TAG_WIDTH,
-    resizeMode: 'contain'
+    top: 5,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    resizeMode: 'contain',
+  },
+  selectedItem: {
+    backgroundColor: 'rgba(207,207,207,0.7)',
+    borderWidth: 0.5,
+    position: 'absolute',
+    borderColor: 'black',
+    borderRadius: TAG_HEIGHT / 2,
+    height: TAG_HEIGHT,
+    width: TAG_WIDTH,
   },
   text: {
     fontWeight: '500',
     fontSize: new FontSizeCalculator(18).getSize(),
     color: '#FFFFFF',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
-  itemMarker: {
+  unselectedItem: {
     position: 'absolute',
-    height: 30,
+    height: TAG_HEIGHT,
     width: TAG_WIDTH,
   },
 });
@@ -42,27 +65,34 @@ class Tag extends Component {
   }
 
   _setupPanResponder(locationX, locationY) {
-    const itemId = this.props.item.id
+    const {item} = this.props
+    const itemId = item.id
     this._pan = new Animated.ValueXY();
     this._pan.addListener((value) => this._value = value);
     this._pan.setOffset({x: locationX, y: locationY})
     this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder : () => true,
-      onPanResponderMove           : Animated.event([null,{
-        dx : this._pan.x,
-        dy : this._pan.y
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, {
+        dx: this._pan.x,
+        dy: this._pan.y
       }]),
-      onPanResponderGrant: () => { },
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderGrant: () => {
+      },
       onPanResponderRelease: (e, gesture) => {
-        this._pan.setOffset(this._value);
-        this._setupPanResponder(this._value.x, this._value.y);
-        const { width, height } = this.getRenderingDimensions();
-        const left = this._value.x / width;
-        const top = this._value.y / height;
-        const nextPosition = {id: itemId, locationX: left, locationY: top};
-        this.setState(nextPosition, () => {
-          this.props.onDragEnd(nextPosition);
-        })
+        if (this._value) {
+          this._pan.setOffset(this._value);
+          this._setupPanResponder(this._value.x, this._value.y);
+          const {width, height} = this.getRenderingDimensions();
+          const left = this._value.x / width;
+          const top = this._value.y / height;
+          const nextPosition = {id: itemId, locationX: left, locationY: top};
+
+          this.setState(nextPosition, () => {
+            this.props.onDragEnd(nextPosition);
+          })
+        }
+        this.props.setCurrentItem(item.id)
       }
     });
   }
@@ -70,68 +100,42 @@ class Tag extends Component {
   getRenderingDimensions() {
     let width = w;
     let height = h;
-    return { width, height };
-  }
-
-  normalizePosition(value) {
-    return Math.min(Math.max(value, 0.1), 0.9);
+    return {width, height};
   }
 
   componentWillMount() {
     let locationX;
     let locationY;
-    if(this.props.item.locationY === 0.5 && this.props.item.locationX === 0.5) {
-       locationX = w / 2;
-       locationY = h / 2;
+    if (this.props.item.locationY === 0.5 && this.props.item.locationX === 0.5) {
+      locationX = w / 2;
+      locationY = h / 2;
     } else {
-       locationX = this.props.item.locationX * w;
-       locationY = this.props.item.locationY * h;
+      locationX = this.props.item.locationX * w;
+      locationY = this.props.item.locationY * h;
     }
     this._setupPanResponder(locationX, locationY);
   }
 
-  getCurrentItemStatus(item) {
-    return item.brand && item.category !== null ? greenMarker : greenMarkerWithBorder
-  }
-
-  otherItemStatus(item) {
-    return item.brand && item.category !== null ? whiteMarker : whiteMarkerWithBorder
+  _getMarkerIcon(item) {
+    return item.brand && item.category !== null ? validMarker : invalidMarker;
   }
 
   render() {
-    const { item, currItemId } = this.props
-    const { width, height } = this.getRenderingDimensions();
-    const x = this.normalizePosition(this.props.item.locationX);
-    const y = this.normalizePosition(this.props.item.locationY);
-    const left = parseInt(x * width);
-    const top = parseInt(y * height);
+    const {item, currItemId} = this.props
     const layout = this._pan.getLayout();
-    const markerImage = currItemId === item.id ? this.getCurrentItemStatus(item) : this.otherItemStatus(item);
-    if(this.props.dragable) {
+    const markerImage = this._getMarkerIcon(item);
+    if (item) {
       return (
         <Animated.View
-
           {...this.panResponder.panHandlers}
-          style={[layout, styles.itemMarker, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? { zIndex: 1 } : null]}>
-
-          <Image source={markerImage} style={styles.itemBgImage} />
+          style={[layout, currItemId === item.id ? styles.selectedItem : styles.unselectedItem, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}]}>
+          <Image source={markerImage}
+                 style={styles.itemBgImage}/>
         </Animated.View>
       );
-    } else {
-      return (
-
-        <View style={[styles.itemMarker, { top: top, left: left}, { transform: [{ translateX: -TAG_WIDTH }, {translateY: -BORDER_WIDTH - 5}]}, Platform.OS === 'ios' ? { zIndex: 1 } : null]}>
-          <TouchableOpacity onPress={() => this.props.setCurrentItem(item)}>
-            <Image source={markerImage} style={[styles.itemBgImage]} />
-          </TouchableOpacity>
-        </View>
-
-      );
     }
-
   }
 }
-
 
 
 export default Tag;

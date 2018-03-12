@@ -1,5 +1,8 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 const width = Dimensions.get('window').width
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
@@ -7,6 +10,14 @@ export default StyleSheet.create({
   container: {},
   tempBtn: {
     position: 'absolute', width: 50, height: 50, backgroundColor: 'green'
+  },
+  noItemLink: {
+    fontSize: generateAdjustedSize(16),
+    backgroundColor: 'transparent',
+    color: Colors.white,
+    textAlign: 'center',
+    padding: 5,
+    fontFamily: Fonts.contentFont,
   },
   itemImage: {
     width: width,
@@ -16,6 +27,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20
+  },
+  loadingImage:{
+    color: 'black',
+    fontFamily: Fonts.contentFont,
+    fontSize: generateAdjustedSize(18),
   },
   topLeft: {
     left: 10

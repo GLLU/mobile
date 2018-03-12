@@ -17,7 +17,7 @@ class FacebookAnalytics {
   logEvent(name, params = {}, timed = false) {
     const action = params.name || name;
     delete params['name']
-    AppEventsLogger.logEvent(action, params);
+    AppEventsLogger.logEvent(action);
   }
 }
 

@@ -4,6 +4,8 @@ import * as _ from 'lodash'
 import { showInfo } from '../../../actions'
 import { connect } from 'react-redux'
 
+import withAnalytics from '../../common/analytics/WithAnalytics';
+
 const bagItImage = require('../../../../images/icons/bag-white.png');
 
 const styles = StyleSheet.create({
@@ -48,14 +50,14 @@ class ItemDataLine extends Component {
   };
 
   handleOpenLink() {
-    const url = this.props.data.url;
+    const { url, is_verified, look_id, id } = this.props.data;
     if (url) {
       Linking.canOpenURL(url).then(supported => {
         if (!supported) {
-          console.log('Can\'t handle url: ' + url);
         }
         else {
           return Linking.openURL(url);
+          this.props.logEvent('lookScreen', {name: 'click on item', isVerified: is_verified, lookId: look_id, item_id: id});
         }
       }).catch(err => console.error('An error occurred', err));
     }
@@ -91,5 +93,5 @@ function bindActions(dispatch) {
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, bindActions)(ItemDataLine);
+export default connect(mapStateToProps, bindActions)(withAnalytics(ItemDataLine));
 

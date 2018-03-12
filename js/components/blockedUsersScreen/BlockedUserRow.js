@@ -21,15 +21,13 @@ const styles = StyleSheet.create({
   },
   name: {
     flex: 0.5,
-    color: Colors.black,
-    fontFamily: Fonts.boldFont,
-    fontWeight: 'bold',
-    fontSize: 14
+    fontFamily: Fonts.boldContentFont,
+    fontSize: 16,
   },
   username: {
     flex: 0.5,
-    color: Colors.usernameColor,
-    fontFamily: Fonts.boldFont,
+    fontFamily: Fonts.contentFont,
+    fontSize: 14,
   },
   photoContainer: {
     flex: 2,
@@ -65,7 +63,9 @@ class BlockedUserRow extends PureComponent {
     this._onUnblockPress = this._onUnblockPress.bind(this);
   }
 
-  _onUnblockPress = () => this.props.onUnblockPress(this.props.userId);
+  _onUnblockPress = () => {
+    this.props.onUnblockPress(this.props.userId)
+  };
 
   renderUserData() {
     const {name, username} = this.props;

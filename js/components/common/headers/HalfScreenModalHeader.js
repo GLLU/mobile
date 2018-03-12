@@ -7,7 +7,7 @@ import CancelButton from "../buttons/CancelButton";
 import Fonts from '../../../styles/Fonts.styles'
 import Colors from '../../../styles/Colors.styles'
 import { noop } from "lodash";
-const infoIcon = require('../../../../images/icons/info-i-white.png');
+const infoIcon = require('../../../../images/icons/info.png');
 
 const styles = StyleSheet.create({
   container: {
@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 10,
     textAlign: 'left',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: Fonts.boldFont
+    fontFamily: Fonts.regularFont,
   },
 });
 

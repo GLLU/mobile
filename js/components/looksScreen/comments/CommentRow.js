@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import moment from 'moment'
-import { noop } from 'lodash'
+import moment from 'moment';
+import { noop } from 'lodash';
+import Fonts from '../../../styles/Fonts.styles';
+import Colors from '../../../styles/Colors.styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +15,23 @@ const styles = StyleSheet.create({
   photo: {
     width: 40,
     height: 40,
-    borderRadius: 20
+    borderRadius: 20,
+  },
+  userName: {
+    fontFamily: Fonts.boldContentFont,
+    fontSize: 16,
+  },
+  commentText: {
+    fontFamily: Fonts.contentFont,
+    fontSize: 14,
+    flex: 1,
+  },
+  createdAt: {
+    fontFamily: Fonts.regularFont,
+    fontSize: 10,
+    flex: 2,
+    textAlign: 'right',
+    color: Colors.lightGray,
   },
 });
 
@@ -31,10 +49,10 @@ export default class CommentRow extends Component {
     user: React.PropTypes.object,
     look_id: React.PropTypes.number,
     body: React.PropTypes.string,
-    //parent_id & children are used for hierarchical comments and therefore currently not relevant
+    // parent_id & children are used for hierarchical comments and therefore currently not relevant
     parent_id: React.PropTypes.number,
     children: React.PropTypes.array,
-    onUserPress: React.PropTypes.func
+    onUserPress: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -42,50 +60,43 @@ export default class CommentRow extends Component {
     id: -1,
     created_at: new Date(1970, 1, 1).toUTCString(),
     body: '',
-    //parent_id & children are used for hierarchical comments and therefore currently not relevant
+    // parent_id & children are used for hierarchical comments and therefore currently not relevant
     parent_id: null,
     children: [],
-    onUserPress: noop
+    onUserPress: noop,
   };
 
   _onUserPress() {
-    this.props.onUserPress(this.props.user);
+    const {user, onUserPress} = this.props
+    onUserPress(user);
   }
 
   render() {
-    const name = this.props.user?this.props.user.name:'';
-    const avatar = this.props.user?this.props.user.avatar:{url:'https://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg'};
+    const {user, created_at, body} = this.props
+    const name = user ? user.name : '';
+    const avatar = user ? user.avatar : { url: 'https://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg' };
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._onUserPress} style={{flex:2}} name="avatar">
-          <Image resizeMode='cover' source={{ uri: avatar.url}} style={styles.photo}/>
+        <TouchableOpacity onPress={this._onUserPress} style={{ flex: 2 }} name="avatar">
+          <Image resizeMode="cover" source={{ uri: avatar.url }} style={styles.photo} />
         </TouchableOpacity>
-        <View style={{flex:13, flexDirection:'column'}}>
-          <View style={{flex:1, flexDirection:'row'}}>
-            <TouchableOpacity style={{flex:3}} onPress={this._onUserPress}>
-              <Text style={{fontWeight:'bold'}} name="name">
+        <View style={{ flex: 13, flexDirection: 'column' }}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <TouchableOpacity style={{ flex: 3 }} onPress={this._onUserPress}>
+              <Text style={styles.userName} name="name">
                 {name}
               </Text>
             </TouchableOpacity>
-            <Text style={{flex:2, fontSize:10, textAlign:'right'}} name="created_at">
-              {moment(this.props.created_at).calendar()}
+            <Text style={styles.createdAt} name="created_at">
+              {moment(created_at).fromNow()}
             </Text>
           </View>
-          <Text style={{flex:1}} name="body">
-            {this.props.body}
+          <Text style={styles.commentText} name="body">
+            {body}
           </Text>
         </View>
       </View>
     );
   }
 }
-
-
-
-
-
-
-
-
-
 

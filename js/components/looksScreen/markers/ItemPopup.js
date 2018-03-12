@@ -6,20 +6,52 @@ import {
   Linking,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { connect } from 'react-redux'
-import { showInfo } from '../../../actions'
-import { noop } from 'lodash'
+import { connect } from 'react-redux';
+import { noop } from 'lodash';
+import I18n from 'react-native-i18n';
+
+import { showInfo } from '../../../actions';
+import Colors from '../../../styles/Colors.styles';
+import Fonts from '../../../styles/Fonts.styles';
+import SolidButton from '../../common/buttons/SolidButton';
+import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import withAnalytics from '../../common/analytics/WithAnalytics';
+
+export const POPUP_WIDTH = 160;
+export const POPUP_HEIGHT = 70;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    position: 'absolute',
-    alignItems: 'stretch',
+    backgroundColor: '#ffffff',
+    width: POPUP_WIDTH,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.black,
   },
+  innerContainer: {
+    backgroundColor: Colors.lightGray,
+    marginHorizontal: 4,
+    marginVertical: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    alignItems: 'center',
+  },
+  brand: {
+    fontSize: generateAdjustedSize(16),
+    color: Colors.black,
+    marginBottom: 4,
+    fontFamily: Fonts.contentFont,
+  },
+  category: {
+    fontSize: generateAdjustedSize(14),
+    color: Colors.white,
+    marginBottom: 4,
+    fontFamily: Fonts.contentFont,
+  },
+
   row: {
-    flex: 1,
     padding: 5,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   titleColors: {
     color: 'black',
@@ -27,16 +59,16 @@ const styles = StyleSheet.create({
   },
   buyColors: {
     color: '#f4b85a',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   topRoundCorners: {
     borderTopRightRadius: 5,
-    borderTopLeftRadius: 5
+    borderTopLeftRadius: 5,
   },
   bottomRoundCorners: {
     borderBottomRightRadius: 5,
-    borderBottomLeftRadius: 5
-  }
+    borderBottomLeftRadius: 5,
+  },
 });
 
 class ItemPopup extends Component {
@@ -51,49 +83,50 @@ class ItemPopup extends Component {
     url: React.PropTypes.string,
     onLayout: React.PropTypes.func,
     dimensions: React.PropTypes.object,
-    showInfo: React.PropTypes.func
+    showInfo: React.PropTypes.func,
   };
 
   static defaultProps = {
     price: 0,
-    brand: {name: 'N/A'},
+    brand: { name: 'N/A' },
     url: '',
-    onLayout: noop
+    onLayout: noop,
   }
 
   handleOpenLink() {
-    const url = this.props.url;
+    const { url, look_id, id, is_verified, openWebView } = this.props;
     if (url) {
-      Linking.canOpenURL(url).then(supported => {
+      Linking.canOpenURL(url).then((supported) => {
         if (!supported) {
-          console.log('Can\'t handle url: ' + url);
-        }
-        else {
-          return Linking.openURL(url);
+        } else {
+          this.props.logEvent('lookScreen', {name: 'click on item', isVerified: is_verified, lookId: look_id, item_id: id});
+          openWebView(url);
         }
       }).catch(err => console.error('An error occurred', err));
-    }
-    else {
-      this.props.showInfo("Sorry, we're still working on finding this item online for you. ")
+    } else {
+      this.props.showInfo("Sorry, we're still working on finding this item online for you. ");
     }
   }
 
   getTitle(brand) {
-    const titleLength=12;
     let title = brand ? brand.name : 'N/A';
-    title = title.length > titleLength ? title.slice(0, titleLength-3) + '...' : title;
     return title;
   }
 
   render() {
+
+    const { category, brand, is_verified } = this.props;
+
     return (
-      <TouchableWithoutFeedback onPress={this.handleOpenLink}>
-        <View style={this.props.dimensions? this.props.dimensions:null}>
-          <Text style={[styles.row, styles.titleColors, styles.topRoundCorners]}>{this.getTitle(this.props.brand)}</Text>
-          <Text style={[styles.row, styles.buyColors, styles.bottomRoundCorners]}>Shop
-            Now!</Text>
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <Text style={styles.brand}>{this.getTitle(brand)}</Text>
+          { category ? <Text style={styles.category}>{category.name}</Text> : null }
+          <SolidButton
+            label={is_verified ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
+            style={{ backgroundColor: Colors.black, width: 140, height: 30 }} onPress={this.handleOpenLink} />
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     );
   }
 }
@@ -104,6 +137,6 @@ function bindActions(dispatch) {
   };
 }
 
-const mapStateToProps= ()=>({});
+const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, bindActions)(ItemPopup);
+export default connect(mapStateToProps, bindActions)(withAnalytics(ItemPopup));

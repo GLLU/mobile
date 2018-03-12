@@ -1,50 +1,42 @@
-import { showProcessing, hideProcessing } from './loader';
-import { showError, hideError, showWarning, hideWarning, showInfo, hideInfo, showFatalError, hideFatalError } from './errorHandler';
-import { showParisBottomMessage, hideParisBottomMessage } from './paris';
-import { loadCategories, loadBrands, loadOccasionTags } from './filters';
-import { completeEdit, saveUserSize } from './myBodyMeasure';
-import { changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType } from './myBodyType';
-import { likeUpdate, unlikeUpdate } from './likes';
-import { getUserBalance } from './wallet';
-import { getLookLikes, initLookLikes } from './lookLikes';
-import { followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows }  from './follows';
-import { getNotifications, goToNotificationSubjectScreen, markAsReadNotifications, clearNewNotifications }  from './notifications';
-import { getUserFollowersData, initUserFollowers }  from './followers';
-import { getLookCommentsData, initLookComments, addLookComment } from './comments';
-import { getUserLooksData, getUserLooks, loadMoreUserLooks } from './looks';
-import { getFeed, loadMore, clearFeed } from './feed';
+import {showProcessing, hideProcessing} from './loader';
 import {
-  addNewLook,
-  editNewLook,
-  editTag,
-  createLookItem,
-  selectLookItem,
-  updateLookItem,
-  publishLookItem,
-  setTagPosition,
-  addItemType,
-  createBrandName,
-  addBrandName,
-  removeBrandName,
-  addItemSize,
-  addItemTag,
-  removeItemTag,
-  addSharingInfo,
-  addDescription,
-  addUrl,
-  addLocation,
-  addPhotosVideo,
-  toggleOccasionTag,
-} from './uploadLook';
-import { setUser,
+  showError,
+  hideError,
+  showWarning,
+  hideWarning,
+  showInfo,
+  hideInfo,
+  showFatalError,
+  hideFatalError
+} from './errorHandler';
+import {showParisBottomMessage, hideParisBottomMessage} from './paris';
+import {loadCategories, loadBrands, loadOccasionTags} from './filters';
+import {completeEdit, saveUserSize} from './myBodyMeasure';
+import {changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType} from './myBodyType';
+import {likeUpdate, unlikeUpdate} from './look';
+import {getUserBalance} from './wallet';
+import {getLookLikes, initLookLikes} from './lookLikes';
+import {followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows}  from './follows';
+import {
+  getNotifications,
+  goToNotificationSubjectScreen,
+  markAsReadNotifications,
+  clearNewNotifications
+}  from './notifications';
+import {getUserFollowersData, initUserFollowers}  from './followers';
+import {getLookCommentsData, initLookComments, addLookComment} from './comments';
+import {getUserLooksData, getUserLooks, loadMoreUserLooks} from './looks';
+import {getFeed, loadMore, clearFeed, getFollowingFeed, getBestMatchFeed, getWhatsHotFeed} from './feed';
+import {
+  setUser,
   loginViaFacebook,
   checkLogin,
   getStats,
   logout,
   clearTutorial,
   hideTutorial,
-  clearBodyModal
-  } from './user';
+  onBodyShapeChoosen
+} from './user';
 
 export {
   loadCategories,
@@ -58,35 +50,17 @@ export {
   changeBodyType,
   showBodyTypeModal,
   hideBodyTypeModal,
-  addNewLook,
-  editNewLook,
-  createLookItem,
-  selectLookItem,
-  updateLookItem,
-  clearBodyModal,
+  onBodyShapeChoosen,
   getUserBalance,
-  publishLookItem,
-  editTag,
-  setTagPosition,
   setUser,
   getStats,
   checkLogin,
   logout,
   clearFeed,
+  getFollowingFeed,
+  getWhatsHotFeed,
+  getBestMatchFeed,
   loginViaFacebook,
-  addItemType,
-  createBrandName,
-  addBrandName,
-  removeBrandName,
-  addItemSize,
-  addItemTag,
-  removeItemTag,
-  addSharingInfo,
-  addDescription,
-  addUrl,
-  addLocation,
-  toggleOccasionTag,
-  addPhotosVideo,
   showProcessing,
   hideProcessing,
   showError,

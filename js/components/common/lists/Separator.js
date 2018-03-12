@@ -1,12 +1,14 @@
 // @flow
 
-import React, { PureComponent } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, {PureComponent} from 'react';
+import {View, StyleSheet} from 'react-native';
 import Colors from "../../../styles/Colors.styles";
 
 const styles = StyleSheet.create({
   separator: {
     backgroundColor: Colors.separatorGray,
+    marginLeft: 16,
+    marginRight: 16,
     height: 1
   }
 });

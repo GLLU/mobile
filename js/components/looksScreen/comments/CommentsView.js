@@ -9,6 +9,7 @@ import BottomHalfScreenModal from '../common/BottomHalfScreenModal'
 import Spinner from '../../loaders/Spinner';
 import { getLookCommentsData, initLookComments, addLookComment } from '../../../actions';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import { getDataWithUsersObj } from '../../../utils/UsersUtils';
 
 const statusBarHeight = Platform.os === 'ios' ? 0 : ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
@@ -76,7 +77,7 @@ class CommentsView extends Component {
       id: -1,
       created_at: new Date().toUTCString(),
       user_id: this.props.myUser.id,
-      user: this.props.myUser,
+      userId: this.props.myUser.id,
       look_id: this.props.look_id,
       //parent_id is used for hierarchical comments and therefore currently not relevant
       parent_id: null,
@@ -129,9 +130,10 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => {
+  const commentsDataWithUsersObjs = getDataWithUsersObj(state.lookComments.lookCommentsData, state.users.usersData, false);
   return ({
     myUser: state.user,
-    comments: state.lookComments.lookCommentsData,
+    comments: commentsDataWithUsersObjs,
     areCommentsLoaded: state.lookComments.currId !== -1
   });
 };

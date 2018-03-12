@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Switch, TouchableWithoutFeedback, TouchableHighlight, Dimensions, StyleSheet } from 'react-native';
-import FilterGroup from './FilterGroup';
+import ScrollableSelectableList from '../../common/itemParams/ScrollableSelectableList';
 import BaseComponent from '../../common/base/BaseComponent';
 import _ from 'lodash'
 import { loadCategories, loadOccasionTags } from '../../../actions/filters';
@@ -171,11 +171,11 @@ class FilterBar extends BaseComponent {
 
       // case 'radio-multi':
       //
-      //   return <FilterGroup onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
-      //                       filters={filters}/>;
+      //   return <ScrollableSelectableList onSelectionChange={(itemParams) => this._setSubFilters(openFilter, itemParams)}
+      //                       itemParams={itemParams}/>;
       default:
       case 'radio-single':
-        return <FilterGroup mode='single' onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
+        return <ScrollableSelectableList mode='single' onSelectionChange={(filters) => this._setSubFilters(openFilter, filters)}
                             filters={filters}/>;
     }
   }
@@ -229,7 +229,7 @@ class FilterBar extends BaseComponent {
     return (
       <View style={myStyles.container}>
         <View style={myStyles.filter}>
-          <FilterGroup mode='single' activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
+          <ScrollableSelectableList mode='single' activeStyle={activeFilter} onSelectionChange={this._setFilters.bind(this)}
                        filters={this.state.filters}/>
         </View>
         {!_.isEmpty(this.state.openFilter) ? this._renderFilters(this.state.openFilter) : null}
@@ -261,23 +261,6 @@ const mapStateToProps = state => {
   }
 };
 
-const mapBodyTypes = (bodytypes) => {
-  return _.chain(Object.keys(bodytypes))
-    .map(key =>
-      _.map(bodytypes[key], bodyType => {
-        return {
-          id: bodyType.body_type,
-          name: bodyType.name,
-          gender: key,
-          kind: 'body_type',
-          icon: {
-            url: bodyType.filterImageUrl,
-            url_hover: bodyType.filterImageUrlActive,
-          }
-        };
-      }))
-    .flatten()
-    .value();
-}
+
 
 export default connect(mapStateToProps, bindActions)(FilterBar);

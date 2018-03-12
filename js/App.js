@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
   },
 });
 
+// Don't allow text growing on IOS
+Text.defaultProps.allowFontScaling = false;
+
 class App extends Component {
 
   constructor(props) {
@@ -33,6 +36,7 @@ class App extends Component {
       downloadProgress: 0,
     };
   }
+
 
   render() {
     // if (this.state.showDownloadingModal) {
@@ -83,9 +87,8 @@ class App extends Component {
     //       </View>
     //   );
     // }
-
-    return <AppNavigator/>;
+    return <AppNavigator notification={this.props.notification} />;
   }
 }
-App = CodePush(App);
+//App = CodePush(App);
 export default App;

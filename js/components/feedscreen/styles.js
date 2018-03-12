@@ -3,6 +3,8 @@ const { StyleSheet, Dimensions, Platform } = React;
 const deviceHeight = Dimensions.get('window').height;
 import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import Colors from '../../styles/Colors.styles';
+import Fonts from '../../styles/Fonts.styles';
 
 module.exports = StyleSheet.create({
   container: {
@@ -19,7 +21,7 @@ module.exports = StyleSheet.create({
     paddingHorizontal: 0,
     paddingLeft: 0,
     flexDirection: 'column',
-    paddingTop: 25
+    paddingTop: Platform.OS === 'ios' ? 25 : 0,
   },
   Textlabel: {
     paddingTop: 0,
@@ -59,5 +61,46 @@ module.exports = StyleSheet.create({
   smallBtn: {
     fontSize: new FontSizeCalculator(24).getSize(),
     color: 'grey'
+  },
+  btnImage: {
+    height: 75,
+    width: 75,
+    marginBottom: 2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    resizeMode: 'contain',
+  },
+  talkBubble: {
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+  },
+  talkBubbleSquare: {
+    width: 230,
+    height: 80,
+    backgroundColor: Colors.highlightColor,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  talkBubbleTriangle: {
+    width: 0,
+    height: 0,
+    borderTopColor: 'transparent',
+    borderTopWidth: 13,
+    borderRightWidth: 26,
+    borderRightColor: Colors.highlightColor,
+    borderBottomWidth: 13,
+    borderBottomColor: 'transparent',
+    transform: [
+      {rotate: '-90deg'}
+    ]
+  },
+  cameraHintText: {
+    fontSize: 16,
+    color: 'white',
+    fontFamily: Fonts.contentFont,
+    textAlign: 'center',
+    alignSelf: 'center',
   }
+
 });

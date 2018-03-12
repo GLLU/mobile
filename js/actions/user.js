@@ -1,22 +1,32 @@
 // @flow
 
-import { showError, hideError, showFatalError, hideFatalError } from './index';
+import {showError, hideError, showFatalError, hideFatalError} from './index';
 import Utils from '../utils';
 import rest from '../api/rest';
 import _ from 'lodash';
 import i18n from 'react-native-i18n';
 import LoginService from '../services/loginService';
+import NetworkManager from '../network/NetworkManager';
 import UsersService from '../services/usersService';
+import * as userMapper from '../mappers/userMapper';
+import { normalize } from 'normalizr';
+import { blockedSchema } from '../schemas/schemas';
+import { setUsers } from './users';
 
 export const SET_USER = 'SET_USER';
 export const HIDE_TUTORIAL = 'HIDE_TUTORIAL';
 export const HIDE_BODY_MODAL = 'HIDE_BODY_MODAL';
+export const BODY_SHAPE_CHOOSEN = 'user.BODY_SHAPE_CHOOSEN';
+export const HIDE_WALLET_BADGE = 'user.HIDE_WALLET_BADGE';
+export const HIDE_CLOSET_WIZARD = 'user.HIDE_CLOSET_WIZARD';
 export const UPDATE_STATS = 'UPDATE_STATS';
 export const RESET_STATE = 'RESET_STATE';
+export const HIDE_SWIPE_WIZARD = 'user.HIDE_SWIPE_WIZARD';
 export const USER_BLOCKED = 'USER_BLOCKED';
 export const USER_UNBLOCKED = 'USER_UNBLOCKED';
 export const SET_BLOCKED_USERS = 'SET_BLOCKED_USERS';
-
+export const SET_FAVORITE_LOOKS = 'user.SET_FAVORITE_LOOKS';
+export const LOADING_FAVORITES_START = 'user.LOADING_FAVORITES_START';
 let api_key = '';
 const setRestOptions = function (dispatch, rest, user) {
 
@@ -29,20 +39,21 @@ const setRestOptions = function (dispatch, rest, user) {
     },
   })).use('responseHandler', (err, data) => {
     if (err) {
-      console.log('ERROR', err, data);
       Utils.notifyRequestError(new Error(JSON.stringify(err)), data);
     } else {
-      console.log('SUCCESS', data);
     }
   });
 };
-
+export function hideWalletBadge() {
+  return ({ type: HIDE_BODY_MODAL });
+}
 const signInFromRest = function (dispatch, data) {
   return new Promise((resolve, reject) => {
     if (!data || _.isEmpty(data)) {
       reject();
     }
     Utils.saveApiKeyToKeychain(data.user.email, data.user.api_key).then(() => {
+      NetworkManager.setToken(data.user.api_key);
       setRestOptions(dispatch, rest, data.user);
       dispatch(setUser(data.user));
       resolve(data.user);
@@ -51,10 +62,22 @@ const signInFromRest = function (dispatch, data) {
 };
 
 export function setUser(user: string) {
-  return {
-    type: SET_USER,
-    payload: user,
-  };
+  return (dispatch) => {
+    const mappedUser = userMapper.map(user)
+    dispatch(setUsers({[mappedUser.id]: mappedUser}))
+    dispatch({
+      type: SET_USER,
+      payload: mappedUser,
+    });
+  }
+}
+
+export function hideSwipeWizard() {
+  return ({ type: HIDE_SWIPE_WIZARD });
+}
+
+export function hideClosetWizard() {
+  return ({ type: HIDE_CLOSET_WIZARD });
 }
 
 export function loginViaFacebook(data) {
@@ -91,11 +114,11 @@ const signUp = function (dispatch, data) {
           data: data[key],
         });
       });
-      Utils.postMultipartForm('', '/users', formData, 'user[avatar]', avatar).then(resolve, reject);
+      Utils.postMultipartForm('', '/users', formData, 'user[avatar]', avatar, 'POST').then(resolve, reject);
     } else {
       // normal rest
-      const body = {user: data};
-      dispatch(rest.actions.users.post({}, {body: JSON.stringify(body)}, (err, data) => {
+      const body = { user: data };
+      dispatch(rest.actions.users.post({}, { body: JSON.stringify(body) }, (err, data) => {
         if (err) {
           reject(err);
         } else {
@@ -115,17 +138,11 @@ export function emailSignUp(data) {
       }).catch((err) => {
         if (err.errors && err.errors.length > 0) {
           const pointers = [];
-          let errorString = '';
           err.errors.map((error) => {
             pointers.push(_.capitalize(_.last(_.split(error.source.pointer, '/'))));
           });
-          if (pointers.length === 1) {
-            dispatch(showFatalError(`${pointers[0]} has already taken`));
-          } else {
-            for (let i = 0; i < pointers.length - 1; i++) {
-              errorString += `${pointers[i]} & `;
-            }
-            dispatch(showFatalError(`${errorString + pointers[pointers.length - 1]} are already taken`));
+          if (pointers.length > 0) {
+            dispatch(showFatalError(`${pointers[0]} ${err.errors[0].detail}`));
           }
         } else {
           dispatch(showFatalError(`Unknown error: ${err}`));
@@ -138,7 +155,7 @@ export function emailSignUp(data) {
 
 export function emailSignIn(data) {
   return dispatch => new Promise((resolve, reject) => {
-    const body = {auth: data};
+    const body = { auth: data };
     const access_token = data.access_token;
     const expiration_time = data.expiration_time;
 
@@ -152,29 +169,14 @@ export function emailSignIn(data) {
       dispatch(showFatalError(error));
       reject(error);
     });
-
-    /*
-     return dispatch(rest.actions.auth.post(body, (err, data) => {
-     if (!err && !_.isEmpty(data)) {
-     signInFromRest(dispatch, data, access_token, expiration_time).then(resolve).catch(reject);
-     dispatch(hideFatalError())
-     } else {
-     const error='Email/Password are incorrect';
-     dispatch(showFatalError(error))
-     reject(error);
-     }
-     }));
-     */
   });
 }
 
 export function forgotPassword(email) {
-  const data = {email};
-  return dispatch => dispatch(rest.actions.password_recovery.post({}, {body: JSON.stringify(data)}, (err, data) => {
+  const data = { email };
+  return dispatch => dispatch(rest.actions.password_recovery.post({}, { body: JSON.stringify(data) }, (err, data) => {
     if (!err && data) {
-      console.log('PASSWORD RECOVERY:', data);
     } else {
-      console.log('password recovery Failed', err);
     }
   }));
 }
@@ -190,7 +192,7 @@ export function statsUpdate(data) {
 
 export function getStats(id) {
   return (dispatch) => {
-    dispatch(rest.actions.stats({id}, (err, data) => {
+    dispatch(rest.actions.stats({ id }, (err, data) => {
       if (!err) {
         dispatch(statsUpdate(data));
       }
@@ -198,34 +200,31 @@ export function getStats(id) {
   };
 }
 
-export function checkLogin(user) {
+export function checkLogin() {
   return dispatch => new Promise((resolve, reject) => {
-    if (user && user.id != -1) {
-      Utils.getKeychainData().then((credentials) => {
-        if (credentials) {
-          setRestOptions(dispatch, rest, _.merge(user, {api_key: credentials.password}));
-          dispatch(rest.actions.auth.get({}, (err, data) => {
-            if (!err) {
-              dispatch(setUser(data.user));
-            } else {
-              console.log('unable to invalidate user data', err);
-              reject(err);
-            }
-          }));
-          resolve(user);
-        }
-      });
-    } else {
-      const error = 'user does not exist';
-      console.log(error);
-      reject(error);
-    }
+    Utils.getKeychainData().then((credentials) => {
+      if (credentials) {
+        NetworkManager.setToken(credentials.password);
+        setRestOptions(dispatch, rest, { api_key: credentials.password });
+        dispatch(rest.actions.auth.get({}, (err, data) => {
+          if (!err && data && data.user && data.user.id !== null && data.user.id !== -1) {
+            dispatch(setUser(data.user));
+          } else {
+            reject(err);
+          }
+        }));
+        resolve(true);
+      }
+      else {
+        reject();
+      }
+    });
   });
 }
 
 export function changeUserAboutMe(data) {
   return dispatch => new Promise((resolve, reject) => {
-    dispatch(rest.actions.changeUserAboutMe.put({id: data.id}, {body: JSON.stringify(data)}, (err, data) => {
+    dispatch(rest.actions.changeUserAboutMe.put({ id: data.id }, { body: JSON.stringify(data) }, (err, data) => {
       if (!err && data) {
         dispatch(setUser(data.user));
         resolve(data.user);
@@ -257,8 +256,10 @@ export function getBlockedUsers() {
     const userId = state.user.id;
     const nextPage = 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
-      const {blockedUsers} = getState().blockedUsers;
-      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      const { blockedUsers } = getState().blockedUsers;
+      const normalizedBlockedUsersData = normalize(data.blockedUsers, [blockedSchema]);
+      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers))
+      const blockedUsersUnion = _.unionBy(blockedUsers, normalizedBlockedUsersData.result);
       dispatch({
         type: SET_BLOCKED_USERS,
         blockedUsers: blockedUsersUnion,
@@ -275,11 +276,13 @@ export function getMoreBlockedUsers() {
   return (dispatch, getState) => {
     const state = getState();
     const userId = state.user.id;
-    const {meta} = state.blockedUsers;
+    const { meta } = state.blockedUsers;
     const nextPage = meta.currentPage + 1;
     UsersService.getBlockedUsers(userId, nextPage).then((data) => {
-      const {blockedUsers} = getState().blockedUsers;
-      const blockedUsersUnion = _.unionBy(blockedUsers, data.blockedUsers, user => user.id);
+      const { blockedUsers } = getState().blockedUsers;
+      const normalizedBlockedUsersData = normalize(data.blockedUsers, [blockedSchema]);
+      dispatch(setUsers(normalizedBlockedUsersData.entities.blockedUsers))
+      const blockedUsersUnion = _.unionBy(blockedUsers, normalizedBlockedUsersData.result);
       dispatch({
         type: SET_BLOCKED_USERS,
         blockedUsers: blockedUsersUnion,
@@ -310,8 +313,8 @@ export function unblockUser(blockedUserId) {
     const userId = getState().user.id;
     UsersService.unblock(userId, blockedUserId)
       .catch(err => ({}));//mute error
-    const {blockedUsers, meta} = getState().blockedUsers;
-    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, user => user.id !== blockedUserId);
+    const { blockedUsers, meta } = getState().blockedUsers;
+    const blockedUsersWithoutUnblocked = _.filter(blockedUsers, userId => userId !== blockedUserId);
     dispatch({
       type: SET_BLOCKED_USERS,
       blockedUsers: blockedUsersWithoutUnblocked,
@@ -350,17 +353,14 @@ export function hideTutorial() {
   };
 }
 
-export function clearBodyModal() {
-  console.log('clear action');
-  return (dispatch, getState) => {
-    dispatch(hideBodyModal());
-  };
+export function setFavoriteLooks(data) {
+  return ({type: SET_FAVORITE_LOOKS, looksIds: data.flatLooksIdData });
 }
 
-export function hideBodyModal() {
-  return (dispatch) => {
+export function onBodyShapeChoosen() {
+  return (dispatch, getState) => {
     dispatch({
-      type: HIDE_BODY_MODAL,
+      type: BODY_SHAPE_CHOOSEN,
     });
   };
 }

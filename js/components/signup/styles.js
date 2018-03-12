@@ -1,26 +1,28 @@
-
 const React = require('react-native');
 import { Platform } from 'react-native';
 const { StyleSheet, Dimensions } = React;
 const deviceHeight = Dimensions.get('window').height;
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import FontSizeCalculator from './../../calculators/FontSize';
+import Fonts from '../../styles/Fonts.styles';
+import Colors from '../../styles/Colors.styles';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 
 module.exports = StyleSheet.create({
   header: {
     backgroundColor: 'transparent',
-    flex:1,
-    flexDirection:'row',
-    alignItems: 'center'
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: '300',
     color: '#FFFFFF',
-    textAlign: 'left'
+    textAlign: 'left',
   },
   headerArrow: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
   container: {
     position: 'absolute',
@@ -28,7 +30,7 @@ module.exports = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT')
+    height: deviceHeight - ExtraDimensions.get('STATUS_BAR_HEIGHT'),
   },
   shadow: {
     flex: 1,
@@ -49,7 +51,7 @@ module.exports = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
   },
   uploadImgContainer: {
     marginTop: 15,
@@ -59,29 +61,23 @@ module.exports = StyleSheet.create({
   uploadImgBtn: {
     borderRadius: 50,
     backgroundColor: '#FFFFFF',
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   uploadImgIcon: {
     backgroundColor: 'transparent',
-    marginBottom: 5
+    marginBottom: 5,
   },
   formItem: {
-    flex: 1,
-    marginLeft: 20,
-    marginRight: 20,
-    borderBottomWidth: 2,
-    borderColor: 'rgba(192,192,192, .3)',
-    height: 55,
-    paddingLeft: 0,
-    alignItems: 'flex-end'
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   formGroup: {
     flex: 1,
     borderColor: 'transparent',
     alignItems: 'flex-end',
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   label: {
     color: 'lightgrey',
@@ -91,12 +87,12 @@ module.exports = StyleSheet.create({
     width: 100,
   },
   addOpacity: {
-      opacity: 0.8
+    opacity: 0.8,
   },
   confirmPass: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
-  genderSelectContainer:{
+  genderSelectContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -105,35 +101,54 @@ module.exports = StyleSheet.create({
   },
   formInput: {
     flex: 1,
-    paddingLeft: 20,
-    lineHeight: 20,
-    marginTop: (Platform.OS === 'ios') ? 20 : 0,
+    lineHeight: 18,
+    height: generateAdjustedSize(45),
+    fontSize: generateAdjustedSize(18),
+    backgroundColor: 'transparent',
     alignItems: 'stretch',
-    color: '#FFFFFF',
-    marginLeft: 10,
-    top: (Platform.OS === 'ios') ? 0 : 13,
+    fontFamily: Fonts.contentFont,
+    color: Colors.white,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'white',
+    marginBottom: 16,
+  },
+  inputTitle: {
+    color: Colors.lightGray,
+    fontSize: 14,
+    fontFamily: Fonts.contentFont,
   },
   formBtn: {
     alignSelf: 'center',
-    marginTop: 70,
+    marginTop: 16,
     marginBottom: (Platform.OS === 'ios') ? 20 : 10,
     width: 280,
     height: 40,
     backgroundColor: '#ADADAD',
     borderRadius: 0,
-    opacity: 0.8
+    opacity: 0.8,
   },
   validationPassed: {
-    backgroundColor: '#009688'
+    backgroundColor: Colors.darkGreen,
   },
   alreadyBox: {
     alignSelf: 'center',
-    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   alreadyTxt: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    opacity: 0.8
+    color: Colors.white,
+    fontFamily: Fonts.contentFont,
+    fontSize: generateAdjustedSize(18),
+    opacity: 0.8,
+  },
+  clickHere: {
+    color: Colors.darkGreen,
+    fontSize: generateAdjustedSize(16),
+    paddingLeft: 5,
+    fontFamily: Fonts.contentFont,
   },
   alreadyBtn: {
     backgroundColor: 'transparent',
@@ -141,41 +156,43 @@ module.exports = StyleSheet.create({
     paddingHorizontal: 5,
     alignItems: 'flex-start',
     shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0,
-      paddingTop: (Platform.OS === 'ios') ? 0 : 5,
+    shadowRadius: 0,
+    elevation: 0,
+    paddingTop: (Platform.OS === 'ios') ? 0 : 5,
   },
-  genderBtnContainer:{
-      flex: 1,
-      alignItems: 'center',
-      marginTop: deviceHeight/4
+  genderBtnContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: deviceHeight / 4,
   },
-  genderImage:{
-      width: 130,
-      height: 130,
-      borderRadius: 65
+  genderImage: {
+    width: 130,
+    height: 130,
+    borderRadius: 65,
   },
-  genderLabel:{
-      color: '#FFFFFF',
-      alignSelf: 'center',
-      marginTop: 15,
-      opacity: 0.8
+  genderLabel: {
+    color: Colors.white,
+    alignSelf: 'center',
+    fontSize: generateAdjustedSize(18),
+    marginTop: 15,
+    opacity: 0.8,
+    fontFamily: Fonts.regularFont,
   },
   bottomContainerContent: {
     justifyContent: 'center',
     marginBottom: 15,
     opacity: 0.8,
     flexDirection: 'row',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   text: {
     color: '#E0E0E0',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    fontSize: generateAdjustedSize(14),
     fontWeight: 'normal',
   },
   link: {
-    color: 'white',
-    fontSize: new FontSizeCalculator(12).getSize(),
+    color: Colors.white,
+    fontSize: generateAdjustedSize(14),
     fontWeight: 'normal',
 
   },

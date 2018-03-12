@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, BackAndroid, Platform, Text, Image } from 'react-native';
 import { Container, Content, Thumbnail, H2, Grid, Row, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { addNewLook } from '../../actions';
+import { addNewLook } from '../../actions/uploadLook';
 import SocialShare from '../../lib/social';
 import NativeBaseButton from '../common/buttons/NativeBaseButton';
 import glluTheme from '../../themes/gllu-theme';
@@ -95,11 +95,10 @@ class FinishLookPage extends Component {
           index: 1,
           actions: [
             NavigationActions.navigate({ routeName: 'feedscreen' }),
-            NavigationActions.navigate({ routeName: 'addItemScreen',params:{ mode: 'create' }})
+            NavigationActions.navigate({ routeName: 'uploadLookScreen',params:{ mode: 'create' }})
           ]
         });
       }).catch(err => {
-        console.log('addNewLook err', err);
       });
   }
 
