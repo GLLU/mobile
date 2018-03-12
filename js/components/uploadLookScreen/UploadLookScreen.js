@@ -14,6 +14,7 @@ import SpinnerSwitch from '../loaders/SpinnerSwitch';
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
 import Tag from '../common/Tag';
+import { isVideo } from '../../utils/MediaUtils';
 
 export const CATEGORY = 'category';
 export const BRAND = 'brand';
@@ -41,7 +42,8 @@ type Props = {
   image: string,
   filePath: string,
   state: string,
-  currentFeedQuery: object
+  currentFeedQuery: object,
+  isVideo: boolean
 };
 
 const styles = StyleSheet.create({
@@ -245,8 +247,8 @@ class UploadLookScreen extends Component {
     if (currItem) {
       return items.map((item, i) => {
         return (
-          <Tag key={item.id} currItemId={currItem.id} setCurrentItem={itemId => this.setCurrentItem(itemId)} item={item}
-               onDragEnd={position => this.handleOnDragEnd(position)}/>
+          <Tag key={item.id} isCustom={item.isCustom} currItemId={currItem.id} setCurrentItem={itemId => this.setCurrentItem(itemId)} item={item}
+               onDragEnd={position => this.handleOnDragEnd(position)} />
         );
       });
     }

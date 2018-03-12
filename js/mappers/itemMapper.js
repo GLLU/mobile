@@ -16,6 +16,7 @@ export default function map(item) {
     tags: item.tags ? item.tags : [],
     description: item.description ? item.description : '',
     url: item.url ? item.url : null,
-    isNew: item.isNew ? true : false
+    isNew: item.isNew ? true : false,
+    isCustom: item.isCustom,
   }
 }

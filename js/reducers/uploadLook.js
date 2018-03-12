@@ -1,7 +1,8 @@
 import {
   EDIT_NEW_LOOK,
   EDIT_TAG,
-  CREATE_LOOK_ITEM_BY_POSITION,
+  CREATE_CUSTOM_LOOK_ITEM,
+  CREATE_SUGGESTION_LOOK_ITEM,
   SELECT_LOOK_ITEM,
   SET_TAG_POSITION,
   ADD_ITEM_TYPE,
@@ -83,12 +84,25 @@ export default function (state = initialState, action) {
         ...state,
         isUploading: false,
       };
-    case CREATE_LOOK_ITEM_BY_POSITION:
+    case CREATE_SUGGESTION_LOOK_ITEM:
+      items = state.items;
+      item = newItem;
+      item.cover_x_pos = action.x;
+      item.cover_y_pos = action.y;
+      item.id = action.itemId;
+      item.isCustom = false;
+      items.push(itemMapper(item));
+      return {
+        ...state,
+        items,
+      };
+    case CREATE_CUSTOM_LOOK_ITEM:
       items = state.items;
       item = newItem;
       item.cover_x_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
       item.cover_y_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
       item.id = action.itemId;
+      item.isCustom = true;
       items.push(itemMapper(item));
       return {
         ...state,

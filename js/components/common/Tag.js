@@ -57,10 +57,11 @@ const styles = StyleSheet.create({
 class Tag extends Component {
   static propTypes = {
     style: React.PropTypes.object,
+    isCustom: React.PropTypes.bool,
 
   }
 
-  constructor(props) {
+  constructor(props: propTypes) {
     super(props);
   }
 

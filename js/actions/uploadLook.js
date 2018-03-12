@@ -1,6 +1,7 @@
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
-export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
+export const CREATE_CUSTOM_LOOK_ITEM = 'CREATE_CUSTOM_LOOK_ITEM';
+export const CREATE_SUGGESTION_LOOK_ITEM = 'CREATE_SUGGESTION_LOOK_ITEM';
 export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
 export const REMOVE_LOOK_ITEM = 'REMOVE_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
@@ -65,7 +66,7 @@ function _getSuggestion(image, dispatch, resolve) {
   });
   });
 }
-let incrementedItemId = 0
+let incrementedItemId = 0;
 
 // Actions
 export function addNewLook(image) {
@@ -99,6 +100,12 @@ export function addNewLook(image) {
                   reject('Uplaod error');
                 }
               }).catch(reject);
+              _getSuggestion(image, dispatch, resolve).then((tagsData) => {
+                const positions = tagsData.tags;
+                for (let i = 0; i < positions.length; i++) {
+                  dispatch(createSuggestionLookItem({ locationX: positions[i].x, locationY: positions[i].y }));
+                }
+              });
             });
 
           } else {
@@ -113,8 +120,6 @@ export function addNewLook(image) {
     });
   }
 }
-
-
 
 export function editNewLook(lookId) {
   return (dispatch) => {
@@ -149,15 +154,30 @@ export function setTagPosition(payload) {
   }
 }
 
+export function createSuggestionLookItem(position) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      const newItemId = incrementedItemId += 1;
+      dispatch({
+        type: CREATE_SUGGESTION_LOOK_ITEM,
+        itemId: newItemId,
+        x: position.locationX,
+        y: position.locationY,
+      });
+      resolve(newItemId);
+    });
+  }
+}
+
 export function createLookItem() {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       const newItemId = incrementedItemId += 1
       dispatch({
-        type: CREATE_LOOK_ITEM_BY_POSITION,
+        type: CREATE_CUSTOM_LOOK_ITEM,
         itemId: newItemId
       })
-      resolve(newItemId)
+      resolve(newItemId);
     });
   }
 }
