@@ -83,7 +83,7 @@ export function addNewLook(image) {
               _getSuggestion(image, dispatch, resolve).then((tagsData) => {
                 const positions = tagsData.tags;
                 for (let i = 0; i < positions.length; i++) {
-                  items.push({ ...newItem, cover_x_pos: positions[i].x, cover_y_pos: positions[i].y, id: (incrementedItemId + i) });
+                  items.push({ ...newItem, cover_x_pos: positions[i].x, cover_y_pos: positions[i].y, id: (incrementedItemId + i), isCustom: true });
                 }
                 const payload = _.merge(emptyLookData.look, {
                   image: image.localPath,
