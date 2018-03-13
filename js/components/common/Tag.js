@@ -129,7 +129,7 @@ class Tag extends Component {
       return (
         <Animated.View
           {...this.panResponder.panHandlers}
-          style={[layout, currItemId === item.id ? styles.selectedItem : styles.unselectedItem, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}]}>
+          style={[layout, currItemId === item.id ? styles.selectedItem : styles.unselectedItem, {transform: [{translateX: -TAG_WIDTH / 2 }, {translateY: -BORDER_WIDTH - 5 }]}]}>
           <Image source={markerImage}
                  style={styles.itemBgImage}/>
         </Animated.View>

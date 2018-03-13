@@ -1,7 +1,6 @@
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_CUSTOM_LOOK_ITEM = 'CREATE_CUSTOM_LOOK_ITEM';
-export const CREATE_SUGGESTION_LOOK_ITEM = 'CREATE_SUGGESTION_LOOK_ITEM';
 export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
 export const REMOVE_LOOK_ITEM = 'REMOVE_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
@@ -80,34 +79,34 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             UploadLookService.createLook().then((emptyLookData) => {
-              const payload = _.merge(emptyLookData.look, {
-                image: image.localPath,
-                items: [newItem],
-                isUploading: true
-              });
-              dispatch({
-                type: EDIT_NEW_LOOK,
-                payload,
-              });
-              resolve(payload);
-              dispatch(hideProcessing());
-              Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
-                if (data) {
-                  dispatch({
-                    type: DONE_UPLOADING_FILE,
-                  });
-                } else {
-                  reject('Uplaod error');
-                }
-              }).catch(reject);
+              const items=[];
               _getSuggestion(image, dispatch, resolve).then((tagsData) => {
                 const positions = tagsData.tags;
                 for (let i = 0; i < positions.length; i++) {
-                  dispatch(createSuggestionLookItem({ locationX: positions[i].x, locationY: positions[i].y }));
+                  items.push({ ...newItem, cover_x_pos: positions[i].x, cover_y_pos: positions[i].y, id: (incrementedItemId + i) });
                 }
+                const payload = _.merge(emptyLookData.look, {
+                  image: image.localPath,
+                  items: (items && items.length > 0) ? items : [newItem],
+                  isUploading: true
+                });
+                dispatch({
+                  type: EDIT_NEW_LOOK,
+                  payload,
+                });
+                resolve(payload);
+                dispatch(hideProcessing());
+                Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
+                  if (data) {
+                    dispatch({
+                      type: DONE_UPLOADING_FILE,
+                    });
+                  } else {
+                    reject('Uplaod error');
+                  }
+                }).catch(reject);
               });
             });
-
           } else {
             dispatch(hideProcessing());
             reject('Authorization error');
@@ -151,21 +150,6 @@ export function setTagPosition(payload) {
   return {
     type: SET_TAG_POSITION,
     payload: payload
-  }
-}
-
-export function createSuggestionLookItem(position) {
-  return (dispatch, getState) => {
-    return new Promise((resolve, reject) => {
-      const newItemId = incrementedItemId += 1;
-      dispatch({
-        type: CREATE_SUGGESTION_LOOK_ITEM,
-        itemId: newItemId,
-        x: position.locationX,
-        y: position.locationY,
-      });
-      resolve(newItemId);
-    });
   }
 }
 
@@ -369,10 +353,3 @@ export function publishLook() {
     })
   }
 }
-
-/*
-_getSuggestion(image, dispatch, resolve).then((tagsData) => {
-                  const positions = tagsData.tags;
-                  dispatch(createLookItem({ locationX: positions[1].x, locationY: positions[1].y }));
-                });
-*/
