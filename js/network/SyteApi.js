@@ -3,28 +3,33 @@
 import axios from 'axios';
 import ApiUtils from './ApiUtils';
 import Utils from '../utils';
-
-const SYTE_URL = 'https://syteapi.com/offers/bb';
-const ACCOUNT_ID = '6742';
-const SIG = 'PFKQPt+GhsBISoHekefe82DvDpbg/J+ijc7Oi/3IRuA=';
-const PAYLOAD_TYPE = 'image_bin';
+import Config from 'react-native-config';
 
 class SyteApi {
 
   static getSuggestions(image: any) {
-    console.log('before fetch');
-    const url = `${SYTE_URL}?account_id=${ACCOUNT_ID}&sig=${encodeURIComponent(SIG)}&payload_type=${PAYLOAD_TYPE}`;
+    const url = `${Config.SYTE_URL}/bb?account_id=${Config.SYTE_ACCOUNT_ID}&sig=${encodeURIComponent(Config.SYTE_SIG)}&payload_type=${Config.SYTE_PAYLOAD_TYPE}&feed=default`;
 
     return axios(url, {
       method: 'POST',
       data: image,
     })
             .then((response) => {
-              console.log('this is the response', response.data);
               return response.data;
             })
             .catch((error) => {
-              console.log(`error: ${error}`);
+              throw new Error(error);
+            });
+  }
+
+  static getOffers(offerLink: string) {
+    return axios(offerLink, {
+      method: 'GET',
+    })
+            .then((response) => {
+              return response.data;
+            })
+            .catch((error) => {
               throw new Error(error);
             });
   }

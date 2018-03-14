@@ -12,6 +12,26 @@ export default function map(look) {
   }
 }
 
+export function mapOffers(offers) {
+  return offers.map(function(offer) {
+    return {
+      brand: offer.merchant,
+      imageUrl: offer.imageUrl,
+      price: offer.price,
+      link: offer.offer,
+    };
+  });
+}
+
+export function mapSuggestion(suggestion, offers) {
+  return {
+    category: suggestion.label,
+    x: suggestion.center[0],
+    y: suggestion.center[1],
+    offers,
+  };
+}
+
 export function mapSuggestions(suggestions) {
   return {
     tags: getTags(suggestions),
@@ -20,13 +40,14 @@ export function mapSuggestions(suggestions) {
 
 function getTags(suggestions) {
   let coords = [];
-  for (const property in suggestions) {
-    if (suggestions.hasOwnProperty(property)) {
-      const suggstionArray = suggestions[property];
+  //we have only one baseImageUrl (the prop name is the url that syte store the image)
+  for (const baseImageUrl in suggestions) {
+    if (suggestions.hasOwnProperty(baseImageUrl)) {
+      const suggstionArray = suggestions[baseImageUrl];
       let item;
       for (let i= 0; i < suggstionArray.length; i++) {
         item = {
-          item: property,
+          category: suggstionArray[i].label,
           x: suggstionArray[i].center[0],
           y: suggstionArray[i].center[1],
         };

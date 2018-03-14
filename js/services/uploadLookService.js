@@ -2,7 +2,7 @@ import _ from 'lodash';
 import AppAPI from '../network/AppApi';
 import * as feedLookMapper from '../mappers/lookMapper';
 import SyteApi from '../network/SyteApi';
-import { mapSuggestions } from '../mappers/uploadLookMapper';
+import { mapSuggestions, mapSuggestion, mapOffers } from '../mappers/uploadLookMapper';
 
 
 const publishRoute = lookId => `/looks/${lookId}/publish`;
@@ -38,11 +38,22 @@ class UploadLookService {
       return data
     }))
 
-  static getLookSuggestions = async (imageData, retryCount = 0) => {
+  static getLookSuggestions = async (imageData) => {
     try {
-      const data = await SyteApi.getSuggestions(imageData);
-      const suggestionsData = mapSuggestions(data);
-      return suggestionsData;
+      const suggestions = await SyteApi.getSuggestions(imageData);
+      const tagsData = [];
+      for (const baseImageUrl in suggestions) {
+        const suggestionArray = suggestions[baseImageUrl];
+        for (let i= 0; i < suggestionArray.length; i++) {
+          const data = await SyteApi.getOffers(suggestionArray[i].offers);
+          if (data && data.ads && data.ads.length > 0) {
+            const offers = mapOffers(data.ads);
+            const suggestion = mapSuggestion(suggestionArray[i], offers);
+            tagsData.push(suggestion);
+          }
+        }
+      }
+      return tagsData;
     } catch (error) {
       console.log(`upload service - ${error}`);
     }

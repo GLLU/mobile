@@ -50,9 +50,7 @@ function _getSuggestion(image, dispatch, resolve) {
   .then((resp) => {
     resp.base64().then((readFile) => {
       uploadLookService.getLookSuggestions(Utils.convertDataURIToBinary(readFile)).then((data) => {
-        if (data && data.tags) {
-          const positions = data.tags;
-          dispatch(createLookItem({ locationX: positions[1].x, locationY: positions[1].y }));
+        if (data) {
           innerResolve(data);
           resolve(data);
         } else {
@@ -79,16 +77,23 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             UploadLookService.createLook().then((emptyLookData) => {
-              const items=[];
+              let items=[];
               _getSuggestion(image, dispatch, resolve).then((tagsData) => {
-                const positions = tagsData.tags;
-                for (let i = 0; i < positions.length; i++) {
-                  items.push({ ...newItem, cover_x_pos: positions[i].x, cover_y_pos: positions[i].y, id: (incrementedItemId + i), isCustom: true });
-                }
+                items = tagsData.map(function(tag, i) {
+                  return {
+                    ...newItem,
+                    cover_x_pos: tag.x,
+                    cover_y_pos: tag.y,
+                    category: tag.category,
+                    offers: tag.offers,
+                    id: (incrementedItemId + i),
+                    isCustom: true,
+                  };
+                });
                 const payload = _.merge(emptyLookData.look, {
                   image: image.localPath,
                   items: (items && items.length > 0) ? items : [newItem],
-                  isUploading: true
+                  isUploading: true,
                 });
                 dispatch({
                   type: EDIT_NEW_LOOK,
