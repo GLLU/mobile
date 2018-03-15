@@ -10,6 +10,7 @@ import VideoWithTags from '../common/VideoWithTags';
 import EditItemTabs from './editItemTabsContainer';
 import ModalQuestion from './forms/ModalQuestion';
 import SpinnerSwitch from '../loaders/SpinnerSwitch';
+import ProductItemsCarousel from './ProductItemsCarousel';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
@@ -231,12 +232,14 @@ class UploadLookScreen extends Component {
   }
 
   renderActions() {
-    const { isVideo } = this.props
+    const { isVideo, items } = this.props;
+    const { currItem } = this.state;
+    const currTag = _.find(items, item => item.id === currItem);
     return (
       <View style={styles.renderActionsContainer}>
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
-        { this._renderEditItemTabs() }
+        { currTag.isCustom ? this._renderEditItemTabs() : <ProductItemsCarousel offers={currTag.offers} />}
       </View>
     );
   }
@@ -319,9 +322,9 @@ class UploadLookScreen extends Component {
     const { items } = this.props;
     const joinedArray = _.map(items, (item) => {
       if (type === 'color_ids' || type === 'occasions') {
-        return item[type].length > 0 ? true : null
+        return (item[type] && item[type].length > 0) ? true : null;
       }
-      return item[type] && item[type] !== -1 ? item[type] : null
+      return item[type] && item[type] !== -1 ? item[type] : null;
     })
     return joinedArray
   }

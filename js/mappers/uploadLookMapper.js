@@ -31,29 +31,3 @@ export function mapSuggestion(suggestion, offers) {
     offers,
   };
 }
-
-export function mapSuggestions(suggestions) {
-  return {
-    tags: getTags(suggestions),
-  };
-}
-
-function getTags(suggestions) {
-  let coords = [];
-  //we have only one baseImageUrl (the prop name is the url that syte store the image)
-  for (const baseImageUrl in suggestions) {
-    if (suggestions.hasOwnProperty(baseImageUrl)) {
-      const suggstionArray = suggestions[baseImageUrl];
-      let item;
-      for (let i= 0; i < suggstionArray.length; i++) {
-        item = {
-          category: suggstionArray[i].label,
-          x: suggstionArray[i].center[0],
-          y: suggstionArray[i].center[1],
-        };
-        coords.push(item);
-      }
-    }
-  }
-  return coords;
-}

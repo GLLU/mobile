@@ -81,13 +81,12 @@ export function addNewLook(image) {
               _getSuggestion(image, dispatch, resolve).then((tagsData) => {
                 items = tagsData.map(function(tag, i) {
                   return {
-                    ...newItem,
                     cover_x_pos: tag.x,
                     cover_y_pos: tag.y,
                     category: tag.category,
                     offers: tag.offers,
-                    id: (incrementedItemId + i),
-                    isCustom: true,
+                    id: (incrementedItemId + 100 + i),
+                    isCustom: false,
                   };
                 });
                 const payload = _.merge(emptyLookData.look, {

@@ -168,7 +168,7 @@ class UploadLookHeader extends Component {
   }
 
   checkRequiredItemFields(item) {
-    return item.brand && item.category !== -1;
+    return !item.isCustom || (item.brand && item.category !== -1);
   }
 
   renderPublishBtn() {

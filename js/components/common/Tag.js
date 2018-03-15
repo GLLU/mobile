@@ -11,6 +11,7 @@ import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const validMarker = require('../../../images/markers/tag_green.png');
 const invalidMarker = require('../../../images/markers/tag_red.png');
+const warningMarker = require('../../../images/markers/tag_warning.png');
 
 const TAG_WIDTH = 50;
 const TAG_HEIGHT = 50;
@@ -118,7 +119,8 @@ class Tag extends Component {
   }
 
   _getMarkerIcon(item) {
-    return item.brand && item.category !== null ? validMarker : invalidMarker;
+    return (item.isCustom) ? (item.brand && item.category !== null ? validMarker : invalidMarker) : warningMarker;
+    //TODO: add custom item marker (with warning triangle)
   }
 
   render() {
