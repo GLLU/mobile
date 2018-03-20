@@ -10,7 +10,8 @@ import VideoWithTags from '../common/VideoWithTags';
 import EditItemTabs from './editItemTabsContainer';
 import ModalQuestion from './forms/ModalQuestion';
 import SpinnerSwitch from '../loaders/SpinnerSwitch';
-import ProductItemsCarousel from './ProductItemsCarousel';
+import ProductItemsCarousel from './productItems/ProductItemsCarousel';
+import ProductItemList from './productItems/ProductItemList';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
@@ -69,11 +70,13 @@ class UploadLookScreen extends Component {
     this.showRemoveItemModal = this.showRemoveItemModal.bind(this);
     this.gobackAndCancel = this.gobackAndCancel.bind(this);
     this.resetToFeed = this.resetToFeed.bind(this);
+    this.toggleSuggestionList = this.toggleSuggestionList.bind(this);
     this.state = {
       currentStep: CATEGORY,
       allowContinue: false,
       currItem: props.items[0].id,
       isPublishing: false,
+      isShowMoreSuggestions: false,
       modalParams: {
         modalVisible: false,
       },
@@ -239,7 +242,7 @@ class UploadLookScreen extends Component {
       <View style={styles.renderActionsContainer}>
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
-        { currTag.isCustom ? this._renderEditItemTabs() : <ProductItemsCarousel offers={currTag.offers} />}
+        { currTag.isCustom ? this._renderEditItemTabs() : <ProductItemsCarousel offers={currTag.offers} onMoreContentPress={this.toggleSuggestionList} /> }
       </View>
     );
   }
@@ -329,18 +332,24 @@ class UploadLookScreen extends Component {
     return joinedArray
   }
 
+  toggleSuggestionList() {
+    this.setState({ isShowMoreSuggestions: !this.state.isShowMoreSuggestions });
+  }
+
   render() {
-    const { isVideo, filePath } = this.props;
-    const { isPublishing } = this.state;
+    const { isVideo, filePath, items } = this.props;
+    const { isPublishing, currItem, isShowMoreSuggestions } = this.state;
+    const currTag = _.find(items, item => item.id === currItem);
     if (!filePath) {
       return null;
     }
     return (
-      <View>
-        {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
-        {isPublishing ? <SpinnerSwitch /> : null}
-        {this._renderModal()}
-      </View>
+      !isShowMoreSuggestions ?
+         <View>
+           {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
+           {isPublishing ? <SpinnerSwitch /> : null}
+           {this._renderModal()}
+         </View> : <ProductItemList offers={currTag.offers} onCloseSuggestionList={this.toggleSuggestionList} />
     );
   }
 }
