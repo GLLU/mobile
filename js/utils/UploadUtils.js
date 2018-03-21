@@ -24,6 +24,20 @@ export function formatLook(path: string): any {
   }
 }
 
+export function findMultipleItemIndex(itemsArray) {
+  let count = 0;
+  let lastIndex = -1;
+  for (let index = 0; index < itemsArray.length; index++) {
+    if (itemsArray[index].label && itemsArray[index].label.toLowerCase() === 'shoes') {
+      count += 1;
+    }
+    if (count > 1 && lastIndex === -1) {
+      lastIndex = index;
+    }
+  }
+	return lastIndex;
+}
+
 export function convertDataURIToBinary(base64) {
   const raw = window.atob(base64);
   const rawLength = raw.length;

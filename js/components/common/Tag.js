@@ -119,7 +119,8 @@ class Tag extends Component {
   }
 
   _getMarkerIcon(item) {
-    return (item.isCustom) ? (item.brand && item.category !== null ? validMarker : invalidMarker) : warningMarker;
+    const isProductItemSelected = (!item.isCustom && item.offers) && item.offers.findIndex((element => element.selected === true)) !== -1;
+    return (item.isCustom) ? (item.brand && item.category !== null ? validMarker : invalidMarker) : isProductItemSelected ? validMarker : warningMarker;
     //TODO: add custom item marker (with warning triangle)
   }
 

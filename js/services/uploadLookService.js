@@ -3,6 +3,7 @@ import AppAPI from '../network/AppApi';
 import * as feedLookMapper from '../mappers/lookMapper';
 import SyteApi from '../network/SyteApi';
 import { mapSuggestion, mapOffers } from '../mappers/uploadLookMapper';
+import { findMultipleItemIndex } from '../utils/UploadUtils';
 
 
 const publishRoute = lookId => `/looks/${lookId}/publish`;
@@ -43,8 +44,12 @@ class UploadLookService {
       const suggestions = await SyteApi.getSuggestions(imageData);
       const tagsData = [];
       for (const baseImageUrl in suggestions) {
-        const suggestionArray = suggestions[baseImageUrl];
-        for (let i= 0; i < suggestionArray.length; i++) {
+        let suggestionArray = suggestions[baseImageUrl];
+        const indexToRemove = findMultipleItemIndex(suggestionArray);
+        if (indexToRemove !== -1) {
+          suggestionArray.splice(indexToRemove, 1);
+        }
+        for (let i = 0; i < suggestionArray.length; i++) {
           const data = await SyteApi.getOffers(suggestionArray[i].offers);
           if (data && data.ads && data.ads.length > 0) {
             const offers = mapOffers(data.ads);

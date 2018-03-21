@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View, ScrollView, Platform, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, ListView, ScrollView, Platform, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import i18n from 'react-native-i18n';
 import ProductItem from './ProductItem';
@@ -26,7 +26,15 @@ class ProductItemsList extends Component {
     onCloseSuggestionList();
   }
 
+  renderGridItem(item) {
+    return (
+      <ProductItem imageUrl={item.imageUrl} brand={item.brand} />
+    );
+  }
+
   _handleDonePressed() {
+    const { showErrorMessage } = this.props;
+    showErrorMessage(i18n.t('REQUIRED_LOOK_ITEMS'));
   }
 
   renderBackButton() {
@@ -50,7 +58,7 @@ class ProductItemsList extends Component {
   }
 
   render() {
-    const { offers } = this.props;
+    const { offers, onSelectProductItem } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -62,9 +70,11 @@ class ProductItemsList extends Component {
           <Image style={{ height: 15, width: 15 }} source={cancelClear} />
         </TouchableOpacity>
         <ScrollView style={styles.listContainer} contentContainerStyle={styles.listContainerItem}>
+          <View style={styles.imageGridContainer}>
           {
-            offers.map((item, i) => <ProductItem key={i} imageUrl={item.imageUrl} brand={item.brand} />)
+            offers.map((item, i) => <ProductItem key={i} offer={item} onSelectProductItem={() => onSelectProductItem(i)} />)
           }
+          </View>
         </ScrollView>
       </View>
     );
@@ -86,14 +96,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    flex: 1,
+    flex: 3,
     fontSize: 16,
     fontWeight: '700',
     justifyContent: 'center',
     alignSelf: 'center',
+    textAlign: 'center',
     lineHeight: HEADER_HEIGHT,
   },
   doneBtnContainer: {
+    flex: 1,
     borderRadius: 15,
     justifyContent: 'center',
     alignSelf: 'center',
@@ -114,6 +126,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: Platform.OS === 'ios' ? height - HEADER_HEIGHT - 22 : height - HEADER_HEIGHT,
   },
+  imageGridContainer: {
+    marginLeft: 2,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   listContainerItem: {
     justifyContent: 'space-between',
   },
@@ -131,3 +148,10 @@ const styles = StyleSheet.create({
 });
 
 export default ProductItemsList;
+
+/*
+{offers ? <ListView
+            contentContainerStyle={styles.grid}
+            dataSource={offersData}
+            renderRow={item => this.renderGridItem(item)}
+*/

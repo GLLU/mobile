@@ -131,6 +131,7 @@
   "ME_NO_BEST_MATCH_RESULTS": "Sorry, we could not find any relevant results",
   "QUERY_SUGGESTION_FEED": "Trendy stuff you may like",
   "SELECT_SIMILAR_ITEMS": "Select similar items",
-  "DONE": "DONE"
+  "DONE": "DONE",
+  "REQUIRED_LOOK_ITEMS": "You must select at least one item",
 }
 

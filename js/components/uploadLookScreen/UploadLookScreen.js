@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Dimensions, Platform, View, StyleSheet, BackAndroid, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Dimensions, Platform, View, StyleSheet, BackAndroid, Image, Text, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import Colors from '../../styles/Colors.styles';
 import i18n from 'react-native-i18n';
 import UploadLookHeader from './UploadLookHeader';
 import _ from 'lodash';
@@ -15,6 +16,8 @@ import ProductItemList from './productItems/ProductItemList';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
+const arrowUp = require('../../../images/icons/arrow_up.png');
+const arrowDown = require('../../../images/icons/arrow_down.png');
 import Tag from '../common/Tag';
 import { isVideo } from '../../utils/MediaUtils';
 
@@ -54,6 +57,20 @@ const styles = StyleSheet.create({
     width: w,
     justifyContent: 'space-between',
   },
+  bottomBarToggle: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.black,
+    opacity: 0.7,
+    width: 40,
+    height: 25,
+  },
+  carouselTitle: {
+    textAlign: 'center',
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    lineHeight: 24,
+  },
 });
 
 class UploadLookScreen extends Component {
@@ -71,12 +88,16 @@ class UploadLookScreen extends Component {
     this.gobackAndCancel = this.gobackAndCancel.bind(this);
     this.resetToFeed = this.resetToFeed.bind(this);
     this.toggleSuggestionList = this.toggleSuggestionList.bind(this);
+    this._toggleCarousel = this._toggleCarousel.bind(this);
+    this.handleSelectProductItem = this.handleSelectProductItem.bind(this);
     this.state = {
       currentStep: CATEGORY,
       allowContinue: false,
       currItem: props.items[0].id,
       isPublishing: false,
+      isShowSuggestion: true,
       isShowMoreSuggestions: false,
+      items: props.items,
       modalParams: {
         modalVisible: false,
       },
@@ -234,6 +255,27 @@ class UploadLookScreen extends Component {
     );
   }
 
+  _toggleCarousel() {
+    this.setState({ isShowSuggestion: !this.state.isShowSuggestion });
+  }
+
+  _renderSuggestionItems(offers) {
+    const { isShowSuggestion } = this.state;
+    return(
+      <View>
+        <TouchableOpacity style={styles.bottomBarToggle} onPress={this._toggleCarousel}>
+          <Image style={{ height: 8, width: 18 }} source={this.state.isShowSuggestion ? arrowDown : arrowUp} resizeMode={'contain'}/>
+        </TouchableOpacity>
+        {isShowSuggestion ?
+          <View>
+            <Text style={styles.carouselTitle}> Please choose similar items </Text>
+            <ProductItemsCarousel offers={offers} onMoreContentPress={this.toggleSuggestionList} onSelectProductItem={this.handleSelectProductItem} />
+          </View>
+        : null}
+      </View>
+    );
+  }
+
   renderActions() {
     const { isVideo, items } = this.props;
     const { currItem } = this.state;
@@ -242,7 +284,7 @@ class UploadLookScreen extends Component {
       <View style={styles.renderActionsContainer}>
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
-        { currTag.isCustom ? this._renderEditItemTabs() : <ProductItemsCarousel offers={currTag.offers} onMoreContentPress={this.toggleSuggestionList} /> }
+        { currTag.isCustom ? this._renderEditItemTabs() : this._renderSuggestionItems(currTag.offers) }
       </View>
     );
   }
@@ -336,9 +378,16 @@ class UploadLookScreen extends Component {
     this.setState({ isShowMoreSuggestions: !this.state.isShowMoreSuggestions });
   }
 
+  handleSelectProductItem(index) {
+    const { currItem, items } = this.state;
+    const i = items.findIndex((element => element.id === currItem));
+    items[i].offers[index].selected = !items[i].offers[index].selected;
+    this.setState({ items });
+  }
+
   render() {
-    const { isVideo, filePath, items } = this.props;
-    const { isPublishing, currItem, isShowMoreSuggestions } = this.state;
+    const { isVideo, filePath, showErrorMessage } = this.props;
+    const { isPublishing, isShowMoreSuggestions, currItem, items } = this.state;
     const currTag = _.find(items, item => item.id === currItem);
     if (!filePath) {
       return null;
@@ -349,7 +398,12 @@ class UploadLookScreen extends Component {
            {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
            {isPublishing ? <SpinnerSwitch /> : null}
            {this._renderModal()}
-         </View> : <ProductItemList offers={currTag.offers} onCloseSuggestionList={this.toggleSuggestionList} />
+         </View> :
+         <ProductItemList
+           offers={currTag.offers}
+           onCloseSuggestionList={this.toggleSuggestionList}
+           showErrorMessage={showErrorMessage}
+           onSelectProductItem={this.handleSelectProductItem} />
     );
   }
 }

@@ -16,25 +16,35 @@ class ProductItem extends Component {
 
   constructor(props) {
     super(props);
-    this.handleAdd = this.handleAdd.bind(this);
+    this.handleSelectProductItem = this.handleSelectProductItem.bind(this);
     this.state = {
       isSelected: false,
+      bigRatio: false,
     };
   }
 
-  handleAdd() {
-    this.setState({ isSelected: !this.state.isSelected });
+  handleSelectProductItem() {
+    const { onSelectProductItem } = this.props;
+    onSelectProductItem();
+  }
+
+  componentWillMount() {
+    const { offer } = this.props;
+    const self = this;
+    Image.getSize(offer.imageUrl, (width, height) => {
+      self.setState({ bigRatio: (height / width > 3 || width / height > 3) });
+    }, (error) => {});
   }
 
   render() {
-    const { imageUrl, brand } = this.props;
-    const { isSelected } = this.state;
+    const { offer, onSelectProductItem } = this.props;
+    const { bigRatio } = this.state;
 
     return (
-      <TouchableHighlight style={styles.container} onPress={this.handleAdd}>
-        <View style={isSelected ? styles.imageSelected : styles.imageNotSelected}>
-          <Image source={{ uri: imageUrl }} style={styles.imageUrl} resizeMode="contain" />
-          <Text style={styles.brand}> {brand} </Text>
+      <TouchableHighlight style={styles.container} onPress={this.handleSelectProductItem}>
+        <View style={offer.selected ? styles.imageSelected : styles.imageNotSelected}>
+          <Image source={{ uri: offer.imageUrl }} style={styles.imageUrl} resizeMode={bigRatio ? 'contain' : 'cover'} />
+          <Text style={styles.brand}> {offer.brand} </Text>
         </View>
       </TouchableHighlight>
     );
@@ -43,11 +53,12 @@ class ProductItem extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 10,
+    marginTop: 1,
+    marginLeft: 1,
   },
   imageUrl: {
-    width: generateAdjustedSize(120),
-    height: generateAdjustedSize(120),
+    width: generateAdjustedSize(126),
+    height: generateAdjustedSize(126),
   },
   imageSelected: {
     backgroundColor: 'white',
@@ -57,6 +68,9 @@ const styles = StyleSheet.create({
   },
   imageNotSelected: {
     backgroundColor: 'white',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 2,
   },
   brand: {
     backgroundColor: 'rgba(255,255,255,0.5)',

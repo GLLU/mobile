@@ -19,6 +19,7 @@ export function mapOffers(offers) {
       imageUrl: offer.imageUrl,
       price: offer.price,
       link: offer.offer,
+      selected: false,
     };
   });
 }
