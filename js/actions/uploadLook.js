@@ -295,6 +295,17 @@ export function createBrandName(newBrand) {
   };
 }
 
+function filteredOffers(item) {
+  let filteredOffers = [];
+  if (item.offers) {
+    filteredOffers = item.offers.filter(offer => offer.selected === true);
+    if (filteredOffers.length === 0) {
+      filteredOffers = item.offers.slice(0, 6);
+    }
+  }
+  return filteredOffers;
+}
+
 export function publishLook() {
   return (dispatch, getState) => {
     const state = getState();
@@ -304,34 +315,45 @@ export function publishLook() {
     let interval;
     return new Promise((resolve, reject) => {
       _.forEach(items, (item) => {
-        const body = {
-          item: {
-            cover_x_pos: item.locationX,
-            cover_y_pos: item.locationY,
-            category_id: item.category,
-            brand_id: item.brand,
-            color_ids: item.color_ids,
-            url: item.url
-          }
-        };
-        const editOrCreate = item.isNew ? { method: 'post' } : { method: 'put', itemId: item.id }
-        UploadLookService.createOrEditItem(lookId, body, editOrCreate).then((createdItemData) => {
-          _.forEach(item.occasions, (occasion) => {
-            const occasionBody = {
-              tag_id: occasion
-            }
-            UploadLookService.addItemOccasions(lookId, createdItemData.item.id, occasionBody).then((occasionData) => {
+        let body;
+        if (item.isCustom) {
+          body = {
+            item: {
+              cover_x_pos: item.locationX,
+              cover_y_pos: item.locationY,
+              category_id: item.category,
+              brand_id: item.brand,
+              color_ids: item.color_ids,
+              url: item.url,
+            },
+          };
+          const editOrCreate = item.isNew ? { method: 'post' } : { method: 'put', itemId: item.id };
+          UploadLookService.createOrEditItem(lookId, body, editOrCreate).then((createdItemData) => {
+            _.forEach(item.occasions, (occasion) => {
+              const occasionBody = {
+                tag_id: occasion,
+              };
+              UploadLookService.addItemOccasions(lookId, createdItemData.item.id, occasionBody).then((occasionData) => {
+              });
             });
-          })
-        })
+          });
+        } else {
+          body = {
+            item: {
+              cover_x_pos: item.locationX,
+              cover_y_pos: item.locationY,
+              category_name: item.category,
+              product_suggestions_attributes: filteredOffers(item),
+            },
+          };
+          UploadLookService.createOrEditItem(lookId, body, { method: 'post' });
+        }
       });
 
       interval = setInterval(function () {
         if (getState().uploadLook.isUploading) {
           //Do nothing, wait until next interval.
-        }
-        else {
-
+        } else {
           clearInterval(interval);
 
           UploadLookService.publishLook(lookId).then((look) => {

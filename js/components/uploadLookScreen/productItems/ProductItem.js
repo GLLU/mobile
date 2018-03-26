@@ -6,13 +6,9 @@ import Colors from '../../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
 import i18n from 'react-native-i18n';
 
-type Props = {
-    imageUrl: string,
-    brand: string,
-}
+const vInCircle = require('../../../../images/indicators/v_in_circle.png');
 
 class ProductItem extends Component {
-  props: Props;
 
   constructor(props) {
     super(props);
@@ -31,7 +27,7 @@ class ProductItem extends Component {
   componentWillMount() {
     const { offer } = this.props;
     const self = this;
-    Image.getSize(offer.imageUrl, (width, height) => {
+    Image.getSize(offer.image_url, (width, height) => {
       self.setState({ bigRatio: (height / width > 3 || width / height > 3) });
     }, (error) => {});
   }
@@ -43,8 +39,9 @@ class ProductItem extends Component {
     return (
       <TouchableHighlight style={styles.container} onPress={this.handleSelectProductItem}>
         <View style={offer.selected ? styles.imageSelected : styles.imageNotSelected}>
-          <Image source={{ uri: offer.imageUrl }} style={styles.imageUrl} resizeMode={bigRatio ? 'contain' : 'cover'} />
-          <Text style={styles.brand}> {offer.brand} </Text>
+          <Image source={{ uri: offer.image_url }} style={styles.imageUrl} resizeMode={bigRatio ? 'contain' : 'cover'} />
+          <Text style={styles.brand}> {offer.brand_name} </Text>
+          {offer.selected ? <Image source={vInCircle} style={styles.vInCircle} /> : null }
         </View>
       </TouchableHighlight>
     );
@@ -73,7 +70,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   brand: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.7)',
     color: 'rgba(0,0,0,1)',
     padding: 8,
     borderRadius: 2,
@@ -81,6 +78,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     bottom: 10,
     left: 0,
+  },
+  vInCircle: {
+    position: 'absolute',
+    right: 5,
+    top: 5,
+    width: 20,
+    height: 20,
   },
 });
 

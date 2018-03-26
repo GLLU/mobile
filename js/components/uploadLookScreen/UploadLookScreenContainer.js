@@ -9,7 +9,8 @@ import {
   setTagPosition,
   removeLookItem,
   publishLook,
-  clearUploadLook
+  clearUploadLook,
+  addDescription,
 } from '../../actions/uploadLook';
 import {
   getBestMatchFeed,
@@ -27,6 +28,7 @@ function mapDispatchToProps(dispatch) {
     removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
     setTagPosition: position => dispatch(setTagPosition(position)),
     getFeed: query => dispatch(getBestMatchFeed(query)),
+    addDescription: (description) => dispatch(addDescription(description)),
     clearFeed: () => dispatch(clearFeed()),
     getUserLooks: data => dispatch(getUserLooks(data)),
     clearUploadLook: () => dispatch(clearUploadLook()),
@@ -52,6 +54,7 @@ const mapStateToProps = (state, ownProps) => {
     categories: state.filters.categories,
     currentFeedQuery: state.feed.bestMatch.query,
     userId: state.user.id,
+    lookDescription: state.uploadLook.description,
     isUploading,
     description: state.uploadLook.description
   };

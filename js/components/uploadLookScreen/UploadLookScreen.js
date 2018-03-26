@@ -13,6 +13,7 @@ import ModalQuestion from './forms/ModalQuestion';
 import SpinnerSwitch from '../loaders/SpinnerSwitch';
 import ProductItemsCarousel from './productItems/ProductItemsCarousel';
 import ProductItemList from './productItems/ProductItemList';
+import DescriptionInput from './forms/DescriptionInput';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
@@ -29,9 +30,11 @@ export const DESCRIPTION = 'description';
 export const LINK = 'link';
 
 const EDIT_MODE = 'edit';
+const MAX_ITEMS_PER_TAG = 10;
 
 type Props = {
   publishLookItem: () => void,
+  addDescription: () => void,
   createLookItem: () => void,
   removeLookItem: () => void,
   setTagPosition: () => void,
@@ -41,6 +44,7 @@ type Props = {
   getUserLooks: () => void,
   lookId: number,
   userId: number,
+  lookDescription: string,
   mode: string,
   items: array,
   categories: array,
@@ -277,7 +281,7 @@ class UploadLookScreen extends Component {
   }
 
   renderActions() {
-    const { isVideo, items } = this.props;
+    const { isVideo, items, addDescription, lookDescription } = this.props;
     const { currItem } = this.state;
     const currTag = _.find(items, item => item.id === currItem);
     return (
@@ -285,6 +289,7 @@ class UploadLookScreen extends Component {
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
         { currTag.isCustom ? this._renderEditItemTabs() : this._renderSuggestionItems(currTag.offers) }
+        <DescriptionInput description={lookDescription} addDescription={description => addDescription(description)} />
       </View>
     );
   }
@@ -379,10 +384,18 @@ class UploadLookScreen extends Component {
   }
 
   handleSelectProductItem(index) {
+    const { showErrorMessage } = this.props;
     const { currItem, items } = this.state;
     const i = items.findIndex((element => element.id === currItem));
-    items[i].offers[index].selected = !items[i].offers[index].selected;
-    this.setState({ items });
+    if (i !== -1) {
+      const numOfSelectedOffers = items[i].offers.filter(offer => offer.selected === true).length;
+      if (numOfSelectedOffers >= MAX_ITEMS_PER_TAG && !items[i].offers[index].selected) {
+        showErrorMessage(`You can't select more than ${MAX_ITEMS_PER_TAG} items per tag`);
+      } else {
+        items[i].offers[index].selected = !items[i].offers[index].selected;
+        this.setState({ items });
+      }
+    }
   }
 
   render() {

@@ -24,11 +24,23 @@ export function formatLook(path: string): any {
   }
 }
 
-export function findMultipleItemIndex(itemsArray) {
+export function removeMultipleItemIndex(suggestionArray) {
+  let indexToRemove = _findMultipleItemIndex(suggestionArray, 'shoes');
+  if (indexToRemove !== -1) {
+    suggestionArray.splice(indexToRemove, 1);
+  }
+  indexToRemove = _findMultipleItemIndex(suggestionArray, 'boots');
+  if (indexToRemove !== -1) {
+    suggestionArray.splice(indexToRemove, 1);
+  }
+}
+
+function _findMultipleItemIndex(itemsArray, categoryName) {
   let count = 0;
   let lastIndex = -1;
   for (let index = 0; index < itemsArray.length; index++) {
-    if (itemsArray[index].label && itemsArray[index].label.toLowerCase() === 'shoes') {
+    const category = itemsArray[index].label;
+    if (category && (category.toLowerCase() === categoryName)) {
       count += 1;
     }
     if (count > 1 && lastIndex === -1) {

@@ -15,10 +15,10 @@ export default function map(look) {
 export function mapOffers(offers) {
   return offers.map(function(offer) {
     return {
-      brand: offer.merchant,
-      imageUrl: offer.imageUrl,
+      brand_name: offer.merchant,
+      image_url: offer.imageUrl,
       price: offer.price,
-      link: offer.offer,
+      url: offer.offer,
       selected: false,
     };
   });

@@ -33,8 +33,8 @@ class ProductItemsList extends Component {
   }
 
   _handleDonePressed() {
-    const { showErrorMessage } = this.props;
-    showErrorMessage(i18n.t('REQUIRED_LOOK_ITEMS'));
+    const { onCloseSuggestionList } = this.props;
+    onCloseSuggestionList();
   }
 
   renderBackButton() {
@@ -52,7 +52,7 @@ class ProductItemsList extends Component {
     const isChosenItems = false; //TODO: handle item choice
     return (
       <TouchableOpacity style={styles.doneBtnContainer} onPress={() => this._handleDonePressed()}>
-        <Text style={[styles.doneBtnText, !isChosenItems ? { color: Colors.gray } : null]}>{i18n.t('DONE')}</Text>
+        <Text style={styles.doneBtnText}>{i18n.t('DONE')}</Text>
       </TouchableOpacity>
     );
   }
@@ -148,10 +148,3 @@ const styles = StyleSheet.create({
 });
 
 export default ProductItemsList;
-
-/*
-{offers ? <ListView
-            contentContainerStyle={styles.grid}
-            dataSource={offersData}
-            renderRow={item => this.renderGridItem(item)}
-*/

@@ -1,6 +1,6 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import EditItemTabs from './editItemTabs';
 import {
   addItemTag,
@@ -11,7 +11,6 @@ import {
   addItemType,
   toggleOccasionTag,
   toggleItemColors,
-  addDescription,
   addUrl,
   addBrandName,
 } from '../../actions/uploadLook';
@@ -23,7 +22,6 @@ function mapDispatchToProps(dispatch, ownProps) {
     toggleItemColors: (tag, selected) => dispatch(toggleItemColors(tag.id, selected, ownProps.item)),
     addItemTag: (name) => dispatch(addItemTag(name, ownProps.item)),
     removeItemTag: (name) => dispatch(removeItemTag(name, ownProps.item)),
-    addDescription: (description) => dispatch(addDescription(description)),
     addUrl: (url) => dispatch(addUrl(url, ownProps.item)),
     addBrandName: (brand) => dispatch(addBrandName(brand, ownProps.item)),
   };
@@ -43,12 +41,10 @@ function mapStateToProps(state, ownProps) {
     itemCategory: currentItem.category,
     itemBrand: currentItem.brand,
     itemOccasions: currentItem.occasions,
-    itemDescription: state.uploadLook.description,
     itemUrl: currentItem.url,
     itemColors: currentItem.color_ids,
     currentItem,
-
-  }
+  };
 }
 
 

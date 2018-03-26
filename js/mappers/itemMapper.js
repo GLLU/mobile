@@ -27,11 +27,11 @@ export default function map(item) {
       locationY: item.cover_y_pos,
       userId: item.user_id,
       lookId: item.look_id,
-      category: item.category ? item.category.id : -1,
+      category: item.category ? item.category : '',
       offers: item.offers,
       tags: item.tags ? item.tags : [],
       description: item.description ? item.description : '',
-      isNew: item.isNew,
+      isNew: true,
       isCustom: false,
     };
   }
