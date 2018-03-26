@@ -44,14 +44,16 @@ class UploadLookService {
       const suggestions = await SyteApi.getSuggestions(imageData);
       const tagsData = [];
       for (const baseImageUrl in suggestions) {
-        let suggestionArray = suggestions[baseImageUrl];
-        removeMultipleItemIndex(suggestionArray);
-        for (let i = 0; i < suggestionArray.length; i++) {
-          const data = await SyteApi.getOffers(suggestionArray[i].offers);
-          if (data && data.ads && data.ads.length > 0) {
-            const offers = mapOffers(data.ads);
-            const suggestion = mapSuggestion(suggestionArray[i], offers);
-            tagsData.push(suggestion);
+        if (suggestions[baseImageUrl]) {
+          const suggestionArray = suggestions[baseImageUrl];
+          removeMultipleItemIndex(suggestionArray);
+          for (let i = 0; i < suggestionArray.length; i++) {
+            const data = await SyteApi.getOffers(suggestionArray[i].offers);
+            if (data && data.ads && data.ads.length > 0) {
+              const offers = mapOffers(data.ads);
+              const suggestion = mapSuggestion(suggestionArray[i], offers);
+              tagsData.push(suggestion);
+            }
           }
         }
       }

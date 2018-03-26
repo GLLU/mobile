@@ -1,5 +1,7 @@
 // @flow
 import { Platform } from 'react-native';
+import RNFetchBlob from 'react-native-fetch-blob';
+import uploadLookService from '../services/uploadLookService';
 
 export function formatAvatar(path: string): any {
 
@@ -59,4 +61,24 @@ export function convertDataURIToBinary(base64) {
     array[i] = raw.charCodeAt(i);
   }
   return array;
+}
+
+export function getSuggestion(image, dispatch, resolve) {
+  return new Promise((innerResolve, reject) => {
+    RNFetchBlob
+  .config({
+    fileCache: true,
+  })
+  .fetch('GET', image.localPath)
+  .then((resp) => {
+    resp.base64().then((readFile) => {
+      uploadLookService.getLookSuggestions(convertDataURIToBinary(readFile)).then((data) => {
+        innerResolve(data);
+        resolve(data);
+      }).catch(() => {
+        reject('error retrieving suggestions');
+      });
+    });
+  });
+  });
 }

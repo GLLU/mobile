@@ -26,43 +26,21 @@ export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
 import { normalize } from 'normalizr';
 import { lookSchema } from '../schemas/schemas';
 import { unifyLooks } from '../utils/FeedUtils';
+import { getSuggestion } from '../utils/UploadUtils';
 
 import UploadLookService from '../services/uploadLookService';
 import _ from 'lodash';
 import rest from '../api/rest';
 import { loadBrands, showProcessing, hideProcessing } from './index';
-import RNFetchBlob from 'react-native-fetch-blob';
-import uploadLookService from '../services/uploadLookService';
 import { newItem } from '../reducers/uploadLook';
 import Utils from '../utils';
 import FEED_TYPE_BEST_MATCH from './feed';
 import {setLooksData, setFeedData} from './feed';
 
+const NUM_OF_DEFAULT_OFFERS = 6;
+
 let api_key = null;
 
-function _getSuggestion(image, dispatch, resolve) {
-  return new Promise((innerResolve, reject) => {
-    RNFetchBlob
-  .config({
-    fileCache: true,
-  })
-  .fetch('GET', image.localPath)
-  .then((resp) => {
-    resp.base64().then((readFile) => {
-      uploadLookService.getLookSuggestions(Utils.convertDataURIToBinary(readFile)).then((data) => {
-        if (data) {
-          innerResolve(data);
-          resolve(data);
-        } else {
-          reject('Error - No data');
-        }
-      }).catch(() => {
-        reject('error retrieving suggestions');
-      });
-    });
-  });
-  });
-}
 let incrementedItemId = 0;
 
 // Actions
@@ -77,8 +55,8 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             UploadLookService.createLook().then((emptyLookData) => {
-              let items=[];
-              _getSuggestion(image, dispatch, resolve).then((tagsData) => {
+              let items = [];
+              getSuggestion(image, dispatch, resolve).then((tagsData) => {
                 items = tagsData.map(function(tag, i) {
                   return {
                     cover_x_pos: tag.x,
@@ -300,7 +278,7 @@ function filteredOffers(item) {
   if (item.offers) {
     filteredOffers = item.offers.filter(offer => offer.selected === true);
     if (filteredOffers.length === 0) {
-      filteredOffers = item.offers.slice(0, 6);
+      filteredOffers = item.offers.slice(0, NUM_OF_DEFAULT_OFFERS);
     }
   }
   return filteredOffers;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableHighlight, TouchableOpacity, View, Image, TextInput, Text } from 'react-native';
+import i18n from 'react-native-i18n';
 import Colors from '../../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
 
@@ -92,7 +93,7 @@ class DecriptionInput extends Component {
         :
         <View style={styles.descriptionInputContainer}>
           <View style={styles.descriptionHeader}>
-            <Text style={styles.descriptionHeaderText}> Describe your look </Text>
+            <Text style={styles.descriptionHeaderText}> { i18n.t('SELECT_ITEM_DESCRIPTION') } </Text>
             <TouchableOpacity onPress={() => this.handleClick(false)}>
               <Image source={exitIcon} style={styles.exitImage} />
             </TouchableOpacity>
