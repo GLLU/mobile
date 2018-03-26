@@ -36,6 +36,7 @@ export const newItem = {
   color_ids: [],
   tags: [],
   isNew: true,
+  isCustom: true,
 };
 
 const mutateItem = function (state, key, value, id) {
