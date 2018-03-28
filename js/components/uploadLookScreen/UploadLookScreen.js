@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { Dimensions, Platform, View, StyleSheet, BackAndroid, Image, Text, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import Colors from '../../styles/Colors.styles';
+import fonts from '../../styles/Fonts.styles';
 import i18n from 'react-native-i18n';
 import UploadLookHeader from './UploadLookHeader';
 import _ from 'lodash';
@@ -72,8 +73,13 @@ const styles = StyleSheet.create({
   },
   carouselTitle: {
     textAlign: 'center',
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(255,255,255,0.8)',
     lineHeight: 24,
+    fontFamily: fonts.subHeaderFont,
+  },
+  footerToggleButton: {
+    height: 8,
+    width: 18,
   },
 });
 
@@ -91,17 +97,17 @@ class UploadLookScreen extends Component {
     this.showRemoveItemModal = this.showRemoveItemModal.bind(this);
     this.gobackAndCancel = this.gobackAndCancel.bind(this);
     this.resetToFeed = this.resetToFeed.bind(this);
-    this.toggleSuggestionList = this.toggleSuggestionList.bind(this);
+    this._toggleSuggestionList = this._toggleSuggestionList.bind(this);
     this._toggleCarousel = this._toggleCarousel.bind(this);
     this.handleSelectProductItem = this.handleSelectProductItem.bind(this);
     this.state = {
       currentStep: CATEGORY,
       allowContinue: false,
       currItem: props.items[0].id,
+      items: props.items,
       isPublishing: false,
       isShowSuggestion: true,
       isShowMoreSuggestions: false,
-      items: props.items,
       modalParams: {
         modalVisible: false,
       },
@@ -268,12 +274,12 @@ class UploadLookScreen extends Component {
     return(
       <View>
         <TouchableOpacity style={styles.bottomBarToggle} onPress={this._toggleCarousel}>
-          <Image style={{ height: 8, width: 18 }} source={this.state.isShowSuggestion ? arrowDown : arrowUp} resizeMode={'contain'}/>
+          <Image style={styles.footerToggleButton} source={this.state.isShowSuggestion ? arrowDown : arrowUp} resizeMode={'contain'}/>
         </TouchableOpacity>
         {isShowSuggestion ?
           <View>
-            <Text style={styles.carouselTitle}> Please choose similar items </Text>
-            <ProductItemsCarousel offers={offers} onMoreContentPress={this.toggleSuggestionList} onSelectProductItem={this.handleSelectProductItem} />
+            <Text style={styles.carouselTitle}> {i18n.t('CHOOSE_SIMILAR_ITEM')} </Text>
+            <ProductItemsCarousel offers={offers} onMoreContentPress={this._toggleSuggestionList} onSelectProductItem={this.handleSelectProductItem} />
           </View>
         : null}
       </View>
@@ -379,28 +385,29 @@ class UploadLookScreen extends Component {
     return joinedArray
   }
 
-  toggleSuggestionList() {
+  _toggleSuggestionList() {
     this.setState({ isShowMoreSuggestions: !this.state.isShowMoreSuggestions });
   }
 
-  handleSelectProductItem(index) {
-    const { showErrorMessage } = this.props;
-    const { currItem, items } = this.state;
-    const i = items.findIndex((element => element.id === currItem));
-    if (i !== -1) {
-      const numOfSelectedOffers = items[i].offers.filter(offer => offer.selected === true).length;
-      if (numOfSelectedOffers >= MAX_ITEMS_PER_TAG && !items[i].offers[index].selected) {
-        showErrorMessage(`You can't select more than ${MAX_ITEMS_PER_TAG} items per tag`);
+  handleSelectProductItem(offerIndex) {
+    const { showErrorMessage, selectProductItem, items } = this.props;
+    const { currItem } = this.state;
+
+    const itemIndex = items.findIndex((element => element.id === currItem));
+    if (itemIndex !== -1) {
+      const numOfSelectedOffers = items[itemIndex].offers.filter(offer => offer.selected === true).length;
+      if (numOfSelectedOffers < MAX_ITEMS_PER_TAG || items[itemIndex].offers[offerIndex].selected) {    
+        selectProductItem(currItem, items, itemIndex, offerIndex);
+        this.forceUpdate();
       } else {
-        items[i].offers[index].selected = !items[i].offers[index].selected;
-        this.setState({ items });
+        showErrorMessage(i18n.t('SELECT_UP_TO_10'));
       }
     }
   }
 
   render() {
-    const { isVideo, filePath, showErrorMessage } = this.props;
-    const { isPublishing, isShowMoreSuggestions, currItem, items } = this.state;
+    const { isVideo, filePath, showErrorMessage, items } = this.props;
+    const { isPublishing, isShowMoreSuggestions, currItem } = this.state;
     const currTag = _.find(items, item => item.id === currItem);
     if (!filePath) {
       return null;
@@ -414,7 +421,7 @@ class UploadLookScreen extends Component {
          </View> :
          <ProductItemList
            offers={currTag.offers}
-           onCloseSuggestionList={this.toggleSuggestionList}
+           onCloseSuggestionList={this._toggleSuggestionList}
            showErrorMessage={showErrorMessage}
            onSelectProductItem={this.handleSelectProductItem} />
     );

@@ -117,11 +117,9 @@ class Tag extends Component {
     }
     this._setupPanResponder(locationX, locationY);
   }
-
   _getMarkerIcon(item) {
-    const isProductItemSelected = (!item.isCustom && item.offers) && item.offers.findIndex((element => element.selected === true)) !== -1;
-    return (item.isCustom) ? (item.brand && item.category !== null ? validMarker : invalidMarker) : isProductItemSelected ? validMarker : warningMarker;
-    //TODO: add custom item marker (with warning triangle)
+    const isProductItemHasOffers = (!item.isCustom && item.offers) && item.offers.findIndex((element => element.selected === true)) !== -1;
+    return (item.isCustom) ? (item.brand && item.category !== null ? validMarker : invalidMarker) : isProductItemHasOffers ? validMarker : warningMarker;
   }
 
   render() {

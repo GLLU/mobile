@@ -22,6 +22,7 @@ export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
 export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
 export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
 export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
+export const SELECT_PRODUCT_ITEM = 'SELECT_PRODUCT_ITEM';
 
 import { normalize } from 'normalizr';
 import { lookSchema } from '../schemas/schemas';
@@ -166,6 +167,16 @@ export function addItemType(categoryItem, itemId) {
     dispatch({
       type: ADD_ITEM_TYPE,
       payload
+    });
+  };
+}
+
+export function selectProductItem(currItem, items, itemIndex, offerIndex) {
+  return (dispatch) => {
+    const payload = { itemIndex, offerIndex };
+    dispatch({
+      type: SELECT_PRODUCT_ITEM,
+      payload,
     });
   };
 }

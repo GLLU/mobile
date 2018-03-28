@@ -22,6 +22,7 @@ import {
   ADD_ITEM_COLOR,
   DONE_UPLOADING_FILE,
   CLEAR_UPLOAD_LOOK,
+  SELECT_PRODUCT_ITEM,
 } from '../actions/uploadLook';
 import _ from 'lodash';
 import { lookMapper, itemMapper } from '../mappers/';
@@ -106,6 +107,15 @@ export default function (state = initialState, action) {
         ...state,
         items: action.newItemsArr,
       };
+    case SELECT_PRODUCT_ITEM:
+      items = state.items;
+      const itemIndex = action.payload.itemIndex;
+      const offerIndex = action.payload.offerIndex;
+      items[itemIndex].offers[offerIndex].selected = !items[itemIndex].offers[offerIndex].selected;
+      return {
+        ...state,
+        items,
+      }
     case SET_TAG_POSITION:
       state.items = mutateItem(state, 'locationX', action.payload.locationX, action.payload.id);
       state.items = mutateItem(state, 'locationY', action.payload.locationY, action.payload.id);

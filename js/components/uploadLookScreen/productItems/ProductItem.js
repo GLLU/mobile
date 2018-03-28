@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, View, Image, Text, StyleSheet } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
+import fonts from '../../../styles/Fonts.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
 import i18n from 'react-native-i18n';
 
@@ -58,14 +59,14 @@ const styles = StyleSheet.create({
     height: generateAdjustedSize(126),
   },
   imageSelected: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     borderColor: Colors.secondaryColor,
     borderStyle: 'solid',
     borderWidth: 2,
   },
   imageNotSelected: {
-    backgroundColor: 'white',
-    borderColor: 'black',
+    backgroundColor: Colors.white,
+    borderColor: Colors.black,
     borderStyle: 'solid',
     borderWidth: 2,
   },
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     position: 'absolute',
     fontSize: 14,
+    fontFamily: fonts.contentFont,
     bottom: 10,
     left: 0,
   },

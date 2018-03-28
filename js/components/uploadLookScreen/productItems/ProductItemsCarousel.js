@@ -42,7 +42,7 @@ class ProductItemsCarousel extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#1A1A1A',
+    backgroundColor: Colors.backgroundDark,
     height: generateAdjustedSize(135),
     bottom: 0,
     width,
