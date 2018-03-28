@@ -11,7 +11,7 @@ import {
   publishLook,
   clearUploadLook,
   addDescription,
-  selectProductItem,
+  toggleProductItemSelection,
 } from '../../actions/uploadLook';
 import {
   getBestMatchFeed,
@@ -34,7 +34,7 @@ function mapDispatchToProps(dispatch) {
     getUserLooks: data => dispatch(getUserLooks(data)),
     clearUploadLook: () => dispatch(clearUploadLook()),
     showErrorMessage: errorMessage => dispatch(showFatalError(errorMessage)),
-    selectProductItem: (currItem, items, itemIndex, offerIndex) => dispatch(selectProductItem(currItem, items, itemIndex, offerIndex)),
+    toggleProductItemSelection: (itemIndex, offerIndex) => dispatch(toggleProductItemSelection(itemIndex, offerIndex)),
   };
 }
 

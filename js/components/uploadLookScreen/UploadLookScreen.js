@@ -390,14 +390,15 @@ class UploadLookScreen extends Component {
   }
 
   handleSelectProductItem(offerIndex) {
-    const { showErrorMessage, selectProductItem, items } = this.props;
+    const { showErrorMessage, toggleProductItemSelection, items } = this.props;
     const { currItem } = this.state;
 
     const itemIndex = items.findIndex((element => element.id === currItem));
     if (itemIndex !== -1) {
       const numOfSelectedOffers = items[itemIndex].offers.filter(offer => offer.selected === true).length;
-      if (numOfSelectedOffers < MAX_ITEMS_PER_TAG || items[itemIndex].offers[offerIndex].selected) {    
-        selectProductItem(currItem, items, itemIndex, offerIndex);
+      const offers = items[itemIndex].offers;
+      if (numOfSelectedOffers < MAX_ITEMS_PER_TAG || offers[offerIndex].selected) {
+        toggleProductItemSelection(itemIndex, offerIndex);
         this.forceUpdate();
       } else {
         showErrorMessage(i18n.t('SELECT_UP_TO_10'));

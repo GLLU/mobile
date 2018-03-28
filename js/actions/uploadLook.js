@@ -171,14 +171,12 @@ export function addItemType(categoryItem, itemId) {
   };
 }
 
-export function selectProductItem(currItem, items, itemIndex, offerIndex) {
-  return (dispatch) => {
+export function toggleProductItemSelection(itemIndex, offerIndex) {
     const payload = { itemIndex, offerIndex };
-    dispatch({
+    return {
       type: SELECT_PRODUCT_ITEM,
       payload,
-    });
-  };
+    };
 }
 
 export function toggleOccasionTag(tagId, selected, itemId) {
