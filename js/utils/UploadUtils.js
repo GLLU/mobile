@@ -1,6 +1,7 @@
 // @flow
 import { Platform } from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
+import base64 from 'base-64';
 import uploadLookService from '../services/uploadLookService';
 
 export function formatAvatar(path: string): any {
@@ -52,8 +53,8 @@ function _findMultipleItemIndex(itemsArray, categoryName) {
 	return lastIndex;
 }
 
-export function convertDataURIToBinary(base64) {
-  const raw = window.atob(base64);
+export function convertDataURIToBinary(base64File) {
+  const raw = base64.decode(base64File);
   const rawLength = raw.length;
   let array = new Uint8Array(new ArrayBuffer(rawLength));
 
