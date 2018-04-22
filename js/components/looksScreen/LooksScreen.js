@@ -21,6 +21,8 @@ import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
 import Spinner from '../loaders/Spinner';
 import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import { getItems } from '../../actions/look';
+import itemsService from '../../services/itemsService';
 
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
@@ -69,6 +71,20 @@ class LooksScreen extends Component {
       isMuted: true,
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
+  }
+
+  componentWillMount() {
+    const { getItems, flatLook } = this.props;
+    getItems(flatLook.id);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { getItems, flatLooksData } = this.props;
+    const currIndex = this.state.currScrollIndex;
+    if (prevState.currScrollIndex !== this.state.currScrollIndex) {
+      const lookArr = this.getFlatFeed();
+      getItems(flatLooksData[currIndex].id);
+    }
   }
 
   componentDidMount() {
@@ -145,8 +161,11 @@ class LooksScreen extends Component {
     this.props.navigateTo('likesscreen', { lookId: look.id, count: look.likes });
   }
 
-  _openWebView = (url: string) => {
-    this.props.navigateTo('webViewScreen', { url, headerData: {title: 'Shop Item'} });
+  _openWebView = (url: string, lookId: number, itemId: number, suggId: number) => {
+    /*itemsService.clickOnProduct(url, lookId, itemId, suggId).then((data) => {
+      this.props.navigateTo('webViewScreen', { url, headerData: { title: i18n.t('SHOP_ITEM') } });
+    });*/
+    this.props.navigateTo('webViewScreen', { url, headerData: { title: i18n.t('SHOP_ITEM') } });
   }
 
   onToggleDrawer(shouldOpen: boolean) {
@@ -175,7 +194,7 @@ class LooksScreen extends Component {
 
   onSwipe(gestureName: string) {
     this.props.logEvent('LookScreen', { name: 'user swiped', type: gestureName });
-    const { onHideSwipeWizard, showSwipeWizard } = this.props;
+    const { onHideSwipeWizard, showSwipeWizard, getItems, flatLook } = this.props;
 
     if (showSwipeWizard) {
       onHideSwipeWizard();
@@ -391,10 +410,11 @@ class LooksScreen extends Component {
   getFlatFeed() {
     let looksArr = '';
     const { meta: { total } } = this.props;
+    const currLook = this.props.flatLooksData[this.state.currScrollIndex];
+ 
     if (total === 1) {
-      return looksArr = [
-        this.props.flatLooksData[this.state.currScrollIndex],
-      ];
+      let looksArr = [currLook];
+      return looksArr;
     }
     switch (this.state.currScrollIndex) {
       case 0:
@@ -402,19 +422,19 @@ class LooksScreen extends Component {
         fictionalLook.originalIndex = 999;
         return looksArr = [
           fictionalLook, // fictional
-          this.props.flatLooksData[this.state.currScrollIndex],
+          currLook,
           this.props.flatLooksData[this.state.currScrollIndex + 1],
         ];
       case this.props.flatLooksData.length - 1:
         looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex - 1],
-          this.props.flatLooksData[this.state.currScrollIndex],
+          currLook,
         ];
         return looksArr;
       default:
         return looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex - 1],
-          this.props.flatLooksData[this.state.currScrollIndex],
+          currLook,
           this.props.flatLooksData[this.state.currScrollIndex + 1],
         ];
     }

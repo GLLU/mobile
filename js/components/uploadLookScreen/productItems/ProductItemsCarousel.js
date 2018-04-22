@@ -8,6 +8,7 @@ import Colors from '../../../styles/Colors.styles';
 import ProductItem from './ProductItem';
 
 const { width } = Dimensions.get('window');
+const MAX_SHOWN_OFFERS = 9;
 
 class ProductItemsCarousel extends Component {
 
@@ -21,7 +22,7 @@ class ProductItemsCarousel extends Component {
   render() {
     const { offers, onMoreContentPress, onSelectProductItem } = this.props;
     const { isOpen } = this.state;
-    const shownOffers = (offers && offers.length > 9) ? offers.slice(0, 9) : offers;
+    const shownOffers = (offers && offers.length > MAX_SHOWN_OFFERS) ? offers.slice(0, MAX_SHOWN_OFFERS - 1) : offers;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -31,9 +32,13 @@ class ProductItemsCarousel extends Component {
           {_.map(shownOffers, (item, index) => (
             <ProductItem key={index} offer={item} onSelectProductItem={() => onSelectProductItem(index)} />
           ))}
-          <TouchableOpacity style={styles.moreContent} onPress={onMoreContentPress}>
-            <Text style={styles.moreContentText}> More Items</Text>
-          </TouchableOpacity>
+          {offers.length > MAX_SHOWN_OFFERS ?
+            <TouchableOpacity style={styles.moreContent} onPress={onMoreContentPress}>
+              <Image style={styles.moreContentImage} source={{ uri: offers[shownOffers.length].image_url }} />
+              <View style={styles.moreContentImageOverlay}>
+                <Text style={styles.moreContentText}> More Items</Text>
+              </View>
+            </TouchableOpacity> : null }
         </ScrollView>
       </View>
     );
@@ -54,6 +59,7 @@ const styles = StyleSheet.create({
     overflow: 'scroll',
     flexDirection: 'row',
     width,
+    zIndex: 2,
   },
   productItem: {
     justifyContent: 'space-around',
@@ -66,9 +72,28 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     justifyContent: 'center',
   },
+  moreContentImage: {
+    width: generateAdjustedSize(123),
+    height: generateAdjustedSize(123),
+  },
+  moreContentImageOverlay: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    opacity: 0.5,
+    backgroundColor: Colors.black,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   moreContentText: {
     textAlign: 'center',
-
+    fontWeight: 'bold',
+    fontSize: 18,
+    width: '100%',
+    opacity: 1,
+    color: Colors.white,
   },
 });
 

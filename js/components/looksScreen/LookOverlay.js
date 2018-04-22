@@ -19,6 +19,7 @@ import ItemMarker from './markers/ItemMarker';
 import InformationView from './information/InformationView';
 import CommentsView from './comments/CommentsView';
 import LookHeader from './LookHeader';
+import ItemPopup from './markers/ItemPopup';
 import MenuView from './menu/MenuViewContainer';
 import withAnalytics from '../common/analytics/WithAnalytics';
 import { downloadFile } from '../../lib/download/FileDownloader';
@@ -63,6 +64,7 @@ class LookOverlay extends Component {
     this.goToLikes = this.goToLikes.bind(this);
     this.closeBottomModal = this.closeBottomModal.bind(this);
     this._onShareClicked = this._onShareClicked.bind(this);
+    this.handleToggleItemPopup = this.handleToggleItemPopup.bind(this);
     const { look } = this.props;
     this.state = {
       comments: look.comments || 0,
@@ -72,12 +74,23 @@ class LookOverlay extends Component {
       fadeAnimContent: new Animated.Value(0),
       isMenuOpen: false,
       isSharing: false,
+      isPopupViewActive: false,
       fadeAnimContentOnPress: new Animated.Value(1),
     };
   }
 
+  handleToggleItemPopup(item, isViewActive) {
+    const { isPopupViewActive, activeItem } = this.state;
+    if (activeItem === item) {
+      this.setState({ isPopupViewActive: !isPopupViewActive });
+    } else {
+      this.setState({ activeItem: item, isPopupViewActive: true });
+    }
+  }
+
   _renderBuyItButtons(look: object) {
     const { width, height, openWebView } = this.props;
+    const { activeItem, isPopupViewActive } = this.state;
     return look.items.map((item, index) =>
       <ItemMarker
         key={index}
@@ -85,7 +98,10 @@ class LookOverlay extends Component {
         onPress={this.props.onInvalidItemPressed}
         openWebView={openWebView}
         containerDimensions={{ width, height }}
-        pinPosition={{ y: item.cover_y_pos, x: item.cover_x_pos }} />
+        onPopupToggled={this.handleToggleItemPopup}
+        pinPosition={{ y: item.cover_y_pos, x: item.cover_x_pos }}
+        activeItem={activeItem} 
+        isPopupActive={isPopupViewActive} />
     );
   }
 
@@ -200,6 +216,7 @@ class LookOverlay extends Component {
   }
 
   _toggleBottomContainer() {
+    this.setState({ isPopupViewActive: false });
     if (this.state.fadeAnimContentOnPress._value === 1) {
       Animated.timing(          // Uses easing functions
         this.state.fadeAnimContentOnPress,    // The value to drive
@@ -219,8 +236,17 @@ class LookOverlay extends Component {
     }
   }
 
+  _renderPopupItems() {
+    const { openWebView, look } = this.props;
+    const { activeItem } = this.state;
+    return (
+      <ItemPopup {...activeItem} openWebView={openWebView} lookId={look.id} itemId={activeItem.id} />
+    );
+  }
+
   render() {
     const { look, lookType, toggleLike, toggleFavorite, goBack, onVolumePressed, isMuted } = this.props;
+    const { isPopupViewActive } = this.state;
     Animated.timing(          // Uses easing functions
       this.state.fadeAnimContent,    // The value to drive
       {
@@ -265,6 +291,7 @@ class LookOverlay extends Component {
         </Animated.View>
         {!lookType ? this._renderBuyItButtons(look) : null}
         {this._renderMenuView(this.state.isMenuOpen)}
+        { isPopupViewActive ? this._renderPopupItems() : null }
       </View>
     );
   }

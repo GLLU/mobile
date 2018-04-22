@@ -269,7 +269,7 @@ class UploadLookHeader extends Component {
   }
 
   render() {
-    const { isVideo } = this.props;
+    const { isVideo, currItem } = this.props;
     return (
       <View>
         <View style={styles.headerContainer}>
@@ -281,7 +281,7 @@ class UploadLookHeader extends Component {
         </View>
         <View style={styles.titleAndAddContainer}>
           <Text
-            style={styles.headerTitle}>{this.getHeadingTitle()}</Text>
+            style={styles.headerTitle}>{currItem.isCustom ? this.getHeadingTitle() : null}</Text>
           {this._renderAddItemBtn()}
         </View>
         { isVideo ? this.renderAddAnotherItemBtn() : null}

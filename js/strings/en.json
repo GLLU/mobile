@@ -134,6 +134,8 @@
   "DONE": "DONE",
   "REQUIRED_LOOK_ITEMS": "You must select at least one item",
   "SELECT_UP_TO_10": "You can't select more than 10 items per tag",
-  "CHOOSE_SIMILAR_ITEM": "Please choose at least one similar item"
+  "CHOOSE_SIMILAR_ITEM": "You can choose more than one similar item",
+  "SHOP_ITEM": "Shop Item",
+  "ENTER_NEW_PASSWORD": "Enter a new Password",
+  "CONFIRM_NEW_PASSWORD": "Confirm new Password",
 }
-

@@ -3,11 +3,13 @@
 import rest from '../api/rest';
 import userService from '../services/usersService';
 import looksService from '../services/looksService';
+import itemsService from '../services/itemsService';
 // Actions
 export const SET_LOOK_LIKE_STATE = 'SET_LOOK_LIKE_STATE';
 export const LOOK_UNLIKE = 'LOOK_UNLIKE';
 export const LOOK_LIKE = 'LOOK_LIKE';
 export const DELETE_LOOK = 'DELETE_LOOK';
+export const ADD_LOOK_ITEMS = 'ADD_LOOK_ITEMS';
 export const ADD_TO_FAVORITES = 'look.ADD_TO_FAVORITES';
 export const REMOVE_FROM_FAVORITES = 'look.REMOVE_FROM_FAVORITES';
 
@@ -48,6 +50,14 @@ export function deleteLook(id: number) {
     dispatch({type: DELETE_LOOK, lookId: id});
     looksService.deleteLook(id);
   }
+}
+
+export function addLookItems(id: number) {
+  return (dispatch) => {
+    itemsService.getItems(id).then((data) => {
+      dispatch({ type: ADD_LOOK_ITEMS, payload: { data, id } });
+    });
+  };
 }
 
 export function updateFavorite(isFavorite, lookId) {

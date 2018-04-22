@@ -15,11 +15,10 @@ import SpinnerSwitch from '../loaders/SpinnerSwitch';
 import ProductItemsCarousel from './productItems/ProductItemsCarousel';
 import ProductItemList from './productItems/ProductItemList';
 import DescriptionInput from './forms/DescriptionInput';
+import { getItems } from '../../actions/look';
 
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const w = Dimensions.get('window').width;
-const arrowUp = require('../../../images/icons/arrow_up.png');
-const arrowDown = require('../../../images/icons/arrow_down.png');
 import Tag from '../common/Tag';
 import { isVideo } from '../../utils/MediaUtils';
 
@@ -43,6 +42,7 @@ type Props = {
   clearUploadLook: () => void,
   getFeed: () => void,
   getUserLooks: () => void,
+  toggleProductItemSelection: () => void,
   lookId: number,
   userId: number,
   lookDescription: string,
@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
   },
   carouselTitle: {
     textAlign: 'center',
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    color: Colors.white,
     lineHeight: 24,
     fontFamily: fonts.subHeaderFont,
   },
@@ -98,16 +99,20 @@ class UploadLookScreen extends Component {
     this.gobackAndCancel = this.gobackAndCancel.bind(this);
     this.resetToFeed = this.resetToFeed.bind(this);
     this._toggleSuggestionList = this._toggleSuggestionList.bind(this);
-    this._toggleCarousel = this._toggleCarousel.bind(this);
+    this._removeCarousel = this._removeCarousel.bind(this);
     this.handleSelectProductItem = this.handleSelectProductItem.bind(this);
+    this.publishAction = this.publishAction.bind(this);
+    this.handlePublish = this.handlePublish.bind(this);
     this.state = {
       currentStep: CATEGORY,
       allowContinue: false,
       currItem: props.items[0].id,
       items: props.items,
+      isFirstPublishClick: true,
       isPublishing: false,
-      isShowSuggestion: true,
+      isShowFooter: false,
       isShowMoreSuggestions: false,
+      isChosenTag: false,
       modalParams: {
         modalVisible: false,
       },
@@ -124,7 +129,7 @@ class UploadLookScreen extends Component {
   }
 
   setCurrentItem(itemId) {
-    this.setState({ currItem: itemId });
+    this.setState({ currItem: itemId, isShowFooter: true, isChosenTag: true });
   }
 
   componentDidMount() {
@@ -136,6 +141,7 @@ class UploadLookScreen extends Component {
   }
 
   componentWillMount() {
+    const { mode, lookId } = this.props;
     BackAndroid.addEventListener('uploadBackPress', () => {
       this.handleBackButton();
       return true;
@@ -200,8 +206,8 @@ class UploadLookScreen extends Component {
   }
 
   resetToFeed() {
-    const {resetTo} = this.props
-    resetTo('feedscreen',{resetToIndex: 1});
+    const { resetTo } = this.props;
+    resetTo('feedscreen', { resetToIndex: 1 });
   }
 
   getCurrentItem() {
@@ -222,7 +228,17 @@ class UploadLookScreen extends Component {
       confirmString: 'DELETE',
       cancelString: 'NO, CONTINUE EDITING',
       confirmAction: this.handleRemoveItem,
-    })
+    });
+  }
+
+  showNoOffersModal() {
+    this.setModalVisible({
+      modalVisible: true,
+      title: 'SKIP ITEM TAGGING?',
+      confirmString: 'PUBLISH LOOK ANYWAY',
+      cancelString: 'CONTINUE EDITING',
+      confirmAction: this.publishAction,
+    });
   }
 
   handleRemoveItem() {
@@ -240,19 +256,19 @@ class UploadLookScreen extends Component {
     return (
       <ModalQuestion
         {...modalParams}
-        closeModal={this.setModalVisible}/>
+        closeModal={this.setModalVisible} />
     );
   }
 
   renderImageWithTags() {
     const { filePath } = this.props;
     return (
-      <Image source={{uri: filePath}} style={styles.itemsContainer} resizeMode={'stretch'}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        {this.renderActions()}
+      <Image source={{ uri: filePath }} style={styles.itemsContainer} resizeMode={'stretch'}>
+        <TouchableWithoutFeedback onPress={this._removeCarousel}>
+          {this.renderActions()}
         </TouchableWithoutFeedback>
       </Image>
-    )
+    );
   }
 
   renderVideoWithTags() {
@@ -265,18 +281,15 @@ class UploadLookScreen extends Component {
     );
   }
 
-  _toggleCarousel() {
-    this.setState({ isShowSuggestion: !this.state.isShowSuggestion });
+  _removeCarousel() {
+    this.setState({ isShowFooter: false, isChosenTag: false });
   }
 
   _renderSuggestionItems(offers) {
-    const { isShowSuggestion } = this.state;
-    return(
+    const { isShowFooter } = this.state;
+    return (
       <View>
-        <TouchableOpacity style={styles.bottomBarToggle} onPress={this._toggleCarousel}>
-          <Image style={styles.footerToggleButton} source={this.state.isShowSuggestion ? arrowDown : arrowUp} resizeMode={'contain'}/>
-        </TouchableOpacity>
-        {isShowSuggestion ?
+        {isShowFooter ?
           <View>
             <Text style={styles.carouselTitle}> {i18n.t('CHOOSE_SIMILAR_ITEM')} </Text>
             <ProductItemsCarousel offers={offers} onMoreContentPress={this._toggleSuggestionList} onSelectProductItem={this.handleSelectProductItem} />
@@ -294,7 +307,7 @@ class UploadLookScreen extends Component {
       <View style={styles.renderActionsContainer}>
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
-        { currTag.isCustom ? this._renderEditItemTabs() : this._renderSuggestionItems(currTag.offers) }
+        { (currTag && currTag.offers && currTag.offers.length > 0) ? this._renderSuggestionItems(currTag.offers) : this._renderEditItemTabs() }
         <DescriptionInput description={lookDescription} addDescription={description => addDescription(description)} />
       </View>
     );
@@ -302,27 +315,55 @@ class UploadLookScreen extends Component {
 
   renderTags() {
     const { items } = this.props;
+    const { isChosenTag } = this.state;
     const currItem = this.getCurrentItem();
     if (currItem) {
       return items.map((item, i) => {
         return (
-          <Tag key={item.id} isCustom={item.isCustom} currItemId={currItem.id} setCurrentItem={itemId => this.setCurrentItem(itemId)} item={item}
-               onDragEnd={position => this.handleOnDragEnd(position)} />
+          <Tag key={item.id} isCustom={!item.offers} currItemId={currItem.id} setCurrentItem={itemId => this.setCurrentItem(itemId)} item={item}
+            onDragEnd={position => this.handleOnDragEnd(position)} isChosenTag={isChosenTag} />
         );
       });
     }
   }
 
   _renderEditItemTabs() {
-    const { currItem } = this.state;
+    const { currItem, isShowFooter } = this.state;
     const { items } = this.props;
     const isFirstItem = currItem === items[0].id;
     return (
-      <EditItemTabs
-        item={currItem}
-        setCurrentStep={this.setCurrentStep}
-        isFirstItem={isFirstItem}/>
+      isShowFooter ?
+        <EditItemTabs
+          item={currItem}
+          setCurrentStep={this.setCurrentStep}
+          isFirstItem={isFirstItem} /> : null
     );
+  }
+
+  _hasOffers(item) {
+    return (!item.isCustom && item.offers) && item.offers.findIndex((element => element.selected === true)) !== -1;
+  }
+
+  handlePublish() {
+    const { items, isShowFooter, isFirstPublishClick, currItem } = this.state;
+    const hasOffers = items.some(this._hasOffers);
+    if (hasOffers) {
+      this.publishAction();
+    } else {
+        if (!isShowFooter && isFirstPublishClick) {
+          this.setState({ isShowFooter: true, isFirstPublishClick: false, isChosenTag: true });
+          setTimeout(() => {
+            this.showNoOffersModal();
+          }, 2000);
+        } else {
+          if (isFirstPublishClick) {
+            this.setState({ isFirstPublishClick: false });
+            this.showNoOffersModal();
+          } else {
+            this.publishAction();
+          }
+        }
+    }
   }
 
   renderHeader() {
@@ -341,7 +382,7 @@ class UploadLookScreen extends Component {
         showErrorMessage={showErrorMessage}
         setCurrentItem={itemId => this.setCurrentItem(itemId)}
         categories={categories}
-        publishItem={this.publishAction.bind(this)}/>
+        publishItem={this.handlePublish} />
     );
   }
 
@@ -359,9 +400,10 @@ class UploadLookScreen extends Component {
   }
 
   gobackAndCancel() {
-    const { goBack, clearUploadLook, logEvent, description, items } = this.props
+    const { goBack, clearUploadLook, logEvent, description, items } = this.props;
     logEvent('uploadLook', {
-      name: 'User canceled the upload look', origin: 'tagging',
+      name: 'User canceled the upload look', 
+      origin: 'tagging',
       category: this.mapItemsForAnalytics('category'),
       brand: this.mapItemsForAnalytics('brand'),
       colors: this.mapItemsForAnalytics('color_ids'),
@@ -381,8 +423,8 @@ class UploadLookScreen extends Component {
         return (item[type] && item[type].length > 0) ? true : null;
       }
       return item[type] && item[type] !== -1 ? item[type] : null;
-    })
-    return joinedArray
+    });
+    return joinedArray;
   }
 
   _toggleSuggestionList() {
@@ -415,16 +457,16 @@ class UploadLookScreen extends Component {
     }
     return (
       !isShowMoreSuggestions ?
-         <View>
-           {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
-           {isPublishing ? <SpinnerSwitch /> : null}
-           {this._renderModal()}
-         </View> :
-         <ProductItemList
-           offers={currTag.offers}
-           onCloseSuggestionList={this._toggleSuggestionList}
-           showErrorMessage={showErrorMessage}
-           onSelectProductItem={this.handleSelectProductItem} />
+        <View>
+          {isVideo ? this.renderVideoWithTags() : this.renderImageWithTags()}
+          {isPublishing ? <SpinnerSwitch /> : null}
+          {this._renderModal()}
+        </View> :
+        <ProductItemList
+          offers={currTag.offers}
+          onCloseSuggestionList={this._toggleSuggestionList}
+          showErrorMessage={showErrorMessage}
+          onSelectProductItem={this.handleSelectProductItem} />
     );
   }
 }

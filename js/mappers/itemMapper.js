@@ -1,5 +1,19 @@
 export default function map(item) {
-  if (item.isCustom) {
+  if (item.offers || item.product_suggestions) {
+    return {
+      id: item.id,
+      locationX: item.cover_x_pos,
+      locationY: item.cover_y_pos,
+      userId: item.user_id,
+      lookId: item.look_id,
+      category: item.category ? item.category : '',
+      offers: item.offers,
+      tags: item.tags ? item.tags : [],
+      description: item.description ? item.description : '',
+      isNew: true,
+      isCustom: false,
+    };
+  } else {
     return {
       id: item.id,
       locationX: item.cover_x_pos,
@@ -19,20 +33,6 @@ export default function map(item) {
       url: item.url ? item.url : null,
       isNew: item.isNew,
       isCustom: true,
-    };
-  } else {
-    return {
-      id: item.id,
-      locationX: item.cover_x_pos,
-      locationY: item.cover_y_pos,
-      userId: item.user_id,
-      lookId: item.look_id,
-      category: item.category ? item.category : '',
-      offers: item.offers,
-      tags: item.tags ? item.tags : [],
-      description: item.description ? item.description : '',
-      isNew: true,
-      isCustom: false,
     };
   }
 }

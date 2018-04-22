@@ -16,12 +16,15 @@ import VideoItemLine from '../common/VideoItemLine';
 import BaseComponent from '../../common/base/BaseComponent';
 import FooterButton from "./FooterButton";
 
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 100,
+    bottom: height / 2.5,
     right: 0,
-    width: Dimensions.get('window').width,
+    width,
     zIndex: 1,
     padding: 10,
     justifyContent: 'space-between',
@@ -127,21 +130,19 @@ export default class ButtonsBar extends BaseComponent {
         <View style={styles.leftContainer}>
           {lookType === 'video' ?
             <View style={{ marginVertical: 5 }}>
-              <VolumeButton size={45} isMuted={isMuted} togglePlaySoundAction={onVolumePressed}/>
+              <VolumeButton size={45} isMuted={isMuted} togglePlaySoundAction={onVolumePressed} />
             </View>
             : null}
         </View>
         <View style={[styles.rightContainer, styles[direction]]}>
           { lookType === 'video' ? this.renderVideoItems() : null }
-
-          <FooterButton
-            icon={ isFavorite ? favoriteIcon : notFavoriteIcon}
-            onPress={() => toggleFavorite(!isFavorite)}/>
-
-          <LikeButton liked={liked} likes={likes} onIconPress={toggleLike} onNumberPress={onNumberPress}/>
-          <CommentsButton count={comments} isActive={isCommentsActive} onPress={this._onBubbleClicked}/>
+          <LikeButton liked={liked} likes={likes} onIconPress={toggleLike} onNumberPress={onNumberPress} />
+          <CommentsButton count={comments} isActive={isCommentsActive} onPress={this._onBubbleClicked} />
           { this._renderInformationButton(hasDescription) }
-          <MenuButton onPress={() => this._onMenuClicked()}/>
+          <FooterButton
+            icon={isFavorite ? favoriteIcon : notFavoriteIcon}
+            onPress={() => toggleFavorite(!isFavorite)} />
+          <MenuButton onPress={() => this._onMenuClicked()} />
         </View>
       </View>
     );

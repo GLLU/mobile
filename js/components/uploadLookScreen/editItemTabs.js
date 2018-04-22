@@ -180,21 +180,6 @@ export default class EditItemTabs extends Component {
     );
   }
 
-  _handleText = () => {
-    const tabHeight = this.state.isOpen ? 0 : generateAdjustedSize(135);
-
-    Animated.timing(          // Uses easing functions
-      this.animatedTabBar,    // The value to drive
-      {
-        toValue: tabHeight,
-        duration: 100,
-      }            // Configuration
-    ).start();
-
-    this.setState({isOpen: !this.state.isOpen});
-  }
-
-
   render() {
     const { currentItem } = this.props;
     if (!currentItem) {
@@ -202,9 +187,6 @@ export default class EditItemTabs extends Component {
     }
     return (
       <KeyboardAvoidingView behavior={'padding'}>
-        <TouchableOpacity style={styles.bottomBarToggle} onPress={this._handleText}>
-          <Image style={{ height: 8, width: 18 }} source={this.state.isOpen ? arrowDown : arrowUp} resizeMode={'contain'}/>
-        </TouchableOpacity>
         <Animated.View style={[styles.container, { height: this.animatedTabBar }]}>
           {
             !this.state.reloadingTabs ? <TabViewAnimated

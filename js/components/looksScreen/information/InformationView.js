@@ -85,7 +85,7 @@ class InformationView extends Component {
       <Modal transparent={true} visible={this.state.isOpen}>
         <TouchableOpacity style={{flex: 1}} onPress={this._onRequestClose}>
           <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: 'white' }}>
-            <HalfScreenModalHeader title={i18n.t('INFORMATION')} onCancelPress={this._onRequestClose} />
+            <HalfScreenModalHeader title={i18n.t('INFORMATION')} onCancelPress={this._onRequestClose} iconType={'info'} />
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>
                 {this.props.description}
@@ -95,11 +95,6 @@ class InformationView extends Component {
             <View style={{alignItems: 'center'}}>
             <ItemBrandsView style={{ paddingVertical: 10}} brands={brands}/>
             </View>
-            <InformationViewFooter
-              onCommentsPress={onCommentsPress}
-              onLikesPress={onLikesPress}
-              likes={likes}
-              comments={comments}/>
           </View>
         </TouchableOpacity>
       </Modal>

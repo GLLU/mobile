@@ -36,7 +36,7 @@ function bindAction(dispatch: any, ownProps: any): void {
     getUserBodyType: data => dispatch(getUserBodyType(data)),
     addNewLook: imagePath => dispatch(addNewLook(imagePath)),
     blockUser: userId => dispatch(blockUser(userId)),
-    editNewLook: id => dispatch(editNewLook(id)),
+    editNewLook: (id, imagePath) => dispatch(editNewLook(id, imagePath)),
     deleteLook: id => dispatch(deleteLook(id)),
     getUserLooks: data => dispatch(getUserLooks(data)),
     getFavoriteLooks: () => dispatch(getFavoriteLooks()),

@@ -2,7 +2,7 @@
 import { Platform } from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import base64 from 'base-64';
-import uploadLookService from '../services/uploadLookService';
+import uploadLookService from '../services/uploadLookService'; 
 
 export function formatAvatar(path: string): any {
 
@@ -51,6 +51,19 @@ function _findMultipleItemIndex(itemsArray, categoryName) {
     }
   }
 	return lastIndex;
+}
+
+export function mapTagsData(tagsData) {
+  return tagsData.map(function(tag, i) {
+    return {
+      cover_x_pos: tag.cover_x_pos,
+      cover_y_pos: tag.cover_y_pos,
+      category: tag.category,
+      offers: tag.offers,
+      id: (i + 100),
+      isCustom: false,
+    };
+  });
 }
 
 export function convertDataURIToBinary(base64File) {

@@ -29,8 +29,18 @@ class ProductItem extends Component {
     const { offer } = this.props;
     const self = this;
     Image.getSize(offer.image_url, (width, height) => {
-      self.setState({ bigRatio: (height / width > 3 || width / height > 3) });
+      if (self._isMounted) {
+        self.setState({ bigRatio: (height / width > 3 || width / height > 3) });
+      }
     }, (error) => {});
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

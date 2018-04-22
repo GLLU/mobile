@@ -1,3 +1,19 @@
+import _ from 'lodash';
+import { normalize } from 'normalizr';
+import { lookSchema } from '../schemas/schemas';
+import { unifyLooks } from '../utils/FeedUtils';
+import { getSuggestion, mapTagsData } from '../utils/UploadUtils';
+
+import UploadLookService from '../services/uploadLookService';
+import { serializeItems } from '../mappers/uploadLookMapper';
+import ItemsService from '../services/itemsService';
+
+import rest from '../api/rest';
+import { loadBrands, showProcessing, hideProcessing } from './index';
+import { newItem } from '../reducers/uploadLook';
+import Utils from '../utils';
+import { setLooksData, setFeedData } from './feed';
+
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
 export const CREATE_CUSTOM_LOOK_ITEM = 'CREATE_CUSTOM_LOOK_ITEM';
@@ -24,19 +40,7 @@ export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
 export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
 export const SELECT_PRODUCT_ITEM = 'SELECT_PRODUCT_ITEM';
 
-import { normalize } from 'normalizr';
-import { lookSchema } from '../schemas/schemas';
-import { unifyLooks } from '../utils/FeedUtils';
-import { getSuggestion } from '../utils/UploadUtils';
 
-import UploadLookService from '../services/uploadLookService';
-import _ from 'lodash';
-import rest from '../api/rest';
-import { loadBrands, showProcessing, hideProcessing } from './index';
-import { newItem } from '../reducers/uploadLook';
-import Utils from '../utils';
-import FEED_TYPE_BEST_MATCH from './feed';
-import {setLooksData, setFeedData} from './feed';
 
 const NUM_OF_DEFAULT_OFFERS = 6;
 
@@ -58,16 +62,7 @@ export function addNewLook(image) {
             UploadLookService.createLook().then((emptyLookData) => {
               let items = [];
               getSuggestion(image, dispatch, resolve).then((tagsData) => {
-                items = tagsData.map(function(tag, i) {
-                  return {
-                    cover_x_pos: tag.x,
-                    cover_y_pos: tag.y,
-                    category: tag.category,
-                    offers: tag.offers,
-                    id: (incrementedItemId + 100 + i),
-                    isCustom: false,
-                  };
-                });
+                items = mapTagsData(tagsData);
                 const payload = _.merge(emptyLookData.look, {
                   image: image.localPath,
                   items: (items && items.length > 0) ? items : [newItem],
@@ -103,7 +98,7 @@ export function addNewLook(image) {
   }
 }
 
-export function editNewLook(lookId) {
+export function editNewLook(lookId, image) {
   return (dispatch) => {
     dispatch(showProcessing());
     dispatch(clearUploadLook());
@@ -111,16 +106,32 @@ export function editNewLook(lookId) {
       dispatch(rest.actions.looks.get({id: lookId}, (err, data) => {
         dispatch(hideProcessing());
         if (!err) {
-          const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-          let payload = {
-            image: url,
-            ...data.look,
-          };
-          dispatch({
-            type: EDIT_NEW_LOOK,
-            payload,
+          const url = data.look.cover.type === 'image' ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+          let items = serializeItems(data.look.items);
+          items = items.map((item) => {
+            return {
+              ...item,
+              offers: item.offers.map((offer) => {
+                return {
+                  ...offer,
+                  selected: true,
+                };
+              }),
+            };
           });
-          resolve(payload);
+          const image = { localPath: data.look.cover.list[0].url };
+          getSuggestion(image, dispatch, resolve).then((tagsData) => {
+            const payload = {
+              image: url,
+              ...data.look,
+              items,
+            };
+            dispatch({
+              type: EDIT_NEW_LOOK,
+              payload,
+            });
+            resolve(payload);
+          });
         } else {
           throw err;
         }
