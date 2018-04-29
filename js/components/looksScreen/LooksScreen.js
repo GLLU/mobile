@@ -20,9 +20,8 @@ import * as _ from 'lodash';
 import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
 import Spinner from '../loaders/Spinner';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
-import { getItems } from '../../actions/look';
-import itemsService from '../../services/itemsService';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import ModalQuestion from '../uploadLookScreen/forms/ModalQuestion';
 
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
@@ -62,6 +61,7 @@ class LooksScreen extends Component {
     this._toggleLike = this._toggleLike.bind(this);
     this.renderUpArrow = this.renderUpArrow.bind(this);
     this.renderDownArrow = this.renderDownArrow.bind(this);
+    this.setModalVisible = this.setModalVisible.bind(this);
     this.state = {
       showAsFeed: props.flatLooksData.length > 1,
       isBottomDrawerOpen: props.openComments,
@@ -69,21 +69,27 @@ class LooksScreen extends Component {
       loader: Platform.OS !== 'ios' && props.flatLooksData.length > 1,
       mountedOnce: false,
       isMuted: true,
+      modalParams: {
+        modalVisible: false,
+      },
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
   }
 
+  setModalVisible(params: object) {
+    const { modalParams } = this.state;
+    this.setState({ modalParams: { ...modalParams, ...params } });
+  }
+
   componentWillMount() {
-    const { getItems, flatLook } = this.props;
-    getItems(flatLook.id);
+    const { flatLook } = this.props;
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { getItems, flatLooksData } = this.props;
+    const { flatLooksData } = this.props;
     const currIndex = this.state.currScrollIndex;
     if (prevState.currScrollIndex !== this.state.currScrollIndex) {
       const lookArr = this.getFlatFeed();
-      getItems(flatLooksData[currIndex].id);
     }
   }
 
@@ -152,9 +158,20 @@ class LooksScreen extends Component {
   }
 
   _goToEdit(look: object) {
+    this.setModalVisible({
+      modalVisible: true,
+      title: i18n.t('EDIT_LOOK'),
+      confirmString: i18n.t('CONTINUE'),
+      cancelString: '',
+      subtitle: i18n.t('EDIT_IN_CONTRUCTION'),
+      confirmAction: this.resetToFeed,
+      cancelAction: this.resetToFeed,
+    });
+    /*
     this.props.editNewLook(look.id).then(() => {
       this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
     });
+    */
   }
 
   _goToLikes(look: object) {
@@ -194,7 +211,7 @@ class LooksScreen extends Component {
 
   onSwipe(gestureName: string) {
     this.props.logEvent('LookScreen', { name: 'user swiped', type: gestureName });
-    const { onHideSwipeWizard, showSwipeWizard, getItems, flatLook } = this.props;
+    const { onHideSwipeWizard, showSwipeWizard } = this.props;
 
     if (showSwipeWizard) {
       onHideSwipeWizard();
@@ -370,9 +387,9 @@ class LooksScreen extends Component {
           top: 0,
           bottom: 0,
           right: 0,
-          left: 0
+          left: 0,
         }}>
-          <Text style={styles.loadingImage}>Loading Image...</Text>
+          <Text style={styles.loadingImage}> {i18n.t('LOADING_IMAGE')} </Text>
         </View>
         <ImageWrapper
           resizeMode={'stretch'}
@@ -449,16 +466,25 @@ class LooksScreen extends Component {
       <View style={{ position: 'absolute', top: 0, height, width }}>
         <Image
           resizeMode={'stretch'} source={{ uri: previewUri }} style={{
-          position: 'absolute',
-          top: 0,
-          height,
-          width,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          <Spinner color="grey"/>
+            position: 'absolute',
+            top: 0,
+            height,
+            width,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Spinner color="grey" />
         </Image>
       </View>
+    );
+  }
+
+  _renderModal() {
+    const { modalParams } = this.state;
+    return (
+      <ModalQuestion
+        {...modalParams}
+        closeModal={this.setModalVisible} />
     );
   }
 
@@ -471,6 +497,7 @@ class LooksScreen extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
+        {this._renderModal()}
         <ScrollView
           keyboardShouldPersistTaps={'always'}
           pagingEnabled={false}

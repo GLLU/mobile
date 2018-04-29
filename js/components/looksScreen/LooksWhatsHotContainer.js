@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import LooksScreen from './LooksScreen';
 import {likeUpdate, unlikeUpdate, loadMore, getLookLikes} from '../../actions';
 import { showParisBottomMessage } from '../../actions/paris';
-import {updateFavorite, addLookItems } from '../../actions/look';
+import { updateFavorite } from '../../actions/look';
 import {getLooksById} from '../../utils/FeedUtils';
 import { getDataWithUsersObj } from '../../utils/UsersUtils';
 import {reportAbuse} from '../../actions/looks';
@@ -19,7 +19,6 @@ function mapDispatchToProps(dispatch) {
     updateFavorite: (isFavorite, lookId) => dispatch(updateFavorite(isFavorite, lookId)),
     editNewLook: id => dispatch(editNewLook(id)),
     likeUpdate: id => dispatch(likeUpdate(id)),
-    getItems: lookId => dispatch(addLookItems(lookId)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),
     getLookLikes: id => dispatch(getLookLikes(id)),
     reportAbuse: lookId => dispatch(reportAbuse(lookId)),

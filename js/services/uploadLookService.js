@@ -2,7 +2,7 @@ import _ from 'lodash';
 import AppAPI from '../network/AppApi';
 import * as feedLookMapper from '../mappers/lookMapper';
 import SyteApi from '../network/SyteApi';
-import { mapSuggestion, mapOffers } from '../mappers/uploadLookMapper';
+import { mapSuggestion, mapOffers } from '../mappers/itemMapper';
 import { removeMultipleItemIndex } from '../utils/UploadUtils';
 
 

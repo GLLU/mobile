@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, KeyboardAvoidingView, Animated, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, KeyboardAvoidingView, Animated, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import BrandSelector from './BrandSelector';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
@@ -180,6 +180,10 @@ export default class EditItemTabs extends Component {
     );
   }
 
+  onClickEditItems(event) {
+    event.preventDefault();
+  }
+
   render() {
     const { currentItem } = this.props;
     if (!currentItem) {
@@ -187,18 +191,20 @@ export default class EditItemTabs extends Component {
     }
     return (
       <KeyboardAvoidingView behavior={'padding'}>
-        <Animated.View style={[styles.container, { height: this.animatedTabBar }]}>
-          {
-            !this.state.reloadingTabs ? <TabViewAnimated
-              style={styles.tabViewAnimatedContainer}
-              navigationState={this.state}
-              renderScene={this._renderScene}
-              renderHeader={this._renderHeader}
-              onRequestChangeTab={this._handleTabsIndexChange}
-              swipeEnabled={false}
-            /> : null
-          }
-        </Animated.View>
+        <TouchableWithoutFeedback transparent onPress={this.onClickEditItems}>
+          <Animated.View style={[styles.container, { height: this.animatedTabBar }]}>
+            {
+              !this.state.reloadingTabs ? <TabViewAnimated
+                style={styles.tabViewAnimatedContainer}
+                navigationState={this.state}
+                renderScene={this._renderScene}
+                renderHeader={this._renderHeader}
+                onRequestChangeTab={this._handleTabsIndexChange}
+                swipeEnabled={false}
+              /> : null
+            }
+          </Animated.View>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
 
     );

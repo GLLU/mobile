@@ -216,8 +216,10 @@ class LookOverlay extends Component {
   }
 
   _toggleBottomContainer() {
-    this.setState({ isPopupViewActive: false });
-    if (this.state.fadeAnimContentOnPress._value === 1) {
+    const { isPopupViewActive } = this.state;
+    if (isPopupViewActive) {
+      this.setState({ isPopupViewActive: false });
+    } else if (this.state.fadeAnimContentOnPress._value === 1) {
       Animated.timing(          // Uses easing functions
         this.state.fadeAnimContentOnPress,    // The value to drive
         {

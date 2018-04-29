@@ -24,7 +24,8 @@ const width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 10,
+    height: generateAdjustedSize(120),
+    bottom: generateAdjustedSize(120),
     zIndex: 2,
     width,
     justifyContent: 'center',
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     flexDirection: 'row',
     padding: 10,
-    bottom: 100,
+    bottom: 0,
     width: generateAdjustedSize(210),
     height: generateAdjustedSize(120),
   },
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     height: generateAdjustedSize(120),
   },
   carousel: {
-    height: generateAdjustedSize(225),
+    height: generateAdjustedSize(120),
     width,
     flexWrap: 'wrap',
     overflow: 'scroll',
@@ -67,6 +68,10 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: 4,
     fontFamily: Fonts.contentFont,
+    textAlign: 'center',
+    flex: 1,
+    flexWrap: 'wrap',
+    width: 100,
   },
   category: {
     fontSize: generateAdjustedSize(15),
@@ -155,7 +160,8 @@ class ItemPopup extends Component {
   }
 
   _textEllipsis(text) {
-    return text.length > 15 ? `${text.substr(0, 10)}...` : text;
+    //return text.length > 15 ? `${text.substr(0, 10)}...` : text;
+    return text;
   }
 
   _renderSingleOffer() {
@@ -165,7 +171,7 @@ class ItemPopup extends Component {
         <Image source={{ uri: offers ? offers[0].image_url : category.icon.url }} style={styles.itemImage} />
         <View style={styles.innerContainer}>
           <Text style={styles.brand}>{this.getTitle(brand)}</Text>
-          { category ? <Text style={styles.category}>{(offers && offers.length === 1) ? category : category.name}</Text> : null }
+          { category ? <Text style={styles.category}>{(offers && offers.length === 1) ? null : category.name}</Text> : null }
           <SolidButton
             label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
             style={styles.shopNowButton} onPress={() => this.handleOpenLink()} />
@@ -181,7 +187,6 @@ class ItemPopup extends Component {
         <Image source={{ uri: item.image_url }} style={styles.itemImage} />
         <View style={styles.innerContainer}>
           <Text style={styles.brand}>{this.getTitle(brand, index)}</Text>
-          { category ? <Text style={styles.category}>{category.name}</Text> : null }
           <SolidButton
             label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
             style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} />

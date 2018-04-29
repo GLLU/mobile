@@ -74,8 +74,7 @@ class NotificationListView extends BaseComponent {
   toggleFollowAction(user, shouldFollow) {
     let data = {id: user.id};
     if (shouldFollow) {
-      this.props.fol
-      lowUpdate(data);
+      this.props.followUpdate(data);
     }
     else {
       this.props.unFollowUpdate(data);

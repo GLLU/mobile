@@ -3,6 +3,7 @@ import * as userMapper from '../mappers/userMapper';
 import * as _ from 'lodash';
 import * as metaMapper from '../mappers/metaMapper';
 import * as feedLookMapper from '../mappers/lookMapper';
+import { serializeItems } from '../mappers/itemMapper';
 
 
 const route = '/users';
@@ -53,14 +54,26 @@ class usersService {
   static getUserLooks = (userId, query) => {
     return AppAPI.get(`${route}/${userId}/looks`, query).then((response) => {
       const looks = feedLookMapper.serializeLooks(response.looks);
-      return {looks, meta: response.meta};
+      const serializedLooks = _.map(looks, (look) => {
+        return {
+          ...look,
+          items: serializeItems(look.items),
+        };
+      });
+      return {looks: serializedLooks, meta: response.meta};
     });
   }
 
   static getFavoriteLooks = (userId, query) => {
     return AppAPI.get(`${route}/${userId}/favorite_looks`, query).then((response) => {
-      const looks = feedLookMapper.serializeLooks(response.looks)
-      return {looks, meta: response.meta};
+      const looks = feedLookMapper.serializeLooks(response.looks);
+      const serializedLooks = _.map(looks, (look) => {
+        return {
+          ...look,
+          items: serializeItems(look.items),
+        };
+      });
+      return {looks: serializedLooks, meta: response.meta};
     });
   }
 

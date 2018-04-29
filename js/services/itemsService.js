@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import AppAPI from '../network/AppApi';
-import { serializeItems } from '../mappers/uploadLookMapper';
+import { serializeItems } from '../mappers/itemMapper';
 
 class ItemsService {
   static getItems = lookId => AppAPI.get(`/looks/${lookId}/items`).then(((data) => {

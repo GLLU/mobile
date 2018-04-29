@@ -5,7 +5,7 @@ import { unifyLooks } from '../utils/FeedUtils';
 import { getSuggestion, mapTagsData } from '../utils/UploadUtils';
 
 import UploadLookService from '../services/uploadLookService';
-import { serializeItems } from '../mappers/uploadLookMapper';
+import { serializeItems } from '../mappers/itemMapper';
 import ItemsService from '../services/itemsService';
 
 import rest from '../api/rest';
