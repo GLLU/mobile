@@ -9,8 +9,6 @@ include ':react-native-mixpanel'
 project(':react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mixpanel/android')
 include ':react-native-fabric'
 project(':react-native-fabric').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fabric/android')
-include ':react-native-google-analytics-bridge'
-project(':react-native-google-analytics-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-analytics-bridge/android')
 include ':react-native-flurry-analytics'
 project(':react-native-flurry-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-flurry-analytics/android')
 include ':react-native-fetch-blob'
