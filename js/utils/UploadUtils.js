@@ -2,7 +2,8 @@
 import { Platform } from 'react-native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import base64 from 'base-64';
-import uploadLookService from '../services/uploadLookService'; 
+import RNFS from 'react-native-fs';
+import uploadLookService from '../services/uploadLookService';
 
 export function formatAvatar(path: string): any {
 
@@ -79,20 +80,17 @@ export function convertDataURIToBinary(base64File) {
 
 export function getSuggestion(image, dispatch, resolve) {
   return new Promise((innerResolve, reject) => {
-    RNFetchBlob
-  .config({
-    fileCache: true,
-  })
-  .fetch('GET', image.localPath)
-  .then((resp) => {
-    resp.base64().then((readFile) => {
-      uploadLookService.getLookSuggestions(convertDataURIToBinary(readFile)).then((data) => {
-        innerResolve(data);
-        resolve(data);
-      }).catch(() => {
-        reject('error retrieving suggestions');
-      });
+    RNFS.readFile(image.localPath, 'base64')
+  .then((readFile) => {
+    uploadLookService.getLookSuggestions(convertDataURIToBinary(readFile)).then((data) => {
+      innerResolve(data);
+      resolve(data);
+    }).catch(() => {
+      reject('error retrieving suggestions');
     });
+  })
+  .catch((err) => {
+    // scan file error
   });
   });
 }

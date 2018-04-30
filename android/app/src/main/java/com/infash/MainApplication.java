@@ -12,6 +12,7 @@ import com.appsflyer.reactnative.RNAppsFlyerPackage;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import cl.json.RNSharePackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
@@ -62,6 +63,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new RNFSPackage(),
             new RNSharePackage(),
             new ReactNativeOneSignalPackage(),
                             new RNI18nPackage(),
