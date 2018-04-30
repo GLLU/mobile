@@ -19,7 +19,6 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.smixx.fabric.FabricPackage;
 import com.infash.customPackages.CameraReactPackage;
-import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.bugsnag.BugsnagReactNative;
@@ -70,7 +69,6 @@ public class MainApplication extends Application
                             new RNMixpanel(),
                             new FabricPackage(),
                             new CameraReactPackage(),
-                            new GoogleAnalyticsBridgePackage(),
                             new FlurryAnalyticsPackage(),
                             new RNFetchBlobPackage(),
                             BugsnagReactNative.getPackage(),

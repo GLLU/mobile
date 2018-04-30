@@ -199,8 +199,7 @@ dependencies {
     compile 'com.facebook.fresco:animated-gif:0.14.1'
     compile 'com.facebook.fresco:animated-webp:0.14.1'
     compile  'com.facebook.fresco:webpsupport:0.14.1'
-    compile project(':react-native-google-analytics-bridge')
-    compile project(':react-native-flurry-analytics')
+    compile project(':react-native-flurry-analytics'    )
     compile project(':react-native-fetch-blob')
     compile project(':bugsnag-react-native')
     compile project(':react-native-keychain')
