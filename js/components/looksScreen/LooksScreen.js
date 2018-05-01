@@ -160,7 +160,7 @@ class LooksScreen extends Component {
   _goToEdit(look: object) {
     this.setModalVisible({
       modalVisible: true,
-      title: i18n.t('EDIT_LOOK'),
+      title: i18n.t('OUR_APOLOGIES'),
       confirmString: i18n.t('CONTINUE'),
       cancelString: '',
       subtitle: i18n.t('EDIT_IN_CONTRUCTION'),

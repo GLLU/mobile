@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: generateAdjustedSize(120),
     bottom: generateAdjustedSize(120),
-    zIndex: 2,
+    //zIndex: 2,
     width,
     justifyContent: 'center',
     alignItems: 'center',
@@ -205,6 +205,7 @@ class ItemPopup extends Component {
           <ScrollView
             style={styles.carousel}
             contentContainerStyle={styles.productItem}
+            showsHorizontalScrollIndicator={false}
             horizontal>
             { _.map(offers, (item, index) => (
               this._renderOffer(item, index)))}

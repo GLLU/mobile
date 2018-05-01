@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableHighlight, TouchableOpacity, View, Image, TextInput, Text, Animated } from 'react-native';
+import { StyleSheet, TouchableHighlight, TouchableOpacity, View, Image, TextInput, Text, Animated, Platform } from 'react-native';
 import i18n from 'react-native-i18n';
 import Colors from '../../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
@@ -12,7 +12,7 @@ const exitIcon = require('../../../../images/icons/cancel-clear-x.png');
 const styles = StyleSheet.create({
   decriptionContainer: {
     left: 15,
-    top: 110,
+    top: Platform.OS === 'ios' ? 68 : 90,
     padding: 5,
     position: 'absolute',
   },
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     position: 'absolute',
     left: 10,
-    top: 30,
+    top: 40,
   },
   descriptionHeader: {
     flexDirection: 'row',
@@ -136,6 +136,7 @@ class DecriptionInput extends Component {
             </View>
             <TextInput
               style={styles.descriptionInput}
+              underlineColorAndroid="transparent"
               value={description}
               editable
               multiline

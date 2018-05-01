@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
 
-import ListViewHeader from './ListViewHeader';
+import ListViewHeader from '../../common/headers/ListViewHeader';
 import NotificationRow from './NotificationRow';
 import BaseComponent from "../../common/base/BaseComponent";
 import SpinnerSwitch from "../../loaders/SpinnerSwitch";

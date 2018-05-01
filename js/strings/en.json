@@ -140,5 +140,6 @@
   "CONFIRM_NEW_PASSWORD": "Confirm new Password",
   "LOADING_IMAGE": "Loading Image...",
   "EDIT_LOOK": "EDIT LOOK",
-  "EDIT_IN_CONTRUCTION": "Our apologies, This action is not available yet. We are working on it and it will be available soon!"
+  "OUR_APOLOGIES": "OUR APOLOGIES",
+  "EDIT_IN_CONTRUCTION": "This action is not available yet. We are working on it and it will be available soon!"
 }

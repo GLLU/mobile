@@ -354,7 +354,7 @@ class UploadLookScreen extends Component {
           this.setState({ isShowFooter: true, isFirstPublishClick: false, isChosenTag: true });
           setTimeout(() => {
             this.showNoOffersModal();
-          }, 2000);
+          }, 500);
         } else {
           if (isFirstPublishClick) {
             this.setState({ isFirstPublishClick: false });
