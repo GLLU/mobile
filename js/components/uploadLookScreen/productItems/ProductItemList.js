@@ -11,7 +11,7 @@ import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-const HEADER_HEIGHT = 45;
+const HEADER_HEIGHT = 60;
 
 class ProductItemsList extends Component {
 

@@ -12,7 +12,7 @@ const exitIcon = require('../../../../images/icons/cancel-clear-x.png');
 const styles = StyleSheet.create({
   decriptionContainer: {
     left: 15,
-    top: Platform.OS === 'ios' ? 68 : 90,
+    top: Platform.OS === 'ios' ? 90 : 68,
     padding: 5,
     position: 'absolute',
   },
