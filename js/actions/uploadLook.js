@@ -295,7 +295,7 @@ export function createBrandName(newBrand) {
 
 function filteredOffers(item) {
   let filteredOffers = [];
-  if (item.offers) {
+  if (item.offers && item.offers.length && item.offers.length > 0) {
     filteredOffers = item.offers.filter(offer => offer.selected === true);
     if (filteredOffers.length === 0) {
       filteredOffers = item.offers.slice(0, NUM_OF_DEFAULT_OFFERS);

@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { Image, TouchableOpacity, Text, View, StyleSheet, Platform } from 'react-native';
+import { Image, Text, View, StyleSheet } from 'react-native';
 import { noop } from 'lodash';
 
 import CancelButton from '../buttons/CancelButton';

@@ -23,7 +23,8 @@ class SyteApi {
   }
 
   static getOffers(offerLink: string) {
-    return axios(offerLink, {
+    const offerLinkUrl = `${offerLink}&force_currency=${Config.DEFAULT_CUREENCY}`;
+    return axios(offerLinkUrl, {
       method: 'GET',
     })
             .then((response) => {

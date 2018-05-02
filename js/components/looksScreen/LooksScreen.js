@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Image,
@@ -11,11 +11,11 @@ import {
   Platform,
 } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import i18n from 'react-native-i18n';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
 import SwipeWizardOverlay from './SwipeWizardOverlay';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import * as _ from 'lodash';
 import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
@@ -346,16 +346,14 @@ class LooksScreen extends Component {
         left: 0,
         backgroundColor: 'black',
         justifyContent: 'center',
-        height: generateAdjustedSize(100)
+        height: generateAdjustedSize(100),
       }}>
         <TouchableOpacity
           hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
           style={{ position: 'absolute', top: 6, right: 6 }}
           onPress={this._onCloseRetailerMessage}>
-          <Image style={{ width: 16, height: 16 }} resizeMode={'contain'} source={closeIcon}/>
+          <Image style={{ width: 16, height: 16 }} resizeMode={'contain'} source={closeIcon} />
         </TouchableOpacity>
-
-        <Text style={styles.noItemLink}>{i18n.t('NO_DIRECT_LINK')}</Text>
       </View>
     );
   }

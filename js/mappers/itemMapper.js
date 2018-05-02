@@ -42,7 +42,7 @@ export function mapOffers(offers) {
     return {
       brand_name: offer.merchant,
       image_url: offer.imageUrl,
-      price: offer.price,
+      price: offer.price.replace('$', ''),
       url: offer.offer,
       selected: false,
     };
@@ -65,6 +65,7 @@ export function _serializeOffers(offers) {
       brand_name: offer.brand.name,
       image_url: offer.image_url,
       url: offer.url,
+      price: offer.price,
     };
   });
 }

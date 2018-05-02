@@ -345,25 +345,21 @@ class UploadLookScreen extends Component {
   }
 
   handlePublish() {
-    const { items, isShowFooter, isFirstPublishClick, currItem } = this.state;
+    const { items, isShowFooter, isFirstPublishClick } = this.state;
     const hasOffers = items.some(this._hasOffers);
     if (hasOffers) {
       this.publishAction();
-    } else {
-        if (!isShowFooter && isFirstPublishClick) {
-          this.setState({ isShowFooter: true, isFirstPublishClick: false, isChosenTag: true });
-          setTimeout(() => {
-            this.showNoOffersModal();
-          }, 500);
-        } else {
-          if (isFirstPublishClick) {
-            this.setState({ isFirstPublishClick: false });
-            this.showNoOffersModal();
-          } else {
-            this.publishAction();
-          }
-        }
-    }
+    } else if (!isShowFooter && isFirstPublishClick && items.offers) {
+        this.setState({ isShowFooter: true, isFirstPublishClick: false, isChosenTag: true });
+        setTimeout(() => {
+          this.showNoOffersModal();
+        }, 500);
+      } else if (isFirstPublishClick && items.offers) {
+          this.setState({ isFirstPublishClick: false });
+          this.showNoOffersModal();
+      } else {
+        this.publishAction();
+      }
   }
 
   renderHeader() {

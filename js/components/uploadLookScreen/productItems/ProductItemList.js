@@ -1,14 +1,11 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View, ListView, ScrollView, Platform, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, ScrollView, Platform, StyleSheet, Dimensions, BackAndroid } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import i18n from 'react-native-i18n';
 import ProductItem from './ProductItem';
 import ListViewHeader from '../../common/headers/ListViewHeader';
-import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
-import Colors from '../../../styles/Colors.styles';
-import Fonts from '../../../styles/Fonts.styles';
 
 const height = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const HEADER_HEIGHT = 60;
@@ -31,9 +28,15 @@ class ProductItemsList extends Component {
     );
   }
 
-  _handleDonePressed() {
-    const { onCloseSuggestionList } = this.props;
-    onCloseSuggestionList();
+  componentWillMount() {
+    BackAndroid.addEventListener('productListBackPress', () => {
+      this._handleExit();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('productListBackPress');
   }
 
   render() {

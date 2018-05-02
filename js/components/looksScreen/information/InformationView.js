@@ -1,27 +1,24 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import i18n from 'react-native-i18n';
-import {Animated, View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
-import {chain, noop} from 'lodash'
-import ItemBrandsView from "./ItemBrandsView";
-import Separator from "../../common/lists/Separator";
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { chain, noop } from 'lodash';
+import ItemBrandsView from './ItemBrandsView';
 import HalfScreenModalHeader from '../../common/headers/HalfScreenModalHeader';
-
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
-import InformationViewFooter from "./InformationViewFooter";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   descriptionContainer: {
     flexDirection: 'column',
-    justifyContent: 'flex-end',
-    paddingVertical: 20
+    justifyContent: 'center',
+    paddingVertical: 20,
   },
   description: {
     paddingHorizontal: 20,
@@ -31,9 +28,8 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: Colors.separatorGray,
-    height: 1
-  }
-
+    height: 1,
+  },
 });
 
 type Props = {
@@ -53,12 +49,12 @@ class InformationView extends Component {
   static defaultProps = {
     style: {},
     isOpen: false,
-    onRequestClose: noop
+    onRequestClose: noop,
   };
 
   constructor(props: Props) {
     super(props);
-    this.state = {isOpen: false};
+    this.state = { isOpen: false };
     this._onRequestClose = this._onRequestClose.bind(this);
   }
 
@@ -79,21 +75,21 @@ class InformationView extends Component {
   }
 
   render() {
-    const { likes, comments, items, onCommentsPress, onLikesPress } = this.props;
+    const { items, description } = this.props;
+    const { isOpen } = this.state;
     const brands = this.getBrandsFromItems(items);
     return (
-      <Modal transparent={true} visible={this.state.isOpen}>
-        <TouchableOpacity style={{flex: 1}} onPress={this._onRequestClose}>
-          <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: 'white' }}>
+      <Modal transparent visible={isOpen}>
+        <TouchableOpacity style={{ flex: 1 }} onPress={this._onRequestClose}>
+          <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: Colors.white }}>
             <HalfScreenModalHeader title={i18n.t('INFORMATION')} onCancelPress={this._onRequestClose} iconType={'info'} />
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>
-                {this.props.description}
+                {description}
               </Text>
             </View>
-            <Separator style={styles.separator}/>
-            <View style={{alignItems: 'center'}}>
-            <ItemBrandsView style={{ paddingVertical: 10}} brands={brands}/>
+            <View style={{ alignItems: 'center' }}>
+              <ItemBrandsView brands={brands} />
             </View>
           </View>
         </TouchableOpacity>
@@ -103,4 +99,4 @@ class InformationView extends Component {
   }
 }
 
-export default InformationView
+export default InformationView;
