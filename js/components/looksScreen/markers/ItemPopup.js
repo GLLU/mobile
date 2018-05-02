@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   brand: {
-    fontSize: generateAdjustedSize(17),
+    fontSize: generateAdjustedSize(15),
     color: Colors.black,
     fontFamily: Fonts.contentFont,
     textAlign: 'center',
@@ -162,7 +162,11 @@ class ItemPopup extends Component {
   }
 
   _getFormattedPrice(price) {
-    return price ? `${(Math.round(price * 2) / 2).toFixed(2)}$` : 'N/A';
+    let formattedPrice = Math.round(price * 2) / 2;
+    if (formattedPrice !== Math.round(formattedPrice)) {
+      formattedPrice = formattedPrice.toFixed(2);
+    }
+    return price ? `${formattedPrice}$` : 'N/A';
   }
 
   // TODO: merge it and _renderOffer to one function
@@ -174,7 +178,7 @@ class ItemPopup extends Component {
         <View style={styles.innerContainer}>
           <Text style={styles.brand}>{this.getTitle(brand)}</Text>
           { category ? <Text style={styles.category}>{(offers && offers.length === 1) ? null : category.name}</Text> : null }
-          {offers ? <Text style={styles.price}>{() => this._getFormattedPrice(offers[0].price)}</Text> : null}
+          {offers ? <Text style={styles.price}>{this._getFormattedPrice(offers[0].price)}</Text> : null}
           <SolidButton
             label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
             style={styles.shopNowButton} onPress={() => this.handleOpenLink()} />
@@ -190,7 +194,7 @@ class ItemPopup extends Component {
         <Image source={{ uri: item.image_url }} style={styles.itemImage} />
         <View style={styles.innerContainer}>
           <Text style={styles.brand}>{this.getTitle(brand, index)}</Text>
-          {offers ? <Text style={styles.price}>{() => this._getFormattedPrice(item.price)}</Text> : null}
+          {offers ? <Text style={styles.price}>{this._getFormattedPrice(item.price)}</Text> : null}
           <SolidButton
             label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
             style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} />
