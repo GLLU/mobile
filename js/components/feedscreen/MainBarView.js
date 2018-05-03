@@ -121,7 +121,6 @@ type Props = {
   addNewItem: void,
   searchStatus: boolean,
   balance: number,
-  showBalanceBadge: boolean
 };
 
 class MainBarView extends BaseComponent {
@@ -185,19 +184,19 @@ class MainBarView extends BaseComponent {
         <TouchableOpacity transparent onPress={onPress}>
           <Text style={textStyle}>{text}</Text>
         </TouchableOpacity>
-        {shouldShowBadge ? <View style={styles.badge}/> : null}
+        {shouldShowBadge ? <View style={styles.badge} /> : null}
       </View>
     );
   }
 
   render() {
-    const {gotNewNotifications, addNewItem, balance, showBalanceBadge} = this.props;
+    const {gotNewNotifications, addNewItem, balance } = this.props;
     const notificationsIcon = gotNewNotifications ? gotNotification : emptyNotification;
     return (
       <View style={styles.navigationBar}>
         <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end' }}>
           {this.renderNavigationButton(userIcon, () => this.goToProfile(false), styles.btnImage)}
-          {this._renderNavigationText(balance !== -1 ? formatNumberAsAmount(balance) : '0.0 US$', () => this.goToProfile(true), styles.walletBalance, showBalanceBadge)}
+          {this._renderNavigationText(balance !== -1 ? formatNumberAsAmount(balance) : '0.0 US$', () => this.goToProfile(true), styles.walletBalance)}
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
           <Image source={homeIcon} style={[styles.logo]}/>

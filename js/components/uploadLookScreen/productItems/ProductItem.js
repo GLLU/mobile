@@ -25,6 +25,14 @@ class ProductItem extends Component {
     onSelectProductItem();
   }
 
+  _getFormattedPrice(price) {
+    let formattedPrice = Math.round(price * 2) / 2;
+    if (formattedPrice !== Math.round(formattedPrice)) {
+      formattedPrice = formattedPrice.toFixed(2);
+    }
+    return price ? `${formattedPrice}$` : 'N/A';
+  }
+
   componentWillMount() {
     const { offer } = this.props;
     const self = this;
@@ -52,6 +60,7 @@ class ProductItem extends Component {
         <View style={offer.selected ? styles.imageSelected : styles.imageNotSelected}>
           <Image source={{ uri: offer.image_url }} style={styles.imageUrl} resizeMode={bigRatio ? 'contain' : 'cover'} />
           <Text style={styles.brand}> {offer.brand_name} </Text>
+          <Text style={styles.price}> {this._getFormattedPrice(offer.price)} </Text>
           {offer.selected ? <Image source={vInCircle} style={styles.vInCircle} /> : null }
         </View>
       </TouchableHighlight>
@@ -82,14 +91,21 @@ const styles = StyleSheet.create({
   },
   brand: {
     backgroundColor: 'rgba(255,255,255,0.7)',
-    color: 'rgba(0,0,0,1)',
     padding: 8,
     borderRadius: 2,
     position: 'absolute',
-    fontSize: 14,
-    fontFamily: fonts.contentFont,
     bottom: 10,
     left: 0,
+    color: 'rgba(0,0,0,1)',
+    fontSize: generateAdjustedSize(14),
+    fontFamily: fonts.contentFont,
+  },
+  price: {
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    fontSize: generateAdjustedSize(13),
+    position: 'absolute',
+    left: 5,
+    top: 5,
   },
   vInCircle: {
     position: 'absolute',

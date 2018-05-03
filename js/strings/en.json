@@ -95,7 +95,7 @@
   "SELECT_ITEM_COLORS": "Select Item Colors",
   "SELECT_ITEM_MOODS": "Select Item Moods",
   "SELECT_ITEM_LINK": "Add Item Link",
-  "SELECT_ITEM_DESCRIPTION": "Describe the Look",
+  "SELECT_ITEM_DESCRIPTION": "Describe your Look",
   "CATEGORY": "CATEGORY",
   "BRAND": "BRAND",
   "COLOR": "COLOR",
@@ -134,12 +134,14 @@
   "DONE": "DONE",
   "REQUIRED_LOOK_ITEMS": "You must select at least one item",
   "SELECT_UP_TO_10": "You can't select more than 10 items per tag",
-  "CHOOSE_SIMILAR_ITEM": "Please choose one or more similar items",
+  "CHOOSE_SIMILAR_ITEM": "Please select one or more similar items",
   "SHOP_ITEM": "Shop Item",
   "ENTER_NEW_PASSWORD": "Enter a new Password",
   "CONFIRM_NEW_PASSWORD": "Confirm new Password",
   "LOADING_IMAGE": "Loading Image...",
   "EDIT_LOOK": "EDIT LOOK",
   "OUR_APOLOGIES": "OUR APOLOGIES",
-  "EDIT_IN_CONTRUCTION": "This action is not available yet. We are working on it and it will be available soon!"
+  "EDIT_IN_CONTRUCTION": "This action is not available yet. We are working on it and it will be available soon!",
+  "POPUP_CONFIRM_STRING": "YES, I'M SURE",
+  "POPUP_CANCEL_STRING": "NO, TAKE ME BACK"
 }

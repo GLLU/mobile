@@ -119,9 +119,9 @@ class UserLooks extends Component {
   _handleDeleteLook(look) {
     this._setModalVisible({
       modalVisible: true,
-      title: 'ARE YOU SURE U WANT TO DELETE THIS LOOK?',
-      confirmString: 'DELETE',
-      cancelString: 'NO, IT WAS A MISTAKE',
+      title: 'ARE YOU SURE YOU WANT TO DELETE THIS LOOK?',
+      confirmString: i18n.t('POPUP_CONFIRM_STRING'),
+      cancelString: i18n.t('POPUP_CANCEL_STRING'),
       cancelAction: this._hideModal,
       confirmAction: () => {
         this.props.deleteLook(look.id);

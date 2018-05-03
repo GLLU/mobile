@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableHighlight, TouchableOpacity, View, Image, TextInput, Text, Animated, Platform } from 'react-native';
+import { StyleSheet, TouchableHighlight, TouchableOpacity, View, Image, TextInput, Text, Animated, Platform, BackAndroid } from 'react-native';
 import i18n from 'react-native-i18n';
 import Colors from '../../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
@@ -100,6 +100,10 @@ class DecriptionInput extends Component {
           delay: 250,
         }            // Configuration
       ).start();
+      BackAndroid.addEventListener('descriptionBackPress', () => {
+        this.setState({ isTabShown: false });
+        return true;
+      });
     }
   }
 

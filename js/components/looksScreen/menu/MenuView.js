@@ -17,16 +17,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 30,
   },
-  thankYouContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  thankYouText: {
-    textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '500',
-  },
 });
 
 type Props = {

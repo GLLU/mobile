@@ -140,6 +140,9 @@ class UploadLookScreen extends Component {
     });
   }
 
+  _addBackAndroidListener() {
+  }
+
   componentWillMount() {
     const { mode, lookId } = this.props;
     BackAndroid.addEventListener('uploadBackPress', () => {
@@ -224,9 +227,10 @@ class UploadLookScreen extends Component {
   showRemoveItemModal() {
     this.setModalVisible({
       modalVisible: true,
-      title: 'ARE YOU SURE U WANT TO REMOVE THIS ITEM?',
-      confirmString: 'DELETE',
-      cancelString: 'NO, CONTINUE EDITING',
+      title: 'DELETE ITEM',
+      subtitle: 'Please note changes will not be saved...',
+      confirmString: i18n.t('POPUP_CONFIRM_STRING'),
+      cancelString: i18n.t('POPUP_CANCEL_STRING'),
       confirmAction: this.handleRemoveItem,
     });
   }
@@ -389,8 +393,8 @@ class UploadLookScreen extends Component {
       modalVisible: true,
       title: mode === EDIT_MODE ? i18n.t('CANCEL_EDIT_LOOK') : i18n.t('CANCEL_UPLOAD_LOOK'),
       subtitle: 'Please note changes will not be saved...',
-      confirmString: 'YES',
-      cancelString: 'NO, I WANT TO CONTINUE',
+      confirmString: i18n.t('POPUP_CONFIRM_STRING'),
+      cancelString: i18n.t('POPUP_CANCEL_STRING'),
       confirmAction: this.gobackAndCancel,
     })
   }
@@ -425,6 +429,12 @@ class UploadLookScreen extends Component {
 
   _toggleSuggestionList() {
     this.setState({ isShowMoreSuggestions: !this.state.isShowMoreSuggestions });
+    if (!this.state.isShowMoreSuggestions) {
+      BackAndroid.addEventListener('uploadBackPress', () => {
+        this.handleBackButton();
+        return true;
+      });
+    }
   }
 
   handleSelectProductItem(offerIndex) {
