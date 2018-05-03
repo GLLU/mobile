@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     fontSize: 14,
     backgroundColor: 'white',
+    textAlignVertical: 'top',
     height: generateAdjustedSize(100),
   },
 });
