@@ -14,7 +14,7 @@ import {
   toggleProductItemSelection,
 } from '../../actions/uploadLook';
 import {
-  getBestMatchFeed,
+  getWhatsHotFeed,
   clearFeed,
 } from '../../actions/feed';
 import {
@@ -28,7 +28,7 @@ function mapDispatchToProps(dispatch) {
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
     setTagPosition: position => dispatch(setTagPosition(position)),
-    getFeed: query => dispatch(getBestMatchFeed(query)),
+    getFeed: query => dispatch(getWhatsHotFeed(query)),
     addDescription: (description) => dispatch(addDescription(description)),
     clearFeed: () => dispatch(clearFeed()),
     getUserLooks: data => dispatch(getUserLooks(data)),

@@ -19,7 +19,6 @@ export const OPEN_FEED_FILTER = 'OPEN_FEED_FILTER';
 export const CLOSE_FEED_FILTER = 'CLOSE_FEED_FILTER';
 export const CHANGE_FILTERS_GENDER = 'CHANGE_FILTERS_GENDER';
 
-
 export const parseQueryFromState = function (state: array) {
   const parsedState = { ...state, 'page[size]': state.page.size, 'page[number]': state.page.number };
   if (state.category) {
@@ -64,7 +63,8 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
           dispatch(setUsers(normalizedLooksData.entities.users));
           const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
           dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
-          dispatch(setFeedData({ flatLooksIdData: normalizedLooksData.result, meta:metaWithRefresh, query: newState, feedType }));
+          const flatLooksIdData = _.union(getState().feed[feedType].flatLooksIdData, normalizedLooksData.result);
+          dispatch(setFeedData({ flatLooksIdData, meta: metaWithRefresh, query: newState, feedType }));
           dispatch(finishFechting(feedType));
           dispatch(loadMore(feedType));
           Promise.resolve(multiData[0]);

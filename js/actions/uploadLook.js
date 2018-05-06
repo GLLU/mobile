@@ -355,13 +355,13 @@ export function publishLook() {
           clearInterval(interval);
 
           UploadLookService.publishLook(lookId).then((look) => {
-            const state = getState().feed['bestMatch'];
+            const state = getState().feed['whatsHot'];
             const normalizedLooksData = normalize([look], [lookSchema]);
             const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
             dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
             const unifiedLooksIds = state.flatLooksIdData;
             unifiedLooksIds.unshift(look.id);
-            dispatch(setFeedData({ flatLooksIdData: unifiedLooksIds, meta: state.meta, query: state.query, feedType: 'bestMatch' }));
+            dispatch(setFeedData({ flatLooksIdData: unifiedLooksIds, meta: state.meta, query: state.query, feedType: 'whatsHot' }));
             if (description.length > 0) {
               const descriptionBody = {
                 description
