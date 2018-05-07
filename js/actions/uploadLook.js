@@ -75,34 +75,45 @@ export function addNewLook(image) {
                 }
               }).catch(reject);
               // upload image to syte to get items bounds
-              getSuggestion(image, dispatch, resolve).then((tagsData) => {
-                items = mapTagsData(tagsData);
+              if (image.type === 'look[image]') {
+                getSuggestion(image, dispatch, resolve).then((tagsData) => {
+                  items = mapTagsData(tagsData);
+                  const payload = _.merge(emptyLookData.look, {
+                    image: image.localPath,
+                    items: (items && items.length > 0) ? items : [newItem],
+                  });
+                  dispatch({
+                    type: EDIT_NEW_LOOK,
+                    payload,
+                  });
+                  resolve(payload);
+                  // update syte offers for each item
+                  const lookItems = getState().uploadLook.items;
+                  if (lookItems.length === 1 && lookItems[0].isCustom === true) {
+                    dispatch(hideProcessing());
+                    return;
+                  } else {
+                    for (const item of lookItems) {
+                      UploadLookService.getItemOffers(item).then((itemWithOffers) => {
+                        dispatch({
+                          type: UPDATE_ITEM_OFFERS,
+                          itemWithOffers,
+                        });
+                      });
+                    }
+                  }
+                  dispatch(hideProcessing());
+                });
+              } else if (image.type === 'look[video]') {
                 const payload = _.merge(emptyLookData.look, {
                   image: image.localPath,
-                  items: (items && items.length > 0) ? items : [newItem],
+                  items: [newItem],
                 });
                 dispatch({
                   type: EDIT_NEW_LOOK,
                   payload,
                 });
-                resolve(payload);
-                // update syte offers for each item
-                const lookItems = getState().uploadLook.items;
-                if (lookItems.length === 1 && lookItems[0].isCustom === true) {
-                  dispatch(hideProcessing());
-                  return;
-                } else {
-                  for (const item of lookItems) {
-                    UploadLookService.getItemOffers(item).then((itemWithOffers) => {
-                      dispatch({
-                        type: UPDATE_ITEM_OFFERS,
-                        itemWithOffers,
-                      });
-                    });
-                  }
-                }
-                dispatch(hideProcessing());
-              });
+              }
             });
           } else {
             dispatch(hideProcessing());

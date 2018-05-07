@@ -13,6 +13,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Modal,
+  BackAndroid,
 } from 'react-native';
 import {TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar} from 'react-native-tab-view';
 import I18n from 'react-native-i18n';
@@ -114,6 +115,15 @@ class ProfileScreen extends Component {
         this.setState({ isLoading: false });
       });
     });
+
+    BackAndroid.addEventListener('profileBackPress', () => {
+      this._handleBackToFeedPress();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('profileBackPress');
   }
 
   componentDidMount() {
