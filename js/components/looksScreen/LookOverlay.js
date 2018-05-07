@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Platform,
+  BackAndroid,
 } from 'react-native';
 import * as _ from 'lodash';
 import styles from './styles';
@@ -244,6 +245,16 @@ class LookOverlay extends Component {
     return (
       <ItemPopup {...activeItem} openWebView={openWebView} lookId={look.id} itemId={activeItem.id} />
     );
+  }
+  componentWillMount() {
+    BackAndroid.addEventListener('lookScreenBackPress', () => {
+      this.props.goBack();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('lookScreenBackPress');
   }
 
   render() {
