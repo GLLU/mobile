@@ -23,6 +23,7 @@ import {
   DONE_UPLOADING_FILE,
   CLEAR_UPLOAD_LOOK,
   SELECT_PRODUCT_ITEM,
+  UPDATE_ITEM_OFFERS,
 } from '../actions/uploadLook';
 import _ from 'lodash';
 import { lookMapper, itemMapper } from '../mappers/';
@@ -69,11 +70,18 @@ export default function (state = initialState, action) {
   let tags;
   let color_ids;
   let occasions;
+  let itemArray;
   switch (action.type) {
     case EDIT_NEW_LOOK:
       return {
         ...action.payload,
         ...lookMapper(action.payload),
+      };
+    case UPDATE_ITEM_OFFERS:
+      itemArray = state.items.filter(element => element.id !== action.itemWithOffers.id);
+      return {
+        ...state,
+        items: [...itemArray, action.itemWithOffers],
       };
     case SELECT_LOOK_ITEM:
       return {

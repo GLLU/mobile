@@ -1,6 +1,5 @@
 // @flow
 import { Platform } from 'react-native';
-import RNFetchBlob from 'react-native-fetch-blob';
 import base64 from 'base-64';
 import RNFS from 'react-native-fs';
 import uploadLookService from '../services/uploadLookService';
@@ -63,6 +62,7 @@ export function mapTagsData(tagsData) {
       offers: tag.offers,
       id: (i + 100),
       isCustom: false,
+      offersLink: tag.offersLink,
     };
   });
 }
@@ -82,7 +82,8 @@ export function getSuggestion(image, dispatch, resolve) {
   return new Promise((innerResolve, reject) => {
     RNFS.readFile(image.localPath, 'base64')
   .then((readFile) => {
-    uploadLookService.getLookSuggestions(convertDataURIToBinary(readFile)).then((data) => {
+    const binaryFile = convertDataURIToBinary(readFile);
+    uploadLookService.getLookSuggestions(binaryFile).then((data) => {
       innerResolve(data);
       resolve(data);
     }).catch(() => {

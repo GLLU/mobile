@@ -39,8 +39,7 @@ export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
 export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
 export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
 export const SELECT_PRODUCT_ITEM = 'SELECT_PRODUCT_ITEM';
-
-
+export const UPDATE_ITEM_OFFERS = 'UPDATE_ITEM_OFFERS';
 
 const NUM_OF_DEFAULT_OFFERS = 6;
 
@@ -61,6 +60,17 @@ export function addNewLook(image) {
           if (api_key) {
             UploadLookService.createLook().then((emptyLookData) => {
               let items = [];
+              // upload image to server
+              Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
+                if (data) {
+                  dispatch({
+                    type: DONE_UPLOADING_FILE,
+                  });
+                } else {
+                  reject('Uplaod error');
+                }
+              }).catch(reject);
+              // upload image to syte to get items bounds
               getSuggestion(image, dispatch, resolve).then((tagsData) => {
                 items = mapTagsData(tagsData);
                 const payload = _.merge(emptyLookData.look, {
@@ -73,16 +83,22 @@ export function addNewLook(image) {
                   payload,
                 });
                 resolve(payload);
-                dispatch(hideProcessing());
-                Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
-                  if (data) {
-                    dispatch({
-                      type: DONE_UPLOADING_FILE,
+                // update syte offers for each item
+                const lookItems = getState().uploadLook.items;
+                if (lookItems.length === 1 && lookItems[0].isCustom === true) {
+                  dispatch(hideProcessing());
+                  return;
+                } else {
+                  for (const item of lookItems) {
+                    UploadLookService.getItemOffers(item).then((itemWithOffers) => {
+                      dispatch({
+                        type: UPDATE_ITEM_OFFERS,
+                        itemWithOffers,
+                      });
                     });
-                  } else {
-                    reject('Uplaod error');
                   }
-                }).catch(reject);
+                }
+                dispatch(hideProcessing());
               });
             });
           } else {

@@ -39,30 +39,48 @@ class UploadLookService {
       return data
     }))
 
-  static getLookSuggestions = async (imageData) => {
+  static getLookSuggestions = (imageData) => {
     try {
-      const suggestions = await SyteApi.getSuggestions(imageData);
-      const tagsData = [];
-      for (const baseImageUrl in suggestions) {
-        if (suggestions[baseImageUrl]) {
-          const suggestionArray = suggestions[baseImageUrl];
-          removeMultipleItemIndex(suggestionArray);
-          for (let i = 0; i < suggestionArray.length; i++) {
-            const data = await SyteApi.getOffers(suggestionArray[i].offers);
-            if (data && data.ads && data.ads.length > 0) {
-              const offers = mapOffers(data.ads);
-              const suggestion = mapSuggestion(suggestionArray[i], offers);
+      return SyteApi.getSuggestions(imageData).then((suggestions) => {
+        const tagsData = [];
+        for (const baseImageUrl in suggestions) {
+          if (suggestions[baseImageUrl]) {
+            const suggestionArray = suggestions[baseImageUrl];
+            removeMultipleItemIndex(suggestionArray);
+            for (let i = 0; i < suggestionArray.length; i++) {
+              const suggestion = {
+                category: suggestionArray[i].label,
+                cover_x_pos: suggestionArray[i].center[0],
+                cover_y_pos: suggestionArray[i].center[1],
+                offersLink: suggestionArray[i].offers,
+              };
               tagsData.push(suggestion);
             }
           }
         }
-      }
-      return tagsData;
+        return tagsData;
+      });
     } catch (error) {
       console.log(`upload service - ${error}`);
     }
-    }
+  }
 
+  static getItemOffers = (tagData) => {
+    const suggestion = tagData;
+    try {
+      return SyteApi.getOffers(tagData.offersLink).then((data) => {
+        if (data && data.ads && data.ads.length > 0) {
+          const offers = mapOffers(data.ads);
+          suggestion.offers = offers;
+          return suggestion;
+        }
+      });
+    } catch (error) {
+      console.log(`upload service - ${error}`);
+    }
+  }
 }
+
+
 
 export default UploadLookService;

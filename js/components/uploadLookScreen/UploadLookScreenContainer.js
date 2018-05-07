@@ -1,11 +1,12 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import asScreen from '../common/containers/Screen';
 import UploadLookScreen from './UploadLookScreen';
 import Utils from '../../utils';
 import {
   createLookItem,
+  addItemsOffers,
   setTagPosition,
   removeLookItem,
   publishLook,
@@ -39,9 +40,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const {lookId, image, items, isUploading} = state.uploadLook;
+  const { lookId, image, items, isUploading } = state.uploadLook;
 
-  if (!image){
+  if (!image) {
     return {};
   }
 
@@ -58,7 +59,7 @@ const mapStateToProps = (state, ownProps) => {
     userId: state.user.id,
     lookDescription: state.uploadLook.description,
     isUploading,
-    description: state.uploadLook.description
+    description: state.uploadLook.description,
   };
 };
 

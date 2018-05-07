@@ -1,5 +1,5 @@
 export default function map(item) {
-  if (item.offers || item.product_suggestions) {
+  if (item.offers || item.product_suggestions || item.offersLink) {
     return {
       id: item.id,
       locationX: item.cover_x_pos,
@@ -8,6 +8,7 @@ export default function map(item) {
       lookId: item.look_id,
       category: item.category ? item.category : '',
       offers: item.offers,
+      offersLink: item.offersLink,
       tags: item.tags ? item.tags : [],
       description: item.description ? item.description : '',
       isNew: true,
@@ -55,6 +56,7 @@ export function mapSuggestion(suggestion, offers) {
     cover_x_pos: suggestion.center[0],
     cover_y_pos: suggestion.center[1],
     offers,
+    offersLink: suggestion.offersLink,
   };
 }
 

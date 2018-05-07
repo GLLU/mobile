@@ -294,10 +294,14 @@ class UploadLookScreen extends Component {
     return (
       <View>
         {isShowFooter ?
-          <View>
-            <Text style={styles.carouselTitle}> {i18n.t('CHOOSE_SIMILAR_ITEM')} </Text>
-            <ProductItemsCarousel offers={offers} onMoreContentPress={this._toggleSuggestionList} onSelectProductItem={this.handleSelectProductItem} />
-          </View>
+          offers ?
+            <View>
+              <Text style={styles.carouselTitle}> {i18n.t('CHOOSE_SIMILAR_ITEM')} </Text>
+              <ProductItemsCarousel offers={offers} onMoreContentPress={this._toggleSuggestionList} onSelectProductItem={this.handleSelectProductItem} />
+            </View> :
+            <View>
+              <Text> Loading Items... </Text>
+            </View>
         : null}
       </View>
     );
@@ -307,11 +311,12 @@ class UploadLookScreen extends Component {
     const { isVideo, items, addDescription, lookDescription } = this.props;
     const { currItem } = this.state;
     const currTag = _.find(items, item => item.id === currItem);
+    const hasIdentifiedItems = currTag && ((currTag.offers && currTag.offers.length) || currTag.offersLink);
     return (
       <View style={styles.renderActionsContainer}>
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
-        { (currTag && currTag.offers && currTag.offers.length > 0) ? this._renderSuggestionItems(currTag.offers) : this._renderEditItemTabs() }
+        { (hasIdentifiedItems) ? this._renderSuggestionItems(currTag.offers) : this._renderEditItemTabs() }
         <DescriptionInput description={lookDescription} addDescription={description => addDescription(description)} />
       </View>
     );
