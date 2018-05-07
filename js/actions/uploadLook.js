@@ -36,6 +36,7 @@ export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
 export const SET_SUGGESTIONS_ITEMS = 'SET_SUGGESTIONS_ITEMS';
 export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
 export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
+export const START_UPLOADING_FILE = 'START_UPLOADING_FILE';
 export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
 export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
 export const SELECT_PRODUCT_ITEM = 'SELECT_PRODUCT_ITEM';
@@ -60,6 +61,9 @@ export function addNewLook(image) {
           if (api_key) {
             UploadLookService.createLook().then((emptyLookData) => {
               let items = [];
+              dispatch({
+                type: START_UPLOADING_FILE,
+              });
               // upload image to server
               Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
                 if (data) {
@@ -76,7 +80,6 @@ export function addNewLook(image) {
                 const payload = _.merge(emptyLookData.look, {
                   image: image.localPath,
                   items: (items && items.length > 0) ? items : [newItem],
-                  isUploading: true,
                 });
                 dispatch({
                   type: EDIT_NEW_LOOK,

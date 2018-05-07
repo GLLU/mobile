@@ -24,6 +24,7 @@ import {
   CLEAR_UPLOAD_LOOK,
   SELECT_PRODUCT_ITEM,
   UPDATE_ITEM_OFFERS,
+  START_UPLOADING_FILE,
 } from '../actions/uploadLook';
 import _ from 'lodash';
 import { lookMapper, itemMapper } from '../mappers/';
@@ -87,6 +88,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         itemId: action.payload,
+      };
+    case START_UPLOADING_FILE:
+      return {
+        ...state,
+        isUploading: true,
       };
     case DONE_UPLOADING_FILE:
       return {
