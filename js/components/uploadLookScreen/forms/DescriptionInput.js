@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: Colors.backgroundGrey,
     overflow: 'hidden',
-    maxHeight: 27,
+    maxHeight: 30,
   },
   descriptionHeaderText: {
     borderRadius: 10,
@@ -69,6 +69,7 @@ class DecriptionInput extends Component {
   constructor(props) {
     super(props);
     this._toggleDesciption = this._toggleDesciption.bind(this);
+    this.animatedInput = this.animatedInput.bind(this);
     this.state = {
       isTabShown: false,
       description: props.description,
@@ -82,30 +83,34 @@ class DecriptionInput extends Component {
     const { description } = this.state;
     const self = this;
     if (this.state.animContentOnPress._value !== 0) {
-      Animated.timing(          // Uses easing functions
-        this.state.animContentOnPress,    // The value to drive
-        {
-          toValue: 0,
-          delay: 250,
-        }            // Configuration
-      ).start(function onComplete() {
+      BackAndroid.removeEventListener('descriptionBackPress');
+      this.animatedInput(0).start(function onComplete() {
         self.setState({ isTabShown: false });
         addDescription(description);
       });
     } else {
-      this.setState({ isTabShown: true });
-      Animated.timing(          // Uses easing functions
-        this.state.animContentOnPress,    // The value to drive
-        {
-          toValue: generateAdjustedSize(350),
-          delay: 250,
-        }            // Configuration
-      ).start();
       BackAndroid.addEventListener('descriptionBackPress', () => {
-        this.setState({ isTabShown: false });
+        BackAndroid.removeEventListener('descriptionBackPress');
+        this.animatedInput(0).start(function onComplete() {
+          self.setState({ isTabShown: false });
+          addDescription(description);
+        });
         return true;
       });
+      this.setState({ isTabShown: true });
+      this.animatedInput(generateAdjustedSize(350)).start();
+      
     }
+  }
+
+  animatedInput(number, delay = 250) {
+    return Animated.timing(          // Uses easing functions
+      this.state.animContentOnPress,    // The value to drive
+      {
+        toValue: number,
+        delay,
+      }
+    );
   }
 
   updateDescription(value) {
@@ -122,6 +127,10 @@ class DecriptionInput extends Component {
         delay: 250,
       }            // Configuration
     ).start();
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('descriptionBackPress');
   }
 
   render() {

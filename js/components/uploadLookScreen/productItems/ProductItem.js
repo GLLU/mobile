@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { TouchableHighlight, View, Image, Text, StyleSheet } from 'react-native';
+import { TouchableHighlight, View, Image, Text, StyleSheet, Platform } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import fonts from '../../../styles/Fonts.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     left: 0,
     color: 'rgba(0,0,0,1)',
-    fontSize: generateAdjustedSize(14),
+    fontSize: Platform.OS === 'android' ? generateAdjustedSize(13) : generateAdjustedSize(14),
     fontFamily: fonts.contentFont,
   },
   price: {
