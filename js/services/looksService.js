@@ -8,13 +8,7 @@ const route = '/feed';
 class LooksService {
   static getLooks = body => AppAPI.get(`${route}`, body).then(((data) => {
     const looks = feedLookMapper.serializeLooks(data.looks);
-    const serializedLooks = _.map(looks, (look) => {
-      return {
-        ...look,
-        items: serializeItems(look.items),
-      };
-    });
-    return { looks: serializedLooks, meta: data.meta };
+    return { looks, meta: data.meta };
   }));
 
   static getVideos = body => AppAPI.get(`${route}`, { ...body, 'videos': true }).then(((data) => {
