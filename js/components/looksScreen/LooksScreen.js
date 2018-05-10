@@ -62,6 +62,7 @@ class LooksScreen extends Component {
     this.renderUpArrow = this.renderUpArrow.bind(this);
     this.renderDownArrow = this.renderDownArrow.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
+    this._renderLookImage = this._renderLookImage.bind(this);
     this.state = {
       showAsFeed: props.flatLooksData.length > 1,
       isBottomDrawerOpen: props.openComments,
@@ -362,20 +363,13 @@ class LooksScreen extends Component {
     this.setState({ showRetailerMessage: false });
   }
 
-  renderImage(look: object, index: boolean) {
+  _renderLookImage(look: object) {
     const showShowArrow = this.shouldRenderArrows();
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
     const { showRetailerMessage } = this.state;
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     return (
-      <GestureRecognizer
-        key={look.originalIndex !== undefined ? look.originalIndex : -1}
-        onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
-        config={config}
-        style={{
-          flex: 1,
-          backgroundColor: 'transparent',
-        }}>
+      <View>
         <View style={{
           flex: 1,
           backgroundColor: 'white',
@@ -418,7 +412,27 @@ class LooksScreen extends Component {
           {showRetailerMessage ? this._renderRetailerMessage() : null}
 
         </ImageWrapper>
-      </GestureRecognizer>
+      </View>
+    );
+  }
+
+  renderImage(look: object, index: boolean) {
+    return (
+      Platform.OS === 'ios' ?
+        <View key={look.originalIndex !== undefined ? look.originalIndex : -1}>
+          {this._renderLookImage(look)}
+        </View>
+        :
+        <GestureRecognizer
+          key={look.originalIndex !== undefined ? look.originalIndex : -1}
+          onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
+          config={config}
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+          }}>
+          {this._renderLookImage(look)}
+        </GestureRecognizer>
     );
   }
 

@@ -7,6 +7,8 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { noop } from 'lodash';
@@ -20,17 +22,26 @@ import withAnalytics from '../../common/analytics/WithAnalytics';
 
 const width = Dimensions.get('window').width;
 
-//TODO: numbers to consts
+// TODO: numbers to consts
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    height: generateAdjustedSize(120),
-    bottom: generateAdjustedSize(120),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+    bottom: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
     width,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  innerContainer: {
+  carousel: {
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+    width,
+    flexWrap: 'wrap',
+    overflow: 'scroll',
+    flexDirection: 'row',
+    zIndex: 2,
+  },
+  productItem: {
+    justifyContent: 'space-around',
+  },
+  rightOfferContainer: {
     marginHorizontal: 4,
     paddingHorizontal: 4,
     alignItems: 'center',
@@ -40,30 +51,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     flexDirection: 'row',
     padding: 10,
-    bottom: 0,
-    width: generateAdjustedSize(210),
-    height: generateAdjustedSize(120),
+    width: Platform.OS === 'ios' ? generateAdjustedSize(240) : generateAdjustedSize(210),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
   },
   itemContainer: {
     backgroundColor: Colors.white,
     flexDirection: 'row',
     marginLeft: 10,
     padding: 10,
-    width: generateAdjustedSize(210),
-    height: generateAdjustedSize(120),
-  },
-  carousel: {
-    height: generateAdjustedSize(120),
-    width,
-    flexWrap: 'wrap',
-    overflow: 'scroll',
-    flexDirection: 'row',
-  },
-  productItem: {
-    justifyContent: 'space-around',
+    width: Platform.OS === 'ios' ? generateAdjustedSize(240) : generateAdjustedSize(210),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+    zIndex: 2,
   },
   brand: {
-    fontSize: generateAdjustedSize(15),
+    fontSize: Platform.OS === 'ios' ? generateAdjustedSize(15) : generateAdjustedSize(14),
     color: Colors.black,
     fontFamily: Fonts.contentFont,
     textAlign: 'center',
@@ -77,28 +78,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.contentFont,
   },
   itemImage: {
-    width: generateAdjustedSize(75),
-    height: generateAdjustedSize(100),
-  },
-  row: {
-    padding: 5,
-    textAlign: 'center',
-  },
-  titleColors: {
-    color: 'black',
-    backgroundColor: '#f4b85a',
-  },
-  buyColors: {
-    color: '#f4b85a',
-    backgroundColor: 'black',
-  },
-  topRoundCorners: {
-    borderTopRightRadius: 5,
-    borderTopLeftRadius: 5,
-  },
-  bottomRoundCorners: {
-    borderBottomRightRadius: 5,
-    borderBottomLeftRadius: 5,
+    width: Platform.OS === 'ios' ? generateAdjustedSize(85) : generateAdjustedSize(75),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(120) : generateAdjustedSize(100),
   },
   shopNowButton: {
     backgroundColor: Colors.secondaryColor,
@@ -175,7 +156,7 @@ class ItemPopup extends Component {
     return (
       <View style={styles.singleItemContainer}>
         <Image source={{ uri: offers ? offers[0].image_url : category.icon.url }} style={styles.itemImage} />
-        <View style={styles.innerContainer}>
+        <View style={styles.rightOfferContainer}>
           <Text style={styles.brand}>{this.getTitle(brand)}</Text>
           { category ? <Text style={styles.category}>{(offers && offers.length === 1) ? null : category.name}</Text> : null }
           {offers ? <Text style={styles.price}>{this._getFormattedPrice(offers[0].price)}</Text> : null}
@@ -188,18 +169,20 @@ class ItemPopup extends Component {
   }
 
   _renderOffer(item, index) {
-    const { category, brand, is_verified, offers } = this.props;
+    const { brand, is_verified, offers } = this.props;
     return (
-      <View style={styles.itemContainer} key={index}>
-        <Image source={{ uri: item.image_url }} style={styles.itemImage} />
-        <View style={styles.innerContainer}>
-          <Text style={styles.brand}>{this.getTitle(brand, index)}</Text>
-          {offers ? <Text style={styles.price}>{this._getFormattedPrice(item.price)}</Text> : null}
-          <SolidButton
-            label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
-            style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} />
+      <TouchableWithoutFeedback key={index} >
+        <View style={styles.itemContainer}>
+          <Image source={{ uri: item.image_url }} style={styles.itemImage} />
+          <View style={styles.rightOfferContainer}>
+            <Text style={styles.brand}>{this.getTitle(brand, index)}</Text>
+            {offers ? <Text style={styles.price}>{this._getFormattedPrice(item.price)}</Text> : null}
+            <SolidButton
+              label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
+              style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} />
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 
@@ -212,8 +195,12 @@ class ItemPopup extends Component {
         { offers && offers.length > 1 ?
           <ScrollView
             style={styles.carousel}
-            contentContainerStyle={styles.productItem}
+            pagingEnabled={false}
+            automaticallyAdjustContentInsets={false}
+            bounces
+            decelerationRate={0.2}
             showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.productItem}
             horizontal>
             { _.map(offers, (item, index) => (
               this._renderOffer(item, index)))}
