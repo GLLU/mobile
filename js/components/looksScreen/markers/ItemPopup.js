@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
     bottom: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
     width,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   carousel: {
     height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
