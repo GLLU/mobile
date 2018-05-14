@@ -24,7 +24,7 @@ import BadNavigationScreen from './components/badNavigationScreen';
 import likesScreen from './components/likesScreen';
 import BlockedUsersScreen from './components/blockedUsersScreen';
 import SearchScreen from './components/searchScreen/SearchScreenContainer';
-import Splash from './components/splashscreen/SplashContainer';
+import Splash from './components/splashScreen/SplashContainer';
 import WebViewAuthoHeight from './components/common/WebViewAutoHeight';
 import CustomWebView from './components/common/CustomWebView';
 
