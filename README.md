@@ -11,6 +11,13 @@
   `gem install cocoapods`
 - install pod dependencties
   `cd ios && pod install` (read the note below)
+- in xcode: 
+    1. add privliged account (ask admin)
+    2. in general tab -> signing -> select tiger account
+    3. add new schema -> target: infash
+    4. edit schema:
+      4.1 Build tab -> add React target (before infash)
+      4.2 under Build=>Pre-actions: echo “.env.staging” > /tmp/envfile
 - launch app `react-native run-ios`
 
 ### Install Pods Differently
