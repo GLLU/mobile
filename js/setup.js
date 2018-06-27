@@ -18,6 +18,8 @@ const DEV = __DEV__;
 
 if (!DEV) {
   disableConsole();
+} else {
+  GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
 }
 
 let notificationObject;
