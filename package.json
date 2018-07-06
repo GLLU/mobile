@@ -14,7 +14,9 @@
     "run-ios": "react-native run-ios --scheme infash-debug",
     "storybook": "storybook start -p 7007",
     "code-push-ios": "code-push release-react infash ios --plistFile \"ios/gllu/Info.plist\" --outputDir ./sourceMap/ios",
-    "code-push-android": "code-push release-react infash android --outputDir ./sourceMap/android"
+    "code-push-android": "code-push release-react infash android --outputDir ./sourceMap/android",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -36,7 +38,7 @@
     "prop-types": "^15.5.8",
     "pusher-js": "^4.0.0",
     "react": "16.0.0-alpha.6",
-    "react-native": "0.43.4",
+    "react-native": "0.56.0",
     "react-native-app-intro": "^1.1.5",
     "react-native-appsflyer": "1.1.5",
     "react-native-autocomplete-input": "^3.2.0",
@@ -77,7 +79,8 @@
     "remote-redux-devtools": "^0.5.10",
     "rn-why-did-you-update": "0.0.8",
     "url": "^0.11.0",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "snyk": "^1.88.1"
   },
   "devDependencies": {
     "@storybook/react-native": "^3.1.7",
@@ -138,5 +141,6 @@
     "transformIgnorePatterns": [
       "node_modules/(?!react-native|bugsnag-react-native|native-base|react-clone-referenced-element)"
     ]
-  }
+  },
+  "snyk": true
 }
