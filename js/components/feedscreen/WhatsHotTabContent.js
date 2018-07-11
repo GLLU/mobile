@@ -31,8 +31,8 @@ import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 
-const profileBackground = require('../../../images/backgrounds/profile-screen-background.png');
 const noResultsIcon = require('../../../images/emptyStates/search.png');
+
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
@@ -91,7 +91,7 @@ class HotTabContent extends BaseComponent {
   }
 
   _getFeed(query) {
-    this.props.getFeed(query);
+    this.props.getFeed({ ...query, 'page[size]': 31, 'page[number]': 1 });
   }
 
   getFeedWithSuggestion(suggestionQuery) {
@@ -138,7 +138,7 @@ class HotTabContent extends BaseComponent {
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const contentSizeHeight = event.nativeEvent.contentSize.height;
       const currentScroll = event.nativeEvent.contentOffset.y;
-      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 350 - layoutMeasurementHeight) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
+      if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 2350 - layoutMeasurementHeight) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
         if (!this.state.loadingMore && !this.state.isLoading) {
           this.setState({ loadingMore: true }, this.loadMore);
         }
@@ -159,10 +159,8 @@ class HotTabContent extends BaseComponent {
       return;
     }
     const { meta: { total }, query } = this.props;
-    const pageSize = query.page.size;
-    const pageNumber = query.page.number;
 
-    if (pageSize * pageNumber < total) {
+    if (query['page[number]'] * query['page[size]'] < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
             this.setState({ isLoading: false });
@@ -268,7 +266,7 @@ class HotTabContent extends BaseComponent {
     return (
       <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
         <Image
-          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
+          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_2.png' }}
           style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
           resizeMode={'stretch'}/>
       </View>

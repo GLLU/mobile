@@ -1,15 +1,14 @@
 // @flow
 
-import React, {Component} from 'react';
-import {View, Image, Linking, Platform, Dimensions, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { Image, Dimensions } from 'react-native';
 import OneSignal from 'react-native-onesignal';
-import {NavigationActions} from "react-navigation";
+import { NavigationActions } from 'react-navigation';
 
-import Spinner from '../loaders/Spinner';
-import * as userMapper from "../../mappers/userMapper";
-
+import * as userMapper from '../../mappers/userMapper';
 
 const background = require('../../../images/backgrounds/splashScreen.png');
+
 const deviceWidth = Dimensions.get('window').width;
 
 type SplashProps = {
@@ -33,9 +32,9 @@ class Splash extends Component {
   checkLogin() {
     const { user, screenProps, setUsers } = this.props;
     const { notification } = screenProps;
-    if(notification) {
-      const mappedUser = userMapper.map(notification.initiator)
-      setUsers({[mappedUser.id]: mappedUser})
+    if (notification) {
+      const mappedUser = userMapper.map(notification.initiator);
+      setUsers({ [mappedUser.id]: mappedUser });
     }
     setTimeout(() => {
       this.props.checkLogin()
@@ -72,7 +71,7 @@ class Splash extends Component {
                   });
               }
             } else {
-              OneSignal.sendTag("id", user.id.toString());
+              OneSignal.sendTag('id', user.id.toString());
               this.props.resetTo('feedscreen');
             }
           } else {
@@ -82,16 +81,14 @@ class Splash extends Component {
         .catch(() => {
           this.props.resetTo('loginscreen');
         });
-    }, 1000);
+    }, 50);
   }
 
   render() {
     return (
       <Image
         source={background} resizeMode={'stretch'}
-        style={{ flex: 1, width: deviceWidth, justifyContent: 'center', alignItems: 'center' }}>
-        <Spinner />
-      </Image>
+        style={{ flex: 1, width: deviceWidth, justifyContent: 'center', alignItems: 'center' }} />
     );
   }
 }

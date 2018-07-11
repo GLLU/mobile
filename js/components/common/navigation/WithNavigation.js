@@ -47,6 +47,7 @@ export default function withNavigation(WrappedComponent) {
     }
 
     navigateTo(route,params) {
+      console.log(`navigating to ${route}`);
       const {routes,index}=this.props.cardNavigation;
       const currentRoute= routes[index].routeName;
       if(currentRoute!==route){

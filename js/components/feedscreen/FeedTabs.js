@@ -21,6 +21,7 @@ class FeedTabs extends Component {
     this._renderHeader = this._renderHeader.bind(this);
     this._toggleFilterMenu = this._toggleFilterMenu.bind(this);
     this._renderNavigationButton = this._renderNavigationButton.bind(this);
+    this._handleTabChange = this._handleTabChange.bind(this);
   }
 
   _renderHeader = props => (
@@ -34,7 +35,7 @@ class FeedTabs extends Component {
     const {navigateTo, showBottomCameraButton} = this.props;
 
     switch (route.key) {
-      case FEED_TYPE_FOLLOWING:
+      case FEED_TYPE_FOLLOWING: 
         return (<FollowingTabContent
           navigateTo={navigateTo} isTabOnFocus={this.props.feedsRoute.index === 0}
           showBottomCameraButton={showBottomCameraButton}/>);
@@ -65,6 +66,11 @@ class FeedTabs extends Component {
         </TouchableOpacity>
       </View>
     );
+  }
+
+  _handleTabChange() {
+    const { handleIndexChange } = this.props;
+    handleIndexChange();
   }
 
   render() {

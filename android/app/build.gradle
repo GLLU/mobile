@@ -97,9 +97,9 @@ android {
     defaultConfig {
         applicationId "com.infash"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 14
-        versionName "1.2.7"
+        versionName "1.2.8"
         multiDexEnabled true
         manifestPlaceholders = [onesignal_app_id: "9dafae92-eb15-420d-b362-0518a6b5234e",
                                 onesignal_google_project_number: "REMOTE"]
@@ -186,6 +186,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-code-push')
     compile project(':react-native-fs')
     compile project(':react-native-share')
     compile project(':react-native-onesignal')

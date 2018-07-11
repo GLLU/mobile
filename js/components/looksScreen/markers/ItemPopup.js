@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     overflow: 'scroll',
     flexDirection: 'row',
-    zIndex: 2,
+    //zIndex: 2,
   },
   productItem: {
     justifyContent: 'space-around',
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: Platform.OS === 'ios' ? generateAdjustedSize(240) : generateAdjustedSize(210),
     height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
-    zIndex: 2,
+    //zIndex: 2,
   },
   brand: {
     fontSize: Platform.OS === 'ios' ? generateAdjustedSize(15) : generateAdjustedSize(14),
@@ -94,6 +94,9 @@ class ItemPopup extends Component {
   constructor(props) {
     super(props);
     this.handleOpenLink = this.handleOpenLink.bind(this);
+    this.state = {
+      isShopNowClicked: false,
+    };
   }
 
   static propTypes = {
@@ -120,6 +123,7 @@ class ItemPopup extends Component {
         if (!supported) {
         } else {
           this.props.logEvent('lookScreen', { name: 'click on item', isVerified: is_verified, lookId, itemId });
+          this.setState({ isShopNowClicked: true });
           offers ? openWebView(productUrl, lookId, itemId, offers[index].id) : openWebView(productUrl, lookId, itemId);
         }
       }).catch(err => console.error('An error occurred', err));
@@ -155,6 +159,7 @@ class ItemPopup extends Component {
   // TODO: merge it and _renderOffer to one function
   _renderSingleOffer() {
     const { category, brand, is_verified, offers, url } = this.props;
+    const { isShopNowClicked } = this.state;
     return (
       <View style={styles.singleItemContainer}>
         <Image source={{ uri: offers ? offers[0].image_url : category.icon.url }} style={styles.itemImage} />
@@ -164,7 +169,7 @@ class ItemPopup extends Component {
           {offers ? <Text style={styles.price}>{this._getFormattedPrice(offers[0].price)}</Text> : null}
           <SolidButton
             label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
-            style={styles.shopNowButton} onPress={() => this.handleOpenLink()} />
+            style={styles.shopNowButton} onPress={() => this.handleOpenLink()} disabled={isShopNowClicked} />
         </View>
       </View>
     );
@@ -172,6 +177,7 @@ class ItemPopup extends Component {
 
   _renderOffer(item, index) {
     const { brand, is_verified, offers } = this.props;
+    const { isShopNowClicked } = this.state;
     return (
       <TouchableWithoutFeedback key={index} >
         <View style={styles.itemContainer}>
@@ -181,11 +187,15 @@ class ItemPopup extends Component {
             {offers ? <Text style={styles.price}>{this._getFormattedPrice(item.price)}</Text> : null}
             <SolidButton
               label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
-              style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} />
+              style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} disabled={isShopNowClicked} />
           </View>
         </View>
       </TouchableWithoutFeedback>
     );
+  }
+
+  componentWillMount() {
+    this.setState({ isShopNowClicked: false });
   }
 
   render() {

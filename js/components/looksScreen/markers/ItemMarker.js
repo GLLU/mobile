@@ -56,7 +56,6 @@ class ItemMarker extends Component {
     }
     onPopupToggled(item, !isViewActive);
     this.setState({
-      popupOffset: 0,
       isViewActive: !isViewActive,
     });
   }

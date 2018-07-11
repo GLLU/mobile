@@ -11,7 +11,6 @@ import {
   Platform,
   RefreshControl,
   View,
-  NetInfo,
   ActivityIndicator,
 } from 'react-native';
 import i18n from 'react-native-i18n';
@@ -28,7 +27,6 @@ import Fonts from '../../styles/Fonts.styles';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
-import FeedActiveFilter from '../common/buttons/TagStringButton';
 import UserActionCard from '../common/lists/UserActionCard';
 const emptyUsersIcon = require('../../../images/emptyStates/user-admin.png');
 const search = require('../../../images/icons/search-black.png');
@@ -69,6 +67,7 @@ class FollowingTabContent extends BaseComponent {
       flatLooksLeft: _.filter(props.flatLooks, (look, index) => index % 2 === 0),
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
+      firstFetch: true,
     };
     this.currPosition = 0;
   }
@@ -80,14 +79,12 @@ class FollowingTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName, getUsersSuggestions } = this.props;
-    this._getFeed(defaultFilters);
-    getUsersSuggestions();
+    const { changeFiltersGender, defaultFilters } = this.props;
+    setInterval(() => {
+      this.handleScrollPosition();
+    }, 1000);
     changeFiltersGender(defaultFilters.gender);
     const that = this;
-    setInterval(() => {
-      that.handleScrollPosition();
-    }, 1000);
   }
 
   _getFeed(query) {
@@ -108,18 +105,6 @@ class FollowingTabContent extends BaseComponent {
       this.setState({ noMoreData: false });
     }
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   if(nextProps !== this.props) {
-  //     _.each(Object.keys(this.props),thisPropsKey=>{
-  //       if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
-  //         console.log(`MediaContainer, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
-  //         return true
-  //       }
-  //     })
-  //   }
-  //   return false
-  // }
 
   handleScroll(event) {
     if (this.props.cardNavigationStack.index === 0) {
@@ -151,10 +136,8 @@ class FollowingTabContent extends BaseComponent {
       return;
     }
     const { meta: { total }, query } = this.props;
-    const pageSize = query.page.size;
-    const pageNumber = query.page.number;
 
-    if (pageSize * pageNumber < total) {
+    if (query['page[number]'] * query['page[size]'] < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
           this.setState({ isLoading: false });
@@ -250,7 +233,7 @@ class FollowingTabContent extends BaseComponent {
     return (
       <View style={{ width: deviceWidth / 2, height: deviceWidth / 4, margin: 3, marginRight: 3 }}>
         <Image
-          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_1.png' }}
+          source={{ uri: 'https://cdn1.infash.com/assets/buttons/feed_invite_2.png' }}
           style={{ width: deviceWidth / 2 - 6, height: deviceWidth / 4 }}
           resizeMode={'stretch'} />
       </View>
@@ -418,8 +401,16 @@ class FollowingTabContent extends BaseComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
+    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton, defaultFilters } = this.props;
+    const { firstFetch } = this.state;
     if (isTabOnFocus) {
+      if (firstFetch) {
+        this._getFeed(defaultFilters);
+        setInterval(() => {
+          this.handleScrollPosition();
+        }, 1000);
+        this.setState({ firstFetch: false });
+      }
       if (isFiltersMenuOpen) {
         showBottomCameraButton(false);
       } else {

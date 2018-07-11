@@ -74,6 +74,7 @@ class BestMatchTabContent extends BaseComponent {
       flatLooksRight: _.filter(props.flatLooks, (look, index) => index % 2 === 1),
       loadingMore: false,
       showBodyTypeModal: !props.hasUserSize,
+      firstFetch: true,
     };
     this.currPosition = 0;
 
@@ -83,13 +84,12 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
-      this._getFeed(defaultFilters);
+    const { changeFiltersGender, defaultFilters } = this.props;
       changeFiltersGender(defaultFilters.gender);
-      const that = this;
       setInterval(() => {
-        that.handleScrollPosition();
+        this.handleScrollPosition();
       }, 1000);
+      const that = this;
   }
 
   _getFeed(query) {
@@ -97,8 +97,17 @@ class BestMatchTabContent extends BaseComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
+    const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton, defaultFilters } = this.props;
+    const { firstFetch } = this.state;
     if (isTabOnFocus) {
+      if (firstFetch) {
+        this._getFeed(defaultFilters);
+        setInterval(() => {
+          this.handleScrollPosition();
+        }, 1000);
+        this.setState({ firstFetch: false });
+      }
+      
       if (this.state.showBodyTypeModal || isFiltersMenuOpen) {
         showBottomCameraButton(false);
       } else {
@@ -155,10 +164,8 @@ class BestMatchTabContent extends BaseComponent {
       return;
     }
     const { meta: { total }, query } = this.props;
-    const pageSize = query.page.size;
-    const pageNumber = query.page.number;
 
-    if (pageSize * pageNumber < total) {
+    if (query['page[number]'] * query['page[size]'] < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
             this.setState({ isLoading: false });

@@ -12,6 +12,7 @@ import com.appsflyer.reactnative.RNAppsFlyerPackage;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
 import com.rnfs.RNFSPackage;
 import cl.json.RNSharePackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
@@ -51,6 +52,12 @@ public class MainApplication extends Application
     private final ReactNativeHost mReactNativeHost =
             new ReactNativeHost(this) {
 
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+
+
 
 
                 @Override
@@ -62,6 +69,7 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
             new RNFSPackage(),
             new RNSharePackage(),
             new ReactNativeOneSignalPackage(),

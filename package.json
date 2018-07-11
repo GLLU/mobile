@@ -11,7 +11,7 @@
     "gradle-build": "cd android && ./gradlew assembleRelease && cd ../",
     "pack-android": "npm run bundle-android && npm run gradle-build",
     "run-android": "react-native run-android",
-    "run-ios": "react-native run-ios --scheme infash-debug",
+    "run-ios": "react-native run-ios --scheme infash",
     "storybook": "storybook start -p 7007",
     "code-push-ios": "code-push release-react infash ios --plistFile \"ios/gllu/Info.plist\" --outputDir ./sourceMap/ios",
     "code-push-android": "code-push release-react infash android --outputDir ./sourceMap/android"
@@ -68,6 +68,7 @@
     "react-native-video": "2.0.0",
     "react-navigation": "1.0.0-beta.11",
     "react-redux": "^5.0.5",
+    "react-router-dom": "^4.3.1",
     "redux": "^3.6.0",
     "redux-api": "^0.10.4",
     "redux-devtools-extension": "^2.13.2",

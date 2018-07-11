@@ -270,7 +270,7 @@ class LookOverlay extends Component {
     return (
       <View style={{ marginTop: 0 }}>
         <LookHeader
-          avatar={{ uri: look.user.avatar.url }}
+          avatar={{ uri: look.user.avatar_url }}
           onBackNavigationPress={goBack}
           onProfileAvatarPress={() => this.goToProfile(look.user)} />
         <Animated.View style={{ opacity: this.state.fadeAnimContentOnPress }}>
@@ -302,7 +302,7 @@ class LookOverlay extends Component {
           {this._renderCommentsView(this.state.isCommentsActive)}
           {this._renderInformationView(this.state.isInformationActive)}
         </Animated.View>
-        {!lookType ? this._renderBuyItButtons(look) : null}
+        {!lookType && look.items ? this._renderBuyItButtons(look) : null}
         {this._renderMenuView(this.state.isMenuOpen)}
         { isPopupViewActive ? this._renderPopupItems() : null }
       </View>
