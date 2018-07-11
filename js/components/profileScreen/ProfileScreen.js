@@ -13,6 +13,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Modal,
+  BackAndroid,
 } from 'react-native';
 import {TabBarTop, TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar} from 'react-native-tab-view';
 import I18n from 'react-native-i18n';
@@ -36,7 +37,7 @@ import Colors from '../../styles/Colors.styles';
 const { height } = Dimensions.get('window');
 const parallaxHeaderHeight = 270;
 const stickyHeaderHeight = Platform.OS === 'ios' ? 66 : 46;
-const cameraIcon = require('../../../images/icons/camera_green-circle.png');
+const cameraIcon = require('../../../images/icons/camera_green_bg.png');
 
 type Props = {
   number: string,
@@ -114,6 +115,15 @@ class ProfileScreen extends Component {
         this.setState({ isLoading: false });
       });
     });
+
+    BackAndroid.addEventListener('profileBackPress', () => {
+      this._handleBackToFeedPress();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('profileBackPress');
   }
 
   componentDidMount() {
@@ -267,9 +277,8 @@ class ProfileScreen extends Component {
       all: this.state.isMyProfile,
     };
     const { meta: { total_count }, query } = this.props;
-    const pageSize = query.page.size;
-    const pageNumber = query.page.number;
-    if (pageSize * pageNumber < total_count) {
+
+    if (query['page[number]'] * query['page[size]'] < total_count) {
       // if (pageSize * pageNumber < total_count) {
       this.setState({ loadingMore: true }, () => {
         this.props.loadMoreUserLooks(data).then(() => {
@@ -369,7 +378,7 @@ class ProfileScreen extends Component {
 
       <View>
         <ProfileScreenHeader
-          balance={balance} profilePic={userData.avatar.url} name={userData.name} username={userData.username}
+          balance={balance} profilePic={userData.avatar_url} name={userData.name} username={userData.username}
           userId={userData.id} changeUserAvatar={changeUserAvatar}
           stats={stats} onProfileEdit={onProfileEdit}
           onProfileImageClicked={() => {
@@ -513,14 +522,14 @@ class ProfileScreen extends Component {
       visible={this.state.showProfileImage} transparent style={{ flex: 1 }} animationType={'fade'}
       onRequestClose={() => this.setState({ showProfileImage: false })}>
       <ImageView
-        imagePath={this.props.userData.avatar.url}
+        imagePath={this.props.userData.avatar_url}
         onClose={() => this.setState({ showProfileImage: false })}/>
     </Modal>
   )
 
   render(): React.Element<any> {
-    const {isMyProfile} = this.props;
-    const {index, userLooks} = this.state;
+    const { isMyProfile, userId } = this.props;
+    const { index, userLooks } = this.state;
     const shouldShowCamera = (userLooks && userLooks.length > 0)
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>

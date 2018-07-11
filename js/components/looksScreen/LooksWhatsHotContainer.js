@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import LooksScreen from './LooksScreen';
 import {likeUpdate, unlikeUpdate, loadMore, getLookLikes} from '../../actions';
 import { showParisBottomMessage } from '../../actions/paris';
-import {updateFavorite} from '../../actions/look';
+import { updateFavorite } from '../../actions/look';
 import {getLooksById} from '../../utils/FeedUtils';
 import { getDataWithUsersObj } from '../../utils/UsersUtils';
 import {reportAbuse} from '../../actions/looks';

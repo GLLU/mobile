@@ -5,6 +5,7 @@ const Colors = {
   disabled: '',
   background: '#F2F2F2',
   backgroundGrey: '#E6E6E6',
+  backgroundDark: '#1A1A1A',
   white: '#FFFFFF',
   black: '#000000',
   Opacityblack: '#000000',

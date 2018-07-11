@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { View, BackAndroid, StatusBar, NetInfo } from 'react-native';
+import { View, BackAndroid, StatusBar, NetInfo, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { addNavigationHelpers } from 'react-navigation';
 import SpinnerClothing from './components/loaders/SpinnerClothing';
 import ErrorHandler from './components/errorHandler';
 import ParisMessages from './components/paris/ParisMessages';
-import { StyleSheet } from 'react-native';
 import Analytics from './lib/analytics/Analytics';
-import CardStack from './routes'
-import { addNavigationHelpers } from "react-navigation";
-import {expireCache} from './lib/cache/FSVideoCache'
-import { trackScreenByNavigationState } from "./utils/TrackingUtils";
+import CardStack from './routes';
+
+import { expireCache } from './lib/cache/FSVideoCache';
+import { trackScreenByNavigationState } from './utils/TrackingUtils';
 import { showParisBottomMessage, hideParisBottomMessage } from './actions';
 
 
@@ -44,14 +44,13 @@ class AppNavigator extends Component {
     );
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      const {dispatch,navigationState} = this.props;
-      const navigation = this.generateNaivgationObject(dispatch,navigationState);
-      const {routes} = navigation.state;
-      if(routes.length>1){
+      const { dispatch ,navigationState } = this.props;
+      const navigation = this.generateNaivgationObject(dispatch, navigationState);
+      const { routes } = navigation.state;
+      if (routes.length > 1) {
         navigation.goBack();
         return true;
-      }
-      else{
+      } else {
         Analytics.logEvent('Exiting App');
         BackAndroid.exitApp();
       }
@@ -59,13 +58,13 @@ class AppNavigator extends Component {
 
     Analytics.trackAppLoaded();
     expireCache()
-      .then(()=>console.log('removed expired items in cache!'))
+      .then(() =>console.log('removed expired items in cache!'));
 
 
   }
 
   handleConnectionChange = (isConnected) => {
-    if(!isConnected){
+    if (!isConnected) {
       this.props.showParisBottomMessage(`It seems you have no internet connection`, 999999);
     } else {
       this.props.hideParisBottomMessage();
@@ -77,26 +76,26 @@ class AppNavigator extends Component {
     NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
   }
 
-  generateNaivgationObject(dispatch,navigationState){
+  generateNaivgationObject(dispatch, navigationState){
     return addNavigationHelpers({
       dispatch,
       state: navigationState,
-    })
+    });
   }
 
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.navigationState!==this.props.navigationState){
-      trackScreenByNavigationState(nextProps.navigationState,this.props.navigationState)
+    if (nextProps.navigationState !== this.props.navigationState) {
+      trackScreenByNavigationState(nextProps.navigationState, this.props.navigationState);
     }
   }
 
   render() {
     const { dispatch,navigationState, notification } = this.props;
     return (
-      <View style={{flex: 1}}>
-        <StatusBar barStyle='default'/>
-        <CardStack screenProps={{notification}} navigation={this.generateNaivgationObject(dispatch,navigationState)}/>
+      <View style={{ flex: 1 }}>
+        <StatusBar barStyle="default" />
+        <CardStack screenProps={{ notification }} navigation={this.generateNaivgationObject(dispatch, navigationState)} />
         {/*{this.props.isLoading ? <SpinnerSwitch /> : null}*/}
         {this.props.fatalError ? <ErrorHandler /> : null}
         {this.props.warning ? <ErrorHandler /> : null}

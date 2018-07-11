@@ -1,18 +1,21 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import asScreen from '../common/containers/Screen';
 import UploadLookScreen from './UploadLookScreen';
 import Utils from '../../utils';
 import {
   createLookItem,
+  addItemsOffers,
   setTagPosition,
   removeLookItem,
   publishLook,
-  clearUploadLook
+  clearUploadLook,
+  addDescription,
+  toggleProductItemSelection,
 } from '../../actions/uploadLook';
 import {
-  getBestMatchFeed,
+  getWhatsHotFeed,
   clearFeed,
 } from '../../actions/feed';
 import {
@@ -26,18 +29,20 @@ function mapDispatchToProps(dispatch) {
     createLookItem: (item, position) => dispatch(createLookItem(item, position)),
     removeLookItem: (itemId) => dispatch(removeLookItem(itemId)),
     setTagPosition: position => dispatch(setTagPosition(position)),
-    getFeed: query => dispatch(getBestMatchFeed(query)),
+    getFeed: query => dispatch(getWhatsHotFeed(query)),
+    addDescription: (description) => dispatch(addDescription(description)),
     clearFeed: () => dispatch(clearFeed()),
     getUserLooks: data => dispatch(getUserLooks(data)),
     clearUploadLook: () => dispatch(clearUploadLook()),
     showErrorMessage: errorMessage => dispatch(showFatalError(errorMessage)),
+    toggleProductItemSelection: (itemIndex, offerIndex) => dispatch(toggleProductItemSelection(itemIndex, offerIndex)),
   };
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const {lookId, image, items, isUploading} = state.uploadLook;
+  const { lookId, image, items, isUploading } = state.uploadLook;
 
-  if (!image){
+  if (!image) {
     return {};
   }
 
@@ -52,8 +57,9 @@ const mapStateToProps = (state, ownProps) => {
     categories: state.filters.categories,
     currentFeedQuery: state.feed.bestMatch.query,
     userId: state.user.id,
+    lookDescription: state.uploadLook.description,
     isUploading,
-    description: state.uploadLook.description
+    description: state.uploadLook.description,
   };
 };
 

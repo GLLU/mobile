@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -8,14 +8,13 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
-import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
-import I18n from 'react-native-i18n';
+import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 const w = Dimensions.get('window').width;
-const closeModalIcon = require('../../../../images/icons/cancel-clear-x.png')
+const closeModalIcon = require('../../../../images/icons/cancel-clear-x.png');
 type Props = {
   modalVisible: boolean,
   title: string,
@@ -24,9 +23,9 @@ type Props = {
   cancelString: string,
   confirmAction: () => void,
   cancelAction: () => void,
-  closeModal: () => void,
+  closeModal: () => void
 };
-
+//TODO: this component should move to common folder
 class ModalQuestion extends Component {
 
   props: Props
@@ -72,10 +71,8 @@ class ModalQuestion extends Component {
         <TouchableOpacity style={styles.modalContainer} onPress={
           this._cancelAction
         }>
-          <View  style={styles.modalContentContainer}>
-            <TouchableOpacity onPress={
-              this._cancelAction
-            } style={styles.closeBtn}>
+          <View style={styles.modalContentContainer}>
+            <TouchableOpacity onPress={this._cancelAction} style={styles.closeBtn}>
               <Image source={closeModalIcon} style={styles.closeModalImg} resizeMode={'contain'} />
             </TouchableOpacity>
             <View>
@@ -86,9 +83,7 @@ class ModalQuestion extends Component {
             <TouchableOpacity onPress={this._confirmAction} style={[styles.actionBtns, styles.confirmBtnBackground]}>
               <Text style={styles.btnsText}>{confirmString}</Text>
             </TouchableOpacity>
-              {cancelString.length > 0 ? <TouchableOpacity onPress={
-                this._cancelAction
-              } style={[styles.actionBtns, styles.cancelBtnBackground]}>
+              {cancelString.length > 0 ? <TouchableOpacity onPress={this._cancelAction} style={[styles.actionBtns, styles.cancelBtnBackground]}>
                 <Text style={styles.btnsText}>{cancelString}</Text>
               </TouchableOpacity> : null}
             </View>
@@ -111,16 +106,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     backgroundColor: Colors.white,
-    width: w-100
+    width: w-100,
   },
   closeBtn: {
     position: 'absolute',
     right: 10,
-    top: 10
+    top: 10,
   },
   closeModalImg: {
     width: 12,
-    height: 12
+    height: 12,
   },
   titleText: {
     fontSize: generateAdjustedSize(20),
@@ -132,7 +127,7 @@ const styles = StyleSheet.create({
     fontSize: generateAdjustedSize(16),
     fontFamily: Fonts.regularFont,
     textAlign: 'center',
-    color: Colors.highlightColor
+    color: Colors.highlightColor,
   },
   actionBtns: {
     height: 40,
@@ -145,13 +140,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
   },
   cancelBtnBackground: {
-    backgroundColor: Colors.secondaryColor
+    backgroundColor: Colors.secondaryColor,
   },
   btnsText: {
     color: Colors.white,
     textAlign: 'center',
     fontFamily: Fonts.boldContentFont,
-    margin: 5
+    margin: 5,
   },
 });
 

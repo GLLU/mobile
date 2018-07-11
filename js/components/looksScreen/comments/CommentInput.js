@@ -90,7 +90,7 @@ export default class CommentInput extends BaseComponent {
           multiline
         underlineColorAndroid="transparent" />
         <SolidButton
-          label="SEND" disabled={_.isEmpty(this.state.value)}
+          label="POST" disabled={_.isEmpty(this.state.value)}
           style={styles.sendButton}
           onPress={this.onSendPress} />
       </View>

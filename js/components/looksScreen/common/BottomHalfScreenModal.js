@@ -1,34 +1,29 @@
 // @flow
 
 import React, { Component } from 'react';
-import {
-  Animated, View, Text, StyleSheet, Modal, TouchableWithoutFeedback, Dimensions,
-  KeyboardAvoidingView
-} from 'react-native';
-import { noop } from 'lodash'
+import { View, StyleSheet, Modal, TouchableWithoutFeedback, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { noop } from 'lodash';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
-import Colors from "../../../styles/Colors.styles";
+import Colors from '../../../styles/Colors.styles';
 
-const {height} = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 const softMenuBarHeight = ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT');
-const statusBarHeight = ExtraDimensions.get('STATUS_BAR_HEIGHT');
 
 const styles = StyleSheet.create({
   container: {
-    height: height,
-    flexDirection: 'column-reverse'
+    height,
+    flexDirection: 'column-reverse',
   },
   childrenContainer: {
     backgroundColor: Colors.white,
-    flex: 1
+    flex: 1,
   },
 });
 
 type Props = {
-  descritpion: string,
   style: any,
   containerStyle: any,
-  isOpen: bool,
+  isOpen: boolean,
   onRequestClose: void
 }
 
@@ -43,32 +38,32 @@ export default class BottomHalfScreenModal extends Component {
 
   static defaultProps = {
     isOpen: false,
-    onRequestClose: noop
+    onRequestClose: noop,
   };
 
   _onRequestClose() {
-    this.props.onRequestClose(false)
+    this.props.onRequestClose(false);
   }
 
   render() {
-    const {isOpen, children, style, containerStyle} = this.props;
+    const { isOpen, children, style, containerStyle } = this.props;
     return (
       <Modal
         visible={isOpen}
-        animationType='slide'
-        transparent={true}
+        animationType="slide"
+        transparent
         onRequestClose={this._onRequestClose}>
         <KeyboardAvoidingView
-          behavior='padding'
+          behavior="padding"
           style={[styles.container, containerStyle]}>
           <View style={[styles.childrenContainer, style]}>
             {children}
           </View>
           <TouchableWithoutFeedback onPress={this._onRequestClose}>
-            <View style={{flex: 1}}/>
+            <View style={{ flex: 1 }} />
           </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
-        <View style={{height: softMenuBarHeight}}/>
+        <View style={{ height: softMenuBarHeight }} />
       </Modal>
     );
   }

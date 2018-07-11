@@ -1,6 +1,22 @@
+import _ from 'lodash';
+import { normalize } from 'normalizr';
+import { lookSchema } from '../schemas/schemas';
+import { unifyLooks } from '../utils/FeedUtils';
+import { getSuggestion, mapTagsData } from '../utils/UploadUtils';
+
+import UploadLookService from '../services/uploadLookService';
+import { serializeItems } from '../mappers/itemMapper';
+import ItemsService from '../services/itemsService';
+
+import rest from '../api/rest';
+import { loadBrands, showProcessing, hideProcessing } from './index';
+import { newItem } from '../reducers/uploadLook';
+import Utils from '../utils';
+import { setLooksData, setFeedData } from './feed';
+
 export const EDIT_NEW_LOOK = 'EDIT_NEW_LOOK';
 export const EDIT_TAG = 'EDIT_TAG';
-export const CREATE_LOOK_ITEM_BY_POSITION = 'CREATE_LOOK_ITEM_BY_POSITION';
+export const CREATE_CUSTOM_LOOK_ITEM = 'CREATE_CUSTOM_LOOK_ITEM';
 export const SELECT_LOOK_ITEM = 'SELECT_LOOK_ITEM';
 export const REMOVE_LOOK_ITEM = 'REMOVE_LOOK_ITEM';
 export const SET_TAG_POSITION = 'SET_TAG_POSITION';
@@ -17,26 +33,20 @@ export const ADD_DESCRIPTION = 'ADD_DESCRIPTION';
 export const ADD_ITEM_URL = 'ADD_ITEM_URL';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const ADD_PHOTOS_VIDEO = 'ADD_PHOTOS_VIDEO';
+export const SET_SUGGESTIONS_ITEMS = 'SET_SUGGESTIONS_ITEMS';
 export const REMOVE_ITEM_COLOR = 'REMOVE_ITEM_COLOR';
 export const ADD_ITEM_COLOR = 'ADD_ITEM_COLOR';
+export const START_UPLOADING_FILE = 'START_UPLOADING_FILE';
 export const DONE_UPLOADING_FILE = 'DONE_UPLOADING_FILE';
 export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
+export const SELECT_PRODUCT_ITEM = 'SELECT_PRODUCT_ITEM';
+export const UPDATE_ITEM_OFFERS = 'UPDATE_ITEM_OFFERS';
 
-import { normalize } from 'normalizr';
-import { lookSchema } from '../schemas/schemas';
-import { unifyLooks } from '../utils/FeedUtils';
-
-import UploadLookService from '../services/uploadLookService';
-import _ from 'lodash';
-import rest from '../api/rest';
-import {newItem} from '../reducers/uploadLook';
-import {loadBrands, showProcessing, hideProcessing} from './index';
-import Utils from '../utils';
-import FEED_TYPE_BEST_MATCH from './feed';
-import {setLooksData, setFeedData} from './feed';
+const NUM_OF_DEFAULT_OFFERS = 6;
 
 let api_key = null;
-let incrementedItemId = 0
+
+let incrementedItemId = 0;
 
 // Actions
 export function addNewLook(image) {
@@ -50,17 +60,11 @@ export function addNewLook(image) {
           api_key = credentials.password;
           if (api_key) {
             UploadLookService.createLook().then((emptyLookData) => {
-              const payload = _.merge(emptyLookData.look, {
-                image: image.localPath,
-                items: [newItem],
-                isUploading: true
-              });
+              let items = [];
               dispatch({
-                type: EDIT_NEW_LOOK,
-                payload,
+                type: START_UPLOADING_FILE,
               });
-              resolve(payload);
-              dispatch(hideProcessing());
+              // upload image to server
               Utils.postMultipartForm(api_key, `/looks/${emptyLookData.look.id}`, [], image.type, image).then((data) => {
                 if (data) {
                   dispatch({
@@ -70,22 +74,61 @@ export function addNewLook(image) {
                   reject('Uplaod error');
                 }
               }).catch(reject);
+              // upload image to syte to get items bounds
+              if (image.type === 'look[image]') {
+                getSuggestion(image, dispatch, resolve).then((tagsData) => {
+                  items = mapTagsData(tagsData);
+                  const payload = _.merge(emptyLookData.look, {
+                    image: image.localPath,
+                    items: (items && items.length > 0) ? items : [newItem],
+                  });
+                  dispatch({
+                    type: EDIT_NEW_LOOK,
+                    payload,
+                  });
+                  resolve(payload);
+                  // update syte offers for each item
+                  const lookItems = getState().uploadLook.items;
+                  if (lookItems.length === 1 && lookItems[0].isCustom === true) {
+                    dispatch(hideProcessing());
+                    return;
+                  } else {
+                    for (const item of lookItems) {
+                      UploadLookService.getItemOffers(item).then((itemWithOffers) => {
+                        dispatch({
+                          type: UPDATE_ITEM_OFFERS,
+                          itemWithOffers,
+                        });
+                      });
+                    }
+                  }
+                  dispatch(hideProcessing());
+                });
+              } else if (image.type === 'look[video]') {
+                const payload = _.merge(emptyLookData.look, {
+                  image: image.localPath,
+                  items: [newItem],
+                });
+                dispatch({
+                  type: EDIT_NEW_LOOK,
+                  payload,
+                });
+              }
             });
-
           } else {
             dispatch(hideProcessing());
-            reject('Authorization error')
+            reject('Authorization error');
           }
         }).catch(reject);
 
       } else {
-        reject('Authorization error')
+        reject('Authorization error');
       }
     });
   }
 }
 
-export function editNewLook(lookId) {
+export function editNewLook(lookId, image) {
   return (dispatch) => {
     dispatch(showProcessing());
     dispatch(clearUploadLook());
@@ -93,16 +136,32 @@ export function editNewLook(lookId) {
       dispatch(rest.actions.looks.get({id: lookId}, (err, data) => {
         dispatch(hideProcessing());
         if (!err) {
-          const url = data.look.cover.type === "image" ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
-          let payload = {
-            image: url,
-            ...data.look,
-          };
-          dispatch({
-            type: EDIT_NEW_LOOK,
-            payload,
+          const url = data.look.cover.type === 'image' ? _.find(data.look.cover.list, x => x.version === 'small').url : _.find(data.look.cover.list, x => x.version === 'original').url;
+          let items = serializeItems(data.look.items);
+          items = items.map((item) => {
+            return {
+              ...item,
+              offers: item.offers.map((offer) => {
+                return {
+                  ...offer,
+                  selected: true,
+                };
+              }),
+            };
           });
-          resolve(payload);
+          const image = { localPath: data.look.cover.list[0].url };
+          getSuggestion(image, dispatch, resolve).then((tagsData) => {
+            const payload = {
+              image: url,
+              ...data.look,
+              items,
+            };
+            dispatch({
+              type: EDIT_NEW_LOOK,
+              payload,
+            });
+            resolve(payload);
+          });
         } else {
           throw err;
         }
@@ -123,10 +182,10 @@ export function createLookItem() {
     return new Promise((resolve, reject) => {
       const newItemId = incrementedItemId += 1
       dispatch({
-        type: CREATE_LOOK_ITEM_BY_POSITION,
+        type: CREATE_CUSTOM_LOOK_ITEM,
         itemId: newItemId
       })
-      resolve(newItemId)
+      resolve(newItemId);
     });
   }
 }
@@ -151,6 +210,14 @@ export function addItemType(categoryItem, itemId) {
       payload
     });
   };
+}
+
+export function toggleProductItemSelection(itemIndex, offerIndex) {
+    const payload = { itemIndex, offerIndex };
+    return {
+      type: SELECT_PRODUCT_ITEM,
+      payload,
+    };
 }
 
 export function toggleOccasionTag(tagId, selected, itemId) {
@@ -256,6 +323,17 @@ export function createBrandName(newBrand) {
   };
 }
 
+function filteredOffers(item) {
+  let filteredOffers = [];
+  if (item.offers && item.offers.length && item.offers.length > 0) {
+    filteredOffers = item.offers.filter(offer => offer.selected === true);
+    if (filteredOffers.length === 0) {
+      filteredOffers = item.offers.slice(0, NUM_OF_DEFAULT_OFFERS);
+    }
+  }
+  return filteredOffers;
+}
+
 export function publishLook() {
   return (dispatch, getState) => {
     const state = getState();
@@ -265,44 +343,55 @@ export function publishLook() {
     let interval;
     return new Promise((resolve, reject) => {
       _.forEach(items, (item) => {
-        const body = {
-          item: {
-            cover_x_pos: item.locationX,
-            cover_y_pos: item.locationY,
-            category_id: item.category,
-            brand_id: item.brand,
-            color_ids: item.color_ids,
-            url: item.url
-          }
-        };
-        const editOrCreate = item.isNew ? { method: 'post' } : { method: 'put', itemId: item.id }
-        UploadLookService.createOrEditItem(lookId, body, editOrCreate).then((createdItemData) => {
-          _.forEach(item.occasions, (occasion) => {
-            const occasionBody = {
-              tag_id: occasion
-            }
-            UploadLookService.addItemOccasions(lookId, createdItemData.item.id, occasionBody).then((occasionData) => {
+        let body;
+        if (item.isCustom) {
+          body = {
+            item: {
+              cover_x_pos: item.locationX,
+              cover_y_pos: item.locationY,
+              category_id: item.category,
+              brand_id: item.brand,
+              color_ids: item.color_ids,
+              url: item.url,
+            },
+          };
+          const editOrCreate = item.isNew ? { method: 'post' } : { method: 'put', itemId: item.id };
+          UploadLookService.createOrEditItem(lookId, body, editOrCreate).then((createdItemData) => {
+            _.forEach(item.occasions, (occasion) => {
+              const occasionBody = {
+                tag_id: occasion,
+              };
+              UploadLookService.addItemOccasions(lookId, createdItemData.item.id, occasionBody).then((occasionData) => {
+              });
             });
-          })
-        })
+          });
+        } else {
+          body = {
+            item: {
+              cover_x_pos: item.locationX,
+              cover_y_pos: item.locationY,
+              category_name: item.category,
+              product_suggestions_attributes: filteredOffers(item),
+            },
+          };
+          UploadLookService.createOrEditItem(lookId, body, { method: 'post' });
+        }
       });
 
       interval = setInterval(function () {
         if (getState().uploadLook.isUploading) {
           //Do nothing, wait until next interval.
-        }
-        else {
-
+        } else {
           clearInterval(interval);
 
           UploadLookService.publishLook(lookId).then((look) => {
-            const state = getState().feed['bestMatch'];
+            const state = getState().feed['whatsHot'];
             const normalizedLooksData = normalize([look], [lookSchema]);
             const unfiedLooks = unifyLooks(normalizedLooksData.entities.looks, getState().looks.flatLooksData);
             dispatch(setLooksData({ flatLooksData: { ...unfiedLooks } }));
             const unifiedLooksIds = state.flatLooksIdData;
             unifiedLooksIds.unshift(look.id);
-            dispatch(setFeedData({ flatLooksIdData: unifiedLooksIds, meta: state.meta, query: state.query, feedType: 'bestMatch' }));
+            dispatch(setFeedData({ flatLooksIdData: unifiedLooksIds, meta: state.meta, query: state.query, feedType: 'whatsHot' }));
             if (description.length > 0) {
               const descriptionBody = {
                 description
@@ -316,12 +405,5 @@ export function publishLook() {
 
       resolve();
     })
-
-    // return new Promise((resolve, reject) => {
-    //   UploadLookService.createLook().then((publishedLookData) => {
-    //     console.log('published look data',publishedLookData)
-    //     resolve()
-    //   });
-    // });
   }
 }

@@ -147,7 +147,7 @@
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "Icon-App-29x29@3x.png",
+      "filename" : "infashappicon2c-1.png",
       "scale" : "1x"
     },
     {
@@ -211,13 +211,10 @@
       "subtype" : "42mm"
     },
     {
-      "idiom" : "watch-marketing",
       "size" : "1024x1024",
+      "idiom" : "watch-marketing",
+      "filename" : "infashappicon2c.png",
       "scale" : "1x"
-    },
-    {
-      "filename" : "Icon-App-60x60@1x.png",
-      "unassigned" : true
     },
     {
       "filename" : "Icon-App-76x76@3x.png",

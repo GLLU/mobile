@@ -11,6 +11,7 @@ import FontSizeCalculator from './../../calculators/FontSize';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 const validMarker = require('../../../images/markers/tag_green.png');
 const invalidMarker = require('../../../images/markers/tag_red.png');
+const warningMarker = require('../../../images/markers/tag_warning.png');
 
 const TAG_WIDTH = 50;
 const TAG_HEIGHT = 50;
@@ -57,10 +58,11 @@ const styles = StyleSheet.create({
 class Tag extends Component {
   static propTypes = {
     style: React.PropTypes.object,
+    isCustom: React.PropTypes.bool,
 
   }
 
-  constructor(props) {
+  constructor(props: propTypes) {
     super(props);
   }
 
@@ -115,20 +117,20 @@ class Tag extends Component {
     }
     this._setupPanResponder(locationX, locationY);
   }
-
   _getMarkerIcon(item) {
-    return item.brand && item.category !== null ? validMarker : invalidMarker;
+    const isProductItemHasOffers = (!item.isCustom && item.offers) && item.offers.findIndex((element => element.selected === true)) !== -1;
+    return (item.isCustom) ? (item.brand && item.category !== null ? validMarker : invalidMarker) : isProductItemHasOffers ? validMarker : warningMarker;
   }
 
   render() {
-    const {item, currItemId} = this.props
+    const {item, currItemId, isChosenTag } = this.props;
     const layout = this._pan.getLayout();
     const markerImage = this._getMarkerIcon(item);
     if (item) {
       return (
         <Animated.View
           {...this.panResponder.panHandlers}
-          style={[layout, currItemId === item.id ? styles.selectedItem : styles.unselectedItem, {transform: [{translateX: -TAG_WIDTH}, {translateY: -BORDER_WIDTH - 5}]}]}>
+          style={[layout, (currItemId === item.id && isChosenTag) ? styles.selectedItem : styles.unselectedItem, {transform: [{translateX: -TAG_WIDTH / 2 }, {translateY: -BORDER_WIDTH - 5 }]}]}>
           <Image source={markerImage}
                  style={styles.itemBgImage}/>
         </Animated.View>

@@ -74,9 +74,18 @@ class UserLooks extends Component {
   }
 
   _handleEditPress(look) {
-    this.props.editNewLook(look.id).then(() => {
-      this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
+    this._setModalVisible({
+      modalVisible: true,
+      title: i18n.t('EDIT_LOOK'),
+      confirmString: i18n.t('CONTINUE'),
+      cancelString: '',
+      subtitle: i18n.t('EDIT_IN_CONTRUCTION'),
+      confirmAction: this._hideModal,
+      cancelAction: this._hideModal,
     });
+    /*this.props.editNewLook(look.id).then(() => {
+      this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
+    });*/
   }
 
   renderLookStatus(look) {
@@ -110,9 +119,9 @@ class UserLooks extends Component {
   _handleDeleteLook(look) {
     this._setModalVisible({
       modalVisible: true,
-      title: 'ARE YOU SURE U WANT TO DELETE THIS LOOK?',
-      confirmString: 'DELETE',
-      cancelString: 'NO, IT WAS A MISTAKE',
+      title: 'ARE YOU SURE YOU WANT TO DELETE THIS LOOK?',
+      confirmString: i18n.t('POPUP_CONFIRM_STRING'),
+      cancelString: i18n.t('POPUP_CANCEL_STRING'),
       cancelAction: this._hideModal,
       confirmAction: () => {
         this.props.deleteLook(look.id);
@@ -130,12 +139,12 @@ class UserLooks extends Component {
     );
   }
 
-  _renderDeleteModal() {
+  _renderModal() {
     const { modalParams } = this.state;
     return (
       <ModalQuestion
         {...modalParams}
-        closeModal={this.setModalVisible}/>
+        closeModal={this.setModalVisible} />
     );
   }
 
@@ -183,7 +192,7 @@ class UserLooks extends Component {
               {this._renderLooks(this.state.flatLooksRight)}
             </View>
           </View>
-          {this._renderDeleteModal()}
+          {this._renderModal()}
         </View>
       );
     }

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { followUpdate, unFollowUpdate, goToNotificationSubjectScreen, markAsReadNotifications } from '../../../actions';
 
-import ListViewHeader from './ListViewHeader';
+import ListViewHeader from '../../common/headers/ListViewHeader';
 import NotificationRow from './NotificationRow';
 import BaseComponent from "../../common/base/BaseComponent";
 import SpinnerSwitch from "../../loaders/SpinnerSwitch";
@@ -51,21 +51,19 @@ class NotificationListView extends BaseComponent {
   }
 
   onUserNavigate(props) {
-    this.logEvent('NotificationsScreen', {name: 'user clicked notification'});
-    if(props.action_kind === 'Follow') {
-      this.props.navigateTo('profileScreen', { userId: props.initiator.id} );
-    } else if (props.action_kind === 'Like' || props.action_kind === 'Comment' || props.action_kind === 'Upload')  {
-      this.setState({isNavigating:true},()=>{
+    this.logEvent('NotificationsScreen', { name: 'user clicked notification' });
+    if (props.action_kind === 'Follow') {
+      this.props.navigateTo('profileScreen', { userId: props.initiator.id });
+    } else if (props.action_kind === 'Like' || props.action_kind === 'Comment' || props.action_kind === 'Upload') {
+      this.setState({ isNavigating: true }, () => {
         this.props.goToNotificationSubjectScreen(props.go_to_object.id, props.id)
-          .then(look=>{
-            this.setState({isNavigating:false},()=> {
-              this.props.navigateTo('lookScreenProfile', { lookId: look.id })
+          .then((look) => {
+            this.setState({ isNavigating: false }, () => {
+              this.props.navigateTo('lookScreenProfile', { lookId: look.id });
             });
           });
       });
-
     }
-
   }
 
   onMarkAsReadPress(props) {
@@ -76,8 +74,7 @@ class NotificationListView extends BaseComponent {
   toggleFollowAction(user, shouldFollow) {
     let data = {id: user.id};
     if (shouldFollow) {
-      this.props.fol
-      lowUpdate(data);
+      this.props.followUpdate(data);
     }
     else {
       this.props.unFollowUpdate(data);

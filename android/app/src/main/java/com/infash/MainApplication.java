@@ -12,13 +12,14 @@ import com.appsflyer.reactnative.RNAppsFlyerPackage;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
+import com.rnfs.RNFSPackage;
 import cl.json.RNSharePackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.smixx.fabric.FabricPackage;
 import com.infash.customPackages.CameraReactPackage;
-import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.xxsnakerxx.flurryanalytics.FlurryAnalyticsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.bugsnag.BugsnagReactNative;
@@ -51,6 +52,12 @@ public class MainApplication extends Application
     private final ReactNativeHost mReactNativeHost =
             new ReactNativeHost(this) {
 
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+
+
 
 
                 @Override
@@ -62,13 +69,14 @@ public class MainApplication extends Application
                 protected List<ReactPackage> getPackages() {
                     return Arrays.<ReactPackage>asList(
                             new MainReactPackage(),
+            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
+            new RNFSPackage(),
             new RNSharePackage(),
             new ReactNativeOneSignalPackage(),
                             new RNI18nPackage(),
                             new RNMixpanel(),
                             new FabricPackage(),
                             new CameraReactPackage(),
-                            new GoogleAnalyticsBridgePackage(),
                             new FlurryAnalyticsPackage(),
                             new RNFetchBlobPackage(),
                             BugsnagReactNative.getPackage(),

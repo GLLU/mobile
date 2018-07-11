@@ -58,7 +58,9 @@ class MarkerView extends Component {
   }
 
   render() {
+    const { item, activeItem, isPopupActive } = this.props;
     const { isSelected } = this.state;
+    const isItemShown = (activeItem && (item.id === activeItem.id));
 
     return (
       <TouchableWithoutFeedback onPress={e => this.onPress(e)}>
@@ -66,7 +68,7 @@ class MarkerView extends Component {
           <Image
             source={this.getMarkerByOrientation(this.props.orientation)}
             style={styles.marker} resizeMode={'contain'} />
-          {isSelected ?
+          {(isItemShown && isPopupActive) ?
             <Image
               source={require('../../../../images/indicators/Ellipse.png')} resizeMode={'cover'}
               style={styles.selectedIndicator} />

@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import _, {noop} from 'lodash';
 import MarkerView, {MARKER_WIDTH, MARKER_HEIGHT} from './MarkerView';
-import ItemPopup, {POPUP_HEIGHT, POPUP_WIDTH} from './ItemPopup';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,7 +30,6 @@ class ItemMarker extends Component {
     super(props);
     this.onPress = this.onPress.bind(this);
     this._renderMarker = this._renderMarker.bind(this);
-    this._renderPopup = this._renderPopup.bind(this);
     this.state = {
       isViewActive: false,
     };
@@ -43,6 +41,7 @@ class ItemMarker extends Component {
     brand: React.PropTypes.object,
     item: React.PropTypes.object,
     onPress: React.PropTypes.func,
+    onPopupToggled: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -51,25 +50,23 @@ class ItemMarker extends Component {
 
   onPress() {
     const { isViewActive } = this.state;
-    if (!this.props.item.is_verified) {
-      this.props.onPress(!isViewActive);
+    const { item, onPress, onPopupToggled } = this.props;
+    if (!item.is_verified && !item.offers) {
+      onPress(!isViewActive);
     }
+    onPopupToggled(item, !isViewActive);
     this.setState({
-      popupOffset: 0,
       isViewActive: !isViewActive,
     });
   }
 
-  getContainerStyle(position, orientation, popupDimensions, isPopupVisible) {
+  getContainerStyle(position, orientation, isPopupVisible) {
     const containerStyles = [styles.container];
     const positionStyle = {
       top: position.y,
       left: position.x,
     };
     if (!orientation.top) {
-      if (isPopupVisible) {
-        positionStyle.top -= popupDimensions.height;
-      }
       containerStyles.push(positionStyle);
       containerStyles.push(styles.flexReverse);
     } else {
@@ -118,17 +115,6 @@ class ItemMarker extends Component {
     return actualPosition;
   }
 
-  adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions) {
-    const adjustedPosition = {
-      x: position.x,
-      y: position.y,
-    };
-    if (orientation.right) {
-      adjustedPosition.x = position.x - (popupDimensions.width - markerDimensions.width);
-    }
-    return adjustedPosition;
-  }
-
   isPositionCloseToEdge(containerDimensions, position) {
     const closeToEdgeIndicator = { top: false, left: false, bottom: false, right: false };
     closeToEdgeIndicator.left = position.x < 20;
@@ -158,18 +144,18 @@ class ItemMarker extends Component {
     return position;
   }
 
-  _renderPopup(item, popupDimensions) {
-    return <ItemPopup {...item} openWebView={this.props.openWebView} dimensions={popupDimensions}/>;
-  }
-
   _renderMarker(position, dimensions, orientation) {
+    const { isPopupActive } = this.props;
+    const { isViewActive } = this.state;
     return (
       <MarkerView
         {...this.props}
         position={position}
         orientation={orientation}
         dimensions={dimensions}
-        onPress={this.onPress}/>
+        onPress={this.onPress}
+        isPopupActive={isPopupActive} />
+        
     );
   }
 
@@ -182,25 +168,18 @@ class ItemMarker extends Component {
 
     const markerDimensions = { width: MARKER_WIDTH, height: MARKER_HEIGHT };
 
-    const popupDimensions = { width: POPUP_WIDTH, height: POPUP_HEIGHT };
-
     let position = this.getPositionByOrientation(orientation, pinPosition, markerDimensions);
 
     const closeToEdgeIndicator = this.isPositionCloseToEdge(this.props.containerDimensions, position);
 
     position = this.limitPosition(position, closeToEdgeIndicator, this.props.containerDimensions);
 
-    if (this.state.isViewActive) {
-      position = this.adjustPositionByPopup(position, orientation, markerDimensions, popupDimensions);
-    }
-
     const markerOrientation = (_.chain(Object.keys(closeToEdgeIndicator)).map(key => closeToEdgeIndicator[key]).sum() > 1) ? this.reverseOrientation(orientation) : orientation;
 
     // Actual Render
     return (
-      <View style={this.getContainerStyle(position, orientation, popupDimensions, this.state.isViewActive)}>
+      <View style={this.getContainerStyle(position, orientation, this.state.isViewActive)}>
         {this._renderMarker(position, markerDimensions, markerOrientation)}
-        { this.state.isViewActive ? this._renderPopup(this.props.item, popupDimensions) : null}
       </View>
     );
   }

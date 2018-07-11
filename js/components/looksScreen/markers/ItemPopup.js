@@ -4,70 +4,89 @@ import {
   View,
   Text,
   Linking,
+  Image,
+  ScrollView,
+  Dimensions,
+  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { noop } from 'lodash';
 import I18n from 'react-native-i18n';
-
 import { showInfo } from '../../../actions';
 import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 import SolidButton from '../../common/buttons/SolidButton';
-import {generateAdjustedSize} from '../../../utils/AdjustabaleContent';
+import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
 import withAnalytics from '../../common/analytics/WithAnalytics';
 
-export const POPUP_WIDTH = 160;
-export const POPUP_HEIGHT = 70;
+const width = Dimensions.get('window').width;
 
+// TODO: numbers to consts
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
-    width: POPUP_WIDTH,
+    position: 'absolute',
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+    bottom: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+    width,
+    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.black,
   },
-  innerContainer: {
-    backgroundColor: Colors.lightGray,
+  carousel: {
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+    width,
+    flexWrap: 'wrap',
+    overflow: 'scroll',
+    flexDirection: 'row',
+    //zIndex: 2,
+  },
+  productItem: {
+    justifyContent: 'space-around',
+  },
+  rightOfferContainer: {
     marginHorizontal: 4,
-    marginVertical: 4,
     paddingHorizontal: 4,
-    paddingVertical: 4,
     alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  singleItemContainer: {
+    backgroundColor: Colors.white,
+    flexDirection: 'row',
+    padding: 10,
+    width: Platform.OS === 'ios' ? generateAdjustedSize(240) : generateAdjustedSize(210),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+  },
+  itemContainer: {
+    backgroundColor: Colors.white,
+    flexDirection: 'row',
+    marginLeft: 10,
+    padding: 10,
+    width: Platform.OS === 'ios' ? generateAdjustedSize(240) : generateAdjustedSize(210),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
+    //zIndex: 2,
   },
   brand: {
-    fontSize: generateAdjustedSize(16),
+    fontSize: Platform.OS === 'ios' ? generateAdjustedSize(15) : generateAdjustedSize(14),
     color: Colors.black,
-    marginBottom: 4,
     fontFamily: Fonts.contentFont,
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    width: 100,
   },
   category: {
-    fontSize: generateAdjustedSize(14),
-    color: Colors.white,
+    fontSize: generateAdjustedSize(15),
+    color: Colors.gray,
     marginBottom: 4,
     fontFamily: Fonts.contentFont,
   },
-
-  row: {
-    padding: 5,
-    textAlign: 'center',
+  itemImage: {
+    width: Platform.OS === 'ios' ? generateAdjustedSize(85) : generateAdjustedSize(75),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(120) : generateAdjustedSize(100),
   },
-  titleColors: {
-    color: 'black',
-    backgroundColor: '#f4b85a',
-  },
-  buyColors: {
-    color: '#f4b85a',
-    backgroundColor: 'black',
-  },
-  topRoundCorners: {
-    borderTopRightRadius: 5,
-    borderTopLeftRadius: 5,
-  },
-  bottomRoundCorners: {
-    borderBottomRightRadius: 5,
-    borderBottomLeftRadius: 5,
+  shopNowButton: {
+    backgroundColor: Colors.secondaryColor,
+    width: 100,
+    height: 30,
   },
 });
 
@@ -75,6 +94,9 @@ class ItemPopup extends Component {
   constructor(props) {
     super(props);
     this.handleOpenLink = this.handleOpenLink.bind(this);
+    this.state = {
+      isShopNowClicked: false,
+    };
   }
 
   static propTypes = {
@@ -93,14 +115,16 @@ class ItemPopup extends Component {
     onLayout: noop,
   }
 
-  handleOpenLink() {
-    const { url, look_id, id, is_verified, openWebView } = this.props;
-    if (url) {
-      Linking.canOpenURL(url).then((supported) => {
+  handleOpenLink(index = 0) {
+    const { url, lookId, itemId, is_verified, openWebView, offers } = this.props;
+    const productUrl = offers ? offers[index].url : url;
+    if (productUrl) {
+      Linking.canOpenURL(productUrl).then((supported) => {
         if (!supported) {
         } else {
-          this.props.logEvent('lookScreen', {name: 'click on item', isVerified: is_verified, lookId: look_id, item_id: id});
-          openWebView(url);
+          this.props.logEvent('lookScreen', { name: 'click on item', isVerified: is_verified, lookId, itemId });
+          this.setState({ isShopNowClicked: true });
+          offers ? openWebView(productUrl, lookId, itemId, offers[index].id) : openWebView(productUrl, lookId, itemId);
         }
       }).catch(err => console.error('An error occurred', err));
     } else {
@@ -108,24 +132,92 @@ class ItemPopup extends Component {
     }
   }
 
-  getTitle(brand) {
-    let title = brand ? brand.name : 'N/A';
-    return title;
+  getTitle(brand, index = 0) {
+    const { offers } = this.props;
+    let title;
+    if (offers && offers.length > 0) {
+      title = offers[index].brand_name ? offers[index].brand_name : 'N/A';
+    } else {
+      title = brand ? brand.name : 'N/A';
+    }
+    return this._textEllipsis(title);
+  }
+
+  _textEllipsis(text) {
+    return text.length > 25 ? `${text.substr(0, 10)}...` : text;
+   // return text;
+  }
+
+  _getFormattedPrice(price) {
+    let formattedPrice = Math.round(price * 2) / 2;
+    if (formattedPrice !== Math.round(formattedPrice)) {
+      formattedPrice = formattedPrice.toFixed(2);
+    }
+    return price ? `${formattedPrice}$` : 'N/A';
+  }
+
+  // TODO: merge it and _renderOffer to one function
+  _renderSingleOffer() {
+    const { category, brand, is_verified, offers, url } = this.props;
+    const { isShopNowClicked } = this.state;
+    return (
+      <View style={styles.singleItemContainer}>
+        <Image source={{ uri: offers ? offers[0].image_url : category.icon.url }} style={styles.itemImage} />
+        <View style={styles.rightOfferContainer}>
+          <Text style={styles.brand}>{this.getTitle(brand)}</Text>
+          { category ? <Text style={styles.category}>{(offers && offers.length === 1) ? null : category.name}</Text> : null }
+          {offers ? <Text style={styles.price}>{this._getFormattedPrice(offers[0].price)}</Text> : null}
+          <SolidButton
+            label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
+            style={styles.shopNowButton} onPress={() => this.handleOpenLink()} disabled={isShopNowClicked} />
+        </View>
+      </View>
+    );
+  }
+
+  _renderOffer(item, index) {
+    const { brand, is_verified, offers } = this.props;
+    const { isShopNowClicked } = this.state;
+    return (
+      <TouchableWithoutFeedback key={index} >
+        <View style={styles.itemContainer}>
+          <Image source={{ uri: item.image_url }} style={styles.itemImage} />
+          <View style={styles.rightOfferContainer}>
+            <Text style={styles.brand}>{this.getTitle(brand, index)}</Text>
+            {offers ? <Text style={styles.price}>{this._getFormattedPrice(item.price)}</Text> : null}
+            <SolidButton
+              label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
+              style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} disabled={isShopNowClicked} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
+
+  componentWillMount() {
+    this.setState({ isShopNowClicked: false });
   }
 
   render() {
 
-    const { category, brand, is_verified } = this.props;
+    const { offers } = this.props;
 
     return (
       <View style={styles.container}>
-        <View style={styles.innerContainer}>
-          <Text style={styles.brand}>{this.getTitle(brand)}</Text>
-          { category ? <Text style={styles.category}>{category.name}</Text> : null }
-          <SolidButton
-            label={is_verified ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
-            style={{ backgroundColor: Colors.black, width: 140, height: 30 }} onPress={this.handleOpenLink} />
-        </View>
+        { offers && offers.length > 1 ?
+          <ScrollView
+            style={styles.carousel}
+            pagingEnabled={false}
+            automaticallyAdjustContentInsets={false}
+            bounces
+            decelerationRate={0.2}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.productItem}
+            horizontal>
+            { _.map(offers, (item, index) => (
+              this._renderOffer(item, index)))}
+          </ScrollView> :
+          this._renderSingleOffer() }
       </View>
     );
   }

@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Image,
@@ -11,16 +11,19 @@ import {
   Platform,
 } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import i18n from 'react-native-i18n';
+import { connect } from 'react-redux';
+import { addLookItems } from '../../actions/look';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
 import SwipeWizardOverlay from './SwipeWizardOverlay';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import * as _ from 'lodash';
 import VideoWithCaching from '../common/media/VideoWithCaching';
 import ImageWrapper from '../common/media/ImageWrapper';
 import Spinner from '../loaders/Spinner';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import ModalQuestion from '../uploadLookScreen/forms/ModalQuestion';
 
 const arrowDown = require('../../../images/icons/arrow_down.png');
 const arrowUp = require('../../../images/icons/arrow_up.png');
@@ -60,6 +63,9 @@ class LooksScreen extends Component {
     this._toggleLike = this._toggleLike.bind(this);
     this.renderUpArrow = this.renderUpArrow.bind(this);
     this.renderDownArrow = this.renderDownArrow.bind(this);
+    this.setModalVisible = this.setModalVisible.bind(this);
+    this._renderLookImage = this._renderLookImage.bind(this);
+    this.fetchMoreLooksItems = this.fetchMoreLooksItems.bind(this);
     this.state = {
       showAsFeed: props.flatLooksData.length > 1,
       isBottomDrawerOpen: props.openComments,
@@ -67,12 +73,48 @@ class LooksScreen extends Component {
       loader: Platform.OS !== 'ios' && props.flatLooksData.length > 1,
       mountedOnce: false,
       isMuted: true,
+      modalParams: {
+        modalVisible: false,
+      },
     };
     this.loadMoreAsync = _.debounce(this.loadMore, 100);
   }
 
+  setModalVisible(params: object) {
+    const { modalParams } = this.state;
+    this.setState({ modalParams: { ...modalParams, ...params } });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { flatLooksData } = this.props;
+    const currIndex = this.state.currScrollIndex;
+    if (prevState.currScrollIndex !== this.state.currScrollIndex) {
+      const lookArr = this.getFlatFeed();
+    }
+  }
+
+  fetchCurrentLookItems() {
+    const { flatLooksData, addLookItems } = this.props;
+    const currIndex = this.state.currScrollIndex;
+    addLookItems(flatLooksData[currIndex].id);
+  }
+
+  fetchMoreLooksItems() {
+    const { flatLooksData, addLookItems } = this.props;
+    const currIndex = this.state.currScrollIndex;
+    const startIndex = (currIndex - 2 > 0) ? currIndex - 2 : 0;
+    const lastIndex = (currIndex + 2 < flatLooksData.length - 1) ? currIndex + 2 : flatLooksData.length - 1;
+
+    for (let i = startIndex; i <= lastIndex; i++) {
+      const lookId = flatLooksData[i].id;
+      if (!flatLooksData[i].items) {
+        addLookItems(lookId);
+      }
+    }
+  }
+
   componentDidMount() {
-    const { meta: { total } } = this.props;
+    const { meta: { total }, flatLooksData } = this.props;
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
@@ -103,10 +145,14 @@ class LooksScreen extends Component {
 
           break;
       }
-      this.setState({ mountedOnce: true }); // because comments are re-open when you this.goBack
     }
-    if (this.state.currScrollIndex === this.props.flatLooksData.length - 1) {
+    if (this.state.currScrollIndex >= this.props.flatLooksData.length - 5) {
       this.loadMore();
+    }
+
+    const currLook = flatLooksData[this.state.currScrollIndex];
+    if (!currLook.items || currLook.items.length === 0) {
+      this.fetchCurrentLookItems();
     }
   }
 
@@ -136,17 +182,34 @@ class LooksScreen extends Component {
   }
 
   _goToEdit(look: object) {
+    this.setModalVisible({
+      modalVisible: true,
+      title: i18n.t('OUR_APOLOGIES'),
+      confirmString: i18n.t('CONTINUE'),
+      cancelString: '',
+      subtitle: i18n.t('EDIT_IN_CONTRUCTION'),
+      confirmAction: this.resetToFeed,
+      cancelAction: this.resetToFeed,
+    });
+    /*
     this.props.editNewLook(look.id).then(() => {
       this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
     });
+    */
   }
 
   _goToLikes(look: object) {
     this.props.navigateTo('likesscreen', { lookId: look.id, count: look.likes });
   }
 
-  _openWebView = (url: string) => {
-    this.props.navigateTo('webViewScreen', { url, headerData: {title: 'Shop Item'} });
+  _openRedirectedWebView = (url: string, lookId: number, itemId: number, suggId: number) => {
+    fetch(url, { redirect: 'follow', credentials: 'include' }).then(res => res.text().then((html) => {
+      this.props.navigateTo('webViewScreen', { html, baseUrl: res.url, headerData: { title: i18n.t('SHOP_ITEM') } });
+    }));
+  }
+
+  _openWebView = (url: string, lookId: number, itemId: number, suggId: number) => {
+    this.props.navigateTo('webViewScreen', { url, headerData: { title: i18n.t('SHOP_ITEM') } });
   }
 
   onToggleDrawer(shouldOpen: boolean) {
@@ -158,9 +221,7 @@ class LooksScreen extends Component {
       return;
     }
     const { meta: { total }, query } = this.props;
-    const pageSize = query.page.size;
-    const pageNumber = query.page.number;
-    if (pageSize * pageNumber < total) {
+    if (query['page[number]'] * query['page[size]'] < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
           this.setState({ isLoading: false });
@@ -176,6 +237,8 @@ class LooksScreen extends Component {
   onSwipe(gestureName: string) {
     this.props.logEvent('LookScreen', { name: 'user swiped', type: gestureName });
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
+
+    this.fetchMoreLooksItems();
 
     if (showSwipeWizard) {
       onHideSwipeWizard();
@@ -250,7 +313,7 @@ class LooksScreen extends Component {
   }
 
   renderVideo(look: object, index: number) {
-    const showShowArrow = this.shouldRenderArrows();
+    const shouldShowArrow = this.shouldRenderArrows();
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
 
@@ -293,8 +356,8 @@ class LooksScreen extends Component {
           toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
           reportAbuse={lookId => this.props.reportAbuse(lookId)}
         />
-        {showShowArrow ? this.renderUpArrow() : null}
-        {showShowArrow ? this.renderDownArrow() : null}
+        {shouldShowArrow ? this.renderUpArrow() : null}
+        {shouldShowArrow ? this.renderDownArrow() : null}
 
         {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard}/> : null}
       </GestureRecognizer>
@@ -310,16 +373,14 @@ class LooksScreen extends Component {
         left: 0,
         backgroundColor: 'black',
         justifyContent: 'center',
-        height: generateAdjustedSize(100)
+        height: generateAdjustedSize(100),
       }}>
         <TouchableOpacity
           hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
           style={{ position: 'absolute', top: 6, right: 6 }}
           onPress={this._onCloseRetailerMessage}>
-          <Image style={{ width: 16, height: 16 }} resizeMode={'contain'} source={closeIcon}/>
+          <Image style={{ width: 16, height: 16 }} resizeMode={'contain'} source={closeIcon} />
         </TouchableOpacity>
-
-        <Text style={styles.noItemLink}>{i18n.t('NO_DIRECT_LINK')}</Text>
       </View>
     );
   }
@@ -328,20 +389,13 @@ class LooksScreen extends Component {
     this.setState({ showRetailerMessage: false });
   }
 
-  renderImage(look: object, index: boolean) {
-    const showShowArrow = this.shouldRenderArrows();
+  _renderLookImage(look: object) {
+    const shouldShowArrow = this.shouldRenderArrows();
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
     const { showRetailerMessage } = this.state;
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     return (
-      <GestureRecognizer
-        key={look.originalIndex !== undefined ? look.originalIndex : -1}
-        onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
-        config={config}
-        style={{
-          flex: 1,
-          backgroundColor: 'transparent',
-        }}>
+      <View style={{ backgroundColor: 'black' }}>
         <View style={{
           flex: 1,
           backgroundColor: 'white',
@@ -350,13 +404,13 @@ class LooksScreen extends Component {
           justifyContent: 'center',
           top: 0,
           bottom: 0,
-          right: 0,
-          left: 0
+          right: 33,
+          left: 33,
         }}>
-          <Text style={styles.loadingImage}>Loading Image...</Text>
+          <Text style={styles.loadingImage}> {i18n.t('LOADING_IMAGE')} </Text>
         </View>
         <ImageWrapper
-          resizeMode={'stretch'}
+          resizeMode={'contain'}
           style={styles.itemImage}
           source={{ uri: look.mediumSizeUri }}
           navigation={this.props.cardNavigation}>
@@ -377,24 +431,45 @@ class LooksScreen extends Component {
             toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
             reportAbuse={lookId => this.props.reportAbuse(lookId)}
           />
-          {showShowArrow ? this.renderUpArrow() : null}
-          {showShowArrow ? this.renderDownArrow() : null}
+          {shouldShowArrow ? this.renderUpArrow() : null}
+          {shouldShowArrow ? this.renderDownArrow() : null}
 
           {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard}/> : null}
           {showRetailerMessage ? this._renderRetailerMessage() : null}
 
         </ImageWrapper>
-      </GestureRecognizer>
+      </View>
+    );
+  }
+
+  renderImage(look: object, index: boolean) {
+    return (
+      Platform.OS === 'ios' ?
+        <View key={look.originalIndex !== undefined ? look.originalIndex : -1}>
+          {this._renderLookImage(look)}
+        </View>
+        :
+        <GestureRecognizer
+          key={look.originalIndex !== undefined ? look.originalIndex : -1}
+          onSwipe={this.state.showAsFeed && !this.state.isBottomDrawerOpen ? (direction, state) => this.onSwipe(direction, state, index) : null}
+          config={config}
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+          }}>
+          {this._renderLookImage(look)}
+        </GestureRecognizer>
     );
   }
 
   getFlatFeed() {
     let looksArr = '';
     const { meta: { total } } = this.props;
+    const currLook = this.props.flatLooksData[this.state.currScrollIndex];
+ 
     if (total === 1) {
-      return looksArr = [
-        this.props.flatLooksData[this.state.currScrollIndex],
-      ];
+      let looksArr = [currLook];
+      return looksArr;
     }
     switch (this.state.currScrollIndex) {
       case 0:
@@ -402,45 +477,70 @@ class LooksScreen extends Component {
         fictionalLook.originalIndex = 999;
         return looksArr = [
           fictionalLook, // fictional
-          this.props.flatLooksData[this.state.currScrollIndex],
+          currLook,
           this.props.flatLooksData[this.state.currScrollIndex + 1],
         ];
       case this.props.flatLooksData.length - 1:
         looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex - 1],
-          this.props.flatLooksData[this.state.currScrollIndex],
+          currLook,
         ];
         return looksArr;
       default:
         return looksArr = [
           this.props.flatLooksData[this.state.currScrollIndex - 1],
-          this.props.flatLooksData[this.state.currScrollIndex],
+          currLook,
           this.props.flatLooksData[this.state.currScrollIndex + 1],
         ];
     }
   }
 
   renderLoader() {
-    const { preview, coverType, uri, avatar } = this.props.flatLook;
+    const { preview, coverType, uri, user } = this.props.flatLook;
     const previewUri = coverType === 'video' ?
-      preview || avatar.url :
+      preview || user.avatar_url :
       uri;
+    console.log(previewUri);
     return (
       <View style={{ position: 'absolute', top: 0, height, width }}>
         <Image
           resizeMode={'stretch'} source={{ uri: previewUri }} style={{
-          position: 'absolute',
-          top: 0,
-          height,
-          width,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          <Spinner color="grey"/>
+            position: 'absolute',
+            top: 0,
+            height,
+            width,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Spinner color="grey" />
         </Image>
       </View>
     );
   }
+
+  _renderModal() {
+    const { modalParams } = this.state;
+    return (
+      <ModalQuestion
+        {...modalParams}
+        closeModal={this.setModalVisible} />
+    );
+  }
+
+  /* componentWillUpdate(nextProps, nextState) {
+    console.log('state');
+    console.log(this.difference(nextState, this.state));
+    console.log('props');
+    console.log(this.difference(nextProps, this.props));
+  }
+
+  difference(object, base) {
+    return _.transform(object, (result, value, key) => {
+      if (!_.isEqual(value, base[key])) {
+        result[key] = _.isObject(value) && _.isObject(base[key]) ? this.difference(value, base[key]) : value;
+      }
+    });
+  }*/
 
   render() {
     let looksArr = '';
@@ -451,6 +551,7 @@ class LooksScreen extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
+        {this._renderModal()}
         <ScrollView
           keyboardShouldPersistTaps={'always'}
           pagingEnabled={false}
@@ -467,4 +568,16 @@ class LooksScreen extends Component {
   }
 }
 
-export default LooksScreen;
+function bindActions(dispatch) {
+  return {
+    addLookItems: lookId => dispatch(addLookItems(lookId)),
+  };
+}
+
+const mapStateToProps = (state) => {
+  return {
+    flatLookData: state.looks.flatLooksData,
+  };
+};
+
+export default connect(mapStateToProps, bindActions)(LooksScreen);

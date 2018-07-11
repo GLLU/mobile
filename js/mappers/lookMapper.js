@@ -1,6 +1,7 @@
 import { find } from "lodash";
 import {Image} from 'react-native';
 import * as userMapper from "./userMapper";
+import { serializeItems } from './itemMapper';
 
 const getCoverByMediaType = (type, coverList) => {
   if (type === 'video') {
@@ -16,20 +17,16 @@ export function serializeLook(look) {
   return {
     liked: look.is_liked,
     description: look.description,
-    type: look.user_size.body_type,
     uri: cover.url ? cover.url : null,
     mediumSizeUri: look.cover.type === 'video' ? null : find(look.cover.list, x => x.version === 'medium').url,
     width: cover ? cover.width : null,
     height: cover ? cover.height : null,
     coverType: look.cover.type,
-    preview: look.cover.thumbnail_url || '',
     likes: look.likes,
     comments: look.comments,
     id: look.id,
-    items: look.items,
-    description: look.description,
     isFavorite: look.is_favorite,
-    user: userMapper.map(look.user),
+    user: look.user,
   }
 }
 

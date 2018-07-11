@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, KeyboardAvoidingView, Animated, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, KeyboardAvoidingView, Animated, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import BrandSelector from './BrandSelector';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import Colors from '../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
-import { CATEGORY, BRAND, COLOR, MOOD, LINK, DESCRIPTION } from './UploadLookScreen';
+import { CATEGORY, BRAND, COLOR, MOOD, LINK } from './UploadLookScreen';
 import ScrollableSelectableList from '../common/itemParams/ScrollableSelectableList';
-import DescriptionTab from './tabs/descriptionTab';
 import LinkTab from './tabs/linkTab';
 const vsign = require('../../../images/indicators/v_sign.png');
 import i18n from 'react-native-i18n';
@@ -32,7 +31,6 @@ export default class EditItemTabs extends Component {
       { key: BRAND, title: i18n.t('BRAND')},
       { key: COLOR, title: i18n.t('COLOR')},
       { key: MOOD, title: i18n.t('MOOD')},
-      { key: DESCRIPTION, title: i18n.t('DESCRIPTION')},
       { key: LINK, title: i18n.t('LINK')},
     ];
     this.routesNoDescription = [
@@ -77,7 +75,7 @@ export default class EditItemTabs extends Component {
   );
 
   renderTabIcon(currTab) {
-    const { itemCategory, currentItem, itemDescription, itemColors } = this.props;
+    const { itemCategory, currentItem, itemColors } = this.props;
     switch (this.state.routes[currTab.index].key) {
       case CATEGORY:
         return itemCategory !== -1 ? this._renderVSign() : this._renderRequiredSign();
@@ -87,8 +85,6 @@ export default class EditItemTabs extends Component {
         return !!currentItem.occasions.length > 0 ? this._renderVSign() : null;
       case COLOR:
         return !!itemColors.length > 0 ? this._renderVSign() : null;
-      case DESCRIPTION:
-        return itemDescription.length > 1 ? this._renderVSign() : null;
       case LINK:
         return currentItem.url ? this._renderVSign() : null;
     }
@@ -143,7 +139,7 @@ export default class EditItemTabs extends Component {
 
   _renderScene = ({ route }) => {
     const { index } = this.state;
-    const { currentItem, categoryFilters, toggleItemColors, brandsFilters, itemBrand, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl, itemDescription, addDescription } = this.props;
+    const { currentItem, categoryFilters, toggleItemColors, brandsFilters, itemBrand, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl } = this.props;
     switch (route.key) {
       case CATEGORY:
         return (<ScrollableSelectableList
@@ -167,10 +163,6 @@ export default class EditItemTabs extends Component {
         return (<ScrollableSelectableList
           mode="multi" onSelectionChange={occasion => toggleOccasionTag(occasion, occasion.selected)}
           filters={occasionsFilters} currentFilter={itemOccasions} />);
-      case DESCRIPTION:
-        return (<DescriptionTab
-          description={itemDescription}
-          addDescription={description => addDescription(description)} />);
       case LINK:
         return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:
@@ -188,20 +180,9 @@ export default class EditItemTabs extends Component {
     );
   }
 
-  _handleText = () => {
-    const tabHeight = this.state.isOpen ? 0 : generateAdjustedSize(135);
-
-    Animated.timing(          // Uses easing functions
-      this.animatedTabBar,    // The value to drive
-      {
-        toValue: tabHeight,
-        duration: 100,
-      }            // Configuration
-    ).start();
-
-    this.setState({isOpen: !this.state.isOpen});
+  onClickEditItems(event) {
+    event.preventDefault();
   }
-
 
   render() {
     const { currentItem } = this.props;
@@ -210,21 +191,20 @@ export default class EditItemTabs extends Component {
     }
     return (
       <KeyboardAvoidingView behavior={'padding'}>
-        <TouchableOpacity style={styles.bottomBarToggle} onPress={this._handleText}>
-          <Image style={{ height: 8, width: 18 }} source={this.state.isOpen ? arrowDown : arrowUp} resizeMode={'contain'}/>
-        </TouchableOpacity>
-        <Animated.View style={[styles.container, { height: this.animatedTabBar }]}>
-          {
-            !this.state.reloadingTabs ? <TabViewAnimated
-              style={styles.tabViewAnimatedContainer}
-              navigationState={this.state}
-              renderScene={this._renderScene}
-              renderHeader={this._renderHeader}
-              onRequestChangeTab={this._handleTabsIndexChange}
-              swipeEnabled={false}
-            /> : null
-          }
-        </Animated.View>
+        <TouchableWithoutFeedback transparent onPress={this.onClickEditItems}>
+          <Animated.View style={[styles.container, { height: this.animatedTabBar }]}>
+            {
+              !this.state.reloadingTabs ? <TabViewAnimated
+                style={styles.tabViewAnimatedContainer}
+                navigationState={this.state}
+                renderScene={this._renderScene}
+                renderHeader={this._renderHeader}
+                onRequestChangeTab={this._handleTabsIndexChange}
+                swipeEnabled={false}
+              /> : null
+            }
+          </Animated.View>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
 
     );

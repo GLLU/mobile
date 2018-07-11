@@ -1,7 +1,7 @@
 import {
   EDIT_NEW_LOOK,
   EDIT_TAG,
-  CREATE_LOOK_ITEM_BY_POSITION,
+  CREATE_CUSTOM_LOOK_ITEM,
   SELECT_LOOK_ITEM,
   SET_TAG_POSITION,
   ADD_ITEM_TYPE,
@@ -22,6 +22,9 @@ import {
   ADD_ITEM_COLOR,
   DONE_UPLOADING_FILE,
   CLEAR_UPLOAD_LOOK,
+  SELECT_PRODUCT_ITEM,
+  UPDATE_ITEM_OFFERS,
+  START_UPLOADING_FILE,
 } from '../actions/uploadLook';
 import _ from 'lodash';
 import { lookMapper, itemMapper } from '../mappers/';
@@ -36,6 +39,7 @@ export const newItem = {
   color_ids: [],
   tags: [],
   isNew: true,
+  isCustom: true,
 };
 
 const mutateItem = function (state, key, value, id) {
@@ -67,28 +71,41 @@ export default function (state = initialState, action) {
   let tags;
   let color_ids;
   let occasions;
+  let itemArray;
   switch (action.type) {
     case EDIT_NEW_LOOK:
       return {
         ...action.payload,
         ...lookMapper(action.payload),
       };
+    case UPDATE_ITEM_OFFERS:
+      itemArray = state.items.filter(element => element.id !== action.itemWithOffers.id);
+      return {
+        ...state,
+        items: [...itemArray, action.itemWithOffers],
+      };
     case SELECT_LOOK_ITEM:
       return {
         ...state,
         itemId: action.payload,
+      };
+    case START_UPLOADING_FILE:
+      return {
+        ...state,
+        isUploading: true,
       };
     case DONE_UPLOADING_FILE:
       return {
         ...state,
         isUploading: false,
       };
-    case CREATE_LOOK_ITEM_BY_POSITION:
+    case CREATE_CUSTOM_LOOK_ITEM:
       items = state.items;
       item = newItem;
       item.cover_x_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
       item.cover_y_pos = 0.5 + (Math.random() * (0.2 - (-0.2)) - 0.2);
       item.id = action.itemId;
+      item.isCustom = true;
       items.push(itemMapper(item));
       return {
         ...state,
@@ -104,6 +121,15 @@ export default function (state = initialState, action) {
         ...state,
         items: action.newItemsArr,
       };
+    case SELECT_PRODUCT_ITEM:
+      items = state.items;
+      const itemIndex = action.payload.itemIndex;
+      const offerIndex = action.payload.offerIndex;
+      items[itemIndex].offers[offerIndex].selected = !items[itemIndex].offers[offerIndex].selected;
+      return {
+        ...state,
+        items,
+      }
     case SET_TAG_POSITION:
       state.items = mutateItem(state, 'locationX', action.payload.locationX, action.payload.id);
       state.items = mutateItem(state, 'locationY', action.payload.locationY, action.payload.id);

@@ -1,27 +1,24 @@
-import React,{PureComponent} from 'react';
-import { StyleSheet, TextInput, Text, Platform, Dimensions, TouchableOpacity, Image, View } from 'react-native';
-import IsOnScreenChecker from './IsOnScreenChecker'
+import React, { PureComponent } from 'react';
+import { Image, View } from 'react-native';
+import IsOnScreenChecker from './IsOnScreenChecker';
+
 class ImageWrapper extends PureComponent {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    if(this.props.isOnScreen) {
-      return(
-        <Image {...this.props} cache={true}>
+    const { source, style } = this.props;
+    if (this.props.isOnScreen) {
+      return (
+        <Image {...this.props} cache>
           {this.props.children}
         </Image>
-      )
+      );
     } else {
-      return(
-        <View {...this.props} >
+      return (
+        <View {...this.props}>
           {this.props.children}
         </View>
-      )
+      );
     }
-
   }
 }
 

@@ -9,5 +9,6 @@ export default function map(look) {
     video: '',
     ...look,
     items,
-  }
+  };
 }
+
