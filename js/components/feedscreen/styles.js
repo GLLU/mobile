@@ -63,8 +63,8 @@ module.exports = StyleSheet.create({
     color: 'grey'
   },
   btnImage: {
-    height: 75,
-    width: 75,
+    height: 63,
+    width: 63,
     marginBottom: 2,
     alignSelf: 'center',
     justifyContent: 'center',

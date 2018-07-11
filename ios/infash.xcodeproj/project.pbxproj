@@ -328,13 +328,6 @@
 			remoteGlobalIDString = FDC64AF01BF1690D0044C1B4;
 			remoteInfo = RNMixpanel;
 		};
-		65EAD55920A49FB6001D0BF6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A33F83D9B2A64017897F4D81 /* BVLinearGradient.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 64AA15081EF7F30100718508;
-			remoteInfo = "BVLinearGradient-tvOS";
-		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -559,6 +552,7 @@
 		3BA68A6CACBA4316BBA3F65B /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		3BE0BE98BE3E4037ABFE58D8 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		3FC2F84104554D5F88D60373 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
+		40B03F4476DE454DAE22C1B5 /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		4514476142504992896A2D23 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		476C4CDE67FC4A89AB1B005D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		47BD83EABF3E4F9A9A8F6CB7 /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BlackItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -929,6 +923,7 @@
 				34692ED035204787A5CD6BE2 /* libRCTOneSignal.a */,
 				E393E3E17A4B4645B0D43601 /* libRNShare.a */,
 				6F041CDF42114F77896B8087 /* libRNFS.a */,
+				40B03F4476DE454DAE22C1B5 /* libFastImage.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1060,7 +1055,6 @@
 			isa = PBXGroup;
 			children = (
 				6391412F1E436463004EABCC /* libBVLinearGradient.a */,
-				65EAD55A20A49FB6001D0BF6 /* libBVLinearGradient.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1636,13 +1630,6 @@
 			remoteRef = 65BCE8D21F16166B00CB6038 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		65EAD55A20A49FB6001D0BF6 /* libBVLinearGradient.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBVLinearGradient.a;
-			remoteRef = 65EAD55920A49FB6001D0BF6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2056,6 +2043,8 @@
 					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
+					"\"$(SRCROOT)/inFash\"",
+					"\"$(SRCROOT)/inFash\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2138,6 +2127,8 @@
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
 					"\"$(SRCROOT)/gllu\"",
+					"\"$(SRCROOT)/inFash\"",
+					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",
 					"\"$(SRCROOT)/inFash\"",

@@ -6,7 +6,7 @@ import { serializeItems } from '../mappers/itemMapper';
 const route = '/feed';
 
 class LooksService {
-  static getLooks = body => AppAPI.get(`${route}`, body).then(((data) => {
+  static getLooks = body => AppAPI.get(`${route}`, Object.assign(body, { minimal: 1 })).then(((data) => {
     const looks = feedLookMapper.serializeLooks(data.looks);
     return { looks, meta: data.meta };
   }));

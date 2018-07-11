@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: height / 2.5,
-    right: 0,
+    right: 20,
     width,
     zIndex: 1,
     padding: 10,

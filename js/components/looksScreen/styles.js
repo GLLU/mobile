@@ -20,8 +20,8 @@ export default StyleSheet.create({
     fontFamily: Fonts.contentFont,
   },
   itemImage: {
-    width: width,
-    height: height,
+    width,
+    height,
   },
   descriptionStyle: {
     flexDirection: 'row',

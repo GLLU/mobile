@@ -2,17 +2,20 @@
 
 import { connect } from 'react-redux';
 import WhatsHotTabContent from './WhatsHotTabContent';
-import { showBodyTypeModal, getWhatsHotFeed, loadMore, showParisBottomMessage } from '../../actions';
+import { showBodyTypeModal, getWhatsHotFeed, loadMore, showParisBottomMessage, addLookItems } from '../../actions';
 import { FEED_TYPE_WHATS_HOT, toggleFiltersMenus, changeFiltersGender, refreshFeed } from '../../actions/feed';
 import { getLooksById } from '../../utils/FeedUtils';
 import { getDataWithUsersObj } from '../../utils/UsersUtils';
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const navigateToLooksScreen = params => ownProps.navigateTo('lookScreenWhatsHot', params);
+  const navigateToLooksScreen = (params) => {
+    ownProps.navigateTo('lookScreenWhatsHot', params);
+  };
   return {
     navigateToLooksScreen,
     showBodyTypeModal: () => dispatch(showBodyTypeModal()),
     getFeed: query => dispatch(getWhatsHotFeed(query)),
+    addLookItems: lookId => dispatch(addLookItems(lookId)),
     loadMore: () => dispatch(loadMore(FEED_TYPE_WHATS_HOT)),
     refreshFeed: () => dispatch(refreshFeed(FEED_TYPE_WHATS_HOT)),
     showParisBottomMessage: message => dispatch(showParisBottomMessage(message)),

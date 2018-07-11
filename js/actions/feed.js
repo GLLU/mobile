@@ -20,7 +20,7 @@ export const CLOSE_FEED_FILTER = 'CLOSE_FEED_FILTER';
 export const CHANGE_FILTERS_GENDER = 'CHANGE_FILTERS_GENDER';
 
 export const parseQueryFromState = function (state: array) {
-  const parsedState = { ...state, 'page[size]': state.page.size, 'page[number]': state.page.number };
+  const parsedState = { ...state, 'page[size]': state['page[size]'], 'page[number]': state['page[number]'] };
   if (state.category) {
     parsedState.category = state.category;
   }
@@ -30,24 +30,16 @@ export const parseQueryFromState = function (state: array) {
 
 export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   return (dispatch, getState) => {
-    const newState = Object.assign({}, query, {
-      page: {
-        size: 10,
-        number: 1,
-      },
-    });
-    dispatch(startFechting(feedType));
-    delete query.page;
-    return Promise.all([LooksService.getLooks({
-      ...query,
-      'page[size]': 10,
+    const newState = Object.assign({}, {
       'page[number]': 1,
-    }), LooksService.getVideos({ ...query, 'page[size]': 15, 'page[number]': 1 })])
+      'page[size]': 16,
+    }, query);
+    dispatch(startFechting(feedType));
+    return Promise.all([LooksService.getLooks(query), LooksService.getVideos({ ...query, 'page[size]': 1, 'page[number]': Math.floor(Math.random() * 15) })])
       .then((multiData) => {
         if (multiData && multiData[0] && multiData[1]) {
           const { looks, meta } = multiData[0];
-          const randomVideoLocation = Math.floor(Math.random() * multiData[1].looks.length) + 0;
-          const videoLook = multiData[1].looks[randomVideoLocation];
+          const videoLook = multiData[1].looks[0];
           const metaWithRefresh = { ...meta, lastRefreshPage: getState().feed[feedType].meta.lastRefreshPage };
 
           if (videoLook) {
@@ -55,6 +47,7 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
             const videoExistsOnLooks = looks.filter(obj => obj.id === videoLook.id)[0];
 
             if (!videoExistsOnLooks) {
+              // always add one video look on the first feed if not exist
               looks.splice(2, 0, videoLook);
             }
           }
@@ -66,7 +59,6 @@ export function getFeed(query: object, feedType = FEED_TYPE_BEST_MATCH, retryCou
           const flatLooksIdData = _.union(getState().feed[feedType].flatLooksIdData, normalizedLooksData.result);
           dispatch(setFeedData({ flatLooksIdData, meta: metaWithRefresh, query: newState, feedType }));
           dispatch(finishFechting(feedType));
-          dispatch(loadMore(feedType));
           Promise.resolve(multiData[0]);
         } else {
           Promise.reject();
@@ -110,10 +102,11 @@ export function clearFeed() {
 export function loadMore(feedType = FEED_TYPE_BEST_MATCH, retryCount = 0) {
   return (dispatch, getState) => {
     const state = getState().feed[feedType];
-    const currPage = state.query.page.number;
+    const currPage = state.query['page[number]'];
     const nextPageNumber = currPage + 1;
-    const newState = _.merge(state.query, { page: { number: nextPageNumber } });
+    const newState = _.merge(state.query, { 'page[number]': nextPageNumber });
     const params = parseQueryFromState(newState);
+    Object.assign(params, { 'page[size]': 16 });
     return LooksService.getLooks(params).then((data) => {
       if (data) {
         const { looks, meta } = data;

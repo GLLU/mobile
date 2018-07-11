@@ -7,8 +7,9 @@ import Config from 'react-native-config';
 
 class SyteApi {
 
+  /* As of July 18 feed=default refer to shopstyle & awin */
   static getSuggestions(image: any) {
-    const url = `${Config.SYTE_URL}/bb?account_id=${Config.SYTE_ACCOUNT_ID}&sig=${encodeURIComponent(Config.SYTE_SIG)}&payload_type=${Config.SYTE_PAYLOAD_TYPE}&feed=default`;
+    const url = `${Config.SYTE_URL}/bb?account_id=${Config.SYTE_ACCOUNT_ID}&sig=${encodeURIComponent(Config.SYTE_SIG)}&payload_type=${Config.SYTE_PAYLOAD_TYPE}&feed=infash`;
 
     return axios(url, {
       method: 'POST',

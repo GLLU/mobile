@@ -26,7 +26,7 @@ import * as userMapper from "../../mappers/userMapper";
 import {FEED_TYPE_BEST_MATCH, FEED_TYPE_FOLLOWING, FEED_TYPE_WHATS_HOT, toggleFiltersMenus} from '../../actions/feed';
 import { getSuggestions } from '../../actions/querySuggestions';
 
-const cameraIcon = require('../../../images/icons/camera_green-circle.png');
+const cameraIcon = require('../../../images/icons/camera_green_bg.png');
 
 class FeedPage extends Component {
 
@@ -83,11 +83,16 @@ class FeedPage extends Component {
 
   componentDidMount() {
     Analytics.setUser(this.props.user);
-    this.props.loadCategories();
-    this.props.loadOccasionTags();
-    this.props.loadColors();
-    this.props.loadBrands();
-    this.props.getSuggestions();
+    setTimeout(() => {
+      this.props.getNotifications(); // can stay here, still thinking about it
+      this.props.getUserBalance(this.props.user.id);
+      this.props.loadCategories();
+      this.props.loadOccasionTags();
+      this.props.loadColors();
+      this.props.loadBrands();
+      this.props.getSuggestions();
+    }, 1000);
+    
   }
 
   _onReceived = (notification) => {
@@ -129,9 +134,6 @@ class FeedPage extends Component {
         return true;
       }
     });
-
-    this.props.getNotifications(); // can stay here, still thinking about it
-    this.props.getUserBalance(this.props.user.id);
   }
 
   componentWillUnmount() {

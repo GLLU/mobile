@@ -19,7 +19,9 @@ class NetworkManager {
       validateStatus: status => ApiUtils.checkStatus(status),
     })
             .then((response) => {
+              // console.log(`Method: ${method}, Route: ${route}, Body: ${body}`);
               return response.data;
+              
             })
             .catch((error) => {
               Utils.notifyRequestError(new Error(JSON.stringify(error)), error.response.data);

@@ -13,6 +13,8 @@ import {
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import i18n from 'react-native-i18n';
+import { connect } from 'react-redux';
+import { addLookItems } from '../../actions/look';
 import styles from './styles';
 import LookOverlay from './LookOverlay';
 import SwipeWizardOverlay from './SwipeWizardOverlay';
@@ -63,6 +65,7 @@ class LooksScreen extends Component {
     this.renderDownArrow = this.renderDownArrow.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
     this._renderLookImage = this._renderLookImage.bind(this);
+    this.fetchMoreLooksItems = this.fetchMoreLooksItems.bind(this);
     this.state = {
       showAsFeed: props.flatLooksData.length > 1,
       isBottomDrawerOpen: props.openComments,
@@ -82,10 +85,6 @@ class LooksScreen extends Component {
     this.setState({ modalParams: { ...modalParams, ...params } });
   }
 
-  componentWillMount() {
-    const { flatLook } = this.props;
-  }
-
   componentDidUpdate(prevProps, prevState) {
     const { flatLooksData } = this.props;
     const currIndex = this.state.currScrollIndex;
@@ -94,8 +93,28 @@ class LooksScreen extends Component {
     }
   }
 
+  fetchCurrentLookItems() {
+    const { flatLooksData, addLookItems } = this.props;
+    const currIndex = this.state.currScrollIndex;
+    addLookItems(flatLooksData[currIndex].id);
+  }
+
+  fetchMoreLooksItems() {
+    const { flatLooksData, addLookItems } = this.props;
+    const currIndex = this.state.currScrollIndex;
+    const startIndex = (currIndex - 2 > 0) ? currIndex - 2 : 0;
+    const lastIndex = (currIndex + 2 < flatLooksData.length - 1) ? currIndex + 2 : flatLooksData.length - 1;
+
+    for (let i = startIndex; i <= lastIndex; i++) {
+      const lookId = flatLooksData[i].id;
+      if (!flatLooksData[i].items) {
+        addLookItems(lookId);
+      }
+    }
+  }
+
   componentDidMount() {
-    const { meta: { total } } = this.props;
+    const { meta: { total }, flatLooksData } = this.props;
     if (this.state.showAsFeed) {
       switch (Platform.OS) {
         case 'ios':
@@ -126,10 +145,14 @@ class LooksScreen extends Component {
 
           break;
       }
-      this.setState({ mountedOnce: true }); // because comments are re-open when you this.goBack
     }
-    if (this.state.currScrollIndex === this.props.flatLooksData.length - 1) {
+    if (this.state.currScrollIndex >= this.props.flatLooksData.length - 5) {
       this.loadMore();
+    }
+
+    const currLook = flatLooksData[this.state.currScrollIndex];
+    if (!currLook.items || currLook.items.length === 0) {
+      this.fetchCurrentLookItems();
     }
   }
 
@@ -179,10 +202,13 @@ class LooksScreen extends Component {
     this.props.navigateTo('likesscreen', { lookId: look.id, count: look.likes });
   }
 
+  _openRedirectedWebView = (url: string, lookId: number, itemId: number, suggId: number) => {
+    fetch(url, { redirect: 'follow', credentials: 'include' }).then(res => res.text().then((html) => {
+      this.props.navigateTo('webViewScreen', { html, baseUrl: res.url, headerData: { title: i18n.t('SHOP_ITEM') } });
+    }));
+  }
+
   _openWebView = (url: string, lookId: number, itemId: number, suggId: number) => {
-    /*itemsService.clickOnProduct(url, lookId, itemId, suggId).then((data) => {
-      this.props.navigateTo('webViewScreen', { url, headerData: { title: i18n.t('SHOP_ITEM') } });
-    });*/
     this.props.navigateTo('webViewScreen', { url, headerData: { title: i18n.t('SHOP_ITEM') } });
   }
 
@@ -195,9 +221,7 @@ class LooksScreen extends Component {
       return;
     }
     const { meta: { total }, query } = this.props;
-    const pageSize = query.page.size;
-    const pageNumber = query.page.number;
-    if (pageSize * pageNumber < total) {
+    if (query['page[number]'] * query['page[size]'] < total) {
       this.setState({ isLoading: true }, () => {
         this.props.loadMore().then(() => {
           this.setState({ isLoading: false });
@@ -213,6 +237,8 @@ class LooksScreen extends Component {
   onSwipe(gestureName: string) {
     this.props.logEvent('LookScreen', { name: 'user swiped', type: gestureName });
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
+
+    this.fetchMoreLooksItems();
 
     if (showSwipeWizard) {
       onHideSwipeWizard();
@@ -287,7 +313,7 @@ class LooksScreen extends Component {
   }
 
   renderVideo(look: object, index: number) {
-    const showShowArrow = this.shouldRenderArrows();
+    const shouldShowArrow = this.shouldRenderArrows();
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
 
@@ -330,8 +356,8 @@ class LooksScreen extends Component {
           toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
           reportAbuse={lookId => this.props.reportAbuse(lookId)}
         />
-        {showShowArrow ? this.renderUpArrow() : null}
-        {showShowArrow ? this.renderDownArrow() : null}
+        {shouldShowArrow ? this.renderUpArrow() : null}
+        {shouldShowArrow ? this.renderDownArrow() : null}
 
         {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard}/> : null}
       </GestureRecognizer>
@@ -364,12 +390,12 @@ class LooksScreen extends Component {
   }
 
   _renderLookImage(look: object) {
-    const showShowArrow = this.shouldRenderArrows();
+    const shouldShowArrow = this.shouldRenderArrows();
     const { onHideSwipeWizard, showSwipeWizard } = this.props;
     const { showRetailerMessage } = this.state;
     const openComments = !this.state.mountedOnce && this.props.openComments && look.id === this.props.flatLook.id;
     return (
-      <View>
+      <View style={{ backgroundColor: 'black' }}>
         <View style={{
           flex: 1,
           backgroundColor: 'white',
@@ -378,13 +404,13 @@ class LooksScreen extends Component {
           justifyContent: 'center',
           top: 0,
           bottom: 0,
-          right: 0,
-          left: 0,
+          right: 33,
+          left: 33,
         }}>
           <Text style={styles.loadingImage}> {i18n.t('LOADING_IMAGE')} </Text>
         </View>
         <ImageWrapper
-          resizeMode={'stretch'}
+          resizeMode={'contain'}
           style={styles.itemImage}
           source={{ uri: look.mediumSizeUri }}
           navigation={this.props.cardNavigation}>
@@ -405,8 +431,8 @@ class LooksScreen extends Component {
             toggleLike={shouldLike => this._toggleLike(shouldLike, look.id)}
             reportAbuse={lookId => this.props.reportAbuse(lookId)}
           />
-          {showShowArrow ? this.renderUpArrow() : null}
-          {showShowArrow ? this.renderDownArrow() : null}
+          {shouldShowArrow ? this.renderUpArrow() : null}
+          {shouldShowArrow ? this.renderDownArrow() : null}
 
           {showSwipeWizard ? <SwipeWizardOverlay onClose={onHideSwipeWizard}/> : null}
           {showRetailerMessage ? this._renderRetailerMessage() : null}
@@ -470,10 +496,11 @@ class LooksScreen extends Component {
   }
 
   renderLoader() {
-    const { preview, coverType, uri, avatar } = this.props.flatLook;
+    const { preview, coverType, uri, user } = this.props.flatLook;
     const previewUri = coverType === 'video' ?
-      preview || avatar.url :
+      preview || user.avatar_url :
       uri;
+    console.log(previewUri);
     return (
       <View style={{ position: 'absolute', top: 0, height, width }}>
         <Image
@@ -499,6 +526,21 @@ class LooksScreen extends Component {
         closeModal={this.setModalVisible} />
     );
   }
+
+  /* componentWillUpdate(nextProps, nextState) {
+    console.log('state');
+    console.log(this.difference(nextState, this.state));
+    console.log('props');
+    console.log(this.difference(nextProps, this.props));
+  }
+
+  difference(object, base) {
+    return _.transform(object, (result, value, key) => {
+      if (!_.isEqual(value, base[key])) {
+        result[key] = _.isObject(value) && _.isObject(base[key]) ? this.difference(value, base[key]) : value;
+      }
+    });
+  }*/
 
   render() {
     let looksArr = '';
@@ -526,4 +568,16 @@ class LooksScreen extends Component {
   }
 }
 
-export default LooksScreen;
+function bindActions(dispatch) {
+  return {
+    addLookItems: lookId => dispatch(addLookItems(lookId)),
+  };
+}
+
+const mapStateToProps = (state) => {
+  return {
+    flatLookData: state.looks.flatLooksData,
+  };
+};
+
+export default connect(mapStateToProps, bindActions)(LooksScreen);
