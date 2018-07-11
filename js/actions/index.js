@@ -13,7 +13,7 @@ import {showParisBottomMessage, hideParisBottomMessage} from './paris';
 import {loadCategories, loadBrands, loadOccasionTags} from './filters';
 import {completeEdit, saveUserSize} from './myBodyMeasure';
 import {changeBodyType, showBodyTypeModal, hideBodyTypeModal, getUserBodyType} from './myBodyType';
-import {likeUpdate, unlikeUpdate} from './look';
+import {likeUpdate, unlikeUpdate, addLookItems} from './look';
 import {getUserBalance} from './wallet';
 import {getLookLikes, initLookLikes} from './lookLikes';
 import {followUpdate, unFollowUpdate, getUserFollowsData, initUserFollows}  from './follows';
@@ -95,4 +95,5 @@ export {
   goToNotificationSubjectScreen,
   markAsReadNotifications,
   clearNewNotifications,
+  addLookItems,
 };

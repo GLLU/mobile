@@ -29,8 +29,13 @@ const styles = StyleSheet.create({
     height: generateAdjustedSize(45),
     alignSelf: 'center',
     backgroundColor: Colors.secondaryColor,
-  }
-  ,
+  },
+  disabledButton: {
+    opacity: 0.4,
+  },
+  enabledButton: {
+    opacity: 1,
+  },
 });
 
 type Props={
@@ -54,9 +59,9 @@ class SolidButton extends Component {
   props: Props;
 
   render() {
-    const { loaderColor, disabled, onPress, label, showLoader, style } = this.props;
+    const { loaderColor, onPress, label, showLoader, style, disabled } = this.props;
     return (
-      <TouchableOpacity style={[styles.center, styles.basicStyle, style]} disabled={disabled} onPress={onPress}>
+      <TouchableOpacity style={[styles.center, styles.basicStyle, disabled ? styles.disabledButton : styles.enabledButton, style]} disabled={disabled} onPress={onPress}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Text style={styles.text}>{label}</Text>
           {showLoader ? <Spinner animating color={loaderColor} size={'small'} style={{ left: 10 }} /> : null}

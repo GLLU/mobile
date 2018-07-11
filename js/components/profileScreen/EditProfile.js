@@ -120,7 +120,7 @@ class EditProfile extends Component {
                 alignItems: 'center',
               }}>
               <ProfileAvatar
-                avatarUrl={this.props.user.avatar.url} style={{ width: 70, height: 70 }}
+                avatarUrl={this.props.user.avatar_url} style={{ width: 70, height: 70 }}
                 isLoading={this.state.isChangingAvatar} changeUserAvatar={this._changeUserAvatar}
                 isEditable />
             </View>

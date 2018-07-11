@@ -17,19 +17,16 @@ export function serializeLook(look) {
   return {
     liked: look.is_liked,
     description: look.description,
-    type: look.user_size.body_type,
     uri: cover.url ? cover.url : null,
     mediumSizeUri: look.cover.type === 'video' ? null : find(look.cover.list, x => x.version === 'medium').url,
     width: cover ? cover.width : null,
     height: cover ? cover.height : null,
     coverType: look.cover.type,
-    preview: look.cover.thumbnail_url || '',
     likes: look.likes,
     comments: look.comments,
     id: look.id,
-    items: serializeItems(look.items),
     isFavorite: look.is_favorite,
-    user: userMapper.map(look.user),
+    user: look.user,
   }
 }
 

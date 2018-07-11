@@ -18,7 +18,7 @@ import VideoWithCaching from "./media/VideoWithCaching";
 import ImageWrapper from "./media/ImageWrapper";
 import withAnalytics from "../common/analytics/WithAnalytics";
 import {connect} from "react-redux";
-import {likeUpdate, unlikeUpdate} from "../../actions/look";
+import {likeUpdate, unlikeUpdate, addLookItems} from "../../actions/look";
 import Fonts from '../../styles/Fonts.styles';
 const deviceWidth = Dimensions.get('window').width;
 
@@ -92,10 +92,13 @@ class MediaContainer extends Component {
   }
 
   _handleItemPress() {
+    const { look, addLookItems } = this.props;
     const item = { lookId: this.props.look.id };
     this.props.logEvent(this.props.fromScreen, { name: 'Image click' });
     const that = this;
-    setTimeout(() => that.props.navigateToLooksScreen(item), 0);
+    setTimeout(() => {
+      that.props.navigateToLooksScreen(item);
+    }, 0);
   }
 
   toggleLikeAction() {
@@ -248,6 +251,7 @@ function bindActions(dispatch) {
   return {
     likeUpdate: id => dispatch(likeUpdate(id)),
     unlikeUpdate: id => dispatch(unlikeUpdate(id)),
+    addLookItems: lookId => dispatch(addLookItems(lookId)),
   };
 }
 

@@ -1,5 +1,4 @@
 export function map(suggestion) {
-  console.log(suggestion);
   return {
     id: suggestion.id,
     rowNumber: suggestion.row_number,

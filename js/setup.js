@@ -51,7 +51,7 @@ function setup(): React.Component {
     }
 
     onStoreConfigured() {
-      setTimeout(()=>this.setState({ isLoading: false }), 500);
+      setTimeout(() => this.setState({ isLoading: false }), 300);
     }
 
     render() {
@@ -59,14 +59,12 @@ function setup(): React.Component {
         return (
           <Image
             source={background} resizeMode={'stretch'}
-            style={{ flex: 1, width: deviceWidth, justifyContent: 'center', alignItems: 'center' }}>
-            <Spinner />
-          </Image>
+            style={{ flex: 1, width: deviceWidth, justifyContent: 'center', alignItems: 'center', transition: 'opacity 300ms linear' }} />
         );
       }
       return (
         <Provider store={this.state.store}>
-          <App notification={notificationObject} isStoreConfigured={!this.state.isLoading}/>
+          <App notification={notificationObject} isStoreConfigured={!this.state.isLoading} />
         </Provider>
       );
     }

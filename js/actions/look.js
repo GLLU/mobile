@@ -54,8 +54,19 @@ export function deleteLook(id: number) {
 
 export function addLookItems(id: number) {
   return (dispatch) => {
-    itemsService.getItems(id).then((data) => {
-      dispatch({ type: ADD_LOOK_ITEMS, payload: { data, id } });
+    return new Promise((resolve, reject) => {
+      itemsService.getItems(id).then((data) => {
+        if (data) {
+          const payload = {
+            data,
+            id,
+          };
+          dispatch({ type: ADD_LOOK_ITEMS, payload });
+          resolve(payload);
+        } else {
+          reject('look items error');
+        }
+      });
     });
   };
 }
