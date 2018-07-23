@@ -2,26 +2,19 @@
 
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import i18n from 'react-native-i18n';
 import _ from 'lodash';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
 import Colors from '../../../styles/Colors.styles';
 import ProductItem from './ProductItem';
 
 const { width } = Dimensions.get('window');
-const MAX_SHOWN_OFFERS = 9;
+const MAX_SHOWN_OFFERS = 10;
 
 class ProductItemsCarousel extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: true,
-    };
-  }
-
   render() {
-    const { offers, onMoreContentPress, onSelectProductItem } = this.props;
-    const { isOpen } = this.state;
+    const { offers, onChangeToManualPress, onSelectProductItem, onEnlargeItem } = this.props;
     const shownOffers = (offers && offers.length > MAX_SHOWN_OFFERS) ? offers.slice(0, MAX_SHOWN_OFFERS - 1) : offers;
     return (
       <View style={styles.container}>
@@ -30,13 +23,16 @@ class ProductItemsCarousel extends Component {
           contentContainerStyle={styles.productItem}
           horizontal>
           {_.map(shownOffers, (item, index) => (
-            <ProductItem key={index} offer={item} onSelectProductItem={() => onSelectProductItem(index)} />
+            <ProductItem
+              key={index}
+              offer={item}
+              onSelectProductItem={() => onSelectProductItem(index)}
+              onEnlargeItem={onEnlargeItem} />
           ))}
           {offers.length > MAX_SHOWN_OFFERS ?
-            <TouchableOpacity style={styles.moreContent} onPress={onMoreContentPress}>
-              <Image style={styles.moreContentImage} source={{ uri: offers[shownOffers.length].image_url }} />
+            <TouchableOpacity style={styles.moreContent} onPress={onChangeToManualPress}>
               <View style={styles.moreContentImageOverlay}>
-                <Text style={styles.moreContentText}> More Items</Text>
+                <Text style={styles.moreContentText}> {i18n.t('MORE_PRODUCT_ITEMS')}</Text>
               </View>
             </TouchableOpacity> : null }
         </ScrollView>
@@ -82,18 +78,19 @@ const styles = StyleSheet.create({
     top: 0,
     width: '100%',
     height: '100%',
-    opacity: 0.5,
-    backgroundColor: Colors.black,
+    opacity: 1,
+    backgroundColor: Colors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   moreContentText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 15,
+    padding: 5,
     width: '100%',
     opacity: 1,
-    color: Colors.white,
+    color: Colors.secondaryColor,
   },
 });
 

@@ -3,11 +3,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
   Animated,
-  TouchableOpacity,
-  Image,
-  TouchableHighlight,
   TouchableWithoutFeedback,
   Platform,
   BackAndroid,

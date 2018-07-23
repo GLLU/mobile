@@ -1,20 +1,24 @@
-import React, {Component} from 'react';
-import {View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import i18n from 'react-native-i18n';
 import _ from 'lodash';
 import Fonts from '../../styles/Fonts.styles';
 import MediaContainer from '../common/MediaContainer';
-const deviceWidth = Dimensions.get('window').width;
 import ParisAdjustableMessage from '../paris/ParisAdjustableMessage';
 import ModalQuestion from '../uploadLookScreen/forms/ModalQuestion';
+
+const deviceWidth = Dimensions.get('window').width;
 
 class UserLooks extends Component {
 
   static propTypes = {
+    isMyProfile: React.PropTypes.bool,
+    isLoading: React.PropTypes.bool,
     userLooks: React.PropTypes.array,
-    handleSwipeTab: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
-    userId: React.PropTypes.number,
+    deleteLook: React.PropTypes.func,
+    likeUpdate: React.PropTypes.func,
+    unlikeUpdate: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -45,7 +49,7 @@ class UserLooks extends Component {
       this.setState({
         flatLooksLeft: _.filter(nextProps.userLooks, (look, index) => index % 2 === 0),
         flatLooksRight: _.filter(nextProps.userLooks, (look, index) => index % 2 === 1),
-        loadingMore: false
+        loadingMore: false,
       });
     }
 
@@ -54,9 +58,6 @@ class UserLooks extends Component {
       this.contentHeight = 0;
       this.currPosition = 0;
       this.setState({ noMoreData: false });
-    }
-    if (nextProps) {
-
     }
   }
 
@@ -83,7 +84,7 @@ class UserLooks extends Component {
       confirmAction: this._hideModal,
       cancelAction: this._hideModal,
     });
-    /*this.props.editNewLook(look.id).then(() => {
+    /* this.props.editNewLook(look.id).then(() => {
       this.props.navigateTo('uploadLookScreen', { mode: 'edit' });
     });*/
   }
@@ -92,7 +93,7 @@ class UserLooks extends Component {
     return (
       <View style={[{
         position: 'absolute',
-        left: 0
+        left: 0,
       }, look.coverType === 'video' ? { top: 30 } : { top: 15 }, Platform.OS === 'ios' && look.coverType === 'video' ? { left: 3 } : null]}>
         <Text style={styles.lookStatusText}>{look.state}</Text>
       </View>
@@ -105,7 +106,7 @@ class UserLooks extends Component {
   }
 
   _hideModal = () => {
-    this.setState({ modalParams: { modalVisible: false } })
+    this.setState({ modalParams: { modalVisible: false } });
   }
 
   renderEmptyView() {
@@ -126,8 +127,8 @@ class UserLooks extends Component {
       confirmAction: () => {
         this.props.deleteLook(look.id);
         this._hideModal();
-      }
-  })
+      },
+    });
   }
 
   renderEditLookBtn(look) {
@@ -203,7 +204,7 @@ class UserLooks extends Component {
 const styles = StyleSheet.create({
   tab: {
     backgroundColor: '#FFFFFF',
-    paddingTop: 5
+    paddingTop: 5,
   },
   mainGrid: {
     backgroundColor: '#FFFFFF',

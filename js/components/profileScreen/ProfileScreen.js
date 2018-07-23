@@ -205,13 +205,13 @@ class ProfileScreen extends Component {
         return (<WalletScreen
           balance={balance} onWithdrawPressed={this._handleWithdraw}
           onShowWalletWizard={() => this.setState({ showWalletWizard: true })}
-          onAddNewLook={() => this._handleNewPost('wallet')}/>);
+          onAddNewLook={() => this._handleNewPost('wallet')} />);
       case 'closet':
         return this._renderLooks('favorites');
       case 'settings':
-        return <SettingsScreen navigation={navigation} onProfileEdit={onProfileEdit}/>;
+        return <SettingsScreen navigation={navigation} onProfileEdit={onProfileEdit} />;
       default:
-        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }}/>
+        return <View style={{ height: 200, width: 450, backgroundColor: 'red' }} />
           ;
     }
   };
@@ -266,7 +266,7 @@ class ProfileScreen extends Component {
     scrollEventThrottle={100}
     onScroll={this._handleScroll}
     style={{ backgroundColor: 'purple' }}
-    pagingEnabled/>
+    pagingEnabled />
 
   _loadMoreUserLooks = () => {
     if (this.state.loadingMore) {
@@ -279,7 +279,6 @@ class ProfileScreen extends Component {
     const { meta: { total_count }, query } = this.props;
 
     if (query['page[number]'] * query['page[size]'] < total_count) {
-      // if (pageSize * pageNumber < total_count) {
       this.setState({ loadingMore: true }, () => {
         this.props.loadMoreUserLooks(data).then(() => {
             this.setState({ loadingMore: false });

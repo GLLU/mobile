@@ -11,7 +11,6 @@ import {
   Platform,
   RefreshControl,
   View,
-  NetInfo,
   ActivityIndicator,
 } from 'react-native';
 import Spinner from '../loaders/Spinner';
@@ -25,14 +24,14 @@ import i18n from 'react-native-i18n';
 import BodyTypePicker from '../myBodyType/BodyTypePicker';
 import SolidButton from '../common/buttons/SolidButton';
 import FiltersView from './FilterContainer';
-import QuerySuggestions from './querySuggestionsGrid/QuerySuggestions';
 import EmptyStateScreen from '../common/EmptyStateScreen';
 import FeedFilters from './FeedFilters';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
-import {CATEGORIES, EVENTS} from '../../reducers/filters';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
+import { CATEGORIES, EVENTS } from '../../reducers/filters';
 
 const noResultsIcon = require('../../../images/emptyStates/search.png');
 const editShapeBtn = require('../../../images/icons/edit_your_body_shape.png');
+
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
@@ -58,11 +57,10 @@ class BestMatchTabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.handleScrollPosition = this.handleScrollPosition.bind(this);
+    this.resetScrollPosition = this.resetScrollPosition.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this.getFeedWithNewBodyShape = this.getFeedWithNewBodyShape.bind(this);
-    //this.getFeedWithSuggestion = this.getFeedWithSuggestion.bind(this);
     this._showBodyShapeModal = this._showBodyShapeModal.bind(this);
     this._saveBodyShape = this._saveBodyShape.bind(this);
     this.state = {
@@ -85,11 +83,11 @@ class BestMatchTabContent extends BaseComponent {
 
   componentDidMount() {
     const { changeFiltersGender, defaultFilters } = this.props;
-      changeFiltersGender(defaultFilters.gender);
-      setInterval(() => {
-        this.handleScrollPosition();
-      }, 1000);
-      const that = this;
+    changeFiltersGender(defaultFilters.gender);
+    setInterval(() => {
+      this.resetScrollPosition();
+    }, 1000);
+    const that = this;
   }
 
   _getFeed(query) {
@@ -103,7 +101,7 @@ class BestMatchTabContent extends BaseComponent {
       if (firstFetch) {
         this._getFeed(defaultFilters);
         setInterval(() => {
-          this.handleScrollPosition();
+          this.resetScrollPosition();
         }, 1000);
         this.setState({ firstFetch: false });
       }
@@ -153,7 +151,7 @@ class BestMatchTabContent extends BaseComponent {
     this.currPosition = event.nativeEvent.contentOffset.y;
   }
 
-  handleScrollPosition() {
+  resetScrollPosition() {
     if (this.state.currentScrollPosition !== this.currPosition) {
       this.setState({ currentScrollPosition: this.currPosition });
     }
@@ -191,7 +189,7 @@ class BestMatchTabContent extends BaseComponent {
         key={look.id}
         shouldOptimize={this.state.flatLooksLeft.length > 10}
         showMediaGrid
-        fromScreen={'Feedscreen'}/>
+        fromScreen={'Feedscreen'} />
     ));
   }
 
@@ -199,14 +197,11 @@ class BestMatchTabContent extends BaseComponent {
     return (
       <View style={styles.loader}>
         {(() => {
-          if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
-          }
           if (this.state.isLoading) {
-            return <Spinner color="rgb(230,230,230)"/>;
+            return <Spinner color="rgb(230,230,230)" />;
           }
           if (this.props.flatLooks.length > 2) {
-            return <Image source={require('../../../images/icons/feedLoadMore.gif')}/>;
+            return <Image source={require('../../../images/icons/feedLoadMore.gif')} />;
           }
           return null;
         })()}
@@ -217,16 +212,17 @@ class BestMatchTabContent extends BaseComponent {
     if (this.props.reloading) {
       return (
         <View style={styles.spinnerContainer}>
-          <Spinner color="#666666"/>
+          <Spinner color="#666666" />
         </View>
       );
     }
+    return null;
   }
 
   _renderRefreshingCover() {
     return (
       this.state.isRefreshing &&
-      <View style={styles.refreshingCover}/>
+      <View style={styles.refreshingCover} />
     );
   }
 
@@ -332,29 +328,6 @@ class BestMatchTabContent extends BaseComponent {
     );
   }
 
-/*
-  _renderEmptyContent() {
-    const { querySuggestions } = this.props;
-    const emptyTitle = i18n.t('EMPTY_FEED_TITLE');
-    const emptySubtitle = i18n.t('EMPTY_FEED_LEGEND');
-    if (!_.isEmpty(querySuggestions)) {
-      return (
-        <ScrollView style={styles.looksSuggestionsScroll}>
-          <Text style={styles.filterLooksNoResultsTxt}>{i18n.t('ME_NO_BEST_MATCH_RESULTS')}</Text>
-          <QuerySuggestions querySuggestions={querySuggestions} getFeedWithSuggestion={this.getFeedWithSuggestion} />
-        </ScrollView>
-      );
-    }
-    return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <EmptyStateScreen
-          title={emptyTitle}
-          subtitle={emptySubtitle} icon={noResultsIcon} />
-      </View>
-    );
-  }
-*/
-
   _renderFilterView() {
     const { myFeedType, toggleFiltersMenus, filtersGender, changeFiltersGender, defaultFilterQuery } = this.props;
     return (
@@ -399,20 +372,6 @@ class BestMatchTabContent extends BaseComponent {
         this.setState({ isRefreshing: false });
       });
   }
-
-/*
-  getFeedWithSuggestion(suggestionQuery) {
-    this.setState({ isRefreshing: true });
-    const { getFeed } = this.props;
-    getFeed(suggestionQuery)
-      .then(() => {
-        this.setState({ isRefreshing: false });
-      })
-      .catch((error) => {
-        this.setState({ isRefreshing: false });
-      });
-  }
-*/
 
   _saveBodyShape() {
     const { saveBodyShape } = this.props;

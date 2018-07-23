@@ -41,7 +41,8 @@ export default function map(item) {
 export function mapOffers(offers) {
   return offers.map(function(offer) {
     return {
-      brand_name: offer.merchant,
+      brand_name: offer.brand ? offer.brand : offer.merchant,
+      merchant: offer.merchant,
       image_url: offer.imageUrl,
       price: offer.price.replace('$', ''),
       url: offer.offer,
@@ -80,6 +81,7 @@ export function _serializeItem(item) {
       cover_x_pos: item.cover_x_pos,
       cover_y_pos: item.cover_y_pos,
       offers: _serializeOffers(item.product_suggestions),
+      isManual: false,
     };
   } else {
     return item;

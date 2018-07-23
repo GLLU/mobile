@@ -95,3 +95,27 @@ export function getSuggestion(image, dispatch, resolve) {
   });
   });
 }
+
+function _mapItemsForAnalytics(items, type) {
+  const joinedArray = _.map(items, (item) => {
+    if (type === 'color_ids' || type === 'occasions') {
+      return (item[type] && item[type].length > 0) ? true : null;
+    }
+    return item[type] && item[type] !== -1 ? item[type] : null;
+  });
+  return joinedArray;
+}
+
+export function logUploadLookEvent(logEvent, eventName, items, description, origin) {
+  logEvent('uploadLook', {
+    name: eventName,
+    category: _mapItemsForAnalytics('category'),
+    brand: _mapItemsForAnalytics('brand'),
+    origin,
+    colors: _mapItemsForAnalytics('color_ids'),
+    occasions: _mapItemsForAnalytics('occasions'),
+    description,
+    link: _mapItemsForAnalytics('url'),
+    items: items.length,
+  });
+}

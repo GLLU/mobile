@@ -1,17 +1,14 @@
-import React, {Component} from 'react';
-import {Dimensions, Image} from 'react-native';
-import {Provider} from 'react-redux';
-import {whyDidYouUpdate} from 'why-did-you-update';
+import React, { Component } from 'react';
+import { Dimensions, Image } from 'react-native';
+import { Provider } from 'react-redux';
 import OneSignal from 'react-native-onesignal';
 
 import App from './App';
-import Spinner from './components/loaders/Spinner';
 import configureStore from './configureStore';
-import {disableConsole} from './utils/DevUtils';
-const background = require('../images/backgrounds/splashScreen.png');
-const deviceWidth = Dimensions.get('window').width;
+import { disableConsole } from './utils/DevUtils';
 
-// whyDidYouUpdate(React)
+const deviceWidth = Dimensions.get('window').width;
+const background = require('../images/backgrounds/splashScreen.png');
 
 /* global __DEV__ */
 const DEV = __DEV__;
@@ -59,7 +56,7 @@ function setup(): React.Component {
         return (
           <Image
             source={background} resizeMode={'stretch'}
-            style={{ flex: 1, width: deviceWidth, justifyContent: 'center', alignItems: 'center', transition: 'opacity 300ms linear' }} />
+            style={{ flex: 1, width: deviceWidth, justifyContent: 'center', alignItems: 'center' }} />
         );
       }
       return (

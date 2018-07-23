@@ -1,7 +1,9 @@
 const Colors = {
   primaryColor: '#F2F2F2',
   secondaryColor: '#00D7B2',
+  textColor: '#535353',
   highlightColor: '#ff3a7d',
+  linkColor: 'dodgerblue',
   disabled: '',
   background: '#F2F2F2',
   backgroundGrey: '#E6E6E6',

@@ -66,14 +66,7 @@ module.exports = {
             "Object": true,
             "Function": true
         }],
-        "flowtype/require-return-type": [
-            2,
-            "always",
-            {
-                "annotateUndefined": "never",
-                "excludeArrowFunctions": true
-            }
-        ],
+        "flowtype/require-return-type": 0,
         "flowtype/object-type-delimiter": [
             2,
             "comma"

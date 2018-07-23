@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import * as _ from 'lodash';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 import Spinner from '../../loaders/Spinner';
 import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
@@ -30,17 +30,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: Colors.secondaryColor,
   },
-  disabledButton: {
-    opacity: 0.4,
-  },
-  enabledButton: {
-    opacity: 1,
-  },
 });
 
 type Props={
   label: string,
-  disabled: boolean,
+  isDisabled: boolean,
   onPress: void,
   style: any,
   showLoader: boolean,
@@ -51,7 +45,7 @@ class SolidButton extends Component {
 
   static defaultProps = {
     onPress: _.noop,
-    disabled: false,
+    isDisabled: false,
     showLoader: false,
     loaderElement: null,
   }
@@ -59,14 +53,14 @@ class SolidButton extends Component {
   props: Props;
 
   render() {
-    const { loaderColor, onPress, label, showLoader, style, disabled } = this.props;
+    const { loaderColor, onPress, label, showLoader, style, isDisabled } = this.props;
     return (
-      <TouchableOpacity style={[styles.center, styles.basicStyle, disabled ? styles.disabledButton : styles.enabledButton, style]} disabled={disabled} onPress={onPress}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      <TouchableHighlight style={[styles.center, styles.basicStyle, style]} isDisabled={isDisabled} onPress={onPress}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%', backgroundColor: Colors.secondaryColor }}>
           <Text style={styles.text}>{label}</Text>
           {showLoader ? <Spinner animating color={loaderColor} size={'small'} style={{ left: 10 }} /> : null}
         </View>
-      </TouchableOpacity>
+      </TouchableHighlight>
     );
   }
 }

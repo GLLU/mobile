@@ -169,7 +169,7 @@ class ItemPopup extends Component {
           {offers ? <Text style={styles.price}>{this._getFormattedPrice(offers[0].price)}</Text> : null}
           <SolidButton
             label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
-            style={styles.shopNowButton} onPress={() => this.handleOpenLink()} disabled={isShopNowClicked} />
+            style={styles.shopNowButton} onPress={() => this.handleOpenLink()} isDisabled={isShopNowClicked} />
         </View>
       </View>
     );

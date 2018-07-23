@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, KeyboardAvoidingView, Animated, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import BrandSelector from './BrandSelector';
+import { View, StyleSheet, Image, KeyboardAvoidingView, Animated, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
+import i18n from 'react-native-i18n';
+import BrandSelector from './BrandSelector';
 import Colors from '../../styles/Colors.styles';
 import { generateAdjustedSize } from './../../utils/AdjustabaleContent';
-import { CATEGORY, BRAND, COLOR, MOOD, LINK } from './UploadLookScreen';
+import { BRAND, LINK } from './UploadLookScreen';
 import ScrollableSelectableList from '../common/itemParams/ScrollableSelectableList';
 import LinkTab from './tabs/linkTab';
-const vsign = require('../../../images/indicators/v_sign.png');
-import i18n from 'react-native-i18n';
 
-const arrowUp = require('../../../images/icons/arrow_up.png');
-const arrowDown = require('../../../images/icons/arrow_down.png');
+const w = Dimensions.get('window').width;
+const vsign = require('../../../images/indicators/v_sign.png');
 
 export default class EditItemTabs extends Component {
   constructor(props: object) {
@@ -27,17 +26,11 @@ export default class EditItemTabs extends Component {
     this.animatedTabBar = new Animated.Value(generateAdjustedSize(140));
 
     this.routes = [
-      { key: CATEGORY, title: i18n.t('CATEGORY')},
-      { key: BRAND, title: i18n.t('BRAND')},
-      { key: COLOR, title: i18n.t('COLOR')},
-      { key: MOOD, title: i18n.t('MOOD')},
-      { key: LINK, title: i18n.t('LINK')},
+      { key: BRAND, title: i18n.t('BRAND') },
+      { key: LINK, title: i18n.t('LINK') },
     ];
     this.routesNoDescription = [
-      { key: CATEGORY, title: 'CATEGORY' },
       { key: BRAND, title: 'BRAND' },
-      { key: COLOR, title: 'COLOR' },
-      { key: MOOD, title: 'MOOD' },
       { key: LINK, title: 'LINK' },
     ];
     this.state = {
@@ -58,7 +51,7 @@ export default class EditItemTabs extends Component {
     const { isFirstItem } = this.props;
     this.setState({ loaded: !this.state.loaded, reloadingTabs: nextProps.isFirstItem !== isFirstItem }, () => {
       if (nextProps.isFirstItem !== isFirstItem) {
-        this.setState({ routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription, index: 0, loaded: !this.state.loaded, reloadingTabs: false});
+        this.setState({ routes: nextProps.isFirstItem ? this.routes : this.routesNoDescription, index: 0, loaded: !this.state.loaded, reloadingTabs: false });
       }
     });
   }
@@ -75,16 +68,10 @@ export default class EditItemTabs extends Component {
   );
 
   renderTabIcon(currTab) {
-    const { itemCategory, currentItem, itemColors } = this.props;
+    const { currentItem } = this.props;
     switch (this.state.routes[currTab.index].key) {
-      case CATEGORY:
-        return itemCategory !== -1 ? this._renderVSign() : this._renderRequiredSign();
       case BRAND:
         return currentItem.brand ? this._renderVSign() : this._renderRequiredSign();
-      case MOOD:
-        return !!currentItem.occasions.length > 0 ? this._renderVSign() : null;
-      case COLOR:
-        return !!itemColors.length > 0 ? this._renderVSign() : null;
       case LINK:
         return currentItem.url ? this._renderVSign() : null;
     }
@@ -139,30 +126,17 @@ export default class EditItemTabs extends Component {
 
   _renderScene = ({ route }) => {
     const { index } = this.state;
-    const { currentItem, categoryFilters, toggleItemColors, brandsFilters, itemBrand, occasionsFilters, itemCategory, addUrl, itemOccasions, toggleOccasionTag, colorsFilters, itemColors, itemUrl } = this.props;
+    const { currentItem, brandsFilters, itemBrand, addUrl, itemUrl } = this.props;
     switch (route.key) {
-      case CATEGORY:
-        return (<ScrollableSelectableList
-          mode="single" onSelectionChange={this._addItemCategory}
-          filters={categoryFilters} currentFilter={itemCategory} />);
-
       case BRAND:
         return (
-          <View style={{flex: 1, margin: 3, flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flex: 1, margin: 3, flexDirection: 'row', alignItems: 'center' }}>
             <BrandSelector item={currentItem} handleTabsIndexChange={() => this._handleTabsIndexChange(index + 1)} />
             <ScrollableSelectableList
               mode="single" onSelectionChange={this._addItemBrand} showTexts={false}
               filters={brandsFilters} currentFilter={itemBrand} />
           </View>
         );
-      case COLOR:
-        return (<ScrollableSelectableList
-          mode="multi" onSelectionChange={color => toggleItemColors(color, color.selected)}
-          filters={colorsFilters} currentFilter={itemColors} />);
-      case MOOD:
-        return (<ScrollableSelectableList
-          mode="multi" onSelectionChange={occasion => toggleOccasionTag(occasion, occasion.selected)}
-          filters={occasionsFilters} currentFilter={itemOccasions} />);
       case LINK:
         return (<LinkTab itemUrl={itemUrl} addUrl={url => addUrl(url)} />);
       default:
@@ -218,7 +192,7 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     flex: 1,
-    width: 100,
+    width: (w / 2),
     paddingHorizontal: 3,
     flexDirection: 'row',
   },

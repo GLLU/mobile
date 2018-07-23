@@ -84,7 +84,7 @@ class FeedPage extends Component {
   componentDidMount() {
     Analytics.setUser(this.props.user);
     setTimeout(() => {
-      this.props.getNotifications(); // can stay here, still thinking about it
+      this.props.getNotifications();
       this.props.getUserBalance(this.props.user.id);
       this.props.loadCategories();
       this.props.loadOccasionTags();

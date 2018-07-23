@@ -1,11 +1,12 @@
 // @flow
 
 import React, { Component } from 'react';
-import { TouchableHighlight, View, Image, Text, StyleSheet, Platform } from 'react-native';
+import { TouchableHighlight, View, Image, Text, StyleSheet, Platform, Dimensions } from 'react-native';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../../styles/Colors.styles';
 import fonts from '../../../styles/Fonts.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
-import i18n from 'react-native-i18n';
+import ProductItemLarge from './ProductItemLarge';
 
 const vInCircle = require('../../../../images/indicators/v_in_circle.png');
 
@@ -21,8 +22,10 @@ class ProductItem extends Component {
   }
 
   handleSelectProductItem() {
-    const { onSelectProductItem } = this.props;
-    onSelectProductItem();
+    const { onSelectProductItem, onEnlargeItem, offer } = this.props;
+    onEnlargeItem(offer);
+
+    //onSelectProductItem();
   }
 
   _getFormattedPrice(price) {
@@ -53,7 +56,7 @@ class ProductItem extends Component {
 
   render() {
     const { offer, onSelectProductItem } = this.props;
-    const { bigRatio } = this.state;
+    const { bigRatio, isEnlarged } = this.state;
 
     return (
       <TouchableHighlight style={styles.container} onPress={this.handleSelectProductItem}>

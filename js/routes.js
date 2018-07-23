@@ -27,6 +27,7 @@ import SearchScreen from './components/searchScreen/SearchScreenContainer';
 import Splash from './components/splashScreen/SplashContainer';
 import WebViewAuthoHeight from './components/common/WebViewAutoHeight';
 import CustomWebView from './components/common/CustomWebView';
+import ProductItemLarge from './components/uploadLookScreen/productItems/ProductItemLarge';
 
 const stackNavigatorConfig = {
   initialRouteName: 'splash',
@@ -122,7 +123,9 @@ const routes = {
   WebViewAuthoHeightScreen: {
     screen: WebViewAuthoHeight,
   },
-
+  productItemLarge: {
+    screen: ProductItemLarge,
+  },
 };
 
 export default StackNavigator(routes, stackNavigatorConfig);

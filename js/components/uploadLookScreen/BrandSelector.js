@@ -1,18 +1,16 @@
-import React, {Component} from 'react';
+import React from 'react';
 import i18n from 'react-native-i18n';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import {
   Modal,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
-  Platform,
   TouchableWithoutFeedback,
   Animated,
-  UIManager,
   View,
   Image,
-  Text
+  Text,
 } from 'react-native';
 import {
   removeBrandName,
@@ -27,11 +25,9 @@ import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BrandNameInput from './forms/BrandNameInput';
 import FontSizeCalculator from './../../calculators/FontSize';
-import _ from 'lodash';
+
 import BaseComponent from '../common/base/BaseComponent';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
-const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-const w = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   titleLabelInfo: {
     fontFamily: Fonts.regularFont,
@@ -83,18 +79,18 @@ class BrandSelector extends BaseComponent {
     this.state = {
       modalVisible: false,
       brandName: props.brand ? props.brand.name : null,
-      fadeAnimContentOnPress: new Animated.Value(0)
-    }
+      fadeAnimContentOnPress: new Animated.Value(0),
+    };
   }
 
   componentWillReceiveProps(nextProps) {
     const { item } = nextProps;
-    const selectedCategory = item ? item.category : null
+    const selectedCategory = item ? item.category : null;
     if (selectedCategory && !item.brand && this.state.fadeAnimContentOnPress._value === 0) {
-      this.toggleBottomContainer()
+      this.toggleBottomContainer();
     }
     if (this.state.brandName && this.state.fadeAnimContentOnPress._value === 100) {
-      this.toggleBottomContainer()
+      this.toggleBottomContainer();
     }
     if (item.id !== this.props.item.id) {
       this.setState({
@@ -106,17 +102,17 @@ class BrandSelector extends BaseComponent {
   }
 
   findOrCreateBrand(brand) {
-    const { handleTabsIndexChange } = this.props
-    const data = { ...brand, itemId: this.props.item.id }
-    const brandName = brand.name
+    const { handleTabsIndexChange } = this.props;
+    const data = { ...brand, itemId: this.props.item.id };
+    const brandName = brand.name;
     const brandFunction = brand.id ? this.props.addBrandName : this.props.createBrandName;
-    if(brand.id){
+    if (brand.id) {
       brandFunction(brand.id, this.props.item.id);
     } else {
       brandFunction(data).then(() => {
-        handleTabsIndexChange()
+        handleTabsIndexChange();
       }).catch(err => {
-      })
+      });
     }
 
     this.setState({ modalVisible: false, brandName });
@@ -137,14 +133,14 @@ class BrandSelector extends BaseComponent {
   handleTextFocus() {
     this.logEvent('UploadLookScreen', { name: 'Choose brand click' });
     this.setState({
-      modalVisible: true
+      modalVisible: true,
     });
   }
 
   handleBrandCancel() {
     this.logEvent('UploadLookScreen', { name: 'Choose brand cancel' });
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
   }
 
@@ -154,7 +150,7 @@ class BrandSelector extends BaseComponent {
         this.state.fadeAnimContentOnPress,    // The value to drive
         {
           toValue: 0,
-          delay: 250
+          delay: 250,
         }            // Configuration
       ).start();
     } else {
@@ -162,7 +158,7 @@ class BrandSelector extends BaseComponent {
         this.state.fadeAnimContentOnPress,    // The value to drive
         {
           toValue: 100,
-          delay: 250
+          delay: 250,
         }            // Configuration
       ).start();
     }
@@ -173,7 +169,7 @@ class BrandSelector extends BaseComponent {
         <TouchableOpacity
           onPress={this.handleTextFocus.bind(this)} style={styles.iconCheckCompleteContainer}>
           <View>
-          <Image source={require('../../../images/icons/search-black.png')} style={styles.iconCheckComplete}/>
+            <Image source={require('../../../images/icons/search-black.png')} style={styles.iconCheckComplete}/>
             <Text style={styles.searchText}>{i18n.t('SEARCH')}</Text>
           </View>
         </TouchableOpacity>
@@ -181,14 +177,14 @@ class BrandSelector extends BaseComponent {
   }
 
   renderOpenButton({ brand }) {
-    const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)'
+    const btnColor = !brand ? 'rgba(32, 32, 32, 0.4)' : 'rgba(0, 255, 128, 0.6)';
     return (
       <TouchableWithoutFeedback onPress={() => this.toggleBottomContainer()}>
         <View style={{ backgroundColor: btnColor, width: 50, height: 30, alignSelf: 'center' }}>
-          <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center' }} name="bars"/>
+          <FontAwesome style={{ fontSize: 16, marginTop: 2, textAlign: 'center' }} name="bars" />
         </View>
       </TouchableWithoutFeedback>
-    )
+    );
   }
 
   render() {
@@ -197,10 +193,10 @@ class BrandSelector extends BaseComponent {
     const currItem = _.find(items, listItem => listItem.id === item.id);
     const brandName = currItem.brand ? currItem.brand.name : null;
     return (
-      <View style={{justifyContent: 'center' }}>
-          {this._renderSearchIcon(currItem)}
+      <View style={{ justifyContent: 'center' }}>
+        {this._renderSearchIcon(currItem)}
         <Modal
-          animationType={"slide"}
+          animationType={'slide'}
           transparent={false}
           visible={modalVisible}
           onRequestClose={() => this.setState({ modalVisible: false })}>
@@ -209,14 +205,13 @@ class BrandSelector extends BaseComponent {
             brand={brandName}
             brands={brands}
             onCancel={this.handleBrandCancel.bind(this)}
-            findOrCreateBrand={this.findOrCreateBrand.bind(this)}/>
+            findOrCreateBrand={this.findOrCreateBrand.bind(this)} />
         </Modal>
       </View>
     )
   }
 }
 
-import {connect} from 'react-redux';
 function bindActions(dispatch) {
   return {
     createBrandName: (data) => dispatch(createBrandName(data)),
@@ -229,8 +224,7 @@ const mapStateToProps = state => {
   const { items } = state.uploadLook;
 
   return {
-    items
-
+    items,
   };
 };
 

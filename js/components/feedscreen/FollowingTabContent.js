@@ -28,8 +28,10 @@ import EmptyStateScreen from '../common/EmptyStateScreen';
 import FiltersView from './FilterContainer';
 import FeedFilters from './FeedFilters';
 import UserActionCard from '../common/lists/UserActionCard';
+
 const emptyUsersIcon = require('../../../images/emptyStates/user-admin.png');
 const search = require('../../../images/icons/search-black.png');
+
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
 const LOADER_HEIGHT = 30;
@@ -55,7 +57,7 @@ class FollowingTabContent extends BaseComponent {
     this.onRefresh = this.onRefresh.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.handleScrollPosition = this.handleScrollPosition.bind(this);
+    this.resetScrollPosition = this.resetScrollPosition.bind(this);
     this._renderFeedFilters = this._renderFeedFilters.bind(this);
     this._getFeed = this._getFeed.bind(this);
     this.checkIfFeedResultsAreFiltered = this.checkIfFeedResultsAreFiltered.bind(this);
@@ -81,10 +83,9 @@ class FollowingTabContent extends BaseComponent {
   componentDidMount() {
     const { changeFiltersGender, defaultFilters } = this.props;
     setInterval(() => {
-      this.handleScrollPosition();
+      this.resetScrollPosition();
     }, 1000);
     changeFiltersGender(defaultFilters.gender);
-    const that = this;
   }
 
   _getFeed(query) {
@@ -125,7 +126,7 @@ class FollowingTabContent extends BaseComponent {
     }
   }
 
-  handleScrollPosition() {
+  resetScrollPosition() {
     if (this.state.currentScrollPosition !== this.currPosition) {
       this.setState({ currentScrollPosition: this.currPosition });
     }
@@ -171,9 +172,6 @@ class FollowingTabContent extends BaseComponent {
     return (
       <View style={styles.loader}>
         {(() => {
-          if (this.state.noMoreData) {
-            return <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>;
-          }
           if (this.state.isLoading) {
             return <Spinner color="rgb(230,230,230)" />;
           }
@@ -407,7 +405,7 @@ class FollowingTabContent extends BaseComponent {
       if (firstFetch) {
         this._getFeed(defaultFilters);
         setInterval(() => {
-          this.handleScrollPosition();
+          this.resetScrollPosition();
         }, 1000);
         this.setState({ firstFetch: false });
       }

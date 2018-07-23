@@ -9,19 +9,17 @@ import {
   TouchableOpacity,
   Text,
   Platform,
-  Animated,
   RefreshControl,
   View,
-  NetInfo,
   ActivityIndicator,
 } from 'react-native';
+import _ from 'lodash';
 import SocialShare from '../../lib/social';
 import Spinner from '../loaders/Spinner';
 import BaseComponent from '../common/base/BaseComponent';
 import MediaContainer from '../common/MediaContainer';
-import _ from 'lodash';
-import {formatInvitationMessage} from '../../lib/messages/index';
-import {generateAdjustedSize} from '../../utils/AdjustabaleContent';
+import { formatInvitationMessage } from '../../lib/messages/index';
+import { generateAdjustedSize } from '../../utils/AdjustabaleContent';
 import QuerySuggestions from './querySuggestionsGrid/QuerySuggestions';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import Colors from '../../styles/Colors.styles';
@@ -81,7 +79,7 @@ class HotTabContent extends BaseComponent {
   }
 
   componentDidMount() {
-    const { changeFiltersGender, defaultFilters, showParisBottomMessage, userName } = this.props;
+    const { changeFiltersGender, defaultFilters } = this.props;
     this._getFeed(defaultFilters);
     changeFiltersGender(defaultFilters.gender);
     const that = this;
@@ -121,27 +119,16 @@ class HotTabContent extends BaseComponent {
     }
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   if(nextProps !== this.props) {
-  //     _.each(Object.keys(this.props),thisPropsKey=>{
-  //       if(this.props[thisPropsKey]!==nextProps[thisPropsKey]){
-  //         console.log(`MediaContainer, props changed! field: ${thisPropsKey}`,this.props[thisPropsKey],nextProps[thisPropsKey]);
-  //         return true
-  //       }
-  //     })
-  //   }
-  //   return false
-  // }
-
   handleScroll(event) {
     if (this.props.cardNavigationStack.index === 0) {
       const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
       const contentSizeHeight = event.nativeEvent.contentSize.height;
       const currentScroll = event.nativeEvent.contentOffset.y;
       if (currentScroll + layoutMeasurementHeight > contentSizeHeight - 2350 - layoutMeasurementHeight) { // currentScroll(topY) + onScreenContentSize > whole scrollView contentSize / 2
-        if (!this.state.loadingMore && !this.state.isLoading) {
-          this.setState({ loadingMore: true }, this.loadMore);
-        }
+        // if (!this.state.loadingMore && !this.state.isLoading) {
+        //   this.setState({ loadingMore: true }, this.loadMore);
+        // }
+        this.loadMore();
       } else {
       }
     }
@@ -200,15 +187,6 @@ class HotTabContent extends BaseComponent {
         </View>
       );
     }
-    if (this.state.noMoreData) {
-      return (
-        <View>
-          <Text style={{ color: 'rgb(230,230,230)' }}>No additional looks yet</Text>
-          <QuerySuggestions querySuggestions={querySuggestions}
-                            getFeedWithSuggestion={this.getFeedWithSuggestion} />
-        </View>
-      );
-    }
     if (this.props.flatLooks.length > 2) {
       return (
         <View style={styles.loader}>
@@ -245,6 +223,14 @@ class HotTabContent extends BaseComponent {
         progressBackgroundColor="#fff"
       />
     );
+  }
+
+  difference(object, base) {
+    return _.transform(object, (result, value, key) => {
+      if (!_.isEqual(value, base[key])) {
+        result[key] = _.isObject(value) && _.isObject(base[key]) ? this.difference(value, base[key]) : value;
+      }
+    });
   }
 
   onRefresh() {
@@ -365,7 +351,7 @@ class HotTabContent extends BaseComponent {
     );
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(nextProps, nextState) {
     const { isFiltersMenuOpen, isTabOnFocus, showBottomCameraButton } = this.props;
     if (isTabOnFocus) {
       if (isFiltersMenuOpen) {
@@ -374,7 +360,7 @@ class HotTabContent extends BaseComponent {
         showBottomCameraButton(true);
       }
     }
-    if (this.scrollView && prevProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
+    if (this.scrollView && nextProps.isFiltersMenuOpen !== isFiltersMenuOpen && !isFiltersMenuOpen) {
       _.delay(() => this.scrollView.scrollTo({ y: this.currPosition, x: 0, animated: false }), 0);
     }
   }
