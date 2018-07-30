@@ -123,9 +123,11 @@ export default function (state = initialState, action) {
       };
     case SELECT_PRODUCT_ITEM:
       items = state.items;
-      const itemIndex = action.payload.itemIndex;
+      const currItemId = action.payload.currItemId;
       const offerIndex = action.payload.offerIndex;
+      const itemIndex = items.findIndex((element => element.id === currItemId));
       items[itemIndex].offers[offerIndex].selected = !items[itemIndex].offers[offerIndex].selected;
+      items[itemIndex].numOfSelectedOffers = items[itemIndex].offers.filter(offer => offer.selected === true).length;
       return {
         ...state,
         items,

@@ -15,6 +15,9 @@ import { logUploadLookEvent } from '../../utils/UploadUtils';
 import styles from './styles';
 
 const EDIT_MODE = 'edit';
+const MAX_ITEMS_PER_TAG = 5;
+const starIcon = require('../../../images/icons/star.png');
+
 export const BRAND = 'brand';
 export const LINK = 'link';
 
@@ -50,7 +53,6 @@ class UploadLookScreen extends Component {
     this.setCurrentItem = this.setCurrentItem.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
-    this.handleNewItem = this.handleNewItem.bind(this);
     this.handleBackButton = this.handleBackButton.bind(this);
     this.showRemoveItemModal = this.showRemoveItemModal.bind(this);
     this.gobackAndCancel = this.gobackAndCancel.bind(this);
@@ -62,9 +64,10 @@ class UploadLookScreen extends Component {
     this.handlePublish = this.handlePublish.bind(this);
     this.setCurrentStep = this.setCurrentStep.bind(this);
     this._handleEnlargeItem = this._handleEnlargeItem.bind(this);
+    this._renderProductItemsHeader = this._renderProductItemsHeader.bind(this);
     this.state = {
       currentStep: BRAND,
-      currItem: props.items[0].id,
+      currItemId: props.items[0].id,
       items: props.items,
       isFirstPublishClick: true,
       isPublishing: false,
@@ -86,7 +89,7 @@ class UploadLookScreen extends Component {
   }
 
   setCurrentItem(itemId) {
-    this.setState({ currItem: itemId, isShowFooter: true, isChosenTag: true });
+    this.setState({ currItemId: itemId, isShowFooter: true, isChosenTag: true });
   }
 
   componentDidMount() {
@@ -152,14 +155,8 @@ class UploadLookScreen extends Component {
   }
 
   getCurrentItem() {
-    const { currItem } = this.state;
-    return _.find(this.props.items, item => item.id === currItem);
-  }
-
-  handleNewItem() {
-    this.props.createLookItem().then((data) => {
-      this.setState({ currItem: data });
-    });
+    const { currItemId, items } = this.state;
+    return _.find(items, item => item.id === currItemId);
   }
 
   showRemoveItemModal() {
@@ -184,9 +181,9 @@ class UploadLookScreen extends Component {
   }
 
   handleRemoveItem() {
-    const itemToRemoveById = _.find(this.props.items, item => item.id !== this.state.currItem).id;
+    const itemToRemoveById = _.find(this.props.items, item => item.id !== this.state.currItemId).id;
     this.setCurrentItem(itemToRemoveById);
-    this.props.removeLookItem(this.state.currItem);
+    this.props.removeLookItem(this.state.currItemId);
   }
 
   handleOnDragEnd(position) {
@@ -231,6 +228,22 @@ class UploadLookScreen extends Component {
     this.props.navigateTo('productItemLarge', { offer });
   }
 
+  _renderProductItemsHeader() {
+    const { items, currItemId } = this.state;
+    const currTag = _.find(items, item => item.id === currItemId);
+    const numOfSelectedOffers = (currTag && currTag.numOfSelectedOffers) ? currTag.numOfSelectedOffers : 0;
+    return (
+      <View style={styles.carouselTitle}>
+        <Image source={starIcon} style={styles.starIcon} />
+        {numOfSelectedOffers ?
+          <Text style={styles.carouselTitleText}> {`You have selected ${numOfSelectedOffers} items`} </Text> :
+          <Text style={styles.carouselTitleText}> {`Choose up to ${MAX_ITEMS_PER_TAG} items`} </Text>
+        }
+        <Image source={starIcon} style={styles.starIcon} />
+      </View>
+    );
+  }
+
   _renderSuggestionItems(offers) {
     const { isShowFooter } = this.state;
     return (
@@ -238,7 +251,7 @@ class UploadLookScreen extends Component {
         {isShowFooter ?
           offers ?
             <View>
-              <Text style={styles.carouselTitle}> {i18n.t('CHOOSE_SIMILAR_ITEM')} </Text>
+              {this._renderProductItemsHeader()}
               <ProductItemsCarousel
                 offers={offers}
                 onChangeToManualPress={this._toggleSuggestionList}
@@ -255,13 +268,13 @@ class UploadLookScreen extends Component {
 
   renderActions() {
     const { isVideo, items } = this.props;
-    const { currItem } = this.state;
-    const currTag = _.find(items, item => item.id === currItem);
+    const { currItemId } = this.state;
+    const currTag = _.find(items, item => item.id === currItemId);
     return (
       <View style={styles.renderActionsContainer}>
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
-        { !currItem.isManual ? this._renderSuggestionItems(currTag.offers) : this._renderEditItemTabs() }
+        { !currTag.isCustom ? this._renderSuggestionItems(currTag.offers) : this._renderEditItemTabs() }
       </View>
     );
   }
@@ -281,10 +294,10 @@ class UploadLookScreen extends Component {
   }
 
   _renderEditItemTabs() {
-    const { currItem, isShowFooter } = this.state;
+    const { currItemId, isShowFooter } = this.state;
     const { items } = this.props;
-    const isFirstItem = currItem === items[0].id;
-    const manualItem = { ...currItem, isCustom: true };
+    const isFirstItem = currItemId === items[0].id;
+    const manualItem = { ...this.getCurrentItem(), isCustom: true };
     return (
       isShowFooter ?
         <EditItemTabs
@@ -344,12 +357,12 @@ class UploadLookScreen extends Component {
 
   _toggleSuggestionList() {
     const { items } = this.props;
-    const { currItem } = this.state;
-    const itemIndex = items.findIndex((element => element.id === currItem));
+    const { currItemId } = this.state;
+    const itemIndex = items.findIndex((element => element.id === currItemId));
     if (itemIndex !== -1) {
       const newItems = items;
-      newItems[itemIndex].isManual = !newItems[itemIndex].isManual;
-      this.setState({ items: newItems, currItem: newItems[itemIndex] });
+      newItems[itemIndex].isCustom = true;
+      this.setState({ items: newItems, currItemId: newItems[itemIndex].id });
       BackAndroid.addEventListener('uploadBackPress', () => {
         this.handleBackButton();
         return true;
@@ -358,25 +371,31 @@ class UploadLookScreen extends Component {
   }
 
   handleProductItemSelection(offerIndex) {
-    const { toggleProductItemSelection, items } = this.props;
-    const { currItem } = this.state;
+    const { toggleProductItemSelection, showErrorMessage } = this.props;
+    const { currItemId } = this.state;
 
-    const itemIndex = items.findIndex((element => element.id === currItem));
-    if (itemIndex !== -1) {
-      toggleProductItemSelection(itemIndex, offerIndex);
-      this.forceUpdate();
+    const currItem = this.getCurrentItem();
+    if (currItemId) {
+      const numOfSelectedOffers = currItem.offers.filter(offer => offer.selected === true).length;
+      const offers = currItem.offers;
+      if (numOfSelectedOffers < MAX_ITEMS_PER_TAG || offers[offerIndex].selected) {
+        toggleProductItemSelection(currItemId, offerIndex);
+        this.forceUpdate();
+      } else {
+        showErrorMessage(i18n.t('SELECT_UP_TO_5'));
+      }
     }
   }
 
   renderHeader() {
-    const { items, categories, showErrorMessage, isVideo } = this.props;
+    const { items, categories, showErrorMessage, isVideo, addDescription } = this.props;
     const currItem = this.getCurrentItem();
     return (
       <UploadLookHeader
         isVideo={isVideo}
         currItem={currItem}
+        addDescription={addDescription}
         items={items}
-        handleNewItem={this.handleNewItem}
         handleRemoveItem={this.showRemoveItemModal}
         handleBackButton={this.handleBackButton}
         showErrorMessage={showErrorMessage}

@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     overflow: 'scroll',
     flexDirection: 'row',
-    //zIndex: 2,
   },
   productItem: {
     justifyContent: 'space-around',
@@ -63,7 +62,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: Platform.OS === 'ios' ? generateAdjustedSize(240) : generateAdjustedSize(210),
     height: Platform.OS === 'ios' ? generateAdjustedSize(140) : generateAdjustedSize(120),
-    //zIndex: 2,
   },
   brand: {
     fontSize: Platform.OS === 'ios' ? generateAdjustedSize(15) : generateAdjustedSize(14),
@@ -145,7 +143,6 @@ class ItemPopup extends Component {
 
   _textEllipsis(text) {
     return text.length > 25 ? `${text.substr(0, 10)}...` : text;
-   // return text;
   }
 
   _getFormattedPrice(price) {

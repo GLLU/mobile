@@ -45,6 +45,7 @@ export function mapOffers(offers) {
       merchant: offer.merchant,
       image_url: offer.imageUrl,
       price: offer.price.replace('$', ''),
+      originalPrice: offer.originalPrice.replace('$', ''),
       url: offer.offer,
       selected: false,
     };

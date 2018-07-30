@@ -51,8 +51,9 @@ class UploadLookHeader extends Component {
     }
   }
 
-  _handleNextPressed() {
-    const { publishItem } = this.props;
+  _handleNextPressed(description) {
+    const { publishItem, addDescription } = this.props;
+    addDescription(description);
     publishItem();
   }
 

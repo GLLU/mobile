@@ -12,16 +12,29 @@ class SocialShare {
     };
   }
 
-  generateShareLookMessage(lookId: number, previewUrl: string) {
+  generateProductItemShareMessage(lookId: number, message: string, previewUrl: string) {
     const lookUrl = `${Config.HOME_PAGE}looks/${lookId}`;
     if (previewUrl) {
       return {
-        text: `${i18n.t('SHARE_LOOK')} ${lookUrl}`,
+        text: `${message} ${lookUrl}`,
         url: previewUrl,
       };
     }
     return {
-      text: `${i18n.t('SHARE_LOOK')} ${lookUrl}`,
+      text: `${message} ${lookUrl}`,
+    };
+  }
+
+  generateSocialShareMessage(lookId: number, message: string, previewUrl: string) {
+    const lookUrl = `${Config.HOME_PAGE}looks/${lookId}`;
+    if (previewUrl) {
+      return {
+        text: `${message} ${lookUrl}`,
+        url: previewUrl,
+      };
+    }
+    return {
+      text: `${message} ${lookUrl}`,
     };
   }
 

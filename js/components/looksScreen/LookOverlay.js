@@ -9,6 +9,7 @@ import {
   BackAndroid,
 } from 'react-native';
 import * as _ from 'lodash';
+import i18n from 'react-native-i18n';
 import styles from './styles';
 import ButtonsBar from './buttons/ButtonsBar';
 import SocialShare from '../../lib/social';
@@ -130,13 +131,13 @@ class LookOverlay extends Component {
     this.setState({ isSharing: true }, () => {
       const previewUrl = look.coverType === 'video' ? look.preview : look.uri;
       if (Platform.OS === 'ios') {
-        const message = SocialShare.generateShareLookMessage(look.id);
+        const message = SocialShare.generateSocialShareMessage(look.id, i18n.t('SHARE_LOOK'));
         this.setState({ isSharing: false }, () => {
           SocialShare.nativeShare(message);
         });
       } else {
         downloadFile(previewUrl, `look-${look.id}`).then((localPath) => {
-          const message = SocialShare.generateShareLookMessage(look.id, localPath);
+          const message = SocialShare.generateSocialShareMessage(look.id, i18n.t('SHARE_LOOK'), localPath);
           this.setState({ isSharing: false }, () => {
             SocialShare.nativeShare(message);
           });

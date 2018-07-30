@@ -16,6 +16,11 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: '#F2F2F2',
   },
+  starIcon: {
+    margin: 4,
+    width: 18,
+    height: 18,
+  },
   renderActionsContainer: {
     height: h,
     width: w,
@@ -31,11 +36,15 @@ export default StyleSheet.create({
     height: 25,
   },
   carouselTitle: {
-    textAlign: 'center',
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    color: Colors.white,
+    backgroundColor: Colors.white,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  carouselTitleText: {
+    color: Colors.black,
     lineHeight: 24,
     fontFamily: Fonts.subHeaderFont,
+    paddingHorizontal: 10,
   },
   footerToggleButton: {
     height: 8,
@@ -52,10 +61,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    marginTop: Platform.OS === 'ios' ? 22 : 0,
+    paddingTop: 10,
+    marginTop: Platform.OS === 'ios' ? 0 : 0,
     backgroundColor: 'white',
     opacity: 0.7,
-    height: 45,
+    height: 67,
     alignItems: 'center',
   },
   publishBtnText: {

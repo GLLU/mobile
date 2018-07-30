@@ -6,15 +6,16 @@ import {
   Platform,
   Animated,
   PanResponder,
-} from 'react-native'
-import FontSizeCalculator from './../../calculators/FontSize';
+} from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import FontSizeCalculator from './../../calculators/FontSize';
+
 const validMarker = require('../../../images/markers/tag_green.png');
 const invalidMarker = require('../../../images/markers/tag_red.png');
 const warningMarker = require('../../../images/markers/tag_warning.png');
 
-const TAG_WIDTH = 50;
-const TAG_HEIGHT = 50;
+const TAG_WIDTH = 40;
+const TAG_HEIGHT = 40;
 
 const BORDER_WIDTH = 5;
 const h = Platform.os === 'ios' ? Dimensions.get('window').height : Dimensions.get('window').height - ExtraDimensions.get('STATUS_BAR_HEIGHT');
@@ -94,7 +95,7 @@ class Tag extends Component {
             this.props.onDragEnd(nextPosition);
           })
         }
-        this.props.setCurrentItem(item.id)
+        this.props.setCurrentItem(item.id);
       }
     });
   }

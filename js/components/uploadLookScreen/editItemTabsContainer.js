@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     addItemTag: (name) => dispatch(addItemTag(name, ownProps.item)),
     removeItemTag: (name) => dispatch(removeItemTag(name, ownProps.item)),
     addUrl: (url) => dispatch(addUrl(url, ownProps.item)),
-    addBrandName: (brand) => dispatch(addBrandName(brand, ownProps.item)),
+    addBrandName: (brand) => dispatch(addBrandName(brand, ownProps.item.id)),
   };
 }
 

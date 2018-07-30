@@ -42,7 +42,7 @@ export const CLEAR_UPLOAD_LOOK = 'CLEAR_UPLOAD_LOOK';
 export const SELECT_PRODUCT_ITEM = 'SELECT_PRODUCT_ITEM';
 export const UPDATE_ITEM_OFFERS = 'UPDATE_ITEM_OFFERS';
 
-const NUM_OF_DEFAULT_OFFERS = 6;
+const NUM_OF_DEFAULT_OFFERS = 5;
 
 let api_key = null;
 
@@ -212,8 +212,8 @@ export function addItemType(categoryItem, itemId) {
   };
 }
 
-export function toggleProductItemSelection(itemIndex, offerIndex) {
-    const payload = { itemIndex, offerIndex };
+export function toggleProductItemSelection(currItemId, offerIndex) {
+    const payload = { currItemId, offerIndex };
     return {
       type: SELECT_PRODUCT_ITEM,
       payload,
@@ -349,9 +349,8 @@ export function publishLook() {
             item: {
               cover_x_pos: item.locationX,
               cover_y_pos: item.locationY,
-              category_id: item.category,
+              category_name: item.category,
               brand_id: item.brand,
-              color_ids: item.color_ids,
               url: item.url,
             },
           };

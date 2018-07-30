@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, Text, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Platform, Text, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import i18n from 'react-native-i18n';
 import _ from 'lodash';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
@@ -44,12 +44,12 @@ class ProductItemsCarousel extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.backgroundDark,
-    height: generateAdjustedSize(135),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(185) : generateAdjustedSize(146),
     bottom: 0,
     width,
   },
   carousel: {
-    height: generateAdjustedSize(135),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(185) : generateAdjustedSize(146),
     marginTop: 2,
     flexWrap: 'wrap',
     overflow: 'scroll',
@@ -61,16 +61,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   moreContent: {
-    width: generateAdjustedSize(126),
-    height: generateAdjustedSize(126),
+    width: generateAdjustedSize(180),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(185) : generateAdjustedSize(146),
     marginLeft: 2,
     marginTop: 3,
     backgroundColor: Colors.background,
     justifyContent: 'center',
   },
   moreContentImage: {
-    width: generateAdjustedSize(123),
-    height: generateAdjustedSize(123),
+    width: generateAdjustedSize(112),
+    height: generateAdjustedSize(112),
   },
   moreContentImageOverlay: {
     position: 'absolute',

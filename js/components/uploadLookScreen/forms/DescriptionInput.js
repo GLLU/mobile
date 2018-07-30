@@ -8,10 +8,12 @@ import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
 const w = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
+  descriptionContainer: {
+    zIndex: 4,
+  },
   descriptionInputContainer: {
     width: w,
     borderRadius: 10,
-    zIndex: 4,
   },
   descriptionHeader: {
     flexDirection: 'row',
@@ -59,6 +61,7 @@ class DecriptionInput extends Component {
 
   constructor(props) {
     super(props);
+    this._handleNextClick = this._handleNextClick.bind(this);
     this.state = {
       isTabShown: false,
       description: props.description,
@@ -75,11 +78,16 @@ class DecriptionInput extends Component {
     BackAndroid.removeEventListener('descriptionBackPress');
   }
 
-  render() {
+  _handleNextClick() {
     const { onClickNext } = this.props;
     const { description } = this.state;
+    onClickNext(description);
+  }
+
+  render() {
+    const { description } = this.state;
     return (
-      <View style={styles.decriptionContainer}>
+      <View style={styles.descriptionContainer}>
         <View style={styles.descriptionInputContainer}>
           <TextInput
             style={styles.descriptionInput}
@@ -92,7 +100,7 @@ class DecriptionInput extends Component {
             onChangeText={text => this.updateDescription(text)} />
         </View>
         <View style={styles.decriptionButtonContainer}>
-          <TouchableOpacity style={styles.decriptionButton} onPress={onClickNext}>
+          <TouchableOpacity style={styles.decriptionButton} onPress={this._handleNextClick}>
             <Text style={styles.decriptionButtonText}>{i18n.t('NEXT')} </Text>
           </TouchableOpacity>
         </View>
