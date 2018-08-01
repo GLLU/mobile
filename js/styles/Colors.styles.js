@@ -9,7 +9,7 @@ const Colors = {
   backgroundGrey: '#E6E6E6',
   backgroundDark: '#1A1A1A',
   white: '#FFFFFF',
-  black: '#000000',
+  black: '#1A1A1A',
   Opacityblack: '#000000',
   link: '#00a9ff',
   lightGray: '#c0c0c0',

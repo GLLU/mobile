@@ -1,9 +1,9 @@
 // @flow
 
-import * as selfRef from './FormatUtils'
-import * as _ from "lodash";
+import * as _ from 'lodash';
+import * as selfRef from './FormatUtils';
 
-export default selfRef
+export default selfRef;
 
 export const format_measurement = (value, measurements_scale) => `${format_number(value)} ${measurements_scale}`;
 
@@ -64,4 +64,16 @@ export const formatNumberAsString = (value: number) => {
   else {
     return `${Math.floor(value / 1000000)}M`
   }
+};
+
+export const formatPrice = (price, percision = 2) => {
+  let formattedPrice = Math.round(price * 2) / 2;
+  if (formattedPrice !== Math.round(formattedPrice)) {
+    formattedPrice = formattedPrice.toFixed(percision);
+  }
+  return price ? `${formattedPrice}$` : 'N/A';
+};
+
+export const textEllipsis = (text, textLength = 20, subStrLen = 10) => {
+  return text.length > textLength ? `${text.substr(0, subStrLen)}...` : text;
 };

@@ -12,7 +12,7 @@
   "UNBLOCK": "Unblock",
   "SHARE": "Share",
   "SHARE_CAP": "SHARE",
-  "MORE_PRODUCT_ITEMS": "Didn't find what you are looking for?",
+  "MORE_PRODUCT_ITEMS": "Didn't find the exact item you are looking for?",
   "EDIT": "Edit",
   "EDIT_LARGE": "EDIT",
   "OPTIONS": "OPTIONS",
@@ -150,6 +150,6 @@
   "NEXT":"NEXT",
   "PRICE":"PRICE",
   "SOLD_AT": "SOLD AT",
-  "SALE": "SALE",
+  "SALE": "Sale",
   "WISH_LIST": "WishList",
 }

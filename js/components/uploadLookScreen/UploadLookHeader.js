@@ -7,7 +7,7 @@ import { BRAND, LINK } from './UploadLookScreen';
 import DescriptionInput from './forms/DescriptionInput';
 
 const trash = require('../../../images/icons/trash.png');
-const leftLongArrow = require('../../../images/icons/left-long-arrow.png');
+const backArrow = require('../../../images/icons/back_black.png');
 
 class UploadLookHeader extends Component {
 
@@ -71,7 +71,7 @@ class UploadLookHeader extends Component {
       <TouchableOpacity
         transparent onPress={() => handleBackButton()}
         style={styles.backBtnContainer}>
-        <Image style={styles.backIcon} source={leftLongArrow} />
+        <Image style={styles.backIcon} source={backArrow} />
       </TouchableOpacity>
     );
   }

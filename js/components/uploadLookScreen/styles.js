@@ -39,12 +39,15 @@ export default StyleSheet.create({
     backgroundColor: Colors.white,
     flexDirection: 'row',
     justifyContent: 'center',
+    height: 30,
   },
   carouselTitleText: {
     color: Colors.black,
-    lineHeight: 24,
     fontFamily: Fonts.subHeaderFont,
     paddingHorizontal: 10,
+    fontWeight: '600',
+    height: 30,
+    paddingTop: 7,
   },
   footerToggleButton: {
     height: 8,
@@ -62,17 +65,16 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingTop: 10,
-    marginTop: Platform.OS === 'ios' ? 0 : 0,
     backgroundColor: 'white',
     opacity: 0.7,
-    height: 67,
+    height: Platform.OS === 'ios' ? 67 : 55,
     alignItems: 'center',
   },
   publishBtnText: {
-    color: Colors.secondaryColor,
+    color: Colors.black,
     textAlign: 'center',
     fontSize: generateAdjustedSize(20),
-    fontFamily: Fonts.boldContentFont,
+    fontWeight: '700',
   },
   addItemContainer: {
     right: 10,
@@ -138,8 +140,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   backIcon: {
-    width: 20,
-    height: 20,
+    width: 12,
+    height: 15,
   },
   videoItemNumber: {
     textAlign: 'center',

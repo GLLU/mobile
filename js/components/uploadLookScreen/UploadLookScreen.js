@@ -16,7 +16,6 @@ import styles from './styles';
 
 const EDIT_MODE = 'edit';
 const MAX_ITEMS_PER_TAG = 5;
-const starIcon = require('../../../images/icons/star.png');
 
 export const BRAND = 'brand';
 export const LINK = 'link';
@@ -234,26 +233,27 @@ class UploadLookScreen extends Component {
     const numOfSelectedOffers = (currTag && currTag.numOfSelectedOffers) ? currTag.numOfSelectedOffers : 0;
     return (
       <View style={styles.carouselTitle}>
-        <Image source={starIcon} style={styles.starIcon} />
         {numOfSelectedOffers ?
           <Text style={styles.carouselTitleText}> {`You have selected ${numOfSelectedOffers} items`} </Text> :
           <Text style={styles.carouselTitleText}> {`Choose up to ${MAX_ITEMS_PER_TAG} items`} </Text>
         }
-        <Image source={starIcon} style={styles.starIcon} />
       </View>
     );
   }
 
-  _renderSuggestionItems(offers) {
+  _renderSuggestionItems(currTag) {
+    const { lookId } = this.props;
     const { isShowFooter } = this.state;
     return (
       <View>
         {isShowFooter ?
-          offers ?
+          currTag.offers ?
             <View>
               {this._renderProductItemsHeader()}
               <ProductItemsCarousel
-                offers={offers}
+                lookId={lookId}
+                itemId={currTag.id}
+                offers={currTag.offers}
                 onChangeToManualPress={this._toggleSuggestionList}
                 onSelectProductItem={this.handleProductItemSelection}
                 onEnlargeItem={offer => this._handleEnlargeItem(offer)} />
@@ -274,7 +274,7 @@ class UploadLookScreen extends Component {
       <View style={styles.renderActionsContainer}>
         { this.renderHeader() }
         { isVideo ? null : this.renderTags() }
-        { !currTag.isCustom ? this._renderSuggestionItems(currTag.offers) : this._renderEditItemTabs() }
+        { !currTag.isCustom ? this._renderSuggestionItems(currTag) : this._renderEditItemTabs() }
       </View>
     );
   }

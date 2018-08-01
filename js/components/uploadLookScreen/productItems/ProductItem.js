@@ -1,17 +1,21 @@
 // @flow
 
 import React, { Component } from 'react';
-import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback,View, Image, Text, StyleSheet, Platform, Dimensions } from 'react-native';
+import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View, Image, Text, StyleSheet, Platform, Linking } from 'react-native';
 import i18n from 'react-native-i18n';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
+import { connect } from 'react-redux';
 import Colors from '../../../styles/Colors.styles';
 import fonts from '../../../styles/Fonts.styles';
 import { generateAdjustedSize } from './../../../utils/AdjustabaleContent';
-import ProductItemLarge from './ProductItemLarge';
+import { formatPrice, textEllipsis } from '../../../utils/FormatUtils';
 import Button from '../../common/buttons/Button';
+import { showInfo } from '../../../actions';
+import asScreen from '../../common/containers/Screen';
+import withAnalytics from '../../common/analytics/WithAnalytics';
 
 const vInCircle = require('../../../../images/indicators/v_in_circle.png');
 const shareInCircle = require('../../../../images/icons/shareInCircle.png');
+const redPixel = require('../../../../images/icons/redPixel.png');
 
 class ProductItem extends Component {
 
@@ -20,14 +24,16 @@ class ProductItem extends Component {
     this.handleSelectProductItem = this.handleSelectProductItem.bind(this);
     this.handleEnlargeProductItem = this.handleEnlargeProductItem.bind(this);
     this._handleEventNone = this._handleEventNone.bind(this);
+    this.handleOpenLink = this.handleOpenLink.bind(this);
     this.state = {
       isSelected: false,
       bigRatio: false,
+      isShopNowClicked: false,
     };
   }
 
   handleSelectProductItem() {
-    const { onSelectProductItem, offer } = this.props;
+    const { onSelectProductItem } = this.props;
     onSelectProductItem();
   }
 
@@ -66,6 +72,23 @@ class ProductItem extends Component {
     this._isMounted = false;
   }
 
+  handleOpenLink(index = 0) {
+    const { offer, showInfo, lookId, itemId, logEvent, navigateTo } = this.props;
+    if (offer.url) {
+      Linking.canOpenURL(offer.url).then((supported) => {
+        if (!supported) {
+          return;
+        } else {
+          logEvent('UploadLook', { name: 'click on shop now', lookId, itemId });
+          this.setState({ isShopNowClicked: true });
+          navigateTo('webViewScreen', { url: offer.url, headerData: { title: i18n.t('SHOP_ITEM') } });
+        }
+      }).catch(err => console.error('An error occurred', err));
+    } else {
+      showInfo("Sorry, we're still working on finding this item online for you. ");
+    }
+  }
+
   render() {
     const { offer, onSelectProductItem } = this.props;
     const { bigRatio, isEnlarged } = this.state;
@@ -73,7 +96,7 @@ class ProductItem extends Component {
 
     return (
       <TouchableWithoutFeedback onPress={event => this._handleEventNone(event)}>
-        <View style={[styles.container, offer.selected ? styles.imageSelected : styles.imageNotSelected]}>
+        <View style={[styles.container, offer.selected ? styles.itemSelected : styles.itemNotSelected]}>
           <View style={styles.productLeft}>
             <TouchableHighlight onPress={this.handleEnlargeProductItem}>
               <View>
@@ -83,9 +106,9 @@ class ProductItem extends Component {
             </TouchableHighlight>
           </View>
           <View style={styles.productRight}>
-            <Text style={styles.brand}> {offer.brand_name}</Text>
-            <Text style={[styles.price, isInSale ? styles.originalPrice : null]}> {`${offer.originalPrice}$`}</Text>
-            {isInSale ? <Text style={styles.price}> {`SALE: ${offer.price}$`}</Text> : null}
+            <Text style={styles.brand}> {textEllipsis(offer.brand_name, 10, 8)}</Text>
+            <Text style={[styles.price, isInSale ? styles.originalPrice : null]}> {`${formatPrice(offer.originalPrice)}`}</Text>
+            {isInSale ? <Text style={styles.price}> {`${i18n.t('SALE')}: ${formatPrice(offer.price)}`}</Text> : null}
             <View style={styles.buttonContainer}>
               <Button
                 label={i18n.t('SHOP_NOW')}
@@ -112,41 +135,45 @@ class ProductItem extends Component {
 const styles = StyleSheet.create({
   container: {
     marginTop: 1,
-    marginLeft: 1,
+    marginLeft: 7,
     flexDirection: 'row',
+    justifyContent: 'space-around',
     width: Platform.OS === 'ios' ? generateAdjustedSize(315) : generateAdjustedSize(265),
-    height: Platform.OS === 'ios' ? generateAdjustedSize(184) : generateAdjustedSize(145),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(174) : generateAdjustedSize(155),
   },
   productRight: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     marginTop: 8,
-    paddingLeft: 8,
-    height: Platform.OS === 'ios' ? generateAdjustedSize(156) : generateAdjustedSize(120),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(156) : generateAdjustedSize(142),
   },
   imageUrl: {
-    width: Platform.OS === 'ios' ? generateAdjustedSize(112) : generateAdjustedSize(100),
-    height: Platform.OS === 'ios' ? generateAdjustedSize(150) : generateAdjustedSize(132),
+    width: Platform.OS === 'ios' ? generateAdjustedSize(112) : generateAdjustedSize(106),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(150) : generateAdjustedSize(148),
   },
   productLeft: {
     backgroundColor: Colors.white,
     flexDirection: 'row',
     paddingTop: 8,
-    paddingLeft: 8,
-    width: Platform.OS === 'ios' ? generateAdjustedSize(112) : generateAdjustedSize(100),
-    height: Platform.OS === 'ios' ? generateAdjustedSize(150) : generateAdjustedSize(132),
+    width: Platform.OS === 'ios' ? generateAdjustedSize(112) : generateAdjustedSize(106),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(150) : generateAdjustedSize(148),
   },
-  imageSelected: {
+  itemSelected: {
     backgroundColor: Colors.white,
     borderColor: Colors.secondaryColor,
     borderStyle: 'solid',
     borderWidth: 2,
   },
-  imageNotSelected: {
+  itemNotSelected: {
     backgroundColor: Colors.white,
-    borderColor: Colors.black,
-    borderStyle: 'solid',
-    borderWidth: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1.5,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 3,
   },
   brand: {
     borderRadius: 2,
@@ -154,19 +181,20 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     fontSize: Platform.OS === 'android' ? generateAdjustedSize(15) : generateAdjustedSize(16),
     fontFamily: fonts.contentFont,
+    color: Colors.black,
   },
   originalPrice: {
     color: Colors.gray,
     textDecorationLine: 'line-through',
-    textDecorationColor: 'red',
   },
   price: {
     fontSize: Platform.OS === 'android' ? generateAdjustedSize(14) : generateAdjustedSize(15),
+    color: Colors.black,
   },
   shareInCircle: {
     position: 'absolute',
-    right: 5,
-    bottom: 5,
+    right: 10,
+    bottom: 10,
     width: 30,
     height: 30,
   },
@@ -200,7 +228,7 @@ const styles = StyleSheet.create({
     top: 6,
     width: generateAdjustedSize(26),
     height: generateAdjustedSize(26),
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: Colors.gray,
   },
   choiceCircleInner: {
@@ -208,4 +236,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductItem;
+function bindActions(dispatch) {
+  return {
+    showInfo: text => dispatch(showInfo(text)),
+  };
+}
+
+const mapStateToProps = () => ({});
+
+export default connect(mapStateToProps, bindActions)(withAnalytics(ProductItem));

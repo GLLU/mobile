@@ -18,6 +18,7 @@ import Colors from '../../../styles/Colors.styles';
 import Fonts from '../../../styles/Fonts.styles';
 import SolidButton from '../../common/buttons/SolidButton';
 import { generateAdjustedSize } from '../../../utils/AdjustabaleContent';
+import { formatPrice, textEllipsis } from '../../../utils/FormatUtils';
 import withAnalytics from '../../common/analytics/WithAnalytics';
 
 const width = Dimensions.get('window').width;
@@ -138,19 +139,7 @@ class ItemPopup extends Component {
     } else {
       title = brand ? brand.name : 'N/A';
     }
-    return this._textEllipsis(title);
-  }
-
-  _textEllipsis(text) {
-    return text.length > 25 ? `${text.substr(0, 10)}...` : text;
-  }
-
-  _getFormattedPrice(price) {
-    let formattedPrice = Math.round(price * 2) / 2;
-    if (formattedPrice !== Math.round(formattedPrice)) {
-      formattedPrice = formattedPrice.toFixed(2);
-    }
-    return price ? `${formattedPrice}$` : 'N/A';
+    return textEllipsis(title, 25);
   }
 
   // TODO: merge it and _renderOffer to one function
@@ -163,7 +152,7 @@ class ItemPopup extends Component {
         <View style={styles.rightOfferContainer}>
           <Text style={styles.brand}>{this.getTitle(brand)}</Text>
           { category ? <Text style={styles.category}>{(offers && offers.length === 1) ? null : category.name}</Text> : null }
-          {offers ? <Text style={styles.price}>{this._getFormattedPrice(offers[0].price)}</Text> : null}
+          {offers ? <Text style={styles.price}>{formatPrice(offers[0].price)}</Text> : null}
           <SolidButton
             label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
             style={styles.shopNowButton} onPress={() => this.handleOpenLink()} isDisabled={isShopNowClicked} />
@@ -181,7 +170,7 @@ class ItemPopup extends Component {
           <Image source={{ uri: item.image_url }} style={styles.itemImage} />
           <View style={styles.rightOfferContainer}>
             <Text style={styles.brand}>{this.getTitle(brand, index)}</Text>
-            {offers ? <Text style={styles.price}>{this._getFormattedPrice(item.price)}</Text> : null}
+            {offers ? <Text style={styles.price}>{formatPrice(item.price)}</Text> : null}
             <SolidButton
               label={(is_verified || offers) ? I18n.t('SHOP_NOW') : I18n.t('VISIT_RETAILER')}
               style={styles.shopNowButton} onPress={() => this.handleOpenLink(index)} disabled={isShopNowClicked} />
