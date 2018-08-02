@@ -7,10 +7,7 @@ import {
 } from 'react-native';
 import { noop } from 'lodash';
 
-const markerTopLeft = require('../../../../images/markers/marker-top-left.png');
-const markerTopRight = require('../../../../images/markers/marker-top-right.png');
-const markerBottomLeft = require('../../../../images/markers/marker-bottom-left.png');
-const markerBottomRight = require('../../../../images/markers/marker-bottom-right.png');
+const marker = require('../../../../images/markers/tag_green.png');
 
 export const MARKER_WIDTH = 55;
 export const MARKER_HEIGHT = 55;
@@ -19,6 +16,7 @@ class MarkerView extends Component {
   constructor(props) {
     super(props);
     this.onPress = this.onPress.bind(this);
+    this.getMarkerAngleByOrientation = this.getMarkerAngleByOrientation.bind(this);
     this.state = { isSelected: false };
   }
 
@@ -43,30 +41,30 @@ class MarkerView extends Component {
     this.props.onPress(e);
   }
 
-  getMarkerByOrientation(orientation) {
+  getMarkerAngleByOrientation(orientation) {
     if (orientation.top) {
       if (orientation.left) {
-        return markerBottomRight;
+        return '135deg';
       } else {
-        return markerBottomLeft;
+        return '225deg';
       }
     } else if (orientation.left) {
-      return markerTopRight;
+      return '45deg';
     } else {
-      return markerTopLeft;
+      return '315deg';
     }
   }
 
   render() {
-    const { item, activeItem, isPopupActive } = this.props;
+    const { item, activeItem, isPopupActive, orientation } = this.props;
     const { isSelected } = this.state;
     const isItemShown = (activeItem && (item.id === activeItem.id));
 
     return (
       <TouchableWithoutFeedback onPress={e => this.onPress(e)}>
-        <View style={styles.container}>
+        <View style={[styles.container, { transform: [{ rotate: this.getMarkerAngleByOrientation(orientation) }] }]}>
           <Image
-            source={this.getMarkerByOrientation(this.props.orientation)}
+            source={marker}
             style={styles.marker} resizeMode={'contain'} />
           {(isItemShown && isPopupActive) ?
             <Image

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   decriptionButtonText: {
     paddingTop: 7,
     textAlign: 'center',
-    color: Colors.secondaryColor,
+    color: Colors.black,
     fontSize: generateAdjustedSize(18),
     fontFamily: Fonts.boldContentFont,
   },
@@ -101,7 +101,7 @@ class DecriptionInput extends Component {
         </View>
         <View style={styles.decriptionButtonContainer}>
           <TouchableOpacity style={styles.decriptionButton} onPress={this._handleNextClick}>
-            <Text style={styles.decriptionButtonText}>{i18n.t('NEXT')} </Text>
+            <Text style={styles.decriptionButtonText}>{i18n.t('PUBLISH')} </Text>
           </TouchableOpacity>
         </View>
       </View>

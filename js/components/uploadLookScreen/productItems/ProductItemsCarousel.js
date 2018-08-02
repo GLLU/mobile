@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   didNotFind: {
-    width: generateAdjustedSize(67),
-    height: generateAdjustedSize(51),
+    width: generateAdjustedSize(50),
+    height: generateAdjustedSize(38),
   },
   moreContentImage: {
     width: generateAdjustedSize(112),

@@ -36,7 +36,7 @@ class UploadLookHeader extends Component {
     const allowPublish = this.allowPublishBtn();
     return (
       <TouchableOpacity style={styles.nextBtnContainer} onPress={() => this._handlePublishPressed(allowPublish)}>
-        <Text style={[styles.publishBtnText, !allowPublish ? { color: Colors.gray } : null]}>{i18n.t('PUBLISH')}</Text>
+        <Text style={[styles.publishBtnText, !allowPublish ? { color: Colors.gray } : null]}>{i18n.t('NEXT')}</Text>
       </TouchableOpacity>
     );
   }

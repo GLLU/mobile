@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: Platform.OS === 'ios' ? generateAdjustedSize(315) : generateAdjustedSize(265),
-    height: Platform.OS === 'ios' ? generateAdjustedSize(174) : generateAdjustedSize(155),
+    height: Platform.OS === 'ios' ? generateAdjustedSize(174) : generateAdjustedSize(165),
   },
   productRight: {
     flexDirection: 'column',
