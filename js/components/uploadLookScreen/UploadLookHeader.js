@@ -14,6 +14,7 @@ class UploadLookHeader extends Component {
   constructor(props) {
     super(props);
     this._handleNextPressed = this._handleNextPressed.bind(this);
+    this._handleBackButton = this._handleBackButton.bind(this);
     this.state = {
       isDescriptionShown: false,
     };
@@ -51,25 +52,26 @@ class UploadLookHeader extends Component {
     }
   }
 
+  _handleBackButton() {
+    const { handleBackButton } = this.props;
+    const { isDescriptionShown } = this.state;
+    if (isDescriptionShown) {
+      this.setState({ isDescriptionShown: false });
+    } else {
+      handleBackButton();
+    }
+  }
+
   _handleNextPressed(description) {
     const { publishItem, addDescription } = this.props;
     addDescription(description);
     publishItem();
   }
 
-  _renderRemoveItemBtn() {
-    return (
-      <TouchableOpacity onPress={() => this.props.handleRemoveItem()} style={styles.removeBtnContainer}>
-        <Image source={trash} resizeMode={'contain'} style={styles.removeBtnImage} />
-      </TouchableOpacity>
-    );
-  }
-
   _renderBackButton() {
-    const { handleBackButton } = this.props;
     return (
       <TouchableOpacity
-        transparent onPress={() => handleBackButton()}
+        transparent onPress={this._handleBackButton}
         style={styles.backBtnContainer}>
         <Image style={styles.backIcon} source={backArrow} />
       </TouchableOpacity>
@@ -127,7 +129,7 @@ class UploadLookHeader extends Component {
           </View>
         </View>
         
-        { isDescriptionShown ? <DescriptionInput onClickNext={this._handleNextPressed} /> : null}
+        { isDescriptionShown ? <DescriptionInput onClickPublish={this._handleNextPressed} /> : null}
         { isVideo ? this.renderAddAnotherItemBtn() : null}
       </View>
     );

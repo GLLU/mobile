@@ -79,9 +79,9 @@ class DecriptionInput extends Component {
   }
 
   _handleNextClick() {
-    const { onClickNext } = this.props;
+    const { onClickPublish } = this.props;
     const { description } = this.state;
-    onClickNext(description);
+    onClickPublish(description);
   }
 
   render() {
